@@ -272,10 +272,12 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
 
                             var retrievedAIModel = await aiModelResourceProvider.GetResourceAsync<AIModelBase>(
                                     resourceObjectId.ObjectId,
-                                    currentUserIdentity);
+                                    currentUserIdentity,
+                                    parentResourceInstance: agentBase);
                             var retrievedAPIEndpointConfiguration = await configurationResourceProvider.GetResourceAsync<APIEndpointConfiguration>(
                                                     retrievedAIModel.EndpointObjectId!,
-                                                    currentUserIdentity);
+                                                    currentUserIdentity,
+                                                    parentResourceInstance: agentBase);
 
                             mainAIModel = retrievedAIModel;
                             mainAIModelAPIEndpointConfiguration = retrievedAPIEndpointConfiguration;
@@ -305,7 +307,8 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
 
                         var retrievedWorkflow = await agentResourceProvider.GetResourceAsync<Workflow>(
                             resourceObjectId.ObjectId,
-                            currentUserIdentity);
+                            currentUserIdentity,
+                            parentResourceInstance: agentBase);
 
                         explodedObjectsManager.TryAdd(
                             retrievedWorkflow.ObjectId!,
@@ -315,7 +318,8 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                     case AzureAIResourceTypeNames.Projects:
                         var retrievedProject = await azureAIResourceProvider.GetResourceAsync<AzureAIProject>(
                                 resourceObjectId.ObjectId,
-                                currentUserIdentity);
+                                currentUserIdentity,
+                                parentResourceInstance: agentBase);
                         explodedObjectsManager.TryAdd(
                             retrievedProject.ObjectId!,
                             retrievedProject);
@@ -342,7 +346,8 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
             var gatewayAPIEndpointConfiguration = await configurationResourceProvider.GetResourceAsync<APIEndpointConfiguration>(
                 instanceId,
                 "GatewayAPI",
-                currentUserIdentity);
+                currentUserIdentity,
+                parentResourceInstance: agentBase);
 
             explodedObjectsManager.TryAdd(
                 CompletionRequestObjectsKeys.GatewayAPIEndpointConfiguration,
@@ -351,7 +356,8 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
             var contextAPIEnpointConfiguration = await configurationResourceProvider.GetResourceAsync<APIEndpointConfiguration>(
                 instanceId,
                 ServiceNames.ContextAPI,
-                currentUserIdentity);
+                currentUserIdentity,
+                parentResourceInstance: agentBase);
 
             explodedObjectsManager.TryAdd(
                 CompletionRequestObjectsKeys.ContextAPIEndpointConfiguration,
@@ -364,6 +370,10 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
             explodedObjectsManager.TryAdd(
                 CompletionRequestObjectsKeys.AgentName,
                 agentBase.Name);
+
+            explodedObjectsManager.TryAdd(
+                CompletionRequestObjectsKeys.AgentObjectId,
+                agentBase.ObjectId!);
 
             #region Tools
 
@@ -486,7 +496,8 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
 
                             var aiModel = await aiModelResourceProvider.GetResourceAsync<AIModelBase>(
                                 resourceObjectId.ObjectId,
-                                currentUserIdentity);
+                                currentUserIdentity,
+                                parentResourceInstance: agentBase);
 
                             explodedObjectsManager.TryAdd(
                                 resourceObjectId.ObjectId,
@@ -497,7 +508,8 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                             {
                                 var aiModelEndpoint = await configurationResourceProvider.GetResourceAsync<APIEndpointConfiguration>(
                                     aiModel.EndpointObjectId!,
-                                    currentUserIdentity);
+                                    currentUserIdentity,
+                                    parentResourceInstance: agentBase);
 
                                 explodedObjectsManager.TryAdd(
                                     aiModel.EndpointObjectId!,
@@ -509,7 +521,8 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                         case ConfigurationResourceTypeNames.APIEndpointConfigurations:
                             var apiEndpoint = await configurationResourceProvider.GetResourceAsync<APIEndpointConfiguration>(
                                 resourceObjectId.ObjectId,
-                                currentUserIdentity);
+                                currentUserIdentity,
+                                parentResourceInstance: agentBase);
 
                             explodedObjectsManager.TryAdd(
                                 resourceObjectId.ObjectId,
@@ -526,7 +539,8 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
 
                             var vectorDatabase = await vectorResourceProvider.GetResourceAsync<VectorDatabase>(
                                 resourceObjectId.ObjectId,
-                                currentUserIdentity);
+                                currentUserIdentity,
+                                parentResourceInstance: agentBase);
 
                             explodedObjectsManager.TryAdd(
                                 resourceObjectId.ObjectId,
@@ -538,7 +552,8 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
 
                                 var vectorDatabaseApiEndpoint = await configurationResourceProvider.GetResourceAsync<APIEndpointConfiguration>(
                                     vectorDatabase.APIEndpointConfigurationObjectId,
-                                    currentUserIdentity);
+                                    currentUserIdentity,
+                                    parentResourceInstance: agentBase);
 
                                 explodedObjectsManager.TryAdd(
                                     vectorDatabase.APIEndpointConfigurationObjectId,
@@ -550,7 +565,8 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                         case PromptResourceTypeNames.Prompts:
                             var prompt = await promptResourceProvider.GetResourceAsync<PromptBase>(
                                 resourceObjectId.ObjectId,
-                                currentUserIdentity);                            
+                                currentUserIdentity,
+                                parentResourceInstance: agentBase);                            
                             
                             if (prompt is MultipartPrompt multipartPrompt)
                             {
@@ -584,7 +600,8 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
 
                             var knowledgeUnit = await contextResourceProvider.GetResourceAsync<KnowledgeUnit>(
                                 resourceObjectId.ObjectId,
-                                currentUserIdentity);
+                                currentUserIdentity,
+                                parentResourceInstance: agentBase);
 
                             explodedObjectsManager.TryAdd(
                                 resourceObjectId.ObjectId,
@@ -596,7 +613,8 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
 
                             var dataSource = await dataSourceResourceProvider.GetResourceAsync<DataSourceBase>(
                                 resourceObjectId.ObjectId,
-                                currentUserIdentity);
+                                currentUserIdentity,
+                                parentResourceInstance: agentBase);
 
                             explodedObjectsManager.TryAdd(
                                 dataSource.ObjectId!,
@@ -632,7 +650,8 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
             var mainPromptObjectId = agentWorkflow!.MainPromptObjectId;
             var retrievedMainPrompt = await promptResourceProvider.GetResourceAsync<PromptBase>(
                                         mainPromptObjectId!,
-                                        currentUserIdentity);
+                                        currentUserIdentity,
+                                        parentResourceInstance: agentBase);
             if (retrievedMainPrompt is MultipartPrompt mainPrompt)
             {
                 if (mainPrompt is not null)
@@ -654,7 +673,9 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
             if (routerPromptObjectId is not null)
             {
                 var retrievedRouterPrompt = await promptResourceProvider.GetResourceAsync<PromptBase>(
-                    routerPromptObjectId!, currentUserIdentity);
+                    routerPromptObjectId!,
+                    currentUserIdentity,
+                    parentResourceInstance: agentBase);
 
                 if (retrievedRouterPrompt is MultipartPrompt routerPrompt
                     && routerPrompt is not null)
@@ -676,7 +697,9 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
             if (filesPromptObjectId is not null)
             {
                 var retrievedFilesPrompt = await promptResourceProvider.GetResourceAsync<PromptBase>(
-                    filesPromptObjectId, currentUserIdentity);
+                    filesPromptObjectId,
+                    currentUserIdentity,
+                    parentResourceInstance: agentBase);
 
                 if (retrievedFilesPrompt is MultipartPrompt filesPrompt
                     && filesPrompt is not null)
@@ -718,7 +741,9 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
             if (finalPromptObjectId is not null)
             {
                 var retrievedFinalPrompt = await promptResourceProvider.GetResourceAsync<PromptBase>(
-                    finalPromptObjectId, currentUserIdentity);
+                    finalPromptObjectId,
+                    currentUserIdentity,
+                    parentResourceInstance: agentBase);
                 if (retrievedFinalPrompt is MultipartPrompt finalPrompt
                     && finalPrompt is not null)
                 {
@@ -822,7 +847,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                     throw new OrchestrationException($"The conversation mapping for conversation {conversationId} was deleted but not purged. It cannot be used for active conversations.");
 
                 var conversationMapping = existsResult.Exists
-                    ? await azureOpenAIResourceProvider.GetResourceAsync<AzureOpenAIConversationMapping>(instanceId, conversationId, currentUserIdentity)
+                    ? await azureOpenAIResourceProvider.GetResourceAsync<AzureOpenAIConversationMapping>(instanceId, conversationId, currentUserIdentity)  // No need for parentResourceInstance, access is granted based on policy.
                     : new AzureOpenAIConversationMapping
                     {
                         Name = conversationId,
@@ -905,7 +930,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                     throw new OrchestrationException($"The conversation mapping for conversation {conversationId} was deleted but not purged. It cannot be used for active conversations.");
 
                 var conversationMapping = existsResult.Exists
-                    ? await azureAIResourceProvider.GetResourceAsync<AzureAIAgentConversationMapping>(instanceId, conversationId, currentUserIdentity)
+                    ? await azureAIResourceProvider.GetResourceAsync<AzureAIAgentConversationMapping>(instanceId, conversationId, currentUserIdentity) // No need for parentResourceInstance, access is granted based on policy.
                     : new AzureAIAgentConversationMapping
                     {
                         Name = conversationId,

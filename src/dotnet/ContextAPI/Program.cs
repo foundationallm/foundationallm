@@ -41,6 +41,7 @@ builder.Configuration.AddAzureAppConfiguration((Action<AzureAppConfigurationOpti
 
     options.Select(AppConfigurationKeyFilters.FoundationaLLM_Code_CodeExecution_AzureContainerAppsDynamicSessions);
 
+    options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_Agent_Storage);
     options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_Configuration_Storage);
     options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_Vector_Storage);
     options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_Context_Storage);
@@ -102,7 +103,7 @@ builder.AddCodeSessionService();
 builder.AddResourceProviderCacheSettings();
 builder.AddResourceValidatorFactory();
 
-//builder.AddAgentResourceProvider();
+builder.AddAgentResourceProvider();
 //builder.AddAttachmentResourceProvider();
 builder.AddConfigurationResourceProvider();
 //builder.AddAzureOpenAIResourceProvider();

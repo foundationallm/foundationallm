@@ -150,13 +150,20 @@ namespace FoundationaLLM.Common.Interfaces
         /// <param name="actionName">The name of the action being executed.</param>
         /// <param name="actionPayload">The payload of the action providing details about it.</param>
         /// <param name="userIdentity">The <see cref="UnifiedUserIdentity"/> with details about the identity of the user.</param>
+        /// <param name="parentResourceInstance">The optional parent resource of the resource identified by
+        /// <paramref name="instanceId"/> and <paramref name="resourceName"/>.</param>
         /// <returns></returns>
+        /// <remarks>
+        /// When the parent resource instance is provided, and it specifies inheritable authorizable actions,
+        /// the parent resource instance is used to authorize the request for any of those actions.
+        /// </remarks>
         Task<TResult> ExecuteResourceActionAsync<T, TAction, TResult>(
             string instanceId,
             string resourceName,
             string actionName,
             TAction actionPayload,
-            UnifiedUserIdentity userIdentity)
+            UnifiedUserIdentity userIdentity,
+            ResourceBase? parentResourceInstance = null)
             where T : ResourceBase
             where TAction : class?
             where TResult : ResourceProviderActionResult;
@@ -174,14 +181,21 @@ namespace FoundationaLLM.Common.Interfaces
         /// <param name="actionName">The name of the action being executed.</param>
         /// <param name="actionPayload">The payload of the action providing details about it.</param>
         /// <param name="userIdentity">The <see cref="UnifiedUserIdentity"/> with details about the identity of the user.</param>
+        /// <param name="parentResourceInstance">The optional parent resource of the resource identified by
+        /// <paramref name="instanceId"/> and <paramref name="resourceName"/>.</param>
         /// <returns></returns>
+        /// <remarks>
+        /// When the parent resource instance is provided, and it specifies inheritable authorizable actions,
+        /// the parent resource instance is used to authorize the request for any of those actions.
+        /// </remarks>
         Task<TResult> ExecuteResourceActionAsync<TMain, TSubordinate, TAction, TResult>(
             string instanceId,
             string mainResourceName,
             string resourceName,
             string actionName,
             TAction actionPayload,
-            UnifiedUserIdentity userIdentity)
+            UnifiedUserIdentity userIdentity,
+            ResourceBase? parentResourceInstance = null)
             where TMain : ResourceBase
             where TSubordinate : ResourceBase
             where TAction : class?

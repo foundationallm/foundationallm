@@ -8,6 +8,8 @@ class CompletionRequestObjectKeys(str, Enum):
     OPENAI_THREAD_ID = "OpenAI.Assistants.Thread.Id"
     GATEWAY_API_ENDPOINT_CONFIGURATION = "GatewayAPIEndpointConfiguration"
     INSTANCE_ID = "FoundationaLLM.InstanceId"
+    AGENT_NAME = "Agent.AgentName"
+    AGENT_OBJECT_ID = "Agent.AgentObjectId"
     CONTEXT_API_ENDPOINT_CONFIGURATION = "ContextAPIEndpointConfiguration"
     WORKFLOW_INVOCATION_CONVERSATION_FILES = "Workflow.Invocation.ConversationFiles"
     WORKFLOW_INVOCATION_ATTACHED_FILES = "Workflow.Invocation.AttachedFiles"
