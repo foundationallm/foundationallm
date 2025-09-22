@@ -1,10 +1,10 @@
 [project]
-name = "foundationallm"
-version = "0.0.2"
+name = "foundationallm-agent-plugins"
+version = "0.9.7rc385"
 authors = [
   { name="FoundationaLLM", email="dev@foundationallm.ai" },
 ]
-description = "Enables integration with the FoundationaLLM platform."
+description = "FoundationaLLM agent plugins."
 readme = "README.md"
 requires-python = ">=3.11"
 license = "MIT"
