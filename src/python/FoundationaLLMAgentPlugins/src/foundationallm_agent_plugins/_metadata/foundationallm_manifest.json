@@ -1,6 +1,4 @@
 {
-    "version": "__VERSION__",
-    "module_name": "foundationallm_agent_plugins",
     "display_name": "FoundationaLLM Agent Plugins (Python)",
     "description": "The FoundationaLLM Agent plugins package for Python.",
     "plugin_managers": [

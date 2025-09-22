@@ -4,7 +4,7 @@ version = "0.9.7rc385"
 authors = [
   { name="FoundationaLLM", email="dev@foundationallm.ai" },
 ]
-description = "FoundationaLLM agent plugins."
+description = "FoundationaLLM Agent plugins."
 readme = "README.md"
 requires-python = ">=3.11"
 license = "MIT"
@@ -19,3 +19,6 @@ Issues = "https://github.com/foundationallm/foundationallm/issues"
 
 [tool.setuptools.packages.find]
 include = ['*']
+
+[tool.setuptools.package-data]
+foundationallm_agent_plugins = ["_metadata/foundationallm_manifest.json"]

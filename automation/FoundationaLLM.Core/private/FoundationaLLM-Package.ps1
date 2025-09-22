@@ -147,9 +147,10 @@ function Deploy-FoundationaLLMPackage {
 
             Write-Host "Updating plugin package: $($plugin[0])"
             $pluginResult = Merge-PluginPackage `
+                -Platform "dotnet" `
                 -PackageName $plugin[0] `
-                -NuGetPackageName $plugin[1] `
-                -NuGetPackageVersion $plugin[2] `
+                -PublishedPackageName $plugin[1] `
+                -PublishedPackageVersion $plugin[2] `
                 -PackagePath $plugin[3]
             Write-Host "Plugin updated: $($pluginResult)" -ForegroundColor Green
         }
@@ -158,8 +159,11 @@ function Deploy-FoundationaLLMPackage {
 
             Write-Host "Updating plugin package: $($plugin[0])"
             $pluginResult = Merge-PluginPackage `
+                -Platform "python" `
                 -PackageName $plugin[0] `
-                -PackagePath $plugin[1]
+                -PublishedPackageName $plugin[1] `
+                -PublishedPackageVersion $plugin[2] `
+                -PackagePath $plugin[3]
             Write-Host "Plugin updated: $($pluginResult)" -ForegroundColor Green
         }
     }

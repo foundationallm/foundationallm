@@ -517,57 +517,39 @@ namespace FoundationaLLM.Plugin.ResourceProviders
         {
             using var archive = new ZipArchive(packageBinaryContent, ZipArchiveMode.Read, leaveOpen: true);
 
-            // Find candidate entries with the manifest filename, prefer entries with smallest path depth (topmost).
-            var candidates = archive.Entries
-                .Select(e => new
-                {
-                    Entry = e,
-                    Depth = e.FullName.Split(new[] { '/' }, StringSplitOptions.RemoveEmptyEntries).Length
-                })
-                .Where(x => string.Equals(Path.GetFileName(x.Entry.FullName), "foundationallm_manifest.json", StringComparison.OrdinalIgnoreCase))
-                .OrderBy(x => x.Depth)
-                .ToArray();
+            var foundationallmManifestText = await GetTextFileContent(archive, "foundationallm_manifest.json");
+            var topLevelText = await GetTextFileContent(archive, "top_level.txt");
+            var metadata = await GetTextFileContent(archive, "METADATA");
+            
+            var moduleName = topLevelText
+                .Split(Environment.NewLine)
+                .First()
+                .Trim();
 
-            if (candidates.Length == 0)
-                throw new ResourceProviderException("The python package does not contain 'foundationallm_manifest.json' in the topmost folder.",
-                    StatusCodes.Status400BadRequest);
+            var metadataVersionLine = metadata
+                .Split(Environment.NewLine)
+                .Single(s => s.StartsWith("Version:"));
+            var versionString = metadataVersionLine
+                .Split(':', StringSplitOptions.TrimEntries)[1];    
 
-            var manifestEntry = candidates.First().Entry;
+            using var foundationallmManifestDoc = JsonDocument.Parse(foundationallmManifestText);
 
-            using var entryStream = manifestEntry.Open();
-            using var ms = new MemoryStream();
-            await entryStream.CopyToAsync(ms);
-            ms.Seek(0, SeekOrigin.Begin);
-
-            var jsonText = Encoding.UTF8.GetString(ms.ToArray());
-            using var doc = JsonDocument.Parse(jsonText);
-
-            if (!doc.RootElement.TryGetProperty("version", out var versionProperty)
-                || versionProperty.ValueKind != JsonValueKind.String)
-                throw new ResourceProviderException("The python package manifest does not contain a valid 'version' property.",
-                    StatusCodes.Status400BadRequest);
-
-            if (!doc.RootElement.TryGetProperty("module_name", out var moduleNameProperty)
-                || moduleNameProperty.ValueKind != JsonValueKind.String)
-                throw new ResourceProviderException("The python package manifest does not contain a valid 'module_name' property.",
-                    StatusCodes.Status400BadRequest);
-
-            if (!doc.RootElement.TryGetProperty("display_name", out var displayNameProperty)
+            if (!foundationallmManifestDoc.RootElement.TryGetProperty("display_name", out var displayNameProperty)
                 || displayNameProperty.ValueKind != JsonValueKind.String)
                 throw new ResourceProviderException("The python package manifest does not contain a valid 'display_name' property.",
                     StatusCodes.Status400BadRequest);
 
-            if (!doc.RootElement.TryGetProperty("description", out var descriptionPropery)
-                || versionProperty.ValueKind != JsonValueKind.String)
+            if (!foundationallmManifestDoc.RootElement.TryGetProperty("description", out var descriptionPropery)
+                || descriptionPropery.ValueKind != JsonValueKind.String)
                 throw new ResourceProviderException("The python package manifest does not contain a valid 'description' property.",
                     StatusCodes.Status400BadRequest);
 
-            if (!doc.RootElement.TryGetProperty("plugin_managers", out var pluginManagersProperty)
+            if (!foundationallmManifestDoc.RootElement.TryGetProperty("plugin_managers", out var pluginManagersProperty)
                 || pluginManagersProperty.ValueKind != JsonValueKind.Array)
                 throw new ResourceProviderException("The python package manifest does not contain a valid 'plugin_managers' property.",
                     StatusCodes.Status400BadRequest);
 
-            var version = SemanticVersion.Parse(versionProperty.ToString());
+            var version = GetVersion(versionString);
             var pluginManagers = pluginManagersProperty.EnumerateArray()
                 .Select(pm => pm.GetString())
                 .ToList();
@@ -581,13 +563,54 @@ namespace FoundationaLLM.Plugin.ResourceProviders
                 Plugins = [],
                 Properties = new Dictionary<string, string>
                 {
-                    { "module_name", moduleNameProperty.ToString() },
+                    { "module_name", moduleName },
                     { "plugin_managers", string.Join(",", pluginManagers) }
                 }
             };
 
             return (version, packageMetadata);
         }
+
+        private async Task<string> GetTextFileContent(
+            ZipArchive archive,
+            string fileName)
+        {
+            // Find candidate entries with the manifest filename, prefer entries with smallest path depth (topmost).
+            var candidates = archive.Entries
+                .Select(e => new
+                {
+                    Entry = e,
+                    Depth = e.FullName.Split(new[] { '/' }, StringSplitOptions.RemoveEmptyEntries).Length
+                })
+                .Where(x => string.Equals(Path.GetFileName(x.Entry.FullName), fileName, StringComparison.OrdinalIgnoreCase))
+                .OrderBy(x => x.Depth)
+                .ToArray();
+
+            if (candidates.Length == 0)
+                throw new ResourceProviderException($"The python package does not contain the {fileName} file.",
+                    StatusCodes.Status400BadRequest);
+
+            var fileEntry = candidates.First().Entry;
+
+            using var entryStream = fileEntry.Open();
+            using var ms = new MemoryStream();
+            await entryStream.CopyToAsync(ms);
+            ms.Seek(0, SeekOrigin.Begin);
+
+            var fileContent = Encoding.UTF8.GetString(ms.ToArray());
+            return fileContent;
+        }
+
+        private SemanticVersion GetVersion(string pythonVersion) =>
+            // Supports only specific Python formats:
+            // 1. X.Y.Z
+            // 2. X.Y.ZrcN
+            // 3. X.Y.ZaN
+            // 4. X.Y.ZbN
+            SemanticVersion.Parse(pythonVersion
+                .Replace("rc", "-rc")
+                .Replace("a", "-alpha")
+                .Replace("b", "-beta"));
 
         #endregion
 
