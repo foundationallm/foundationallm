@@ -142,4 +142,14 @@ a.table__button[aria-disabled="true"],
 	opacity: 0.6;
 	cursor: default;
 }
+
+.input-error {
+	border: 1.5px solid #e53935 !important;
+	background: #fff0f0;
+}
+.error-message {
+	color: #e53935;
+	font-size: 0.95em;
+	margin-top: 2px;
+}
 </style>
