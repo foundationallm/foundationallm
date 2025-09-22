@@ -49,10 +49,11 @@ export default defineNuxtPlugin(async (nuxtApp: any) => {
 			if (appConfigStore.instanceId && appConfigStore.instanceId !== api.instanceId) {
 				api.setInstanceId(appConfigStore.instanceId);
 			}
-		} catch (error) {
+		} catch (error: any) {
 			console.warn('Failed to load app configuration set during init, will be loaded later:', error);
 			// Don't throw error here, let the app continue loading
 			// Configuration will be loaded when user authenticates
+			// If it's a 403 error, the error state will be preserved in the store
 		}
 	}
 
