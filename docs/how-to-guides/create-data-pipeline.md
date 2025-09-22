@@ -13,7 +13,7 @@ This guide explains how to build a new data pipeline in the Management Portal. P
 1. **Sign in to the Management Portal.**
    - Navigate to your deployment's portal URL and authenticate with an account that has the required permissions.
 2. **Open the Pipelines workspace.**
-   - From the left navigation pane, select **Pipelines** to view existing pipelines.
+   - From the left navigation pane, select **Data Pipelines** to view existing pipelines.
 3. **Start creating a new pipeline.**
    - Select **+ Create Pipeline** to open the pipeline creation wizard.
 4. **Name the pipeline.**
@@ -46,9 +46,7 @@ This guide explains how to build a new data pipeline in the Management Portal. P
      - **Trigger Parameters**: Supply required values for the selected trigger type. The editor supports text, numeric, boolean, list, and resource selection inputs based on each parameter's metadata.
    - Collapse or delete triggers using the chevron and trash icons, respectively.
 9. **Create the pipeline.**
-   - After supplying all required information, select **Create Pipeline**. The button changes to **Save Changes** when editing an existing pipeline.
-10. **Cancel if necessary.**
-    - If you need to discard changes, select **Cancel** to return to the pipelines list without saving.
+   - After supplying all required information, select **Create Pipeline**.
 
 ## Next steps
 
