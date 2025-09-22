@@ -138,7 +138,7 @@
                                         <CustomQuillEditor
                                             v-model="welcomeMessage"
                                             :initial-content="JSON.parse(JSON.stringify(welcomeMessage))"
-                                            class="w-full"
+                                            class="w-full max-w-[100%!important]"
                                             placeholder="Enter agent welcome message"
                                             aria-labelledby="aria-welcome-message-desc"
                                             @content-update="updateAgentWelcomeMessage($event)"
