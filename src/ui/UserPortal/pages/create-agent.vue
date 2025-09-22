@@ -1,9 +1,24 @@
 <template>
-    <header role="banner">
-        <NavBarSettings />
-    </header>
+    <!-- Access Denied Message for 403 Errors -->
+    <div v-if="$appConfigStore.hasConfigurationAccessError" class="access-denied-overlay">
+        <div class="access-denied-container">
+            <div class="access-denied-icon">
+                <i class="pi pi-ban" style="font-size: 4rem; color: #e74c3c;"></i>
+            </div>
+            <h2 class="access-denied-title">Access Denied</h2>
+            <p class="access-denied-message">
+                {{ $appConfigStore.configurationAccessErrorMessage }}
+            </p>
+        </div>
+    </div>
 
-    <main id="main-content">
+    <!-- Normal Page Content -->
+    <div v-else>
+        <header role="banner">
+            <NavBarSettings />
+        </header>
+
+        <main id="main-content">
         <Toast position="top-center" />
 
         <div class="w-full max-w-[1430px] mx-auto px-4 py-7">
@@ -333,9 +348,11 @@
                                                     <td class="mnt-b-bottom p-3 text-center">{{
                                                         formatFileSize(file.size) }}</td>
                                                     <td class="mnt-b-bottom p-3 text-center">
-                                                        <Button label="Remove" severity="secondary"
+                                                        <Button icon="pi pi-times" severity="secondary"
+                                                            text rounded
                                                             @click="removeFile(idx)"
-                                                            class="min-h-[45px] min-w-[125px]" />
+                                                            class="min-h-[35px] min-w-[35px]"
+                                                            aria-label="Remove file" />
                                                     </td>
                                                 </tr>
                                             </tbody>
@@ -376,10 +393,13 @@
                                                     }}</td>
                                                     <td class="mnt-b-bottom p-3 text-center">
                                                         <Button
-                                                            label="Delete"
+                                                            icon="pi pi-trash"
                                                             severity="danger"
+                                                            text
+                                                            rounded
                                                             @click="deleteFile(f.resource?.name)"
-                                                            class="min-h-[35px] min-w-[80px]"
+                                                            class="min-h-[35px] min-w-[35px]"
+                                                            aria-label="Delete file"
                                                         />
                                                     </td>
                                                 </tr>
@@ -658,6 +678,7 @@
             </template>
         </Dialog>
     </main>
+    </div>
 </template>
 
 
@@ -671,6 +692,7 @@ import { defineComponent } from 'vue';
 import NavBarSettings from '~/components/NavBarSettings.vue';
 import '@/styles/agents.scss';
 import '@/styles/loading.scss';
+import '@/styles/access-denied.scss';
 
 import Column from 'primevue/column';
 import DataTable from 'primevue/datatable';
@@ -1701,6 +1723,46 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
+/* Access Denied Styles */
+.access-denied-overlay {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100vw;
+	height: 100vh;
+	background-color: var(--primary-bg, #fff);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	z-index: 9999;
+}
+
+.access-denied-container {
+	text-align: center;
+	padding: 2rem;
+	max-width: 500px;
+	margin: 0 auto;
+}
+
+.access-denied-icon {
+	margin-bottom: 1.5rem;
+}
+
+.access-denied-title {
+	font-size: 2rem;
+	font-weight: 600;
+	color: var(--primary-color, #131833);
+	margin-bottom: 1rem;
+	margin-top: 0;
+}
+
+.access-denied-message {
+	font-size: 1.1rem;
+	color: var(--secondary-text, #666);
+	line-height: 1.6;
+	margin: 0;
+}
+
 .csm-input-switch-1 {
     &.p-inputswitch {
         .p-inputswitch-slider {

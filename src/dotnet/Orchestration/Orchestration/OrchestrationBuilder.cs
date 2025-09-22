@@ -617,53 +617,54 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
 
             #region Build workflow prompts
 
-            #region Main prompt and router prompt processing
-
-            // Get main prompt and router prompt if available.
-            var mainPromptObjectId = agentWorkflow!.MainPromptObjectId;
-            
-            var retrievedMainPrompt = await promptResourceProvider.GetResourceAsync<PromptBase>(
-                                        mainPromptObjectId!,
-                                        currentUserIdentity);        
-            
             var tokenReplacements = new Dictionary<string, string>();
 
             // If tools exist on the agent, prepare for the potential of tools list token replacements in the prompt.
 
-            if(toolList.Length > 0)
+            if (toolList.Length > 0)
                 tokenReplacements.Add(TemplateVariables.ToolList, toolList.ToString());
 
-            if(toolRouterPrompts.Length > 0)
+            if (toolRouterPrompts.Length > 0)
                 tokenReplacements.Add(TemplateVariables.ToolRouterPrompts, toolRouterPrompts.ToString());
 
+            #region Main prompt and router prompt processing
+
+            var mainPromptObjectId = agentWorkflow!.MainPromptObjectId;
+            var retrievedMainPrompt = await promptResourceProvider.GetResourceAsync<PromptBase>(
+                                        mainPromptObjectId!,
+                                        currentUserIdentity);
             if (retrievedMainPrompt is MultipartPrompt mainPrompt)
             {
-                //check for token replacements, multipartPrompt variable has the same reference as retrievedPrompt therefore this edits the prefix/suffix in place
                 if (mainPrompt is not null)
                 {
-                    var routerPromptObjectId = agentWorkflow!.RouterPromptObjectId;
-                    if (routerPromptObjectId is not null)
-                    {
-                        var retrievedRouterPrompt = await promptResourceProvider.GetResourceAsync<PromptBase>(
-                            routerPromptObjectId!, currentUserIdentity);
-
-                        if (retrievedRouterPrompt is MultipartPrompt routerPrompt
-                            && routerPrompt is not null)
-                        {
-                            // If the router prompt is present, prepare to replace the router prompt token in the main prompt.
-                            tokenReplacements.Add(TemplateVariables.RouterPrompt,
-                                                    routerPrompt.Prefix +
-                                                    (string.IsNullOrEmpty(routerPrompt.Suffix)
-                                                            ? string.Empty : routerPrompt.Suffix));
-                        }
-                    }
-                   
                     mainPrompt.Prefix = templatingService.Transform(mainPrompt.Prefix!, tokenReplacements);
                     mainPrompt.Suffix = templatingService.Transform(mainPrompt.Suffix!, tokenReplacements);
 
                     explodedObjectsManager.TryAdd(
                             mainPromptObjectId!,
                             mainPrompt);
+                }
+            }
+
+            #endregion
+
+            #region Router prompt processing
+
+            var routerPromptObjectId = agentWorkflow!.RouterPromptObjectId;
+            if (routerPromptObjectId is not null)
+            {
+                var retrievedRouterPrompt = await promptResourceProvider.GetResourceAsync<PromptBase>(
+                    routerPromptObjectId!, currentUserIdentity);
+
+                if (retrievedRouterPrompt is MultipartPrompt routerPrompt
+                    && routerPrompt is not null)
+                {
+                    routerPrompt.Prefix = templatingService.Transform(routerPrompt.Prefix!, tokenReplacements);
+                    routerPrompt.Suffix = templatingService.Transform(routerPrompt.Suffix!, tokenReplacements);
+
+                    explodedObjectsManager.TryAdd(
+                            routerPromptObjectId!,
+                            routerPrompt);
                 }
             }
 
