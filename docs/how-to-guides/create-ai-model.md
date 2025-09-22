@@ -35,8 +35,6 @@ This guide explains how to register a new AI model in the FoundationaLLM Managem
    - Under **What are the model parameters?**, use the property builder to add key-value pairs for any defaults you want to apply when the model is invoked (such as temperature, top_p, or max_tokens).
 10. **Create the model.**
     - Select **Create Model** to save the registration. The portal displays a success notification and returns you to the Models list.
-11. **(Optional) Cancel without saving.**
-    - If you decide not to proceed, select **Cancel** and confirm to return to the Models list without creating a new entry.
 
 ## Next steps
 
