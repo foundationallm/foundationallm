@@ -61,7 +61,7 @@ namespace FoundationaLLM.Common.Constants.Agents
         /// <summary>
         /// The key name for the FoundationaLLM agent object identifier.
         /// </summary>
-        public const string AgentObjectId = "Agent.ObjectId";
+        public const string AgentObjectId = "Agent.AgentObjectId";
 
         /// <summary>
         /// The key name for the workflow invocation conversation files.
