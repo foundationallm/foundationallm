@@ -68,6 +68,8 @@ items:
   items:
   - name: Create custom tools
     href: how-to-guides/create-custom-tools.md
+  - name: Create a prompt
+    href: how-to-guides/create-prompt.md
   - name: Create an API endpoint
     href: how-to-guides/create-api-endpoint.md
   - name: Create an AI model
