@@ -9,6 +9,10 @@ export default defineNuxtPlugin(async (nuxtApp: any) => {
 	const appConfigStore = useAppConfigStore(nuxtApp.$pinia);
 	await appConfigStore.getConfigVariables();
 
+	// Load basic branding configuration for signin page (logoUrl, logoText)
+	// This ensures the signin page displays the correct branding before authentication
+	await appConfigStore.loadBasicBrandingConfiguration();
+
 	const config = useRuntimeConfig();
 
 	// Make stores globally accessible on the nuxt app instance
