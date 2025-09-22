@@ -90,6 +90,10 @@ builder.AddAzureContainerAppsCodeSessionProviderServices();
 builder.AddKnowledgeGraphService();
 builder.AddAzureCosmosDBService();
 
+// Add authorization services.
+builder.AddIdentitiyManagement();
+builder.AddAuthorizationServiceClient();
+
 //---------------------------
 // Scoped services
 //---------------------------
@@ -105,6 +109,7 @@ builder.AddCodeSessionService();
 builder.AddResourceProviderCacheSettings();
 builder.AddResourceValidatorFactory();
 
+builder.AddAuthorizationResourceProvider();
 builder.AddAgentResourceProvider();
 builder.AddPromptResourceProvider();
 //builder.AddAttachmentResourceProvider();
