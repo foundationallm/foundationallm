@@ -185,7 +185,6 @@
     </div>
 </template>
 
-
 <script lang="ts">
 import api from '@/js/api';
 import type { AgentBase, ResourceProviderGetResult } from '@/js/types';
