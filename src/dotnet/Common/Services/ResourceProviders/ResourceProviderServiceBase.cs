@@ -679,7 +679,13 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
         }
 
         /// <inheritdoc/>
-        public async Task<TResult> ExecuteResourceActionAsync<T, TAction, TResult>(string instanceId, string resourceName, string actionName, TAction actionPayload, UnifiedUserIdentity userIdentity)
+        public async Task<TResult> ExecuteResourceActionAsync<T, TAction, TResult>(
+            string instanceId,
+            string resourceName,
+            string actionName,
+            TAction actionPayload,
+            UnifiedUserIdentity userIdentity,
+            ResourceBase? parentResourceInstance = null)
             where T : ResourceBase
             where TAction : class?
             where TResult : ResourceProviderActionResult
@@ -687,8 +693,14 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
             EnsureServiceInitialization();
             var (ParsedResourcePath, AuthorizationRequirements) = CreateAndValidateResourcePath(instanceId, HttpMethod.Post, typeof(T), resourceName: resourceName, actionName: actionName);
 
-            var authorizationResult = await Authorize(ParsedResourcePath, userIdentity, AuthorizationRequirements,
-                actionName == ResourceProviderActions.Filter, false, false);
+            var authorizationResult = await Authorize(
+                ParsedResourcePath,
+                userIdentity,
+                AuthorizationRequirements,
+                actionName == ResourceProviderActions.Filter,
+                false,
+                false,
+                parentResourceInstance: parentResourceInstance);
 
             var actionResult =
                 await ExecuteResourceActionAsyncInternal<T, TAction, TResult>(ParsedResourcePath, authorizationResult, actionPayload, userIdentity);
@@ -703,7 +715,8 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
             string resourceName,
             string actionName,
             TAction actionPayload,
-            UnifiedUserIdentity userIdentity)
+            UnifiedUserIdentity userIdentity,
+            ResourceBase? parentResourceInstance = null)
             where TMain : ResourceBase
             where TSubordinate : ResourceBase
             where TAction : class?
@@ -713,8 +726,14 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
             var (ParsedResourcePath, AuthorizationRequirements) =
                 CreateAndValidateResourcePath(instanceId, HttpMethod.Post, typeof(TMain), mainResourceName, typeof(TSubordinate), resourceName, actionName);
 
-            var authorizationResult = await Authorize(ParsedResourcePath, userIdentity, AuthorizationRequirements,
-               actionName == ResourceProviderActions.Filter, false, false);
+            var authorizationResult = await Authorize(
+                ParsedResourcePath,
+                userIdentity,
+                AuthorizationRequirements,
+                actionName == ResourceProviderActions.Filter,
+                false,
+                false,
+                parentResourceInstance: parentResourceInstance);
 
             var actionResult =
                 await ExecuteResourceActionAsyncInternal<TSubordinate, TAction, TResult>(ParsedResourcePath, authorizationResult, actionPayload, userIdentity);

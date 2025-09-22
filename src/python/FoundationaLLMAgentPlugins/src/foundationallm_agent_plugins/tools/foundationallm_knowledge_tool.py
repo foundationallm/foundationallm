@@ -47,6 +47,7 @@ class FoundationaLLMKnowledgeTool(FoundationaLLMToolBase):
         self.knowledge_unit_vector_store_filters = self.tool_config.properties.get("knowledge_unit_vector_store_filters", None)
         self.context_api_client = self.get_context_api_client(user_identity, config)
         self.instance_id = objects.get(CompletionRequestObjectKeys.INSTANCE_ID, None)
+        self.agent_object_id = objects.get(CompletionRequestObjectKeys.AGENT_OBJECT_ID, None)
 
         self.use_conversation_as_vector_store = \
             'vector_store_provider' in self.tool_config.properties and \
@@ -100,7 +101,8 @@ class FoundationaLLMKnowledgeTool(FoundationaLLMToolBase):
                 'vector_store_query': self.vector_store_query,
                 'knowledge_graph_query': self.knowledge_graph_query,
                 'knowledge_unit_vector_store_filters': copy.deepcopy(self.knowledge_unit_vector_store_filters), # Use a copy to avoid mutating the original
-                "format_response": True
+                "format_response": True,
+                'agent_object_id': self.agent_object_id
             }
         
         if query_request['knowledge_unit_vector_store_filters']:

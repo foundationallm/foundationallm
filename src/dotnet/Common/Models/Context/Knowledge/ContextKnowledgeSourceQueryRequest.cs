@@ -37,5 +37,11 @@ namespace FoundationaLLM.Common.Models.Context.Knowledge
         /// <remarks>When <see langword="true"/>, the response will be plain text. Otherwise, the response will be structured.</remarks>
         [JsonPropertyName("format_response")]
         public bool? FormatResponse { get; set; }
+
+        /// <summary>
+        /// Gets or sets the agent object identifier if the query is being made on behalf of an agent.
+        /// </summary>
+        [JsonPropertyName("agent_object_id")]
+        public string? AgentObjectId { get; set; }
     }
 }

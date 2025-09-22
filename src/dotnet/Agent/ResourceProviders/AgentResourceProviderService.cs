@@ -638,7 +638,7 @@ namespace FoundationaLLM.Agent.ResourceProviders
             {
                 try
                 {
-                    // Assign the agent's virtual security group identifier read permissions to the agent and its prompt.
+                    // Assign the agent's virtual security group identifier read permissions to the agent.
                     var roleAssignmentName = Guid.NewGuid().ToString();
                     var roleAssignmentDescription = $"Reader role for the {agent.Name} agent's virtual security group";
                     var roleAssignmentResult = await _authorizationServiceClient.CreateRoleAssignment(
@@ -661,18 +661,20 @@ namespace FoundationaLLM.Agent.ResourceProviders
                             agent.Name);
                     }
 
-                    if (!agent.InheritableAuthorizableActions.Contains(
-                        AuthorizableActionNames.FoundationaLLM_Prompt_Prompts_Read))
-                    {
-                        _logger.LogWarning("The agent {AgentName} does not specify {ActionName} as an inheritable authorizable action. Explicit role assignments must be set on all referenced resources for the virtual security group identifier {VirtualSecurityGroupId}.",
-                            agent.Name,
-                            AuthorizableActionNames.FoundationaLLM_Prompt_Prompts_Read,
-                            agent.VirtualSecurityGroupId!);
-                    }
-
                     // With the introduction of the more complex prompt structure,
                     // the approach of assigning permissions to a single main prompt is no longer valid.
                     //
+
+                    //if (!agent.InheritableAuthorizableActions.Contains(
+                    //    AuthorizableActionNames.FoundationaLLM_Prompt_Prompts_Read))
+                    //{
+                    //    _logger.LogWarning("The agent {AgentName} does not specify {ActionName} as an inheritable authorizable action. Explicit role assignments must be set on all referenced resources for the virtual security group identifier {VirtualSecurityGroupId}.",
+                    //        agent.Name,
+                    //        AuthorizableActionNames.FoundationaLLM_Prompt_Prompts_Read,
+                    //        agent.VirtualSecurityGroupId!);
+                    //}
+
+                    
                     //if (!string.IsNullOrWhiteSpace(agent.Workflow?.MainPromptObjectId))
                     //{
                     //    roleAssignmentName = Guid.NewGuid().ToString();

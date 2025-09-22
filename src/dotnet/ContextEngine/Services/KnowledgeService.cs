@@ -11,6 +11,7 @@ using FoundationaLLM.Common.Models.Authentication;
 using FoundationaLLM.Common.Models.Context;
 using FoundationaLLM.Common.Models.Context.Knowledge;
 using FoundationaLLM.Common.Models.ResourceProviders;
+using FoundationaLLM.Common.Models.ResourceProviders.Agent;
 using FoundationaLLM.Common.Models.ResourceProviders.Context;
 using FoundationaLLM.Common.Models.ResourceProviders.Vector;
 using FoundationaLLM.Common.Services.Azure;
@@ -30,6 +31,7 @@ namespace FoundationaLLM.Context.Services
     /// </summary>
     /// <param name="storageService">The <see cref="IStorageService"/> providing storage services.</param>
     /// <param name="authorizationServiceClient">The client for the FoundationaLLM Authorization API.</param>
+    /// <param name="agentResourceProvider">The FoundationaLLM.Agent resource provider.</param>
     /// <param name="contextResourceProvider"> The FoundationaLLM.Context resource provider service.</param>
     /// <param name="configurationResourceProvider">The FoundationaLLM.Configuration resource provider service.</param>
     /// <param name="vectorResourceProvider">The FoundationaLLM.Vector resource provider service.</param>
@@ -39,6 +41,7 @@ namespace FoundationaLLM.Context.Services
     public class KnowledgeService(
         IStorageService storageService,
         IAuthorizationServiceClient authorizationServiceClient,
+        IResourceProviderService agentResourceProvider,
         IResourceProviderService contextResourceProvider,
         IResourceProviderService configurationResourceProvider,
         IResourceProviderService vectorResourceProvider,
@@ -48,6 +51,7 @@ namespace FoundationaLLM.Context.Services
     {
         private readonly IStorageService _storageService = storageService;
         private readonly IAuthorizationServiceClient _authorizationServiceClient = authorizationServiceClient;
+        private readonly IResourceProviderService _agentResourceProvider = agentResourceProvider;
         private readonly IResourceProviderService _contextResourceProvider = contextResourceProvider;
         private readonly IResourceProviderService _configurationResourceProvider = configurationResourceProvider;
         private readonly IResourceProviderService _vectorResourceProvider = vectorResourceProvider;
@@ -226,23 +230,33 @@ namespace FoundationaLLM.Context.Services
         {
             try
             {
+                // If the query is submitted on behalf of an agent, retrieve the agent resource.
+                AgentBase agent = null!;
+                if (queryRequest.AgentObjectId is not null)
+                    agent = await _agentResourceProvider.GetResourceAsync<AgentBase>(
+                        queryRequest.AgentObjectId,
+                        userIdentity);
+
                 var knowledgeSource = await _contextResourceProvider.GetResourceAsync<KnowledgeSource>(
                     instanceId,
                     knowledgeSourceId,
-                    userIdentity);
+                    userIdentity,
+                    parentResourceInstance: agent);
 
                 var knowledgeUnitTasks = knowledgeSource.KnowledgeUnitObjectIds
                     .Select(knowledgeUnitObjectId =>
                         _contextResourceProvider.GetResourceAsync<KnowledgeUnit>(
                             knowledgeUnitObjectId,
-                            userIdentity))
+                            userIdentity,
+                            parentResourceInstance: agent))
                     .ToList();
                 var knowledgeUnits = await Task.WhenAll(knowledgeUnitTasks);
 
                 var vectorDatabaseTasks = knowledgeUnits
                     .Select(knowledgeUnit => _vectorResourceProvider.GetResourceAsync<VectorDatabase>(
                         knowledgeUnit.VectorDatabaseObjectId,
-                        userIdentity))
+                        userIdentity,
+                        parentResourceInstance: agent))
                     .ToList();
                 var vectorDatabases = await Task.WhenAll(vectorDatabaseTasks);
 
@@ -251,7 +265,8 @@ namespace FoundationaLLM.Context.Services
                         knowledgeUnit.HasKnowledgeGraph
                         ? await _vectorResourceProvider.GetResourceAsync<VectorDatabase>(
                                     knowledgeUnit.KnowledgeGraphVectorDatabaseObjectId!,
-                                    userIdentity)
+                                    userIdentity,
+                                    parentResourceInstance: agent)
                         : null)
                     .ToList();
                 var knowledgeGraphVectorDatabases = await Task.WhenAll(knowledgeGraphVectorDatabaseTasks);
@@ -259,6 +274,7 @@ namespace FoundationaLLM.Context.Services
                 var cachedKnowledgeUnitTasks = Enumerable.Range(0, knowledgeUnits.Length)
                     .Select(i => GetCachedKnowledgeUnit(
                         instanceId,
+                        agent,
                         knowledgeUnits[i],
                         vectorDatabases[i],
                         knowledgeGraphVectorDatabases[i],
@@ -342,6 +358,7 @@ namespace FoundationaLLM.Context.Services
 
                 var cachedKnowledgeUnit = await GetCachedKnowledgeUnit(
                     instanceId,
+                    null,
                     knowledgeUnit,
                     vectorDatabase,
                     knowledgeGraphVectorDatabase,
@@ -388,6 +405,7 @@ namespace FoundationaLLM.Context.Services
 
         private async Task<CachedKnowledgeUnit> GetCachedKnowledgeUnit(
             string instanceId,
+            AgentBase? agent,
             KnowledgeUnit knowledgeUnit,
             VectorDatabase vectorDatabase,
             VectorDatabase? knowledgeGraphVectorDatabase,
@@ -431,7 +449,8 @@ namespace FoundationaLLM.Context.Services
                     knowledgeUnit.Name,
                     ResourceProviderActions.LoadGraph,
                     null!,
-                    userIdentity);
+                    userIdentity,
+                    parentResourceInstance: agent);
 
                 if (!actionResult.IsSuccess)
                 {
