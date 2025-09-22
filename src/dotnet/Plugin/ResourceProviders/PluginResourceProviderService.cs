@@ -22,8 +22,6 @@ using Microsoft.Extensions.Options;
 using NuGet.Packaging;
 using NuGet.Versioning;
 using System.IO.Compression;
-using System.Reflection;
-using System.Runtime.Loader;
 using System.Text;
 using System.Text.Json;
 

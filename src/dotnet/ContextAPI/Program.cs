@@ -87,6 +87,7 @@ builder.Services.AddAzureEventGridEvents(
 builder.AddAzureCosmosDBContextServices();
 builder.AddAzureContainerAppsCodeSessionProviderServices();
 builder.AddKnowledgeGraphService();
+builder.AddAzureCosmosDBService();
 
 //---------------------------
 // Scoped services
