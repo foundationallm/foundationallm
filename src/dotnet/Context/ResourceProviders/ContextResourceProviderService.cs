@@ -12,6 +12,7 @@ using FoundationaLLM.Common.Models.Context.Knowledge;
 using FoundationaLLM.Common.Models.Knowledge;
 using FoundationaLLM.Common.Models.Orchestration;
 using FoundationaLLM.Common.Models.ResourceProviders;
+using FoundationaLLM.Common.Models.ResourceProviders.Agent;
 using FoundationaLLM.Common.Models.ResourceProviders.Context;
 using FoundationaLLM.Common.Services.ResourceProviders;
 using FoundationaLLM.Context.Models;
@@ -179,7 +180,8 @@ namespace FoundationaLLM.Context.ResourceProviders
             ResourcePath resourcePath,
             ResourcePathAuthorizationResult authorizationResult,
             UnifiedUserIdentity userIdentity,
-            ResourceProviderGetOptions? options = null) =>
+            ResourceProviderGetOptions? options = null,
+            ResourceBase? parentResourceInstance = null) =>
             resourcePath.MainResourceTypeName switch
             {
                 ContextResourceTypeNames.KnowledgeUnits =>
@@ -187,7 +189,8 @@ namespace FoundationaLLM.Context.ResourceProviders
                         resourcePath,
                         authorizationResult,
                         userIdentity,
-                        options)) as T
+                        options,
+                        parentResourceInstance)) as T
                     ?? throw new ResourceProviderException(
                         $"The knowledge unit {resourcePath.MainResourceId} could not be loaded.",
                         StatusCodes.Status404NotFound),
@@ -196,7 +199,8 @@ namespace FoundationaLLM.Context.ResourceProviders
                         resourcePath,
                         authorizationResult,
                         userIdentity,
-                        options)) as T
+                        options,
+                        parentResourceInstance)) as T
                     ?? throw new ResourceProviderException(
                         $"The knowledge source {resourcePath.MainResourceId} could not be loaded.",
                         StatusCodes.Status404NotFound),
@@ -268,7 +272,8 @@ namespace FoundationaLLM.Context.ResourceProviders
             ResourcePath resourcePath,
             ResourcePathAuthorizationResult authorizationResult,
             UnifiedUserIdentity userIdentity,
-            ResourceProviderGetOptions? options)
+            ResourceProviderGetOptions? options,
+            ResourceBase? parentResourceInstance = null)
         {
             if (!_proxyMode)
                 return (await LoadResource<KnowledgeSource>(
@@ -277,7 +282,10 @@ namespace FoundationaLLM.Context.ResourceProviders
             var contextServiceClient = GetContextServiceClient(userIdentity);
             var contextResponse = await contextServiceClient.GetKnowledgeSource(
                 resourcePath.InstanceId!,
-                resourcePath.MainResourceId!);
+                resourcePath.MainResourceId!,
+                parentResourceInstance is AgentBase
+                    ? parentResourceInstance.Name
+                    : null);
 
             if (contextResponse.Success)
                 return contextResponse.Result!.Resource;
@@ -290,7 +298,8 @@ namespace FoundationaLLM.Context.ResourceProviders
             ResourcePath resourcePath,
             ResourcePathAuthorizationResult authorizationResult,
             UnifiedUserIdentity userIdentity,
-            ResourceProviderGetOptions? options)
+            ResourceProviderGetOptions? options,
+            ResourceBase? parentResourceInstance = null)
         {
             if (!_proxyMode)
                 return (await LoadResource<KnowledgeUnit>(
@@ -299,7 +308,10 @@ namespace FoundationaLLM.Context.ResourceProviders
             var contextServiceClient = GetContextServiceClient(userIdentity);
             var contextResponse = await contextServiceClient.GetKnowledgeUnit(
                 resourcePath.InstanceId!,
-                resourcePath.MainResourceId!);
+                resourcePath.MainResourceId!,
+                parentResourceInstance is AgentBase
+                    ? parentResourceInstance.Name
+                    : null);
 
             if (contextResponse.Success)
                 return contextResponse.Result!.Resource;

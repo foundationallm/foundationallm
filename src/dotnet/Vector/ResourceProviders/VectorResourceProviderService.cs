@@ -133,7 +133,8 @@ namespace FoundationaLLM.Vector.ResourceProviders
             ResourcePath resourcePath,
             ResourcePathAuthorizationResult authorizationResult,
             UnifiedUserIdentity userIdentity,
-            ResourceProviderGetOptions? options = null) =>
+            ResourceProviderGetOptions? options = null,
+            ResourceBase? parentResourceInstance = null) =>
             (await LoadResource<T>(resourcePath.ResourceId!))!;
 
         #endregion
