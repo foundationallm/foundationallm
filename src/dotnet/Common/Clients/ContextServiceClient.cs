@@ -335,25 +335,30 @@ namespace FoundationaLLM.Common.Clients
         /// <inheritdoc/>
         public async Task<ContextServiceResponse<ResourceProviderGetResult<KnowledgeUnit>>> GetKnowledgeUnit(
             string instanceId,
-            string knowledgeUnitId) =>
+            string knowledgeUnitId,
+            string? agentName = null) =>
             await GetKnowledgeResource<KnowledgeUnit>(
                 instanceId,
                 ContextResourceTypeNames.KnowledgeUnits,
-                knowledgeUnitId);
+                knowledgeUnitId,
+                agentName);
 
         /// <inheritdoc/>
         public async Task<ContextServiceResponse<ResourceProviderGetResult<KnowledgeSource>>> GetKnowledgeSource(
             string instanceId,
-            string knowledgeSourceId) =>
+            string knowledgeSourceId,
+            string? agentName = null) =>
             await GetKnowledgeResource<KnowledgeSource>(
                 instanceId,
                 ContextResourceTypeNames.KnowledgeSources,
-                knowledgeSourceId);
+                knowledgeSourceId,
+                agentName);
 
         private async Task<ContextServiceResponse<ResourceProviderGetResult<T>>> GetKnowledgeResource<T>(
             string instanceId,
             string knowledgeResourceType,
-            string knowledgeResourceId)
+            string knowledgeResourceId,
+            string? agentName = null)
             where T : ResourceBase
         {
             try
@@ -363,7 +368,9 @@ namespace FoundationaLLM.Common.Clients
                     HttpClientNames.ContextAPI,
                     _callContext.CurrentUserIdentity!);
                 var responseMessage = await client.GetAsync(
-                    $"instances/{instanceId}/{knowledgeResourceType}/{knowledgeResourceId}");
+                    agentName is null
+                        ? $"instances/{instanceId}/{knowledgeResourceType}/{knowledgeResourceId}"
+                        : $"instances/{instanceId}/{knowledgeResourceType}/{knowledgeResourceId}?agentName={agentName}");
                 if (responseMessage.IsSuccessStatusCode)
                 {
                     var responseContent = await responseMessage.Content.ReadAsStringAsync();

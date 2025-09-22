@@ -611,7 +611,12 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
                     false,
                     parentResourceInstance: parentResourceInstance);
 
-            return await GetResourceAsyncInternal<T>(ParsedResourcePath, authorizationResult, userIdentity, options);
+            return await GetResourceAsyncInternal<T>(
+                ParsedResourcePath,
+                authorizationResult,
+                userIdentity,
+                options,
+                parentResourceInstance: parentResourceInstance);
         }
 
         /// <inheritdoc/>
@@ -638,7 +643,12 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
                     false,
                     parentResourceInstance: parentResourceInstance);
 
-            return await GetResourceAsyncInternal<T>(ParsedResourcePath, authorizationResult, userIdentity, options);
+            return await GetResourceAsyncInternal<T>(
+                ParsedResourcePath,
+                authorizationResult,
+                userIdentity,
+                options,
+                parentResourceInstance: parentResourceInstance);
         }
 
         /// <inheritdoc/>
@@ -779,11 +789,18 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
         /// <param name="authorizationResult">The <see cref="ResourcePathAuthorizationResult"/> containing the result of the resource path authorization request.</param>
         /// <param name="userIdentity">The <see cref="UnifiedUserIdentity"/> providing information about the calling user identity.</param>
         /// <param name="options">The <see cref="ResourceProviderGetOptions"/> which provides operation parameters.</param>
+        /// <param name="parentResourceInstance">The optional parent resource of the resource identified by <paramref name="resourcePath"/>.</param>
+        /// <remarks>
+        /// When the parent resource instance is provided, and it specifies inheritable authorizable actions,
+        /// the parent resource instance is used to authorize the request for any of those actions.
+        /// </remarks>
         /// <returns></returns>
         protected virtual async Task<T> GetResourceAsyncInternal<T>(
             ResourcePath resourcePath,
             ResourcePathAuthorizationResult authorizationResult,
-            UnifiedUserIdentity userIdentity, ResourceProviderGetOptions? options = null)
+            UnifiedUserIdentity userIdentity,
+            ResourceProviderGetOptions? options = null,
+            ResourceBase? parentResourceInstance = null)
             where T : ResourceBase
         {
             await Task.CompletedTask;

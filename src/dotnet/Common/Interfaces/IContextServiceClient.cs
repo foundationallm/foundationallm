@@ -97,20 +97,24 @@ namespace FoundationaLLM.Common.Interfaces
         /// </summary>
         /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
         /// <param name="knowledgeUnitId">The knowledge unit identifier.</param>
+        /// <param name="agentName">The agent name if the request is being made on behalf of an agent.</param>
         /// <returns>The requested knowledge unit.</returns>
         Task<ContextServiceResponse<ResourceProviderGetResult<KnowledgeUnit>>> GetKnowledgeUnit(
             string instanceId,
-            string knowledgeUnitId);
+            string knowledgeUnitId,
+            string? agentName = null);
 
         /// <summary>
         /// Call the Context API to retrieve a knowledge source.
         /// </summary>
         /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
         /// <param name="knowledgeSourceId">The knowledge source identifier.</param>
+        /// <param name="agentName">The agent name if the request is being made on behalf of an agent.</param>
         /// <returns>The requested knowledge source.</returns>
         Task<ContextServiceResponse<ResourceProviderGetResult<KnowledgeSource>>> GetKnowledgeSource(
             string instanceId,
-            string knowledgeSourceId);
+            string knowledgeSourceId,
+            string? agentName = null);
 
         /// <summary>
         /// Call the Context API to retrieve the list of knowledge units.

@@ -377,7 +377,8 @@ namespace FoundationaLLM.Plugin.ResourceProviders
             ResourcePath resourcePath,
             ResourcePathAuthorizationResult authorizationResult,
             UnifiedUserIdentity userIdentity,
-            ResourceProviderGetOptions? options = null) =>
+            ResourceProviderGetOptions? options = null,
+            ResourceBase? parentResourceInstance = null) =>
             typeof(T) switch
             {
                 Type t when t == typeof(PluginDefinition) =>

@@ -74,12 +74,22 @@ namespace FoundationaLLM.Context.Services
         public async Task<ContextServiceResponse<ResourceProviderGetResult<KnowledgeUnit>>> GetKnowledgeUnit(
             string instanceId,
             string knowledgeUnitId,
+            string? agentName,
             UnifiedUserIdentity userIdentity)
         {
+            // If the query is submitted on behalf of an agent, retrieve the agent resource.
+            AgentBase agent = null!;
+            if (agentName is not null)
+                agent = await _agentResourceProvider.GetResourceAsync<AgentBase>(
+                    instanceId,
+                    agentName,
+                    userIdentity);
+
             var knowledgeUnit = await _contextResourceProvider.GetResourceAsync<KnowledgeUnit>(
                 instanceId,
                 knowledgeUnitId,
-                userIdentity);
+                userIdentity,
+                parentResourceInstance: agent);
             return new ContextServiceResponse<ResourceProviderGetResult<KnowledgeUnit>>
             {
                 Success = true,
@@ -96,12 +106,22 @@ namespace FoundationaLLM.Context.Services
         public async Task<ContextServiceResponse<ResourceProviderGetResult<KnowledgeSource>>> GetKnowledgeSource(
             string instanceId,
             string knowledgeSourceId,
+            string? agentName,
             UnifiedUserIdentity userIdentity)
         {
+            // If the query is submitted on behalf of an agent, retrieve the agent resource.
+            AgentBase agent = null!;
+            if (agentName is not null)
+                agent = await _agentResourceProvider.GetResourceAsync<AgentBase>(
+                    instanceId,
+                    agentName,
+                    userIdentity);
+
             var knowledgeSource = await _contextResourceProvider.GetResourceAsync<KnowledgeSource>(
                 instanceId,
                 knowledgeSourceId,
-                userIdentity);
+                userIdentity,
+                parentResourceInstance: agent);
             return new ContextServiceResponse<ResourceProviderGetResult<KnowledgeSource>>
             {
                 Success = true,

@@ -16,11 +16,13 @@ namespace FoundationaLLM.Context.Interfaces
         /// </summary>
         /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
         /// <param name="knowledgeUnitId">The knowledge unit identifier.</param>
+        /// <param name="agentName">The agent name if the request is being made on behalf of an agent.</param>
         /// <param name="userIdentity">The identity of the security principal submitting the request.</param>
         /// <returns></returns>
         Task<ContextServiceResponse<ResourceProviderGetResult<KnowledgeUnit>>> GetKnowledgeUnit(
             string instanceId,
             string knowledgeUnitId,
+            string? agentName,
             UnifiedUserIdentity userIdentity);
 
         /// <summary>
@@ -28,11 +30,13 @@ namespace FoundationaLLM.Context.Interfaces
         /// </summary>
         /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
         /// <param name="knowledgeSourceId">The knowledge source identifier.</param>
+        /// <param name="agentName">The agent name if the request is being made on behalf of an agent.</param>
         /// <param name="userIdentity">The identity of the security principal submitting the request.</param>
         /// <returns></returns>
         Task<ContextServiceResponse<ResourceProviderGetResult<KnowledgeSource>>> GetKnowledgeSource(
             string instanceId,
             string knowledgeSourceId,
+            string? agentName,
             UnifiedUserIdentity userIdentity);
 
         /// <summary>

@@ -30,15 +30,18 @@ namespace FoundationaLLM.Context.API.Controllers
         /// </summary>
         /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
         /// <param name="knowledgeUnitId">The knowledge unit identifier.</param>
+        /// <param name="agentName">The agent name if the request is being made on behalf of an agent.</param>
         /// <returns></returns>
         [HttpGet("knowledgeUnits/{knowledgeUnitId}")]
         public async Task<IActionResult> GetKnowledgeUnit(
             string instanceId,
-            string knowledgeUnitId)
+            string knowledgeUnitId,
+            string? agentName)
         {
             var knowledgeUnit = await _knowledgeService.GetKnowledgeUnit(
                 instanceId,
                 knowledgeUnitId,
+                agentName,
                 _callContext.CurrentUserIdentity!);
             return Ok(knowledgeUnit);
         }
@@ -48,15 +51,18 @@ namespace FoundationaLLM.Context.API.Controllers
         /// </summary>
         /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
         /// <param name="knowledgeSourceId">The knowledge source identifier.</param>
+        /// <param name="agentName">The agent name if the request is being made on behalf of an agent.</param>
         /// <returns></returns>
         [HttpGet("knowledgeSources/{knowledgeSourceId}")]
         public async Task<IActionResult> GetKnowledgeSource(
             string instanceId,
-            string knowledgeSourceId)
+            string knowledgeSourceId,
+            string? agentName)
         {
             var knowledgeSource = await _knowledgeService.GetKnowledgeSource(
                 instanceId,
                 knowledgeSourceId,
+                agentName,
                 _callContext.CurrentUserIdentity!);
             return Ok(knowledgeSource);
         }

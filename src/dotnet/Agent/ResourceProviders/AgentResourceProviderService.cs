@@ -247,8 +247,11 @@ namespace FoundationaLLM.Agent.ResourceProviders
 
         /// <inheritdoc/>
         protected override async Task<T> GetResourceAsyncInternal<T>(
-            ResourcePath resourcePath, ResourcePathAuthorizationResult authorizationResult,
-            UnifiedUserIdentity userIdentity, ResourceProviderGetOptions? options = null)
+            ResourcePath resourcePath,
+            ResourcePathAuthorizationResult authorizationResult,
+            UnifiedUserIdentity userIdentity,
+            ResourceProviderGetOptions? options = null,
+            ResourceBase? parentResourceInstance = null)
         {
             switch (resourcePath.ResourceTypeName)
             {
