@@ -183,10 +183,8 @@ export default {
 				this.$watch(
 					() => this.$appStore.getSessionAgent(this.currentSession as Session),
 					(newAgent: ResourceProviderGetResult<Agent> | null) => {
-						if (newAgent) {
-							this.isLoading = false;
-							this.welcomeMessage = this.getWelcomeMessage(newAgent);
-						}
+						this.isLoading = false;
+						this.welcomeMessage = this.getWelcomeMessage(newAgent);
 					},
 					{ immediate: true },
 				);
@@ -196,6 +194,30 @@ export default {
 
 	methods: {
 		getWelcomeMessage(agent) {
+			// If no agent is provided, show the no agents message
+			if (!agent) {
+				return 'Enable at least one agent in Settings -> Agents so you can start new conversations.';
+			}
+			
+			// Check if the agent is accessible to the user
+			const userProfile = this.$appStore.userProfiles;
+			const enabledAgentIds = userProfile?.agents || [];
+			
+			// If user has no enabled agents, show no agents message
+			if (enabledAgentIds.length === 0) {
+				return 'Enable at least one agent in Settings -> Agents so you can start new conversations.';
+			}
+			
+			// Check if current agent is in user's enabled agents
+			const foundAgent = enabledAgentIds.find((agentId: any) => 
+				agentId == agent.resource.object_id
+			);
+			
+			if (!foundAgent) {
+				return 'Enable at least one agent in Settings -> Agents so you can start new conversations.';
+			}
+			
+			// Agent is accessible, show its welcome message
 			const welcomeMessage = agent?.resource?.properties?.welcome_message?.trim();
 			return (
 				welcomeMessage ||
