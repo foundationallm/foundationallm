@@ -20,6 +20,7 @@
     <ProjectReference Include="..\Common\Common.csproj" />
     <ProjectReference Include="..\Configuration\Configuration.csproj" />
     <ProjectReference Include="..\Context\Context.csproj" />
+    <ProjectReference Include="..\Prompt\Prompt.csproj" />
     <ProjectReference Include="..\Vector\Vector.csproj" />
   </ItemGroup>
 
