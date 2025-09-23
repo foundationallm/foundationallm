@@ -174,7 +174,7 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
                 OperationStatus.INPROGRESS,
                 "Running agent workflow.",
                 "Running agent workflow...",
-                self.user_identity.upn
+                self.user_identity.model_dump_json(exclude_none=True)
             )
 
             with self.tracer.start_as_current_span(f'{self.name}_workflow_llm_call', kind=SpanKind.INTERNAL):
@@ -211,7 +211,7 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
                         OperationStatus.INPROGRESS,
                         "Running agent tools.",
                         "Running agent tools...",
-                        self.user_identity.upn
+                        self.user_identity.model_dump_json(exclude_none=True)
                     )
 
                     intermediate_responses.append(str(llm_response.content))
@@ -259,7 +259,7 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
                             OperationStatus.INPROGRESS,
                             "Preparing final response.",
                             "Preparing final response...",
-                            self.user_identity.upn
+                            self.user_identity.model_dump_json(exclude_none=True)
                         )
 
                         final_llm_response = await self.workflow_llm.ainvoke(
