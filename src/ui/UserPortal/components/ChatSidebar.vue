@@ -344,9 +344,10 @@
 							v-if="$appConfigStore.agentManagementPermissionRequestUrl" 
 							:to="$appConfigStore.agentManagementPermissionRequestUrl" 
 							external
+							target="_blank"
 							class="p-component csm-only-text-btn-1"
 						>
-							Request permission to manege agents
+							Request permission to manage agents
 							<i class="pi pi-external-link ml-1"></i>
 						</nuxt-link>
 					</div>
