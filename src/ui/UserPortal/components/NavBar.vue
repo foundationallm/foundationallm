@@ -244,7 +244,8 @@
 					return (!isExpiredOrDisabled && !isNotInUserProfile) || isCurrentAgent(agent);
 				});
 
-				this.agentOptions = filteredAgents.filter((agent: any) => enabledAgentIds.includes(agent?.resource?.object_id)).map((agent: any) => ({
+				// Map filtered agents to dropdown options - no additional filtering needed since filtering was done above
+				this.agentOptions = filteredAgents.map((agent: any) => ({
 					label: agent.resource.display_name ? agent.resource.display_name : agent.resource.name,
 					type: agent.resource.type,
 					object_id: agent.resource.object_id,
