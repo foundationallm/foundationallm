@@ -3,7 +3,7 @@
 > [!NOTE]
 > This section is for changes that are not yet released but will affect future releases.
 
-## Starting from 0.9.7-re388
+## Starting from 0.9.7-rc388
 
 The `external-modules-python` container from the main storage account is obsolete and must be deleted.
 
