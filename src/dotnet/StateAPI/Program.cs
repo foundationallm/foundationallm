@@ -99,7 +99,7 @@ builder.AddIdentitiyManagement();
 // Add services to the container.
 builder.Services.AddAuthorization();
 
-builder.Services.AddSingleton<ICosmosDbService, CosmosDbService>();
+builder.Services.AddSingleton<IStateCosmosDBService, StateCosmosDBService>();
 builder.AddStateService();
 
 builder.Services

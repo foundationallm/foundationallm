@@ -80,11 +80,25 @@ async def submit_completion_request(
                 request.app.state.config,
                 request.app.state.http_client_session,
                 logger)
-            # Submit the completion request operation to the state API.
-            operation = await operations_manager.create_operation_async(
+            
+            # Update the operation status to reflect that it is now
+            # being processed by LangChain API.
+            operation = await operations_manager.update_operation_async(
                 operation_id,
                 instance_id,
-                x_user_identity)
+                status = OperationStatus.INPROGRESS,
+                status_message = 'The operation is being processed by LangChain API.',
+                user_identity = x_user_identity
+            )
+            if operation is None:
+                # Create the operation if it does not exist.
+                # The operation might not exist if LangChain API is called directly
+                # without going through the Orchestration API (e.g. for testing or debugging).
+                operation = await operations_manager.create_operation_async(
+                    operation_id,
+                    instance_id,
+                    x_user_identity
+                )
 
             # Start a background task to perform the completion request.
             asyncio.create_task(
@@ -124,15 +138,6 @@ async def create_completion_response(
             span.set_attribute('operation_id', operation_id)
             span.set_attribute('instance_id', instance_id)
             span.set_attribute('user_identity', x_user_identity)
-
-            # Change the operation status to 'InProgress' using an async task.
-            await operations_manager.update_operation_async(
-                operation_id,
-                instance_id,
-                status = OperationStatus.INPROGRESS,
-                status_message = 'Operation state changed to in progress.',
-                user_identity = x_user_identity
-            )
 
             # Create the user identity object from the x_user_identity header.
             user_identity = UserIdentity(**json.loads(x_user_identity))

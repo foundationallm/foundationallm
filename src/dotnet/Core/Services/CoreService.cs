@@ -380,7 +380,7 @@ public partial class CoreService(
         LongRunningOperation operation)
     {
         if ((DateTime.UtcNow - operationContext.StartTime).TotalMinutes > 30
-                && (operation.Status == OperationStatus.Pending || operation.Status == OperationStatus.InProgress))
+                && (operation.Status == OperationStatus.InProgress))
         {
             // We've hit the hard stop time for the operation.
 
@@ -1133,7 +1133,7 @@ public partial class CoreService(
             UPN = userIdentity.UPN!,
             SenderDisplayName = userIdentity.Name,
             Attachments = request.Attachments,
-            Status = OperationStatus.Pending,
+            Status = OperationStatus.InProgress,
             OperationId = request.OperationId
         };
 
@@ -1144,7 +1144,7 @@ public partial class CoreService(
             Sender = nameof(Participants.Agent),
             UPN = userIdentity.UPN!,
             SenderDisplayName = request.AgentName,
-            Status = OperationStatus.Pending,
+            Status = OperationStatus.InProgress,
             OperationId = request.OperationId
         };
 

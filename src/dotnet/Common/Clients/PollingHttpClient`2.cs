@@ -185,7 +185,6 @@ namespace FoundationaLLM.Common.Clients
 
                             return default;
                         case OperationStatus.InProgress:
-                        case OperationStatus.Pending:
                             if (totalPollingTime > _maxWaitTime)
                             {
                                 _logger.LogWarning("Total polling time ({TotalTime} seconds) exceeded to maximum allowed ({MaxTime} seconds).",

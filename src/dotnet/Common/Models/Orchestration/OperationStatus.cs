@@ -6,11 +6,6 @@
     public enum OperationStatus
     {
         /// <summary>
-        /// Operation is new and Pending processing.
-        /// </summary>
-        Pending,
-
-        /// <summary>
         /// Operation is in progress.
         /// </summary>
         InProgress,

@@ -15,7 +15,7 @@ namespace FoundationaLLM.State.Services
     /// <param name="logger">The <see cref="ILogger"/> used for logging.</param>
     public class StateService(
         IOptions<StateServiceSettings> options,
-        ICosmosDbService cosmosDbService,
+        IStateCosmosDBService cosmosDbService,
         ILogger<StateService> logger) : IStateService
     {
         /// <inheritdoc/>
@@ -52,8 +52,8 @@ namespace FoundationaLLM.State.Services
             logger.LogInformation("Creating long running operation.");
             var operation = new LongRunningOperation
             {
-                Status = OperationStatus.Pending,
-                StatusMessage = "Operation was submitted and is pending execution.",
+                Status = OperationStatus.InProgress,
+                StatusMessage = "Operation started.",
                 OperationId = operationId,
                 UPN = upn
             };

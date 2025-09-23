@@ -92,7 +92,8 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
         private readonly IResourceProviderService _dataPipelineResourceProvider =
             resourceProviderServices[ResourceProviderNames.FoundationaLLM_DataPipeline];
         private readonly string? _vectorStoreId = vectorStoreId;
-        private GatewayServiceClient? _gatewayClient;
+        private GatewayServiceClient _gatewayClient = null!;
+        private StateServiceClient _stateClient = null!;
 
         private readonly IUserPromptRewriteService _userPromptRewriteService = userPromptRewriteService;
         private readonly ISemanticCacheService _semanticCacheService = semanticCacheService;
@@ -101,6 +102,8 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
         /// <inheritdoc/>
         public override async Task<LongRunningOperation> StartCompletionOperation(CompletionRequest completionRequest)
         {
+            await CreateClients();
+
             var validationResponse = await ValidateCompletionRequest(completionRequest);
             if (validationResponse != null)
                 return new LongRunningOperation
@@ -129,6 +132,13 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                     };
                 }
             }
+
+            // For now, we're just interested in initializing the state for the operation.
+            // The long running operation that will be returned is retrieved below by StartCompletionOperation.
+            _ = await _stateClient.CreateOperation(
+                _callContext.InstanceId!,
+                completionRequest.OperationId!,
+                _callContext.CurrentUserIdentity!);
 
             var llmCompletionRequest = await GetLLMCompletionRequest(completionRequest);
 
@@ -179,6 +189,8 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
         /// <inheritdoc/>
         public override async Task<CompletionResponse> GetCompletion(CompletionRequest completionRequest)
         {
+            await CreateClients();
+
             var validationResponse = await ValidateCompletionRequest(completionRequest);
             if (validationResponse != null)
                 return validationResponse;
@@ -192,6 +204,13 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                 if (cachedResponse != null)
                     return cachedResponse;
             }
+
+            // We're just interested in initializing the state for the operation.
+            // The long running operation is not returned in this case.
+            _ = await _stateClient.CreateOperation(
+                _callContext.InstanceId!,
+                completionRequest.OperationId!,
+                _callContext.CurrentUserIdentity!);
 
             var llmCompletionRequest = await GetLLMCompletionRequest(completionRequest);
 
@@ -218,7 +237,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
             return completionResponse;
         }
 
-        private async Task<CompletionResponse?> ValidateCompletionRequest(CompletionRequest completionRequest)
+        private async Task CreateClients()
         {
             _gatewayClient = new GatewayServiceClient(
                 await _httpClientFactoryService
@@ -228,8 +247,18 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                         _callContext.CurrentUserIdentity!),
                 _logger);
 
+            _stateClient = await _httpClientFactoryService.CreateClient<StateServiceClient>(
+                _callContext.InstanceId!,
+                HttpClientNames.StateAPI,
+                _callContext.CurrentUserIdentity!,
+                StateServiceClient.BuildClient);
+        }
+
+        private async Task<CompletionResponse?> ValidateCompletionRequest(CompletionRequest completionRequest)
+        {
+            CompletionResponse? invalidResponse = null;
             if (_agent!.ExpirationDate.HasValue && _agent.ExpirationDate.Value < DateTime.UtcNow)
-                return new CompletionResponse
+                invalidResponse = new CompletionResponse
                 {
                     OperationId = completionRequest.OperationId!,
                     Completion = $"The requested agent, {_agent.Name}, has expired and is unable to respond.",
@@ -237,7 +266,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                     AgentName = _agent.Name
                 };
 
-            return null;
+            return await Task.FromResult<CompletionResponse?>(invalidResponse);
         }
 
         private async Task HandlePromptRewrite(CompletionRequest completionRequest)
@@ -320,7 +349,9 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                 UserPromptRewrite = completionRequest.UserPromptRewrite,
                 MessageHistory = completionRequest.MessageHistory,
                 FileHistory = completionRequest.FileHistory,
-                Attachments = await PrepareAttachments(completionRequest.Attachments),
+                Attachments = await PrepareAttachments(
+                    completionRequest.OperationId!,
+                    completionRequest.Attachments),
                 Agent = _agent!,
                 Objects = _explodedObjects!
             };
@@ -334,7 +365,9 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
             return llmCompletionRequest;
         }
 
-        private async Task<List<AttachmentProperties>> PrepareAttachments(List<string> attachmentObjectIds)
+        private async Task<List<AttachmentProperties>> PrepareAttachments(
+            string operationId,
+            List<string> attachmentObjectIds)
         {
             if (attachmentObjectIds.Count == 0)
                 return [];
@@ -494,6 +527,15 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
             var fileProcessingTasks = new Dictionary<string, Task<bool>>();
             var candidateResult = new Dictionary<string, AttachmentProperties>();
 
+            if (contextAttachmentObjectIds.Count > 0)
+                await _stateClient.UpdateOperationWithTextResult(
+                    _instanceId,
+                    operationId,
+                    OperationStatus.InProgress,
+                    $"Processing {contextAttachmentObjectIds.Count} attachment files.",
+                    "Processing attachments...",
+                    _callContext.CurrentUserIdentity!);
+
             var contextAttachmentResponses = contextAttachmentObjectIds
                 .ToAsyncEnumerable()
                 .SelectAwait(async x => await _contextServiceClient.GetFileRecord(_instanceId, x));
@@ -562,7 +604,6 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
             {
                 var failedFileObjectIds = string.Join(Environment.NewLine, failedFiles);
                 _logger.LogError("The processing failed for the following files: {FileObjectIds}", failedFileObjectIds);
-
 
                 foreach (var failedFile in failedFiles)
                     candidateResult.Remove(failedFile);
