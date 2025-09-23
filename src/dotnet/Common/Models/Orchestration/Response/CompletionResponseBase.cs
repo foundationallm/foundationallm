@@ -8,6 +8,15 @@ namespace FoundationaLLM.Common.Models.Orchestration.Response
     public class CompletionResponseBase
     {
         /// <summary>
+        /// The unigue identifier for the completion response, same as the operation id.
+        /// </summary>
+        /// <remarks>
+        /// This property is provided for convenience when storing completion responses in a database where an "id" field is expected.
+        /// </remarks>
+        [JsonPropertyName("id")]
+        public string Id => OperationId;
+
+        /// <summary>
         /// The Operation ID identifying the completion request.
         /// </summary>
         [JsonPropertyName("operation_id")]
