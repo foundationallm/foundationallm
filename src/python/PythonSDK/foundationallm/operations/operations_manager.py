@@ -321,7 +321,9 @@ class OperationsManager():
                 operation_id,
                 instance_id,
                 CompletionResponse(
+                    id=operation_id,
                     operation_id=operation_id,
+                    user_prompt='',
                     completion=result_message
                 ))
             
