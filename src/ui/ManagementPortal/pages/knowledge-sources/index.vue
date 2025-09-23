@@ -28,10 +28,28 @@
                     placeholder="-- Select Knowledge Source --" />
                 <Dropdown v-model="selectedKnowledgeUnitName" :options="knowledgeUnitNames" option-label=""
                     placeholder="-- Select Knowledge Units --" />
-                <Button type="button" icon="pi pi-refresh" @click="getKnowledgeSources"
-                    v-tooltip="'Refresh knowledge sources'" />
-                <Button v-if="selectedKnowledgeSource && hasKnowledgeGraph" type="button" icon="pi pi-share-alt"
-                    @click="renderKnowledgeGraph" v-tooltip="'Render knowledge graph'" />
+                <VTooltip :auto-hide="false" :popper-triggers="['hover']">
+                    <Button 
+                        type="button" 
+                        icon="pi pi-refresh" 
+                        @click="getKnowledgeSources"
+                        aria-describedby="refresh-knowledge-sources-tooltip"
+                    />
+                    <template #popper>
+                        <div id="refresh-knowledge-sources-tooltip" role="tooltip">Refresh knowledge sources</div>
+                    </template>
+                </VTooltip>
+                <VTooltip v-if="selectedKnowledgeSource && hasKnowledgeGraph" :auto-hide="false" :popper-triggers="['hover']">
+                    <Button 
+                        type="button" 
+                        icon="pi pi-share-alt"
+                        @click="renderKnowledgeGraph"
+                        aria-describedby="render-knowledge-graph-tooltip"
+                    />
+                    <template #popper>
+                        <div id="render-knowledge-graph-tooltip" role="tooltip">Render knowledge graph</div>
+                    </template>
+                </VTooltip>
             </div>
 
             <!-- Main query grid for knowledge source options and filters -->
@@ -182,9 +200,19 @@
                     <div
                         style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem; justify-content: space-between;">
                         <label class="query-grid-label" style="margin-bottom: 0;">Query Result</label>
-                        <Button type="button" icon="pi pi-share-alt" @click="renderQueryResult"
-                            v-tooltip="'Render query result'" size="small"
-                            style="padding: 0; font-size: 0.7rem; min-width: 1rem; width: 1.5rem; height: 1.5rem; opacity: 0.75;" />
+                        <VTooltip :auto-hide="false" :popper-triggers="['hover']">
+                            <Button 
+                                type="button" 
+                                icon="pi pi-share-alt" 
+                                @click="renderQueryResult"
+                                size="small"
+                                style="padding: 0; font-size: 0.7rem; min-width: 1rem; width: 1.5rem; height: 1.5rem; opacity: 0.75;"
+                                aria-describedby="render-query-result-tooltip"
+                            />
+                            <template #popper>
+                                <div id="render-query-result-tooltip" role="tooltip">Render query result</div>
+                            </template>
+                        </VTooltip>
                     </div>
                     <JsonEditorVue v-model="queryResult" :read-only="true"
                         style="flex: 1 1 0; min-height: 0px; overflow-y: auto;" />

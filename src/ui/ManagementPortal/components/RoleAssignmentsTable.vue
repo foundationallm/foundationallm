@@ -37,14 +37,19 @@
 
 			<template #groupheader="{ data }">
 				<span>{{ data.role.display_name }}</span>
-				<span
-					v-tooltip.bottom="{
-						value: data.role.description,
-						autoHide: false,
-					}"
-				>
-					<i class="pi pi-info-circle" style="margin-left: 8px"></i>
-				</span>
+				<VTooltip :auto-hide="false" :popper-triggers="['hover']">
+					<span
+						:aria-describedby="`role-description-tooltip-${data.role.name}`"
+						tabindex="0"
+					>
+						<i class="pi pi-info-circle" style="margin-left: 8px"></i>
+					</span>
+					<template #popper>
+						<div :id="`role-description-tooltip-${data.role.name}`" role="tooltip">
+							{{ data.role.description }}
+						</div>
+					</template>
+				</VTooltip>
 			</template>
 
 			<!-- Name -->
@@ -104,14 +109,19 @@
 			>
 				<template #body="{ data }">
 					<span>{{ data.role.display_name }}</span>
-					<span
-						v-tooltip.bottom="{
-							value: data.role.description,
-							autoHide: false,
-						}"
-					>
-						<i class="pi pi-info-circle" style="margin-left: 8px;"></i>
-					</span>
+					<VTooltip :auto-hide="false" :popper-triggers="['hover']">
+						<span
+							:aria-describedby="`role-description-tooltip-${data.role.name}`"
+							tabindex="0"
+						>
+							<i class="pi pi-info-circle" style="margin-left: 8px;"></i>
+						</span>
+						<template #popper>
+							<div :id="`role-description-tooltip-${data.role.name}`" role="tooltip">
+								{{ data.role.description }}
+							</div>
+						</template>
+					</VTooltip>
 				</template>
 			</Column>
 -->
