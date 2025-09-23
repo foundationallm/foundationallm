@@ -8,7 +8,11 @@ from foundationallm.models.operations import (
     LongRunningOperationLogEntry,
     OperationStatus
 )
-from foundationallm.models.orchestration import CompletionResponse
+
+from foundationallm.models.orchestration import (
+    CompletionResponse,
+    OpenAITextMessageContentItem
+)
 from foundationallm.telemetry import Telemetry
 from logging import Logger
 
@@ -324,7 +328,10 @@ class OperationsManager():
                     id=operation_id,
                     operation_id=operation_id,
                     user_prompt='',
-                    completion=result_message
+                    completion=result_message,
+                    content=[
+                        OpenAITextMessageContentItem(value=result_message)
+                    ]
                 ))
             
             operation = await self.update_operation_async(
