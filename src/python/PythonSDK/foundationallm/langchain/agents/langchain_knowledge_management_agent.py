@@ -566,7 +566,9 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
                 request.objects['message_history'] = request.message_history[:agent.conversation_history_settings.max_history*2]
 
                 # create the workflow
-                workflow_factory = WorkflowFactory(self.plugin_manager)
+                workflow_factory = WorkflowFactory(
+                    self.plugin_manager,
+                    self.operations_manager)
                 workflow = workflow_factory.get_workflow(
                     agent.workflow,
                     request.objects,
