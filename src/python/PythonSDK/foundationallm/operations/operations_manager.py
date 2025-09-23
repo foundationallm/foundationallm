@@ -282,6 +282,63 @@ class OperationsManager():
             self.logger.exception(f'An error occurred while retrieving the log for operation {operation_id}: {e}')
             raise
 
+    async def update_operation_with_text_result_async(
+        self,
+        operation_id: str,
+        instance_id: str,
+        status: OperationStatus,
+        status_message: str,
+        result_message: str,
+        user_identity: str
+    ) -> Optional[LongRunningOperation]:
+        
+        """
+        Updates the state of a background operation through the State API, including a text result.
+        
+        Parameters
+        ----------
+        operation : LongRunningOperation
+            The operation to update.
+        instance_id : str
+            The unique identifier for the FLLM instance.
+        status: OperationStatus
+            The new status to assign to the operation.
+        status_message: str
+            The message to associate with the new status.
+        result_message: str
+            The text result to used as the result of the operation.
+        user_identity : str
+            The user identity object containing the user principal name of the user who initiated the operation.
+        
+        Returns
+        -------
+        Optional[LongRunningOperation]
+            Object representing the operation if successful, None if not found.
+        """
+        try:
+            
+            await self.set_operation_result_async(
+                operation_id,
+                instance_id,
+                CompletionResponse(
+                    operation_id=operation_id,
+                    completion=result_message
+                ))
+            
+            operation = await self.update_operation_async(
+                operation_id,
+                instance_id,
+                status,
+                status_message,
+                user_identity
+            )
+
+            return operation
+
+        except Exception as e:
+            self.logger.exception(f'An error occurred while updating the status of operation {operation_id}: {e}')
+            raise
+
     def __get_standard_headers(self):
         """
         Retrieves the standard headers for interacting with the State API.

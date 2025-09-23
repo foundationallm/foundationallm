@@ -11,6 +11,7 @@ from foundationallm.config import Configuration, UserIdentity
 from foundationallm.models.agents import ExternalAgentWorkflow
 from foundationallm.models.messages.message_history_item import MessageHistoryItem
 from foundationallm.models.orchestration import CompletionResponse, FileHistoryItem
+from foundationallm.operations import OperationsManager
 from foundationallm.telemetry import Telemetry
 
 from .foundationallm_tool_base import FoundationaLLMToolBase
@@ -23,6 +24,7 @@ class FoundationaLLMWorkflowBase(ABC):
                  workflow_config: ExternalAgentWorkflow,
                  objects: dict,
                  tools: List[FoundationaLLMToolBase],
+                 operations_manager: OperationsManager,
                  user_identity: UserIdentity,
                  config: Configuration):
         """
@@ -44,6 +46,7 @@ class FoundationaLLMWorkflowBase(ABC):
         self.workflow_config = workflow_config
         self.objects = objects
         self.tools = tools if tools is not None else []
+        self.operations_manager = operations_manager
         self.user_identity = user_identity
         self.config = config
         self.logger = Telemetry.get_logger(self.workflow_config.name)

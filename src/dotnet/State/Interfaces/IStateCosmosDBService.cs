@@ -6,7 +6,7 @@ namespace FoundationaLLM.State.Interfaces
     /// <summary>
     /// Provides methods for interacting with the Cosmos DB service.
     /// </summary>
-    public interface ICosmosDbService
+    public interface IStateCosmosDBService
     {
         /// <summary>
         /// Retrieves all long-running operations.

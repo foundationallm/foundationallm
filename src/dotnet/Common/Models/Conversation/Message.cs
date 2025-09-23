@@ -133,5 +133,5 @@ public record Message
     /// </summary>
     [JsonPropertyName("status")]
     [JsonConverter(typeof(JsonStringEnumConverter))]
-    public OperationStatus Status { get; set; } = OperationStatus.Pending;
+    public OperationStatus Status { get; set; } = OperationStatus.InProgress;
 }

@@ -17,26 +17,26 @@ namespace FoundationaLLM.State.Services
     /// <summary>
     /// Service to access Azure Cosmos DB for NoSQL.
     /// </summary>
-    public class CosmosDbService : ICosmosDbService
+    public class StateCosmosDBService : IStateCosmosDBService
     {
         private readonly Container _state;
         private readonly AzureCosmosDBSettings _settings;
         private readonly ILogger _logger;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CosmosDbService"/> class.
+        /// Initializes a new instance of the <see cref="StateCosmosDBService"/> class.
         /// </summary>
         /// <param name="settings">The <see cref="AzureCosmosDBSettings"/> settings retrieved
         /// by the injected <see cref="IOptions{TOptions}"/>.</param>
         /// <param name="client">The Cosmos DB client.</param>
         /// <param name="logger">The logging interface used to log under the
-        /// <see cref="CosmosDbService"></see> type name.</param>
+        /// <see cref="StateCosmosDBService"></see> type name.</param>
         /// <exception cref="ArgumentException">Thrown if any of the required settings
         /// are null or empty.</exception>
-        public CosmosDbService(
+        public StateCosmosDBService(
             IOptions<AzureCosmosDBSettings> settings,
             CosmosClient client,
-            ILogger<CosmosDbService> logger)
+            ILogger<StateCosmosDBService> logger)
         {
             _settings = settings.Value;
             ArgumentException.ThrowIfNullOrEmpty(_settings.Endpoint);

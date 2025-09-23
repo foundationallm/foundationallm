@@ -17,6 +17,7 @@ class CompletionResponse(BaseModel):
     user_prompt: str
     user_prompt_rewrite: Optional[str] = None
     full_prompt: Optional[str] = None
+    completion: Optional[str] = None
     content: Optional[
         List[
             Annotated[

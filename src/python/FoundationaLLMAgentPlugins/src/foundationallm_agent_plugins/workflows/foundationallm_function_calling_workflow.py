@@ -38,6 +38,7 @@ from foundationallm.models.constants import (
     TemplateVariables
 )
 from foundationallm.models.messages import MessageHistoryItem
+from foundationallm.models.operations import OperationStatus
 from foundationallm.models.orchestration import (
     CompletionRequestObjectKeys,
     CompletionResponse,
@@ -48,6 +49,7 @@ from foundationallm.models.orchestration import (
     OpenAIFilePathMessageContentItem
 )
 from foundationallm.models.resource_providers.configuration import APIEndpointConfiguration
+from foundationallm.operations import OperationsManager
 from foundationallm.services import HttpClientService
 from foundationallm.telemetry import Telemetry
 
@@ -61,6 +63,7 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
                  workflow_config: ExternalAgentWorkflow,
                  objects: Dict,
                  tools: List[FoundationaLLMToolBase],
+                 operations_manager: OperationsManager,
                  user_identity: UserIdentity,
                  config: Configuration):
         """
@@ -79,7 +82,7 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
         config : Configuration
             The application configuration for FoundationaLLM.
         """
-        super().__init__(workflow_config, objects, tools, user_identity, config)
+        super().__init__(workflow_config, objects, tools, operations_manager, user_identity, config)
         self.name = workflow_config.name
         self.logger : Logger = Telemetry.get_logger(self.name)
         self.tracer : Tracer = Telemetry.get_tracer(self.name)
@@ -165,6 +168,15 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
 
         with self.tracer.start_as_current_span(f'{self.name}_workflow', kind=SpanKind.INTERNAL):
 
+            await self.operations_manager.update_operation_with_text_result_async(
+                operation_id,
+                self.instance_id,
+                OperationStatus.INPROGRESS,
+                "Running agent workflow.",
+                "Running agent workflow...",
+                self.user_identity.upn
+            )
+
             with self.tracer.start_as_current_span(f'{self.name}_workflow_llm_call', kind=SpanKind.INTERNAL):
                 router_start_time = time.time()
 
@@ -192,6 +204,16 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
                     final_response = '\n'.join(f'{tool_call["name"]} [{json.dumps(tool_call["args"])}]' for tool_call in llm_response.tool_calls)
 
                 else:
+
+                    await self.operations_manager.update_operation_with_text_result_async(
+                        operation_id,
+                        self.instance_id,
+                        OperationStatus.INPROGRESS,
+                        "Running agent tools.",
+                        "Running agent tools...",
+                        self.user_identity.upn
+                    )
+
                     intermediate_responses.append(str(llm_response.content))
 
                     for tool_call in llm_response.tool_calls:
@@ -230,6 +252,15 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
                     )
 
                     with self.tracer.start_as_current_span(f'{self.name}_final_llm_call', kind=SpanKind.INTERNAL):
+
+                        await self.operations_manager.update_operation_with_text_result_async(
+                            operation_id,
+                            self.instance_id,
+                            OperationStatus.INPROGRESS,
+                            "Preparing final response.",
+                            "Preparing final response...",
+                            self.user_identity.upn
+                        )
 
                         final_llm_response = await self.workflow_llm.ainvoke(
                             [SystemMessage(content=workflow_main_prompt)]
