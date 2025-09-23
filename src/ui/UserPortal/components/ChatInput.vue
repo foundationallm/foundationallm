@@ -1002,7 +1002,6 @@ export default {
 .chat-input {
 	display: flex;
 	background-color: white;
-	border-radius: 8px;
 	width: 100%;
 }
 
@@ -1083,7 +1082,7 @@ export default {
 	width: 63px;
 	background-color: #4a4a4a !important;
 	border: 0;
-	border-radius: 5px;
+	border-radius: 0px;
 	margin-left: -2px;
 }
 
@@ -1098,7 +1097,7 @@ export default {
 	width: 63px;
 	background-color: #003965 !important;
 	border: 0;
-	border-radius: 5px;
+	border-radius: 0px;
 	margin-right: -2px;
 }
 
@@ -1259,7 +1258,7 @@ export default {
 
 .file-upload-file {
 	border-color: rgb(226, 232, 240);
-	border-radius: 6px;
+	border-radius: 0px;
 	border-style: solid;
 	border-width: 1px;
 	display: flex;
@@ -1325,13 +1324,13 @@ export default {
 
 .csm-mnt-txta-all-1 .file-upload-button .p-badge{
 	margin: 0px;
-	border-radius: 50%;
+	border-radius: 0px;
 	color: #fff;
 	background-color: #216ece;
 	font-weight: 400;
 	position: absolute;
-	right: 10px;
-    bottom: 10px;
+	right: 8px;
+    bottom: 8px;
     z-index: 1;
     width: 18px;
     height: 18px;
