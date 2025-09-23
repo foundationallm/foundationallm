@@ -168,8 +168,8 @@ Class StateService  <a class="header-action link-secondary" title="View source" 
 
   <a id="FoundationaLLM_State_Services_StateService__ctor_" data-uid="FoundationaLLM.State.Services.StateService.#ctor*"></a>
 
-  <h3 id="FoundationaLLM_State_Services_StateService__ctor_Microsoft_Extensions_Options_IOptions_FoundationaLLM_State_Models_Configuration_StateServiceSettings__FoundationaLLM_State_Interfaces_ICosmosDbService_Microsoft_Extensions_Logging_ILogger_FoundationaLLM_State_Services_StateService__" data-uid="FoundationaLLM.State.Services.StateService.#ctor(Microsoft.Extensions.Options.IOptions{FoundationaLLM.State.Models.Configuration.StateServiceSettings},FoundationaLLM.State.Interfaces.ICosmosDbService,Microsoft.Extensions.Logging.ILogger{FoundationaLLM.State.Services.StateService})">
-  StateService(IOptions&lt;StateServiceSettings&gt;, ICosmosDbService, ILogger&lt;StateService&gt;)
+  <h3 id="FoundationaLLM_State_Services_StateService__ctor_Microsoft_Extensions_Options_IOptions_FoundationaLLM_State_Models_Configuration_StateServiceSettings__FoundationaLLM_State_Interfaces_IStateCosmosDBService_Microsoft_Extensions_Logging_ILogger_FoundationaLLM_State_Services_StateService__" data-uid="FoundationaLLM.State.Services.StateService.#ctor(Microsoft.Extensions.Options.IOptions{FoundationaLLM.State.Models.Configuration.StateServiceSettings},FoundationaLLM.State.Interfaces.IStateCosmosDBService,Microsoft.Extensions.Logging.ILogger{FoundationaLLM.State.Services.StateService})">
+  StateService(IOptions&lt;StateServiceSettings&gt;, IStateCosmosDBService, ILogger&lt;StateService&gt;)
   <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/State/Services/StateService.cs/#L16"><i class="bi bi-code-slash"></i></a>
   </h3>
 
@@ -178,7 +178,7 @@ Class StateService  <a class="header-action link-secondary" title="View source" 
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public StateService(IOptions&lt;StateServiceSettings&gt; options, ICosmosDbService cosmosDbService, ILogger&lt;StateService&gt; logger)</code></pre>
+    <pre><code class="lang-csharp hljs">public StateService(IOptions&lt;StateServiceSettings&gt; options, IStateCosmosDBService cosmosDbService, ILogger&lt;StateService&gt; logger)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -186,7 +186,7 @@ Class StateService  <a class="header-action link-secondary" title="View source" 
     <dt><code>options</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.options.ioptions-1">IOptions</a>&lt;<a class="xref" href="FoundationaLLM.State.Models.Configuration.StateServiceSettings.html">StateServiceSettings</a>&gt;</dt>
     <dd><p>Provides the options with the <a class="xref" href="FoundationaLLM.State.Models.Configuration.StateServiceSettings.html">StateServiceSettings</a> settings for configuration.</p>
 </dd>
-    <dt><code>cosmosDbService</code> <a class="xref" href="FoundationaLLM.State.Interfaces.ICosmosDbService.html">ICosmosDbService</a></dt>
+    <dt><code>cosmosDbService</code> <a class="xref" href="FoundationaLLM.State.Interfaces.IStateCosmosDBService.html">IStateCosmosDBService</a></dt>
     <dd><p>Provides methods to interact with Cosmos DB.</p>
 </dd>
     <dt><code>logger</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1">ILogger</a>&lt;<a class="xref" href="FoundationaLLM.State.Services.StateService.html">StateService</a>&gt;</dt>

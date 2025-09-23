@@ -1678,6 +1678,20 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Clients.StateServiceClient.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Clients.StateServiceClient.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Clients.StateServiceClient",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Clients.StateServiceClient.yml\" sourcestartlinenumber=\"1\">Provides methods for managing state for long-running operations.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/dotnet/FoundationaLLM.Common.Clients.yml",
       "output": {
         ".html": {
@@ -4797,6 +4811,20 @@
       "IsMRef": true,
       "Title": "FoundationaLLM.Common.Interfaces.IRunnableResource",
       "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Interfaces.IRunnableResource.yml\" sourcestartlinenumber=\"1\">Defines the properties and methods for a runnable FoundationaLLM resource.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Interfaces.IStateServiceClient.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Interfaces.IStateServiceClient.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Interfaces.IStateServiceClient",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Interfaces.IStateServiceClient.yml\" sourcestartlinenumber=\"1\">Represents a client for interacting with the FoundationaLLM State API service.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -17666,17 +17694,17 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.State.Interfaces.ICosmosDbService.yml",
+      "source_relative_path": "api/dotnet/FoundationaLLM.State.Interfaces.IStateCosmosDBService.yml",
       "output": {
         ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.State.Interfaces.ICosmosDbService.html"
+          "relative_path": "api/dotnet/FoundationaLLM.State.Interfaces.IStateCosmosDBService.html"
         }
       },
       "version": "",
       "Uid": null,
       "IsMRef": true,
-      "Title": "FoundationaLLM.State.Interfaces.ICosmosDbService",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.State.Interfaces.ICosmosDbService.yml\" sourcestartlinenumber=\"1\">Provides methods for interacting with the Cosmos DB service.</p>\n"
+      "Title": "FoundationaLLM.State.Interfaces.IStateCosmosDBService",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.State.Interfaces.IStateCosmosDBService.yml\" sourcestartlinenumber=\"1\">Provides methods for interacting with the Cosmos DB service.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -17736,17 +17764,17 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.State.Services.CosmosDbService.yml",
+      "source_relative_path": "api/dotnet/FoundationaLLM.State.Services.StateCosmosDBService.yml",
       "output": {
         ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.State.Services.CosmosDbService.html"
+          "relative_path": "api/dotnet/FoundationaLLM.State.Services.StateCosmosDBService.html"
         }
       },
       "version": "",
       "Uid": null,
       "IsMRef": true,
-      "Title": "FoundationaLLM.State.Services.CosmosDbService",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.State.Services.CosmosDbService.yml\" sourcestartlinenumber=\"1\">Service to access Azure Cosmos DB for NoSQL.</p>\n"
+      "Title": "FoundationaLLM.State.Services.StateCosmosDBService",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.State.Services.StateCosmosDBService.yml\" sourcestartlinenumber=\"1\">Service to access Azure Cosmos DB for NoSQL.</p>\n"
     },
     {
       "type": "ManagedReference",
