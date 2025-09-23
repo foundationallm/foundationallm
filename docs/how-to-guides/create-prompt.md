@@ -5,7 +5,7 @@ This guide explains how to use the Management Portal to author a reusable prompt
 ## Prerequisites
 
 - You can access your organization's FoundationaLLM Management Portal.
-- Your account is assigned a role that allows you to create or edit prompts (for example, **FoundationaLLM Owner** or **FoundationaLLM Contributor**).
+- Your account is assigned a role that allows you to create (requires **Prompts Contributor** on the FoundationaLLM instance) or edit prompts (requires **Owner** or **Contributor** on the prompt).
 - You know the name, description, and prefix text that you want to apply to the prompt.
 
 ## Step-by-step instructions
@@ -32,4 +32,3 @@ This guide explains how to use the Management Portal to author a reusable prompt
 ## Next steps
 
 - Attach the prompt to agents or workflows so that conversations benefit from the new instructions.
-- Document naming conventions or prefix templates your team should follow to keep prompts consistent.
