@@ -544,31 +544,41 @@ class LangChainKnowledgeManagementAgent(LangChainAgentBase):
 
         # Start External Agent workflow implementation
         if isinstance(agent.workflow, ExternalAgentWorkflow):
-            # prepare tools
-            tool_factory = ToolFactory(self.plugin_manager)
-            workflow_tools = []
 
-            # Populate tools list from agent configuration
-            for tool_config in agent.tools:
-                tool_instance = \
-                    tool_factory.get_tool(agent.name, tool_config, request.objects, self.user_identity, self.config)
-                tool_instance.description = tool_config.description
-                tool_instance.tool_config = tool_config
-                tool_instance.objects = request.objects
-                workflow_tools.append(tool_instance)
+            with self.tracer.start_as_current_span('langchain_prepare_external_workflow', kind=SpanKind.SERVER) as span:
+                span.set_attribute("agent_name", agent.name)
+                span.set_attribute("conversation_id", request.session_id if request.session_id is not None else '')
+                span.set_attribute("operation_id", request.operation_id)
 
-            request.objects['message_history'] = request.message_history[:agent.conversation_history_settings.max_history*2]
+                # prepare tools
+                tool_factory = ToolFactory(self.plugin_manager)
+                workflow_tools = []
 
-            # create the workflow
-            workflow_factory = WorkflowFactory(self.plugin_manager)
-            workflow = workflow_factory.get_workflow(
-                agent.workflow,
-                request.objects,
-                workflow_tools,
-                self.user_identity,
-                self.config)
+                # Populate tools list from agent configuration
+                for tool_config in agent.tools:
+                    tool_instance = \
+                        tool_factory.get_tool(agent.name, tool_config, request.objects, self.user_identity, self.config)
+                    tool_instance.description = tool_config.description
+                    tool_instance.tool_config = tool_config
+                    tool_instance.objects = request.objects
+                    workflow_tools.append(tool_instance)
+
+                request.objects['message_history'] = request.message_history[:agent.conversation_history_settings.max_history*2]
+
+                # create the workflow
+                workflow_factory = WorkflowFactory(self.plugin_manager)
+                workflow = workflow_factory.get_workflow(
+                    agent.workflow,
+                    request.objects,
+                    workflow_tools,
+                    self.user_identity,
+                    self.config)
 
             with self.tracer.start_as_current_span('langchain_invoke_external_workflow', kind=SpanKind.SERVER) as span:
+                span.set_attribute("agent_name", agent.name)
+                span.set_attribute("conversation_id", request.session_id if request.session_id is not None else '')
+                span.set_attribute("operation_id", request.operation_id)
+                
                 response = await workflow.invoke_async(
                     operation_id=request.operation_id,
                     user_prompt=request.user_prompt,

@@ -50,14 +50,14 @@ class WorkflowFactory:
             The user identity of the user initiating the request.
         config : Configuration
             The application configuration for FoundationaLLM.
-        """        
+        """     
         if workflow_config.package_name == "FoundationaLLM":
              # internal workflows
             AZURE_AI_AGENT_SERVICE_WORKFLOW_CLASS_NAME = "AzureAIAgentServiceWorkflow"
-            
+
             if workflow_config.class_name == AZURE_AI_AGENT_SERVICE_WORKFLOW_CLASS_NAME:                                
                 return AzureAIAgentServiceWorkflow(workflow_config, objects, tools, user_identity, config, self.operations_manager)
-            
+
             raise LangChainException(f"FoundationaLLM workflow class {workflow_config.class_name} is not supported by the workflow factory.")
         else:
             workflow_plugin_manager = None
