@@ -3,6 +3,7 @@ from typing import List
 from foundationallm.config import Configuration, UserIdentity
 from foundationallm.langchain.common import FoundationaLLMWorkflowBase
 from foundationallm.models.agents import AgentTool, ExternalAgentWorkflow
+from foundationallm.operations import OperationsManager
 from foundationallm.plugins import PluginManagerTypes
 
 class WorkflowPluginManagerBase(ABC):
@@ -18,6 +19,7 @@ class WorkflowPluginManagerBase(ABC):
         workflow_config: ExternalAgentWorkflow,
         objects: dict,
         tools: List[AgentTool],
+        operations_manager: OperationsManager,
         user_identity: UserIdentity,
         config: Configuration) -> FoundationaLLMWorkflowBase:
         """

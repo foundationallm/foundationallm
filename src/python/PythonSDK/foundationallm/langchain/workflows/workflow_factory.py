@@ -8,7 +8,7 @@ from foundationallm.langchain.common import FoundationaLLMWorkflowBase
 from foundationallm.langchain.exceptions import LangChainException
 from foundationallm.langchain.workflows.azure_ai.azure_ai_agent_service_workflow import AzureAIAgentServiceWorkflow
 from foundationallm.models.agents import AgentTool, ExternalAgentWorkflow
-from foundationallm.operations.operations_manager import OperationsManager
+from foundationallm.operations import OperationsManager
 from foundationallm.plugins import PluginManager, PluginManagerTypes
 
 class WorkflowFactory:
@@ -69,6 +69,12 @@ class WorkflowFactory:
                     if wm.plugin_manager_type == PluginManagerTypes.WORKFLOWS), None)
                 if workflow_plugin_manager is None:
                     raise LangChainException(f"Workflow plugin manager not found for package {workflow_config.package_name}")
-                return workflow_plugin_manager.create_workflow(workflow_config, objects, tools, user_identity, config)
-            else:
-                raise LangChainException(f"Package {workflow_config.package_name} not found in the list of external modules loaded by the package manager.")
+                return workflow_plugin_manager.create_workflow(
+                    workflow_config,
+                    objects,
+                    tools,
+                    self.operations_manager,
+                    user_identity,
+                    config)
+
+            raise LangChainException(f"Package {workflow_config.package_name} not found in the list of external modules loaded by the package manager.")
