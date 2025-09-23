@@ -29,7 +29,7 @@ class OperationsManager():
 
         # Determine if the State API should be accessed using HTTPS.
         self.use_ssl = os.environ.get('FOUNDATIONALLM_ENV', 'prod') == 'prod'
-    
+
     async def create_operation_async(
         self,
         operation_id: str,
@@ -40,7 +40,7 @@ class OperationsManager():
         Creates a background operation by settings its initial state through the State API.
 
         POST {state_api_url}/instances/{instanceId}/operations/{operationId} -> LongRunningOperation
-        
+
         Parameters
         ----------
         operation_id : str
@@ -49,12 +49,12 @@ class OperationsManager():
             The unique identifier for the FLLM instance.
         user_identity : str
             The user identity object containing the user principal name of the user who initiated the operation.
-        
+
         Returns
         -------
         Optional[LongRunningOperation]
             Object representing the operation if successful, None if not found.
-        """               
+        """
         try:
             body = {
                 "operation_id": operation_id,
@@ -90,7 +90,7 @@ class OperationsManager():
         Updates the state of a background operation through the State API.
 
         PUT {state_api_url}/instances/{instanceId}/operations/{operationId} -> LongRunningOperation
-        
+
         Parameters
         ----------
         operation : LongRunningOperation
@@ -103,7 +103,7 @@ class OperationsManager():
             The message to associate with the new status.
         user_identity : str
             The user identity object containing the user principal name of the user who initiated the operation.
-        
+
         Returns
         -------
         Optional[LongRunningOperation]
@@ -116,7 +116,7 @@ class OperationsManager():
                 status_message = status_message,
                 upn = self.__get_upn_from_user_identity(user_identity)
             )
-            
+
             # Call the State API to create a new operation.
             async with self.http_client_session.put(
                 f'{self.state_api_url}/instances/{instance_id}/operations/{operation_id}',
@@ -133,7 +133,7 @@ class OperationsManager():
         except Exception as e:
             self.logger.exception(f'An error occurred while updating the status of operation {operation_id}: {e}')
             raise
-        
+
     async def get_operation_async(
         self,
         operation_id: str,
@@ -143,14 +143,14 @@ class OperationsManager():
         Retrieves the state of a background operation through the State API.
 
         GET {state_api_url}/instances/{instanceId}/operations/{operationId} -> LongRunningOperation
-        
+
         Parameters
         ----------
         operation_id : str
             The unique identifier for the operation.
         instance_id : str
             The unique identifier for the FLLM instance.
-        
+
         Returns
         -------
         Optional[LongRunningOperation]
@@ -182,7 +182,7 @@ class OperationsManager():
         Sets the result of a completion operation through the State API.
 
         PUT {state_api_url}/instances/{instanceId}/operations/{operationId}/result -> CompletionResponse
-        
+
         Parameters
         ----------
         operation_id : str
@@ -217,14 +217,14 @@ class OperationsManager():
         Retrieves the result of an async completion operation through the State API.
 
         GET {state_api_url}/instances/{instanceId}/operations/{operationId}/result -> CompletionResponse
-        
+
         Parameters
         ----------
         operation_id : str
             The unique identifier for the operation.
         instance_id : str
             The unique identifier for the FLLM instance.
-        
+
         Returns
         -------
         CompletionResponse
@@ -256,14 +256,14 @@ class OperationsManager():
         Retrieves a list of log entries for an async operation through the State API.
 
         GET {state_api_url}/instances/{instanceId}/operations/{operationId}/log -> List[LongRunningOperationLogEntry]
-        
+
         Parameters
         ----------
         operation_id : str
             The unique identifier for the operation.
         instance_id : str
             The unique identifier for the FLLM instance.
-        
+
         Returns
         -------
         Optional[List[LongRunningOperationLogEntry]]
@@ -295,10 +295,10 @@ class OperationsManager():
         result_message: str,
         user_identity: str
     ) -> Optional[LongRunningOperation]:
-        
+
         """
         Updates the state of a background operation through the State API, including a text result.
-        
+
         Parameters
         ----------
         operation : LongRunningOperation
@@ -313,14 +313,14 @@ class OperationsManager():
             The text result to used as the result of the operation.
         user_identity : str
             The user identity object containing the user principal name of the user who initiated the operation.
-        
+
         Returns
         -------
         Optional[LongRunningOperation]
             Object representing the operation if successful, None if not found.
         """
         try:
-            
+
             await self.set_operation_result_async(
                 operation_id,
                 instance_id,
@@ -329,10 +329,12 @@ class OperationsManager():
                     user_prompt='',
                     completion=result_message,
                     content=[
-                        OpenAITextMessageContentItem(value=result_message)
+                        OpenAITextMessageContentItem(
+                            agent_capability_category='FoundationaLLM.KnowledgeManagement',
+                            value=result_message)
                     ]
                 ))
-            
+
             operation = await self.update_operation_async(
                 operation_id,
                 instance_id,
@@ -356,7 +358,7 @@ class OperationsManager():
             "charset":"utf-8",
             "Content-Type":"application/json"
         }
-    
+
     def __get_upn_from_user_identity(self, user_identity: str) -> str:
         """
         Retrieves the user principal name from the user identity object.
@@ -365,7 +367,7 @@ class OperationsManager():
         ----------
         user_identity : str
             The user identity object containing the user principal name of the user who initiated the operation.
-        
+
         Returns
         -------
         str

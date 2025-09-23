@@ -8,5 +8,6 @@ class OpenAITextMessageContentItem(MessageContentItemBase):
     """An OpenAI text message content item."""
 
     type: Literal[MessageContentItemTypes.TEXT] = MessageContentItemTypes.TEXT
+    agent_capability_category: Optional[str] = Field(None, alias="agent_capability_category")
     annotations: Optional[List[OpenAIFilePathMessageContentItem]] = Field(default_factory=list, alias="annotations")
     value: Optional[str] = Field(None, alias="value")
