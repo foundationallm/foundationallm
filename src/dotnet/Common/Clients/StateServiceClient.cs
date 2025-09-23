@@ -1,6 +1,7 @@
 ﻿using Azure;
 using FoundationaLLM.Common.Clients.Http;
 using FoundationaLLM.Common.Constants;
+using FoundationaLLM.Common.Constants.Agents;
 using FoundationaLLM.Common.Constants.Authentication;
 using FoundationaLLM.Common.Exceptions;
 using FoundationaLLM.Common.Interfaces;
@@ -192,7 +193,15 @@ namespace FoundationaLLM.Common.Clients
                 new CompletionResponse(
                     operationId,
                     resultMessage,
-                    string.Empty, 0, 0, null),
+                    string.Empty, 0, 0, null)
+                {
+                    Content = [
+                        new TextMessageContentItem {
+                            Value = resultMessage,
+                            AgentCapabilityCategory = AgentCapabilityCategoryNames.FoundationaLLMKnowledgeManagement
+                        }
+                    ]
+                },
                 cancellationToken);
 
             var operation = await UpdateOperation(
