@@ -6,8 +6,7 @@ This step-by-step guide walks through creating a new data source for Foundationa
 
 - You have a FoundationaLLM environment with access to the Management Portal.
 - You have the data source connection details handy, such as the Azure Storage account, container, and any authentication secrets.
-- You are assigned a role that allows managing data sources (for example, **FoundationaLLM Owner** or **FoundationaLLM Contributor**).
-[TODO: Confirm roles]
+- You are assigned a role that allows managing data sources (**Owner** or **Contributor** on the FoundationaLLM instance).
 
 ## Step-by-step instructions
 
@@ -43,7 +42,7 @@ This step-by-step guide walks through creating a new data source for Foundationa
       - Cost center: provide a cost center value if you'd like to assign this data source to a cost center.
 3. Select **Create Data Source** to save the new data source. 
 
-### Creating an OneLake data source
+### Creating a OneLake data source
 
 1. Select **OneLake** in the data source type drop down.  
 2. **Select Authentication Type**
