@@ -44,21 +44,28 @@ class ToolFactory:
         Creates an instance of a tool based on the tool configuration.
         """
 
+        # NOTE: Disabled tool caching due to multiple implications with object lifetimes and stateful tools.
+        # For example, tools that use LangChain LLM classed that authentication with tokens that expire pose
+        # challenges when caching tools.
+
+        # TODO: Revisit tool caching strategy in the future. Implement a more elaborate caching mechanism that
+        # considers object lifetimes, stateful vs stateless tools, and token expiration handling.
+
         # Use a cache key based on agent name, package name, and tool name to store the tool instance in the object cache.
-        cache_key = f"{(self.__normalize_upn(user_identity.upn))}|{agent_name}|{tool_config.package_name}|{tool_config.name}"
+        # cache_key = f"{(self.__normalize_upn(user_identity.upn))}|{agent_name}|{tool_config.package_name}|{tool_config.name}"
 
-        if cache_key in self.plugin_manager.object_cache:
-            self.logger.info("Using cached tool instance for key: %s", cache_key)
-            return self.plugin_manager.object_cache[cache_key]
+        # if cache_key in self.plugin_manager.object_cache:
+        #     self.logger.info("Using cached tool instance for key: %s", cache_key)
+        #     return self.plugin_manager.object_cache[cache_key]
 
-        self.logger.info("Creating new tool instance for key: %s", cache_key)
+        # self.logger.info("Creating new tool instance for key: %s", cache_key)
 
         if tool_config.package_name == self.FLLM_PACKAGE_NAME:
             # Initialize by class name.
             match tool_config.class_name:
                 case self.DALLE_IMAGE_GENERATION_TOOL:
                     tool = DALLEImageGenerationTool(tool_config, objects, user_identity, config)
-                    self.plugin_manager.object_cache[cache_key] = tool
+                    # self.plugin_manager.object_cache[cache_key] = tool
                 case self.FOUNDATIONALLM_CONTENT_SEARCH_TOOL:
                     tool = FoundationaLLMContentSearchTool(tool_config, objects, user_identity, config)
             if tool is not None:
@@ -74,7 +81,7 @@ class ToolFactory:
                 if tool_plugin_manager is None:
                     raise LangChainException(f"Tool plugin manager not found for package {tool_config.package_name}")
                 tool = tool_plugin_manager.create_tool(tool_config, objects, user_identity, config)
-                self.plugin_manager.object_cache[cache_key] = tool
+                # self.plugin_manager.object_cache[cache_key] = tool
                 return tool
 
             raise LangChainException(f"Package {tool_config.package_name} not found in the list of external modules loaded by the package manager.")
