@@ -70,13 +70,17 @@ namespace FoundationaLLM.Core.Examples.Concepts.Plugins
         new()
         {
             {
-                "work-item-kgZE8-uAKUmtWAVhhxIdiA",
-                "run-20250808-112603-7FMMokPMBEyg7NAIrr575w-TAfGit69y0OhQOwAAtltKw",
+                "work-item-ptNkaLhZOkqujDU2W5fjhA",
+                "run-20250924-114010-koNWof6FX0e7ry5x-8FQ4w-TAfGit69y0OhQOwAAtltKw",
                 new Dictionary<string, object>
                 {
                     {
                         PluginParameterNames.AZUREAISEARCHINDEXING_DATAPIPELINESTAGE_KNOWLEDGEUNITOBJECTID,
-                        "instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.Context/knowledgeUnits/ProcessSPOFiles-KG-01"
+                        "instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.Context/knowledgeUnits/AgentPrivateStores"
+                    },
+                    {
+                        PluginParameterNames.AZUREAISEARCHINDEXING_DATAPIPELINESTAGE_VECTORSTOREID,
+                        "MAA-02"
                     }
                 }
             }
