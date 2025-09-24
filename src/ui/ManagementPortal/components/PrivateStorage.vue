@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div :class="{ 'grid--loading': loading }">
 		<!-- Loading overlay -->
 		<template v-if="loading">
 			<div class="grid__loading-overlay" role="status" aria-live="polite" aria-label="Loading private storage">
@@ -639,5 +639,25 @@ export default {
 :deep(.p-input-icon-left input) {
 	width: 100%;
 	padding-left: 2.5rem;
+}
+
+.grid--loading {
+	pointer-events: none;
+}
+
+.grid__loading-overlay {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	gap: 16px;
+	z-index: 10;
+	background-color: rgba(255, 255, 255, 0.9);
+	pointer-events: none;
 }
 </style>
