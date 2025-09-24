@@ -2,7 +2,7 @@
 	<div>
 		<!-- Loading overlay -->
 		<template v-if="loading">
-			<div class="grid__loading-overlay" role="status" aria-live="polite">
+			<div class="grid__loading-overlay" role="status" aria-live="polite" aria-label="Loading private storage">
 				<LoadingGrid />
 				<div>{{ loadingStatusText }}</div>
 			</div>
@@ -27,7 +27,7 @@
 			@hide="handleClosePrivateStorage"
 		>
 			<template v-if="modalLoading">
-				<div class="grid__loading-overlay">
+				<div class="grid__loading-overlay" role="status" aria-live="polite" aria-label="Loading modal content">
 					<LoadingGrid />
 					<div>{{ loadingModalStatusText }}</div>
 				</div>

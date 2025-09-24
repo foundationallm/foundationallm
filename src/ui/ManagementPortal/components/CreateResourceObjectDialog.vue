@@ -7,7 +7,7 @@
 		:closable="false"
 	>
 		<template v-if="loading">
-			<div class="loading-overlay" role="status" aria-live="polite">
+			<div class="loading-overlay" role="status" aria-live="polite" aria-label="Loading resource creation">
 				<LoadingGrid />
 				<div>{{ loadingStatusText }}</div>
 			</div>

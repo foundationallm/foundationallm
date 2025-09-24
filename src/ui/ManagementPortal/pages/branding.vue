@@ -1,7 +1,7 @@
 <template>
 	<main id="main-content">
 		<template v-if="loading">
-			<div class="grid__loading-overlay" role="status" aria-live="polite">
+			<div class="grid__loading-overlay" role="status" aria-live="polite" aria-label="Loading branding settings">
 				<LoadingGrid />
 				<div>{{ loadingStatusText }}</div>
 			</div>
