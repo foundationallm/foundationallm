@@ -26,9 +26,10 @@
 				class="color-undo-button"
 				icon="pi pi-undo"
 				aria-label="Reset to initial color"
+				:aria-describedby="`color-reset-tooltip-${ariaLabel}`"
 				@click="$emit('reset', originalValue)"
 			/>
-			<template #popper><div role="tooltip">Reset to initial color</div></template>
+			<template #popper><div :id="`color-reset-tooltip-${ariaLabel}`" role="tooltip">Reset to initial color</div></template>
 		</VTooltip>
 	</div>
 </template>
