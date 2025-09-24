@@ -1658,6 +1658,11 @@ export default {
 				mainModel?.model_parameters ?? mainModel?.properties?.model_parameters;
 			this.workflowMainAIModelParameters = existingMainModelParamters ?? {};
 		},
+
+		// Watch for changes to userPromptRewriteEnabled to load prompts lazily
+		userPromptRewriteEnabled() {
+			this.loadPromptsIfNeeded();
+		},
 	},
 
 	async created() {
@@ -1720,9 +1725,8 @@ export default {
 				})),
 			);
 
-			this.loadingStatusText = 'Retrieving prompts...';
-			const promptOptionsResult = await api.getPrompts();
-			this.promptOptions = promptOptionsResult.map((result) => result.resource);
+			// Note: Prompts are now loaded lazily when userPromptRewriteEnabled is true
+			// This improves performance by not loading all prompts upfront
 		} catch (error) {
 			this.$toast.add({
 				severity: 'error',
@@ -1911,6 +1915,11 @@ export default {
 				userPromptRewriteSettings?.user_prompt_rewrite_prompt_object_id ?? null;
 			this.userPromptRewriteWindowSize = userPromptRewriteSettings?.user_prompts_window_size ?? 3;
 
+			// Load prompts lazily if userPromptRewriteEnabled is true in edit mode
+			if (this.userPromptRewriteEnabled) {
+				this.loadPromptsIfNeeded();
+			}
+
 			const semanticCacheSettings = agent.cache_settings?.semantic_cache_settings;
 			this.semanticCacheEnabled = agent.cache_settings?.semantic_cache_enabled ?? false;
 			this.semanticCacheAIModel = semanticCacheSettings?.embedding_ai_model_object_id ?? null;
@@ -1956,6 +1965,27 @@ export default {
 			const defaultFormValues = getDefaultFormValues();
 			for (const key in defaultFormValues) {
 				this[key] = defaultFormValues[key];
+			}
+		},
+
+		/**
+		 * Loads prompts lazily when userPromptRewriteEnabled is true
+		 * This improves performance by not loading all prompts upfront
+		 */
+		async loadPromptsIfNeeded() {
+			if (this.userPromptRewriteEnabled && this.promptOptions.length === 0) {
+				this.loadingStatusText = 'Retrieving prompts...';
+				try {
+					const promptOptionsResult = await api.getPrompts();
+					this.promptOptions = promptOptionsResult.map((result) => result.resource);
+				} catch (error) {
+					this.$toast.add({
+						severity: 'error',
+						detail: error?.response?._data || error,
+						life: undefined,
+						closable: true,
+					});
+				}
 			}
 		},
 
