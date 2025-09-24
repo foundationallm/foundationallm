@@ -1325,15 +1325,13 @@ export default {
 .csm-mnt-txta-all-1 .file-upload-button .p-badge{
 	margin: 0px;
 	border-radius: 0px;
-	color: #fff;
-	background-color: #216ece;
 	font-weight: 400;
 	position: absolute;
 	right: 8px;
     bottom: 8px;
     z-index: 1;
-    width: 18px;
-    height: 18px;
+    width: 16px;
+    height: 16px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1347,13 +1345,6 @@ export default {
 	font-size: 24px;
 }
 .csm-mnt-txta-1{
-	font-family: "Poppins", sans-serif !important;
-	color: var(--secondary-color) !important;
-	border-right: 0px !important;
-	border-left: 0px !important;
 	height: 63px !important;
-}
-.csm-mnt-txta-1::placeholder{
-	color: var(--secondary-color);
 }
 </style>
