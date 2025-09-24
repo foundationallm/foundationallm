@@ -19,7 +19,7 @@
 		<div :class="{ 'grid--loading': loading }">
 			<!-- Loading overlay -->
 			<template v-if="loading">
-				<div class="grid__loading-overlay" role="status" aria-live="polite">
+				<div class="grid__loading-overlay" role="status" aria-live="polite" aria-label="Loading vector stores">
 					<LoadingGrid />
 					<div>{{ loadingStatusText }}</div>
 				</div>

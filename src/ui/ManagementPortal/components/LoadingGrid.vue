@@ -1,14 +1,15 @@
 <template>
-	<div class="lds-grid">
-		<div></div>
-		<div></div>
-		<div></div>
-		<div></div>
-		<div></div>
-		<div></div>
-		<div></div>
-		<div></div>
-		<div></div>
+	<div class="lds-grid" aria-label="Loading" role="status">
+		<!-- Loading animation dots -->
+		<div aria-hidden="true"></div>
+		<div aria-hidden="true"></div>
+		<div aria-hidden="true"></div>
+		<div aria-hidden="true"></div>
+		<div aria-hidden="true"></div>
+		<div aria-hidden="true"></div>
+		<div aria-hidden="true"></div>
+		<div aria-hidden="true"></div>
+		<div aria-hidden="true"></div>
 	</div>
 </template>
 

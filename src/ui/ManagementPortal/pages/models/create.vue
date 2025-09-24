@@ -14,7 +14,7 @@
 		<div class="steps" :class="{ 'steps--loading': loading }">
 			<!-- Loading overlay -->
 			<template v-if="loading">
-				<div class="steps__loading-overlay">
+				<div class="steps__loading-overlay" role="status" aria-live="polite" aria-label="Loading model form">
 					<LoadingGrid />
 					<div>{{ loadingStatusText }}</div>
 				</div>

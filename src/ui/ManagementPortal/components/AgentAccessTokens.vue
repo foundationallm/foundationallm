@@ -2,7 +2,7 @@
 	<div>
 		<!-- Loading overlay -->
 		<template v-if="loadingAccessTokens">
-			<div class="flex flex-col justify-center items-center">
+			<div class="flex flex-col justify-center items-center" role="status" aria-live="polite" aria-label="Loading agent access tokens">
 				<LoadingGrid />
 				<div>Loading agent access tokens...</div>
 			</div>
@@ -101,7 +101,7 @@
 
 			<template v-else>
 				<template v-if="loadingCreateAccessToken">
-					<div class="steps__loading-overlay">
+					<div class="steps__loading-overlay" role="status" aria-live="polite" aria-label="Creating access token">
 						<LoadingGrid />
 						<div>Creating access token...</div>
 					</div>
