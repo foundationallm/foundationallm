@@ -166,18 +166,21 @@
 					:aria-label="`User Avatar for ${$authStore.currentAccount?.name}`"
 				/>
 
-				<div>
-					<VTooltip :auto-hide="isMobile" :popper-triggers="isMobile ? [] : ['hover']">
-						<span
-							class="sidebar__username"
-							aria-label="Logged in as {{ $authStore.currentAccount?.username }}"
-						>
-							{{ $authStore.currentAccount?.name }}
-						</span>
-						<template #popper>
-							<div role="tooltip">Logged in as {{ $authStore.currentAccount?.username }}</div>
-						</template>
-					</VTooltip>
+				<div class="sidebar__username-container">
+					<span
+						:id="`username-tooltip-trigger-${$authStore.currentAccount?.username}`"
+						class="sidebar__username"
+						tabindex="0"
+						:aria-describedby="`username-tooltip-${$authStore.currentAccount?.username}`"
+						aria-label="Logged in as {{ $authStore.currentAccount?.username }}"
+						@mouseenter="showUsernameTooltip"
+						@mouseleave="hideUsernameTooltip"
+						@focus="showUsernameTooltip"
+						@blur="hideUsernameTooltip"
+						@keydown.escape="hideUsernameTooltip"
+					>
+						{{ $authStore.currentAccount?.name }}
+					</span>
 					<Button
 						class="sidebar__sign-out-button"
 						icon="pi pi-sign-out"
@@ -190,6 +193,21 @@
 				</div>
 			</div>
 		</div>
+		
+		<!-- Tooltip outside sidebar to avoid overflow issues -->
+		<div
+			v-if="$authStore.currentAccount?.name && showTooltip && tooltipReady"
+			:id="`username-tooltip-${$authStore.currentAccount?.username}`"
+			role="tooltip"
+			class="username-tooltip"
+			:aria-hidden="!showTooltip"
+			:style="{
+				top: tooltipPosition.top + 'px',
+				left: tooltipPosition.left + 'px'
+			}"
+		>
+			Logged in as {{ $authStore.currentAccount?.username }}
+		</div>
 	</div>
 </template>
 
@@ -200,6 +218,9 @@ export default {
 	data() {
 		return {
 			isMobile: window.screen.width < 950,
+			showTooltip: false,
+			tooltipPosition: { top: 0, left: 0 },
+			tooltipReady: false,
 		};
 	},
 
@@ -210,6 +231,49 @@ export default {
 	methods: {
 		isRouteActive(route) {
 			return this.$route.path.startsWith(route);
+		},
+		showUsernameTooltip() {
+			this.tooltipReady = false;
+			this.updateTooltipPosition();
+		},
+		hideUsernameTooltip() {
+			this.showTooltip = false;
+			this.tooltipReady = false;
+		},
+		updateTooltipPosition() {
+			this.$nextTick(() => {
+				const trigger = document.getElementById(`username-tooltip-trigger-${this.$authStore.currentAccount?.username}`);
+				if (trigger) {
+					const rect = trigger.getBoundingClientRect();
+					const viewportWidth = window.innerWidth;
+					const tooltipWidth = 300; // Conservative estimate
+					const margin = 35;
+					
+					// Try to center on username first
+					let left = rect.left + (rect.width / 2);
+					
+					// Ensure tooltip doesn't go off the left edge
+					const minLeft = tooltipWidth / 2 + margin;
+					if (left < minLeft) {
+						left = minLeft;
+					}
+					
+					// Ensure tooltip doesn't go off the right edge
+					const maxLeft = viewportWidth - tooltipWidth / 2 - margin;
+					if (left > maxLeft) {
+						left = maxLeft;
+					}
+					
+					// Position tooltip above the username
+					this.tooltipPosition = {
+						top: rect.top - 40,
+						left: left,
+					};
+					
+					this.tooltipReady = true;
+					this.showTooltip = true;
+				}
+			});
 		},
 	},
 };
@@ -352,12 +416,47 @@ a {
 	   display: block;
 }
 
+.sidebar__username-container {
+	position: relative;
+	display: inline-block;
+}
+
 .sidebar__username {
 	color: var(--primary-text);
 	font-size: 0.875rem;
 	text-transform: capitalize;
 	line-height: 0;
 	vertical-align: super;
+	cursor: pointer;
+	outline: none;
+	
+	&:focus {
+		outline: 2px solid var(--primary-text);
+		outline-offset: 2px;
+	}
+}
+
+.username-tooltip {
+	position: fixed;
+	background-color: rgba(0, 0, 0, 0.8);
+	color: white;
+	padding: 8px 12px;
+	border-radius: 4px;
+	font-size: 0.875rem;
+	white-space: nowrap;
+	z-index: 9999 !important;
+	pointer-events: none;
+	transform: translateX(-50%);
+	
+	&[aria-hidden="true"] {
+		visibility: hidden;
+		opacity: 0;
+	}
+	
+	&[aria-hidden="false"] {
+		visibility: visible;
+		opacity: 1;
+	}
 }
 
 .sidebar__sign-out-button {
