@@ -7,7 +7,7 @@ azure-monitor-opentelemetry==1.8.0
 azure-monitor-opentelemetry-exporter==1.0.0b41
 azure-search-documents==11.7.0b1
 azure-storage-blob==12.21.0
-foundationallm==0.9.7rc392
+foundationallm==0.9.7rc404
 langchain==0.3.27
 langchain-aws==0.2.32
 langchain_azure_ai==0.1.5
