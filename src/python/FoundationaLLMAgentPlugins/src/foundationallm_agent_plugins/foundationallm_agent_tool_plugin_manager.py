@@ -5,6 +5,7 @@ from foundationallm.plugins import ToolPluginManagerBase
 
 from foundationallm_agent_plugins.tools import (
     FoundationaLLMSQLTool,
+    FoundationaLLMDatabricksTool,
     FoundationaLLMKQLTool,
     FoundationaLLMCodeInterpreterTool,
     FoundationaLLMFileAnalysisTool,
@@ -17,6 +18,7 @@ class FoundationaLLMAgentToolPluginManager(ToolPluginManagerBase):
 
     FOUNDATIONALLM_CODE_INTERPRETER_TOOL_CLASS = 'FoundationaLLMCodeInterpreterTool'
     FOUNDATIONALLM_SQL_TOOL_CLASS = 'FoundationaLLMSQLTool'
+    FOUNDATIONALLM_DATABRICKS_TOOL_CLASS = 'FoundationaLLMDatabricksTool'
     FOUNDATIONALLM_KQL_TOOL_CLASS = 'FoundationaLLMKQLTool'
     FOUNDATIONALLM_FILE_ANALYSIS_TOOL_CLASS = 'FoundationaLLMFileAnalysisTool'
     FOUNDATIONALLM_KNOWLEDGE_TOOL_CLASS = 'FoundationaLLMKnowledgeTool'
@@ -37,6 +39,8 @@ class FoundationaLLMAgentToolPluginManager(ToolPluginManagerBase):
                 return FoundationaLLMCodeInterpreterTool(tool_config, objects, user_identity, config)
             case FoundationaLLMAgentToolPluginManager.FOUNDATIONALLM_SQL_TOOL_CLASS:
                 return FoundationaLLMSQLTool(tool_config, objects, user_identity, config)
+            case FoundationaLLMAgentToolPluginManager.FOUNDATIONALLM_DATABRICKS_TOOL_CLASS:
+                return FoundationaLLMDatabricksTool(tool_config, objects, user_identity, config)
             case FoundationaLLMAgentToolPluginManager.FOUNDATIONALLM_KQL_TOOL_CLASS:
                 return FoundationaLLMKQLTool(tool_config, objects, user_identity, config)
             case FoundationaLLMAgentToolPluginManager.FOUNDATIONALLM_FILE_ANALYSIS_TOOL_CLASS:
