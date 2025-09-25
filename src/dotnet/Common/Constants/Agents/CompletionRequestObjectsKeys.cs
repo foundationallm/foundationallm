@@ -74,6 +74,11 @@ namespace FoundationaLLM.Common.Constants.Agents
         public const string WorkflowInvocationAttachedFiles = "Workflow.Invocation.AttachedFiles";
 
         /// <summary>
+        /// The key name for the workflow invocation private store files.
+        /// </summary>
+        public const string WorkflowInvocationPrivateStoreFiles = "Workflow.Invocation.PrivateStoreFiles";
+
+        /// <summary>
         /// The key name for the flag that indicates the need to trace completion requests.
         /// </summary>
         public const string TracingTraceCompletionRequest = "Tracing.TraceCompletionRequest";
