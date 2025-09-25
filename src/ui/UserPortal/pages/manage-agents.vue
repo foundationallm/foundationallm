@@ -37,7 +37,7 @@
                 <div class="w-full max-w-full md:max-w-[50%] px-4 mb-5 text-center md:text-left">
                     <nuxt-link 
                         v-if="hasAgentsContributorRole && hasPromptsContributorRole"
-                        to="/create-agent"
+                        :to="{ path: '/create-agent', query: { returnTo: 'manage-agents' } }"
                         class="p-button p-component create-agent-button">
                         New Agent <i class="pi pi-plus ml-3"></i>
                     </nuxt-link>
@@ -360,7 +360,7 @@ export default defineComponent({
         const onEditAgent = (rowData: any) => {
             // Edit agent: navigate to create-agent with query params
             const agentName = rowData.resource.name;
-            router.push({ path: '/create-agent', query: { edit: 'true', agentName } });
+            router.push({ path: '/create-agent', query: { edit: 'true', agentName, returnTo: 'manage-agents' } });
         };
 
         const getOwnerEmail = (ownerUserId?: string | null): string => {

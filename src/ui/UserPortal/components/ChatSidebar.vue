@@ -888,7 +888,8 @@ import Checkbox from 'primevue/checkbox';
 					query: { 
 						edit: 'true',
 						agentName: agent.name,
-						agentId: agent.object_id
+						agentId: agent.object_id,
+						returnTo: 'manage-agents'
 					}
 				});
 			},
