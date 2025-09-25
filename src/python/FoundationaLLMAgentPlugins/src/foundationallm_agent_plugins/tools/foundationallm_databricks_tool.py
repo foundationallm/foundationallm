@@ -164,7 +164,7 @@ class FoundationaLLMDatabricksTool(FoundationaLLMToolBase):
                 ]
 
                 with self.tracer.start_as_current_span(f'{self.name}_final_llm_call', kind=SpanKind.INTERNAL):
-                    final_llm_response = await self.main_llm.ainvoke(final_messages, tools=None)
+                    final_llm_response = await self.main_llm.ainvoke(final_messages)
                     input_tokens += final_llm_response.usage_metadata['input_tokens']
                     output_tokens += final_llm_response.usage_metadata['output_tokens']
                     final_response = final_llm_response.content
