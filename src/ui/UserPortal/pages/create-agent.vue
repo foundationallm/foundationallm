@@ -23,8 +23,8 @@
 
         <div class="w-full max-w-[1430px] mx-auto px-4 py-7">
             <div class="csm-backto-chats-1">
-                <nuxt-link to="/" class="backto-chats">
-                    <i class="pi pi-angle-left relative top-[2px]"></i> {{ isEditMode ? 'Return to conversations' : 'Return to conversations' }}
+                <nuxt-link :to="returnToConversationsUrl" class="backto-chats">
+                    <i class="pi pi-angle-left relative top-[2px]"></i> {{ returnToConversationsText }}
                 </nuxt-link>
             </div>
 
@@ -827,9 +827,26 @@ export default defineComponent({
             },
 
             returnToConversationsUrl() {
+                // Check if we should return to manage-agents page
+                const query = this.$route.query;
+                if (query.returnTo === 'manage-agents') {
+                    return '/manage-agents';
+                }
+                
                 // If opened from Settings -> Agents, return to main page (Settings modal will remain open)
                 // Otherwise, return to main page
                 return '/';
+            },
+
+            returnToConversationsText() {
+                // Check if we should return to manage-agents page
+                const query = this.$route.query;
+                if (query.returnTo === 'manage-agents') {
+                    return 'Return to Manage Agents';
+                }
+                
+                // Default text for other cases
+                return 'Return to conversations';
             }
         },
 
