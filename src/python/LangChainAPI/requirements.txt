@@ -24,7 +24,7 @@ openai==1.107.2
 opentelemetry-api==1.36.0
 opentelemetry-sdk==1.36.0
 pandas==2.2.2
-pyarrow==19.0.1
+pyarrow==21.0.0
 pydantic==2.10.6
 pylint==3.2.6
 pyodbc==5.2.0
