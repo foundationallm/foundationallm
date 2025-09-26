@@ -21,7 +21,7 @@ namespace FoundationaLLM.Common.Constants.ResourceProviders
                         typeof(AIModelBase))
                 {
                     AllowedTypes = [
-                        new ResourceTypeAllowedTypes(HttpMethod.Get.Method, AuthorizableOperations.Read, [], [], [typeof(ResourceProviderGetResult<AIModelBase>)]),
+                        new ResourceTypeAllowedTypes(HttpMethod.Get.Method, $"{AuthorizableOperations.Read}|{RoleDefinitionNames.Agents_Contributor}", [], [], [typeof(ResourceProviderGetResult<AIModelBase>)]),
                         new ResourceTypeAllowedTypes(HttpMethod.Post.Method, AuthorizableOperations.Write, [], [typeof(AIModelBase)], [typeof(ResourceProviderUpsertResult)]),
                         new ResourceTypeAllowedTypes(HttpMethod.Delete.Method, AuthorizableOperations.Delete, [], [], []),
                     ],
@@ -33,7 +33,7 @@ namespace FoundationaLLM.Common.Constants.ResourceProviders
                             new ResourceTypeAllowedTypes(HttpMethod.Post.Method, AuthorizableOperations.Delete, [], [], [typeof(ResourceProviderActionResult)])
                         ]),
                         new ResourceTypeAction(ResourceProviderActions.Filter, false, true, [
-                            new ResourceTypeAllowedTypes(HttpMethod.Post.Method, AuthorizableOperations.Read, [], [typeof(ResourceFilter)], [typeof(AIModelBase)])
+                            new ResourceTypeAllowedTypes(HttpMethod.Post.Method, $"{AuthorizableOperations.Read}|{RoleDefinitionNames.Agents_Contributor}", [], [typeof(ResourceFilter)], [typeof(AIModelBase)])
                         ])
                     ]
                 }

@@ -289,9 +289,7 @@ namespace FoundationaLLM.Common.Models.Authorization
                         Permissions = [                            
                             new RoleDefinitionPermissions
                             {
-                                Actions = [
-                                    "FoundationaLLM.AIModel/aiModels/read",
-                                    "FoundationaLLM.Agent/agentTemplates/read",],
+                                Actions = [],
                                 NotActions = [],
                                 DataActions = [],
                                 NotDataActions = [],

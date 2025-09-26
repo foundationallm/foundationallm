@@ -257,10 +257,7 @@
 		],
 		"permissions": [
 			{
-				"actions": [
-					"FoundationaLLM.AIModel/aiModels/read",
-					"FoundationaLLM.Agent/agentTemplates/read"
-				],
+				"actions": [],
 				"not_actions": [],
 				"data_actions": [],
 				"not_data_actions": []
