@@ -63,6 +63,7 @@
     <ProjectReference Include="..\Context\Context.csproj" />
     <ProjectReference Include="..\Conversation\Conversation.csproj" />
     <ProjectReference Include="..\Core\Core.csproj" />
+    <ProjectReference Include="..\DataPipeline\DataPipeline.csproj" />
     <ProjectReference Include="..\Prompt\Prompt.csproj" />
   </ItemGroup>
 

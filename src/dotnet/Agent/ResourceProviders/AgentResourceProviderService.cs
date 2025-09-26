@@ -1378,9 +1378,12 @@ namespace FoundationaLLM.Agent.ResourceProviders
                 throw new ResourceProviderException($"The agent file {fileObjectId} is already associated with the tool {toolObjectId}.",
                     StatusCodes.Status400BadRequest);
 
-            var toolResource = await GetResourceAsync<Tool>(toolObjectId, userIdentity);
             var agentObjectId = ResourcePath.GetObjectId(_instanceSettings.Id, _name, AgentResourceTypeNames.Agents, resourcePath.MainResourceId!);
-            AgentBase agent = null!;
+            var agent = await GetResourceAsync<AgentBase>(agentObjectId, userIdentity);
+            var toolResource = await GetResourceAsync<Tool>(
+                toolObjectId,
+                userIdentity,
+                parentResourceInstance: agent);
 
             switch (toolResource.Name)
             {
@@ -1388,7 +1391,6 @@ namespace FoundationaLLM.Agent.ResourceProviders
                     var gatewayClient = await GetGatewayServiceClient(
                         resourcePath.InstanceId!,
                         userIdentity);
-                    agent = await GetResourceAsync<AgentBase>(agentObjectId, userIdentity);
 
                     (var openAIAssistantId, var openAIAssistantVectorStoreId, var workflow, var agentAIModel, var agentPrompt, var agentAIModelAPIEndpoint)
                         = await ResolveAgentProperties(agent, userIdentity);
@@ -1438,7 +1440,6 @@ namespace FoundationaLLM.Agent.ResourceProviders
                     var gatewayClientCI = await GetGatewayServiceClient(
                         resourcePath.InstanceId!,
                         userIdentity);
-                    agent = await GetResourceAsync<AgentBase>(agentObjectId, userIdentity);
 
                     (var openAIAssistantIdCI, var openAIAssistantVectorStoreIdCI, var workflowCI, var agentAIModelCI, var agentPromptCI, var agentAIModelAPIEndpointCI)
                         = await ResolveAgentProperties(agent, userIdentity);
@@ -1485,7 +1486,6 @@ namespace FoundationaLLM.Agent.ResourceProviders
                     break;
 
                 case AgentToolNames.FoundationaLLMKnowledgeSearchTool:
-                    agent = await GetResourceAsync<AgentBase>(agentObjectId, userIdentity);
 
                     await RunDataPipeline(
                         _instanceSettings.Id,
@@ -1526,9 +1526,12 @@ namespace FoundationaLLM.Agent.ResourceProviders
                 throw new ResourceProviderException($"The agent file {fileObjectId} is not associated with the tool {toolObjectId}.",
                     StatusCodes.Status400BadRequest);
 
-            var toolResource = await GetResourceAsync<Tool>(toolObjectId, userIdentity);
             var agentObjectId = ResourcePath.GetObjectId(_instanceSettings.Id, _name, AgentResourceTypeNames.Agents, resourcePath.MainResourceId!);
-            AgentBase agent = default!;
+            var agent = await GetResourceAsync<AgentBase>(agentObjectId, userIdentity);
+            var toolResource = await GetResourceAsync<Tool>(
+                toolObjectId,
+                userIdentity,
+                parentResourceInstance: agent);
 
             switch (toolResource.Name)
             {
@@ -1536,7 +1539,6 @@ namespace FoundationaLLM.Agent.ResourceProviders
                     var gatewayClient = await GetGatewayServiceClient(
                         resourcePath.InstanceId!,
                         userIdentity);
-                    agent = await GetResourceAsync<AgentBase>(agentObjectId, userIdentity);
 
                     (var openAIAssistantId, var openAIAssistantVectorStoreId, var workflow, var agentAIModel, var agentPrompt, var agentAIModelAPIEndpoint)
                         = await ResolveAgentProperties(agent, userIdentity);
@@ -1558,7 +1560,6 @@ namespace FoundationaLLM.Agent.ResourceProviders
                     var gatewayClientCI = await GetGatewayServiceClient(
                         resourcePath.InstanceId!,
                         userIdentity);
-                    agent = await GetResourceAsync<AgentBase>(agentObjectId, userIdentity);
 
                     (var openAIAssistantIdCI, var openAIAssistantVectorStoreIdCI, var workflowCI, var agentAIModelCI, var agentPromptCI, var agentAIModelAPIEndpointCI)
                         = await ResolveAgentProperties(agent, userIdentity);
@@ -1577,8 +1578,6 @@ namespace FoundationaLLM.Agent.ResourceProviders
                     break;
 
                 case AgentToolNames.FoundationaLLMKnowledgeSearchTool:
-                    agent = await GetResourceAsync<AgentBase>(agentObjectId, userIdentity);
-
                     await RunDataPipeline(
                         _instanceSettings.Id,
                         fileObjectId,
