@@ -1,13 +1,19 @@
 #!/bin/bash
 
-# Determine the branch name
-BRANCH_NAME=$(git rev-parse --abbrev-ref HEAD)
+# Determine the raw tag
+RAW_TAG="${GITHUB_REF#refs/tags/}"
+echo "The raw tag is: '$RAW_TAG'"
 
-# Extract version from branch name (format: release/1.0.0 or release/1.0.0-alpha1)
-if [[ "$BRANCH_NAME" =~ ^release/([0-9]+\.[0-9]+\.[0-9]+(-[a-zA-Z0-9]+(\.[0-9]+)?)?)$ ]]; then
+# Extract version from branch name (format: 1.0.0 or 1.0.0-alpha1 or 1.0.0-beta1 or 1.0.0-rc1)
+if [[ "$RAW_TAG" =~ ^([0-9]+\.[0-9]+\.[0-9]+(-[a-zA-Z0-9]+(\.[0-9]+)?)?)$ ]]; then
   VERSION="${BASH_REMATCH[1]}"
 else
   VERSION="0.0.0"
+fi
+
+if [ "$VERSION" = "0.0.0" ]; then
+  echo "Error: could not infer a valid version."
+  exit 1
 fi
 
 # Convert .NET versioning to Python versioning
