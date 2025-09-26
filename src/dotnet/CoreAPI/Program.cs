@@ -64,6 +64,7 @@ namespace FoundationaLLM.Core.API
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_GatewayAPI_Essentials);
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_GatekeeperAPI_Essentials);
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_ContextAPI_Essentials);
+                options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_DataPipelineAPI_Essentials);
 
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_Agent_Storage);
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_Prompt_Storage);
@@ -72,6 +73,7 @@ namespace FoundationaLLM.Core.API
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_AzureAI_Storage);
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_Configuration_Storage);
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_Context_Storage);
+                options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_DataPipeline_Storage);
 
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_Quota_Storage);
 
@@ -124,6 +126,8 @@ namespace FoundationaLLM.Core.API
             builder.AddAIModelResourceProvider();
             builder.AddConversationResourceProvider();
             builder.AddContextResourceProvider();
+            builder.AddRemoteDataPipelineServiceClient(); // Required by the DataPipeline resource provider.
+            builder.AddDataPipelineResourceProvider();
 
             // Register the downstream services and HTTP clients.
             builder.AddHttpClientFactoryService();

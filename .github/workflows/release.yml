@@ -2,8 +2,8 @@ name: Release Build
 
 on:
   push:
-    branches:
-    - release/**
+    tags:
+    - "*.*.*-rc*"
   workflow_dispatch:
     inputs: {}
 
@@ -55,14 +55,18 @@ jobs:
     - name: Set Git and Helm Tag
       id: docker-tag
       run: |
-        DOCKER_TAG=$(echo ${{ github.ref_name }} |  cut -d'/' -f 2)
+        if [ "${GITHUB_REF_TYPE}" = "tag" ]; then
+          DOCKER_TAG="${GITHUB_REF_NAME}"
+        else
+          DOCKER_TAG="${GITHUB_REF_NAME#release/}"
+        fi
         echo "DOCKER_TAG=$DOCKER_TAG" >> $GITHUB_ENV
         echo "docker_tag: Latest Tag is : $DOCKER_TAG"
         echo "docker_tag=$DOCKER_TAG" >> $GITHUB_OUTPUT      
 
   helm_build:
     name: Package Helm Charts
-    if: startsWith(github.ref, 'refs/heads/release/') || startsWith(github.ref, 'refs/heads/poc/')
+    if: startsWith(github.ref, 'refs/heads/release/') || startsWith(github.ref, 'refs/heads/poc/') || (github.ref_type == 'tag' && contains(github.ref_name, '-rc'))
     needs: generate_matrix
     strategy:
       fail-fast: false
@@ -80,7 +84,7 @@ jobs:
 
   docker_build:
     name: Build Docker Images
-    if: startsWith(github.ref, 'refs/heads/release/') || startsWith(github.ref, 'refs/heads/poc/')
+    if: startsWith(github.ref, 'refs/heads/release/') || startsWith(github.ref, 'refs/heads/poc/') || (github.ref_type == 'tag' && contains(github.ref_name, '-rc'))
     needs: 
       - generate_matrix
     strategy:
