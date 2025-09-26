@@ -677,6 +677,49 @@
                 </div>
             </template>
         </Dialog>
+
+        <!-- Delete file confirmation dialog -->
+        <Dialog
+            v-if="fileToDelete !== null"
+            v-focustrap
+            :visible="fileToDelete !== null"
+            :closable="false"
+            class="sidebar-dialog"
+            modal
+            header="Delete file"
+            @keydown.esc="fileToDelete = null"
+        >
+            <div v-if="filesLoading" class="delete-dialog-content">
+                <div role="status">
+                    <i
+                        class="pi pi-spin pi-spinner"
+                        style="font-size: 2rem"
+                        role="img"
+                        aria-label="Loading"
+                    ></i>
+                </div>
+            </div>
+            <div v-else>
+                <p>Do you want to delete the file "{{ fileToDelete }}" ?</p>
+            </div>
+            <template #footer>
+                <Button
+                    class="sidebar-dialog__button"
+                    label="Cancel"
+                    text
+                    autofocus
+                    :disabled="filesLoading"
+                    @click="fileToDelete = null"
+                />
+                <Button
+                    class="sidebar-dialog__button"
+                    label="Delete"
+                    severity="danger"
+                    :disabled="filesLoading"
+                    @click="confirmDelete"
+                />
+            </template>
+        </Dialog>
     </main>
     </div>
 </template>
@@ -741,6 +784,7 @@ export default defineComponent({
                 welcomeMessage: '',
 
                 selectedAgentName: null as string | null,
+                fileToDelete: null as string | null,
                 availableAgents: [] as any[],
                 agentsLoaded: false as boolean,
                 imageGenerationEnabled: false as boolean,
@@ -1486,20 +1530,26 @@ export default defineComponent({
             }
         },
 
-        async deleteFile(fileName: string) {
-            if (!this.selectedAgentName) {
+        deleteFile(fileName: string) {
+            this.fileToDelete = fileName;
+        },
+
+        async confirmDelete() {
+            if (!this.selectedAgentName || !this.fileToDelete) {
                 return;
             }
 
             try {
-                await api.deleteAgentFile(this.selectedAgentName, fileName);
+                await api.deleteAgentFile(this.selectedAgentName, this.fileToDelete);
                 // Remove from both uploaded files and existing files lists
-                this.uploadedFiles = this.uploadedFiles.filter(f => f.name !== fileName);
-                this.agentFiles = this.agentFiles.filter(f => f.resource?.name !== fileName);
-                this.$toast.add({ severity: 'success', summary: 'Success', detail: `File "${fileName}" deleted.`, life: 3000 });
+                this.uploadedFiles = this.uploadedFiles.filter(f => f.name !== this.fileToDelete);
+                this.agentFiles = this.agentFiles.filter(f => f.resource?.name !== this.fileToDelete);
+                this.$toast.add({ severity: 'success', summary: 'Success', detail: `File "${this.fileToDelete}" deleted.`, life: 3000 });
             } catch (error: any) {
-                this.$toast.add({ severity: 'error', summary: 'Error', detail: `Failed to delete file "${fileName}": ${error.message}`, life: 5000 });
+                this.$toast.add({ severity: 'error', summary: 'Error', detail: `Failed to delete file "${this.fileToDelete}": ${error.message}`, life: 5000 });
                 console.error('Delete error:', error);
+            } finally {
+                this.fileToDelete = null;
             }
         },
 
@@ -1843,5 +1893,30 @@ export default defineComponent({
             opacity: 0;
         }
     }
+}
+
+.delete-dialog-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+}
+
+.sidebar-dialog {
+    max-width: 90vw;
+}
+
+@media only screen and (max-width: 950px) {
+    .sidebar-dialog {
+        width: 95vw;
+    }
+}
+
+.p-button-text.sidebar-dialog__button:focus {
+    box-shadow: 0 0 0 0.1rem var(--primary-button-bg);
+}
+
+.sidebar-dialog__button:focus {
+    box-shadow: 0 0 0 0.1rem #000;
 }
 </style>
