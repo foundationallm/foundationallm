@@ -1,9 +1,12 @@
-name: Release Build
+name: Build All
 
 on:
   push:
     tags:
     - "*.*.*-rc*"
+    tags-ignore:
+      - "nuget-*"
+      - "pypi-*"
   workflow_dispatch:
     inputs: {}
 
