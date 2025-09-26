@@ -1,4 +1,5 @@
-﻿using FoundationaLLM.Common.Constants.Agents;
+﻿using FoundationaLLM.Common.Authentication;
+using FoundationaLLM.Common.Constants.Agents;
 using FoundationaLLM.Common.Constants.ResourceProviders;
 using FoundationaLLM.Common.Exceptions;
 using FoundationaLLM.Common.Interfaces;
@@ -83,10 +84,12 @@ namespace FoundationaLLM.Common.Services.ResourceProviders.Agent
                 createAgentRequest.TemplateParameters,
                 finalParameterValues!);
 
+            // Using the hosting service identity to check for existing agents to avoid
+            // the need to assign additional permissions to end users.
             var (Exists, _) = await _agentResourceProviderService.ResourceExistsAsync<AgentBase>(
                 instanceId,
                 finalParameterValues![AgentTemplateParameterNames.AgentName],
-                userIdentity);
+                ServiceContext.ServiceIdentity!);
 
             if (Exists)
                 throw new ResourceProviderException(
