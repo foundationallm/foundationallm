@@ -63,18 +63,6 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
                 dataPipelineRun,
                 dataPipelineRunWorkItem,
                 DataPipelineStateFileNames.Metadata);
-            if (!contentChanged
-                && !metadataChanged)
-            {
-                _logger.LogInformation(
-                    "The {PluginName} plugin for the {Stage} stage determined there were no changes to process the work item {WorkItemId}.",
-                    Name,
-                    dataPipelineRunWorkItem.Stage,
-                    dataPipelineRunWorkItem.Id);
-                // Since neither content nor metadata have changed, we can skip the indexing step.
-                return new PluginResult(true, false);
-            }
-
             var contentItemParts = await _dataPipelineStateService.LoadDataPipelineRunWorkItemParts<DataPipelineContentItemContentPart>(
                dataPipelineDefinition,
                dataPipelineRun,
@@ -84,18 +72,25 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
             if (!contentItemParts.Any())
                 return new PluginResult(true, false, WarningMessage: "The content item has no content.");
 
-            // If there are no content item parts that have changed in the current data pipeline run,
-            // and no metadata has changed, we can skip the indexing step.
-            // Even if none of the content item parts have changed, if the metadata has changed, this means the index must be updated.
-            if (!contentItemParts.Any(part => part.LastChangedBy.Equals(dataPipelineRun.Id))
-                && !metadataChanged)
+            if (!contentChanged
+                && !metadataChanged
+                && !contentItemParts.Any(part =>
+                    part.LastChangedBy.Equals(dataPipelineRun.Id)
+                    || !part.Indexed))
             {
+                // Conditions for skipping processing:
+                // 1. The text content has not changed.
+                // 2. The metadata has not changed.
+                // 3. None of the content item parts have been updated by the current data pipeline run or are unindexed.
+                // Note that a content item part can be unindexed even if it has not changed, for example if the content item
+                // was removed from the index by another data pipeline run.
+
                 _logger.LogInformation(
-                    "The {PluginName} plugin for the {Stage} stage determined there were no changes to process for the work item {WorkItemId}.",
+                    "The {PluginName} plugin for the {Stage} stage determined there were no changes to process the work item {WorkItemId}.",
                     Name,
                     dataPipelineRunWorkItem.Stage,
                     dataPipelineRunWorkItem.Id);
-                // Since none of the content has changed, we can skip the embedding step.
+
                 return new PluginResult(true, false);
             }
 
@@ -156,6 +151,8 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
                 searchIndexClient,
                 _serviceProvider.GetRequiredService<ILogger<AzureAISearchService>>()) as IAzureAISearchService;
 
+            #region Create Azure AI Search Index if it does not exist
+
             var metadataProperties = vectorDatabase.MetadataProperties
                 .Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
             var metadataField = new ComplexField(vectorDatabase.MetadataPropertyName);
@@ -185,6 +182,8 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
                         new HnswAlgorithmConfiguration("algorithm-configuration")
                     }
                 });
+
+            #endregion
 
             var serializedMetadata = (await _dataPipelineStateService.LoadDataPipelineRunWorkItemArtifacts(
                 dataPipelineDefinition,
@@ -222,6 +221,26 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
                     cip.Embedding!,
                     metadata!
                 })]);
+
+            #region Update content item parts flag that indicates whether they have been indexed or not
+
+            // This is mostly preparing the ground for future enhancements, for example to only re-index certain content item parts.
+            // For now, we are replacing the entire content item in the index every time.
+
+            foreach (var contentItemPart in contentItemParts)
+            {
+                contentItemPart.Indexed = uploadResults.TryGetValue(contentItemPart.IndexEntryId!, out var indexed) && indexed;
+                contentItemPart.LastChangedBy = dataPipelineRun.Id;
+            }
+
+            await _dataPipelineStateService.SaveDataPipelineRunWorkItemParts<DataPipelineContentItemContentPart>(
+                dataPipelineDefinition,
+                dataPipelineRun,
+                dataPipelineRunWorkItem,
+                contentItemParts,
+                DataPipelineStateFileNames.ContentParts);
+
+            #endregion
 
             if (uploadResults.Values.Any(ur => !ur))
                 return new PluginResult(

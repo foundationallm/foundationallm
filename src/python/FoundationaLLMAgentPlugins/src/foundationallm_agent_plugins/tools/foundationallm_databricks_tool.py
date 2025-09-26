@@ -1,5 +1,5 @@
 """
-Provides an implementation for the FoundationaLLM SQL tool.
+Provides an implementation for the FoundationaLLM Databricks tool.
 """
 
 # Platform imports
@@ -15,6 +15,11 @@ from itertools import chain, repeat
 
 #Azure imports
 from azure.identity import DefaultAzureCredential
+
+# Databricks imports
+from databricks.sdk.core import Config, oauth_service_principal
+from databricks import sql
+
 # LangChain imports
 from langchain_core.messages import (
     BaseMessage,
@@ -40,9 +45,9 @@ from foundationallm.models.constants import (
     ResourceProviderNames)
 from foundationallm.models.orchestration import ContentArtifact
 
-class FoundationaLLMSQLTool(FoundationaLLMToolBase):
+class FoundationaLLMDatabricksTool(FoundationaLLMToolBase):
     """
-    Provides an implementation for the FoundationaLLM SQL tool.
+    Provides an implementation for the FoundationaLLM Databricks tool.
     """
 
     def __init__(
@@ -51,7 +56,7 @@ class FoundationaLLMSQLTool(FoundationaLLMToolBase):
         objects: Dict,
         user_identity:UserIdentity,
         config: Configuration):
-        """ Initializes the FoundationaLLMSQLTool class with the tool configuration,
+        """ Initializes the FoundationaLLMDatabricksTool class with the tool configuration,
             exploded objects collection, user_identity, and platform configuration. """
 
         super().__init__(tool_config, objects, user_identity, config)
@@ -60,7 +65,7 @@ class FoundationaLLMSQLTool(FoundationaLLMToolBase):
         self.main_prompt = self.get_main_prompt()
         self.final_prompt = self.get_prompt("final_prompt")
         self.default_error_message = "An error occurred while executing the SQL query."
-        self.__setup_sql_configuration(tool_config, config)
+        self.__setup_databricks_configuration(tool_config, config)
         self.vector_store_metadata_filter = self.tool_config.properties.get("vector_store_metadata_filter", None)
 
     def _run(
@@ -122,7 +127,7 @@ class FoundationaLLMSQLTool(FoundationaLLMToolBase):
                                     raise ValueError(f"Metadata key '{value}' not found in tool runtime properties.")
                             sql_query_to_execute = sql_query_to_execute.replace(f'{{{{{key}}}}}', str(value))
 
-                    response = self.query_azure_sql(sql_query_to_execute)
+                    response = self.query_databricks_sql(sql_query_to_execute)
                     sql_response = response
 
                 else:
@@ -136,7 +141,7 @@ class FoundationaLLMSQLTool(FoundationaLLMToolBase):
                         output_tokens += response.usage_metadata['output_tokens']
 
                     if response.tool_calls \
-                        and response.tool_calls[0]['name'] == 'query_azure_sql':
+                        and response.tool_calls[0]['name'] == 'query_databricks_sql':
 
                         tool_call = response.tool_calls[0]
 
@@ -198,51 +203,22 @@ class FoundationaLLMSQLTool(FoundationaLLMToolBase):
                     output_tokens=output_tokens
                 )
 
-    def __setup_sql_configuration(
+    def __setup_databricks_configuration(
             self,
             tool_config: AgentTool,
             config: Configuration,
     ):
-        data_source_object_id = self.tool_config.get_resource_object_id_properties(
-            "FoundationaLLM.DataSource",
-            "dataSources",
-            ResourceObjectIdPropertyNames.OBJECT_ROLE,
-            "data_source"
-        )
-        data_source = self.objects[data_source_object_id.object_id] if data_source_object_id else None
-
-        self.connection_attrs_before = None
-        server = tool_config.properties['sql_server']
-        database = tool_config.properties['sql_database']
-
-        if data_source:
-            if data_source['type'] != 'azure-sql-database':
-                raise ValueError(f"Unsupported data source type: {data_source['type']}. Expected 'azure-sql-database'.")
-            connection_string_config_name = data_source['configuration_references'].get('ConnectionString', None)
-            if not connection_string_config_name:
-                raise ValueError("Connection string configuration reference is missing in the data source object.")
-            connection_string = config.get_value(connection_string_config_name)
-            if not connection_string:
-                raise ValueError(f"Connection string '{connection_string_config_name}' not found in the configuration.")
-
-            self.connection_string = self.__translate_connection_string(connection_string, database)
-        else:
-            # Expects Azure credentials to authenticate to the database.
-            # Get access token for Fabric
-            credential = DefaultAzureCredential()
-            token = credential.get_token('https://database.windows.net/.default')
-            token_as_bytes = bytes(token.token, "UTF-8")
-            encoded_bytes = bytes(chain.from_iterable(zip(token_as_bytes, repeat(0)))) # Encode the bytes to a Windows byte string
-            token_bytes = struct.pack("<i", len(encoded_bytes)) + encoded_bytes # Package the token into a bytes object
-            self.connection_attrs_before = {1256: token_bytes}  # Attribute pointing to SQL_COPT_SS_ACCESS_TOKEN to pass access token to the driver
-            self.connection_string = f'Driver={{ODBC Driver 18 for SQL Server}};Server=tcp:{self.server},1433;Database={self.database};Encrypt=yes;TrustServerCertificate=no;Connection Timeout=30;'
+        self.databricks_server_hostname = tool_config.properties['databricks_server_hostname']
+        self.databricks_http_path = tool_config.properties['databricks_http_path']
+        self.databricks_client_id = tool_config.properties['databricks_client_id']
+        self.databricks_client_secret = config.get_value(tool_config.properties['databricks_client_secret'])
 
         self.tools = [
             {
                 "type": "function",
                 "function": {
-                    "name": "query_azure_sql",
-                    "description": "Execute a SQL query to retrieve information from a database",
+                    "name": "query_databricks_sql",
+                    "description": "Execute a SQL query to retrieve information from a Databricks warehouse.",
                     "parameters": {
                         "type": "object",
                         "properties": {
@@ -331,51 +307,43 @@ class FoundationaLLMSQLTool(FoundationaLLMToolBase):
         ]
 
         self.available_sql_functions = {
-            "query_azure_sql":self.query_azure_sql,
+            "query_databricks_sql":self.query_databricks_sql,
             # "get_table_schema":self.get_table_schema,
             #"get_table_rows":self.get_table_rows,
             #"get_column_values":self.get_column_values,
             # "agent_query_validator":self.agent_query_validator
         }
 
-    def query_azure_sql(self, query: str) -> str:
-        """Run a SQL query on Azure SQL and return results as a pandas DataFrame"""
-        print(f"Executing query on Azure SQL: {query}")
-        try:
-            conn = pyodbc.connect(self.connection_string, attrs_before=self.connection_attrs_before) \
-                if self.connection_attrs_before else pyodbc.connect(self.connection_string)
-            df = pd.read_sql(query, conn)
-            df = self.__convert_datetime_columns_to_string(df)
-            return json.dumps(df.to_dict(orient='records'))
-        except pyodbc.Error as e:
-            self.logger.error("Error occurred while executing a SQL query. Error: %s; Query: %s", e, query)
-
-    def __translate_connection_string(self, connection_string: str, database_name: str) -> str:
-        """Translate the connection string to a format compatible with pyodbc."""
-
-        matches = re.findall(r'(?i)\b([\w\s]+?)\s*=\s*([^;]+)', connection_string)
-
-        # Normalize keys and store in dictionary
-        connection_string_properties = {key.strip().lower(): value.strip() for key, value in matches}
-
-        # Access specific values
-        server = connection_string_properties.get('server')
-        database = connection_string_properties.get('database')
-        uid = connection_string_properties.get('uid') or connection_string_properties.get('user id')  # support both
-        pwd = connection_string_properties.get('pwd') or connection_string_properties.get('password')  # support both
-
-        new_connection_string = (
-            'Driver={ODBC Driver 18 for SQL Server};'
-            f'Server={server};'
-            f'Database={database if database else database_name};'
-            f'Uid={uid};'
-            f'Pwd={pwd};'
-            'Encrypt=yes;'
-            'TrustServerCertificate=Yes;'
+    def databricks_credential_provider(self):
+        cfg = Config(
+            host=f"https://{self.databricks_server_hostname}",
+            client_id=self.databricks_client_id,
+            client_secret=self.databricks_client_secret,
         )
+        return oauth_service_principal(cfg)
 
-        return str(new_connection_string)
+    def query_databricks_sql(self, query: str) -> str:
+        """Run a SQL query on Databricks and return results as a pandas DataFrame"""
 
+        try:
+            
+            with sql.connect(
+                server_hostname=self.databricks_server_hostname,
+                http_path=self.databricks_http_path,
+                credentials_provider=self.databricks_credential_provider,
+            ) as conn:
+                with conn.cursor() as cursor:
+                    cursor.execute(query)
+                    tbl = cursor.fetchall_arrow()       # pyarrow.Table
+                    df = tbl.to_pandas()                # pandas.DataFrame
+
+                    df = self.__convert_datetime_columns_to_string(df)
+                    return json.dumps(df.to_dict(orient='records'))
+
+        except Exception as e:
+            self.logger.error("Error occurred while executing a SQL query. Error: %s; Query: %s", e, query)
+            raise e
+    
     def __convert_to_string(self, val):
         if val is None \
             or pd.isna(val):

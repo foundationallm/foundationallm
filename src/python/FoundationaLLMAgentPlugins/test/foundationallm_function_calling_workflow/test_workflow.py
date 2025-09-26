@@ -8,6 +8,7 @@ import sys
 import uuid
 
 sys.path.append('src')
+from foundationallm.operations.operations_manager import OperationsManager
 from foundationallm_agent_plugins import (
     FoundationaLLMAgentToolPluginManager,
     FoundationaLLMAgentWorkflowPluginManager
@@ -95,6 +96,7 @@ if os.path.exists(main_prompt_file_path):
 
 workflow_plugin_manager = FoundationaLLMAgentWorkflowPluginManager()
 tool_plugin_manager = FoundationaLLMAgentToolPluginManager()
+operations_manager = OperationsManager(config)
 
 # prepare tools
 tools = []
@@ -115,6 +117,7 @@ workflow = workflow_plugin_manager.create_workflow(
     agent.workflow,
     objects,
     tools,
+    operations_manager,
     user_identity,
     config
 )

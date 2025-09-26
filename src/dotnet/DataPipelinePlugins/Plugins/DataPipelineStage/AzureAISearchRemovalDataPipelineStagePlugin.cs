@@ -17,6 +17,7 @@ using FoundationaLLM.Common.Services.Azure;
 using FoundationaLLM.Common.Services.Plugins;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.Graph;
 using System.Text.Json;
 
 namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
@@ -155,6 +156,29 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
                 dataPipelineRun.Id,
                 dataPipelineRunWorkItem.ContentItemCanonicalId,
                 deletedKeysCount);
+
+            #region Reset the indexed flag of all content item parts
+
+            var contentItemParts = await _dataPipelineStateService.LoadDataPipelineRunWorkItemParts<DataPipelineContentItemContentPart>(
+               dataPipelineDefinition,
+               dataPipelineRun,
+               dataPipelineRunWorkItem,
+               DataPipelineStateFileNames.ContentParts);
+
+            foreach (var contentItemPart in contentItemParts)
+            {
+                contentItemPart.Indexed = false;
+                contentItemPart.LastChangedBy = dataPipelineRun.Id;
+            }
+
+            await _dataPipelineStateService.SaveDataPipelineRunWorkItemParts<DataPipelineContentItemContentPart>(
+                dataPipelineDefinition,
+                dataPipelineRun,
+                dataPipelineRunWorkItem,
+                contentItemParts,
+                DataPipelineStateFileNames.ContentParts);
+
+            #endregion
 
             return new PluginResult(true, false);
         }
