@@ -4,12 +4,9 @@
 RAW_TAG="${GITHUB_REF#refs/tags/}"
 echo "The raw tag is: '$RAW_TAG'"
 
-PACKAGE_PLATFORM=""
-
 # Extract version from branch name (format: 1.0.0 or 1.0.0-alpha1 or 1.0.0-beta1 or 1.0.0-rc1)
 if [[ "$RAW_TAG" =~ ^((nuget|pypi)-)?([0-9]+\.[0-9]+\.[0-9]+(?:-(?:alpha|beta|rc)[1-9][0-9]{2})?)$ ]]; then
   VERSION="${BASH_REMATCH[3]}"
-  PACKAGE_PLATFORM="${BASH_REMATCH[2]}"
 else
   VERSION="0.0.0"
 fi
@@ -32,11 +29,9 @@ fi
 # Output versions for GitHub Actions
 echo "dotnet_version=$VERSION" >> "$GITHUB_OUTPUT"
 echo "python_version=$PYTHON_VERSION" >> "$GITHUB_OUTPUT"
-echo "package_platform=$PACKAGE_PLATFORM" >> "$GITHUB_OUTPUT"
 
 echo "NuGet Version: $VERSION"
 echo "Python Version: $PYTHON_VERSION"
-echo "Package Platform: $PACKAGE_PLATFORM"
 
 # Replace the version placeholders in the .csproj files for .NET projects
 for csproj in $(find . -name '*.csproj'); do
