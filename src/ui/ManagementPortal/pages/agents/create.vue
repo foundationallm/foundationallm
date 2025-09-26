@@ -1525,6 +1525,8 @@ export default {
 			showNewToolDialog: false,
 
 			promptOptions: [] as Prompt[],
+			promptCache: new Map<string, Prompt[]>(), // Cache for different contexts
+			promptLoadingStates: new Map<string, boolean>(), // Track loading states
 
 			orchestratorOptions: [
 				{
@@ -1661,7 +1663,7 @@ export default {
 
 		// Watch for changes to userPromptRewriteEnabled to load prompts lazily
 		userPromptRewriteEnabled() {
-			this.loadPromptsIfNeeded();
+			this.loadPromptsIfNeeded('userPromptRewrite');
 		},
 	},
 
@@ -1917,7 +1919,7 @@ export default {
 
 			// Load prompts lazily if userPromptRewriteEnabled is true in edit mode
 			if (this.userPromptRewriteEnabled) {
-				this.loadPromptsIfNeeded();
+				this.loadPromptsIfNeeded('editMode');
 			}
 
 			const semanticCacheSettings = agent.cache_settings?.semantic_cache_settings;
@@ -1969,24 +1971,98 @@ export default {
 		},
 
 		/**
-		 * Loads prompts lazily when userPromptRewriteEnabled is true
+		 * Loads prompts lazily based on context and requirements
 		 * This improves performance by not loading all prompts upfront
+		 * @param context - The context for loading prompts ('userPromptRewrite', 'workflowResource', 'editMode')
+		 * @param filterCriteria - Optional filter criteria for prompts
 		 */
-		async loadPromptsIfNeeded() {
-			if (this.userPromptRewriteEnabled && this.promptOptions.length === 0) {
-				this.loadingStatusText = 'Retrieving prompts...';
-				try {
-					const promptOptionsResult = await api.getPrompts();
-					this.promptOptions = promptOptionsResult.map((result) => result.resource);
-				} catch (error) {
-					this.$toast.add({
-						severity: 'error',
-						detail: error?.response?._data || error,
-						life: undefined,
-						closable: true,
-					});
-				}
+		async loadPromptsIfNeeded(context: 'userPromptRewrite' | 'workflowResource' | 'editMode' = 'userPromptRewrite', filterCriteria?: string): Promise<void> {
+			const cacheKey = `${context}_${filterCriteria || 'default'}`;
+			
+			// Check if prompts are already cached for this context
+			if (this.promptCache.has(cacheKey)) {
+				this.promptOptions = this.promptCache.get(cacheKey)!;
+				return;
 			}
+
+			// Check if already loading for this context
+			if (this.promptLoadingStates.get(cacheKey)) {
+				return;
+			}
+
+			// Mark as loading
+			this.promptLoadingStates.set(cacheKey, true);
+			this.loadingStatusText = 'Retrieving prompts...';
+
+			try {
+				const promptOptionsResult = await api.getPrompts();
+				if (!promptOptionsResult) {
+					this.promptOptions = [];
+					return;
+				}
+				let filteredPrompts = promptOptionsResult.map((result) => result.resource);
+
+				// Apply context-specific filtering
+				if (context === 'editMode' && this.editAgent) {
+					// In edit mode, only load prompts related to this agent
+					// This includes prompts with the agent name in their name or description
+					const agentName = this.agentName.toLowerCase();
+					filteredPrompts = filteredPrompts.filter(prompt => 
+						prompt.name.toLowerCase().includes(agentName) ||
+						prompt.description?.toLowerCase().includes(agentName) ||
+						prompt.category === 'Workflow' // Include workflow-related prompts
+					);
+				} else if (context === 'workflowResource') {
+					// For workflow resources, filter to relevant prompt categories
+					filteredPrompts = filteredPrompts.filter(prompt => 
+						prompt.category === 'Workflow' || 
+						prompt.category === 'System' ||
+						prompt.name.toLowerCase().includes('workflow')
+					);
+				}
+
+				// Apply additional filter criteria if provided
+				if (filterCriteria) {
+					const criteria = filterCriteria.toLowerCase();
+					filteredPrompts = filteredPrompts.filter(prompt => 
+						prompt.name.toLowerCase().includes(criteria) ||
+						prompt.description?.toLowerCase().includes(criteria)
+					);
+				}
+
+				// Cache the filtered results
+				this.promptCache.set(cacheKey, filteredPrompts);
+				this.promptOptions = filteredPrompts;
+			} catch (error) {
+				this.$toast.add({
+					severity: 'error',
+					detail: error?.response?._data || error,
+					life: undefined,
+					closable: true,
+				});
+			} finally {
+				// Mark as not loading
+				this.promptLoadingStates.set(cacheKey, false);
+			}
+		},
+
+		/**
+		 * Clear prompt cache when needed (e.g., when switching contexts)
+		 */
+		clearPromptCache(): void {
+			this.promptCache.clear();
+			this.promptLoadingStates.clear();
+			this.promptOptions = [];
+		},
+
+		/**
+		 * Get cached prompts for a specific context
+		 * @param context - The context to get prompts for
+		 * @param filterCriteria - Optional filter criteria
+		 */
+		getCachedPrompts(context: string, filterCriteria?: string): Prompt[] {
+			const cacheKey = `${context}_${filterCriteria || 'default'}`;
+			return this.promptCache.get(cacheKey) || [];
 		},
 
 		handleCancel() {
