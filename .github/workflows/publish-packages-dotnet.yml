@@ -71,39 +71,39 @@ jobs:
 
     - name: Pack Common
       working-directory: ./src/dotnet/Common
-      run: dotnet pack --configuration Release /p:PackageVersion=${{ steps.versioning.outputs.version }} -p:GITHUB_ACTIONS=true --output ./nupkg
+      run: dotnet pack --configuration Release /p:PackageVersion=${{ steps.versioning.outputs.dotnet_version }} -p:GITHUB_ACTIONS=true --output ./nupkg
 
     - name: Pack Configuration
       working-directory: ./src/dotnet/Configuration
-      run: dotnet pack --configuration Release /p:PackageVersion=${{ steps.versioning.outputs.version }} -p:GITHUB_ACTIONS=true --output ./nupkg
+      run: dotnet pack --configuration Release /p:PackageVersion=${{ steps.versioning.outputs.dotnet_version }} -p:GITHUB_ACTIONS=true --output ./nupkg
 
     - name: Pack DataSource
       working-directory: ./src/dotnet/DataSource
-      run: dotnet pack --configuration Release /p:PackageVersion=${{ steps.versioning.outputs.version }} -p:GITHUB_ACTIONS=true --output ./nupkg
+      run: dotnet pack --configuration Release /p:PackageVersion=${{ steps.versioning.outputs.dotnet_version }} -p:GITHUB_ACTIONS=true --output ./nupkg
 
     - name: Pack Prompt
       working-directory: ./src/dotnet/Prompt
-      run: dotnet pack --configuration Release /p:PackageVersion=${{ steps.versioning.outputs.version }} -p:GITHUB_ACTIONS=true --output ./nupkg
+      run: dotnet pack --configuration Release /p:PackageVersion=${{ steps.versioning.outputs.dotnet_version }} -p:GITHUB_ACTIONS=true --output ./nupkg
 
     - name: Pack Plugin
       working-directory: ./src/dotnet/Plugin
-      run: dotnet pack --configuration Release /p:PackageVersion=${{ steps.versioning.outputs.version }} -p:GITHUB_ACTIONS=true --output ./nupkg
+      run: dotnet pack --configuration Release /p:PackageVersion=${{ steps.versioning.outputs.dotnet_version }} -p:GITHUB_ACTIONS=true --output ./nupkg
 
     - name: Pack CoreClient
       working-directory: ./src/dotnet/CoreClient
-      run: dotnet pack --configuration Release /p:PackageVersion=${{ steps.versioning.outputs.version }} -p:GITHUB_ACTIONS=true --output ./nupkg
+      run: dotnet pack --configuration Release /p:PackageVersion=${{ steps.versioning.outputs.dotnet_version }} -p:GITHUB_ACTIONS=true --output ./nupkg
 
     - name: Pack ManagementClient
       working-directory: ./src/dotnet/ManagementClient
-      run: dotnet pack --configuration Release /p:PackageVersion=${{ steps.versioning.outputs.version }} -p:GITHUB_ACTIONS=true --output ./nupkg
+      run: dotnet pack --configuration Release /p:PackageVersion=${{ steps.versioning.outputs.dotnet_version }} -p:GITHUB_ACTIONS=true --output ./nupkg
 
     - name: Pack DataPipelinePlugins
       working-directory: ./src/dotnet/DataPipelinePlugins
-      run: dotnet pack --configuration Release /p:PackageVersion=${{ steps.versioning.outputs.version }} -p:GITHUB_ACTIONS=true --output ./nupkg
+      run: dotnet pack --configuration Release /p:PackageVersion=${{ steps.versioning.outputs.dotnet_version }} -p:GITHUB_ACTIONS=true --output ./nupkg
 
     - name: Pack Core.Examples
       working-directory: ./tests/dotnet/Tests
-      run: dotnet pack --configuration Release /p:PackageVersion=${{ steps.versioning.outputs.version }} -p:GITHUB_ACTIONS=true --output ./nupkg
+      run: dotnet pack --configuration Release /p:PackageVersion=${{ steps.versioning.outputs.dotnet_version }} -p:GITHUB_ACTIONS=true --output ./nupkg
 
     # .NET Publish Steps
     - name: Publish Common to NuGet
