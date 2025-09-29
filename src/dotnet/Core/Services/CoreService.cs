@@ -92,8 +92,6 @@ public partial class CoreService(
         resourceProviderServices.Single(rps => rps.Name == ResourceProviderNames.FoundationaLLM_Configuration);
     private readonly IResourceProviderService _conversationResourceProvider =
         resourceProviderServices.Single(rps => rps.Name == ResourceProviderNames.FoundationaLLM_Conversation);
-    private readonly IResourceProviderService _contextResourceProvider =
-        resourceProviderServices.Single(rps => rps.Name == ResourceProviderNames.FoundationaLLM_Context);
 
     private readonly HashSet<string> _azureOpenAIFileSearchFileExtensions =
         settings.Value.AzureOpenAIAssistantsFileSearchFileExtensions
