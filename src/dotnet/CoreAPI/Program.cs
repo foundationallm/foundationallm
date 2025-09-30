@@ -72,7 +72,7 @@ namespace FoundationaLLM.Core.API
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_AIModel_Storage);
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_AzureAI_Storage);
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_Configuration_Storage);
-                options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_Context_Storage);
+                //options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_Context_Storage);
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_DataPipeline_Storage);
 
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_Quota_Storage);
@@ -125,7 +125,7 @@ namespace FoundationaLLM.Core.API
             builder.AddAzureOpenAIResourceProvider();
             builder.AddAIModelResourceProvider();
             builder.AddConversationResourceProvider();
-            builder.AddContextResourceProvider();
+            //builder.AddContextResourceProvider();
             builder.AddRemoteDataPipelineServiceClient(); // Required by the DataPipeline resource provider.
             builder.AddDataPipelineResourceProvider();
 

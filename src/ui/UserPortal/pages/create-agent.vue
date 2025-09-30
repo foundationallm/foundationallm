@@ -730,17 +730,17 @@ import api from '@/js/api';
 import { debounce, isAgentReadonly } from '@/js/helpers';
 import type { AgentBase } from '@/js/types';
 import type { AgentCreationFromTemplateRequest, ResourceBase } from '@/js/types/index';
+import '@/styles/access-denied.scss';
+import '@/styles/agents.scss';
+import '@/styles/loading.scss';
 import mime from 'mime';
 import { defineComponent } from 'vue';
 import NavBarSettings from '~/components/NavBarSettings.vue';
-import '@/styles/agents.scss';
-import '@/styles/loading.scss';
-import '@/styles/access-denied.scss';
 
+import Checkbox from 'primevue/checkbox';
 import Column from 'primevue/column';
 import DataTable from 'primevue/datatable';
 import Dropdown from 'primevue/dropdown';
-import Checkbox from 'primevue/checkbox';
 
 // Constants for allowed roles
 const ALLOWED_ROLE_NAMES = ['Reader', 'Contributor', 'Owner'];
@@ -1379,14 +1379,31 @@ export default defineComponent({
 
         handleFiles(files: File[]) {
             // Allow all file types, but keep the size restriction (10MB)
-            const validFiles = files.filter(file => {
-                if (file.size > 10 * 1024 * 1024) {
+            const maxSize = 10 * 1024 * 1024; // 10MB in bytes
+            const validFiles: File[] = [];
+            const rejectedFiles: string[] = [];
+            
+            files.forEach(file => {
+                if (file.size > maxSize) {
                     console.warn(`File too large: ${file.name}`);
-                    return false;
+                    rejectedFiles.push(`${file.name} (${this.formatFileSize(file.size)})`);
+                } else {
+                    validFiles.push(file);
                 }
-                return true;
             });
+            
+            // Add valid files to upload list
             this.uploadedFiles.push(...validFiles);
+            
+            // Show error message for rejected files
+            if (rejectedFiles.length > 0) {
+                this.$toast.add({
+                    severity: 'error',
+                    summary: 'File Size Error',
+                    detail: `The following files are too large (max 10MB): ${rejectedFiles.join(', ')}`,
+                    life: 8000
+                });
+            }
         },
 
         removeFile(index: number) {
@@ -1409,6 +1426,8 @@ export default defineComponent({
             let filesUploaded = 0;
             let filesFailed = 0;
             let associationsFailed = 0;
+            const uploadErrors: string[] = [];
+            const associationErrors: string[] = [];
 
             for (const file of this.uploadedFiles) {
                 try {
@@ -1423,6 +1442,15 @@ export default defineComponent({
 
                     // Upload the file
                     const uploadResult = await api.uploadAgentFile(this.selectedAgentName, file.name, formData);
+                    
+                    // Check if upload was successful based on API response
+                    if (uploadResult && uploadResult.success === false) {
+                        // Handle API error response with error_message
+                        const errorMessage = uploadResult.error_message || 'Unknown upload error';
+                        uploadErrors.push(`${file.name}: ${errorMessage}`);
+                        filesFailed++;
+                        continue;
+                    }
                     
                     // Extract file ID from upload result
                     let fileId = null;
@@ -1439,19 +1467,34 @@ export default defineComponent({
                     // Associate the file with Knowledge tool
                     if (fileId) {
                         try {
-                            await api.associateFileWithKnowledgeTool(this.selectedAgentName, fileId);
+                            const associationResult = await api.associateFileWithKnowledgeTool(this.selectedAgentName, fileId);
+                            
+                            // Check if association was successful based on API response
+                            if (associationResult && associationResult.success === false) {
+                                // Handle API error response with error_message
+                                const errorMessage = associationResult.error_message || 'Unknown association error';
+                                associationErrors.push(`${file.name}: ${errorMessage}`);
+                                associationsFailed++;
+                            } else {
+                                filesUploaded++;
+                            }
                         } catch (associationError: any) {
                             console.error('File association error:', associationError);
+                            // Extract error message from the error object
+                            const errorMessage = associationError?.message || associationError?.error_message || 'Association failed';
+                            associationErrors.push(`${file.name}: ${errorMessage}`);
                             associationsFailed++;
-                            // Continue with the upload process even if association fails
                         }
+                    } else {
+                        filesUploaded++;
                     }
-
-                    filesUploaded++;
 
                 } catch (error: any) {
                     filesFailed++;
                     console.error('Upload error:', error);
+                    // Extract error message from the error object
+                    const errorMessage = error?.message || error?.error_message || 'Upload failed';
+                    uploadErrors.push(`${file.name}: ${errorMessage}`);
                 }
             }
 
@@ -1477,12 +1520,23 @@ export default defineComponent({
                 }
             }
 
-            if (filesFailed > 0) {
+            // Show detailed error messages for failed uploads
+            if (uploadErrors.length > 0) {
                 this.$toast.add({ 
                     severity: 'error', 
                     summary: 'Upload Failed', 
-                    detail: `${filesFailed} file(s) failed to upload.`, 
-                    life: 5000 
+                    detail: `Upload failed for ${uploadErrors.length} file(s): ${uploadErrors.join('; ')}`, 
+                    life: 8000 
+                });
+            }
+
+            // Show detailed error messages for failed associations
+            if (associationErrors.length > 0) {
+                this.$toast.add({ 
+                    severity: 'error', 
+                    summary: 'Association Failed', 
+                    detail: `Association failed for ${associationErrors.length} file(s): ${associationErrors.join('; ')}`, 
+                    life: 8000 
                 });
             }
         },
@@ -1540,13 +1594,27 @@ export default defineComponent({
             }
 
             try {
-                await api.deleteAgentFile(this.selectedAgentName, this.fileToDelete);
+                const deleteResult = await api.deleteAgentFile(this.selectedAgentName, fileName);
+                
+                // Check if delete was successful based on API response
+                if (deleteResult && deleteResult.success === false) {
+                    // Handle API error response with error_message
+                    const errorMessage = deleteResult.error_message || 'Unknown delete error';
+                    this.$toast.add({ 
+                        severity: 'error', 
+                        summary: 'Delete Failed', 
+                        detail: `Failed to delete file "${fileName}": ${errorMessage}`, 
+                        life: 5000 
+                    });
+                    return;
+                }
+                
                 // Remove from both uploaded files and existing files lists
-                this.uploadedFiles = this.uploadedFiles.filter(f => f.name !== this.fileToDelete);
-                this.agentFiles = this.agentFiles.filter(f => f.resource?.name !== this.fileToDelete);
-                this.$toast.add({ severity: 'success', summary: 'Success', detail: `File "${this.fileToDelete}" deleted.`, life: 3000 });
+                this.uploadedFiles = this.uploadedFiles.filter(f => f.name !== fileName);
+                this.agentFiles = this.agentFiles.filter(f => f.resource?.name !== fileName);
+                this.$toast.add({ severity: 'success', summary: 'Success', detail: `File "${fileName}" deleted.`, life: 3000 });
             } catch (error: any) {
-                this.$toast.add({ severity: 'error', summary: 'Error', detail: `Failed to delete file "${this.fileToDelete}": ${error.message}`, life: 5000 });
+                this.$toast.add({ severity: 'error', summary: 'Error', detail: `Failed to delete file "${fileName}": ${error.message}`, life: 5000 });
                 console.error('Delete error:', error);
             } finally {
                 this.fileToDelete = null;

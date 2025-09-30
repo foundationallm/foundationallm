@@ -1,25 +1,22 @@
-name: Publish NuGet & PyPi Packages
+name: Publish .NET Packages
 
 on:
   push:
-    branches:
-    - release/**
+    tags:
+    - "nuget-*.*.*"
+    - "nuget-*.*.*-alpha*"
+    - "nuget-*.*.*-beta*"
+    - "nuget-*.*.*-rc*"
   workflow_dispatch:
 
 env:
   DOTNET_VERSION: '8.0.x'
-  PYTHON_VERSION: '3.11.x'
 
 jobs:
   build-and-publish:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Validate branch
-      if: ${{ !startsWith(github.ref, 'refs/heads/release/') }}
-      run: |
-        echo "This workflow can only be run on release branches."
-        exit 1
 
     - name: Checkout code
       uses: actions/checkout@v3
@@ -30,11 +27,6 @@ jobs:
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: ${{ env.DOTNET_VERSION }}
-
-    - name: Set up Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: ${{ env.PYTHON_VERSION }}
 
     - name: Run versioning script
       run: bash ./versioning.sh
@@ -79,39 +71,39 @@ jobs:
 
     - name: Pack Common
       working-directory: ./src/dotnet/Common
-      run: dotnet pack --configuration Release /p:PackageVersion=${{ steps.versioning.outputs.version }} -p:GITHUB_ACTIONS=true --output ./nupkg
+      run: dotnet pack --configuration Release /p:PackageVersion=${{ steps.versioning.outputs.dotnet_version }} -p:GITHUB_ACTIONS=true --output ./nupkg
 
     - name: Pack Configuration
       working-directory: ./src/dotnet/Configuration
-      run: dotnet pack --configuration Release /p:PackageVersion=${{ steps.versioning.outputs.version }} -p:GITHUB_ACTIONS=true --output ./nupkg
+      run: dotnet pack --configuration Release /p:PackageVersion=${{ steps.versioning.outputs.dotnet_version }} -p:GITHUB_ACTIONS=true --output ./nupkg
 
     - name: Pack DataSource
       working-directory: ./src/dotnet/DataSource
-      run: dotnet pack --configuration Release /p:PackageVersion=${{ steps.versioning.outputs.version }} -p:GITHUB_ACTIONS=true --output ./nupkg
+      run: dotnet pack --configuration Release /p:PackageVersion=${{ steps.versioning.outputs.dotnet_version }} -p:GITHUB_ACTIONS=true --output ./nupkg
 
     - name: Pack Prompt
       working-directory: ./src/dotnet/Prompt
-      run: dotnet pack --configuration Release /p:PackageVersion=${{ steps.versioning.outputs.version }} -p:GITHUB_ACTIONS=true --output ./nupkg
+      run: dotnet pack --configuration Release /p:PackageVersion=${{ steps.versioning.outputs.dotnet_version }} -p:GITHUB_ACTIONS=true --output ./nupkg
 
     - name: Pack Plugin
       working-directory: ./src/dotnet/Plugin
-      run: dotnet pack --configuration Release /p:PackageVersion=${{ steps.versioning.outputs.version }} -p:GITHUB_ACTIONS=true --output ./nupkg
+      run: dotnet pack --configuration Release /p:PackageVersion=${{ steps.versioning.outputs.dotnet_version }} -p:GITHUB_ACTIONS=true --output ./nupkg
 
     - name: Pack CoreClient
       working-directory: ./src/dotnet/CoreClient
-      run: dotnet pack --configuration Release /p:PackageVersion=${{ steps.versioning.outputs.version }} -p:GITHUB_ACTIONS=true --output ./nupkg
+      run: dotnet pack --configuration Release /p:PackageVersion=${{ steps.versioning.outputs.dotnet_version }} -p:GITHUB_ACTIONS=true --output ./nupkg
 
     - name: Pack ManagementClient
       working-directory: ./src/dotnet/ManagementClient
-      run: dotnet pack --configuration Release /p:PackageVersion=${{ steps.versioning.outputs.version }} -p:GITHUB_ACTIONS=true --output ./nupkg
+      run: dotnet pack --configuration Release /p:PackageVersion=${{ steps.versioning.outputs.dotnet_version }} -p:GITHUB_ACTIONS=true --output ./nupkg
 
     - name: Pack DataPipelinePlugins
       working-directory: ./src/dotnet/DataPipelinePlugins
-      run: dotnet pack --configuration Release /p:PackageVersion=${{ steps.versioning.outputs.version }} -p:GITHUB_ACTIONS=true --output ./nupkg
+      run: dotnet pack --configuration Release /p:PackageVersion=${{ steps.versioning.outputs.dotnet_version }} -p:GITHUB_ACTIONS=true --output ./nupkg
 
     - name: Pack Core.Examples
       working-directory: ./tests/dotnet/Tests
-      run: dotnet pack --configuration Release /p:PackageVersion=${{ steps.versioning.outputs.version }} -p:GITHUB_ACTIONS=true --output ./nupkg
+      run: dotnet pack --configuration Release /p:PackageVersion=${{ steps.versioning.outputs.dotnet_version }} -p:GITHUB_ACTIONS=true --output ./nupkg
 
     # .NET Publish Steps
     - name: Publish Common to NuGet
@@ -150,33 +142,3 @@ jobs:
       working-directory: ./tests/dotnet/Tests
       run: dotnet nuget push ./nupkg/*.Tests.*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
 
-    # Python Build and Publish Steps
-    - name: Build Python PythonSDK Package
-      run: |
-        cd ./src/python/PythonSDK
-        python -m pip install --upgrade build
-        python -m build
-
-    - name: Publish Python PythonSDK Package to PyPI
-      working-directory: ./src/python/PythonSDK/dist
-      env:
-        TWINE_USERNAME: __token__
-        TWINE_PASSWORD: ${{ secrets.PYPI_API_KEY }}
-      run: |
-        python -m pip install --upgrade twine
-        python -m twine upload --repository-url https://upload.pypi.org/legacy/ *.tar.gz *.whl
-
-    - name: Build Python FoundationaLLMAgentPlugins Package
-      run: |
-        cd ./src/python/FoundationaLLMAgentPlugins/src
-        python -m pip install --upgrade build
-        python -m build
-
-    - name: Publish Python FoundationaLLMAgentPlugins Package to PyPI
-      working-directory: ./src/python/FoundationaLLMAgentPlugins/src/dist
-      env:
-        TWINE_USERNAME: __token__
-        TWINE_PASSWORD: ${{ secrets.PYPI_API_KEY }}
-      run: |
-        python -m pip install --upgrade twine
-        python -m twine upload --repository-url https://upload.pypi.org/legacy/ *.tar.gz *.whl

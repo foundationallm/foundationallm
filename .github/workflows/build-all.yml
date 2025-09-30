@@ -1,9 +1,20 @@
-name: Release Build
+name: Build All
 
 on:
   push:
     tags:
-    - "*.*.*-rc*"
+    - "0.*.*"
+    - "0.*.*-alpha*"
+    - "0.*.*-beta*"
+    - "0.*.*-rc*"
+    - "1.*.*"
+    - "1.*.*-alpha*"
+    - "1.*.*-beta*"
+    - "1.*.*-rc*"
+    - "2.*.*"
+    - "2.*.*-alpha*"
+    - "2.*.*-beta*"
+    - "2.*.*-rc*"
   workflow_dispatch:
     inputs: {}
 
