@@ -84,6 +84,7 @@ builder.AddAuthorizationServiceClient();
 //----------------------------
 builder.AddResourceProviderCacheSettings();
 
+builder.AddAuthorizationResourceProvider();
 builder.AddAgentResourceProvider();
 builder.AddPromptResourceProvider();
 builder.AddAttachmentResourceProvider();
