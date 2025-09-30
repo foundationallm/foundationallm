@@ -3,6 +3,10 @@
 > [!NOTE]
 > This section is for changes that are not yet released but will affect future releases.
 
+## Starting from 0.9.7-rc422
+
+The managed identity of Core API must have the `Data Pipelines Execution Manager` role assigned on the FoundationaLLM instance. 
+
 ## Starting from 0.9.7-rc388
 
 The `external-modules-python` container from the main storage account is obsolete and must be deleted.
