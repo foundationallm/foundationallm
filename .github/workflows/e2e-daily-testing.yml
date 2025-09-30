@@ -1,7 +1,6 @@
 name: Daily End to End Testing
 
 on:
-  schedule:
   workflow_dispatch: {}
 
 jobs:
