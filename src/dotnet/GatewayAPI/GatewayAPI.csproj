@@ -24,6 +24,7 @@
     <ProjectReference Include="..\Authorization\Authorization.csproj" />
     <ProjectReference Include="..\Configuration\Configuration.csproj" />
     <ProjectReference Include="..\Gateway\Gateway.csproj" />
+    <ProjectReference Include="..\Prompt\Prompt.csproj" />
   </ItemGroup>
 
 </Project>
