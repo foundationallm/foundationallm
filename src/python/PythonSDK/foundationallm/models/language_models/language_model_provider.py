@@ -7,3 +7,4 @@ class LanguageModelProvider(str, Enum):
     OPENAI = "openai"
     BEDROCK = "bedrock"
     VERTEXAI = "vertexai"
+    DATABRICKS = "databricks"

@@ -3,6 +3,8 @@ import botocore
 import json
 from azure.core.credentials import AzureKeyCredential
 from azure.identity import DefaultAzureCredential, get_bearer_token_provider
+from databricks_langchain import ChatDatabricks
+from databricks.sdk import WorkspaceClient
 from google.oauth2 import service_account
 from langchain_azure_ai.chat_models import AzureAIChatCompletionsModel
 from langchain_core.language_models import BaseLanguageModel
@@ -10,6 +12,7 @@ from langchain_aws import ChatBedrockConverse
 from langchain_google_vertexai import ChatVertexAI
 from langchain_openai import AzureChatOpenAI, ChatOpenAI, OpenAI
 from openai import AsyncAzureOpenAI as async_aoi
+
 from foundationallm.config import Configuration
 from foundationallm.langchain.exceptions import LangChainException
 from foundationallm.models.authentication import AuthenticationTypes
@@ -256,6 +259,19 @@ class LanguageModelFactory:
                     stop=None,
                     credentials=service_account_credentials
                 )
+            case LanguageModelProvider.DATABRICKS:
+                    
+                workspace_client = WorkspaceClient(
+                    host=api_endpoint.url,
+                    client_id=api_endpoint.authentication_parameters.get('client_id'),
+                    client_secret=self.config.get_value(api_endpoint.authentication_parameters.get('client_secret'))
+                )
+
+                language_model = ChatDatabricks(
+                    model=ai_model.deployment_name,
+                    workspace_client=workspace_client
+                )
+
 
         # Set model parameters.
         for key, value in ai_model.model_parameters.items():
