@@ -328,11 +328,17 @@
                                     <div v-if="uploadedFiles.length > 0" class="mt-8">
                                         <div class="mb-4">
                                             <Button label="Upload Files" severity="primary" @click="uploadFiles"
-                                                :loading="filesLoading" :disabled="filesLoading"
+                                                :loading="uploadFilesLoading" :disabled="uploadFilesLoading"
                                                 class="min-h-[45px] min-w-[125px]" />
                                         </div>
 
-                                        <table class="w-full text-left border-collapse">
+                                        <!-- Loader shown while files are uploading -->
+                                        <div v-if="uploadFilesLoading" class="loading-container flex items-center justify-center mb-4">
+                                            <i class="pi pi-spin pi-spinner" style="font-size: 2rem"></i>
+                                            <span class="ml-3">Uploading files...</span>
+                                        </div>
+
+                                        <table v-else class="w-full text-left border-collapse">
                                             <thead>
                                                 <tr>
                                                     <th class="mnt-b-bottom p-3 bg-[#5472d4] text-white">File name</th>
@@ -771,6 +777,7 @@ export default defineComponent({
                 createdAgent: null as AgentBase | null,
                 agentExpirationDate: null as Date | null,
                 filesLoading: false as boolean,
+                uploadFilesLoading: false as boolean, 
                 filesError: '' as string,
                 agentFiles: [] as any[],
                 agentDisplayName: '',
@@ -1423,6 +1430,8 @@ export default defineComponent({
                 return;
             }
 
+            this.uploadFilesLoading = true; // Use new loader state
+
             let filesUploaded = 0;
             let filesFailed = 0;
             let associationsFailed = 0;
@@ -1539,6 +1548,8 @@ export default defineComponent({
                     life: 8000 
                 });
             }
+
+            this.uploadFilesLoading = false; // Stop upload loader
         },
 
         async loadAgentFiles() {
