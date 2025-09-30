@@ -7,7 +7,7 @@ azure-monitor-opentelemetry==1.8.0
 azure-monitor-opentelemetry-exporter==1.0.0b41
 azure-search-documents==11.7.0b1
 azure-storage-blob==12.21.0
-foundationallm==0.9.7rc404
+foundationallm==0.9.7rc425
 langchain==0.3.27
 langchain-aws==0.2.32
 langchain_azure_ai==0.1.5
@@ -16,6 +16,7 @@ langchain-google-vertexai==2.1.0
 langchain-openai==0.3.33
 langchain-azure-dynamic-sessions==0.2.0
 langgraph==0.2.53
+databricks-langchain==0.8.1
 openai==1.107.2
 opentelemetry-api==1.36.0
 opentelemetry-sdk==1.36.0
