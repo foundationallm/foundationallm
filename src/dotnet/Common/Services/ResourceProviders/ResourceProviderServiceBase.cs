@@ -1080,13 +1080,13 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
             {
                 _logger.LogWarning("The {ActionType} access to the resource path {ResourcePath} was not authorized for user {UserName} : userId {UserId}.",
                     actionType, resourcePath.GetObjectId(_instanceSettings.Id, _name), userIdentity!.Username, userIdentity!.UserId);
-                throw new ResourceProviderException("Access is not authorized.", StatusCodes.Status403Forbidden);
+                throw new ResourceProviderException($"Access is not authorized for {resourcePath.RawResourcePath}.", StatusCodes.Status403Forbidden);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "An error occurred while attempting to authorize access to the resource path.");
                 throw new ResourceProviderException(
-                    "An error occurred while attempting to authorize access to the resource path.",
+                    $"An error occurred while attempting to authorize access to the resource path {resourcePath.RawResourcePath}.",
                     StatusCodes.Status403Forbidden);
             }
         }
