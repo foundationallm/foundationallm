@@ -989,9 +989,13 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
 
             if (parentResourceInstance is not null
                 && roleName is not null)
-                throw new ResourceProviderException(
-                    "When a parent resource instance is provided, the use of an optional RBAC role name in the authorization requirements is not allowed.",
-                    StatusCodes.Status400BadRequest);
+            {
+                _logger.LogWarning(
+                    "When a parent resource instance is provided, the use of an optional RBAC role name in the authorization requirements is not allowed and will be ignored. Resource: {ResourcePath}, Parent Resource: {ParentResourceObjectId}",
+                    resourcePath.RawResourcePath,
+                    parentResourceInstance.ObjectId);
+                roleName = null;
+            }
 
             if (userIdentity is null
                 || userIdentity.UserId is null)
