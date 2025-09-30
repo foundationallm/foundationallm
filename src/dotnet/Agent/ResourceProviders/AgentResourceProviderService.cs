@@ -1085,11 +1085,13 @@ namespace FoundationaLLM.Agent.ResourceProviders
             var fileContent = await _storageService.ReadFileAsync(_storageContainerName, filePath, default);
             var existingAssociations = JsonSerializer.Deserialize<List<AgentFileToolAssociation>>(Encoding.UTF8.GetString(fileContent.ToArray()))!;
 
-            var fileObjectId = $"/{resourcePath.RawResourcePath}";
+            var fileObjectId = resourcePath.RawResourcePath;
             var fileToolAssociation = existingAssociations.Where(x => x.FileObjectId == fileObjectId).SingleOrDefault();
 
             if (fileToolAssociation != null)
             {
+                // Create a temporary resource path for the file tool association to pass to the RemoveFileToolAssociation method.
+                // The resource identifier is not relevant, so we just use a random GUID to ensire the format is correct.
                 if (!ResourcePath.TryParse(
                     $"/instances/{_instanceSettings.Id}/providers/{_name}/{AgentResourceTypeNames.Agents}/{resourcePath.MainResourceId}/{AgentResourceTypeNames.AgentFileToolAssociations}/{Guid.NewGuid()}",
                     [_name],
