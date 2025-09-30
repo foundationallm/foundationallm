@@ -192,8 +192,9 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
                 llm_response = await llm_bound_tools.ainvoke(
                     messages,
                     tool_choice='auto')
-                input_tokens += llm_response.usage_metadata['input_tokens']
-                output_tokens += llm_response.usage_metadata['output_tokens']
+                usage = self.__get_canonical_usage(llm_response)
+                input_tokens += usage['input_tokens']
+                output_tokens += usage['output_tokens']
                 router_end_time = time.time()
 
             if llm_response.tool_calls:
@@ -266,8 +267,9 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
                             [SystemMessage(content=workflow_main_prompt)]
                             + messages[1:-1] # Exclude the original system prompt (first message) and context message (last message)
                             + [final_message])
-                        input_tokens += final_llm_response.usage_metadata['input_tokens']
-                        output_tokens += final_llm_response.usage_metadata['output_tokens']
+                        usage = self.__get_canonical_usage(final_llm_response)
+                        input_tokens += usage['input_tokens']
+                        output_tokens += usage['output_tokens']
                         final_response = final_llm_response.content
 
             else:
@@ -623,3 +625,34 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
             main_prompt = llm_prompt[match.end():].strip()
             return commands, main_prompt
         return [], llm_prompt
+
+    def __get_canonical_usage(
+            self,
+            llm_response: AIMessage
+    ) -> Dict:
+        """
+        Returns the canonical usage dictionary from the LLM response.
+
+        Parameters
+        ----------
+        llm_response : AIMessage
+            The LLM response message containing usage metadata.
+        """
+        if llm_response.usage_metadata:
+            return llm_response.usage_metadata
+        
+        if llm_response.response_metadata \
+            and 'usage' in llm_response.response_metadata \
+            and 'prompt_tokens' in llm_response.response_metadata['usage'] \
+            and 'completion_tokens' in llm_response.response_metadata['usage']:
+            return {
+                'input_tokens': llm_response.response_metadata['usage']['prompt_tokens'],
+                'output_tokens': llm_response.response_metadata['usage']['completion_tokens'],
+                'total_tokens': llm_response.response_metadata['usage']['total_tokens']
+            }
+        
+        return {
+            'input_tokens': 0,
+            'output_tokens': 0,
+            'total_tokens': 0
+        }
