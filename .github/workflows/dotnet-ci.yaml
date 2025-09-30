@@ -1,9 +1,8 @@
 name: .NET Build & Test
 
 on:
-  pull_request:
-    types: [synchronize, opened, reopened, labeled, unlabeled]
-    branches: [main]
+  workflow_dispatch:
+    {}
 
 env:
   DOTNET_VERSION: '8.0.x'
