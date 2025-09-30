@@ -1594,7 +1594,7 @@ export default defineComponent({
             }
 
             try {
-                const deleteResult = await api.deleteAgentFile(this.selectedAgentName, fileName);
+                const deleteResult = await api.deleteAgentFile(this.selectedAgentName, this.fileToDelete);
                 
                 // Check if delete was successful based on API response
                 if (deleteResult && deleteResult.success === false) {
@@ -1603,18 +1603,18 @@ export default defineComponent({
                     this.$toast.add({ 
                         severity: 'error', 
                         summary: 'Delete Failed', 
-                        detail: `Failed to delete file "${fileName}": ${errorMessage}`, 
+                        detail: `Failed to delete file "${this.fileToDelete}": ${errorMessage}`, 
                         life: 5000 
                     });
                     return;
                 }
                 
                 // Remove from both uploaded files and existing files lists
-                this.uploadedFiles = this.uploadedFiles.filter(f => f.name !== fileName);
-                this.agentFiles = this.agentFiles.filter(f => f.resource?.name !== fileName);
-                this.$toast.add({ severity: 'success', summary: 'Success', detail: `File "${fileName}" deleted.`, life: 3000 });
+                this.uploadedFiles = this.uploadedFiles.filter(f => f.name !== this.fileToDelete);
+                this.agentFiles = this.agentFiles.filter(f => f.resource?.name !== this.fileToDelete);
+                this.$toast.add({ severity: 'success', summary: 'Success', detail: `File "${this.fileToDelete}" deleted.`, life: 3000 });
             } catch (error: any) {
-                this.$toast.add({ severity: 'error', summary: 'Error', detail: `Failed to delete file "${fileName}": ${error.message}`, life: 5000 });
+                this.$toast.add({ severity: 'error', summary: 'Error', detail: `Failed to delete file "${this.fileToDelete}": ${error.message}`, life: 5000 });
                 console.error('Delete error:', error);
             } finally {
                 this.fileToDelete = null;
