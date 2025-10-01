@@ -695,36 +695,25 @@
             header="Delete file"
             @keydown.esc="fileToDelete = null"
         >
-            <div v-if="filesLoading" class="delete-dialog-content">
-                <div role="status">
-                    <i
-                        class="pi pi-spin pi-spinner"
-                        style="font-size: 2rem"
-                        role="img"
-                        aria-label="Loading"
-                    ></i>
-                </div>
-            </div>
-            <div v-else>
-                <p>Do you want to delete the file "{{ fileToDelete }}" ?</p>
-            </div>
-            <template #footer>
-                <Button
-                    class="sidebar-dialog__button"
-                    label="Cancel"
-                    text
-                    autofocus
-                    :disabled="filesLoading"
-                    @click="fileToDelete = null"
-                />
-                <Button
-                    class="sidebar-dialog__button"
-                    label="Delete"
-                    severity="danger"
-                    :disabled="filesLoading"
-                    @click="confirmDelete"
-                />
-            </template>
+          <p>Do you want to delete the file "{{ fileToDelete }}" ?</p>
+    <template #footer>
+        <Button
+            class="sidebar-dialog__button"
+            label="Cancel"
+            text
+            autofocus
+            :disabled="deletingFile"
+            @click="fileToDelete = null"
+        />
+        <Button
+            class="sidebar-dialog__button"
+            label="Delete"
+            severity="danger"
+            :disabled="deletingFile"
+            :loading="deletingFile"
+            @click="confirmDelete"
+        />
+    </template>
         </Dialog>
     </main>
     </div>
@@ -823,6 +812,7 @@ export default defineComponent({
                 // Loading states for edit mode
                 loadingAgentData: false as boolean,
                 agentLoadError: '' as string,
+                deletingFile: false as boolean,
             };
         },
 
@@ -1604,6 +1594,7 @@ export default defineComponent({
                 return;
             }
 
+            this.deletingFile = true;
             try {
                 const deleteResult = await api.deleteAgentFile(this.selectedAgentName, this.fileToDelete);
                 
@@ -1628,6 +1619,7 @@ export default defineComponent({
                 this.$toast.add({ severity: 'error', summary: 'Error', detail: `Failed to delete file "${this.fileToDelete}": ${error.message}`, life: 5000 });
                 console.error('Delete error:', error);
             } finally {
+                this.deletingFile = false;
                 this.fileToDelete = null;
             }
         },
