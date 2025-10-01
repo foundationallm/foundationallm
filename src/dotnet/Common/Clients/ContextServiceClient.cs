@@ -47,7 +47,7 @@ namespace FoundationaLLM.Common.Clients
                         Result = new ContextFileContent
                         {
                             FileContent = await responseMessage.Content.ReadAsStreamAsync(),
-                            FileName = responseMessage!.Content.Headers.ContentDisposition!.FileName!,
+                            FileName = responseMessage!.Content.Headers.ContentDisposition!.FileNameStar!,
                             ContentType = responseMessage!.Content.Headers.ContentType!.MediaType!
                         }
                     };
