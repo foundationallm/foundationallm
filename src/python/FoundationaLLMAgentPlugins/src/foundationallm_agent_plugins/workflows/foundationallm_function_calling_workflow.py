@@ -521,10 +521,12 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
             else:
                 messages.append(AIMessage(content=message.text))
 
-        conversation_files = objects.get(
-            CompletionRequestObjectKeys.WORKFLOW_INVOCATION_CONVERSATION_FILES, '')
-        attached_files = objects.get(
-            CompletionRequestObjectKeys.WORKFLOW_INVOCATION_ATTACHED_FILES, '')
+        # Enclose the file names in backticks to enforce the LLM to treat them as file names
+        # regardless of their content (e.g., file names starting with 1., 2., etc. could be misinterpreted as numbered lists).
+        conversation_files = [f'`{file_name}`' for file_name in objects.get(
+            CompletionRequestObjectKeys.WORKFLOW_INVOCATION_CONVERSATION_FILES, [])]
+        attached_files = [f'`{file_name}`' for file_name in objects.get(
+            CompletionRequestObjectKeys.WORKFLOW_INVOCATION_ATTACHED_FILES, [])]
 
         context_file_messages = []
         for context_file in [f for f in file_history if f.embed_content_in_request]:
