@@ -716,7 +716,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
             // Leave out files that are supposed to be embedded in the request.
             var fileHistory = originalRequest.FileHistory?
                                 .Where(f => !f.EmbedContentInRequest)
-                                .Select(f => $"{f.Order}. {f.OriginalFileName}")
+                                .Select(f => $"{f.OriginalFileName}")
                                 .ToArray() ?? [];
 
             explodedObjectsManager.TryAdd(
