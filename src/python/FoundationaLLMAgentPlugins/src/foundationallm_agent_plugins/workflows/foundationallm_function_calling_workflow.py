@@ -527,6 +527,7 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
             CompletionRequestObjectKeys.WORKFLOW_INVOCATION_CONVERSATION_FILES, [])]
         attached_files = [f'/{file_name}/' for file_name in objects.get(
             CompletionRequestObjectKeys.WORKFLOW_INVOCATION_ATTACHED_FILES, [])]
+        context_files = []
 
         context_file_messages = []
         for context_file in [f for f in file_history if f.embed_content_in_request]:
@@ -552,11 +553,12 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
                 } if context_file.content_type.startswith("audio/") \
                 else {
                     'type': 'text',
-                    'text': f'\nFILE_CONTENT for {context_file.original_file_name}:\n{context_file_content}\nEND_FILE_CONTENT\n'
+                    'text': f'\nFILE_CONTENT for /{context_file.original_file_name}/:\n{context_file_content}\nEND_FILE_CONTENT\n'
                 }
             
             context_file_messages.append(
                 context_file_message)
+            context_files.append(f'/{context_file.original_file_name}/')
 
         context_message = HumanMessage(
             content=[{"type": "text", "text": llm_prompt}]+context_file_messages)
@@ -564,6 +566,7 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
         files_prompt = workflow_files_prompt \
             .replace(f'{{{{{TemplateVariables.CONVERSATION_FILES}}}}}', '\n'.join(conversation_files)) \
             .replace(f'{{{{{TemplateVariables.ATTACHED_FILES}}}}}', '\n'.join(attached_files)) \
+            .replace(f'{{{{{TemplateVariables.CONTEXT_FILES}}}}}', '\n'.join(context_files)) \
             if workflow_files_prompt else ''
 
         system_prompt = '/n'.join([
