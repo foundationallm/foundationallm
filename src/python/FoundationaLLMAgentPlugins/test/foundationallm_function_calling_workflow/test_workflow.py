@@ -83,16 +83,29 @@ message_history = request.message_history
 file_history = request.file_history
 user_prompt_rewrite = request.user_prompt_rewrite
 
-main_prompt_file_path = 'test/main_prompt.txt'
-if os.path.exists(main_prompt_file_path):
+files_prompt_file_path = 'test/files_prompt.txt'
+if os.path.exists(files_prompt_file_path):
     prompt_object_id = request.agent.workflow.get_resource_object_id_properties(
                 ResourceProviderNames.FOUNDATIONALLM_PROMPT,
                 PromptResourceTypeNames.PROMPTS,
                 ResourceObjectIdPropertyNames.OBJECT_ROLE,
-                ResourceObjectIdPropertyValues.MAIN_PROMPT
+                ResourceObjectIdPropertyValues.FILES_PROMPT
             )
-    with open(main_prompt_file_path, 'r') as f:
+    with open(files_prompt_file_path, 'r') as f:
         request.objects[prompt_object_id.object_id]['prefix'] = f.read()
+
+code_tool_prompt_file_path = 'test/code_tool_prompt.txt'
+if os.path.exists(code_tool_prompt_file_path):
+    code_tool = (next((tool for tool in request.agent.tools if tool.name == 'Code'), None))
+    if code_tool is not None:
+        prompt_object_id = code_tool.get_resource_object_id_properties(
+                    ResourceProviderNames.FOUNDATIONALLM_PROMPT,
+                    PromptResourceTypeNames.PROMPTS,
+                    ResourceObjectIdPropertyNames.OBJECT_ROLE,
+                    ResourceObjectIdPropertyValues.MAIN_PROMPT
+                )
+        with open(code_tool_prompt_file_path, 'r') as f:
+            request.objects[prompt_object_id.object_id]['prefix'] = f.read()
 
 workflow_plugin_manager = FoundationaLLMAgentWorkflowPluginManager()
 tool_plugin_manager = FoundationaLLMAgentToolPluginManager()
