@@ -6,6 +6,7 @@ using OpenAI.Assistants;
 using OpenAI.VectorStores;
 using System.ClientModel.Primitives;
 using System.CommandLine;
+using System.Text.Json;
 
 var accountOption = new Option<string>("--account")
 {
@@ -40,6 +41,12 @@ var instructionsFileOption = new Option<string>("--instructions-file")
 var vectorStoreIdOption = new Option<string>("--vector-store-id")
 {
     Description = "The vector store identifier.",
+    Required = true
+};
+
+var fileIdOption = new Option<string>("--file-id")
+{
+    Description = "The file identifier.",
     Required = true
 };
 
@@ -101,6 +108,17 @@ assistantSetVectorStoreCommand.SetAction(async parseResult =>
         vectorStoreId!);
 });
 
+var vectorStoreCreateCommand = new Command("create", "Create an Azure OpenAI vector store")
+{
+    accountOption
+};
+vectorStoreCreateCommand.SetAction(async parseResult =>
+{
+    var account = parseResult.GetValue(accountOption);
+    CreateVectorStore(
+        account!);
+});
+
 var vectorStoreShowCommand = new Command("show", "Show the details of an Azure OpenAI vector store")
 {
     accountOption,
@@ -121,7 +139,6 @@ var vectorStoreDeleteCommand = new Command("delete", "Delete an Azure OpenAI vec
     accountOption,
     vectorStoreIdOption
 };
-
 vectorStoreDeleteCommand.SetAction(async parseResult =>
 {
     var account = parseResult.GetValue(accountOption);
@@ -129,6 +146,56 @@ vectorStoreDeleteCommand.SetAction(async parseResult =>
     await DeleteVectorStore(
         account!,
         vectorStoreId!);
+});
+
+var vectorStoreFileCommand = new Command("file", "Manage the files in an Azure OpenAI vector store");
+
+var vectorStoreFileListCommand = new Command("list", "List the content of an Azure OpenAI vector store")
+{
+    accountOption,
+    vectorStoreIdOption
+};
+vectorStoreFileListCommand.SetAction(async parseResult =>
+{
+    var account = parseResult.GetValue(accountOption);
+    var vectorStoreId = parseResult.GetValue(vectorStoreIdOption);
+    ListVectorStoreFiles(
+        account!,
+        vectorStoreId!);
+});
+
+var vectorStoreFileAddCommand = new Command("add", "Add a file to an Azure OpenAI vector store")
+{
+    accountOption,
+    vectorStoreIdOption,
+    fileIdOption
+};
+vectorStoreFileAddCommand.SetAction(async parseResult =>
+{
+    var account = parseResult.GetValue(accountOption);
+    var vectorStoreId = parseResult.GetValue(vectorStoreIdOption);
+    var fileId = parseResult.GetValue(fileIdOption);
+    AddVectorStoreFile(
+        account!,
+        vectorStoreId!,
+        fileId!);
+});
+
+var vectorStoreFileShowCommand = new Command("show", "Show the details of a file in an Azure OpenAI vector store")
+{
+    accountOption,
+    vectorStoreIdOption,
+    fileIdOption
+};
+vectorStoreFileShowCommand.SetAction(async parseResult =>
+{
+    var account = parseResult.GetValue(accountOption);
+    var vectorStoreId = parseResult.GetValue(vectorStoreIdOption);
+    var fileId = parseResult.GetValue(fileIdOption);
+    ShowVectorStoreFile(
+        account!,
+        vectorStoreId!,
+        fileId!);
 });
 
 rootCommand.Subcommands.Add(assistantCommand);
@@ -139,8 +206,14 @@ assistantCommand.Subcommands.Add(assistantSetCommand);
 assistantSetCommand.Subcommands.Add(assistantSetVectorStoreCommand);
 
 rootCommand.Subcommands.Add(vectorStoreCommand);
+vectorStoreCommand.Subcommands.Add(vectorStoreCreateCommand);
 vectorStoreCommand.Subcommands.Add(vectorStoreShowCommand);
+vectorStoreCommand.Subcommands.Add(vectorStoreFileCommand);
 vectorStoreCommand.Subcommands.Add(vectorStoreDeleteCommand);
+
+vectorStoreFileCommand.Subcommands.Add(vectorStoreFileListCommand);
+vectorStoreFileCommand.Subcommands.Add(vectorStoreFileAddCommand);
+vectorStoreFileCommand.Subcommands.Add(vectorStoreFileShowCommand);
 
 ParseResult parseResult = rootCommand.Parse(args);
 return parseResult.Invoke();
@@ -151,8 +224,6 @@ void CreateAssistant(
     string modelDeploymentName,
     string instructionsFile)
 {
-    Console.WriteLine($"Starting to create assistant {assistantName} in Azure OpenAI account {account}...");
-
     try
     {
         var azureOpenAIClient = new AzureOpenAIClient(new Uri($"https://{account}.openai.azure.com/"), new AzureCliCredential());
@@ -187,13 +258,17 @@ void CreateAssistant(
                 }
 
             });
-        Console.WriteLine("Assistant created successfully.");
         Console.WriteLine(
             ModelReaderWriter.Write(assistantResult.Value).ToString());
     }
     catch (Exception ex)
     {
-        Console.WriteLine($"An error occurred while creating the assistant: {ex.Message}");
+        Console.WriteLine(
+            JsonSerializer.Serialize(
+                new
+                {
+                    error = ex.Message
+                }));
     }
 }
 
@@ -202,7 +277,6 @@ void SetAssistantVectorStore(
     string assistantId,
     string vectorStoreId)
 {
-    Console.WriteLine($"Starting to set vector store {vectorStoreId} for assistant {assistantId} in Azure OpenAI account {account}...");
     try
     {
         var azureOpenAIClient = new AzureOpenAIClient(new Uri($"https://{account}.openai.azure.com/"), new AzureCliCredential());
@@ -222,13 +296,17 @@ void SetAssistantVectorStore(
                     }
                 });
 
-        Console.WriteLine("Assistant vector store updated successfully.");
         Console.WriteLine(
             ModelReaderWriter.Write(updateAssistantResult.Value).ToString());
     }
     catch (Exception ex)
     {
-        Console.WriteLine($"An error occurred while updating the assistant: {ex.Message}");
+        Console.WriteLine(
+            JsonSerializer.Serialize(
+                new
+                {
+                    error = ex.Message
+                }));
     }
 }
 
@@ -236,7 +314,6 @@ void ShowAssistant(
     string account,
     string assistantId)
 {
-    Console.WriteLine($"Retrieving assistant {assistantId} from Azure OpenAI account {account}...");
     try
     {
         var azureOpenAIClient = new AzureOpenAIClient(new Uri($"https://{account}.openai.azure.com/"), new AzureCliCredential());
@@ -247,7 +324,39 @@ void ShowAssistant(
     }
     catch (Exception ex)
     {
-        Console.WriteLine($"An error occurred while retrieving the assistant: {ex.Message}");
+        Console.WriteLine(
+            JsonSerializer.Serialize(
+                new
+                {
+                    error = ex.Message
+                }));
+    }
+}
+
+void CreateVectorStore(
+    string account)
+{
+    try
+    {
+        var azureOpenAIClient = new AzureOpenAIClient(new Uri($"https://{account}.openai.azure.com/"), new AzureCliCredential());
+        var vectorStoreClient = azureOpenAIClient.GetVectorStoreClient();
+        var clientResult = vectorStoreClient.CreateVectorStore(true, new VectorStoreCreationOptions
+        {
+            ExpirationPolicy = new VectorStoreExpirationPolicy(
+                VectorStoreExpirationAnchor.LastActiveAt,
+                365)
+        });
+        Console.WriteLine(
+            ModelReaderWriter.Write(clientResult.Value!).ToString());
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine(
+            JsonSerializer.Serialize(
+                new
+                {
+                    error = ex.Message
+                }));
     }
 }
 
@@ -255,8 +364,6 @@ async Task DeleteVectorStore(
     string account,
     string vectorStoreId)
 {
-    Console.WriteLine($"Starting to delete vector store {vectorStoreId} from Azure OpenAI account {account}...");
-
     try
     {
         var azureOpenAIClient = new AzureOpenAIClient(new Uri($"https://{account}.openai.azure.com/"), new AzureCliCredential());
@@ -264,13 +371,110 @@ async Task DeleteVectorStore(
         var clientResult = await vectorStoreClient.DeleteVectorStoreAsync(vectorStoreId);
 
         if (!clientResult.Value.Deleted)
-            Console.WriteLine($"Failed to delete vector store.");
+            Console.WriteLine(
+                JsonSerializer.Serialize(
+                new
+                {
+                    success = false,
+                    error = "Failed to delete vector store."
+                }));
         else
-            Console.WriteLine("Vector store deleted successfully.");
+            Console.WriteLine(JsonSerializer.Serialize(
+                new
+                {
+                    success = true
+                }));
     }
     catch (Exception ex)
     {
-        Console.WriteLine($"An error occurred while deleting the vector store: {ex.Message}");
+        Console.WriteLine(
+            JsonSerializer.Serialize(
+                new
+                {
+                    error = ex.Message
+                }));
+    }
+}
+
+void AddVectorStoreFile(
+    string account,
+    string vectorStoreId,
+    string fileId)
+{
+    try
+    {
+        var azureOpenAIClient = new AzureOpenAIClient(new Uri($"https://{account}.openai.azure.com/"), new AzureCliCredential());
+        var vectorStoreClient = azureOpenAIClient.GetVectorStoreClient();
+        var addFileResult = vectorStoreClient.AddFileToVectorStore(vectorStoreId, fileId, false);
+        Console.WriteLine(
+            ModelReaderWriter.Write(addFileResult.Value!).ToString());
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine(
+            JsonSerializer.Serialize(
+                new
+                {
+                    error = ex.Message
+                }));
+    }
+}
+
+void ShowVectorStoreFile(
+    string account,
+    string vectorStoreId,
+    string fileId)
+{
+    try
+    {
+        var azureOpenAIClient = new AzureOpenAIClient(new Uri($"https://{account}.openai.azure.com/"), new AzureCliCredential());
+        var vectorStoreClient = azureOpenAIClient.GetVectorStoreClient();
+        var fileAssociationResult = vectorStoreClient.GetFileAssociation(vectorStoreId, fileId);
+        Console.WriteLine(
+            ModelReaderWriter.Write(fileAssociationResult.Value!).ToString());
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine(
+            JsonSerializer.Serialize(
+                new
+                {
+                    error = ex.Message
+                }));
+    }
+}
+
+void ListVectorStoreFiles(
+    string account,
+    string vectorStoreId)
+{
+    try
+    {
+        var azureOpenAIClient = new AzureOpenAIClient(new Uri($"https://{account}.openai.azure.com/"), new AzureCliCredential());
+        var vectorStoreClient = azureOpenAIClient.GetVectorStoreClient();
+        var clientResult = vectorStoreClient.GetVectorStore(vectorStoreId);
+
+        var filesResult = vectorStoreClient.GetFileAssociations(vectorStoreId, new VectorStoreFileAssociationCollectionOptions
+        {
+            PageSizeLimit = 100
+        });
+
+        var fileIds = filesResult
+            .Where(fa => fa.Status == VectorStoreFileAssociationStatus.Completed)
+            .Select(fa => fa.FileId)
+            .ToList();
+
+        Console.WriteLine(
+            JsonSerializer.Serialize(fileIds));
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine(
+            JsonSerializer.Serialize(
+                new
+                {
+                    error = ex.Message
+                }));
     }
 }
 
@@ -278,8 +482,6 @@ void ShowVectorStore(
     string account,
     string vectorStoreId)
 {
-    Console.WriteLine($"Retrieving vector store {vectorStoreId} from Azure OpenAI account {account}...");
-
     try
     {
         var azureOpenAIClient = new AzureOpenAIClient(new Uri($"https://{account}.openai.azure.com/"), new AzureCliCredential());
@@ -291,6 +493,11 @@ void ShowVectorStore(
     }
     catch (Exception ex)
     {
-        Console.WriteLine($"An error occurred while retrieving the vector store: {ex.Message}");
+        Console.WriteLine(
+            JsonSerializer.Serialize(
+                new
+                {
+                    error = ex.Message
+                }));
     }
 }
