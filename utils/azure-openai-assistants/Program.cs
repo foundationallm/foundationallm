@@ -2,6 +2,8 @@
 
 using Azure.AI.OpenAI;
 using Azure.Identity;
+using OpenAI.Assistants;
+using OpenAI.VectorStores;
 using System.ClientModel.Primitives;
 using System.CommandLine;
 
@@ -17,6 +19,24 @@ var assistantIdOption = new Option<string>("--assistant-id")
     Required = true
 };
 
+var assistantNameOption = new Option<string>("--assistant-name")
+{
+    Description = "The assistant name.",
+    Required = true
+};
+
+var modelDeploymentNameOption = new Option<string>("--model-deployment-name")
+{
+    Description = "The model deployment name.",
+    Required = true
+};
+
+var instructionsFileOption = new Option<string>("--instructions-file")
+{
+    Description = "The path of the text file containing the instructions for the assistant.",
+    Required = true
+};
+
 var vectorStoreIdOption = new Option<string>("--vector-store-id")
 {
     Description = "The vector store identifier.",
@@ -27,6 +47,26 @@ var rootCommand = new RootCommand("FoundationaLLM Azure OpenAI Utility");
 
 var assistantCommand = new Command("assistant", "Manage Azure OpenAI assistants");
 var vectorStoreCommand = new Command("vector-store", "Manage Azure OpenAI vector stores");
+
+var assistantCreateCommand = new Command("create", "Create an Azure OpenAI assistant")
+{
+    accountOption,
+    assistantNameOption,
+    modelDeploymentNameOption,
+    instructionsFileOption
+};
+assistantCreateCommand.SetAction(async parseResult =>
+{
+    var account = parseResult.GetValue(accountOption);
+    var assistantName = parseResult.GetValue(assistantNameOption);
+    var modelDeploymentName = parseResult.GetValue(modelDeploymentNameOption);
+    var instructionsFile = parseResult.GetValue(instructionsFileOption);
+    CreateAssistant(
+        account!,
+        assistantName!,
+        modelDeploymentName!,
+        instructionsFile!);
+});
 
 var assistantShowCommand = new Command("show", "Show the details of an Azure OpenAI assistant")
 {
@@ -40,6 +80,25 @@ assistantShowCommand.SetAction(async parseResult =>
     ShowAssistant(
         account!,
         assistantId!);
+});
+
+var assistantSetCommand = new Command("set", "Set the properties of an Azure OpenAI assistant");
+
+var assistantSetVectorStoreCommand = new Command("vector-store", "Set the vector store of an Azure OpenAI assistant")
+{
+    accountOption,
+    assistantIdOption,
+    vectorStoreIdOption
+};
+assistantSetVectorStoreCommand.SetAction(async parseResult =>
+{
+    var account = parseResult.GetValue(accountOption);
+    var assistantId = parseResult.GetValue(assistantIdOption);
+    var vectorStoreId = parseResult.GetValue(vectorStoreIdOption);
+    SetAssistantVectorStore(
+        account!,
+        assistantId!,
+        vectorStoreId!);
 });
 
 var vectorStoreShowCommand = new Command("show", "Show the details of an Azure OpenAI vector store")
@@ -73,7 +132,11 @@ vectorStoreDeleteCommand.SetAction(async parseResult =>
 });
 
 rootCommand.Subcommands.Add(assistantCommand);
+assistantCommand.Subcommands.Add(assistantCreateCommand);
 assistantCommand.Subcommands.Add(assistantShowCommand);
+assistantCommand.Subcommands.Add(assistantSetCommand);
+
+assistantSetCommand.Subcommands.Add(assistantSetVectorStoreCommand);
 
 rootCommand.Subcommands.Add(vectorStoreCommand);
 vectorStoreCommand.Subcommands.Add(vectorStoreShowCommand);
@@ -81,6 +144,93 @@ vectorStoreCommand.Subcommands.Add(vectorStoreDeleteCommand);
 
 ParseResult parseResult = rootCommand.Parse(args);
 return parseResult.Invoke();
+
+void CreateAssistant(
+    string account,
+    string assistantName,
+    string modelDeploymentName,
+    string instructionsFile)
+{
+    Console.WriteLine($"Starting to create assistant {assistantName} in Azure OpenAI account {account}...");
+
+    try
+    {
+        var azureOpenAIClient = new AzureOpenAIClient(new Uri($"https://{account}.openai.azure.com/"), new AzureCliCredential());
+        var assistantClient = azureOpenAIClient.GetAssistantClient();
+        var vectorStoreClient = azureOpenAIClient.GetVectorStoreClient();
+
+        // Create the assistant-level vector store and assign it to the file search tool definition for the assistant.
+        var vectorStoreResult = vectorStoreClient.CreateVectorStore(true, new VectorStoreCreationOptions
+        {
+            Name = assistantName,
+            ExpirationPolicy = new VectorStoreExpirationPolicy(
+                VectorStoreExpirationAnchor.LastActiveAt,
+                365)
+        });
+        var fileSearchToolResources = new FileSearchToolResources();
+        fileSearchToolResources.VectorStoreIds.Add(vectorStoreResult.Value!.Id);
+
+        var assistantResult = assistantClient.CreateAssistant(
+            modelDeploymentName,
+            new AssistantCreationOptions()
+            {
+                Name = assistantName,
+                Instructions = File.ReadAllText(instructionsFile),
+                Tools =
+                    {
+                    new CodeInterpreterToolDefinition(),
+                    new FileSearchToolDefinition()
+                    },
+                ToolResources = new ToolResources()
+                {
+                    FileSearch = fileSearchToolResources
+                }
+
+            });
+        Console.WriteLine("Assistant created successfully.");
+        Console.WriteLine(
+            ModelReaderWriter.Write(assistantResult.Value).ToString());
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"An error occurred while creating the assistant: {ex.Message}");
+    }
+}
+
+void SetAssistantVectorStore(
+    string account,
+    string assistantId,
+    string vectorStoreId)
+{
+    Console.WriteLine($"Starting to set vector store {vectorStoreId} for assistant {assistantId} in Azure OpenAI account {account}...");
+    try
+    {
+        var azureOpenAIClient = new AzureOpenAIClient(new Uri($"https://{account}.openai.azure.com/"), new AzureCliCredential());
+        var assistantClient = azureOpenAIClient.GetAssistantClient();
+
+        var fileSearchToolResources = new FileSearchToolResources();
+        fileSearchToolResources.VectorStoreIds.Add(vectorStoreId);
+
+        // Update the assistant with the new vector store file search tool resource               
+        var updateAssistantResult = assistantClient.ModifyAssistant(
+            assistantId,
+            new AssistantModificationOptions
+                {
+                    ToolResources = new ToolResources()
+                    {
+                        FileSearch = fileSearchToolResources
+                    }
+                });
+
+        Console.WriteLine("Assistant vector store updated successfully.");
+        Console.WriteLine(
+            ModelReaderWriter.Write(updateAssistantResult.Value).ToString());
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"An error occurred while updating the assistant: {ex.Message}");
+    }
+}
 
 void ShowAssistant(
     string account,
