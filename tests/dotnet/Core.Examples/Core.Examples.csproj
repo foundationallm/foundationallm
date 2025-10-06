@@ -48,6 +48,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\src\dotnet\Agent\Agent.csproj" />
     <ProjectReference Include="..\..\..\src\dotnet\Common\Common.csproj" />
     <ProjectReference Include="..\..\..\src\dotnet\CoreClient\CoreClient.csproj" />
     <ProjectReference Include="..\..\..\src\dotnet\Core\Core.csproj" />

@@ -167,6 +167,7 @@ namespace FoundationaLLM.Core.Examples.Setup
             IServiceCollection services,
             IConfiguration configuration)
         {
+            services.AddAgentResourceProvider(configuration);
             services.AddConfigurationResourceProvider(configuration);
             services.AddDataSourceResourceProvider(configuration);
             services.AddDataPipelineResourceProvider(configuration);
