@@ -12,7 +12,7 @@
 RootModule = 'FoundationaLLM.Core.psm1'
 
 # Version number of this module.
-ModuleVersion = '0.0.20'
+ModuleVersion = '0.0.21'
 
 # Supported PSEditions
 CompatiblePSEditions = @(
@@ -76,6 +76,7 @@ FunctionsToExport = @(
     'Deploy-FoundationaLLMPackage',
     'Start-DataPipeline',
     'Import-Dotenv',
+    'Get-AllAgents',
     'Get-Agent',
     'Merge-Agent',
     'Get-Conversations',
