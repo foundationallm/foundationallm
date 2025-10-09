@@ -12,7 +12,7 @@
 RootModule = 'FoundationaLLM.Core.psm1'
 
 # Version number of this module.
-ModuleVersion = '0.0.21'
+ModuleVersion = '0.0.22'
 
 # Supported PSEditions
 CompatiblePSEditions = @(
@@ -82,7 +82,8 @@ FunctionsToExport = @(
     'Get-Conversations',
     'New-Conversation',
     'Send-ConversationFile',
-    'New-Completion'
+    'New-Completion',
+    'Get-Prompt'
 )
 
 # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
