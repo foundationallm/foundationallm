@@ -116,54 +116,64 @@ async def crawl_site_async(url: str, config: CrawlConfig | None = None) -> Crawl
     pages: list[PageResult] = []
     errors: list[str] = []
 
-    async with async_playwright() as playwright:
+    playwright = None
+    browser = None
+    context = None
+    
+    try:
+        playwright = await async_playwright().start()
         browser = await playwright.chromium.launch(headless=cfg.headless)
         context = await browser.new_context(user_agent=cfg.user_agent)
-        try:
-            while queue and len(pages) < cfg.max_pages:
-                current_url, depth = queue.popleft()
-                if current_url in visited or depth > cfg.max_depth:
-                    continue
-                visited.add(current_url)
+        
+        while queue and len(pages) < cfg.max_pages:
+            current_url, depth = queue.popleft()
+            if current_url in visited or depth > cfg.max_depth:
+                continue
+            visited.add(current_url)
 
-                page = await context.new_page()
-                try:
-                    await page.goto(
-                        current_url,
-                        wait_until=cfg.wait_until,
-                        timeout=cfg.timeout_ms,
+            page = await context.new_page()
+            try:
+                await page.goto(
+                    current_url,
+                    wait_until=cfg.wait_until,
+                    timeout=cfg.timeout_ms,
+                )
+                html = await page.content()
+                title = await page.title()
+                hrefs: Iterable[str] = await page.eval_on_selector_all(
+                    "a[href]", "elements => elements.map(el => el.href)"
+                )
+                normalized_links: list[str] = []
+                for href in hrefs:
+                    normalized = _normalize_url(href)
+                    if not normalized:
+                        continue
+                    normalized_links.append(normalized)
+                    if depth < cfg.max_depth and _should_enqueue(
+                        normalized, start_url, cfg, visited, queued
+                    ):
+                        queue.append((normalized, depth + 1))
+                        queued.add(normalized)
+                pages.append(
+                    PageResult(
+                        url=current_url,
+                        title=title or None,
+                        content=html,
+                        links=normalized_links,
                     )
-                    html = await page.content()
-                    title = await page.title()
-                    hrefs: Iterable[str] = await page.eval_on_selector_all(
-                        "a[href]", "elements => elements.map(el => el.href)"
-                    )
-                    normalized_links: list[str] = []
-                    for href in hrefs:
-                        normalized = _normalize_url(href)
-                        if not normalized:
-                            continue
-                        normalized_links.append(normalized)
-                        if depth < cfg.max_depth and _should_enqueue(
-                            normalized, start_url, cfg, visited, queued
-                        ):
-                            queue.append((normalized, depth + 1))
-                            queued.add(normalized)
-                    pages.append(
-                        PageResult(
-                            url=current_url,
-                            title=title or None,
-                            content=html,
-                            links=normalized_links,
-                        )
-                    )
-                except Exception as exc:  # noqa: BLE001 - capture Playwright failures
-                    errors.append(f"{current_url}: {exc}")
-                finally:
-                    await page.close()
-        finally:
+                )
+            except Exception as exc:  # noqa: BLE001 - capture Playwright failures
+                errors.append(f"{current_url}: {exc}")
+            finally:
+                await page.close()
+    finally:
+        # Clean up resources in reverse order
+        if context:
             await context.close()
+        if browser:
             await browser.close()
+        if playwright:
+            await playwright.stop()
 
     return CrawlResult(pages=pages, errors=errors)
 

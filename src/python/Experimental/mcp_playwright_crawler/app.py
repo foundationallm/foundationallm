@@ -6,7 +6,7 @@ from typing import Any
 
 from mcp.server.fastmcp import FastMCP
 
-from .crawler import CrawlConfig, crawl_site_async, crawl_site_sync
+from .crawler import CrawlConfig, crawl_site_async
 
 
 def _build_config(**kwargs: Any) -> CrawlConfig:
@@ -43,7 +43,7 @@ def create_app(
         name=name,
         instructions=(
             instructions
-            or "Crawl websites using Playwright with synchronous and asynchronous tooling."
+            or "Crawl websites using Playwright. All tools use the async API under the hood."
         ),
         host=host,
         port=port,
@@ -58,38 +58,10 @@ def create_app(
     )
 
     @app.tool(
-        name="crawl_sync",
-        description="Crawl a website using the synchronous Playwright API.",
+        name="crawl",
+        description="Crawl a website using Playwright's asynchronous API.",
     )
-    def crawl_sync_tool(
-        url: str,
-        max_depth: int = 1,
-        max_pages: int = 10,
-        same_origin: bool = True,
-        timeout_ms: int = 30_000,
-        wait_until: str = "load",
-        headless: bool = True,
-        user_agent: str | None = None,
-    ) -> dict[str, Any]:
-        """Run a synchronous crawl and return the captured pages."""
-
-        config = _build_config(
-            max_depth=max_depth,
-            max_pages=max_pages,
-            same_origin=same_origin,
-            timeout_ms=timeout_ms,
-            wait_until=wait_until,
-            headless=headless,
-            user_agent=user_agent,
-        )
-        result = crawl_site_sync(url, config=config)
-        return result.to_dict()
-
-    @app.tool(
-        name="crawl_async",
-        description="Crawl a website using the asynchronous Playwright API.",
-    )
-    async def crawl_async_tool(
+    async def crawl_tool(
         url: str,
         max_depth: int = 1,
         max_pages: int = 10,
