@@ -103,12 +103,42 @@ def _should_enqueue(
 
 def _html_to_markdown(html: str) -> str:
     """Convert HTML content to Markdown using shared options."""
-
+    import re
+    
+    # Pre-process HTML to remove inline styles and scripts
+    # Remove style attributes
+    html = re.sub(r'\s*style\s*=\s*"[^"]*"', '', html)
+    html = re.sub(r"\s*style\s*=\s*'[^']*'", '', html)
+    
+    # Remove script tags and their content
+    html = re.sub(r'<script[^>]*>.*?</script>', '', html, flags=re.DOTALL | re.IGNORECASE)
+    
+    # Remove style tags and their content
+    html = re.sub(r'<style[^>]*>.*?</style>', '', html, flags=re.DOTALL | re.IGNORECASE)
+    
+    # Remove JSON-LD structured data
+    html = re.sub(r'<script[^>]*type\s*=\s*["\']application/ld\+json["\'][^>]*>.*?</script>', '', html, flags=re.DOTALL | re.IGNORECASE)
+    
+    # Remove CSS rules that might be in text content
+    html = re.sub(r'img:is\([^)]*\)\s*\{[^}]*\}', '', html)
+    
+    # Remove JavaScript variable declarations
+    html = re.sub(r'var\s+\w+\s*=\s*[^;]+;', '', html)
+    
     return md(
         html,
         heading_style="ATX",
         bullets="-",
-        strip=["script", "style"],
+        strip=[
+            "script", "style", "svg", "noscript", "meta", "link", 
+            "head", "title", "base", "iframe", "object", "embed",
+            "applet", "form", "input", "button", "select", "textarea",
+            "label", "fieldset", "legend", "optgroup", "option",
+            "template", "slot", "canvas", "audio", "video", "source",
+            "track", "map", "area", "param", "details", "summary",
+            "dialog", "menu", "menuitem", "command", "keygen",
+            "output", "progress", "meter", "datalist", "fieldset"
+        ],
     )
 
 
