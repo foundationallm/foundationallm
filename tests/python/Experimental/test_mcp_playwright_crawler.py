@@ -11,6 +11,7 @@ import pytest
 
 from mcp_playwright_crawler.app import create_app
 from mcp_playwright_crawler.crawler import CrawlConfig, crawl_site_async, crawl_site_sync
+from markdownify import markdownify as md
 
 
 class _AsyncPageStub:
@@ -87,16 +88,23 @@ class _AsyncPlaywright:
     def __init__(self, state: dict[str, object]):
         self.chromium = _AsyncChromiumStub(state)
 
+    async def stop(self) -> None:
+        return None
+
 
 class _AsyncPlaywrightManager:
     def __init__(self, state: dict[str, object]):
         self._state = state
+        self._playwright = _AsyncPlaywright(state)
 
     async def __aenter__(self) -> _AsyncPlaywright:
-        return _AsyncPlaywright(self._state)
+        return self._playwright
 
     async def __aexit__(self, exc_type, exc, tb) -> bool:  # noqa: D401, ANN001
         return False
+
+    async def start(self) -> _AsyncPlaywright:
+        return self._playwright
 
 
 class _SyncPageStub:
@@ -238,6 +246,22 @@ def test_crawl_site_async_respects_same_origin(playwright_stubs: Callable[[dict[
     )
 
     assert [page.url for page in result.pages] == ["https://example.com/", "https://example.com/about"]
+    assert [
+        page.content for page in result.pages
+    ] == [
+        md(
+            site_map["https://example.com/"]["html"],
+            heading_style="ATX",
+            bullets="-",
+            strip=["script", "style"],
+        ),
+        md(
+            site_map["https://example.com/about"]["html"],
+            heading_style="ATX",
+            bullets="-",
+            strip=["script", "style"],
+        ),
+    ]
     assert result.errors == []
     assert state["visited"] == ["https://example.com/", "https://example.com/about"]
 
@@ -264,6 +288,12 @@ def test_crawl_site_sync_collects_errors(playwright_stubs: Callable[[dict[str, d
     )
 
     assert [page.url for page in result.pages] == ["https://example.com/"]
+    assert result.pages[0].content == md(
+        site_map["https://example.com/"]["html"],
+        heading_style="ATX",
+        bullets="-",
+        strip=["script", "style"],
+    )
     assert result.errors and "navigation failed" in result.errors[0]
     assert state["visited"] == ["https://example.com/", "https://example.com/broken"]
 
@@ -277,5 +307,5 @@ def test_create_app_exposes_tools() -> None:
     app = create_app(stateless_http=True)
     tool_list = anyio.run(app.list_tools)
     tools = {tool.name for tool in tool_list}
-    assert {"crawl_sync", "crawl_async"} <= tools
+    assert "crawl" in tools
     assert app.settings.stateless_http is True
