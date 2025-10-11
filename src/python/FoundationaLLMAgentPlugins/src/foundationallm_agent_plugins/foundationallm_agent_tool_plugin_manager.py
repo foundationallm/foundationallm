@@ -11,7 +11,8 @@ from foundationallm_agent_plugins.tools import (
     FoundationaLLMFileAnalysisTool,
     FoundationaLLMKnowledgeTool,
     # The FoundationaLLMKnowledgeSearchTool is obsolete and replaced by FoundationaLLMKnowledgeTool.
-    FoundationaLLMKnowledgeSearchTool
+    FoundationaLLMKnowledgeSearchTool,
+    FoundationaLLMMCPClientTool
 )
 
 class FoundationaLLMAgentToolPluginManager(ToolPluginManagerBase):
@@ -24,6 +25,7 @@ class FoundationaLLMAgentToolPluginManager(ToolPluginManagerBase):
     FOUNDATIONALLM_KNOWLEDGE_TOOL_CLASS = 'FoundationaLLMKnowledgeTool'
     # The FoundationaLLMKnowledgeSearchTool is obsolete and replaced by FoundationaLLMKnowledgeTool.
     FOUNDATIONALLM_KNOWLEDGE_SEARCH_TOOL_CLASS = 'FoundationaLLMKnowledgeSearchTool'
+    FOUNDATIONALLM_MCP_CLIENT_TOOL_CLASS = 'FoundationaLLMMCPClientTool'
 
     def __init__(self):
         super().__init__()
@@ -49,6 +51,8 @@ class FoundationaLLMAgentToolPluginManager(ToolPluginManagerBase):
                 return FoundationaLLMKnowledgeTool(tool_config, objects, user_identity, config)
             case FoundationaLLMAgentToolPluginManager.FOUNDATIONALLM_KNOWLEDGE_SEARCH_TOOL_CLASS:
                 return FoundationaLLMKnowledgeSearchTool(tool_config, objects, user_identity, config)
+            case FoundationaLLMAgentToolPluginManager.FOUNDATIONALLM_MCP_CLIENT_TOOL_CLASS:
+                return FoundationaLLMMCPClientTool(tool_config, objects, user_identity, config)
             case _:
                 raise ValueError(f'Unknown tool class: {tool_config.class_name}')
 

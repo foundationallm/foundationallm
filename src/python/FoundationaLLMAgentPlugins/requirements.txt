@@ -16,6 +16,7 @@ langchain-google-vertexai==2.1.0
 langchain-openai==0.3.33
 langchain-azure-dynamic-sessions==0.2.0
 langgraph==0.2.53
+mcp==1.17.0
 databricks-langchain==0.8.1
 openai==1.107.2
 opentelemetry-api==1.36.0
