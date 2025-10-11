@@ -7,6 +7,8 @@ from dataclasses import dataclass, asdict
 from typing import Deque, Iterable
 from urllib.parse import urlparse, urldefrag
 
+from markdownify import markdownify as md
+
 
 @dataclass(slots=True)
 class PageResult:
@@ -99,6 +101,17 @@ def _should_enqueue(
     return True
 
 
+def _html_to_markdown(html: str) -> str:
+    """Convert HTML content to Markdown using shared options."""
+
+    return md(
+        html,
+        heading_style="ATX",
+        bullets="-",
+        strip=["script", "style"],
+    )
+
+
 async def crawl_site_async(url: str, config: CrawlConfig | None = None) -> CrawlResult:
     """Crawl a site using Playwright's async API."""
 
@@ -140,6 +153,7 @@ async def crawl_site_async(url: str, config: CrawlConfig | None = None) -> Crawl
                 )
                 html = await page.content()
                 title = await page.title()
+                markdown = _html_to_markdown(html)
                 hrefs: Iterable[str] = await page.eval_on_selector_all(
                     "a[href]", "elements => elements.map(el => el.href)"
                 )
@@ -158,7 +172,7 @@ async def crawl_site_async(url: str, config: CrawlConfig | None = None) -> Crawl
                     PageResult(
                         url=current_url,
                         title=title or None,
-                        content=html,
+                        content=markdown,
                         links=normalized_links,
                     )
                 )
@@ -214,6 +228,7 @@ def crawl_site_sync(url: str, config: CrawlConfig | None = None) -> CrawlResult:
                     )
                     html = page.content()
                     title = page.title()
+                    markdown = _html_to_markdown(html)
                     hrefs: Iterable[str] = page.eval_on_selector_all(
                         "a[href]", "elements => elements.map(el => el.href)"
                     )
@@ -232,7 +247,7 @@ def crawl_site_sync(url: str, config: CrawlConfig | None = None) -> CrawlResult:
                         PageResult(
                             url=current_url,
                             title=title or None,
-                            content=html,
+                            content=markdown,
                             links=normalized_links,
                         )
                     )

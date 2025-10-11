@@ -9,6 +9,7 @@ This guide explains how to run and test the Playwright-powered Model Context Pro
 - Anonymous-only authentication; no credentials are required or accepted.
 - Ships as a standalone Python module (`mcp_playwright_crawler`) that can be executed with `python -m`.
 - Includes unit tests with Playwright stubs so test execution does not require browser binaries.
+- Converts crawled HTML into Markdown using [`markdownify`](https://github.com/matthewwithanm/python-markdownify) for easy consumption by language models and downstream tooling.
 
 ## Prerequisites
 
@@ -22,7 +23,7 @@ Install the Python dependencies:
 python -m venv .venv
 source .venv/bin/activate
 pip install --upgrade pip
-pip install mcp playwright anyio
+pip install mcp playwright anyio markdownify
 # Install browsers required by Playwright
 playwright install chromium
 ```
