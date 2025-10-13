@@ -398,24 +398,29 @@ export const useAppStore = defineStore('app', {
 			let selectedAgent = this.selectedAgents.get(session.sessionId);
 
 			if (!selectedAgent) {
-				if (this.lastSelectedAgent && !isAgentExpired(this.lastSelectedAgent)) {
-					// Default to the last selected agent to make the selection "sticky" across sessions.
-					selectedAgent = this.lastSelectedAgent;
-				} else {
-					// Find an agent in the list that is configured as the default agent.
-					selectedAgent = this.agents.find((agent) => agent.resource.properties?.default_resource);
-					if (!selectedAgent || selectedAgent.resource.properties?.default_resource !== 'true') {
-						// Default to the first agent in the list.
-						selectedAgent = this.agents[0];
-					}
+				const storedAgentId = localStorage.getItem(`session-agent-${session.sessionId}`);
+				if (storedAgentId) {
+					selectedAgent = this.agents.find(agent => agent.resource.object_id === storedAgentId);
 				}
 			}
-			return selectedAgent;
+			// If selected agent is expired, remove it
+			if (selectedAgent && isAgentExpired(selectedAgent)) {
+				localStorage.removeItem(`session-agent-${session.sessionId}`);
+				this.selectedAgents.delete(session.sessionId);
+				selectedAgent = null;
+			}
+			return selectedAgent || null;
 		},
 
-		setSessionAgent(session: Session, agent: ResourceProviderGetResult<AgentBase>) {
+		setSessionAgent(session: Session, agent: ResourceProviderGetResult<AgentBase>, shouldPersist: boolean = false) {
 			this.lastSelectedAgent = agent;
-			return this.selectedAgents.set(session.sessionId, agent);
+			this.selectedAgents.set(session.sessionId, agent);
+			if (shouldPersist && agent?.resource?.object_id) {
+				const key = `session-agent-${session.sessionId}`;
+				const value = agent.resource.object_id;
+				localStorage.setItem(key, value);
+			}
+			return this.selectedAgents;
 		},
 
 		/**
