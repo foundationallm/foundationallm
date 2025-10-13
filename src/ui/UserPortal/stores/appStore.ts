@@ -20,7 +20,6 @@ import type {
 } from '@/js/types';
 import api from '@/js/api';
 import { isAgentExpired } from '@/js/helpers';
-// import eventBus from '@/js/eventBus';
 
 const DEFAULT_POLLING_INTERVAL_MS = 250;
 
