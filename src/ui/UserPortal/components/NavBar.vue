@@ -212,7 +212,7 @@
 			handleAgentChange() {
 				if (isAgentExpired(this.agentSelection!.value)) return;
 
-				this.$appStore.setSessionAgent(this.currentSession, this.agentSelection!.value);
+				this.$appStore.setSessionAgent(this.currentSession, this.agentSelection!.value, true);
 				const message = this.agentSelection!.value
 					? `Agent changed to ${this.agentSelection!.label}`
 					: `Cleared agent hint selection`;
@@ -259,7 +259,7 @@
 				const enabledAgentIds = userProfile?.agents || [];
 
 				// Filter out expired agents, disabled agents, and agents not enabled in user profile
-				// but keep the currently selected agent even if it doesn't meet these criteria
+				// but keep the currently selected agent even if it doesn't meet these criteria				
 				const filteredAgents = this.$appStore.agents.filter((agent: any) => {
 					const isExpiredOrDisabled = isAgentExpired(agent) || agent.enabled === false;
 					
@@ -359,10 +359,6 @@
 					this.agentOptions.find(
 						(option) => option.value.resource.object_id === agent.resource.object_id,
 					) || null;
-
-				if (this.agentSelection) {
-					this.$appStore.setSessionAgent(this.currentSession, this.agentSelection.value);
-				}
 			},
 
 			hideAllPoppers() {
