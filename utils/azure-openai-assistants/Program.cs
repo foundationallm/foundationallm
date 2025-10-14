@@ -35,7 +35,13 @@ var modelDeploymentNameOption = new Option<string>("--model-deployment-name")
 var instructionsFileOption = new Option<string>("--instructions-file")
 {
     Description = "The path of the text file containing the instructions for the assistant.",
-    Required = true
+    Required = false
+};
+
+var instructionsOption = new Option<string>("--instructions")
+{
+    Description = "The instructions for the assistant.",
+    Required = false
 };
 
 var vectorStoreIdOption = new Option<string>("--vector-store-id")
@@ -60,19 +66,27 @@ var assistantCreateCommand = new Command("create", "Create an Azure OpenAI assis
     accountOption,
     assistantNameOption,
     modelDeploymentNameOption,
-    instructionsFileOption
+    instructionsFileOption,
+    instructionsOption
 };
+AddMutuallyExclusiveValidator<string>(
+    assistantCreateCommand,
+    true,
+    instructionsFileOption,
+    instructionsOption);
 assistantCreateCommand.SetAction(async parseResult =>
 {
     var account = parseResult.GetValue(accountOption);
     var assistantName = parseResult.GetValue(assistantNameOption);
     var modelDeploymentName = parseResult.GetValue(modelDeploymentNameOption);
     var instructionsFile = parseResult.GetValue(instructionsFileOption);
+    var instructions = parseResult.GetValue(instructionsOption);
     CreateAssistant(
         account!,
         assistantName!,
         modelDeploymentName!,
-        instructionsFile!);
+        instructionsFile,
+        instructions);
 });
 
 var assistantShowCommand = new Command("show", "Show the details of an Azure OpenAI assistant")
@@ -218,11 +232,27 @@ vectorStoreFileCommand.Subcommands.Add(vectorStoreFileShowCommand);
 ParseResult parseResult = rootCommand.Parse(args);
 return parseResult.Invoke();
 
+static void AddMutuallyExclusiveValidator<T>(
+    Command cmd,
+    bool requireExactlyOne,
+    params Option<T>[] options)
+{
+    cmd.Validators.Add(ctx =>
+    {
+        int count = options.Count(o => ctx.GetValue<T>(o) is not null);
+        if (count > 1)
+            ctx.AddError($"Options {string.Join(", ", options.Select(o => o.Aliases.First()))} are mutually exclusive.");
+        else if (requireExactlyOne && count == 0)
+            ctx.AddError($"Specify exactly one of {string.Join(", ", options.Select(o => o.Aliases.First()))}.");
+    });
+}
+
 void CreateAssistant(
     string account,
     string assistantName,
     string modelDeploymentName,
-    string instructionsFile)
+    string? instructionsFile,
+    string? instructions)
 {
     try
     {
@@ -246,7 +276,9 @@ void CreateAssistant(
             new AssistantCreationOptions()
             {
                 Name = assistantName,
-                Instructions = File.ReadAllText(instructionsFile),
+                Instructions = instructionsFile is not null
+                    ? File.ReadAllText(instructionsFile)
+                    : instructions!,
                 Tools =
                     {
                     new CodeInterpreterToolDefinition(),
