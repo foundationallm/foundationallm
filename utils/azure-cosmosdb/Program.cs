@@ -81,29 +81,34 @@ async Task ListConversationPurgeableItems(
             throw new Exception("The maximum age in days of a purgeable conversation item must be greater than 30.");
         var refTimestamp = DateTime.UtcNow;
 
+        var connectionMode = directConnection
+            ? ConnectionMode.Direct
+            : ConnectionMode.Gateway;
         var client = new CosmosClient(account, new AzureCliCredential(), new CosmosClientOptions
         {
-            ConnectionMode = directConnection
-                ? ConnectionMode.Direct
-                : ConnectionMode.Gateway,
+            ConnectionMode = connectionMode,
             UseSystemTextJsonSerializerWithOptions = new JsonSerializerOptions()
         });
+        if (!noProgress)
+            Console.Error.WriteLine($"Connection mode is {connectionMode}");
         var c = client.GetContainer("database", "Sessions");
 
         var contentMatchingCriteria = "c.deleted and (c.type = \"Session\" or (c.type = \"Message\" and ((not IS_NULL(c.attachments) and ARRAY_LENGTH(c.attachments) > 0) or (not IS_NULL(c.content) and ARRAY_LENGTH(c.content) > 0 and (ARRAY_CONTAINS(c.content, {\"type\": \"image_file\"}, true) or ARRAY_CONTAINS(c.content, {\"type\": \"file_path\"}, true))))))";
         var timeMatchingCriteria = "c._ts * 1000 < GetCurrentTimestamp() - 30*24*60*60*1000 and c._ts * 1000 >= GetCurrentTimestamp() - @maxDaysAge*24*60*60*1000";
-        var q = new QueryDefinition($"SELECT c.id, c.type, TimestampToDateTime(c._ts * 1000) AS lastModifiedUtc FROM c WHERE {contentMatchingCriteria} and {timeMatchingCriteria} ORDER BY c._ts DESC")
+        var q = new QueryDefinition($"SELECT c.id, c.sessionId as conversationId, c.type, c.content, c.attachments, TimestampToDateTime(c._ts * 1000) AS lastModifiedUtc FROM c WHERE {contentMatchingCriteria} and {timeMatchingCriteria}")
             .WithParameter("@maxDaysAge", maxDaysAge);
 
         var items = new List<string>();
         using var feed = c.GetItemQueryIterator<JsonElement>(q, requestOptions: new QueryRequestOptions
         {
             MaxItemCount = 1000, // tune page size
+            ResponseContinuationTokenLimitInKb = 2
         });
 
         while (feed.HasMoreResults)
         {
             var response = await feed.ReadNextAsync();
+
             foreach (var doc in response)
             {
                 items.Add(JsonSerializer.Serialize(doc));
@@ -113,6 +118,9 @@ async Task ListConversationPurgeableItems(
             }
         }
 
+        if (!noProgress)
+            Console.Error.WriteLine($"Found {items.Count} conversation purgeable items.");
+
         File.WriteAllText(exportFileName, string.Join(Environment.NewLine, items));
 
         var result = new
@@ -121,7 +129,19 @@ async Task ListConversationPurgeableItems(
             max_days_age = maxDaysAge,
             count = items.Count
         };
+
         Console.WriteLine(JsonSerializer.Serialize(result));
+    }
+    catch (CosmosException cex)
+    {
+        Console.WriteLine(
+            JsonSerializer.Serialize(
+                new
+                {
+                    status_code = cex.StatusCode,
+                    sub_status_code = cex.SubStatusCode,
+                    error = cex.ToString()
+                }));
     }
     catch (Exception ex)
     {
