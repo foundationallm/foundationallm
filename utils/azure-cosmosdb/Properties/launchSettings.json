@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "AzureCosmosDBUtility": {
+      "commandName": "Project",
+      "commandLineArgs": "purgeable-conversation list \r\n--account https://cosmos-l43jljq2i5ox6.documents.azure.com:443/ \r\n--max-days-age 40"
+    }
+  }
+}
