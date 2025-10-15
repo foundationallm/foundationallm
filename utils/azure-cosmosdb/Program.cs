@@ -37,6 +37,10 @@ var rootCommand = new RootCommand("FoundationaLLM Azure Cosmos DB Utility");
 
 var conversationCommand = new Command("conversation", "Manage conversations in Azure Cosmos DB");
 var conversationPurgeableItemCommand = new Command("purgeable-item", "Manage purgeable conversation items in Azure Cosmos DB");
+var conversationOpenAIMappingCommand = new Command("openai-mapping", "Manage conversation OpenAI mappings in Azure Cosmos DB");
+
+var fileCommand = new Command("file", "Manage files in Azure Cosmos DB");
+var fileOpenAIMappingCommand = new Command("openai-mapping", "Manage file OpenAI mappings in Azure Cosmos DB");
 
 var listConversationPurgeableItemCommand = new Command("list", "List purgeable conversations")
 {
@@ -61,9 +65,58 @@ listConversationPurgeableItemCommand.SetAction(async parseResult =>
         noProgress);
 });
 
+var listConversationOpenAIMappingCommand = new Command("list", "List conversation OpenAI mappings")
+{
+    accountOption,
+    directConnectionOption,
+    exportFileNameOption,
+    noProgressOption
+};
+listConversationOpenAIMappingCommand.SetAction(async parseResult =>
+{
+    var account = parseResult.GetValue(accountOption);
+    var directConnection = parseResult.GetValue(directConnectionOption);
+    var exportFileName = parseResult.GetValue(exportFileNameOption);
+    var noProgress = parseResult.GetValue(noProgressOption);
+    await ListConversationOpenAIMappings(
+        account!,
+        directConnection,
+        exportFileName!,
+        noProgress);
+});
+
+var listFileOpenAIMappingCommand = new Command("list", "List file OpenAI mappings")
+{
+    accountOption,
+    directConnectionOption,
+    exportFileNameOption,
+    noProgressOption
+};
+listFileOpenAIMappingCommand.SetAction(async parseResult =>
+{
+    var account = parseResult.GetValue(accountOption);
+    var directConnection = parseResult.GetValue(directConnectionOption);
+    var exportFileName = parseResult.GetValue(exportFileNameOption);
+    var noProgress = parseResult.GetValue(noProgressOption);
+    await ListFileOpenAIMappings(
+        account!,
+        directConnection,
+        exportFileName!,
+        noProgress);
+});
+
 rootCommand.Subcommands.Add(conversationCommand);
+rootCommand.Subcommands.Add(fileCommand);
+
 conversationCommand.Subcommands.Add(conversationPurgeableItemCommand);
+conversationCommand.Subcommands.Add(conversationOpenAIMappingCommand);
+
+fileCommand.Subcommands.Add(fileOpenAIMappingCommand);
+
 conversationPurgeableItemCommand.Subcommands.Add(listConversationPurgeableItemCommand);
+conversationOpenAIMappingCommand.Subcommands.Add(listConversationOpenAIMappingCommand);
+
+fileOpenAIMappingCommand.Subcommands.Add(listFileOpenAIMappingCommand);
 
 ParseResult parseResult = rootCommand.Parse(args);
 return parseResult.Invoke();
@@ -130,6 +183,142 @@ async Task ListConversationPurgeableItems(
             count = items.Count
         };
 
+        Console.WriteLine(JsonSerializer.Serialize(result));
+    }
+    catch (CosmosException cex)
+    {
+        Console.WriteLine(
+            JsonSerializer.Serialize(
+                new
+                {
+                    status_code = cex.StatusCode,
+                    sub_status_code = cex.SubStatusCode,
+                    error = cex.ToString()
+                }));
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine(
+            JsonSerializer.Serialize(
+                new
+                {
+                    error = ex.Message
+                }));
+    }
+}
+
+async Task ListConversationOpenAIMappings(
+    string account,
+    bool directConnection,
+    string exportFileName,
+    bool noProgress)
+{
+    try
+    {
+        var connectionMode = directConnection
+            ? ConnectionMode.Direct
+            : ConnectionMode.Gateway;
+        var client = new CosmosClient(account, new AzureCliCredential(), new CosmosClientOptions
+        {
+            ConnectionMode = connectionMode,
+            UseSystemTextJsonSerializerWithOptions = new JsonSerializerOptions()
+        });
+        if (!noProgress)
+            Console.Error.WriteLine($"Connection mode is {connectionMode}");
+        var c = client.GetContainer("database", "ExternalResources");
+        var q = new QueryDefinition("SELECT c.conversationId as cid, c.openAIAssistantsAssistantId as aid, c.openAIAssistantsThreadId as tid, c.openAIVectorStoreId as vsid, c.openAIEndpoint as oai FROM c WHERE c.type = \"AzureOpenAIConversationMapping\"");
+        var items = new List<string>();
+        using var feed = c.GetItemQueryIterator<JsonElement>(q, requestOptions: new QueryRequestOptions
+        {
+            MaxItemCount = 1000, // tune page size
+            ResponseContinuationTokenLimitInKb = 2
+        });
+        while (feed.HasMoreResults)
+        {
+            var response = await feed.ReadNextAsync();
+            foreach (var doc in response)
+            {
+                items.Add(JsonSerializer.Serialize(doc));
+                if (!noProgress
+                    && items.Count % 100 == 0)
+                    Console.Error.WriteLine($"Found {items.Count} conversation OpenAI mappings so far...");
+            }
+        }
+        if (!noProgress)
+            Console.Error.WriteLine($"Found {items.Count} conversation OpenAI mappings.");
+        File.WriteAllText(exportFileName, string.Join(Environment.NewLine, items));
+        var result = new
+        {
+            count = items.Count
+        };
+        Console.WriteLine(JsonSerializer.Serialize(result));
+    }
+    catch (CosmosException cex)
+    {
+        Console.WriteLine(
+            JsonSerializer.Serialize(
+                new
+                {
+                    status_code = cex.StatusCode,
+                    sub_status_code = cex.SubStatusCode,
+                    error = cex.ToString()
+                }));
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine(
+            JsonSerializer.Serialize(
+                new
+                {
+                    error = ex.Message
+                }));
+    }
+}
+
+async Task ListFileOpenAIMappings(
+    string account,
+    bool directConnection,
+    string exportFileName,
+    bool noProgress)
+{
+    try
+    {
+        var connectionMode = directConnection
+            ? ConnectionMode.Direct
+            : ConnectionMode.Gateway;
+        var client = new CosmosClient(account, new AzureCliCredential(), new CosmosClientOptions
+        {
+            ConnectionMode = connectionMode,
+            UseSystemTextJsonSerializerWithOptions = new JsonSerializerOptions()
+        });
+        if (!noProgress)
+            Console.Error.WriteLine($"Connection mode is {connectionMode}");
+        var c = client.GetContainer("database", "ExternalResources");
+        var q = new QueryDefinition("SELECT c.fileObjectId as id, c.openAIFileId as fid, c.openAIEndpoint as oai FROM c WHERE c.type = \"AzureOpenAIFileMapping\"");
+        var items = new List<string>();
+        using var feed = c.GetItemQueryIterator<JsonElement>(q, requestOptions: new QueryRequestOptions
+        {
+            MaxItemCount = 1000, // tune page size
+            ResponseContinuationTokenLimitInKb = 2
+        });
+        while (feed.HasMoreResults)
+        {
+            var response = await feed.ReadNextAsync();
+            foreach (var doc in response)
+            {
+                items.Add(JsonSerializer.Serialize(doc));
+                if (!noProgress
+                    && items.Count % 100 == 0)
+                    Console.Error.WriteLine($"Found {items.Count} file OpenAI mappings so far...");
+            }
+        }
+        if (!noProgress)
+            Console.Error.WriteLine($"Found {items.Count} file OpenAI mappings.");
+        File.WriteAllText(exportFileName, string.Join(Environment.NewLine, items));
+        var result = new
+        {
+            count = items.Count
+        };
         Console.WriteLine(JsonSerializer.Serialize(result));
     }
     catch (CosmosException cex)
