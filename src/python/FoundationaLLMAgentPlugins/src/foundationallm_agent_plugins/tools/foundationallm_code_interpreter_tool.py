@@ -200,7 +200,7 @@ class FoundationaLLMCodeInterpreterTool(FoundationaLLMToolBase):
                 'tool_generated_code': generated_code,
                 'tool_output': code_execution_response.get('standard_output', ''),
                 'tool_error': code_execution_response.get('error_output', ''),
-                'tool_result': code_execution_response.get('execution_result', '')
+                'tool_result': final_response
             }
         ))
 
