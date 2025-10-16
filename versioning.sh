@@ -4,8 +4,8 @@
 RAW_TAG="${GITHUB_REF#refs/tags/}"
 echo "The raw tag is: '$RAW_TAG'"
 
-# Extract version from branch name (format: 1.0.0 or 1.0.0-alpha1 or 1.0.0-beta1 or 1.0.0-rc1)
-if [[ "$RAW_TAG" =~ ^(nuget-|pypi-)?([0-9]+\.[0-9]+\.[0-9]+(-(alpha|beta|rc)[1-9][0-9]{2})?)$ ]]; then
+# Extract version from branch name (format: 1.0.0 or 1.0.0-alpha1 or 1.0.0-beta1 or 1.0.0-rc1 or 1.0.0-poc1)
+if [[ "$RAW_TAG" =~ ^(nuget-|pypi-)?([0-9]+\.[0-9]+\.[0-9]+(-(alpha|beta|rc|poc)[1-9][0-9]{2})?)$ ]]; then
   VERSION="${BASH_REMATCH[2]}"
 else
   VERSION="0.0.0"
@@ -24,6 +24,8 @@ elif [[ "$VERSION" =~ ([0-9]+\.[0-9]+\.[0-9]+)-beta([0-9]+)$ ]]; then
   PYTHON_VERSION="${BASH_REMATCH[1]}b${BASH_REMATCH[2]}"
 elif [[ "$VERSION" =~ ([0-9]+\.[0-9]+\.[0-9]+)-rc([0-9]+)$ ]]; then
   PYTHON_VERSION="${BASH_REMATCH[1]}rc${BASH_REMATCH[2]}"
+elif [[ "$VERSION" =~ ([0-9]+\.[0-9]+\.[0-9]+)-poc([0-9]+)$ ]]; then
+  PYTHON_VERSION="${BASH_REMATCH[1]}+poc${BASH_REMATCH[2]}"
 fi
 
 # Output versions for GitHub Actions
