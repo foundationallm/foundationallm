@@ -3,6 +3,7 @@ Main entry-point for the FoundationaLLM LangChainAPI.
 """
 
 import datetime
+import ast
 import io
 import json
 import mimetypes
@@ -66,6 +67,9 @@ async def execute_code(request_body: dict):
         new_stdout = io.StringIO()
         sys.stdout = new_stdout
 
+        # Determine which variable names (if any) are referenced by the last expression
+        selected_names = _extract_last_variable_names(code)
+
         # pylint: disable=exec-used
         exec(code, namespace, namespace)
         # pylint: enable=exec-used
@@ -73,7 +77,32 @@ async def execute_code(request_body: dict):
         output = new_stdout.getvalue()
         sys.stdout = old_stdout
 
-        return { 'results': get_json_serializable_dict(namespace), 'output': output }
+        # Build results: only include variables referenced by the last expression (if any)
+        results = {}
+        if selected_names:
+            results = { name: namespace[name] for name in selected_names if name in namespace }
+
+        # If any selected value is a pandas DataFrame, auto-save to CSV and return empty metadata
+        if results:
+            try:
+                import pandas as pd  # type: ignore
+                for key, value in list(results.items()):
+                    if isinstance(value, pd.DataFrame):
+                        # Create a safe unique filename
+                        timestamp = datetime.datetime.utcnow().strftime('%Y%m%d%H%M%S%f')
+                        safe_key = ''.join(c for c in str(key) if c.isalnum() or c in ('_', '-')) or 'df'
+                        file_name = f"{safe_key}_{timestamp}.csv"
+                        file_path = os.path.join(ROOT_DATA_PATH, file_name)
+                        try:
+                            value.to_csv(file_path, index=False)
+                        except Exception:
+                            # If writing fails, fall back to dropping the value (non-serializable)
+                            results.pop(key, None)
+            except Exception:
+                # If pandas is not available or any import/runtime error occurs, leave results as-is
+                pass
+
+        return { 'results': get_json_serializable_dict(results), 'output': output }
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error executing code: {str(e)}") from e
 
@@ -222,3 +251,50 @@ def get_json_serializable_dict(d: dict) -> dict:
         except (TypeError, OverflowError):
             pass
     return result
+
+def _extract_last_variable_names(code: str) -> list[str]:
+    """
+    Extract variable names referenced by the last expression line of the code.
+
+    Returns a list of variable names if the last syntactic unit is an expression consisting
+    solely of variable name(s) (single name, tuple, or list of names). Returns an empty list
+    in all other cases (including function calls, literals, attribute access, or final statements).
+    """
+    try:
+        tree = ast.parse(code)
+    except SyntaxError:
+        return []
+
+    if not getattr(tree, 'body', None):
+        return []
+
+    last_node = tree.body[-1]
+
+    def names_from(node: ast.AST) -> list[str]:
+        if isinstance(node, ast.Name):
+            return [node.id]
+        if isinstance(node, (ast.Tuple, ast.List)):
+            names: list[str] = []
+            for elt in node.elts:
+                if isinstance(elt, ast.Name):
+                    names.append(elt.id)
+                else:
+                    return []
+            return names
+        return []
+
+    # Case 1: last node is a bare expression like: x or (x, y)
+    if isinstance(last_node, ast.Expr):
+        return names_from(last_node.value)
+
+    # Case 2: last node is an assignment like: x = ... or (x, y) = ... or x = y = ...
+    if isinstance(last_node, ast.Assign):
+        collected: list[str] = []
+        for target in last_node.targets:
+            target_names = names_from(target)
+            if not target_names:
+                return []
+            collected.extend(target_names)
+        return collected
+
+    return []
