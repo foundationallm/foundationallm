@@ -26,5 +26,15 @@ namespace FoundationaLLM.Common.Models.ResourceProviders
         /// </remarks>
         [JsonPropertyName("object_ids")]
         public List<string>? ObjectIDs { get; set; }
+
+        /// <summary>
+        /// Gets or sets the name of the resource to filter by.
+        /// </summary>
+        /// <remarks>
+        /// The value can be a full name, a partial name, or a name pattern (depending on the support
+        /// provided by the resource provider).
+        /// </remarks>
+        [JsonPropertyName("name")]
+        public string? Name { get; set; }
     }
 }
