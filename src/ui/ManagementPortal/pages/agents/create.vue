@@ -2406,7 +2406,7 @@ export default {
 			this.$toast.add({
 				severity: 'success',
 				detail: successMessage,
-				life: undefined,
+				life: 5000,
 				closable: true,
 			});
 
