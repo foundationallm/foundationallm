@@ -1446,7 +1446,7 @@ export default defineComponent({
                     if (uploadResult && uploadResult.success === false) {
                         // Handle API error response with error_message
                         const errorMessage = uploadResult.error_message || 'Unknown upload error';
-                        uploadErrors.push(`${file.name}: ${errorMessage}`);
+                        uploadErrors.push(`${errorMessage}`);
                         filesFailed++;
                         continue;
                     }
@@ -1524,7 +1524,7 @@ export default defineComponent({
                 this.$toast.add({ 
                     severity: 'error', 
                     summary: 'Upload Failed', 
-                    detail: `Upload failed for ${uploadErrors.length} file(s): ${uploadErrors.join('; ')}`, 
+                    detail: `${uploadErrors.join('; ')}`, 
                     life: 8000 
                 });
             }
@@ -1534,7 +1534,7 @@ export default defineComponent({
                 this.$toast.add({ 
                     severity: 'error', 
                     summary: 'Association Failed', 
-                    detail: `Association failed for ${associationErrors.length} file(s): ${associationErrors.join('; ')}`, 
+                    detail: `${associationErrors.join('; ')}`,  
                     life: 8000 
                 });
             }
