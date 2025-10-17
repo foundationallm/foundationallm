@@ -916,6 +916,7 @@ export default {
 
 				this.$appStore.addToast({
 					severity: 'success',
+					life: 5000,
 					detail: 'Message copied to clipboard with formatting!',
 				});
 			} catch (error) {
@@ -931,6 +932,7 @@ export default {
 
 				this.$appStore.addToast({
 					severity: 'success',
+					life: 5000,
 					detail: 'Message copied to clipboard!',
 				});
 			}
@@ -945,6 +947,7 @@ export default {
 			this.isRatingModalVisible = false;
 			this.$appStore.addToast({
 				severity: 'success',
+				life: 5000,
 				detail: 'Rating submitted!',
 			});
 		},

@@ -672,6 +672,7 @@ import Checkbox from 'primevue/checkbox';
 						severity: 'error',
 						summary: 'Error',
 						detail: 'Could not create a new session. Please try again.',
+						life: 5000,
 					});
 				} finally {
 					this.createProcessing = false; // Re-enable the button
@@ -708,6 +709,7 @@ import Checkbox from 'primevue/checkbox';
 						severity: 'error',
 						summary: 'Error',
 						detail: 'Could not delete the session. Please try again.',
+						life: 5000,
 					});
 				} finally {
 					this.deleteProcessing = false;
