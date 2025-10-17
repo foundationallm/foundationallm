@@ -23,15 +23,44 @@
 			placeholder="--Select--"
 		/>
 
-		<!-- Resource selection -->
-		<div class="mb-1 mt-4">Resource:</div>
-		<Dropdown
-			v-model="resourceId"
-			:options="resourceOptions"
-			option-label="name"
-			option-value="object_id"
-			placeholder="--Select--"
-		/>
+	<!-- Resource selection -->
+	<div class="mb-1 mt-4">Resource:</div>
+	<div class="relative">
+	<InputText
+		v-model="resourceSearch"
+		:disabled="!resourceType"
+		type="text"
+		class="w-full"
+		placeholder="Start typing resource name..."
+		@input="onResourceSearchInput"
+	/>
+		<div v-if="resourceSearchLoading" class="absolute right-2 top-1/2 -translate-y-1/2">
+			<i class="pi pi-spin pi-spinner text-blue-500"></i>
+		</div>
+	</div>
+	<div
+		v-if="resourceOptions.length > 0 && resourceSearch && !selectedResource"
+		class="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-auto"
+	>
+		<div
+			v-for="resource in resourceOptions"
+			:key="resource.object_id"
+			@click="selectResource(resource)"
+			class="px-3 py-2 hover:bg-gray-100 cursor-pointer border-b border-gray-100 last:border-b-0"
+		>
+			<div class="font-medium">{{ resource.name }}</div>
+		</div>
+	</div>
+
+	<div v-if="selectedResource" class="mt-2 mb-4 p-3 bg-gray-50 border border-gray-200 rounded-md">
+		<div class="flex items-center justify-between">
+			<div>
+				<span class="text-sm font-medium">Selected Resource:</span>
+				<span class="ml-2 text-sm">{{ selectedResource.name }}</span>
+			</div>
+			<Button icon="pi pi-times" severity="secondary" text @click="clearSelectedResource" class="p-1" />
+		</div>
+	</div>
 
 		<!-- Resource role -->
 		<div class="mb-1 mt-4">Resource Role:</div>
@@ -121,14 +150,23 @@ export default {
 
 			resourceOption: null,
 			resourceOptions: [],
+			resourceSearch: '' as string,
+			resourceSearchLoading: false as boolean,
+			selectedResource: null as any,
+			allResourcesCache: [] as any[],
 		};
 	},
 
 	watch: {
-		async resourceType(newType, oldType) {
+		resourceType(newType, oldType) {
 			if (newType === oldType) return;
 
-			await this.updateResourceOptions(newType);
+			this.resourceSearch = '';
+			this.selectedResource = null;
+			this.resourceOptions = [];
+			this.allResourcesCache = [];
+			this.resourceSearchLoading = false;
+			this.updateResourceOptions(newType);
 		},
 	},
 
@@ -160,34 +198,26 @@ export default {
 		async updateResourceOptions(resourceType) {
 			let apiMethod = null;
 			if (resourceType === 'model') {
-				this.loadingStatusText = 'Loading models...';
 				apiMethod = api.getAIModels;
 			} else if (resourceType === 'textEmbeddingProfile') {
-				this.loadingStatusText = 'Loading text embedding profiles...';
 				apiMethod = api.getTextEmbeddingProfiles;
 			} else if (resourceType === 'indexingProfile') {
-				this.loadingStatusText = 'Loading vector stores...';
 				apiMethod = api.getAgentIndexes;
 			} else if (resourceType === 'prompt') {
-				this.loadingStatusText = 'Loading prompts...';
 				apiMethod = api.getPrompts;
 			} else if (resourceType === 'apiEndpoint') {
-				this.loadingStatusText = 'Loading api endpoints...';
 				apiMethod = api.getOrchestrationServices;
 			} else if (resourceType === 'datapipeline') {
-				this.loadingStatusText = 'Loading data pipelines...';
 				apiMethod = api.getPipelines;
 			} else if (resourceType === 'vectordatabase') {
-				this.loadingStatusText = 'Loading vector databases...';
 				apiMethod = api.getVectorDatabases;
 			} else if (resourceType === 'project') {
-				this.loadingStatusText = 'Loading projects...';
 				apiMethod = api.getProjects;
 			}
-
-			this.loading = true;
+			this.resourceSearchLoading = true;
+			
 			try {
-				this.resourceOptions = (await apiMethod.call(api))
+				this.allResourcesCache = (await apiMethod.call(api))
 					.map((resource) => resource.resource)
 					.sort((a, b) => a.name.localeCompare(b.name));
 			} catch (error) {
@@ -197,7 +227,35 @@ export default {
 					life: 5000,
 				});
 			}
-			this.loading = false;
+			this.resourceSearchLoading = false;
+		},
+
+		onResourceSearchInput() {
+			if (!this.resourceSearch || !this.resourceSearch.trim()) {
+				this.resourceOptions = [];
+				return;
+			}
+			
+			const searchTerm = this.resourceSearch.toLowerCase().trim();
+			this.resourceOptions = this.allResourcesCache.filter((resource) => {
+				const name = (resource.name || '').toLowerCase();
+				const description = (resource.description || '').toLowerCase();
+				return name.includes(searchTerm) || description.includes(searchTerm);
+			});
+		},
+
+		selectResource(resource) {
+			this.selectedResource = resource;
+			this.resourceId = resource.object_id;
+			this.resourceSearch = '';
+			this.resourceOptions = [];
+		},
+
+		clearSelectedResource() {
+			this.selectedResource = null;
+			this.resourceId = '';
+			this.resourceSearch = '';
+			this.resourceOptions = [];
 		},
 
 		handleSave() {
