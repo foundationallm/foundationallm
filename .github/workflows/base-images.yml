@@ -1,9 +1,6 @@
-name: Base Docker Images Build
+name: Build Base Images
 
 on:
-  push:
-    branches:
-    - release/**
   workflow_dispatch:
     inputs: {}
 
@@ -54,6 +51,7 @@ jobs:
       dockerfile: ${{ matrix.object.dockerfile }}
       registry: ${{ needs.generate_matrix.outputs.registry }}
       tag: latest
-      username: e2e-token
+      username: foundationallm
       target: sandbox
     secrets: inherit
+
