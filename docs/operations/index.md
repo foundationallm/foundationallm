@@ -2,7 +2,7 @@
 
 1. **Environment Setup:**
    - [Initial environment setup (Quick Start Deployment)](../deployment/deployment-quick-start.md)
-   - [Initial environment setup (Standard Deployment)](https://github.com/solliancenet/foundationallm/blob/main/deploy/standard/bicep/README.md)
+   - [Initial environment setup (Standard Deployment)](https://github.com/foundationallm/foundationallm/blob/main/deploy/standard/bicep/README.md)
    - Configuration settings for different components:
      - [App Configuration Settings](../deployment/app-configuration-values.md)
      - [Configuration for deployment](../deployment/deployment-configuration.md)

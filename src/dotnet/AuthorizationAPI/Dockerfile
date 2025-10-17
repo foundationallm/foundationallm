@@ -54,5 +54,5 @@ FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "FoundationaLLM.Authorization.API.dll"]
-LABEL org.opencontainers.image.source=https://github.com/solliancenet/foundationallm
+LABEL org.opencontainers.image.source=https://github.com/foundationallm/foundationallm
 LABEL ai.foundationallm.version=${FOUNDATIONALLM_VERSION:-0.0.0}
