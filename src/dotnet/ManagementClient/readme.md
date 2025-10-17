@@ -236,4 +236,4 @@ Follow the [Quick Start Deployment instructions](./docs/deployment/deployment-qu
 
 ## Reporting Issues and Support
 
-If you encounter any issues with Foundationa**LLM**, please [open an issue](https://github.com/solliancenet/foundationallm/issues) on GitHub. We will respond to your issue as soon as possible. Please use the Labels (`bug`, `documentation`, `general question`, `release x.x.x`) to categorize your issue and provide as much detail as possible to help us understand and resolve the issue.
+If you encounter any issues with Foundationa**LLM**, please [open an issue](https://github.com/foundationallm/foundationallm/issues) on GitHub. We will respond to your issue as soon as possible. Please use the Labels (`bug`, `documentation`, `general question`, `release x.x.x`) to categorize your issue and provide as much detail as possible to help us understand and resolve the issue.

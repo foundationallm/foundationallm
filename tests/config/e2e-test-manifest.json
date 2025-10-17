@@ -1,5 +1,5 @@
 {
-    "registry": "crfllme2eops.azurecr.io",
+    "registry": "foundationallm.azurecr.io",
     "base_images": [
         {
             "name": "fllm-python-base",
@@ -121,22 +121,6 @@
             "package_helm": true
         },
         {
-            "name": "vectorization-api",
-            "context": "./src",
-            "dockerfile": "./src/dotnet/VectorizationAPI/Dockerfile",
-            "helm_chart": "./deploy/common/helm/vectorization-api",
-            "azd_env_key": "SERVICE_VECTORIZATIONAPI_IMAGE",
-            "package_helm": true
-        },
-        {
-            "name": "vectorization-job",
-            "context": "./src",
-            "dockerfile": "./src/dotnet/VectorizationWorker/Dockerfile",
-            "helm_chart": "./deploy/common/helm/vectorization-job",
-            "azd_env_key": "SERVICE_VECTORIZATIONJOB_IMAGE",
-            "package_helm": true
-        },
-        {
             "name": "context-api",
             "context": "./src",
             "dockerfile": "./src/dotnet/ContextAPI/Dockerfile",
@@ -244,3 +228,4 @@
         }
     ]
 }
+

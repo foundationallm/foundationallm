@@ -20,7 +20,7 @@
 	<PackageProjectUrl>https://foundationallm.ai</PackageProjectUrl>
 	<PackageIcon>fllm-icon-128.png</PackageIcon>
 	<PackageReadmeFile>readme.md</PackageReadmeFile>
-	<RepositoryUrl>https://github.com/solliancenet/foundationallm</RepositoryUrl>
+	<RepositoryUrl>https://github.com/foundationallm/foundationallm</RepositoryUrl>
 	<RepositoryType>git</RepositoryType>
 	<PackageTags>FoundationaLLM;LLM;GPT;AI;Data;Core;Example</PackageTags>
 	<AssemblyVersion>0.0.0</AssemblyVersion>

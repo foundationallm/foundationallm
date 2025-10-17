@@ -6,6 +6,16 @@ function Get-AllPrompts {
         -RelativeUri "providers/FoundationaLLM.Prompt/prompts"
 }
 
+function Get-Prompt {
+    param (
+        [string]$PromptName
+    )
+
+    return Invoke-ManagementAPI `
+        -Method GET `
+        -RelativeUri "providers/FoundationaLLM.Prompt/prompts/$PromptName"
+}
+
 function Merge-Prompt {
     param (
         [hashtable]$Prompt

@@ -109,7 +109,7 @@ class FoundationaLLMCodeInterpreterTool(FoundationaLLMToolBase):
 
         with self.tracer.start_as_current_span(f'{self.name}_initial_llm_call', kind=SpanKind.INTERNAL):
 
-            available_file_names = '\n'.join(file_names)
+            available_file_names = '\n'.join([f'/{file_name}/' for file_name in file_names])
             code_generation_prompt = main_prompt.replace('{{file_names}}', available_file_names)
 
             messages = [
