@@ -606,6 +606,7 @@ export default {
 						severity: 'error',
 						summary: 'Error',
 						detail: `File upload failed for "${file.name}". ${error.message || error.title || ''}`,
+						life: 5000,
 					});
 				} finally {
 					if (totalFiles === filesUploaded + filesFailed) {
@@ -619,6 +620,7 @@ export default {
 							this.$appStore.addToast({
 								severity: 'success',
 								summary: 'Success',
+								life: 5000,
 								detail: `Successfully uploaded ${filesUploaded} file${totalFiles > 1 ? 's' : ''}.`,
 							});
 						}
@@ -722,6 +724,7 @@ export default {
 						severity: 'error',
 						summary: 'Error',
 						detail: 'File size exceeds the limit of 512MB.',
+						life: 5000,
 					});
 				} else if (allowedFileTypes && allowedFileTypes !== '') {
 					const fileExtension = file.name.split('.').pop()?.toLowerCase();
@@ -735,6 +738,7 @@ export default {
 							severity: 'error',
 							summary: 'Error',
 							detail: `File type not supported. File: ${file.name}`,
+							life: 5000
 						});
 					} else {
 						filteredFiles.push(file);
@@ -755,6 +759,7 @@ export default {
 					severity: 'error',
 					summary: 'Error',
 					detail: `You can only upload a maximum of ${this.maxFiles} ${this.maxFiles === 1 ? 'file' : 'files'} at a time.`,
+					life: 5000
 				});
 				filteredFiles.splice(
 					this.maxFiles -
@@ -818,6 +823,7 @@ export default {
 				this.$appStore.addToast({
 					severity: 'success',
 					summary: 'Success',
+					life: 5000,
 					detail: `Your account is now connected to OneDrive.`,
 				});
 				this.connectingOneDrive = false;
@@ -830,6 +836,7 @@ export default {
 				this.$appStore.addToast({
 					severity: 'success',
 					summary: 'Success',
+					life: 5000,
 					detail: `Your account is now disconnected from OneDrive.`,
 				});
 				this.disconnectingOneDrive = false;

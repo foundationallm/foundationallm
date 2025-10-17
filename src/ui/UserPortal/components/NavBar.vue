@@ -219,6 +219,7 @@
 
 				this.$appStore.addToast({
 					severity: 'success',
+					life: 5000,
 					detail: message,
 				});
 

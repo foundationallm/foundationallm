@@ -16,6 +16,7 @@ export async function fetchBlobUrl(content: MessageContent) {
 				severity: 'error',
 				summary: 'Error downloading file',
 				detail: `Failed to download "${content.fileName}".`,
+				life: 5000
 			});
 			content.error = true;
 		} finally {
