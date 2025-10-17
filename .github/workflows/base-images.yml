@@ -38,7 +38,7 @@ jobs:
 
   base_docker_build:
     name: Build Base Docker Images
-    if: startsWith(github.ref, 'refs/heads/release/') || startsWith(github.ref, 'refs/heads/poc/')
+    if: (github.ref_type == 'tag' && contains(github.ref_name, '-base'))
     needs: generate_matrix
     strategy:
       fail-fast: false
@@ -54,4 +54,5 @@ jobs:
       username: foundationallm
       target: sandbox
     secrets: inherit
+
 
