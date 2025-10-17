@@ -50,9 +50,9 @@ Based on all of the above, the justification for the requested roles is as follo
 "In some cases, an app might need extra permissions to read some group properties like member and memberOf. For example, if a group has one or more service principals as members, the app also needs permissions to read service principals, otherwise Microsoft Graph returns an error or limited information."
 
 ## Transparency and auditing
-The FoundationaLLM source code is fully available in a public GitHub repo: https://github.com/solliancenet/foundationallm.
+The FoundationaLLM source code is fully available in a public GitHub repo: https://github.com/foundationallm/foundationallm.
 We took this critical decision precisely for cases like this, where our customers need to understand (and also fully audit if needed) the security implications of the permissions granted to various FoundationaLLM components during deployment.
-For the specific case of Graph API interactions, the behavior is fully encapsulated in one [service implementation](https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/Security/MicrosoftGraphIdentityManagementService.cs)
+For the specific case of Graph API interactions, the behavior is fully encapsulated in one [service implementation](https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Services/Security/MicrosoftGraphIdentityManagementService.cs)
 It can be immediately verified that:
 - Our code performs only the operations mentioned above.
 - Our code uses the smallest possible subset of properties to fulfill its required functionality.
