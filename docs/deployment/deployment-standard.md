@@ -94,7 +94,7 @@ Follow the steps below to deploy the solution to your Azure subscription.
 2. From a PowerShell prompt, execute the following to clone the repository:
 
     ```pwsh
-      git clone https://github.com/solliancenet/foundationallm.git
+      git clone https://github.com/foundationallm/foundationallm.git
       cd foundationallm
       git checkout release/0.9.6
     ```

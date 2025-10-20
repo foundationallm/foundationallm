@@ -8,10 +8,10 @@ To run the sample, you need to have the following prerequisites:
 
 1. Python 3.11 or later installed on your machine.
 2. The [Azure CLI](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli) installed with version 2.71.0 or later.
-3. The [FoundationaLLM GitHub repository](https://github.com/solliancenet/foundationallm) cloned to your local machine. You can clone the repository using the following command:
+3. The [FoundationaLLM GitHub repository](https://github.com/foundationallm/foundationallm) cloned to your local machine. You can clone the repository using the following command:
 
    ```cmd
-   git clone https://github.com/solliancenet/foundationallm.git
+   git clone https://github.com/foundationallm/foundationallm.git
    ```
 
 > [!NOTE]

@@ -27,7 +27,7 @@
       FoundationaLLM.Prompt is a .NET library for the Prompt resource provider. The resource provider manages prompts across a FoundationaLLM instance.
     </Description>
     <PackageTags>FoundationaLLM;LLM;GPT;AI;SDK;Prompts</PackageTags>
-    <RepositoryUrl>https://github.com/solliancenet/foundationallm</RepositoryUrl>
+    <RepositoryUrl>https://github.com/foundationallm/foundationallm</RepositoryUrl>
     <PackageId>FoundationaLLM.Prompt</PackageId>
     <Version>0.0.0</Version>
     <!-- Placeholder version -->

@@ -68,7 +68,7 @@ jobs:
           ${{ inputs.registry }}/${{ inputs.image }}
         tags: |
           type=semver,pattern={{version}},value=${{ inputs.tag }}
-          type=raw,value=cache
+          type=raw,value=latest
 
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v3
@@ -100,3 +100,4 @@ jobs:
       run: |
         rm -rf ${{ runner.temp }}/.buildx-cache
         mv ${{ runner.temp }}/.buildx-cache-new ${{ runner.temp }}/.buildx-cache
+

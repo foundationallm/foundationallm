@@ -1,7 +1,7 @@
 # Foundationa**LLM**: The platform for deploying, scaling, securing and governing generative AI in the enterprises 🚀
 
 [![License](https://img.shields.io/badge/license-evaluation%20and%20demo-green)](https://www.foundationallm.ai/license)
-[![Open Issues](https://img.shields.io/github/issues-raw/solliancenet/foundationallm)](https://github.com/solliancenet/foundationallm/issues)
+[![Open Issues](https://img.shields.io/github/issues-raw/solliancenet/foundationallm)](https://github.com/foundationallm/foundationallm/issues)
 
 Foundationa**LLM** provides the platform for deploying, scaling, securing and governing generative AI in the enterprise. With Foundationa**LLM** you can:
 - Create AI agents that are grounded in your enterprise data, be that text, semi-structured or structured data. 
@@ -83,7 +83,7 @@ Follow the [Quick Start Deployment instructions](./docs/deployment/deployment-qu
 
 ## Reporting Issues and Support
 
-If you encounter any issues with Foundationa**LLM**, please [open an issue](https://github.com/solliancenet/foundationallm/issues) on GitHub. We will respond to your issue as soon as possible. Please use the Labels (`bug`, `documentation`, `general question`, `release x.x.x`) to categorize your issue and provide as much detail as possible to help us understand and resolve the issue.
+If you encounter any issues with Foundationa**LLM**, please [open an issue](https://github.com/foundationallm/foundationallm/issues) on GitHub. We will respond to your issue as soon as possible. Please use the Labels (`bug`, `documentation`, `general question`, `release x.x.x`) to categorize your issue and provide as much detail as possible to help us understand and resolve the issue.
 
 ## Contributing to Foundationa**LLM**
 

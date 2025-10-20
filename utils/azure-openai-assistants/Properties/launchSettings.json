@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "AzureOpenAIAssistantsUtility": {
+      "commandName": "Project",
+      "commandLineArgs": "vector-store delete --account openai-l43jljq2i5ox6 --ids vs_1 vs_2 vs_3 vs_4"
+    }
+  }
+}

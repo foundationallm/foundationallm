@@ -1,5 +1,5 @@
 {
-    "registry": "crfllme2eops.azurecr.io",
+    "registry": "foundationallm.azurecr.io",
     "base_images": [
         {
             "name": "fllm-python-base",

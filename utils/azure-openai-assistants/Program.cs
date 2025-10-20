@@ -4,6 +4,7 @@ using Azure.AI.OpenAI;
 using Azure.Identity;
 using OpenAI.Assistants;
 using OpenAI.VectorStores;
+using System.ClientModel;
 using System.ClientModel.Primitives;
 using System.CommandLine;
 using System.Text.Json;
@@ -47,13 +48,21 @@ var instructionsOption = new Option<string>("--instructions")
 var vectorStoreIdOption = new Option<string>("--vector-store-id")
 {
     Description = "The vector store identifier.",
-    Required = true
+    Required = false
 };
 
 var fileIdOption = new Option<string>("--file-id")
 {
     Description = "The file identifier.",
     Required = true
+};
+
+var idsOption = new Option<string[]>("--ids")
+{
+    Description = "The list of identifiers.",
+    AllowMultipleArgumentsPerToken = true,
+    Arity = ArgumentArity.OneOrMore,
+    Required = false
 };
 
 var rootCommand = new RootCommand("FoundationaLLM Azure OpenAI Utility");
@@ -69,7 +78,7 @@ var assistantCreateCommand = new Command("create", "Create an Azure OpenAI assis
     instructionsFileOption,
     instructionsOption
 };
-AddMutuallyExclusiveValidator<string>(
+AddMutuallyExclusiveValidator<string, string>(
     assistantCreateCommand,
     true,
     instructionsFileOption,
@@ -151,15 +160,23 @@ vectorStoreShowCommand.SetAction(async parseResult =>
 var vectorStoreDeleteCommand = new Command("delete", "Delete an Azure OpenAI vector store")
 {
     accountOption,
-    vectorStoreIdOption
+    vectorStoreIdOption,
+    idsOption
 };
+AddMutuallyExclusiveValidator<string, string[]>(
+    vectorStoreDeleteCommand,
+    true,
+    vectorStoreIdOption,
+    idsOption);
 vectorStoreDeleteCommand.SetAction(async parseResult =>
 {
     var account = parseResult.GetValue(accountOption);
     var vectorStoreId = parseResult.GetValue(vectorStoreIdOption);
+    var ids = parseResult.GetValue(idsOption);
     await DeleteVectorStore(
         account!,
-        vectorStoreId!);
+        vectorStoreId,
+        ids);
 });
 
 var vectorStoreFileCommand = new Command("file", "Manage the files in an Azure OpenAI vector store");
@@ -232,18 +249,22 @@ vectorStoreFileCommand.Subcommands.Add(vectorStoreFileShowCommand);
 ParseResult parseResult = rootCommand.Parse(args);
 return parseResult.Invoke();
 
-static void AddMutuallyExclusiveValidator<T>(
+
+static void AddMutuallyExclusiveValidator<T1, T2>(
     Command cmd,
     bool requireExactlyOne,
-    params Option<T>[] options)
+    Option<T1> option1,
+    Option<T2> option2)
 {
     cmd.Validators.Add(ctx =>
     {
-        int count = options.Count(o => ctx.GetValue<T>(o) is not null);
+        int count = 0;
+        if (ctx.GetValue<T1>(option1) is not null) count++;
+        if (ctx.GetValue<T2>(option2) is not null) count++;
         if (count > 1)
-            ctx.AddError($"Options {string.Join(", ", options.Select(o => o.Aliases.First()))} are mutually exclusive.");
+            ctx.AddError($"Options {option1.Aliases.First()} and {option2.Aliases.First()} are mutually exclusive.");
         else if (requireExactlyOne && count == 0)
-            ctx.AddError($"Specify exactly one of {string.Join(", ", options.Select(o => o.Aliases.First()))}.");
+            ctx.AddError($"Specify exactly one of {option1.Aliases.First()} and {option2.Aliases.First()}.");
     });
 }
 
@@ -394,28 +415,54 @@ void CreateVectorStore(
 
 async Task DeleteVectorStore(
     string account,
-    string vectorStoreId)
+    string? vectorStoreId,
+    string[]? ids)
 {
     try
     {
         var azureOpenAIClient = new AzureOpenAIClient(new Uri($"https://{account}.openai.azure.com/"), new AzureCliCredential());
         var vectorStoreClient = azureOpenAIClient.GetVectorStoreClient();
-        var clientResult = await vectorStoreClient.DeleteVectorStoreAsync(vectorStoreId);
 
-        if (!clientResult.Value.Deleted)
+        if (ids is not null)
+        {
+            var results = new Dictionary<string, string>();
+            foreach (var id in ids)
+            {
+                try
+                {
+                    var clientResult = await vectorStoreClient.DeleteVectorStoreAsync(id);
+                    if (!clientResult.Value.Deleted)
+                        results[id] = "NotDeleted";
+                    else
+                        results[id] = "Deleted";
+                }
+                catch (ClientResultException ex) when (ex.Status == 404)
+                {
+                    results[id] = "NotFound";
+                }
+            }
             Console.WriteLine(
-                JsonSerializer.Serialize(
-                new
-                {
-                    success = false,
-                    error = "Failed to delete vector store."
-                }));
+                JsonSerializer.Serialize(results));
+        }
         else
-            Console.WriteLine(JsonSerializer.Serialize(
-                new
-                {
-                    success = true
-                }));
+        {
+            var clientResult = await vectorStoreClient.DeleteVectorStoreAsync(vectorStoreId);
+
+            if (!clientResult.Value.Deleted)
+                Console.WriteLine(
+                    JsonSerializer.Serialize(
+                    new
+                    {
+                        success = false,
+                        error = "Failed to delete vector store."
+                    }));
+            else
+                Console.WriteLine(JsonSerializer.Serialize(
+                    new
+                    {
+                        success = true
+                    }));
+        }
     }
     catch (Exception ex)
     {
