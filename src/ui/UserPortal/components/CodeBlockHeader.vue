@@ -44,6 +44,7 @@ export default {
 
 				this.$appStore.addToast({
 					severity: 'success',
+					life: 5000,
 					detail: 'Code copied to clipboard with formatting!',
 				});
 			} catch (error) {
@@ -61,6 +62,7 @@ export default {
 
 					this.$appStore.addToast({
 						severity: 'success',
+						life: 5000,
 						detail: 'Code copied to clipboard!',
 					});
 				} catch (fallbackError) {
@@ -68,6 +70,7 @@ export default {
 					this.$appStore.addToast({
 						severity: 'error',
 						detail: 'Failed to copy to clipboard',
+						life: 5000
 					});
 				}
 			}

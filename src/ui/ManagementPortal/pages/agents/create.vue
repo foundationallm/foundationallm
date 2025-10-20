@@ -1727,8 +1727,9 @@ export default {
 			this.$toast.add({
 				severity: 'error',
 				detail: error?.response?._data || error,
-				life: undefined,
+				life: 5000,
 				closable: true,
+				
 			});
 		}
 
@@ -2027,7 +2028,7 @@ export default {
 				this.$toast.add({
 					severity: 'success',
 					detail: 'Virtual Security Group ID copied to clipboard!',
-					life: undefined,
+					life: 5000,
 					closable: true,
 				});
 			}
