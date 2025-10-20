@@ -62,6 +62,18 @@
 		</div>
 	</div>
 
+		<!-- Search filter for prompts -->
+		<div v-if="resourceType === 'prompt'" class="mb-1 mt-4">
+			<div class="mb-2">Search prompts:</div>
+			<InputText
+				v-model="searchFilter"
+				type="text"
+				class="w-full"
+				placeholder="Filter prompts by name or description..."
+				@input="filterPrompts"
+			/>
+		</div>
+
 		<!-- Resource role -->
 		<div class="mb-1 mt-4">Resource Role:</div>
 		<InputText
@@ -171,12 +183,12 @@ export default {
 	},
 
 	methods: {
-		getResourceNameFromId(resourceId) {
+		getResourceNameFromId(resourceId: string): string {
 			const parts = resourceId.split('/').filter(Boolean);
 			return parts.slice(-1)[0];
 		},
 
-		getResourceTypeFromId(resourceId) {
+		getResourceTypeFromId(resourceId: string): string {
 			const parts = resourceId.split('/').filter(Boolean);
 			const type = parts.slice(-2)[0];
 
@@ -195,8 +207,20 @@ export default {
 			return type;
 		},
 
-		async updateResourceOptions(resourceType) {
-			let apiMethod = null;
+		async updateResourceOptions(resourceType: string): Promise<void> {
+			// Check if resources are already cached for this type
+			if (this.resourceCache.has(resourceType)) {
+				this.allResourceOptions = this.resourceCache.get(resourceType)!;
+				this.applyResourceFiltering(resourceType);
+				return;
+			}
+
+			// Check if already loading for this type
+			if (this.resourceLoadingStates.get(resourceType)) {
+				return;
+			}
+
+			let apiMethod: (() => Promise<any>) | null = null;
 			if (resourceType === 'model') {
 				apiMethod = api.getAIModels;
 			} else if (resourceType === 'textEmbeddingProfile') {
@@ -226,6 +250,33 @@ export default {
 					detail: error?.response?._data || error,
 					life: 5000,
 				});
+			} finally {
+				this.loading = false;
+				this.resourceLoadingStates.set(resourceType, false);
+			}
+		},
+
+		/**
+		 * Apply filtering based on resource type and search criteria
+		 */
+		applyResourceFiltering(resourceType: string): void {
+			if (resourceType === 'prompt') {
+				this.resourceOptions = this.filterPromptsByCriteria(
+					this.allResourceOptions, 
+					'workflowResource', 
+					this.searchFilter
+				);
+			} else {
+				// For other resource types, apply search filter if provided
+				if (this.searchFilter) {
+					const criteria = this.searchFilter.toLowerCase();
+					this.resourceOptions = this.allResourceOptions.filter(resource => 
+						resource.name.toLowerCase().includes(criteria) ||
+						resource.description?.toLowerCase().includes(criteria)
+					);
+				} else {
+					this.resourceOptions = this.allResourceOptions;
+				}
 			}
 			this.resourceSearchLoading = false;
 		},

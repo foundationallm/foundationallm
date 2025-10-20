@@ -184,7 +184,7 @@ class FoundationaLLMCodeInterpreterTool(FoundationaLLMToolBase):
                 ))
 
         final_response = \
-            code_execution_response['execution_result'] if (code_execution_response['status'] == 'Succeeded' and code_execution_response['execution_result'] != '') \
+            code_execution_response['execution_result'] if (code_execution_response['status'] == 'Succeeded' and code_execution_response['execution_result'] != '{}') \
             else code_execution_response['standard_output'] if code_execution_response['status'] == 'Succeeded' \
             else 'The generated code could not be executed successfully. '
 
@@ -200,7 +200,7 @@ class FoundationaLLMCodeInterpreterTool(FoundationaLLMToolBase):
                 'tool_generated_code': generated_code,
                 'tool_output': code_execution_response.get('standard_output', ''),
                 'tool_error': code_execution_response.get('error_output', ''),
-                'tool_result': code_execution_response.get('execution_result', '')
+                'tool_result': final_response
             }
         ))
 
