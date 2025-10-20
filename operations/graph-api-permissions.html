@@ -124,9 +124,9 @@ They are also involved in enforcing and managing the underlying Role-Based Acces
 &quot;In some cases, an app might need extra permissions to read some group properties like member and memberOf. For example, if a group has one or more service principals as members, the app also needs permissions to read service principals, otherwise Microsoft Graph returns an error or limited information.&quot;</p>
 </div>
 <h2 id="transparency-and-auditing">Transparency and auditing</h2>
-<p>The FoundationaLLM source code is fully available in a public GitHub repo: <a href="https://github.com/solliancenet/foundationallm">https://github.com/solliancenet/foundationallm</a>.
+<p>The FoundationaLLM source code is fully available in a public GitHub repo: <a href="https://github.com/foundationallm/foundationallm">https://github.com/foundationallm/foundationallm</a>.
 We took this critical decision precisely for cases like this, where our customers need to understand (and also fully audit if needed) the security implications of the permissions granted to various FoundationaLLM components during deployment.
-For the specific case of Graph API interactions, the behavior is fully encapsulated in one <a href="https://github.com/solliancenet/foundationallm/blob/main/src/dotnet/Common/Services/Security/MicrosoftGraphIdentityManagementService.cs">service implementation</a>
+For the specific case of Graph API interactions, the behavior is fully encapsulated in one <a href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Services/Security/MicrosoftGraphIdentityManagementService.cs">service implementation</a>
 It can be immediately verified that:</p>
 <ul>
 <li>Our code performs only the operations mentioned above.</li>
