@@ -155,6 +155,7 @@
 		watch: {
 			currentSession(newSession: Session, oldSession: Session) {
 				if (newSession.sessionId !== oldSession?.sessionId) {
+					this.setAgentOptions();
 					this.updateAgentSelection();
 				}
 			},
