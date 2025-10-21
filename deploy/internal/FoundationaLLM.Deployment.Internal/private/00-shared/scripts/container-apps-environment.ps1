@@ -5,8 +5,9 @@ function Initialize-ContainerAppsEnvironment {
     )
 
     $resourceGroupName = "$UniqueName-core"
-    $logAnalyticsName = "$UniqueName-log-analytics"
-    $containerAppsEnvironmentName = "$UniqueName-container-apps-env"
+    $resourceNames = Get-ResourceNames -UniqueName $UniqueName
+    $logAnalyticsName = $resourceNames.LogAnalytics
+    $containerAppsEnvironmentName = $resourceNames.ContainerAppsEnvironment
     $containerAppsWorkloadProfileName = "Warm"
     
     Write-Host "Ensuring log analytics workspace $($logAnalyticsName) exists in resource group '$resourceGroupName'..."
