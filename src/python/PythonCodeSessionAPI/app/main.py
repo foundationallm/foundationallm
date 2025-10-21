@@ -82,7 +82,7 @@ async def execute_code(request_body: dict):
         if selected_names:
             results = { name: namespace[name] for name in selected_names if name in namespace }
 
-        # If any selected value is a pandas DataFrame, auto-save to CSV and return empty metadata
+        # If any selected value is a pandas DataFrame or Series, auto-save to CSV and return serializable metadata
         if results:
             try:
                 import pandas as pd  # type: ignore
@@ -95,9 +95,22 @@ async def execute_code(request_body: dict):
                         file_path = os.path.join(ROOT_DATA_PATH, file_name)
                         try:
                             value.to_csv(file_path, index=False)
+                            # Replace DataFrame with a serializable summary
+                            results[key] = {
+                                "type": "dataframe",
+                                "details": "The dataframe has been saved to a CSV file. A preview of the first ten rows of data has been generated. To view all the data, examine the CSV file that was returned.",
+                                "preview": value.head(10).to_dict(orient="records")
+                            }
                         except Exception:
                             # If writing fails, fall back to dropping the value (non-serializable)
                             results.pop(key, None)
+                    elif isinstance(value, pd.Series):
+                        # Handle pandas Series - convert to dict for serialization
+                        results[key] = {
+                            "type": "series",
+                            "details": "The series data is displayed below.",
+                            "data": value.to_dict()
+                        }
             except Exception:
                 # If pandas is not available or any import/runtime error occurs, leave results as-is
                 pass
