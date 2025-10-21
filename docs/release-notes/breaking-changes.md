@@ -126,7 +126,7 @@ The following App Configuration value have been added:
 | `FoundationaLLM:ResourceProviders:Plugin:Storage:AuthenticationType` | `AzureIdentity` | The type of authentication used by the FoundationaLLM Plugin resource provider to connect to the storage account. |
 
 >[!IMPORTANT]
->A new Azure Cosmos DB container named `DataPipelines` must be created with a parition key of `/runId` and an autoscale transactional throughput of maximum 4000 RU/s.
+>A new Azure Cosmos DB container named `DataPipelines` must be created with a parition key of `/run_id` and an autoscale transactional throughput of maximum 4000 RU/s.
 
 >[!IMPORTANT]
 >A new `APIEndpointConfiguration` artifact named `DataPipelineAPI` must be created and saved to a file named `DataPipelineAPI.json`. The file must be created in the `FoundationaLLM.Configuration` resource provider folder of the FoundationaLLM storage account. The file must contain the following content:
