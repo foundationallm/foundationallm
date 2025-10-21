@@ -35,6 +35,19 @@
             "justMyCode": false
         },
         {
+            "name": "FoundationaLLMAgentPlugins - Debug ZST Workflow",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/src/python/FoundationaLLMAgentPlugins/test/foundationallm_function_calling_workflow/test_workflow_zst.py",
+            "console": "integratedTerminal",
+            "python": "${workspaceFolder}/src/python/FoundationaLLMAgentPlugins/.venv/Scripts/python.exe",
+            "cwd" : "${workspaceFolder}/src/python/FoundationaLLMAgentPlugins",
+            "justMyCode": false,
+            "env" : {
+                "FOUNDATIONALLM_APP_CONFIGURATION_URI": "https://appcs-l43jljq2i5ox6.azconfig.io"
+            }
+        },
+        {
             "name": "User Portal UI - Frontend",
             "type": "chrome",
             "request": "launch",
