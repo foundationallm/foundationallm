@@ -326,6 +326,29 @@
 					});
 				}
 					
+				if (!this.$appStore.getSessionAgent(this.currentSession)) {
+					let selectedAgent = null;
+					
+					if (nonFeaturedAgents.length > 0 && enabledAgentIds.length > 0) {
+						const profileOtherAgents = nonFeaturedAgents.filter(agent => 
+							enabledAgentIds.some(agentId => agentId == agent.value.resource.object_id)
+						);
+						
+						if (profileOtherAgents.length > 0) {
+							selectedAgent = profileOtherAgents[0];
+						}
+					}
+					
+					if (!selectedAgent && featuredAgents.length > 0) {
+						selectedAgent = featuredAgents[0];
+					}
+					
+					if (selectedAgent) {
+						this.agentSelection = selectedAgent;
+						this.$appStore.setSessionAgent(this.currentSession, selectedAgent.value, false);
+					}
+				}
+
 				// Add Other Agents group if there are non-featured agents
 				if (nonFeaturedAgents.length > 0) {
 					this.agentOptionsGroup.push({
