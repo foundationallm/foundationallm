@@ -98,8 +98,8 @@ async def execute_code(request_body: dict):
                             # Replace DataFrame with a serializable summary
                             results[key] = {
                                 "type": "dataframe",
-                                "details": "The dataframe has been saved to a CSV file. A preview of the data has been generated.",
-                                "preview": value.head(3).to_dict(orient="records")
+                                "details": "The dataframe has been saved to a CSV file. A preview of the first ten rows of data has been generated. To view all the data, examine the CSV file that was returned.",
+                                "preview": value.head(10).to_dict(orient="records")
                             }
                         except Exception:
                             # If writing fails, fall back to dropping the value (non-serializable)
