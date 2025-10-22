@@ -32,13 +32,18 @@ import Color from 'color';
 
 export default {
 	data() {
-		return {
-			pageTitle: this.$appConfigStore.pageTitle || 'FoundationaLLM',
-			iconLink: this.$appConfigStore.favIconUrl || '/favicon.ico',
-		};
+		return {};
 	},
 
 	computed: {
+		pageTitle() {
+			return this.$appConfigStore.pageTitle || 'FoundationaLLM';
+		},
+		
+		iconLink() {
+			return this.$appConfigStore.favIconUrl || '/favicon.ico';
+		},
+
 		style() {
 			return {
 				// Primary theme variables

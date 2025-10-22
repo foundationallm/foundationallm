@@ -74,9 +74,11 @@ export const useAppConfigStore = defineStore('appConfig', {
 				};
 
 				// Load only the essential branding values needed for signin page
-				const [logoUrl, logoText] = await Promise.all([
+				const [logoUrl, logoText, pageTitle, favIconUrl] = await Promise.all([
 					getConfigValueSafe('FoundationaLLM:Branding:LogoUrl'),
 					getConfigValueSafe('FoundationaLLM:Branding:LogoText'),
+					getConfigValueSafe('FoundationaLLM:Branding:PageTitle'),
+					getConfigValueSafe('FoundationaLLM:Branding:FavIconUrl'),
 				]);
 
 				// Set the branding values
@@ -85,6 +87,12 @@ export const useAppConfigStore = defineStore('appConfig', {
 				}
 				if (logoText) {
 					this.logoText = logoText as string;
+				}
+				if (pageTitle) {
+					this.pageTitle = pageTitle as string;
+				}
+				if (favIconUrl) {
+					this.favIconUrl = favIconUrl as string;
 				}
 
 				// console.log('Basic branding configuration loaded successfully');
