@@ -156,9 +156,8 @@ class TestSuiteManager:
     
     def run_suite(self, suite_name: str, agent_name: str, 
                    quick_mode: bool = False, test_index: Optional[int] = None,
-                   max_workers: int = 5, validation_mode: str = 'hybrid',
-                   output_dir: str = 'results', timestamp: str = '',
-                   verbose: bool = False) -> Optional[Dict[str, Any]]:
+                   max_workers: int = 5, output_dir: str = 'results', 
+                   timestamp: str = '', verbose: bool = False) -> Optional[Dict[str, Any]]:
         """Run a test suite for a specific agent"""
         
         if suite_name == "all":
@@ -168,7 +167,7 @@ class TestSuiteManager:
                 if name != "all":  # Avoid infinite recursion
                     result = self.run_suite(
                         name, agent_name, quick_mode, test_index,
-                        max_workers, validation_mode, output_dir, timestamp, verbose
+                        max_workers, output_dir, timestamp, verbose
                     )
                     if result:
                         all_results[name] = result

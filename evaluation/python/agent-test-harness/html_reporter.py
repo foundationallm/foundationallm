@@ -43,7 +43,8 @@ class HTMLReporter:
                 'total_tests': 0,
                 'total_passed': 0,
                 'total_failed': 0,
-                'overall_pass_rate': 0
+                'overall_pass_rate': 0,
+                'total_duration': 0
             }
         }
         
@@ -58,6 +59,7 @@ class HTMLReporter:
                 report_data['summary']['total_tests'] += agent_data['total_tests']
                 report_data['summary']['total_passed'] += agent_data['passed_tests']
                 report_data['summary']['total_failed'] += agent_data['failed_tests']
+                report_data['summary']['total_duration'] += agent_data['total_duration']
             else:
                 # Multi-suite results
                 for suite_name, suite_results in agent_results.items():
@@ -70,6 +72,7 @@ class HTMLReporter:
                         report_data['summary']['total_tests'] += suite_data['total_tests']
                         report_data['summary']['total_passed'] += suite_data['passed_tests']
                         report_data['summary']['total_failed'] += suite_data['failed_tests']
+                        report_data['summary']['total_duration'] += suite_data['total_duration']
         
         # Calculate overall pass rate
         if report_data['summary']['total_tests'] > 0:
@@ -122,6 +125,7 @@ class HTMLReporter:
         passed_tests = 0
         failed_tests = 0
         error_tests = 0
+        total_duration = 0
         
         # Analyze test results
         test_analysis = []
@@ -151,8 +155,12 @@ class HTMLReporter:
             artifacts_produced = self._parse_artifacts(test.get('ArtifactsSummary', '[]'))
             artifacts_expected = self._parse_expected_artifacts(test.get('Answer', ''), test.get('ValidationRules', '{}'))
             
+            # Calculate duration
+            test_duration = test.get('CompletionRequestDuration', 0)
+            total_duration += test_duration
+            
             test_analysis.append({
-                'index': i,
+                'index': f"{agent_name}-{i}",
                 'question': test.get('Question', ''),
                 'status': status,
                 'agent_answer': test.get('AgentAnswer', ''),
@@ -175,6 +183,7 @@ class HTMLReporter:
             'failed_tests': failed_tests,
             'error_tests': error_tests,
             'pass_rate': (passed_tests / total_tests * 100) if total_tests > 0 else 0,
+            'total_duration': total_duration,
             'test_analysis': test_analysis,
             'suite_name': results.get('suite_name', 'unknown'),
             'timestamp': results.get('timestamp', '')
@@ -788,6 +797,10 @@ class HTMLReporter:
                     <div class="stat-number">{summary['overall_pass_rate']:.1f}%</div>
                     <div class="stat-label">Pass Rate</div>
                 </div>
+                <div class="stat-card">
+                    <div class="stat-number">{summary.get('total_duration', 0):.1f}s</div>
+                    <div class="stat-label">Total Duration</div>
+                </div>
             </div>
         </section>
         """
@@ -817,6 +830,10 @@ class HTMLReporter:
                         <div class="agent-stat">
                             <div class="agent-stat-number">{agent_data['pass_rate']:.1f}%</div>
                             <div class="agent-stat-label">Pass Rate</div>
+                        </div>
+                        <div class="agent-stat">
+                            <div class="agent-stat-number">{agent_data.get('total_duration', 0):.1f}s</div>
+                            <div class="agent-stat-label">Duration</div>
                         </div>
                     </div>
                     <div class="expand-icon" id="icon-{agent_name}">▼</div>

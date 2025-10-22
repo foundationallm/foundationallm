@@ -72,7 +72,7 @@ Examples:
   python run_tests.py --suite code-interpreter --agent MAA-06 --quick
   
   # Comprehensive validation with LLM
-  python run_tests.py --suite all --agent MAA-06 --validate hybrid --report
+  python run_tests.py --suite all --agent MAA-06 --report
   
   # Compare against baseline
   python run_tests.py --suite all --agent MAA-06 --baseline results/baseline-MAA-06.json
@@ -107,8 +107,6 @@ Examples:
                        help='Validate configuration without executing tests')
     
     # Validation options
-    parser.add_argument('--validate', choices=['rule', 'llm', 'hybrid'], default='hybrid',
-                       help='Validation mode (default: hybrid)')
     parser.add_argument('--strict', action='store_true',
                        help='Exit with error code if any validation fails')
     
@@ -186,7 +184,8 @@ Examples:
                     all_results = results
                 
                 timestamp = results.get('timestamp', datetime.now().strftime("%Y%m%d_%H%M%S"))
-                report_path = os.path.join(args.output_dir, f"summary-{timestamp}.html")
+                suite_name = results.get('suite_name', 'unknown')
+                report_path = os.path.join(args.output_dir, f"summary-{timestamp}-{suite_name}.html")
                 reporter.generate_report(all_results, report_path, timestamp)
                 print(f"📊 HTML report generated: {report_path}")
                 
@@ -232,7 +231,13 @@ Examples:
                     sys.exit(1)
                 
                 timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-                report_path = os.path.join(args.output_dir, f"summary-{timestamp}.html")
+                # Get suite name from first agent's results
+                suite_name = 'unknown'
+                if all_results:
+                    first_agent = list(all_results.values())[0]
+                    if isinstance(first_agent, dict) and 'results' in first_agent:
+                        suite_name = first_agent.get('suite_name', 'unknown')
+                report_path = os.path.join(args.output_dir, f"summary-{timestamp}-{suite_name}.html")
                 reporter.generate_report(all_results, report_path, timestamp)
                 print(f"📊 HTML report generated: {report_path}")
                 
@@ -291,7 +296,6 @@ Examples:
             print(f"\n{'='*60}")
             print(f"Running tests for agent: {agent}")
             print(f"Suite: {args.suite}")
-            print(f"Validation: {args.validate}")
             print(f"{'='*60}")
             
             # Run the test suite
@@ -301,7 +305,6 @@ Examples:
                 quick_mode=args.quick,
                 test_index=args.test_index,
                 max_workers=args.workers,
-                validation_mode=args.validate,
                 output_dir=args.output_dir,
                 timestamp=timestamp,
                 verbose=args.verbose
@@ -313,26 +316,31 @@ Examples:
             
             all_results[agent] = results
             
-            # Validate results if requested
-            if args.validate != 'none':
-                validation_results = validator.validate_results(
-                    results, 
-                    mode=args.validate,
-                    verbose=args.verbose
-                )
-                
-                # Check for validation failures
-                failed_tests = validation_results.get('failed_tests_list', [])
-                if failed_tests and args.strict:
-                    print(f"\n✗ {len(failed_tests)} tests failed validation")
-                    sys.exit(1)
+            # Validate results using test-specific validation modes
+            validation_results = validator.validate_results(
+                results, 
+                verbose=args.verbose
+            )
+            
+            # Check for validation failures
+            failed_tests = validation_results.get('failed_tests_list', [])
+            if failed_tests and args.strict:
+                print(f"\n✗ {len(failed_tests)} tests failed validation")
+                sys.exit(1)
         
         # Generate reports
         if not args.no_report and (args.report or len(agents) > 1):
             from html_reporter import HTMLReporter
             reporter = HTMLReporter()
             
-            report_path = os.path.join(args.output_dir, f"summary-{timestamp}.html")
+            # Get suite name from first agent's results
+            suite_name = 'unknown'
+            if all_results:
+                first_agent = list(all_results.values())[0]
+                if isinstance(first_agent, dict) and 'results' in first_agent:
+                    suite_name = first_agent.get('suite_name', 'unknown')
+            
+            report_path = os.path.join(args.output_dir, f"summary-{timestamp}-{suite_name}.html")
             reporter.generate_report(all_results, report_path, timestamp)
             print(f"\n📊 HTML report generated: {report_path}")
         

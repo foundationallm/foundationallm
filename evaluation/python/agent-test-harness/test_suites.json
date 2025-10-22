@@ -38,5 +38,20 @@
     "csv_file": "test-data\\file-type-detection\\TestQuestions-file-type-detection.csv",
     "description": "Tests for file-type-detection",
     "quick_mode_limit": 5
+  },
+  "image-analysis": {
+    "csv_file": "test-data\\image-analysis\\TestQuestions-image-analysis.csv",
+    "description": "Tests for image-analysis",
+    "quick_mode_limit": 5
+  },
+  "code-file-analysis": {
+    "csv_file": "test-data\\code-file-analysis\\TestQuestions-code-file-analysis.csv",
+    "description": "Tests for code-file-analysis",
+    "quick_mode_limit": 5
+  },
+  "test-hybrid-validation": {
+    "csv_file": "test-data\\test-hybrid-validation\\TestQuestions-test-hybrid-validation.csv",
+    "description": "Tests for test-hybrid-validation",
+    "quick_mode_limit": 5
   }
 }

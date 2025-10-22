@@ -619,36 +619,38 @@ GenerationStrategy: combinations
         if validation_mode in ['llm', 'hybrid']:
             rules['llm_validation'] = True
         
-        # Contains rule
-        contains = self._get_user_input("  Contains (comma-separated list): ", required=False)
-        if contains:
-            rules['contains'] = [item.strip() for item in contains.split(',') if item.strip()]
-        
-        # Excludes rule
-        excludes = self._get_user_input("  Excludes (comma-separated list): ", required=False)
-        if excludes:
-            rules['excludes'] = [item.strip() for item in excludes.split(',') if item.strip()]
-        
-        # Regex rule
-        regex = self._get_user_input("  Regex pattern: ", required=False)
-        if regex:
-            rules['regex'] = regex
-        
-        # Length rules
-        min_length = self._get_user_input("  Minimum length: ", required=False)
-        if min_length and min_length.isdigit():
-            rules['min_length'] = int(min_length)
-        
-        max_length = self._get_user_input("  Maximum length: ", required=False)
-        if max_length and max_length.isdigit():
-            rules['max_length'] = int(max_length)
+        # Skip rule-based validation rules for LLM mode
+        if validation_mode != 'llm':
+            # Contains rule
+            contains = self._get_user_input("  Contains (comma-separated list): ", required=False)
+            if contains:
+                rules['contains'] = [item.strip() for item in contains.split(',') if item.strip()]
+            
+            # Excludes rule
+            excludes = self._get_user_input("  Excludes (comma-separated list): ", required=False)
+            if excludes:
+                rules['excludes'] = [item.strip() for item in excludes.split(',') if item.strip()]
+            
+            # Regex rule
+            regex = self._get_user_input("  Regex pattern: ", required=False)
+            if regex:
+                rules['regex'] = regex
+            
+            # Length rules
+            min_length = self._get_user_input("  Minimum length: ", required=False)
+            if min_length and min_length.isdigit():
+                rules['min_length'] = int(min_length)
+            
+            max_length = self._get_user_input("  Maximum length: ", required=False)
+            if max_length and max_length.isdigit():
+                rules['max_length'] = int(max_length)
         
         # Artifact rules
         artifact_count = self._get_user_input("  Expected artifact count: ", required=False)
         if artifact_count and artifact_count.isdigit():
             rules['artifact_count'] = int(artifact_count)
         
-        artifact_types = self._get_user_input("  Expected artifact types (comma-separated): ", required=False)
+        artifact_types = self._get_user_input("  Expected artifact types (WorkflowExecution, ToolExecution, File, etc.): ", required=False)
         if artifact_types:
             rules['artifact_types'] = [item.strip() for item in artifact_types.split(',') if item.strip()]
         
