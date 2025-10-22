@@ -108,6 +108,29 @@ function Initialize-CommonStorage {
         Write-Host "Cosmos DB account '$cosmosDBAccountName' created."
     }
 
+    $storageContainers = @(
+        "orchestration-completion-requests",
+        "quota",
+        "resource-provider"
+    )
+
+    foreach ($containerName in $storageContainers) {
+        Write-Host "Ensuring storage container $containerName exists in storage account '$storageAccountName'..."
+        if ((az storage container list `
+            --account-name $storageAccountName `
+            --auth-mode login `
+            --query "[?name=='$($containerName)']" -o tsv).Count -eq 0) {
+            
+            az storage container create `
+                --account-name $storageAccountName `
+                --auth-mode login `
+                --name $containerName | Out-Null
+            Write-Host "Storage container '$containerName' created."
+        } else {
+            Write-Host "Storage container '$containerName' already exists."
+        }
+    }
+
     Write-Host "Ensuring Cosmos DB database $($resourceNames.CosmosDBDatabase) exists in account '$cosmosDBAccountName'..."
     if ((az cosmosdb sql database list `
         --account-name $cosmosDBAccountName `
@@ -122,14 +145,7 @@ function Initialize-CommonStorage {
         Write-Host "Cosmos DB database '$($resourceNames.CosmosDBDatabase)' created."
     }
 
-    $containers = @(
-        @{
-            Name = "Agents"
-            PartitionKeyPath = "[""/instanceId"",""/agentName""]"
-            HierarchicalPartitionKey = $true
-            MaxThroughput = 1000
-            TTL = -1
-        },
+    $cosmosDBContainers = @(
         @{
             Name = "Attachments"
             HierarchicalPartitionKey = $false
@@ -209,7 +225,7 @@ function Initialize-CommonStorage {
         }
     )
 
-    foreach ($container in $containers) {
+    foreach ($container in $cosmosDBContainers) {
         Initialize-CosmosDBContainer `
             -ResourceGroupName $resourceGroupName `
             -AccountName $cosmosDBAccountName `
