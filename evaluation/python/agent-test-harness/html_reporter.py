@@ -216,7 +216,7 @@ class HTMLReporter:
     </div>
     
     <script>
-        {self._get_javascript()}
+{self._get_javascript()}
     </script>
 </body>
 </html>
@@ -856,47 +856,46 @@ class HTMLReporter:
             status_class = test['status']
             status_text = test['status'].upper()
             
-            tests_html += f"""
-            <div class="test-item">
-                <div class="test-header" onclick="toggleTest('test-{test['index']}')">
-                    <div class="test-question">{test['question'][:100]}{'...' if len(test['question']) > 100 else ''}</div>
-                    <div class="test-status {status_class}">{status_text}</div>
-                </div>
-                <div class="test-details" id="test-{test['index']}">
-                    {self._generate_llm_validation_section(test)}
-                    <div class="answers-comparison">
-                        <div class="answer-column">
-                            <h4>🤖 Agent Answer</h4>
-                            <div class="test-answer-content">{test['agent_answer'] or 'No answer provided'}</div>
-                        </div>
-                        <div class="answer-column">
-                            <h4>🎯 Expected Answer</h4>
-                            <div class="test-answer-content">{test['expected_answer'] or 'No expected answer defined'}</div>
-                        </div>
-                    </div>
-                    {self._generate_artifacts_section(test)}
-                    {f'<div class="test-answer"><h4>Validation Details:</h4><div class="test-answer-content">{test["validation_details"]}</div></div>' if test['validation_details'] else ''}
-                    <div class="test-metrics">
-                        <div class="metric">
-                            <div class="metric-value">{test['tokens']}</div>
-                            <div class="metric-label">Tokens</div>
-                        </div>
-                        <div class="metric">
-                            <div class="metric-value">{test['duration']:.2f}s</div>
-                            <div class="metric-label">Duration</div>
-                        </div>
-                        <div class="metric">
-                            <div class="metric-value">{test['artifacts_count']}</div>
-                            <div class="metric-label">Artifacts</div>
-                        </div>
-                        <div class="metric">
-                            <div class="metric-value">{'❌' if test['code_failed'] else '✅'}</div>
-                            <div class="metric-label">Code Success</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            """
+            # Use a string with no indentation to avoid nesting issues
+            tests_html += f"""<div class="test-item">
+<div class="test-header" onclick="toggleTest('test-{test['index']}')">
+<div class="test-question">{test['question'][:100]}{'...' if len(test['question']) > 100 else ''}</div>
+<div class="test-status {status_class}">{status_text}</div>
+</div>
+<div class="test-details" id="test-{test['index']}">
+{self._generate_llm_validation_section(test)}
+<div class="answers-comparison">
+<div class="answer-column">
+<h4>🤖 Agent Answer</h4>
+<div class="test-answer-content">{test['agent_answer'] or 'No answer provided'}</div>
+</div>
+<div class="answer-column">
+<h4>🎯 Expected Answer</h4>
+<div class="test-answer-content">{test['expected_answer'] or 'No expected answer defined'}</div>
+</div>
+</div>
+{self._generate_artifacts_section(test)}
+{f'<div class="test-answer"><h4>Validation Details:</h4><div class="test-answer-content">{test["validation_details"]}</div></div>' if test['validation_details'] else ''}
+<div class="test-metrics">
+<div class="metric">
+<div class="metric-value">{test['tokens']}</div>
+<div class="metric-label">Tokens</div>
+</div>
+<div class="metric">
+<div class="metric-value">{test['duration']:.2f}s</div>
+<div class="metric-label">Duration</div>
+</div>
+<div class="metric">
+<div class="metric-value">{test['artifacts_count']}</div>
+<div class="metric-label">Artifacts</div>
+</div>
+<div class="metric">
+<div class="metric-value">{'❌' if test['code_failed'] else '✅'}</div>
+<div class="metric-label">Code Success</div>
+</div>
+</div>
+</div>
+</div>"""
         
         return tests_html
     
@@ -1050,39 +1049,37 @@ class HTMLReporter:
     
     def _get_javascript(self) -> str:
         """Get JavaScript for interactive features"""
-        return """
-        function toggleAgent(agentName) {
-            const content = document.getElementById('content-' + agentName);
-            const icon = document.getElementById('icon-' + agentName);
-            
-            if (content.classList.contains('expanded')) {
-                content.classList.remove('expanded');
-                icon.classList.remove('expanded');
-            } else {
-                content.classList.add('expanded');
-                icon.classList.add('expanded');
-            }
+        return """function toggleAgent(agentName) {
+    const content = document.getElementById('content-' + agentName);
+    const icon = document.getElementById('icon-' + agentName);
+    
+    if (content.classList.contains('expanded')) {
+        content.classList.remove('expanded');
+        icon.classList.remove('expanded');
+    } else {
+        content.classList.add('expanded');
+        icon.classList.add('expanded');
+    }
+}
+
+function toggleTest(testId) {
+    const content = document.getElementById(testId);
+    
+    if (content.classList.contains('expanded')) {
+        content.classList.remove('expanded');
+    } else {
+        content.classList.add('expanded');
+    }
+}
+
+// Auto-expand failed tests
+document.addEventListener('DOMContentLoaded', function() {
+    const failedTests = document.querySelectorAll('.test-status.failed, .test-status.error');
+    failedTests.forEach(function(testStatus) {
+        const testItem = testStatus.closest('.test-item');
+        const testHeader = testItem.querySelector('.test-header');
+        if (testHeader) {
+            testHeader.click();
         }
-        
-        function toggleTest(testId) {
-            const content = document.getElementById(testId);
-            
-            if (content.classList.contains('expanded')) {
-                content.classList.remove('expanded');
-            } else {
-                content.classList.add('expanded');
-            }
-        }
-        
-        // Auto-expand failed tests
-        document.addEventListener('DOMContentLoaded', function() {
-            const failedTests = document.querySelectorAll('.test-status.failed, .test-status.error');
-            failedTests.forEach(function(testStatus) {
-                const testItem = testStatus.closest('.test-item');
-                const testHeader = testItem.querySelector('.test-header');
-                if (testHeader) {
-                    testHeader.click();
-                }
-            });
-        });
-        """
+    });
+});"""

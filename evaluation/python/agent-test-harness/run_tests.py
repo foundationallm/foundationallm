@@ -171,7 +171,7 @@ Examples:
                 sys.exit(1)
             
             try:
-                with open(args.report_from_results, 'r') as f:
+                with open(args.report_from_results, 'r', encoding='utf-8') as f:
                     results = json.load(f)
                 
                 # Convert single result to multi-agent format if needed
@@ -212,7 +212,7 @@ Examples:
                 for json_file in json_files:
                     file_path = os.path.join(args.report_from_dir, json_file)
                     try:
-                        with open(file_path, 'r') as f:
+                        with open(file_path, 'r', encoding='utf-8') as f:
                             results = json.load(f)
                         
                         # Extract agent name from results
@@ -347,7 +347,7 @@ Examples:
         # Handle baseline operations
         if args.save_baseline and len(agents) == 1:
             baseline_path = os.path.join(args.output_dir, f"baseline-{agents[0]}.json")
-            with open(baseline_path, 'w') as f:
+            with open(baseline_path, 'w', encoding='utf-8') as f:
                 json.dump(all_results[agents[0]], f, indent=2)
             print(f"💾 Baseline saved: {baseline_path}")
         

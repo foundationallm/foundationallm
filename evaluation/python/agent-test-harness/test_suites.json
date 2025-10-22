@@ -53,5 +53,10 @@
     "csv_file": "test-data\\test-hybrid-validation\\TestQuestions-test-hybrid-validation.csv",
     "description": "Tests for test-hybrid-validation",
     "quick_mode_limit": 5
+  },
+  "multi-file-analysis": {
+    "csv_file": "test-data\\multi-file-analysis\\TestQuestions-multi-file-analysis.csv",
+    "description": "Tests for multi-file-analysis",
+    "quick_mode_limit": 5
   }
 }
