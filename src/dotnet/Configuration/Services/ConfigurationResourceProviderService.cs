@@ -250,14 +250,16 @@ namespace FoundationaLLM.Configuration.Services
 
             try
             {
-                var eventData = JsonSerializer.Deserialize<AppConfigurationEventData>(e.Data);
-                if (eventData == null)
-                    throw new ResourceProviderException("Invalid app configuration event data.");
+                var eventData = JsonSerializer.Deserialize<ResourceProviderEventData>(e.Data!)
+                    ?? throw new ResourceProviderException("Invalid app configuration event data.");
+                var configurationEventData = JsonSerializer.Deserialize<AppConfigurationEventData>(
+                    JsonSerializer.Serialize(eventData.Data!))
+                    ?? throw new ResourceProviderException("Invalid app configuration event data.");
 
                 _logger.LogInformation("The value [{AppConfigurationKey}] managed by the [{ResourceProvider}] resource provider has changed and will be reloaded.",
-                    eventData.Key, _name);
+                    configurationEventData.Key, _name);
 
-                var keyValue = await _appConfigurationService.GetConfigurationSettingAsync(eventData.Key);
+                var keyValue = await _appConfigurationService.GetConfigurationSettingAsync(configurationEventData.Key);
 
                 try
                 {
@@ -269,7 +271,7 @@ namespace FoundationaLLM.Configuration.Services
                 }
                 catch { }
 
-                _configuration[eventData.Key] = keyValue;
+                _configuration[configurationEventData.Key] = keyValue;
             }
             catch (Exception ex)
             {
