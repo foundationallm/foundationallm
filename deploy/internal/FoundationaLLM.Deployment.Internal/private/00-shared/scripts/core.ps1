@@ -13,7 +13,29 @@ function Get-ResourceNames {
         CoreStorageAccount      = "$($UniqueName.ToLower())fllmcorestorage"
         CosmosDBAccount         = "$UniqueName-cosmosdb"
         CosmosDBDatabase        = "database"
+        AuthStorageAccount      = "$($UniqueName.ToLower())fllmauthstorage"
+        AuthKeyVault            = "$UniqueName-auth-key-vault"
+
+        AuthorizationAPIManagedIdentity = "$UniqueName-mi-authorization-api"
+        ManagementAPIManagedIdentity    = "$UniqueName-mi-management-api"
+
+        AuthorizationAPIContainerApp = "$UniqueName-app-authorization-api"
+        ManagementAPIContainerApp    = "$UniqueName-app-management-api"
     }
 
     return $resourceNames
+}
+
+function Get-ContainerImageNames {
+    param (
+        [string]$ContainerRegistry,
+        [string]$Version
+    )
+
+    $containerImages = @{
+        AuthorizationAPI = "$ContainerRegistry/authorization-api:$Version"
+        ManagementAPI    = "$ContainerRegistry/management-api:$Version"
+    }
+
+    return $containerImages
 }
