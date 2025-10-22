@@ -1,0 +1,42 @@
+{
+  "code-interpreter": {
+    "csv_file": "test-data/code-interpreter/TestQuestions-code-interpreter.csv",
+    "description": "Tests for code execution and file generation",
+    "quick_mode_limit": 5
+  },
+  "document-analysis": {
+    "csv_file": "test-data/document-analysis/TestQuestions-document-analysis.csv",
+    "description": "Tests for document analysis and processing",
+    "quick_mode_limit": 3
+  },
+  "file-operations": {
+    "csv_file": "test-data/file-operations/TestQuestions-file-operations.csv",
+    "description": "Tests for file creation, conversion, and manipulation",
+    "quick_mode_limit": 4
+  },
+  "routing": {
+    "csv_file": "test-data/routing/TestQuestions-routing.csv",
+    "description": "Tests for agent routing and task delegation",
+    "quick_mode_limit": 5
+  },
+  "conversational": {
+    "csv_file": "test-data/conversational/TestQuestions-conversational.csv",
+    "description": "Tests for general conversation and Q&A",
+    "quick_mode_limit": 3
+  },
+  "knowledge-retrieval": {
+    "csv_file": "test-data/knowledge-retrieval/TestQuestions-knowledge-retrieval.csv",
+    "description": "Tests for knowledge base queries and retrieval",
+    "quick_mode_limit": 4
+  },
+  "dataframe-tests": {
+    "csv_file": "test-data/dataframe-tests/TestQuestions-dataframe-tests.csv",
+    "description": "Tests for dataframe-tests",
+    "quick_mode_limit": 5
+  },
+  "file-type-detection": {
+    "csv_file": "test-data\\file-type-detection\\TestQuestions-file-type-detection.csv",
+    "description": "Tests for file-type-detection",
+    "quick_mode_limit": 5
+  }
+}

@@ -5,3 +5,4 @@ uploads/
 test_results.json
 test_results*
 old_test_results*
+results/
