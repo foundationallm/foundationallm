@@ -1,20 +1,3 @@
-function Get-ResourceGroupNamesList {
-    param (
-        [Parameter(Mandatory = $true)]
-        [string[]]$UniqueName
-    )
-
-    $resourceGroupNames = @(
-        "core",
-        "auth",
-        "context",
-        "data",
-        "ai-foundry"
-    )
-
-    return $resourceGroupNames | ForEach-Object { "$($UniqueName)-$($_)" }
-}
-
 function Initialize-ResourceGroup {
     param (
         [Parameter(Mandatory = $true)]

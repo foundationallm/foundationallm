@@ -4,13 +4,17 @@ function Initialize-AuthorizationAPI {
         [string]$Location,
         [string]$AdminGroupObjectId,
         [string]$TenantId,
+        [string]$SubscriptionId,
         [string]$InstanceId,
         [string]$ContainerImage
     )
 
-    $authResourceGroupName = "$UniqueName-auth"
-    $coreResourceGroupName = "$UniqueName-core"
     $resourceNames = Get-ResourceNames -UniqueName $UniqueName
+    $resourceGroupNames = Get-ResourceGroupNames -UniqueName $UniqueName
+    $appRegistrationNames = Get-EntraIDAppRegistrationNames
+
+    $authResourceGroupName = $resourceGroupNames.Authorization
+    $coreResourceGroupName = $resourceGroupNames.Core
 
     $authStorageAccountName = $resourceNames.AuthStorageAccount
     $authKeyVaultName = $resourceNames.AuthKeyVault
@@ -77,29 +81,16 @@ function Initialize-AuthorizationAPI {
         Write-Host "Key Vault $authKeyVaultName already exists."
     }
 
-    Write-Host "Ensuring managed identities for Authorization API and Management API exist..."
+    Write-Host "Ensuring Authorization API managed identity exists..."
     $managedIdentities = @(
-        $resourceNames.AuthorizationAPIManagedIdentity,
-        $resourceNames.ManagementAPIManagedIdentity
+        $resourceNames.AuthorizationAPIManagedIdentity
     )
+    Initialize-ManagedIdentities `
+        -ManagedIdentityNames $managedIdentities `
+        -ResourceGroupName $coreResourceGroupName `
+        -Location $Location
 
-    foreach ($miName in $managedIdentities) {
-        if ((az identity list `
-            -g $coreResourceGroupName `
-            --query "[?name=='$($miName)']" -o tsv).Count -eq 0) {
-
-            Write-Host "Creating managed identity $miName in resource group $coreResourceGroupName..."
-            az identity create `
-                --name $miName `
-                --resource-group $coreResourceGroupName `
-                --location $Location | Out-Null
-            Write-Host "Managed identity $miName created."
-        } else {
-            Write-Host "Managed identity $miName already exists."
-        }
-    }
-
-    Write-Host "Ensuring role assignments for FoundationaLLM Admin group and Management API managed identity exist..."
+    Write-Host "Ensuring FoundationaLLM role assignments for FoundationaLLM Admin group and Management API managed identity exist..."
     if (-not (az storage blob exists `
         --account-name $authStorageAccountName `
         --auth-mode login `
@@ -119,7 +110,7 @@ function Initialize-AuthorizationAPI {
             "GUID02"                                           = [guid]::NewGuid().ToString()
             "GUID03"                                           = [guid]::NewGuid().ToString()
         }
-        Get-Content "$PSScriptRoot/../data/DefaultRoleAssignments.template.json" -Raw `
+        Get-Content "$PSScriptRoot/../data/foundationallm-role-assignments-template.json" -Raw `
             | ForEach-Object { 
                 Write-Output "$(Update-TemplateContent -TemplateContent $_ -Placeholders $placeholders)"
             } `
@@ -135,6 +126,25 @@ function Initialize-AuthorizationAPI {
         Write-Host "Role assignments for FoundationaLLM Admin group and Management API managed identity already exist."
     }
 
+    Write-Host "Ensuring Azure role assignments for Authorization API managed identity exist..."
+    Set-ManagedIdentityAzureRoleAssignments `
+        -SubscriptionId $SubscriptionId `
+        -ManagedIdentityType "AuthorizationAPIManagedIdentity" `
+        -ResourceGroupNames $resourceGroupNames `
+        -ResourceNames $resourceNames
+
+    Write-Host "Ensuring Authorization API key vault secrets exist..."
+    $keyVaultSecrets = Get-AuthorizationKeyVaultSecrets `
+        -ResourceGroupName $coreResourceGroupName `
+        -ResourceNames $resourceNames `
+        -TenantId $TenantId `
+        -InstanceId $InstanceId `
+        -EntraIDAppRegistrationName $appRegistrationNames.AuthorizationAPI
+    Set-KeyVaultSecrets `
+        -KeyVaultName $authKeyVaultName `
+        -Secrets $keyVaultSecrets
+
+    Write-Host "Ensuring Authorization API container app exists..."
     $environmentVariables = Get-AuthorizationEnvVars `
         -ResourceGroupName $coreResourceGroupName `
         -ResourceNames $resourceNames `
