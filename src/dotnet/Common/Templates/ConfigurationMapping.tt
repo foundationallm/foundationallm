@@ -1,0 +1,66 @@
+<#@ template debug="false" hostspecific="true" language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.IO" #>
+<#@ assembly name="System.Text.Json" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ assembly name="System.Memory" #>
+<#@ import namespace="System.Text.Json" #>
+<#@ import namespace="System.Text.Json.Nodes" #>
+<#@ output extension=".cs" #>
+<#
+    string inputFileName = this.Host.ResolvePath($"../Constants/Data/ConfigurationMapping.json");
+    string inputContent = File.ReadAllText(inputFileName);
+    var jsonObjects = JsonNode.Parse(inputContent)!;
+    Func<JsonNode, string> getName = n => n.GetValue<string>().Replace(":", "_");
+#>
+// -------------------------------------------------------------------------------
+//
+// WARNING!
+// This file is auto-generated based on the AppConfiguration.json file.
+// Do not make changes to this file, as they will be automatically overwritten.
+//
+// -------------------------------------------------------------------------------
+
+using Microsoft.Extensions.Configuration.AzureAppConfiguration;
+
+namespace FoundationaLLM.Common.Constants.Configuration
+{
+    /// <summary>
+    /// Defines methods to select configuration options.
+    /// </summary>
+    public static class ConfigurationOptions
+    {
+<#
+    foreach (var jsonObject in jsonObjects.AsArray())
+    {
+        var name = jsonObject["name"].GetValue<string>();
+#>
+        /// <summary>
+        /// Selects configuration options for <#=name#>.
+        /// </summary>
+        public static void SelectFor<#=name#>(
+            AzureAppConfigurationOptions options)
+        {
+<#
+        var configurationOptions = jsonObject["configuration_options"].AsArray();
+
+        foreach (var configurationOptionObject in configurationOptions)
+        {
+            var configurationOption = configurationOptionObject.GetValue<string>();
+            var configurationClass = "AppConfigurationKeys";
+            if (configurationOption.EndsWith(":*"))
+            {
+                configurationClass = "AppConfigurationKeyFilters";
+                configurationOption = configurationOption.Replace(":*", "");
+            }
+#>
+            options.Select(<#=configurationClass#>.FoundationaLLM_<#=getName(configurationOption)#>);
+<#
+        }
+#>
+        }
+<#
+    }
+#>
+    }
+}

@@ -10,6 +10,7 @@
         {
             "key": "FoundationaLLM:Instance:Id",
             "value": "${env:FOUNDATIONALLM_INSTANCE_ID}",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -17,6 +18,7 @@
         {
             "key": "FoundationaLLM:Instance:SecurityGroupRetrievalStrategy",
             "value": "IdentityManagementService",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -24,6 +26,7 @@
         {
             "key": "FoundationaLLM:Instance:IdentitySubstitutionSecurityPrincipalId",
             "value": "",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -31,6 +34,7 @@
         {
             "key": "FoundationaLLM:Instance:IdentitySubstitutionUserPrincipalNamePattern",
             "value": "",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -38,6 +42,7 @@
         {
             "key": "FoundationaLLM:Configuration:KeyVaultURI",
             "value": "${env:AZURE_KEY_VAULT_ENDPOINT}",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -45,6 +50,7 @@
         {
             "key": "FoundationaLLM:PythonSDK:Logging:LogLevel:Default",
             "value": "Information",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -52,6 +58,7 @@
         {
             "key": "FoundationaLLM:PythonSDK:Logging:LogLevel:Azure",
             "value": "Warning",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -59,6 +66,7 @@
         {
             "key": "FoundationaLLM:PythonSDK:Logging:EnableConsoleLogging",
             "value": "false",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -66,6 +74,7 @@
         {
             "key": "FoundationaLLM:Code:CodeExecution:AzureContainerAppsDynamicSessions:CodeInterpreter",
             "value": "{\"Endpoints\": {\"Python\":[], \"CSharp\":[]}",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "application/json",
             "tags": {}
@@ -73,6 +82,7 @@
         {
             "key": "FoundationaLLM:Code:CodeExecution:AzureContainerAppsDynamicSessions:CustomContainer",
             "value": "{\"Endpoints\": {\"Python\":[], \"CSharp\":[]}",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "application/json",
             "tags": {}
@@ -80,6 +90,7 @@
         {
             "key": "FoundationaLLM:ResourceProvidersCache:EnableCache",
             "value": "false",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -87,6 +98,7 @@
         {
             "key": "FoundationaLLM:ResourceProvidersCache:AbsoluteCacheExpirationSeconds",
             "value": "300",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -94,6 +106,7 @@
         {
             "key": "FoundationaLLM:ResourceProvidersCache:SlidingCacheExpirationSeconds",
             "value": "120",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -101,6 +114,7 @@
         {
             "key": "FoundationaLLM:ResourceProvidersCache:CacheSizeLimit",
             "value": "10000",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -108,6 +122,7 @@
         {
             "key": "FoundationaLLM:ResourceProvidersCache:CacheExpirationScanFrequencySeconds",
             "value": "30",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -115,6 +130,7 @@
         {
             "key": "FoundationaLLM:Quota:Storage:AuthenticationType",
             "value": "AzureIdentity",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -122,6 +138,7 @@
         {
             "key": "FoundationaLLM:Quota:Storage:AccountName",
             "value": "${env:AZURE_STORAGE_ACCOUNT_NAME}",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -129,6 +146,7 @@
         {
             "key": "FoundationaLLM:ResourceProviders:AIModel:Storage:AuthenticationType",
             "value": "AzureIdentity",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -136,6 +154,7 @@
         {
             "key": "FoundationaLLM:ResourceProviders:AIModel:Storage:AccountName",
             "value": "${env:AZURE_STORAGE_ACCOUNT_NAME}",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -143,6 +162,7 @@
         {
             "key": "FoundationaLLM:ResourceProviders:Agent:Storage:AuthenticationType",
             "value": "AzureIdentity",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -150,6 +170,7 @@
         {
             "key": "FoundationaLLM:ResourceProviders:Agent:Storage:AccountName",
             "value": "${env:AZURE_STORAGE_ACCOUNT_NAME}",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -157,6 +178,7 @@
         {
             "key": "FoundationaLLM:ResourceProviders:AzureAI:Storage:AuthenticationType",
             "value": "AzureIdentity",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -164,6 +186,7 @@
         {
             "key": "FoundationaLLM:ResourceProviders:AzureAI:Storage:AccountName",
             "value": "${env:AZURE_STORAGE_ACCOUNT_NAME}",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -171,6 +194,7 @@
         {
             "key": "FoundationaLLM:ResourceProviders:Attachment:Storage:AuthenticationType",
             "value": "AzureIdentity",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -178,6 +202,7 @@
         {
             "key": "FoundationaLLM:ResourceProviders:Attachment:Storage:AccountName",
             "value": "${env:AZURE_STORAGE_ACCOUNT_NAME}",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -185,6 +210,7 @@
         {
             "key": "FoundationaLLM:ResourceProviders:Configuration:Storage:AuthenticationType",
             "value": "AzureIdentity",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -192,6 +218,7 @@
         {
             "key": "FoundationaLLM:ResourceProviders:Configuration:Storage:AccountName",
             "value": "${env:AZURE_STORAGE_ACCOUNT_NAME}",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -199,6 +226,7 @@
         {
             "key": "FoundationaLLM:ResourceProviders:DataSource:Storage:AuthenticationType",
             "value": "AzureIdentity",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -206,6 +234,7 @@
         {
             "key": "FoundationaLLM:ResourceProviders:DataSource:Storage:AccountName",
             "value": "${env:AZURE_STORAGE_ACCOUNT_NAME}",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -213,6 +242,7 @@
         {
             "key": "FoundationaLLM:ResourceProviders:Prompt:Storage:AuthenticationType",
             "value": "AzureIdentity",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -220,6 +250,7 @@
         {
             "key": "FoundationaLLM:ResourceProviders:Prompt:Storage:AccountName",
             "value": "${env:AZURE_STORAGE_ACCOUNT_NAME}",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -227,6 +258,7 @@
         {
             "key": "FoundationaLLM:ResourceProviders:Vectorization:Storage:AuthenticationType",
             "value": "AzureIdentity",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -234,6 +266,7 @@
         {
             "key": "FoundationaLLM:ResourceProviders:Vectorization:Storage:AccountName",
             "value": "${env:AZURE_STORAGE_ACCOUNT_NAME}",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -241,6 +274,7 @@
         {
             "key": "FoundationaLLM:ResourceProviders:DataPipeline:Storage:AuthenticationType",
             "value": "AzureIdentity",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -248,6 +282,7 @@
         {
             "key": "FoundationaLLM:ResourceProviders:DataPipeline:Storage:AccountName",
             "value": "${env:AZURE_STORAGE_ACCOUNT_NAME}",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -255,6 +290,7 @@
         {
             "key": "FoundationaLLM:ResourceProviders:Plugin:Storage:AuthenticationType",
             "value": "AzureIdentity",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -262,6 +298,7 @@
         {
             "key": "FoundationaLLM:ResourceProviders:Plugin:Storage:AccountName",
             "value": "${env:AZURE_STORAGE_ACCOUNT_NAME}",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -269,6 +306,7 @@
         {
             "key": "FoundationaLLM:ResourceProviders:Vector:Storage:AuthenticationType",
             "value": "AzureIdentity",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -276,6 +314,7 @@
         {
             "key": "FoundationaLLM:ResourceProviders:Vector:Storage:AccountName",
             "value": "${env:AZURE_STORAGE_ACCOUNT_NAME}",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -283,6 +322,7 @@
         {
             "key": "FoundationaLLM:ResourceProviders:Context:Storage:AuthenticationType",
             "value": "AzureIdentity",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -290,6 +330,7 @@
         {
             "key": "FoundationaLLM:ResourceProviders:Context:Storage:AccountName",
             "value": "${env:CONTEXTAPI_KNOWLEDGESERVICE_AZURE_STORAGE_ACCOUNT_NAME}",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -297,6 +338,7 @@
         {
             "key": "FoundationaLLM:APIEndpoints:AuthorizationAPI:Essentials:APIUrl",
             "value": "${env:SERVICE_AUTH_API_ENDPOINT_URL}",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -304,6 +346,7 @@
         {
             "key": "FoundationaLLM:APIEndpoints:AuthorizationAPI:Essentials:APIScope",
             "value": "${env:ENTRA_AUTH_API_SCOPES}",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -311,6 +354,7 @@
         {
             "key": "FoundationaLLM:APIEndpoints:AuthorizationAPI:Essentials:EnableCache",
             "value": "false",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -318,6 +362,7 @@
         {
             "key": "FoundationaLLM:APIEndpoints:AuthorizationAPI:Essentials:AbsoluteCacheExpirationSeconds",
             "value": "300",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -325,6 +370,7 @@
         {
             "key": "FoundationaLLM:APIEndpoints:AuthorizationAPI:Essentials:SlidingCacheExpirationSeconds",
             "value": "120",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -332,6 +378,7 @@
         {
             "key": "FoundationaLLM:APIEndpoints:AuthorizationAPI:Essentials:CacheSizeLimit",
             "value": "10000",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -339,6 +386,7 @@
         {
             "key": "FoundationaLLM:APIEndpoints:AuthorizationAPI:Essentials:CacheExpirationScanFrequencySeconds",
             "value": "30",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -346,6 +394,7 @@
         {
             "key": "FoundationaLLM:APIEndpoints:CoreAPI:Essentials:APIUrl",
             "value": "${env:SERVICE_CORE_API_ENDPOINT_URL}",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -353,6 +402,7 @@
         {
             "key": "FoundationaLLM:APIEndpoints:CoreAPI:Essentials:AppInsightsConnectionString",
             "value": "{\"uri\":\"${env:AZURE_KEY_VAULT_ENDPOINT}secrets/foundationallm-appinsights-connectionstring\"}",
+            "key_vault_secret_name": "foundationallm-appinsights-connectionstring",
             "label": null,
             "content_type": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8",
             "tags": {}
@@ -360,6 +410,7 @@
         {
             "key": "FoundationaLLM:APIEndpoints:CoreAPI:Configuration:BypassGatekeeper",
             "value": "true",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -367,6 +418,7 @@
         {
             "key": "FoundationaLLM:APIEndpoints:CoreAPI:Configuration:AzureOpenAIAssistantsFileSearchFileExtensions",
             "value": "c, cpp, cs, css, doc, docx, html, java, js, json, md, pdf, php, pptx, py, rb, sh, tex, ts, txt",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -374,6 +426,7 @@
         {
             "key": "FoundationaLLM:APIEndpoints:CoreAPI:Configuration:AzureAIAgentsFileSearchFileExtensions",
             "value": "c, cpp, cs, css, doc, docx, html, java, js, json, md, pdf, php, pptx, py, rb, sh, tex, ts, txt",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -381,6 +434,7 @@
         {
             "key": "FoundationaLLM:APIEndpoints:CoreAPI:Configuration:AllowedUploadFileExtensions",
             "value": "c, cpp, cs, css, csv, doc, docx, gif, html, java, jpeg, jpg, js, json, md, pdf, php, png, pptx, py, rb, sh, tar, tex, ts, txt, xlsx, xml, zip",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -388,6 +442,7 @@
         {
             "key": "FoundationaLLM:APIEndpoints:CoreAPI:Configuration:MaxUploadsPerMessage",
             "value": "{ \"value\": 10, \"value_exceptions\": []}",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "application/json",
             "tags": {}
@@ -395,6 +450,7 @@
         {
             "key": "FoundationaLLM:APIEndpoints:CoreAPI:Configuration:CompletionResponsePollingIntervalMilliseconds",
             "value": "{ \"value\": 10, \"value_exceptions\": []}",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "application/json",
             "tags": {}
@@ -402,6 +458,7 @@
         {
             "key": "FoundationaLLM:APIEndpoints:CoreAPI:Configuration:Entra:Instance",
             "value": "https://login.microsoftonline.com/",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -409,6 +466,7 @@
         {
             "key": "FoundationaLLM:APIEndpoints:CoreAPI:Configuration:Entra:TenantId",
             "value": "${env:ENTRA_CORE_API_TENANT_ID}",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -416,6 +474,7 @@
         {
             "key": "FoundationaLLM:APIEndpoints:CoreAPI:Configuration:Entra:Scopes",
             "value": "Data.Read",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -423,6 +482,7 @@
         {
             "key": "FoundationaLLM:APIEndpoints:CoreAPI:Configuration:Entra:CallbackPath",
             "value": "/signin-oidc",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -430,6 +490,7 @@
         {
             "key": "FoundationaLLM:APIEndpoints:CoreAPI:Configuration:Entra:ClientId",
             "value": "${env:ENTRA_CORE_API_CLIENT_ID}",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -437,6 +498,7 @@
         {
             "key": "FoundationaLLM:APIEndpoints:CoreAPI:Configuration:Entra:RequireScopes",
             "value": "true",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -444,6 +506,7 @@
         {
             "key": "FoundationaLLM:APIEndpoints:CoreAPI:Configuration:Entra:AllowACLAuthorization",
             "value": "false",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -451,6 +514,7 @@
         {
             "key": "FoundationaLLM:APIEndpoints:CoreAPI:Configuration:CosmosDB:Endpoint",
             "value": "${env:AZURE_COSMOS_DB_ENDPOINT}",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -458,6 +522,7 @@
         {
             "key": "FoundationaLLM:APIEndpoints:CoreAPI:Configuration:CosmosDB:Database",
             "value": "database",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -465,6 +530,7 @@
         {
             "key": "FoundationaLLM:APIEndpoints:CoreAPI:Configuration:CosmosDB:Containers",
             "value": "Sessions, UserSessions, UserProfiles",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -472,6 +538,7 @@
         {
             "key": "FoundationaLLM:APIEndpoints:CoreAPI:Configuration:CosmosDB:MonitoredContainers",
             "value": "Sessions",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -479,6 +546,7 @@
         {
             "key": "FoundationaLLM:APIEndpoints:CoreAPI:Configuration:CosmosDB:ChangeFeedLeaseContainer",
             "value": "leases",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -486,6 +554,7 @@
         {
             "key": "FoundationaLLM:APIEndpoints:CoreWorker:Essentials:APIKey",
             "value": "{\"uri\":\"${env:AZURE_KEY_VAULT_ENDPOINT}secrets/foundationallm-apiendpoints-coreworker-apikey\"}",
+            "key_vault_secret_name": "foundationallm-apiendpoints-coreworker-apikey",
             "label": null,
             "content_type": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8",
             "tags": {}
@@ -493,6 +562,7 @@
         {
             "key": "FoundationaLLM:APIEndpoints:CoreWorker:Essentials:AppInsightsConnectionString",
             "value": "{\"uri\":\"${env:AZURE_KEY_VAULT_ENDPOINT}secrets/foundationallm-appinsights-connectionstring\"}",
+            "key_vault_secret_name": "foundationallm-appinsights-connectionstring",
             "label": null,
             "content_type": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8",
             "tags": {}
@@ -500,6 +570,7 @@
         {
             "key": "FoundationaLLM:APIEndpoints:GatekeeperAPI:Essentials:APIKey",
             "value": "{\"uri\":\"${env:AZURE_KEY_VAULT_ENDPOINT}secrets/foundationallm-apiendpoints-gatekeeperapi-apikey\"}",
+            "key_vault_secret_name": "foundationallm-apiendpoints-gatekeeperapi-apikey",
             "label": null,
             "content_type": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8",
             "tags": {}
@@ -507,6 +578,7 @@
         {
             "key": "FoundationaLLM:APIEndpoints:GatekeeperAPI:Essentials:AppInsightsConnectionString",
             "value": "{\"uri\":\"${env:AZURE_KEY_VAULT_ENDPOINT}secrets/foundationallm-appinsights-connectionstring\"}",
+            "key_vault_secret_name": "foundationallm-appinsights-connectionstring",
             "label": null,
             "content_type": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8",
             "tags": {}
@@ -514,6 +586,7 @@
         {
             "key": "FoundationaLLM:APIEndpoints:GatekeeperAPI:Configuration:EnableLakeraGuard",
             "value": "false",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -521,6 +594,7 @@
         {
             "key": "FoundationaLLM:APIEndpoints:GatekeeperAPI:Configuration:EnableEnkryptGuardrails",
             "value": "false",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -528,6 +602,7 @@
         {
             "key": "FoundationaLLM:APIEndpoints:GatekeeperAPI:Configuration:EnableAzureContentSafety",
             "value": "false",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -535,6 +610,7 @@
         {
             "key": "FoundationaLLM:APIEndpoints:GatekeeperAPI:Configuration:EnableAzureContentSafetyPromptShields",
             "value": "false",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -542,6 +618,7 @@
         {
             "key": "FoundationaLLM:APIEndpoints:GatekeeperAPI:Configuration:EnableMicrosoftPresidio",
             "value": "false",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -549,6 +626,7 @@
         {
             "key": "FoundationaLLM:APIEndpoints:GatekeeperIntegrationAPI:Essentials:APIKey",
             "value": "{\"uri\":\"${env:AZURE_KEY_VAULT_ENDPOINT}secrets/foundationallm-apiendpoints-gatekeeperintegrationapi-apikey\"}",
+            "key_vault_secret_name": "foundationallm-apiendpoints-gatekeeperintegrationapi-apikey",
             "label": null,
             "content_type": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8",
             "tags": {}
@@ -556,6 +634,7 @@
         {
             "key": "FoundationaLLM:APIEndpoints:GatekeeperIntegrationAPI:Essentials:AppInsightsConnectionString",
             "value": "{\"uri\":\"${env:AZURE_KEY_VAULT_ENDPOINT}secrets/foundationallm-appinsights-connectionstring\"}",
+            "key_vault_secret_name": "foundationallm-appinsights-connectionstring",
             "label": null,
             "content_type": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8",
             "tags": {}
@@ -563,6 +642,7 @@
         {
             "key": "FoundationaLLM:APIEndpoints:OrchestrationAPI:Essentials:APIKey",
             "value": "{\"uri\":\"${env:AZURE_KEY_VAULT_ENDPOINT}secrets/foundationallm-apiendpoints-orchestrationapi-apikey\"}",
+            "key_vault_secret_name": "foundationallm-apiendpoints-orchestrationapi-apikey",
             "label": null,
             "content_type": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8",
             "tags": {}
@@ -570,6 +650,7 @@
         {
             "key": "FoundationaLLM:APIEndpoints:OrchestrationAPI:Essentials:AppInsightsConnectionString",
             "value": "{\"uri\":\"${env:AZURE_KEY_VAULT_ENDPOINT}secrets/foundationallm-appinsights-connectionstring\"}",
+            "key_vault_secret_name": "foundationallm-appinsights-connectionstring",
             "label": null,
             "content_type": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8",
             "tags": {}
@@ -577,6 +658,7 @@
         {
             "key": "FoundationaLLM:APIEndpoints:OrchestrationAPI:Configuration:CompletionRequestsStorage:AccountName",
             "value": "${env:AZURE_STORAGE_ACCOUNT_NAME}",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -584,6 +666,7 @@
         {
             "key": "FoundationaLLM:APIEndpoints:OrchestrationAPI:Configuration:CompletionRequestsStorage:AuthenticationType",
             "value": "AzureIdentity",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -591,6 +674,7 @@
         {
             "key": "FoundationaLLM:APIEndpoints:OrchestrationAPI:Configuration:CompletionRequestsStorage:ContainerName",
             "value": "orchestration-completion-requests",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -598,6 +682,7 @@
         {
             "key": "FoundationaLLM:APIEndpoints:LangChainAPI:Essentials:APIKey",
             "value": "{\"uri\":\"${env:AZURE_KEY_VAULT_ENDPOINT}secrets/foundationallm-apiendpoints-langchainapi-apikey\"}",
+            "key_vault_secret_name": "foundationallm-apiendpoints-langchainapi-apikey",
             "label": null,
             "content_type": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8",
             "tags": {}
@@ -605,6 +690,7 @@
         {
             "key": "FoundationaLLM:APIEndpoints:LangChainAPI:Essentials:AppInsightsConnectionString",
             "value": "{\"uri\":\"${env:AZURE_KEY_VAULT_ENDPOINT}secrets/foundationallm-appinsights-connectionstring\"}",
+            "key_vault_secret_name": "foundationallm-appinsights-connectionstring",
             "label": null,
             "content_type": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8",
             "tags": {}
@@ -612,6 +698,7 @@
         {
             "key": "FoundationaLLM:APIEndpoints:LangChainAPI:Configuration:PollingIntervalSeconds",
             "value": "10",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -619,6 +706,7 @@
         {
             "key": "FoundationaLLM:APIEndpoints:LangChainAPI:Configuration:ExternalModules:Storage:AccountName",
             "value": "${env:AZURE_STORAGE_ACCOUNT_NAME}",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -626,6 +714,7 @@
         {
             "key": "FoundationaLLM:APIEndpoints:LangChainAPI:Configuration:ExternalModules:Storage:AuthenticationType",
             "value": "AzureIdentity",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -633,6 +722,7 @@
         {
             "key": "FoundationaLLM:APIEndpoints:SemanticKernelAPI:Essentials:APIKey",
             "value": "{\"uri\":\"${env:AZURE_KEY_VAULT_ENDPOINT}secrets/foundationallm-apiendpoints-semantickernelapi-apikey\"}",
+            "key_vault_secret_name": "foundationallm-apiendpoints-semantickernelapi-apikey",
             "label": null,
             "content_type": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8",
             "tags": {}
@@ -640,6 +730,7 @@
         {
             "key": "FoundationaLLM:APIEndpoints:SemanticKernelAPI:Essentials:AppInsightsConnectionString",
             "value": "{\"uri\":\"${env:AZURE_KEY_VAULT_ENDPOINT}secrets/foundationallm-appinsights-connectionstring\"}",
+            "key_vault_secret_name": "foundationallm-appinsights-connectionstring",
             "label": null,
             "content_type": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8",
             "tags": {}
@@ -647,6 +738,7 @@
         {
             "key": "FoundationaLLM:APIEndpoints:SemanticKernelAPI:Configuration:MaxConcurrentCompletions",
             "value": "20",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -654,6 +746,7 @@
         {
             "key": "FoundationaLLM:APIEndpoints:ManagementAPI:Essentials:APIUrl",
             "value": "${env:SERVICE_MANAGEMENT_API_ENDPOINT_URL}",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -661,6 +754,7 @@
         {
             "key": "FoundationaLLM:APIEndpoints:ManagementAPI:Essentials:AppInsightsConnectionString",
             "value": "{\"uri\":\"${env:AZURE_KEY_VAULT_ENDPOINT}secrets/foundationallm-appinsights-connectionstring\"}",
+            "key_vault_secret_name": "foundationallm-appinsights-connectionstring",
             "label": null,
             "content_type": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8",
             "tags": {}
@@ -668,6 +762,7 @@
         {
             "key": "FoundationaLLM:APIEndpoints:ManagementAPI:Configuration:Entra:Instance",
             "value": "https://login.microsoftonline.com/",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -675,6 +770,7 @@
         {
             "key": "FoundationaLLM:APIEndpoints:ManagementAPI:Configuration:Entra:TenantId",
             "value": "${env:ENTRA_MANAGEMENT_API_TENANT_ID}",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -682,6 +778,7 @@
         {
             "key": "FoundationaLLM:APIEndpoints:ManagementAPI:Configuration:Entra:Scopes",
             "value": "${env:ENTRA_MANAGEMENT_API_SCOPES}",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -689,6 +786,7 @@
         {
             "key": "FoundationaLLM:APIEndpoints:ManagementAPI:Configuration:Entra:CallbackPath",
             "value": "/signin-oidc",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -696,6 +794,7 @@
         {
             "key": "FoundationaLLM:APIEndpoints:ManagementAPI:Configuration:Entra:ClientId",
             "value": "${env:ENTRA_MANAGEMENT_API_CLIENT_ID}",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -703,6 +802,7 @@
         {
             "key": "FoundationaLLM:APIEndpoints:ManagementAPI:Configuration:AllowedUploadFileExtensions",
             "value": "c, cpp, cs, css, csv, doc, docx, gif, html, java, jpeg, jpg, js, json, md, pdf, php, png, pptx, py, rb, sh, tar, tex, ts, txt, xlsx, xml, zip",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -710,6 +810,7 @@
         {
             "key": "FoundationaLLM:APIEndpoints:VectorizationAPI:Essentials:APIKey",
             "value": "{\"uri\":\"${env:AZURE_KEY_VAULT_ENDPOINT}secrets/foundationallm-apiendpoints-vectorizationapi-apikey\"}",
+            "key_vault_secret_name": "foundationallm-apiendpoints-vectorizationapi-apikey",
             "label": null,
             "content_type": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8",
             "tags": {}
@@ -717,6 +818,7 @@
         {
             "key": "FoundationaLLM:APIEndpoints:VectorizationAPI:Essentials:AppInsightsConnectionString",
             "value": "{\"uri\":\"${env:AZURE_KEY_VAULT_ENDPOINT}secrets/foundationallm-appinsights-connectionstring\"}",
+            "key_vault_secret_name": "foundationallm-appinsights-connectionstring",
             "label": null,
             "content_type": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8",
             "tags": {}
@@ -724,6 +826,7 @@
         {
             "key": "FoundationaLLM:APIEndpoints:VectorizationWorker:Essentials:APIKey",
             "value": "{\"uri\":\"${env:AZURE_KEY_VAULT_ENDPOINT}secrets/foundationallm-apiendpoints-vectorizationworker-apikey\"}",
+            "key_vault_secret_name": "foundationallm-apiendpoints-vectorizationworker-apikey",
             "label": null,
             "content_type": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8",
             "tags": {}
@@ -731,6 +834,7 @@
         {
             "key": "FoundationaLLM:APIEndpoints:VectorizationWorker:Essentials:AppInsightsConnectionString",
             "value": "{\"uri\":\"${env:AZURE_KEY_VAULT_ENDPOINT}secrets/foundationallm-appinsights-connectionstring\"}",
+            "key_vault_secret_name": "foundationallm-appinsights-connectionstring",
             "label": null,
             "content_type": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8",
             "tags": {}
@@ -738,6 +842,7 @@
         {
             "key": "FoundationaLLM:DataPipeline:State:CosmosDB:Endpoint",
             "value": "${env:AZURE_COSMOS_DB_ENDPOINT}",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -745,6 +850,7 @@
         {
             "key": "FoundationaLLM:DataPipeline:State:CosmosDB:Database",
             "value": "database",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -752,6 +858,7 @@
         {
             "key": "FoundationaLLM:DataPipeline:State:CosmosDB:Containers",
             "value": "Context",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -759,6 +866,7 @@
         {
             "key": "FoundationaLLM:DataPipeline:State:Storage:AccountName",
             "value": "${env:DATAPIPELINESTATE_AZURE_STORAGE_ACCOUNT_NAME}",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -766,6 +874,7 @@
         {
             "key": "FoundationaLLM:DataPipeline:State:Storage:AuthenticationType",
             "value": "AzureIdentity",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -773,6 +882,7 @@
         {
             "key": "FoundationaLLM:APIEndpoints:DataPipelineAPI:Essentials:APIKey",
             "value": "{\"uri\":\"${env:AZURE_KEY_VAULT_ENDPOINT}secrets/foundationallm-apiendpoints-datapipelineapi-apikey\"}",
+            "key_vault_secret_name": "foundationallm-apiendpoints-datapipelineapi-apikey",
             "label": null,
             "content_type": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8",
             "tags": {}
@@ -780,6 +890,7 @@
         {
             "key": "FoundationaLLM:APIEndpoints:DataPipelineAPI:Essentials:AppInsightsConnectionString",
             "value": "{\"uri\":\"${env:AZURE_KEY_VAULT_ENDPOINT}secrets/foundationallm-appinsights-connectionstring\"}",
+            "key_vault_secret_name": "foundationallm-appinsights-connectionstring",
             "label": null,
             "content_type": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8",
             "tags": {}
@@ -787,6 +898,7 @@
         {
             "key": "FoundationaLLM:APIEndpoints:DataPipelineAPI:Configuration:Storage:AccountName",
             "value": "${env:DATAPIPELINEAPI_AZURE_STORAGE_ACCOUNT_NAME}",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -794,6 +906,7 @@
         {
             "key": "FoundationaLLM:APIEndpoints:DataPipelineAPI:Configuration:Storage:AuthenticationType",
             "value": "AzureIdentity",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -801,6 +914,7 @@
         {
             "key": "FoundationaLLM:APIEndpoints:DataPipelineAPI:Configuration:FrontendWorkerQueue",
             "value": "frontend-worker",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -808,6 +922,7 @@
         {
             "key": "FoundationaLLM:APIEndpoints:DataPipelineAPI:Configuration:BackendWorkerQueue",
             "value": "backend-worker",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -815,6 +930,7 @@
         {
             "key": "FoundationaLLM:APIEndpoints:DataPipelineFrontendWorker:Essentials:APIKey",
             "value": "{\"uri\":\"${env:AZURE_KEY_VAULT_ENDPOINT}secrets/foundationallm-apiendpoints-datapipelinefrontendworker-apikey\"}",
+            "key_vault_secret_name": "foundationallm-apiendpoints-datapipelinefrontendworker-apikey",
             "label": null,
             "content_type": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8",
             "tags": {}
@@ -822,6 +938,7 @@
         {
             "key": "FoundationaLLM:APIEndpoints:DataPipelineFrontendWorker:Essentials:AppInsightsConnectionString",
             "value": "{\"uri\":\"${env:AZURE_KEY_VAULT_ENDPOINT}secrets/foundationallm-appinsights-connectionstring\"}",
+            "key_vault_secret_name": "foundationallm-appinsights-connectionstring",
             "label": null,
             "content_type": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8",
             "tags": {}
@@ -829,6 +946,7 @@
         {
             "key": "FoundationaLLM:APIEndpoints:DataPipelineFrontendWorker:Configuration:Storage:AccountName",
             "value": "${env:DATAPIPELINEFRONTENDWORKER_AZURE_STORAGE_ACCOUNT_NAME}",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -836,6 +954,7 @@
         {
             "key": "FoundationaLLM:APIEndpoints:DataPipelineFrontendWorker:Configuration:Storage:AuthenticationType",
             "value": "AzureIdentity",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -843,6 +962,7 @@
         {
             "key": "FoundationaLLM:APIEndpoints:DataPipelineFrontendWorker:Configuration:Queue",
             "value": "frontend-worker",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -850,6 +970,7 @@
         {
             "key": "FoundationaLLM:APIEndpoints:DataPipelineFrontendWorker:Configuration:ParallelProcessorsCount",
             "value": "10",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -857,6 +978,7 @@
         {
             "key": "FoundationaLLM:APIEndpoints:DataPipelineBackendWorker:Essentials:APIKey",
             "value": "{\"uri\":\"${env:AZURE_KEY_VAULT_ENDPOINT}secrets/foundationallm-apiendpoints-datapipelinebackendworker-apikey\"}",
+            "key_vault_secret_name": "foundationallm-apiendpoints-datapipelinebackendworker-apikey",
             "label": null,
             "content_type": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8",
             "tags": {}
@@ -864,6 +986,7 @@
         {
             "key": "FoundationaLLM:APIEndpoints:DataPipelineBackendWorker:Essentials:AppInsightsConnectionString",
             "value": "{\"uri\":\"${env:AZURE_KEY_VAULT_ENDPOINT}secrets/foundationallm-appinsights-connectionstring\"}",
+            "key_vault_secret_name": "foundationallm-appinsights-connectionstring",
             "label": null,
             "content_type": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8",
             "tags": {}
@@ -871,6 +994,7 @@
         {
             "key": "FoundationaLLM:APIEndpoints:DataPipelineBackendWorker:Configuration:Storage:AccountName",
             "value": "${env:DATAPIPELINEBACKENDWORKER_AZURE_STORAGE_ACCOUNT_NAME}",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -878,6 +1002,7 @@
         {
             "key": "FoundationaLLM:APIEndpoints:DataPipelineBackendWorker:Configuration:Storage:AuthenticationType",
             "value": "AzureIdentity",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -885,6 +1010,7 @@
         {
             "key": "FoundationaLLM:APIEndpoints:DataPipelineBackendWorker:Configuration:Queue",
             "value": "backend-worker",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -892,6 +1018,7 @@
         {
             "key": "FoundationaLLM:APIEndpoints:DataPipelineBackendWorker:Configuration:ParallelProcessorsCount",
             "value": "10",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -899,6 +1026,7 @@
         {
             "key": "FoundationaLLM:APIEndpoints:ContextAPI:Essentials:APIKey",
             "value": "{\"uri\":\"${env:AZURE_KEY_VAULT_ENDPOINT}secrets/foundationallm-apiendpoints-contextapi-apikey\"}",
+            "key_vault_secret_name": "foundationallm-apiendpoints-contextapi-apikey",
             "label": null,
             "content_type": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8",
             "tags": {}
@@ -906,6 +1034,7 @@
         {
             "key": "FoundationaLLM:APIEndpoints:ContextAPI:Essentials:AppInsightsConnectionString",
             "value": "{\"uri\":\"${env:AZURE_KEY_VAULT_ENDPOINT}secrets/foundationallm-appinsights-connectionstring\"}",
+            "key_vault_secret_name": "foundationallm-appinsights-connectionstring",
             "label": null,
             "content_type": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8",
             "tags": {}
@@ -913,6 +1042,7 @@
         {
             "key": "FoundationaLLM:APIEndpoints:ContextAPI:Configuration:FileService:Storage:AccountName",
             "value": "${env:CONTEXTAPI_FILESERVICE_AZURE_STORAGE_ACCOUNT_NAME}",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -920,6 +1050,7 @@
         {
             "key": "FoundationaLLM:APIEndpoints:ContextAPI:Configuration:FileService:Storage:AuthenticationType",
             "value": "AzureIdentity",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -927,6 +1058,7 @@
         {
             "key": "FoundationaLLM:APIEndpoints:ContextAPI:Configuration:FileService:CosmosDB:Endpoint",
             "value": "${env:AZURE_COSMOS_DB_ENDPOINT}",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -934,6 +1066,7 @@
         {
             "key": "FoundationaLLM:APIEndpoints:ContextAPI:Configuration:FileService:CosmosDB:Database",
             "value": "database",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -941,6 +1074,7 @@
         {
             "key": "FoundationaLLM:APIEndpoints:ContextAPI:Configuration:FileService:CosmosDB:Containers",
             "value": "Context",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -948,6 +1082,7 @@
         {
             "key": "FoundationaLLM:APIEndpoints:ContextAPI:Configuration:FileService:KnowledgeSearchFileExtensions",
             "value": "c, cpp, cs, css, doc, docx, html, java, js, json, md, pdf, php, pptx, py, rb, sh, tex, ts, txt, gif, jpeg, jpg, png",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -955,6 +1090,7 @@
         {
             "key": "FoundationaLLM:APIEndpoints:ContextAPI:Configuration:FileService:KnowledgeSearchContextFileExtensions",
             "value": "c, cs, cpp, css, html, java, js, json, jsonl, md, php, py, rb, sh, ts, tex, txt, gif, jpeg, jpg, png",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -962,6 +1098,7 @@
         {
             "key": "FoundationaLLM:APIEndpoints:ContextAPI:Configuration:FileService:KnowledgeSearchContextFileMaxSizeBytes",
             "value": "{\"c,cs,cpp,html,java,js,json,jsonl,md,php,py,rb,sh,ts,tex,txt\": 25000, \"gif,jpeg,jpg,png\":500000}",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -969,6 +1106,7 @@
         {
             "key": "FoundationaLLM:APIEndpoints:ContextAPI:Configuration:KnowledgeService:Storage:AccountName",
             "value": "${env:CONTEXTAPI_KNOWLEDGESERVICE_AZURE_STORAGE_ACCOUNT_NAME}",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -976,6 +1114,7 @@
         {
             "key": "FoundationaLLM:APIEndpoints:ContextAPI:Configuration:KnowledgeService:Storage:AuthenticationType",
             "value": "AzureIdentity",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -983,6 +1122,7 @@
         {
             "key": "FoundationaLLM:APIEndpoints:ContextAPI:Configuration:KnowledgeService:Embedding",
             "value": "{\"EmbeddingAPIEndpointConfigurationObjectId\": null, \"ModelDeployments\": {}",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "application/json",
             "tags": {}
@@ -990,6 +1130,7 @@
         {
             "key": "FoundationaLLM:APIEndpoints:GatewayAPI:Essentials:APIKey",
             "value": "{\"uri\":\"${env:AZURE_KEY_VAULT_ENDPOINT}secrets/foundationallm-apiendpoints-gatewayapi-apikey\"}",
+            "key_vault_secret_name": "foundationallm-apiendpoints-gatewayapi-apikey",
             "label": null,
             "content_type": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8",
             "tags": {}
@@ -997,6 +1138,7 @@
         {
             "key": "FoundationaLLM:APIEndpoints:GatewayAPI:Essentials:AppInsightsConnectionString",
             "value": "{\"uri\":\"${env:AZURE_KEY_VAULT_ENDPOINT}secrets/foundationallm-appinsights-connectionstring\"}",
+            "key_vault_secret_name": "foundationallm-appinsights-connectionstring",
             "label": null,
             "content_type": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8",
             "tags": {}
@@ -1004,6 +1146,7 @@
         {
             "key": "FoundationaLLM:APIEndpoints:GatewayAPI:Configuration:AzureOpenAIAccounts",
             "value": "${env:AZURE_OPENAI_ID}",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -1011,6 +1154,7 @@
         {
             "key": "FoundationaLLM:APIEndpoints:GatewayAPI:Configuration:AzureOpenAIAssistantsMaxVectorizationTimeSeconds",
             "value": "120",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -1018,6 +1162,7 @@
         {
             "key": "FoundationaLLM:APIEndpoints:GatewayAPI:Configuration:AzureAIAgentServiceMaxVectorizationTimeSeconds",
             "value": "120",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -1025,6 +1170,7 @@
         {
             "key": "FoundationaLLM:APIEndpoints:GatewayAPI:Configuration:TokenRateLimitMultiplier",
             "value": "0.95",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -1032,6 +1178,7 @@
         {
             "key": "FoundationaLLM:APIEndpoints:GatewayAdapterAPI:Essentials:APIKey",
             "value": "{\"uri\":\"${env:AZURE_KEY_VAULT_ENDPOINT}secrets/foundationallm-apiendpoints-gatewayadapterapi-apikey\"}",
+            "key_vault_secret_name": "foundationallm-apiendpoints-gatewayadapterapi-apikey",
             "label": null,
             "content_type": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8",
             "tags": {}
@@ -1039,6 +1186,7 @@
         {
             "key": "FoundationaLLM:APIEndpoints:GatewayAdapterAPI:Essentials:AppInsightsConnectionString",
             "value": "{\"uri\":\"${env:AZURE_KEY_VAULT_ENDPOINT}secrets/foundationallm-appinsights-connectionstring\"}",
+            "key_vault_secret_name": "foundationallm-appinsights-connectionstring",
             "label": null,
             "content_type": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8",
             "tags": {}
@@ -1046,6 +1194,7 @@
         {
             "key": "FoundationaLLM:APIEndpoints:StateAPI:Essentials:APIUrl",
             "value": "${env:SERVICE_STATE_API_ENDPOINT_URL}",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -1053,6 +1202,7 @@
         {
             "key": "FoundationaLLM:APIEndpoints:StateAPI:Essentials:APIKey",
             "value": "{\"uri\":\"${env:AZURE_KEY_VAULT_ENDPOINT}secrets/foundationallm-apiendpoints-stateapi-apikey\"}",
+            "key_vault_secret_name": "foundationallm-apiendpoints-stateapi-apikey",
             "label": null,
             "content_type": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8",
             "tags": {}
@@ -1060,6 +1210,7 @@
         {
             "key": "FoundationaLLM:APIEndpoints:StateAPI:Essentials:AppInsightsConnectionString",
             "value": "{\"uri\":\"${env:AZURE_KEY_VAULT_ENDPOINT}secrets/foundationallm-appinsights-connectionstring\"}",
+            "key_vault_secret_name": "foundationallm-appinsights-connectionstring",
             "label": null,
             "content_type": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8",
             "tags": {}
@@ -1067,6 +1218,7 @@
         {
             "key": "FoundationaLLM:APIEndpoints:StateAPI:Configuration:CosmosDB:Endpoint",
             "value": "${env:AZURE_COSMOS_DB_ENDPOINT}",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -1074,6 +1226,7 @@
         {
             "key": "FoundationaLLM:APIEndpoints:StateAPI:Configuration:CosmosDB:Database",
             "value": "database",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -1081,6 +1234,7 @@
         {
             "key": "FoundationaLLM:APIEndpoints:StateAPI:Configuration:CosmosDB:Containers",
             "value": "State",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -1088,6 +1242,7 @@
         {
             "key": "FoundationaLLM:APIEndpoints:AzureOpenAI:Essentials:APIKey",
             "value": "{\"uri\":\"${env:AZURE_KEY_VAULT_ENDPOINT}secrets/foundationallm-apiendpoints-azureopenai-apikey\"}",
+            "key_vault_secret_name": "foundationallm-apiendpoints-azureopenai-apikey",
             "label": null,
             "content_type": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8",
             "tags": {}
@@ -1095,6 +1250,7 @@
         {
             "key": "FoundationaLLM:APIEndpoints:AzureEventGrid:Essentials:APIKey",
             "value": "{\"uri\":\"${env:AZURE_KEY_VAULT_ENDPOINT}secrets/foundationallm-apiendpoints-azureeventgrid-apikey\"}",
+            "key_vault_secret_name": "foundationallm-apiendpoints-azureeventgrid-apikey",
             "label": null,
             "content_type": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8",
             "tags": {}
@@ -1102,6 +1258,7 @@
         {
             "key": "FoundationaLLM:APIEndpoints:AzureEventGrid:Configuration:NamespaceId",
             "value": "${env:AZURE_EVENT_GRID_ID}",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -1109,6 +1266,7 @@
         {
             "key": "FoundationaLLM:APIEndpoints:AzureContentSafety:Essentials:APIKey",
             "value": "{\"uri\":\"${env:AZURE_KEY_VAULT_ENDPOINT}secrets/foundationallm-apiendpoints-azurecontentsafety-apikey\"}",
+            "key_vault_secret_name": "foundationallm-apiendpoints-azurecontentsafety-apikey",
             "label": null,
             "content_type": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8",
             "tags": {}
@@ -1116,6 +1274,7 @@
         {
             "key": "FoundationaLLM:APIEndpoints:AzureContentSafety:Configuration:HateSeverity",
             "value": "2",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -1123,6 +1282,7 @@
         {
             "key": "FoundationaLLM:APIEndpoints:AzureContentSafety:Configuration:SelfHarmSeverity",
             "value": "2",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -1130,6 +1290,7 @@
         {
             "key": "FoundationaLLM:APIEndpoints:AzureContentSafety:Configuration:SexualSeverity",
             "value": "2",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -1137,6 +1298,7 @@
         {
             "key": "FoundationaLLM:APIEndpoints:AzureContentSafety:Configuration:ViolenceSeverity",
             "value": "2",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -1144,6 +1306,7 @@
         {
             "key": "FoundationaLLM:Branding:AccentColor",
             "value": "#fff",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -1151,6 +1314,7 @@
         {
             "key": "FoundationaLLM:Branding:AccentTextColor",
             "value": "#131833",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -1158,6 +1322,7 @@
         {
             "key": "FoundationaLLM:Branding:BackgroundColor",
             "value": "#fff",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -1165,6 +1330,7 @@
         {
             "key": "FoundationaLLM:Branding:CompanyName",
             "value": "FoundationaLLM",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -1172,6 +1338,7 @@
         {
             "key": "FoundationaLLM:Branding:FavIconUrl",
             "value": "favicon.ico",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -1179,6 +1346,7 @@
         {
             "key": "FoundationaLLM:Branding:AgentIconUrl",
             "value": "",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -1186,6 +1354,7 @@
         {
             "key": "FoundationaLLM:Branding:KioskMode",
             "value": "false",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -1193,6 +1362,7 @@
         {
             "key": "FoundationaLLM:Branding:LogoText",
             "value": "FoundationaLLM",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -1200,6 +1370,7 @@
         {
             "key": "FoundationaLLM:Branding:LogoUrl",
             "value": "foundationallm-logo-white.svg",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -1207,6 +1378,7 @@
         {
             "key": "FoundationaLLM:Branding:PageTitle",
             "value": "FoundationaLLM User Portal",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -1214,6 +1386,7 @@
         {
             "key": "FoundationaLLM:Branding:PrimaryColor",
             "value": "#131833",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -1221,6 +1394,7 @@
         {
             "key": "FoundationaLLM:Branding:PrimaryTextColor",
             "value": "#fff",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -1228,6 +1402,7 @@
         {
             "key": "FoundationaLLM:Branding:SecondaryColor",
             "value": "#334581",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -1235,6 +1410,7 @@
         {
             "key": "FoundationaLLM:Branding:SecondaryTextColor",
             "value": "#fff",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -1242,6 +1418,7 @@
         {
             "key": "FoundationaLLM:Branding:PrimaryButtonBackgroundColor",
             "value": "#5472d4",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -1249,6 +1426,7 @@
         {
             "key": "FoundationaLLM:Branding:PrimaryButtonTextColor",
             "value": "#fff",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -1256,6 +1434,7 @@
         {
             "key": "FoundationaLLM:Branding:SecondaryButtonBackgroundColor",
             "value": "#70829a",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -1263,6 +1442,7 @@
         {
             "key": "FoundationaLLM:Branding:SecondaryButtonTextColor",
             "value": "#fff",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -1270,6 +1450,7 @@
         {
             "key": "FoundationaLLM:Branding:FooterText",
             "value": "FoundationaLLM &copy; All rights reserved",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -1277,6 +1458,7 @@
         {
             "key": "FoundationaLLM:Branding:NoAgentsMessage",
             "value": "No agents available. Please check with your system administrator for assistance.",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -1284,6 +1466,7 @@
         {
             "key": "FoundationaLLM:Branding:DefaultAgentWelcomeMessage",
             "value": "Start the conversation using the text box below.",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -1291,6 +1474,7 @@
         {
             "key": "FoundationaLLM:UserPortal:Authentication:Entra:Instance",
             "value": "https://login.microsoftonline.com/",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -1298,6 +1482,7 @@
         {
             "key": "FoundationaLLM:UserPortal:Authentication:Entra:TenantId",
             "value": "${env:ENTRA_CHAT_UI_TENANT_ID}",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -1305,6 +1490,7 @@
         {
             "key": "FoundationaLLM:UserPortal:Authentication:Entra:Scopes",
             "value": "${env:ENTRA_CHAT_UI_SCOPES}",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -1312,6 +1498,7 @@
         {
             "key": "FoundationaLLM:UserPortal:Authentication:Entra:CallbackPath",
             "value": "/signin-oidc",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -1319,6 +1506,7 @@
         {
             "key": "FoundationaLLM:UserPortal:Authentication:Entra:ClientId",
             "value": "${env:ENTRA_CHAT_UI_CLIENT_ID}",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -1326,6 +1514,7 @@
         {
             "key": "FoundationaLLM:UserPortal:Authentication:Entra:TimeoutInMinutes",
             "value": "60",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -1333,6 +1522,7 @@
         {
             "key": "FoundationaLLM:UserPortal:Configuration:ShowLastConversationOnStartup",
             "value": "false",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -1340,6 +1530,7 @@
         {
             "key": "FoundationaLLM:UserPortal:Configuration:ShowMessageRating",
             "value": "true",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -1347,6 +1538,7 @@
         {
             "key": "FoundationaLLM:UserPortal:Configuration:ShowMessageTokens",
             "value": "true",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -1354,6 +1546,7 @@
         {
             "key": "FoundationaLLM:UserPortal:Configuration:ShowViewPrompt",
             "value": "true",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -1361,6 +1554,7 @@
         {
             "key": "FoundationaLLM:UserPortal:Configuration:ShowFileUpload",
             "value": "true",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -1368,6 +1562,7 @@
         {
             "key": "FoundationaLLM:UserPortal:Configuration:AgentManagementPermissionRequestUrl",
             "value": "true",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -1375,6 +1570,7 @@
         {
             "key": "FoundationaLLM:UserPortal:Configuration:FeaturedAgentNames",
             "value": "true",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -1382,6 +1578,7 @@
         {
             "key": "FoundationaLLM:ManagementPortal:Authentication:Entra:Instance",
             "value": "https://login.microsoftonline.com/",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -1389,6 +1586,7 @@
         {
             "key": "FoundationaLLM:ManagementPortal:Authentication:Entra:TenantId",
             "value": "${env:ENTRA_MANAGEMENT_UI_TENANT_ID}",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -1396,6 +1594,7 @@
         {
             "key": "FoundationaLLM:ManagementPortal:Authentication:Entra:Scopes",
             "value": "${env:ENTRA_MANAGEMENT_UI_SCOPES}",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -1403,6 +1602,7 @@
         {
             "key": "FoundationaLLM:ManagementPortal:Authentication:Entra:CallbackPath",
             "value": "/signin-oidc",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -1410,6 +1610,7 @@
         {
             "key": "FoundationaLLM:ManagementPortal:Authentication:Entra:ClientId",
             "value": "${env:ENTRA_MANAGEMENT_UI_CLIENT_ID}",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -1417,6 +1618,7 @@
         {
             "key": "FoundationaLLM:Vectorization:Worker",
             "value": "${env:VECTORIZATION_WORKER_CONFIG}",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "application/json",
             "tags": {}
@@ -1424,6 +1626,7 @@
         {
             "key": "FoundationaLLM:Vectorization:Queues:Extract:AccountName",
             "value": "${env:AZURE_STORAGE_ACCOUNT_NAME}",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -1431,6 +1634,7 @@
         {
             "key": "FoundationaLLM:Vectorization:Queues:Partition:AccountName",
             "value": "${env:AZURE_STORAGE_ACCOUNT_NAME}",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -1438,6 +1642,7 @@
         {
             "key": "FoundationaLLM:Vectorization:Queues:Embed:AccountName",
             "value": "${env:AZURE_STORAGE_ACCOUNT_NAME}",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -1445,6 +1650,7 @@
         {
             "key": "FoundationaLLM:Vectorization:Queues:Index:AccountName",
             "value": "${env:AZURE_STORAGE_ACCOUNT_NAME}",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -1452,6 +1658,7 @@
         {
             "key": "FoundationaLLM:Vectorization:StateService:Storage:AuthenticationType",
             "value": "AzureIdentity",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -1459,6 +1666,7 @@
         {
             "key": "FoundationaLLM:Vectorization:StateService:Storage:AccountName",
             "value": "${env:AZURE_STORAGE_ACCOUNT_NAME}",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}
@@ -1466,6 +1674,7 @@
         {
             "key": "FoundationaLLM:Events:Profiles:CoreAPI",
             "value": "${env:FOUNDATIONALLM_CORE_API_EVENT_GRID_PROFILE}",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "application/json",
             "tags": {}
@@ -1473,6 +1682,7 @@
         {
             "key": "FoundationaLLM:Events:Profiles:OrchestrationAPI",
             "value": "${env:FOUNDATIONALLM_ORCHESTRATION_API_EVENT_GRID_PROFILE}",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "application/json",
             "tags": {}
@@ -1480,6 +1690,7 @@
         {
             "key": "FoundationaLLM:Events:Profiles:ManagementAPI",
             "value": "${env:FOUNDATIONALLM_MANAGEMENT_API_EVENT_GRID_PROFILE}",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "application/json",
             "tags": {}
@@ -1487,6 +1698,7 @@
         {
             "key": "FoundationaLLM:Events:Profiles:VectorizationAPI",
             "value": "${env:FOUNDATIONALLM_VECTORIZATION_API_EVENT_GRID_PROFILE}",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "application/json",
             "tags": {}
@@ -1494,6 +1706,7 @@
         {
             "key": "FoundationaLLM:Events:Profiles:VectorizationWorker",
             "value": "${env:FOUNDATIONALLM_VECTORIZATION_WORKER_EVENT_GRID_PROFILE}",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "application/json",
             "tags": {}
@@ -1501,6 +1714,7 @@
         {
             "key": "FoundationaLLM:Events:Profiles:GatekeeperAPI",
             "value": "${env:FOUNDATIONALLM_GATEKEEPER_API_EVENT_GRID_PROFILE}",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "application/json",
             "tags": {}
@@ -1508,6 +1722,7 @@
         {
             "key": "FoundationaLLM:Events:Profiles:GatewayAPI",
             "value": "${env:FOUNDATIONALLM_GATEWAY_API_EVENT_GRID_PROFILE}",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "application/json",
             "tags": {}
@@ -1515,6 +1730,7 @@
         {
             "key": "FoundationaLLM:Events:Profiles:ContextAPI",
             "value": "${env:FOUNDATIONALLM_CONTEXT_API_EVENT_GRID_PROFILE}",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "application/json",
             "tags": {}
@@ -1522,6 +1738,7 @@
         {
             "key": "FoundationaLLM:Events:Profiles:DataPipelineAPI",
             "value": "${env:FOUNDATIONALLM_DATAPIPELINE_API_EVENT_GRID_PROFILE}",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "application/json",
             "tags": {}
@@ -1529,6 +1746,7 @@
         {
             "key": "FoundationaLLM:Events:Profiles:DataPipelineFrontendWorker",
             "value": "${env:FOUNDATIONALLM_DATAPIPELINE_FRONTENDWORKER_EVENT_GRID_PROFILE}",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "application/json",
             "tags": {}
@@ -1536,6 +1754,7 @@
         {
             "key": "FoundationaLLM:Events:Profiles:DataPipelineBackendWorker",
             "value": "${env:FOUNDATIONALLM_DATAPIPELINE_BACKENDWORKER_EVENT_GRID_PROFILE}",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "application/json",
             "tags": {}
@@ -1543,6 +1762,7 @@
         {
             "key": "FoundationaLLM:IdentityManagement:MicrosoftGraph:RetrieveOnPremisesAccountName",
             "value": "false",
+            "key_vault_secret_name": null,
             "label": null,
             "content_type": "",
             "tags": {}

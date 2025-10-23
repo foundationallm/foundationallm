@@ -21,6 +21,10 @@
         ? n["value"].GetValue<string>()
         : $"{{\\\"uri\\\":\\\"${{env:AZURE_KEY_VAULT_ENDPOINT}}secrets/foundationallm-{n["secret"].GetValue<string>()}\\\"}}";
 
+    Func<JsonNode, string> getSecret = n => string.IsNullOrWhiteSpace(n["secret"].GetValue<string>())
+        ? "null"
+        : $"\"foundationallm-{n["secret"].GetValue<string>()}\"";
+
     var items =
         jsonObjects.AsArray()
         .Select(ns =>
@@ -28,6 +32,7 @@
             .Select(k => new {
                 Key = $"FoundationaLLM:{(ns["namespace"])}:{(k["name"])}",
                 Value = getValue(k),
+                KeyVaultSecretName = getSecret(k),
                 ContentType = getContentType(k)
             }))
         .SelectMany(x => x)
@@ -49,6 +54,7 @@
         {
             "key": "<#=items[i].Key#>",
             "value": "<#=items[i].Value#>",
+            "key_vault_secret_name": <#=items[i].KeyVaultSecretName#>,
             "label": null,
             "content_type": "<#=items[i].ContentType#>",
             "tags": {}
