@@ -6,7 +6,8 @@ function Initialize-ManagementAPI {
         [string]$TenantId,
         [string]$SubscriptionId,
         [string]$InstanceId,
-        [string]$ContainerImage
+        [string]$ContainerImage,
+        [string]$FoundationaLLMRepoPath
     )
 
     $resourceNames = Get-ResourceNames -UniqueName $UniqueName

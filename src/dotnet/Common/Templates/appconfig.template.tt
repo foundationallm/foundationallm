@@ -25,6 +25,10 @@
         ? "null"
         : $"\"foundationallm-{n["secret"].GetValue<string>()}\"";
 
+    Func<JsonNode, string> getSecretValue = n => string.IsNullOrWhiteSpace(n["secret"].GetValue<string>())
+        ? "null"
+        : $"\"{n["value"].GetValue<string>()}\"";
+
     var items =
         jsonObjects.AsArray()
         .Select(ns =>
@@ -33,6 +37,7 @@
                 Key = $"FoundationaLLM:{(ns["namespace"])}:{(k["name"])}",
                 Value = getValue(k),
                 KeyVaultSecretName = getSecret(k),
+                KeyVaultSecretValue = getSecretValue(k),
                 ContentType = getContentType(k)
             }))
         .SelectMany(x => x)
@@ -55,6 +60,7 @@
             "key": "<#=items[i].Key#>",
             "value": "<#=items[i].Value#>",
             "key_vault_secret_name": <#=items[i].KeyVaultSecretName#>,
+            "key_vault_secret_value": <#=items[i].KeyVaultSecretValue#>,
             "label": null,
             "content_type": "<#=items[i].ContentType#>",
             "tags": {}
