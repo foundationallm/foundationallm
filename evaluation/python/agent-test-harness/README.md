@@ -7,17 +7,16 @@ A comprehensive test framework for FoundationaLLM agents that provides automated
 ### Prerequisites
 - Python 3.10 or later
 - FoundationaLLM agent with access token
-- Root virtual environment at `[Your Path to Repo]\foundationallm\.venv`
 
 ### Setup (One-time)
-1. **Activate the root virtual environment:**
+1. **Create a local virtual environment:**
    ```powershell
-   [Your Path to Repo]\foundationallm\.venv\Scripts\Activate.ps1
+   .\create_venv.ps1
    ```
 
-2. **Navigate to test harness directory:**
+2. **Activate the virtual environment:**
    ```powershell
-   cd [Your Path to Repo]\foundationallm\evaluation\python\agent-test-harness
+   .\.venv\Scripts\Activate.ps1
    ```
 
 3. **Install dependencies:**
@@ -33,7 +32,7 @@ A comprehensive test framework for FoundationaLLM agents that provides automated
 
 5. **Validate setup:**
    ```powershell
-   .\activate_env.ps1
+   .\validate_setup.ps1
    ```
 
 ### Run Your First Test
@@ -341,7 +340,7 @@ python generate_tests.py --input seed-tests.csv --output combinations.csv --stra
 The `--dry-run` switch performs comprehensive configuration validation without executing tests:
 
 **Environment Validation:**
-- Virtual environment activation (`c:/Repos/foundationallm/.venv`)
+- Virtual environment activation (local `.venv` directory)
 - Required environment variables (`FLLM_ACCESS_TOKEN`, `FLLM_ENDPOINT`)
 - Output directory creation
 
@@ -520,7 +519,7 @@ python run_tests.py --suite all --agent MAA-02 --baseline results/baseline-v1.2.
 ## 🔍 Troubleshooting
 
 ### Common Issues
-1. **Virtual environment not activated**: Run `c:\Repos\foundationallm\.venv\Scripts\Activate.ps1`
+1. **Virtual environment not activated**: Run `.\.venv\Scripts\Activate.ps1`
 2. **Missing environment variables**: Check your `.env` file
 3. **Test execution fails**: Use `--verbose` flag for detailed error information
 4. **Validation errors**: Check `ValidationDetails` column in results
@@ -528,7 +527,7 @@ python run_tests.py --suite all --agent MAA-02 --baseline results/baseline-v1.2.
 ### Debug Commands
 ```powershell
 # Validate environment
-.\activate_env.ps1
+.\validate_setup.ps1
 
 # Check test suite configuration
 python run_tests.py --list-suites
