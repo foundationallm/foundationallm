@@ -15,6 +15,16 @@
             "justMyCode": false
         },
         {
+            "name": "Agent Test Harness - Debug Current File",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${file} --suite code-interpreter --agent MAA-02 --quick --report",
+            "console": "integratedTerminal",
+            "python": "${workspaceFolder}/evaluation/python/agent-test-harness/.venv/Scripts/python.exe",
+            "cwd" : "${workspaceFolder}/evaluation/python/agent-test-harness",
+            "justMyCode": false
+        },
+        {
             "name": "FoundationaLLMAgentPlugins - Debug Current File",
             "type": "debugpy",
             "request": "launch",
