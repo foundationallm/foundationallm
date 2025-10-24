@@ -408,7 +408,11 @@ def process_question(question, answer, filename, agent_name="MAA-02", validation
                 'source': a.get('source'),
                 'filepath': a.get('filepath'),
                 'tool_result': meta.get('tool_result'),
-                'tool_error': meta.get('tool_error')
+                'tool_error': meta.get('tool_error'),
+                'tool_generated_code': meta.get('tool_generated_code'),
+                'tool_input_prompt': meta.get('tool_input_prompt'),
+                'tool_input_files': meta.get('tool_input_files'),
+                'tool_output': meta.get('tool_output')
             }
 
         artifacts_summary = [_summarize_artifact(a) for a in artifacts]
@@ -645,6 +649,79 @@ def execute_tests(test_file, agent_name, max_workers=5):
         print(f"Warning: could not write test_results.json: {e}\n")
     
     return results_df
+
+
+def execute_tests_from_dataframe(df, agent_name, max_workers=5):
+    """Execute tests from a pandas DataFrame instead of reading from CSV file"""
+    # Initialize list to store results
+    results = []
+    
+    # Process questions in parallel
+    with concurrent.futures.ThreadPoolExecutor(max_workers=max_workers) as executor:
+        # Create future objects for each question
+        future_to_question = {
+            executor.submit(process_question, row['Question'], row['Answer'], row['Filename'], agent_name, row.get('ValidationRules', '{}'), row.get('ValidationMode', 'hybrid')): index 
+            for index, row in df.iterrows()
+        }
+        
+        # Process completed futures as they finish
+        for future in concurrent.futures.as_completed(future_to_question):
+            index = future_to_question[future]
+            try:
+                result = future.result()
+                if result:
+                    # Add repeat information if available
+                    if '_repeat_index' in df.iloc[index]:
+                        result['RepeatIndex'] = df.iloc[index]['_repeat_index']
+                        result['OriginalIndex'] = df.iloc[index]['_original_index']
+                    result['Ordinal'] = index + 1
+                    results.append(result)
+                else:
+                    # Get the original question from the DataFrame
+                    original_question = df.iloc[index]['Question']
+                    print(f"Failed to process question: {original_question}")
+                    # Create a failed result entry
+                    failed_result = {
+                        'Question': original_question,
+                        'Filename': df.iloc[index]['Filename'],
+                        'Answer': df.iloc[index]['Answer'],
+                        'AgentAnswer': 'Failed to process',
+                        'ErrorOccured': 1,
+                        'ErrorDetails': 'Test execution failed',
+                        'Ordinal': index + 1
+                    }
+                    # Add repeat information if available
+                    if '_repeat_index' in df.iloc[index]:
+                        failed_result['RepeatIndex'] = df.iloc[index]['_repeat_index']
+                        failed_result['OriginalIndex'] = df.iloc[index]['_original_index']
+                    results.append(failed_result)
+            except Exception as e:
+                print(f"Error processing question at index {index}: {e}")
+                # Create a failed result entry
+                original_question = df.iloc[index]['Question']
+                failed_result = {
+                    'Question': original_question,
+                    'Filename': df.iloc[index]['Filename'],
+                    'Answer': df.iloc[index]['Answer'],
+                    'AgentAnswer': 'Failed to process',
+                    'ErrorOccured': 1,
+                    'ErrorDetails': str(e),
+                    'Ordinal': index + 1
+                }
+                # Add repeat information if available
+                if '_repeat_index' in df.iloc[index]:
+                    failed_result['RepeatIndex'] = df.iloc[index]['_repeat_index']
+                    failed_result['OriginalIndex'] = df.iloc[index]['_original_index']
+                results.append(failed_result)
+    
+    # Convert results to DataFrame
+    if results:
+        results_df = pd.DataFrame(results)
+        return results_df
+    else:
+        print("No results to return")
+        return None
+
 
 if __name__ == "__main__":
     # Legacy execution - now handled by run_tests.py

@@ -7,17 +7,16 @@ A comprehensive test framework for FoundationaLLM agents that provides automated
 ### Prerequisites
 - Python 3.10 or later
 - FoundationaLLM agent with access token
-- Root virtual environment at `[Your Path to Repo]\foundationallm\.venv`
 
 ### Setup (One-time)
-1. **Activate the root virtual environment:**
+1. **Create a local virtual environment:**
    ```powershell
-   [Your Path to Repo]\foundationallm\.venv\Scripts\Activate.ps1
+   .\create_venv.ps1
    ```
 
-2. **Navigate to test harness directory:**
+2. **Activate the virtual environment:**
    ```powershell
-   cd [Your Path to Repo]\foundationallm\evaluation\python\agent-test-harness
+   .\.venv\Scripts\Activate.ps1
    ```
 
 3. **Install dependencies:**
@@ -33,7 +32,7 @@ A comprehensive test framework for FoundationaLLM agents that provides automated
 
 5. **Validate setup:**
    ```powershell
-   .\activate_env.ps1
+   .\validate_setup.ps1
    ```
 
 ### Run Your First Test
@@ -79,6 +78,9 @@ python run_tests.py --suite code-interpreter --agent MAA-02 --quick
 
 # Specific test by index
 python run_tests.py --suite code-interpreter --agent MAA-02 --test-index 3
+
+# Repeat each test 3 times for reliability testing
+python run_tests.py --suite code-interpreter --agent MAA-02 --repeat-test 3
 ```
 
 ### Advanced Testing
@@ -88,6 +90,9 @@ python run_tests.py --suite all --agent MAA-02  --report
 
 # Cross-agent comparison
 python run_tests.py --suite code-interpreter --agents MAA-02,MAA-04,MAA-02 --compare
+
+# Repeat tests for reliability analysis
+python run_tests.py --suite code-interpreter --agent MAA-02 --repeat-test 5
 
 # Baseline comparison
 python run_tests.py --suite all --agent MAA-02 --baseline results/baseline-MAA-02.json
@@ -215,6 +220,7 @@ python run_tests.py --report-from-dir results/
 |-----------|---------|-----------------|
 | `--quick` | Run only first N tests | `--quick` (uses default limit from test_suites.json) |
 | `--test-index` | Run specific test by index | `--test-index 3` (0-based index) |
+| `--repeat-test` | Number of times to repeat each test | `--repeat-test 3` (default: 1) |
 | `--no-report` | Skip HTML report generation | `--no-report` |
 
 #### Validation Options
@@ -247,6 +253,9 @@ python run_tests.py --suite dataframe-tests --agents MAA-02,MAA-04,MAA-06 --repo
 
 # Quick test with specific test
 python run_tests.py --suite document-analysis --agent MAA-02 --quick --test-index 2
+
+# Repeat tests for reliability analysis
+python run_tests.py --suite code-interpreter --agent MAA-02 --repeat-test 3 --report
 
 # Generate report from existing results
 python run_tests.py --report-from-results results/20251021_220653-MAA-02-dataframe-tests-results.json
@@ -341,7 +350,7 @@ python generate_tests.py --input seed-tests.csv --output combinations.csv --stra
 The `--dry-run` switch performs comprehensive configuration validation without executing tests:
 
 **Environment Validation:**
-- Virtual environment activation (`c:/Repos/foundationallm/.venv`)
+- Virtual environment activation (local `.venv` directory)
 - Required environment variables (`FLLM_ACCESS_TOKEN`, `FLLM_ENDPOINT`)
 - Output directory creation
 
@@ -520,7 +529,7 @@ python run_tests.py --suite all --agent MAA-02 --baseline results/baseline-v1.2.
 ## 🔍 Troubleshooting
 
 ### Common Issues
-1. **Virtual environment not activated**: Run `c:\Repos\foundationallm\.venv\Scripts\Activate.ps1`
+1. **Virtual environment not activated**: Run `.\.venv\Scripts\Activate.ps1`
 2. **Missing environment variables**: Check your `.env` file
 3. **Test execution fails**: Use `--verbose` flag for detailed error information
 4. **Validation errors**: Check `ValidationDetails` column in results
@@ -528,7 +537,7 @@ python run_tests.py --suite all --agent MAA-02 --baseline results/baseline-v1.2.
 ### Debug Commands
 ```powershell
 # Validate environment
-.\activate_env.ps1
+.\validate_setup.ps1
 
 # Check test suite configuration
 python run_tests.py --list-suites

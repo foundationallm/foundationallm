@@ -1,5 +1,5 @@
-# PowerShell script to activate the FoundationaLLM virtual environment
-# and validate the test harness setup
+# PowerShell script to validate the test harness setup
+# and check the local virtual environment
 
 param(
     [switch]$SkipValidation,
@@ -29,31 +29,37 @@ function Write-ColorOutput {
 function Test-Environment {
     Write-ColorOutput "🔍 Checking FoundationaLLM test environment..." $Blue
     
-    # Check if we're in the right directory
+    # Check if we're in the right directory pattern
     $currentDir = Get-Location
-    $expectedDir = "C:\Repos\foundationallm\evaluation\python\agent-test-harness"
+    $expectedDirPattern = "*\evaluation\python\agent-test-harness"
     
-    if ($currentDir.Path -ne $expectedDir) {
-        Write-ColorOutput "⚠️  Warning: Not in expected directory" $Yellow
+    if ($currentDir.Path -notlike $expectedDirPattern) {
+        Write-ColorOutput "⚠️  Warning: Directory path doesn't match expected pattern" $Yellow
         Write-ColorOutput "   Current: $($currentDir.Path)" $Yellow
-        Write-ColorOutput "   Expected: $expectedDir" $Yellow
-        Write-ColorOutput "   Please run: cd '$expectedDir'" $Yellow
+        Write-ColorOutput "   Expected pattern: $expectedDirPattern" $Yellow
     }
     
-    # Check if root .venv exists
-    $venvPath = "C:\Repos\foundationallm\.venv"
+    # Check if local .venv exists
+    $venvPath = ".\.venv"
     if (-not (Test-Path $venvPath)) {
-        Write-ColorOutput "❌ Root .venv not found at: $venvPath" $Red
-        Write-ColorOutput "   Please ensure the FoundationaLLM virtual environment is set up." $Red
-        return $false
+        Write-ColorOutput "⚠️  Warning: Local .venv not found at: $venvPath" $Yellow
+        Write-ColorOutput "   Consider running: .\create_venv.ps1" $Yellow
     }
     
-    # Check if we're in the right virtual environment
+    # Check if we're in a virtual environment
     $currentVenv = $env:VIRTUAL_ENV
-    if ($currentVenv -and $currentVenv -ne $venvPath) {
-        Write-ColorOutput "⚠️  Warning: Different virtual environment active" $Yellow
-        Write-ColorOutput "   Current: $currentVenv" $Yellow
-        Write-ColorOutput "   Expected: $venvPath" $Yellow
+    if ($currentVenv) {
+        $expectedVenvPattern = "*\evaluation\python\agent-test-harness\.venv"
+        if ($currentVenv -notlike $expectedVenvPattern) {
+            Write-ColorOutput "⚠️  Warning: Different virtual environment active" $Yellow
+            Write-ColorOutput "   Current: $currentVenv" $Yellow
+            Write-ColorOutput "   Expected pattern: $expectedVenvPattern" $Yellow
+        } else {
+            Write-ColorOutput "   ✓ Correct virtual environment active" $Green
+        }
+    } else {
+        Write-ColorOutput "⚠️  Warning: No virtual environment detected" $Yellow
+        Write-ColorOutput "   Consider running: .\.venv\Scripts\Activate.ps1" $Yellow
     }
     
     # Check required files
@@ -107,7 +113,7 @@ function Test-PythonEnvironment {
     # Check if we're in a virtual environment
     if (-not $env:VIRTUAL_ENV) {
         Write-ColorOutput "⚠️  No virtual environment detected" $Yellow
-        Write-ColorOutput "   Run: C:\Repos\foundationallm\.venv\Scripts\Activate.ps1" $Yellow
+        Write-ColorOutput "   Run: .\.venv\Scripts\Activate.ps1" $Yellow
         return $false
     }
     
@@ -252,14 +258,16 @@ function Install-MissingPackages {
 
 function Show-SetupInstructions {
     Write-ColorOutput "`n📋 Setup Instructions:" $Blue
-    Write-ColorOutput "1. Activate the root virtual environment:" $Blue
-    Write-ColorOutput "   C:\Repos\foundationallm\.venv\Scripts\Activate.ps1" $Blue
-    Write-ColorOutput "`n2. Copy and configure environment file:" $Blue
+    Write-ColorOutput "1. Create a local virtual environment:" $Blue
+    Write-ColorOutput "   .\create_venv.ps1" $Blue
+    Write-ColorOutput "`n2. Activate the virtual environment:" $Blue
+    Write-ColorOutput "   .\.venv\Scripts\Activate.ps1" $Blue
+    Write-ColorOutput "`n3. Copy and configure environment file:" $Blue
     Write-ColorOutput "   copy sample.env .env" $Blue
     Write-ColorOutput "   # Edit .env with your values" $Blue
-    Write-ColorOutput "`n3. Install required packages:" $Blue
+    Write-ColorOutput "`n4. Install required packages:" $Blue
     Write-ColorOutput "   pip install -r requirements.txt" $Blue
-    Write-ColorOutput "`n4. Run tests:" $Blue
+    Write-ColorOutput "`n5. Run tests:" $Blue
     Write-ColorOutput "   python run_tests.py --suite code-interpreter --agent MAA-02 --quick" $Blue
 }
 

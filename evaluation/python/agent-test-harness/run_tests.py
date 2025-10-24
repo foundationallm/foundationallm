@@ -12,37 +12,12 @@ import sys
 import subprocess
 import json
 from datetime import datetime
-from pathlib import Path
 
 # Add the current directory to Python path for imports
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 from test_suite_manager import TestSuiteManager
 from validator import TestValidator
-
-
-def activate_venv():
-    """Activate the root .venv environment"""
-    root_venv = Path("c:/Repos/foundationallm/.venv")
-    if not root_venv.exists():
-        print("Error: Root .venv not found at c:/Repos/foundationallm/.venv")
-        print("Please ensure the FoundationaLLM virtual environment is set up.")
-        sys.exit(1)
-    
-    # Check if we're already in the right environment
-    if hasattr(sys, 'real_prefix') or (hasattr(sys, 'base_prefix') and sys.base_prefix != sys.prefix):
-        # We're in a virtual environment, check if it's the right one
-        current_venv = Path(sys.prefix)
-        if root_venv.resolve() != current_venv.resolve():
-            print(f"Warning: Currently in {current_venv}, but should use {root_venv}")
-            print("Please run: c:/Repos/foundationallm/.venv/Scripts/Activate.ps1")
-            print("Then run this script again.")
-            sys.exit(1)
-    else:
-        print("Warning: No virtual environment detected.")
-        print("Please run: c:/Repos/foundationallm/.venv/Scripts/Activate.ps1")
-        print("Then run this script again.")
-        sys.exit(1)
 
 
 def validate_environment():
@@ -80,6 +55,9 @@ Examples:
   # Cross-agent comparison
   python run_tests.py --suite code-interpreter --agents MAA-02,MAA-04,MAA-06 --compare
   
+  # Repeat each test 3 times for reliability testing
+  python run_tests.py --suite code-interpreter --agent MAA-02 --repeat-test 3
+  
   # Generate HTML report from existing results
   python run_tests.py --report-from-results results/20251021_201101-MAA-02-code-interpreter-results.json
   
@@ -103,6 +81,8 @@ Examples:
                        help='Run specific test by index (0-based)')
     parser.add_argument('--workers', type=int, default=5,
                        help='Number of parallel workers (default: 5)')
+    parser.add_argument('--repeat-test', type=int, default=1,
+                       help='Number of times to repeat each test (default: 1)')
     parser.add_argument('--dry-run', action='store_true',
                        help='Validate configuration without executing tests')
     
@@ -262,8 +242,7 @@ Examples:
             print("Error: Cannot specify both --agent and --agents")
             sys.exit(1)
     
-    # Activate environment and validate setup
-    activate_venv()
+    # Validate environment variables
     validate_environment()
     
     # Create output directory
@@ -307,7 +286,8 @@ Examples:
                 max_workers=args.workers,
                 output_dir=args.output_dir,
                 timestamp=timestamp,
-                verbose=args.verbose
+                verbose=args.verbose,
+                repeat_test=args.repeat_test
             )
             
             if results is None:

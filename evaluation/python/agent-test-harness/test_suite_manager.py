@@ -13,7 +13,7 @@ from typing import Dict, List, Optional, Any
 import sys
 
 # Import the existing test harness
-from test_harness import execute_tests, process_question
+from test_harness import execute_tests, process_question, execute_tests_from_dataframe
 
 
 class TestSuiteManager:
@@ -157,7 +157,8 @@ class TestSuiteManager:
     def run_suite(self, suite_name: str, agent_name: str, 
                    quick_mode: bool = False, test_index: Optional[int] = None,
                    max_workers: int = 5, output_dir: str = 'results', 
-                   timestamp: str = '', verbose: bool = False) -> Optional[Dict[str, Any]]:
+                   timestamp: str = '', verbose: bool = False, 
+                   repeat_test: int = 1) -> Optional[Dict[str, Any]]:
         """Run a test suite for a specific agent"""
         
         if suite_name == "all":
@@ -167,7 +168,7 @@ class TestSuiteManager:
                 if name != "all":  # Avoid infinite recursion
                     result = self.run_suite(
                         name, agent_name, quick_mode, test_index,
-                        max_workers, output_dir, timestamp, verbose
+                        max_workers, output_dir, timestamp, verbose, repeat_test
                     )
                     if result:
                         all_results[name] = result
@@ -210,8 +211,24 @@ class TestSuiteManager:
                 print(f"Running specific test at index {test_index}")
             
             # Run the tests
-            print(f"Executing {len(df)} tests...")
-            results_df = execute_tests(csv_path, agent_name, max_workers)
+            if repeat_test > 1:
+                print(f"Executing {len(df)} tests, repeating each test {repeat_test} times...")
+                # Create expanded dataframe with repeated tests
+                repeated_rows = []
+                for _, row in df.iterrows():
+                    for i in range(repeat_test):
+                        # Create a copy of the row with a repeat indicator
+                        repeated_row = row.copy()
+                        repeated_row['_repeat_index'] = i + 1
+                        repeated_row['_original_index'] = row.name
+                        repeated_rows.append(repeated_row)
+                
+                # Create new dataframe with repeated tests
+                expanded_df = pd.DataFrame(repeated_rows)
+                results_df = execute_tests_from_dataframe(expanded_df, agent_name, max_workers)
+            else:
+                print(f"Executing {len(df)} tests...")
+                results_df = execute_tests(csv_path, agent_name, max_workers)
             
             if results_df is None:
                 print("Test execution failed")

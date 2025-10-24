@@ -58,5 +58,10 @@
     "csv_file": "test-data\\multi-file-analysis\\TestQuestions-multi-file-analysis.csv",
     "description": "Tests for multi-file-analysis",
     "quick_mode_limit": 5
+  },
+  "compressed-file-analysis": {
+    "csv_file": "test-data\\compressed-file-analysis\\TestQuestions-compressed-file-analysis.csv",
+    "description": "Tests for compressed-file-analysis",
+    "quick_mode_limit": 5
   }
 }
