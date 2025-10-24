@@ -315,52 +315,52 @@
 					}
 				});
 
-				this.virtualUser = await this.$appStore.getVirtualUser();
+			this.virtualUser = await this.$appStore.getVirtualUser();
 
-				this.agentOptionsGroup = [];
-				
-				// Add Featured group if there are featured agents
-				if (featuredAgents.length > 0) {
-					this.agentOptionsGroup.push({
+			this.agentOptionsGroup = [];
+
+			// Add Featured group if there are featured agents
+			if (featuredAgents.length > 0) {
+				this.agentOptionsGroup.push({
 						label: '-- Featured --',
-						items: featuredAgents,
-					});
-				}
+					items: featuredAgents,
+				});
+			}
+
+			if (!this.$appStore.getSessionAgent(this.currentSession) && this.currentSession) {
+				let selectedAgent = null;
+
+				if (nonFeaturedAgents.length > 0 && enabledAgentIds.length > 0) {
+					const profileOtherAgents = nonFeaturedAgents.filter(agent => 
+						enabledAgentIds.some(agentId => agentId == agent.value.resource.object_id)
+					);
 					
-				if (!this.$appStore.getSessionAgent(this.currentSession)) {
-					let selectedAgent = null;
-					
-					if (nonFeaturedAgents.length > 0 && enabledAgentIds.length > 0) {
-						const profileOtherAgents = nonFeaturedAgents.filter(agent => 
-							enabledAgentIds.some(agentId => agentId == agent.value.resource.object_id)
-						);
-						
-						if (profileOtherAgents.length > 0) {
-							selectedAgent = profileOtherAgents[0];
-						}
-					}
-					
-					if (!selectedAgent && featuredAgents.length > 0) {
-						selectedAgent = featuredAgents[0];
-					}
-					
-					if (selectedAgent) {
-						this.agentSelection = selectedAgent;
-						this.$appStore.setSessionAgent(this.currentSession, selectedAgent.value, false);
+					if (profileOtherAgents.length > 0) {
+						selectedAgent = profileOtherAgents[0];
 					}
 				}
+				
+				if (!selectedAgent && featuredAgents.length > 0) {
+					selectedAgent = featuredAgents[0];
+				}
+				
+				if (selectedAgent) {
+					this.agentSelection = selectedAgent;
+					this.$appStore.setSessionAgent(this.currentSession, selectedAgent.value, false);
+				}
+			}
 
 				// Add Other Agents group if there are non-featured agents
-				if (nonFeaturedAgents.length > 0) {
-					this.agentOptionsGroup.push({
-						label: featuredAgents.length > 0 ? '-- Other --' : 'Other Agents',
-						items: nonFeaturedAgents,
-					});
-				}
+			if (nonFeaturedAgents.length > 0) {
+				this.agentOptionsGroup.push({
+					label: featuredAgents.length > 0 ? '-- Other --' : 'Other Agents',
+					items: nonFeaturedAgents,
+				});
+			}
 
-				// Update agent selection after options are set
-				this.updateAgentSelection();
-			},
+			// Update agent selection after options are set
+			this.updateAgentSelection();
+		},
 
 			// handleCopySession() {
 			// 	const chatLink = `${window.location.origin}?chat=${this.currentSession!.sessionId}`;
