@@ -299,6 +299,15 @@ export const useAppStore = defineStore('app', {
 			});
 		},
 
+		async isSessionEmpty(sessionId: string): Promise<boolean> {
+			try {
+				const messages = await api.getMessages(sessionId);
+				return !messages || messages.length === 0;
+			} catch (error) {
+				return false;
+			}
+		},
+
 		async getMessages() {
 			if (
 				(this.newSession && this.newSession.sessionId === this.currentSession!.sessionId) ||
