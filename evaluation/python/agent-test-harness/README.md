@@ -78,6 +78,9 @@ python run_tests.py --suite code-interpreter --agent MAA-02 --quick
 
 # Specific test by index
 python run_tests.py --suite code-interpreter --agent MAA-02 --test-index 3
+
+# Repeat each test 3 times for reliability testing
+python run_tests.py --suite code-interpreter --agent MAA-02 --repeat-test 3
 ```
 
 ### Advanced Testing
@@ -87,6 +90,9 @@ python run_tests.py --suite all --agent MAA-02  --report
 
 # Cross-agent comparison
 python run_tests.py --suite code-interpreter --agents MAA-02,MAA-04,MAA-02 --compare
+
+# Repeat tests for reliability analysis
+python run_tests.py --suite code-interpreter --agent MAA-02 --repeat-test 5
 
 # Baseline comparison
 python run_tests.py --suite all --agent MAA-02 --baseline results/baseline-MAA-02.json
@@ -214,6 +220,7 @@ python run_tests.py --report-from-dir results/
 |-----------|---------|-----------------|
 | `--quick` | Run only first N tests | `--quick` (uses default limit from test_suites.json) |
 | `--test-index` | Run specific test by index | `--test-index 3` (0-based index) |
+| `--repeat-test` | Number of times to repeat each test | `--repeat-test 3` (default: 1) |
 | `--no-report` | Skip HTML report generation | `--no-report` |
 
 #### Validation Options
@@ -246,6 +253,9 @@ python run_tests.py --suite dataframe-tests --agents MAA-02,MAA-04,MAA-06 --repo
 
 # Quick test with specific test
 python run_tests.py --suite document-analysis --agent MAA-02 --quick --test-index 2
+
+# Repeat tests for reliability analysis
+python run_tests.py --suite code-interpreter --agent MAA-02 --repeat-test 3 --report
 
 # Generate report from existing results
 python run_tests.py --report-from-results results/20251021_220653-MAA-02-dataframe-tests-results.json

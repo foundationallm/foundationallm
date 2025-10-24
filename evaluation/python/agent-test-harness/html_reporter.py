@@ -764,6 +764,145 @@ class HTMLReporter:
                 padding: 10px;
             }
         }
+        
+        /* ToolExecution Details Styles */
+        .tool-execution-details {
+            margin-top: 10px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #007bff;
+        }
+        
+        .tool-detail {
+            margin-bottom: 15px;
+            padding: 10px;
+            background: white;
+            border-radius: 5px;
+            border: 1px solid #e0e0e0;
+        }
+        
+        .tool-detail:last-child {
+            margin-bottom: 0;
+        }
+        
+        .tool-detail strong {
+            color: #007bff;
+            display: block;
+            margin-bottom: 5px;
+        }
+        
+        .tool-input, .tool-files {
+            color: #495057;
+            font-family: 'Courier New', monospace;
+            background: #f8f9fa;
+            padding: 5px 8px;
+            border-radius: 3px;
+            display: inline-block;
+        }
+        
+        .code-block {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 10px 0;
+            border: 1px solid #4a5568;
+        }
+        
+        .code-block code {
+            color: #e2e8f0;
+            font-family: 'Fira Code', 'Courier New', monospace;
+            font-size: 0.9em;
+            line-height: 1.5;
+        }
+        
+        .output-block {
+            background: #f0f8ff;
+            color: #2c5282;
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 10px 0;
+            border: 1px solid #bee3f8;
+        }
+        
+        .output-block code {
+            color: #2c5282;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        
+        .error-block {
+            background: #fed7d7;
+            color: #c53030;
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 10px 0;
+            border: 1px solid #feb2b2;
+        }
+        
+        .error-block code {
+            color: #c53030;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        
+        .json-block {
+            background: #f7fafc;
+            color: #2d3748;
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 10px 0;
+            border: 1px solid #e2e8f0;
+        }
+        
+        .json-block code {
+            color: #2d3748;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            line-height: 1.4;
+        }
+        
+        .result-block {
+            background: #f0fff4;
+            color: #22543d;
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 10px 0;
+            border: 1px solid #9ae6b4;
+        }
+        
+        .result-block code {
+            color: #22543d;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        
+        /* Syntax highlighting for Python code */
+        .code-block .python {
+            color: #e2e8f0;
+        }
+        
+        /* Responsive design for tool details */
+        @media (max-width: 768px) {
+            .tool-execution-details {
+                padding: 10px;
+            }
+            
+            .tool-detail {
+                padding: 8px;
+            }
+            
+            .code-block, .output-block, .error-block, .json-block, .result-block {
+                padding: 10px;
+                font-size: 0.8em;
+            }
+        }
         """
     
     def _generate_summary_section(self, report_data: Dict[str, Any]) -> str:
@@ -938,11 +1077,8 @@ class HTMLReporter:
                         if artifact.get('filepath'):
                             artifacts_html += f' <span class="artifact-filename">({artifact["filepath"]})</span>'
                     elif artifact_type == 'ToolExecution':
-                        if artifact.get('tool_result'):
-                            result_preview = artifact['tool_result'][:100] + '...' if len(artifact['tool_result']) > 100 else artifact['tool_result']
-                            artifacts_html += f' <span class="artifact-result">Result: {result_preview}</span>'
-                        if artifact.get('tool_error'):
-                            artifacts_html += f' <span class="artifact-error">Error: {artifact["tool_error"]}</span>'
+                        # Create a detailed ToolExecution display
+                        artifacts_html += self._generate_tool_execution_details(artifact)
                     elif artifact_type == 'WorkflowExecution':
                         if artifact.get('source'):
                             artifacts_html += f' <span class="artifact-source">Source: {artifact["source"]}</span>'
@@ -1002,6 +1138,62 @@ class HTMLReporter:
         
         artifacts_html += '</div>'
         return artifacts_html
+    
+    def _generate_tool_execution_details(self, artifact: Dict[str, Any]) -> str:
+        """Generate detailed HTML for ToolExecution artifacts"""
+        details_html = '<div class="tool-execution-details">'
+        
+        # File path
+        if artifact.get('filepath'):
+            details_html += f'<div class="tool-detail"><strong>📁 File Path:</strong> <code>{artifact["filepath"]}</code></div>'
+        
+        # Tool input prompt
+        if artifact.get('tool_input_prompt'):
+            details_html += f'<div class="tool-detail"><strong>💬 Input Prompt:</strong> <span class="tool-input">{artifact["tool_input_prompt"]}</span></div>'
+        
+        # Tool input files
+        if artifact.get('tool_input_files'):
+            details_html += f'<div class="tool-detail"><strong>📄 Input Files:</strong> <span class="tool-files">{artifact["tool_input_files"]}</span></div>'
+        
+        # Generated Python code with syntax highlighting
+        if artifact.get('tool_generated_code'):
+            code = artifact['tool_generated_code']
+            # Escape HTML characters in the code
+            code_escaped = code.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;')
+            details_html += f'<div class="tool-detail"><strong>🐍 Generated Code:</strong></div>'
+            details_html += f'<pre class="code-block python"><code>{code_escaped}</code></pre>'
+        
+        # Tool output (stdout)
+        if artifact.get('tool_output'):
+            output = artifact['tool_output']
+            output_escaped = output.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;')
+            details_html += f'<div class="tool-detail"><strong>📤 Standard Output:</strong></div>'
+            details_html += f'<pre class="output-block"><code>{output_escaped}</code></pre>'
+        
+        # Tool error (stderr)
+        if artifact.get('tool_error'):
+            error = artifact['tool_error']
+            error_escaped = error.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;')
+            details_html += f'<div class="tool-detail"><strong>❌ Standard Error:</strong></div>'
+            details_html += f'<pre class="error-block"><code>{error_escaped}</code></pre>'
+        
+        # Tool result (JSON) with pretty printing
+        if artifact.get('tool_result'):
+            try:
+                import json
+                result_data = json.loads(artifact['tool_result'])
+                pretty_result = json.dumps(result_data, indent=2)
+                pretty_result_escaped = pretty_result.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;')
+                details_html += f'<div class="tool-detail"><strong>📊 Tool Result (JSON):</strong></div>'
+                details_html += f'<pre class="json-block"><code>{pretty_result_escaped}</code></pre>'
+            except (json.JSONDecodeError, TypeError):
+                # If not valid JSON, display as plain text
+                result_escaped = artifact['tool_result'].replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;')
+                details_html += f'<div class="tool-detail"><strong>📊 Tool Result:</strong></div>'
+                details_html += f'<pre class="result-block"><code>{result_escaped}</code></pre>'
+        
+        details_html += '</div>'
+        return details_html
     
     def _generate_llm_validation_section(self, test: Dict[str, Any]) -> str:
         """Generate HTML for LLM validation results section"""

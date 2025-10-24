@@ -55,6 +55,9 @@ Examples:
   # Cross-agent comparison
   python run_tests.py --suite code-interpreter --agents MAA-02,MAA-04,MAA-06 --compare
   
+  # Repeat each test 3 times for reliability testing
+  python run_tests.py --suite code-interpreter --agent MAA-02 --repeat-test 3
+  
   # Generate HTML report from existing results
   python run_tests.py --report-from-results results/20251021_201101-MAA-02-code-interpreter-results.json
   
@@ -78,6 +81,8 @@ Examples:
                        help='Run specific test by index (0-based)')
     parser.add_argument('--workers', type=int, default=5,
                        help='Number of parallel workers (default: 5)')
+    parser.add_argument('--repeat-test', type=int, default=1,
+                       help='Number of times to repeat each test (default: 1)')
     parser.add_argument('--dry-run', action='store_true',
                        help='Validate configuration without executing tests')
     
@@ -281,7 +286,8 @@ Examples:
                 max_workers=args.workers,
                 output_dir=args.output_dir,
                 timestamp=timestamp,
-                verbose=args.verbose
+                verbose=args.verbose,
+                repeat_test=args.repeat_test
             )
             
             if results is None:
