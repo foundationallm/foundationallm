@@ -378,15 +378,18 @@ def process_question(question, answer, filename, agent_name="MAA-02", validation
                 error_details = "Empty content array"
                 print(f"Warning: Empty content array for question: {question}")
             else:
-                # Get all items except the last one for other_agent_content
-                other_agent_content = content_items[:-1]
-                # Get the last item as agent_answer
-                last_item = content_items[-1]
-                agent_answer = last_item.get('value', '')
+                # Preserve all content items in other_agent_content
+                other_agent_content = content_items
+                # Concatenate all content items into agent_answer
+                agent_answer_parts = []
+                for item in content_items:
+                    if item.get('value'):
+                        agent_answer_parts.append(item.get('value'))
+                agent_answer = '\n'.join(agent_answer_parts)
                 if not agent_answer:
                     error_occurred = 1
-                    error_details = "Empty content value in last item"
-                    print(f"Warning: Empty content value in last item for question: {question}")
+                    error_details = "No content values found in any items"
+                    print(f"Warning: No content values found in any items for question: {question}")
         except (IndexError, AttributeError, KeyError) as e:
             error_occurred = 1
             error_details = str(e)

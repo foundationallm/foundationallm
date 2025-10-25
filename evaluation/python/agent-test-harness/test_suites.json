@@ -63,5 +63,10 @@
     "csv_file": "test-data\\compressed-file-analysis\\TestQuestions-compressed-file-analysis.csv",
     "description": "Tests for compressed-file-analysis",
     "quick_mode_limit": 5
+  },
+  "image-processing": {
+    "csv_file": "test-data\\image-processing\\TestQuestions-image-processing.csv",
+    "description": "Tests for image-processing",
+    "quick_mode_limit": 5
   }
 }
