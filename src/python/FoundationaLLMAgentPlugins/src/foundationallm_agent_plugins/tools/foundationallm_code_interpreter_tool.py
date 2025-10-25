@@ -183,10 +183,27 @@ class FoundationaLLMCodeInterpreterTool(FoundationaLLMToolBase):
                     }
                 ))
 
-        final_response = \
-            code_execution_response['execution_result'] if (code_execution_response['status'] == 'Succeeded' and code_execution_response['execution_result'] != '{}') \
-            else code_execution_response['standard_output'] if code_execution_response['status'] == 'Succeeded' \
-            else 'The generated code could not be executed successfully. '
+        final_response = ""
+        if code_execution_response['status'] == 'Failed':
+            final_response = (
+                "The generated code could not be executed successfully. "
+                + code_execution_response['execution_result']
+            )
+        elif code_execution_response['status'] == 'Succeeded':
+            if code_execution_response['execution_result'] != '{}':
+                final_response = code_execution_response['execution_result']
+            else:
+                final_response = code_execution_response['standard_output']
+        else:
+            status = code_execution_response.get('status', 'Unknown')
+            error_output = code_execution_response.get('error_output', '')
+            standard_output = code_execution_response.get('standard_output', '')
+            
+            final_response = (
+                f"Code execution failed with unexpected status '{status}'. "
+                f"Error details: {error_output if error_output else 'No error details available'}. "
+                f"Output: {standard_output if standard_output else 'No output available'}"
+            )
 
         content_artifacts.append(ContentArtifact(
             id = self.name,

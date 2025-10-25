@@ -267,6 +267,11 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
                             [SystemMessage(content=workflow_main_prompt)]
                             + messages[1:-1] # Exclude the original system prompt (first message) and context message (last message)
                             + [final_message])
+
+                        # ensure final_llm_response.content is a string, collapsing any lists into a single string.
+                        if isinstance(final_llm_response.content, list):
+                            final_llm_response.content = '\n'.join(final_llm_response.content)
+                            
                         usage = self.__get_canonical_usage(final_llm_response)
                         input_tokens += usage['input_tokens']
                         output_tokens += usage['output_tokens']

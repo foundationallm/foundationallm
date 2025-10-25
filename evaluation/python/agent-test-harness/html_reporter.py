@@ -43,6 +43,7 @@ class HTMLReporter:
                 'total_tests': 0,
                 'total_passed': 0,
                 'total_failed': 0,
+                'total_errors': 0,
                 'overall_pass_rate': 0,
                 'total_duration': 0
             }
@@ -59,6 +60,7 @@ class HTMLReporter:
                 report_data['summary']['total_tests'] += agent_data['total_tests']
                 report_data['summary']['total_passed'] += agent_data['passed_tests']
                 report_data['summary']['total_failed'] += agent_data['failed_tests']
+                report_data['summary']['total_errors'] += agent_data['error_tests']
                 report_data['summary']['total_duration'] += agent_data['total_duration']
             else:
                 # Multi-suite results
@@ -72,10 +74,12 @@ class HTMLReporter:
                         report_data['summary']['total_tests'] += suite_data['total_tests']
                         report_data['summary']['total_passed'] += suite_data['passed_tests']
                         report_data['summary']['total_failed'] += suite_data['failed_tests']
+                        report_data['summary']['total_errors'] += suite_data['error_tests']
                         report_data['summary']['total_duration'] += suite_data['total_duration']
         
-        # Calculate overall pass rate
+        # Calculate overall pass rate (treating errors as failures)
         if report_data['summary']['total_tests'] > 0:
+            total_failed_and_errors = report_data['summary']['total_failed'] + report_data['summary']['total_errors']
             report_data['summary']['overall_pass_rate'] = (
                 report_data['summary']['total_passed'] / report_data['summary']['total_tests'] * 100
             )
@@ -467,6 +471,28 @@ class HTMLReporter:
             white-space: pre-wrap;
             max-height: 200px;
             overflow-y: auto;
+        }
+        
+        .test-question-full {
+            margin: 20px 0;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .test-question-full h4 {
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+        
+        .test-question-full .test-answer-content {
+            background: white;
+            border-left: 4px solid #667eea;
+            margin: 0;
+            max-height: none;
+            overflow-y: visible;
         }
         
         .answers-comparison {
@@ -932,6 +958,10 @@ class HTMLReporter:
                     <div class="stat-number">{summary['total_failed']}</div>
                     <div class="stat-label">Failed</div>
                 </div>
+                <div class="stat-card error">
+                    <div class="stat-number">{summary['total_errors']}</div>
+                    <div class="stat-label">Errors</div>
+                </div>
                 <div class="stat-card">
                     <div class="stat-number">{summary['overall_pass_rate']:.1f}%</div>
                     <div class="stat-label">Pass Rate</div>
@@ -965,6 +995,10 @@ class HTMLReporter:
                         <div class="agent-stat">
                             <div class="agent-stat-number">{agent_data['failed_tests']}</div>
                             <div class="agent-stat-label">Failed</div>
+                        </div>
+                        <div class="agent-stat">
+                            <div class="agent-stat-number">{agent_data['error_tests']}</div>
+                            <div class="agent-stat-label">Errors</div>
                         </div>
                         <div class="agent-stat">
                             <div class="agent-stat-number">{agent_data['pass_rate']:.1f}%</div>
@@ -1002,6 +1036,10 @@ class HTMLReporter:
 <div class="test-status {status_class}">{status_text}</div>
 </div>
 <div class="test-details" id="test-{test['index']}">
+<div class="test-question-full">
+<h4>❓ Question</h4>
+<div class="test-answer-content">{test['question']}</div>
+</div>
 {self._generate_llm_validation_section(test)}
 <div class="answers-comparison">
 <div class="answer-column">
