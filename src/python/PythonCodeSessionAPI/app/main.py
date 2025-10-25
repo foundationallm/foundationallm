@@ -118,7 +118,7 @@ async def execute_code(request_body: dict):
         return { 'results': get_json_serializable_dict(results), 'output': output }
     except Exception as e:
         # make sure error sent to stderr is not lost
-        print(f"Error: str({e})", file=sys.stderr)
+        print(f"Error: {str(e)}", file=sys.stderr)
         raise HTTPException(status_code=500, detail=f"Error executing code: {str(e)}") from e
 
 @app.post('/files/upload')
