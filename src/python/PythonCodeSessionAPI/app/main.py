@@ -124,7 +124,7 @@ async def execute_code(request_body: dict):
 
         return { 'results': get_json_serializable_dict(results), 'output': standard_output, 'error': standard_error }
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Error executing code: {str(e)}") from e
+        raise HTTPException(status_code=500, detail={'results': '', 'output': '', 'error': str(e)}) from e
 
 @app.post('/files/upload')
 async def upload_file(file: UploadFile):
