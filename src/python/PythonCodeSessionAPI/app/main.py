@@ -122,7 +122,13 @@ async def execute_code(request_body: dict):
                 # If pandas is not available or any import/runtime error occurs, leave results as-is
                 pass
 
-        return { 'results': get_json_serializable_dict(results), 'output': standard_output, 'error': standard_error }
+        return {
+            'detail': {
+                'results': get_json_serializable_dict(results),
+                'output': standard_output,
+                'error': standard_error
+            }
+         }
     except Exception as e:
         raise HTTPException(status_code=500, detail={'results': '', 'output': '', 'error': str(e)}) from e
 
