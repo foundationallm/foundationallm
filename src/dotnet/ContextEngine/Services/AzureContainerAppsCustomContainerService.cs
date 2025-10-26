@@ -141,27 +141,41 @@ namespace FoundationaLLM.Context.Services
             string endpoint,
             string codeToExecute)
         {
-            var httpClient = await CreateHttpClient();
-
-            var payload = new { code = codeToExecute };
-            var content = new StringContent(JsonSerializer.Serialize(payload), System.Text.Encoding.UTF8, "application/json");
-
-            var response = await httpClient.PostAsync(
-                $"{endpoint}/code/execute?api-version=2024-10-02-preview&identifier={codeSessionId}",
-                content);
-
-            var responseContent = await response.Content.ReadAsStringAsync();
-            var responseJson = (JsonElement)JsonSerializer.Deserialize<dynamic>(responseContent);
-
-            return new CodeSessionCodeExecuteResponse
+            try
             {
-                Status = response.IsSuccessStatusCode
-                    ? "Succeeded"
-                    : "Failed",
-                StandardOutput = responseJson.GetProperty("output").ToString(),
-                StandardError = responseJson.GetProperty("error").ToString(),
-                ExecutionResult = responseJson.GetProperty("results").ToString(),
-            };
+                var httpClient = await CreateHttpClient();
+
+                var payload = new { code = codeToExecute };
+                var content = new StringContent(JsonSerializer.Serialize(payload), System.Text.Encoding.UTF8, "application/json");
+
+                var response = await httpClient.PostAsync(
+                    $"{endpoint}/code/execute?api-version=2024-10-02-preview&identifier={codeSessionId}",
+                    content);
+
+                var responseContent = await response.Content.ReadAsStringAsync();
+                var responseJson = ((JsonElement)JsonSerializer.Deserialize<dynamic>(responseContent)).GetProperty("details");
+
+                return new CodeSessionCodeExecuteResponse
+                {
+                    Status = response.IsSuccessStatusCode
+                        ? "Succeeded"
+                        : "Failed",
+                    StandardOutput = responseJson.GetProperty("output").ToString(),
+                    StandardError = responseJson.GetProperty("error").ToString(),
+                    ExecutionResult = responseJson.GetProperty("results").ToString(),
+                };
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error executing code in code session {CodeSessionId}", codeSessionId);
+                return new CodeSessionCodeExecuteResponse
+                {
+                    Status = "Failed",
+                    StandardOutput = string.Empty,
+                    StandardError = ex.Message,
+                    ExecutionResult = "The code execution failed due to a communication issue with the code execution environment.",
+                };
+            }
         }
 
         private async Task<List<CodeSessionFileStoreItem>> GetCodeSessionFileStoreItems(
