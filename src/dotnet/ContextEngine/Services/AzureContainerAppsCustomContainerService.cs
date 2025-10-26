@@ -153,7 +153,7 @@ namespace FoundationaLLM.Context.Services
                     content);
 
                 var responseContent = await response.Content.ReadAsStringAsync();
-                var responseJson = ((JsonElement)JsonSerializer.Deserialize<dynamic>(responseContent)).GetProperty("details");
+                var responseJson = ((JsonElement)JsonSerializer.Deserialize<dynamic>(responseContent)).GetProperty("detail");
 
                 return new CodeSessionCodeExecuteResponse
                 {
