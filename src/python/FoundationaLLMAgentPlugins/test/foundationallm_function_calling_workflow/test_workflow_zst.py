@@ -74,7 +74,12 @@ with open(full_request_json_file_name, 'r') as f:
 operation_id = request_json['operation_id']
 conversation_id = request_json['session_id']
 # user_prompt = request_json['user_prompt']
-user_prompt = "Write a Python function that calculates the Fibonacci sequence up to the 20th term and run it."
+
+
+user_prompt = "I've uploaded a PNG file. Please use Python to: Load the image. Report its pixel dimensions (width × height). Convert the image to grayscale. Save and display the new grayscale version."
+
+
+
 
 request = KnowledgeManagementCompletionRequest(**request_json)
 agent = request.agent
