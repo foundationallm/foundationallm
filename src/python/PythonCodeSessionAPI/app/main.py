@@ -123,9 +123,8 @@ async def execute_code(request_body: dict):
                 pass
 
         return {
-                'results': get_json_serializable_dict(results),
-                'output': standard_output,
-                'error': standard_error
+            'results': get_json_serializable_dict(results),
+            'output': standard_output
          }
     except Exception as e:
         raise HTTPException(status_code=500, detail={'results': '', 'output': '', 'error': str(e)}) from e
