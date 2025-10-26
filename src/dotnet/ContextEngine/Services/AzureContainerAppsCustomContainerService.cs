@@ -150,27 +150,16 @@ namespace FoundationaLLM.Context.Services
                 $"{endpoint}/code/execute?api-version=2024-10-02-preview&identifier={codeSessionId}",
                 content);
 
-            if (!response.IsSuccessStatusCode)
-            {
-                var error = await response.Content.ReadAsStringAsync();
-
-                return new CodeSessionCodeExecuteResponse
-                {
-                    Status = "Failed",
-                    StandardOutput = "",
-                    StandardError = "",
-                    ExecutionResult = $"Code execution failed: {error}"
-                };
-            }
-
             var responseContent = await response.Content.ReadAsStringAsync();
             var responseJson = (JsonElement)JsonSerializer.Deserialize<dynamic>(responseContent);
 
             return new CodeSessionCodeExecuteResponse
             {
-                Status = "Succeeded",
+                Status = response.IsSuccessStatusCode
+                    ? "Succeeded"
+                    : "Failed",
                 StandardOutput = responseJson.GetProperty("output").ToString(),
-                StandardError = "",
+                StandardError = responseJson.GetProperty("error").ToString(),
                 ExecutionResult = responseJson.GetProperty("results").ToString(),
             };
         }
