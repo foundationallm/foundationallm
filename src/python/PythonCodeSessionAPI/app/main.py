@@ -67,6 +67,10 @@ async def execute_code(request_body: dict):
         new_stdout = io.StringIO()
         sys.stdout = new_stdout
 
+        old_stderr = sys.stderr
+        new_stderr = io.StringIO()
+        sys.stderr = new_stderr
+
         # Determine which variable names (if any) are referenced by the last expression
         selected_names = _extract_last_variable_names(code)
 
@@ -74,8 +78,11 @@ async def execute_code(request_body: dict):
         exec(code, namespace, namespace)
         # pylint: enable=exec-used
 
-        output = new_stdout.getvalue()
+        standard_output = new_stdout.getvalue()
         sys.stdout = old_stdout
+
+        standard_error = new_stderr.getvalue()
+        sys.stderr = old_stderr
 
         # Build results: only include variables referenced by the last expression (if any)
         results = {}
@@ -115,10 +122,8 @@ async def execute_code(request_body: dict):
                 # If pandas is not available or any import/runtime error occurs, leave results as-is
                 pass
 
-        return { 'results': get_json_serializable_dict(results), 'output': output }
+        return { 'results': get_json_serializable_dict(results), 'output': standard_output, 'error': standard_error }
     except Exception as e:
-        # make sure error sent to stderr is not lost
-        print(f"Error: {str(e)}", file=sys.stderr)
         raise HTTPException(status_code=500, detail=f"Error executing code: {str(e)}") from e
 
 @app.post('/files/upload')

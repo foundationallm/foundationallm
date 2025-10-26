@@ -185,9 +185,10 @@ class FoundationaLLMCodeInterpreterTool(FoundationaLLMToolBase):
 
         final_response = ""
         if code_execution_response['status'] == 'Failed':
-            final_response = (
-                "The generated code could not be executed successfully. "
-                + code_execution_response['execution_result']
+            final_response = '\n'.join([
+                "The generated code could not be executed successfully. ",
+                code_execution_response['execution_result'],
+                code_execution_response.get('error_output', '')]
             )
         elif code_execution_response['status'] == 'Succeeded':
             if code_execution_response['execution_result'] != '{}':
