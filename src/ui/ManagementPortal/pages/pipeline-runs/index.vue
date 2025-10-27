@@ -224,6 +224,17 @@
             :header="`Data Pipeline Run`"
             @update:visible="closeParametersDialog"
             >
+                <label style="font-weight: bold;">Stage Metrics</label>
+                <DataTable :value="stage_metrics_formatted_data">
+                    <Column field="stage" header="Stage"></Column>
+                    <Column field="work_items_count" header="Work Items"></Column>
+                    <Column field="completed_work_items_count" header="Completed"></Column>
+                    <Column field="successful_work_items_count" header="Successful"></Column>
+                    <Column field="start_timestamp" header="Start Time"></Column>
+                    <Column field="last_update_timestamp" header="End Time"></Column>
+                    <Column field="duration" header="Duration (mm:ss.ms)"></Column>
+                </DataTable>
+                <br>
                 <label style="font-weight: bold;">Identifier</label>
 				<div style="margin-bottom: 1rem">
 					<InputText
@@ -267,18 +278,6 @@
 						/>
 					</div>
 				</div>
-
-                <h4>Stage Metrics</h4>
-
-                <DataTable :value="stage_metrics_formatted_data">
-                    <Column field="stage" header="Stage"></Column>
-                    <Column field="work_items_count" header="Work Items"></Column>
-                    <Column field="completed_work_items_count" header="Completed"></Column>
-                    <Column field="successful_work_items_count" header="Successful"></Column>
-                    <Column field="start_timestamp" header="Start Time"></Column>
-                    <Column field="last_update_timestamp" header="End Time"></Column>
-                    <Column field="duration" header="Duration (mm:ss.ms)"></Column>
-                </DataTable>
 
 				<div>
 					<Button
