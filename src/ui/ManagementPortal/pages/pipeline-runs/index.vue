@@ -265,7 +265,7 @@
 					/>
 				</div>
 
-                <h4>Parameters</h4>
+                <label style="font-weight: bold;">Parameters</label>
 				<div v-for="(value, key) in selectedRun.trigger_parameter_values" :key="key" class="form-group">
 					<div style="margin-bottom: 1rem">
 						<label :for="key">{{ key }}</label>
