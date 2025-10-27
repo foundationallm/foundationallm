@@ -260,15 +260,15 @@
 
                 <h4>Stage Metrics</h4>
 
-				<DataTable :value="stage_metrics_formatted_data">
-					<Column field="stage" header="Stage"></Column>
-					<Column field="work_items_count" header="Work Items"></Column>
-					<Column field="completed_work_items_count" header="Completed"></Column>
-					<Column field="successful_work_items_count" header="Successful"></Column>
-					<Column field="start_timestamp" header="Start Time"></Column>
-					<Column field="last_update_timestamp" header="End Time"></Column>
-					<Column field="duration" header="Duration (mm:ss:ms)"></Column>
-				</DataTable>
+                <DataTable :value="stage_metrics_formatted_data">
+                    <Column field="stage" header="Stage"></Column>
+                    <Column field="work_items_count" header="Work Items"></Column>
+                    <Column field="completed_work_items_count" header="Completed"></Column>
+                    <Column field="successful_work_items_count" header="Successful"></Column>
+                    <Column field="start_timestamp" header="Start Time"></Column>
+                    <Column field="last_update_timestamp" header="End Time"></Column>
+                    <Column field="duration" header="Duration (mm:ss:ms)"></Column>
+                </DataTable>
 
 				<div>
 					<Button
@@ -363,36 +363,36 @@ export default {
             return date.toString().replace('T', ' ').replace('Z', '').slice(0, 19);
         },
 
-		formatDuration(ms) {
-			if (ms === null || ms === undefined) return '-'
-			const totalMilliseconds = Number(ms)
-			const hours = Math.floor(totalMilliseconds / 3600000)
-			const minutes = Math.floor((totalMilliseconds % 3600000) / 60000)
-			const seconds = Math.floor((totalMilliseconds % 60000) / 1000)
-			const milliseconds = totalMilliseconds % 1000
-			if (hours > 0) {
-			return `${this.pad(hours)}:${this.pad(minutes)}:${this.pad(seconds)}.${String(milliseconds).padStart(3, '0')}`
-			}
-			return `${this.pad(minutes)}:${this.pad(seconds)}.${String(milliseconds).padStart(3, '0')}`
-		},
+        formatDuration(ms) {
+            if (ms === null || ms === undefined) return '-'
+            const totalMilliseconds = Number(ms)
+            const hours = Math.floor(totalMilliseconds / 3600000)
+            const minutes = Math.floor((totalMilliseconds % 3600000) / 60000)
+            const seconds = Math.floor((totalMilliseconds % 60000) / 1000)
+            const milliseconds = totalMilliseconds % 1000
+            if (hours > 0) {
+                return `${this.pad(hours)}:${this.pad(minutes)}:${this.pad(seconds)}.${String(milliseconds).padStart(3, '0')}`
+            }
+            return `${this.pad(minutes)}:${this.pad(seconds)}.${String(milliseconds).padStart(3, '0')}`
+        },
 
-		pad(number, digits = 2) {
-			return String(number).padStart(digits, '0')
-		},
+        pad(number, digits = 2) {
+            return String(number).padStart(digits, '0')
+        },
 
         openParameters(pipelineRun) {
             this.showParametersDialog = true;
             this.selectedRun = pipelineRun;
 
-			this.stage_metrics_formatted_data = Object.entries(pipelineRun.stages_metrics).map(([key, value]) => ({
-				stage: key,
-				work_items_count: value.work_items_count,
-				completed_work_items_count: value.completed_work_items_count,
-				successful_work_items_count: value.successful_work_items_count,
-				start_timestamp: this.getFormattedDate(value.start_timestamp),
-				last_update_timestamp: this.getFormattedDate(value.last_update_timestamp),
-				duration: this.formatDuration(Math.max(0, new Date(value.last_update_timestamp).getTime() - new Date(value.start_timestamp).getTime()))
-			}));
+            this.stage_metrics_formatted_data = Object.entries(pipelineRun.stages_metrics).map(([key, value]) => ({
+                stage: key,
+                work_items_count: value.work_items_count,
+                completed_work_items_count: value.completed_work_items_count,
+                successful_work_items_count: value.successful_work_items_count,
+                start_timestamp: this.getFormattedDate(value.start_timestamp),
+                last_update_timestamp: this.getFormattedDate(value.last_update_timestamp),
+                duration: this.formatDuration(Math.max(0, new Date(value.last_update_timestamp).getTime() - new Date(value.start_timestamp).getTime()))
+            }));
         },
 
         closeParametersDialog() {
