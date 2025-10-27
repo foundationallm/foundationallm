@@ -234,6 +234,16 @@
 					/>
 				</div>
 
+                <label style="font-weight: bold;">Canonical Id</label>
+				<div style="margin-bottom: 1rem">
+					<InputText
+                        :readonly="true"
+                        type="text"
+						v-model="selectedRun.canonical_run_id"
+						class="w-full"
+					/>
+				</div>
+
                 <label style="font-weight: bold;">Processor</label>
 				<div style="margin-bottom: 1rem">
 					<InputText
@@ -267,7 +277,7 @@
                     <Column field="successful_work_items_count" header="Successful"></Column>
                     <Column field="start_timestamp" header="Start Time"></Column>
                     <Column field="last_update_timestamp" header="End Time"></Column>
-                    <Column field="duration" header="Duration (mm:ss:ms)"></Column>
+                    <Column field="duration" header="Duration (mm:ss.ms)"></Column>
                 </DataTable>
 
 				<div>
