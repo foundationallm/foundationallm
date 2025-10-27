@@ -326,8 +326,7 @@
 						items: featuredAgents,
 					});
 				}
-					
-				if (!this.$appStore.getSessionAgent(this.currentSession)) {
+				if (!this.$appStore.getSessionAgent(this.currentSession) && this.currentSession) {
 					let selectedAgent = null;
 					
 					if (nonFeaturedAgents.length > 0 && enabledAgentIds.length > 0) {

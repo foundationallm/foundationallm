@@ -643,6 +643,10 @@ import Checkbox from 'primevue/checkbox';
 
 			handleSessionSelected(session: Session) {
 				(this.$appStore as any).changeSession(session);
+				const sessionAgent = (this.$appStore as any).getSessionAgent(session);
+				if (sessionAgent) {
+					(this.$appStore as any).setSessionAgent(session, sessionAgent, true);
+				}
 			},
 
 		async handleAddSession() {
@@ -661,11 +665,11 @@ import Checkbox from 'primevue/checkbox';
 			this.createProcessing = true;
 
 			try {
+			const currentAgent = this.currentSession ? (this.$appStore as any).getSessionAgent(this.currentSession) : null;
 				const mostRecentSession = this.sessions[0];
 				if (mostRecentSession) {
 					const isEmptySession = await (this.$appStore as any).isSessionEmpty(mostRecentSession.sessionId);
 					if (isEmptySession) {
-						const currentAgent = this.currentSession ? (this.$appStore as any).getSessionAgent(this.currentSession) : null;
 						const timestamp = (this.$appStore as any).getDefaultChatSessionProperties().name;
 						await (this.$appStore as any).updateConversation(mostRecentSession, timestamp, mostRecentSession.metadata || '');
 						if (currentAgent) {
@@ -679,6 +683,9 @@ import Checkbox from 'primevue/checkbox';
 					}
 				}
 				const newSession = await (this.$appStore as any).addSession();
+				if (currentAgent) {
+					(this.$appStore as any).setSessionAgent(newSession, currentAgent, true);
+				}
 				this.handleSessionSelected(newSession);
 
 				this.debounceTimeout = setTimeout(() => {
