@@ -9,9 +9,7 @@ from tqdm import tqdm
 import mimetypes
 from dotenv import load_dotenv
 
-TEST_FILE = "TestQuestions.csv"
-AGENT_NAME = "MAA-06"  
-MAX_WORKERS=5
+# Global variables removed - now passed as parameters to functions
 
 # Load environment variables from .env file
 load_dotenv()
@@ -319,7 +317,7 @@ def upload_file_with_progress(file_path, fllm_endpoint, session_id, agent_name):
             raise e
 
 
-def process_question(question, answer, filename):
+def process_question(question, answer, filename, agent_name="MAA-02", validation_rules="{}", validation_mode="hybrid"):
 
     # Time the session creation
     session_start_time = time.time()
@@ -350,18 +348,18 @@ def process_question(question, answer, filename):
         # Upload the file
         file_path = os.path.join(os.getcwd(), 'uploads', input_filename)
         fllm_endpoint = os.getenv("FLLM_ENDPOINT")
-        upload_response = upload_file_with_progress(file_path, fllm_endpoint, session_id, AGENT_NAME)
+        upload_response = upload_file_with_progress(file_path, fllm_endpoint, session_id, agent_name)
 
         response = send_completion_request(
             session_id=session_id,
-            agent_name=AGENT_NAME,
+            agent_name=agent_name,
             user_prompt=question,
             attachments=[upload_response.get('object_id') or upload_response.get('objectId')]
         )
     else:   
         response = send_completion_request(
             session_id=session_id,
-            agent_name=AGENT_NAME,
+            agent_name=agent_name,
             user_prompt=question
         )
     completion_duration = time.time() - completion_start_time
@@ -380,15 +378,18 @@ def process_question(question, answer, filename):
                 error_details = "Empty content array"
                 print(f"Warning: Empty content array for question: {question}")
             else:
-                # Get all items except the last one for other_agent_content
-                other_agent_content = content_items[:-1]
-                # Get the last item as agent_answer
-                last_item = content_items[-1]
-                agent_answer = last_item.get('value', '')
+                # Preserve all content items in other_agent_content
+                other_agent_content = content_items
+                # Concatenate all content items into agent_answer
+                agent_answer_parts = []
+                for item in content_items:
+                    if item.get('value'):
+                        agent_answer_parts.append(item.get('value'))
+                agent_answer = '\n'.join(agent_answer_parts)
                 if not agent_answer:
                     error_occurred = 1
-                    error_details = "Empty content value in last item"
-                    print(f"Warning: Empty content value in last item for question: {question}")
+                    error_details = "No content values found in any items"
+                    print(f"Warning: No content values found in any items for question: {question}")
         except (IndexError, AttributeError, KeyError) as e:
             error_occurred = 1
             error_details = str(e)
@@ -410,7 +411,11 @@ def process_question(question, answer, filename):
                 'source': a.get('source'),
                 'filepath': a.get('filepath'),
                 'tool_result': meta.get('tool_result'),
-                'tool_error': meta.get('tool_error')
+                'tool_error': meta.get('tool_error'),
+                'tool_generated_code': meta.get('tool_generated_code'),
+                'tool_input_prompt': meta.get('tool_input_prompt'),
+                'tool_input_files': meta.get('tool_input_files'),
+                'tool_output': meta.get('tool_output')
             }
 
         artifacts_summary = [_summarize_artifact(a) for a in artifacts]
@@ -463,6 +468,42 @@ def process_question(question, answer, filename):
         agent_answer_preview = _single_line(agent_answer_full)[:50]
         error_details_single_line = _single_line(error_details)
 
+        # Add validation results if validation is enabled
+        validation_passed = -1  # -1 = not validated, 0 = failed, 1 = passed
+        validation_score = 0
+        validation_details = ""
+        
+        # Try to import and use validator if available
+        try:
+            from validator import TestValidator
+            validator = TestValidator()
+            
+            # Create test result dict for validation
+            test_result = {
+                'Question': question,
+                'AgentAnswer': agent_answer_full,
+                'ExpectedAnswer': answer,
+                'ValidationRules': validation_rules,
+                'ValidationMode': validation_mode,
+                'ErrorOccured': error_occurred,
+                'CodeToolFailed': code_tool_failed,
+                'ProducedFilesCount': produced_files_count,
+                'ArtifactsSummary': artifacts_summary_json
+            }
+            
+            # Perform validation
+            validation_result = validator._validate_single_test(test_result, 'hybrid', False)
+            validation_passed = 1 if validation_result['passed'] else 0
+            validation_score = validation_result['score']
+            validation_details = validation_result['reason']
+            
+        except ImportError:
+            # Validator not available, skip validation
+            pass
+        except Exception as e:
+            # Validation failed, mark as not validated
+            validation_details = f"Validation error: {str(e)}"
+        
         return {
             'Question': question,
             'Filename': input_filename,
@@ -487,7 +528,12 @@ def process_question(question, answer, filename):
             'CodeToolResult': code_tool_result,
             'CodeToolFailed': code_tool_failed,
             'ProducedFilesCount': produced_files_count,
-            'ProducedFilesSummary': produced_files_summary_json
+            'ProducedFilesSummary': produced_files_summary_json,
+            'ValidationRules': validation_rules,
+            'ValidationMode': validation_mode,
+            'ValidationPassed': validation_passed,
+            'ValidationScore': validation_score,
+            'ValidationDetails': validation_details
         }
     else:
         print(f"Failed to get completion for question: {question}")
@@ -515,15 +561,18 @@ def process_question(question, answer, filename):
             'CodeToolResult': '',
             'CodeToolFailed': False,
             'ProducedFilesCount': 0,
-            'ProducedFilesSummary': '[]'
+            'ProducedFilesSummary': '[]',
+            'ValidationPassed': -1,
+            'ValidationScore': 0,
+            'ValidationDetails': 'Test execution failed'
         }
 
-def execute_tests(max_workers=2):
+def execute_tests(test_file, agent_name, max_workers=5):
     # Read the CSV file with proper handling of quoted fields
     try:
-        df = pd.read_csv(TEST_FILE, quotechar='"', escapechar='\\')
+        df = pd.read_csv(test_file, quotechar='"', escapechar='\\')
     except FileNotFoundError:
-        print(f"Error: {TEST_FILE} file not found")
+        print(f"Error: {test_file} file not found")
         return None
     
     # Initialize list to store results
@@ -533,7 +582,7 @@ def execute_tests(max_workers=2):
     with concurrent.futures.ThreadPoolExecutor(max_workers=max_workers) as executor:
         # Create future objects for each question
         future_to_question = {
-            executor.submit(process_question, row['Question'], row['Answer'], row['Filename']): index 
+            executor.submit(process_question, row['Question'], row['Answer'], row['Filename'], agent_name, row.get('ValidationRules', '{}'), row.get('ValidationMode', 'hybrid')): index 
             for index, row in df.iterrows()
         }
         
@@ -604,51 +653,81 @@ def execute_tests(max_workers=2):
     
     return results_df
 
-if __name__ == "__main__":
-    # Execute tests with N workers
-    results = execute_tests(MAX_WORKERS)
-    if results is not None:
-        print("\nTest Results:")
-        # Compact ordered summary: Ordinal, Question, ErrorOccured, ArtifactsSummary
-        try:
-            view_cols = ['Ordinal', 'Question', 'ErrorOccured', 'ArtifactsSummary']
-            existing = [c for c in view_cols if c in results.columns]
-            view = results[existing].copy()
-            if 'Ordinal' in view:
-                view = view.sort_values('Ordinal')
-            for _, row in view.iterrows():
-                ord_str = str(row.get('Ordinal', ''))
-                q = _single_line(str(row.get('Question', '')))
-                err = str(row.get('ErrorOccured', ''))
-                # Build artifact titles list from ArtifactsSummary JSON
-                titles_display = '-'
-                try:
-                    art = row.get('ArtifactsSummary', '[]')
-                    art_list = json.loads(art) if isinstance(art, str) else (art or [])
-                    titles = [str(a.get('title')) for a in art_list if isinstance(a, dict) and a.get('title')]
-                    if titles:
-                        titles_display = ', '.join(titles)
-                except Exception:
-                    pass
-                print(f"{ord_str:>3}. Q: {q} | Error: {err} | Artifacts: {titles_display}")
 
-            # Print failures-only section
-            if 'ErrorOccured' in results.columns:
-                print("\nFailed Tests:")
-                try:
-                    failed = results.copy()
-                    if 'Ordinal' in failed:
-                        failed = failed.sort_values('Ordinal')
-                    failed = failed[failed['ErrorOccured'] == 1]
-                    if failed.empty:
-                        print("  (none)")
-                    else:
-                        for _, row in failed.iterrows():
-                            ord_str = str(row.get('Ordinal', ''))
-                            details = _ellipsis(str(row.get('ErrorDetails', '')), limit=500)
-                            print(f"{ord_str:>3}. {details}")
-                except Exception:
-                    pass
-        except Exception:
-            # Fallback to printing the DataFrame if anything goes wrong
-            print(results)
+def execute_tests_from_dataframe(df, agent_name, max_workers=5):
+    """Execute tests from a pandas DataFrame instead of reading from CSV file"""
+    # Initialize list to store results
+    results = []
+    
+    # Process questions in parallel
+    with concurrent.futures.ThreadPoolExecutor(max_workers=max_workers) as executor:
+        # Create future objects for each question
+        future_to_question = {
+            executor.submit(process_question, row['Question'], row['Answer'], row['Filename'], agent_name, row.get('ValidationRules', '{}'), row.get('ValidationMode', 'hybrid')): index 
+            for index, row in df.iterrows()
+        }
+        
+        # Process completed futures as they finish
+        for future in concurrent.futures.as_completed(future_to_question):
+            index = future_to_question[future]
+            try:
+                result = future.result()
+                if result:
+                    # Add repeat information if available
+                    if '_repeat_index' in df.iloc[index]:
+                        result['RepeatIndex'] = df.iloc[index]['_repeat_index']
+                        result['OriginalIndex'] = df.iloc[index]['_original_index']
+                    result['Ordinal'] = index + 1
+                    results.append(result)
+                else:
+                    # Get the original question from the DataFrame
+                    original_question = df.iloc[index]['Question']
+                    print(f"Failed to process question: {original_question}")
+                    # Create a failed result entry
+                    failed_result = {
+                        'Question': original_question,
+                        'Filename': df.iloc[index]['Filename'],
+                        'Answer': df.iloc[index]['Answer'],
+                        'AgentAnswer': 'Failed to process',
+                        'ErrorOccured': 1,
+                        'ErrorDetails': 'Test execution failed',
+                        'Ordinal': index + 1
+                    }
+                    # Add repeat information if available
+                    if '_repeat_index' in df.iloc[index]:
+                        failed_result['RepeatIndex'] = df.iloc[index]['_repeat_index']
+                        failed_result['OriginalIndex'] = df.iloc[index]['_original_index']
+                    results.append(failed_result)
+            except Exception as e:
+                print(f"Error processing question at index {index}: {e}")
+                # Create a failed result entry
+                original_question = df.iloc[index]['Question']
+                failed_result = {
+                    'Question': original_question,
+                    'Filename': df.iloc[index]['Filename'],
+                    'Answer': df.iloc[index]['Answer'],
+                    'AgentAnswer': 'Failed to process',
+                    'ErrorOccured': 1,
+                    'ErrorDetails': str(e),
+                    'Ordinal': index + 1
+                }
+                # Add repeat information if available
+                if '_repeat_index' in df.iloc[index]:
+                    failed_result['RepeatIndex'] = df.iloc[index]['_repeat_index']
+                    failed_result['OriginalIndex'] = df.iloc[index]['_original_index']
+                results.append(failed_result)
+    
+    # Convert results to DataFrame
+    if results:
+        results_df = pd.DataFrame(results)
+        return results_df
+    else:
+        print("No results to return")
+        return None
+
+
+if __name__ == "__main__":
+    # Legacy execution - now handled by run_tests.py
+    print("This script is now called through run_tests.py")
+    print("Use: python run_tests.py --suite <suite> --agent <agent>")
+    print("Example: python run_tests.py --suite code-interpreter --agent MAA-02 --quick")

@@ -33,6 +33,18 @@
 			placeholder="--Select--"
 		/>
 
+		<!-- Search filter for prompts -->
+		<div v-if="resourceType === 'prompt'" class="mb-1 mt-4">
+			<div class="mb-2">Search prompts:</div>
+			<InputText
+				v-model="searchFilter"
+				type="text"
+				class="w-full"
+				placeholder="Filter prompts by name or description..."
+				@input="filterPrompts"
+			/>
+		</div>
+
 		<!-- Resource role -->
 		<div class="mb-1 mt-4">Resource Role:</div>
 		<InputText
@@ -121,6 +133,10 @@ export default {
 
 			resourceOption: null,
 			resourceOptions: [],
+			allResourceOptions: [], // Store all resources for filtering
+			searchFilter: '' as string,
+			resourceCache: new Map<string, any[]>(), // Cache for different resource types
+			resourceLoadingStates: new Map<string, boolean>(), // Track loading states
 		};
 	},
 
@@ -133,12 +149,12 @@ export default {
 	},
 
 	methods: {
-		getResourceNameFromId(resourceId) {
+		getResourceNameFromId(resourceId: string): string {
 			const parts = resourceId.split('/').filter(Boolean);
 			return parts.slice(-1)[0];
 		},
 
-		getResourceTypeFromId(resourceId) {
+		getResourceTypeFromId(resourceId: string): string {
 			const parts = resourceId.split('/').filter(Boolean);
 			const type = parts.slice(-2)[0];
 
@@ -157,8 +173,20 @@ export default {
 			return type;
 		},
 
-		async updateResourceOptions(resourceType) {
-			let apiMethod = null;
+		async updateResourceOptions(resourceType: string): Promise<void> {
+			// Check if resources are already cached for this type
+			if (this.resourceCache.has(resourceType)) {
+				this.allResourceOptions = this.resourceCache.get(resourceType)!;
+				this.applyResourceFiltering(resourceType);
+				return;
+			}
+
+			// Check if already loading for this type
+			if (this.resourceLoadingStates.get(resourceType)) {
+				return;
+			}
+
+			let apiMethod: (() => Promise<any>) | null = null;
 			if (resourceType === 'model') {
 				this.loadingStatusText = 'Loading models...';
 				apiMethod = api.getAIModels;
@@ -185,19 +213,106 @@ export default {
 				apiMethod = api.getProjects;
 			}
 
+			// Mark as loading
+			this.resourceLoadingStates.set(resourceType, true);
 			this.loading = true;
+
 			try {
-				this.resourceOptions = (await apiMethod.call(api))
-					.map((resource) => resource.resource)
-					.sort((a, b) => a.name.localeCompare(b.name));
-			} catch (error) {
+				if (!apiMethod) {
+					throw new Error(`No API method found for resource type: ${resourceType}`);
+				}
+				const allResources = (await apiMethod.call(api))
+					.map((resource: any) => resource.resource)
+					.sort((a: any, b: any) => a.name.localeCompare(b.name));
+
+				// Cache the resources
+				this.resourceCache.set(resourceType, allResources);
+				this.allResourceOptions = allResources;
+				
+				// Apply initial filtering
+				this.applyResourceFiltering(resourceType);
+			} catch (error: any) {
 				this.$toast.add({
 					severity: 'error',
 					detail: error?.response?._data || error,
 					life: 5000,
 				});
+			} finally {
+				this.loading = false;
+				this.resourceLoadingStates.set(resourceType, false);
 			}
-			this.loading = false;
+		},
+
+		/**
+		 * Apply filtering based on resource type and search criteria
+		 */
+		applyResourceFiltering(resourceType: string): void {
+			if (resourceType === 'prompt') {
+				this.resourceOptions = this.filterPromptsByCriteria(
+					this.allResourceOptions, 
+					'workflowResource', 
+					this.searchFilter
+				);
+			} else {
+				// For other resource types, apply search filter if provided
+				if (this.searchFilter) {
+					const criteria = this.searchFilter.toLowerCase();
+					this.resourceOptions = this.allResourceOptions.filter(resource => 
+						resource.name.toLowerCase().includes(criteria) ||
+						resource.description?.toLowerCase().includes(criteria)
+					);
+				} else {
+					this.resourceOptions = this.allResourceOptions;
+				}
+			}
+		},
+
+		/**
+		 * Filter prompts based on context and search criteria
+		 * @param prompts - Array of prompt objects
+		 * @param context - The context for filtering ('workflowResource', 'editMode', etc.)
+		 * @param searchCriteria - Optional search criteria
+		 */
+		filterPromptsByCriteria(prompts: any[], context = 'workflowResource', searchCriteria = ''): any[] {
+			let filteredPrompts = [...prompts];
+
+			// Apply context-specific filtering
+			if (context === 'workflowResource') {
+				// For workflow resources, filter to relevant prompt categories
+				filteredPrompts = filteredPrompts.filter(prompt => 
+					prompt.category === 'Workflow' || 
+					prompt.category === 'System' ||
+					prompt.name.toLowerCase().includes('workflow')
+				);
+			}
+
+			// Apply search criteria if provided
+			if (searchCriteria) {
+				const criteria = searchCriteria.toLowerCase();
+				filteredPrompts = filteredPrompts.filter(prompt => 
+					prompt.name.toLowerCase().includes(criteria) ||
+					prompt.description?.toLowerCase().includes(criteria)
+				);
+			}
+
+			return filteredPrompts;
+		},
+
+		/**
+		 * Filter prompts based on search input
+		 */
+		filterPrompts(): void {
+			this.applyResourceFiltering(this.resourceType);
+		},
+
+		/**
+		 * Clear resource cache when needed
+		 */
+		clearResourceCache(): void {
+			this.resourceCache.clear();
+			this.resourceLoadingStates.clear();
+			this.allResourceOptions = [];
+			this.resourceOptions = [];
 		},
 
 		handleSave() {

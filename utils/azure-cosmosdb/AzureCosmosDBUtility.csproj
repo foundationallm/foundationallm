@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <RootNamespace>FoundationaLLM.Utils.AzureCosmosDB</RootNamespace>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+	<AssemblyName>fllm-cdb</AssemblyName>
+  </PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Azure.Identity" Version="1.15.0" />
+		<PackageReference Include="Microsoft.Azure.Cosmos" Version="3.54.0" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
+		<PackageReference Include="System.CommandLine" Version="2.0.0-rc.1.25451.107" />
+	</ItemGroup>
+
+</Project>

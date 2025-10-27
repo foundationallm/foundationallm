@@ -155,6 +155,7 @@
 		watch: {
 			currentSession(newSession: Session, oldSession: Session) {
 				if (newSession.sessionId !== oldSession?.sessionId) {
+					this.setAgentOptions();
 					this.updateAgentSelection();
 				}
 			},
@@ -212,13 +213,14 @@
 			handleAgentChange() {
 				if (isAgentExpired(this.agentSelection!.value)) return;
 
-				this.$appStore.setSessionAgent(this.currentSession, this.agentSelection!.value);
+				this.$appStore.setSessionAgent(this.currentSession, this.agentSelection!.value, true);
 				const message = this.agentSelection!.value
 					? `Agent changed to ${this.agentSelection!.label}`
 					: `Cleared agent hint selection`;
 
 				this.$appStore.addToast({
 					severity: 'success',
+					life: 5000,
 					detail: message,
 				});
 
@@ -259,7 +261,7 @@
 				const enabledAgentIds = userProfile?.agents || [];
 
 				// Filter out expired agents, disabled agents, and agents not enabled in user profile
-				// but keep the currently selected agent even if it doesn't meet these criteria
+				// but keep the currently selected agent even if it doesn't meet these criteria				
 				const filteredAgents = this.$appStore.agents.filter((agent: any) => {
 					const isExpiredOrDisabled = isAgentExpired(agent) || agent.enabled === false;
 					
@@ -324,7 +326,29 @@
 						items: featuredAgents,
 					});
 				}
+				if (!this.$appStore.getSessionAgent(this.currentSession) && this.currentSession) {
+					let selectedAgent = null;
 					
+					if (nonFeaturedAgents.length > 0 && enabledAgentIds.length > 0) {
+						const profileOtherAgents = nonFeaturedAgents.filter(agent => 
+							enabledAgentIds.some(agentId => agentId == agent.value.resource.object_id)
+						);
+						
+						if (profileOtherAgents.length > 0) {
+							selectedAgent = profileOtherAgents[0];
+						}
+					}
+					
+					if (!selectedAgent && featuredAgents.length > 0) {
+						selectedAgent = featuredAgents[0];
+					}
+					
+					if (selectedAgent) {
+						this.agentSelection = selectedAgent;
+						this.$appStore.setSessionAgent(this.currentSession, selectedAgent.value, false);
+					}
+				}
+
 				// Add Other Agents group if there are non-featured agents
 				if (nonFeaturedAgents.length > 0) {
 					this.agentOptionsGroup.push({
@@ -359,10 +383,6 @@
 					this.agentOptions.find(
 						(option) => option.value.resource.object_id === agent.resource.object_id,
 					) || null;
-
-				if (this.agentSelection) {
-					this.$appStore.setSessionAgent(this.currentSession, this.agentSelection.value);
-				}
 			},
 
 			hideAllPoppers() {

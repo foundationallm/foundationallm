@@ -89,7 +89,7 @@ jobs:
       registry: ${{ needs.generate_matrix.outputs.registry }}
       tag: ${{ needs.generate_matrix.outputs.docker_tag }}
       package_chart: ${{ matrix.object.package_helm }}
-      username: e2e-token
+      username: foundationallm
       target: sandbox
     secrets: inherit
 
@@ -109,6 +109,6 @@ jobs:
       dockerfile: ${{ matrix.object.dockerfile }}
       registry: ${{ needs.generate_matrix.outputs.registry }}
       tag: ${{ needs.generate_matrix.outputs.docker_tag }}
-      username: e2e-token
+      username: foundationallm
       target: sandbox
     secrets: inherit

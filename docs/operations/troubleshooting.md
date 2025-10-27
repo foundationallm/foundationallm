@@ -75,7 +75,7 @@ If you encounter an issue that is not addressed by the troubleshooting steps out
 ### Steps to open a GitHub issue
 
 1. **Navigate to our GitHub Repository:**
-   - Visit our GitHub repository at [https://github.com/solliancenet/foundationallm](https://github.com/solliancenet/foundationallm).
+   - Visit our GitHub repository at [https://github.com/foundationallm/foundationallm](https://github.com/foundationallm/foundationallm).
 
 2. **Check Existing Issues:**
    - Before creating a new issue, check the existing issues to see if the problem has already been reported or discussed.
@@ -94,6 +94,6 @@ If you encounter an issue that is not addressed by the troubleshooting steps out
 6. **Monitor for Updates:**
    - After creating the issue, monitor it for updates and respond promptly to any requests for additional information.
 
-By opening a GitHub issue at [https://github.com/solliancenet/foundationallm](https://github.com/solliancenet/foundationallm), you contribute to our collaborative effort in maintaining a robust and well-supported system. Our team values your feedback, and addressing issues through GitHub allows for a transparent and efficient resolution process.
+By opening a GitHub issue at [https://github.com/foundationallm/foundationallm](https://github.com/foundationallm/foundationallm), you contribute to our collaborative effort in maintaining a robust and well-supported system. Our team values your feedback, and addressing issues through GitHub allows for a transparent and efficient resolution process.
 
 Thank you for your collaboration, and we look forward to assisting you with any challenges you may encounter. Your input is instrumental in enhancing the overall reliability and functionality of our system.

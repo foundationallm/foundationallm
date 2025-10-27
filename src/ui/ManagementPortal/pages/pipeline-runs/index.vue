@@ -224,6 +224,17 @@
             :header="`Data Pipeline Run`"
             @update:visible="closeParametersDialog"
             >
+                <label style="font-weight: bold;">Stage Metrics</label>
+                <DataTable :value="stage_metrics_formatted_data">
+                    <Column field="stage" header="Stage"></Column>
+                    <Column field="work_items_count" header="Work Items"></Column>
+                    <Column field="completed_work_items_count" header="Completed"></Column>
+                    <Column field="successful_work_items_count" header="Successful"></Column>
+                    <Column field="start_timestamp" header="Start Time"></Column>
+                    <Column field="last_update_timestamp" header="End Time"></Column>
+                    <Column field="duration" header="Duration (mm:ss.ms)"></Column>
+                </DataTable>
+                <br>
                 <label style="font-weight: bold;">Identifier</label>
 				<div style="margin-bottom: 1rem">
 					<InputText
@@ -233,6 +244,16 @@
 						class="w-full"
 					/>
 				</div>
+
+                <label style="font-weight: bold;">Canonical Id</label>
+                <div style="margin-bottom: 1rem">
+                    <InputText
+                        :readonly="true"
+                        type="text"
+                        v-model="selectedRun.canonical_run_id"
+                        class="w-full"
+                    />
+                </div>
 
                 <label style="font-weight: bold;">Processor</label>
 				<div style="margin-bottom: 1rem">
@@ -244,7 +265,7 @@
 					/>
 				</div>
 
-                <h4>Parameters</h4>
+                <label style="font-weight: bold;">Parameters</label>
 				<div v-for="(value, key) in selectedRun.trigger_parameter_values" :key="key" class="form-group">
 					<div style="margin-bottom: 1rem">
 						<label :for="key">{{ key }}</label>
@@ -255,17 +276,6 @@
 							v-model="selectedRun.trigger_parameter_values[key]"
 							class="w-full"
 						/>
-					</div>
-				</div>
-
-                <h4>Stage Metrics</h4>
-
-                <div v-for="(value, key) in selectedRun.stages_metrics" :key="key" class="form-group">
-					<div class="flex align-items-center justify-content-center gap-2" style="margin-bottom: 1rem">
-						<label :for="key" style="font-weight: bold; min-width: 90px;">{{ key }} </label>
-                        <label style="min-width: 120px;">work items: {{ selectedRun.stages_metrics[key].work_items_count }},</label>
-                        <label style="min-width: 120px;">completed: {{ selectedRun.stages_metrics[key].completed_work_items_count }},</label>
-                        <label style="min-width: 120px;">successful: {{ selectedRun.stages_metrics[key].successful_work_items_count }}</label>
 					</div>
 				</div>
 
@@ -284,7 +294,6 @@
 
 <script lang="ts">
 import api from '@/js/api';
-import type { ResourceProviderGetResult } from '@/js/types';
 
 export default {
 	name: 'DataPipelineRuns',
@@ -294,6 +303,7 @@ export default {
 			pipelineRuns: [],
             pipelineNames: [],
             selectedRun: null,
+            stage_metrics_formatted_data: [],
             selectedPipelineName: null as string | null,
             showParametersDialog: false as boolean,
             showAll: true as boolean,
@@ -362,12 +372,40 @@ export default {
             return date.toString().replace('T', ' ').replace('Z', '').slice(0, 19);
         },
 
+        formatDuration(ms) {
+            if (ms === null || ms === undefined) return '-'
+            const totalMilliseconds = Number(ms)
+            const hours = Math.floor(totalMilliseconds / 3600000)
+            const minutes = Math.floor((totalMilliseconds % 3600000) / 60000)
+            const seconds = Math.floor((totalMilliseconds % 60000) / 1000)
+            const milliseconds = totalMilliseconds % 1000
+            if (hours > 0) {
+                return `${this.pad(hours)}:${this.pad(minutes)}:${this.pad(seconds)}.${String(milliseconds).padStart(3, '0')}`
+            }
+            return `${this.pad(minutes)}:${this.pad(seconds)}.${String(milliseconds).padStart(3, '0')}`
+        },
+
+        pad(number, digits = 2) {
+            return String(number).padStart(digits, '0')
+        },
+
         openParameters(pipelineRun) {
             this.showParametersDialog = true;
             this.selectedRun = pipelineRun;
+
+            this.stage_metrics_formatted_data = Object.entries(pipelineRun.stages_metrics).map(([key, value]) => ({
+                stage: key,
+                work_items_count: value.work_items_count,
+                completed_work_items_count: value.completed_work_items_count,
+                successful_work_items_count: value.successful_work_items_count,
+                start_timestamp: this.getFormattedDate(value.start_timestamp),
+                last_update_timestamp: this.getFormattedDate(value.last_update_timestamp),
+                duration: this.formatDuration(Math.max(0, new Date(value.last_update_timestamp).getTime() - new Date(value.start_timestamp).getTime()))
+            }));
         },
 
         closeParametersDialog() {
+            this.stage_metrics_formatted_data = [];
             this.showParametersDialog = false;
             this.selectedRun = null;
         },

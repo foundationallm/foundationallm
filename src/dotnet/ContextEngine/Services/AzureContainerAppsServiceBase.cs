@@ -62,6 +62,7 @@ namespace FoundationaLLM.Context.Services
 
             httpClient.DefaultRequestHeaders.Authorization =
                 new AuthenticationHeaderValue("Bearer", tokenResult.Token);
+            httpClient.Timeout = TimeSpan.FromMinutes(10);
 
             return httpClient;
         }

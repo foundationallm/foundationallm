@@ -4,6 +4,7 @@ using Azure.AI.OpenAI;
 using Azure.Identity;
 using OpenAI.Assistants;
 using OpenAI.VectorStores;
+using System.ClientModel;
 using System.ClientModel.Primitives;
 using System.CommandLine;
 using System.Text.Json;
@@ -35,44 +36,74 @@ var modelDeploymentNameOption = new Option<string>("--model-deployment-name")
 var instructionsFileOption = new Option<string>("--instructions-file")
 {
     Description = "The path of the text file containing the instructions for the assistant.",
-    Required = true
+    Required = false
+};
+
+var instructionsOption = new Option<string>("--instructions")
+{
+    Description = "The instructions for the assistant.",
+    Required = false
 };
 
 var vectorStoreIdOption = new Option<string>("--vector-store-id")
 {
     Description = "The vector store identifier.",
-    Required = true
+    Required = false
 };
 
 var fileIdOption = new Option<string>("--file-id")
 {
     Description = "The file identifier.",
-    Required = true
+    Required = false
+};
+
+var threadIdOption = new Option<string>("--thread-id")
+{
+    Description = "The thread identifier.",
+    Required = false
+};
+
+var idsOption = new Option<string[]>("--ids")
+{
+    Description = "The list of identifiers.",
+    AllowMultipleArgumentsPerToken = true,
+    Arity = ArgumentArity.OneOrMore,
+    Required = false
 };
 
 var rootCommand = new RootCommand("FoundationaLLM Azure OpenAI Utility");
 
 var assistantCommand = new Command("assistant", "Manage Azure OpenAI assistants");
 var vectorStoreCommand = new Command("vector-store", "Manage Azure OpenAI vector stores");
+var fileCommand = new Command("file", "Manage Azure OpenAI files");
+var threadCommand = new Command("thread", "Manage Azure OpenAI assistant threads");
 
 var assistantCreateCommand = new Command("create", "Create an Azure OpenAI assistant")
 {
     accountOption,
     assistantNameOption,
     modelDeploymentNameOption,
-    instructionsFileOption
+    instructionsFileOption,
+    instructionsOption
 };
+AddMutuallyExclusiveValidator<string, string>(
+    assistantCreateCommand,
+    true,
+    instructionsFileOption,
+    instructionsOption);
 assistantCreateCommand.SetAction(async parseResult =>
 {
     var account = parseResult.GetValue(accountOption);
     var assistantName = parseResult.GetValue(assistantNameOption);
     var modelDeploymentName = parseResult.GetValue(modelDeploymentNameOption);
     var instructionsFile = parseResult.GetValue(instructionsFileOption);
+    var instructions = parseResult.GetValue(instructionsOption);
     CreateAssistant(
         account!,
         assistantName!,
         modelDeploymentName!,
-        instructionsFile!);
+        instructionsFile,
+        instructions);
 });
 
 var assistantShowCommand = new Command("show", "Show the details of an Azure OpenAI assistant")
@@ -137,15 +168,23 @@ vectorStoreShowCommand.SetAction(async parseResult =>
 var vectorStoreDeleteCommand = new Command("delete", "Delete an Azure OpenAI vector store")
 {
     accountOption,
-    vectorStoreIdOption
+    vectorStoreIdOption,
+    idsOption
 };
+AddMutuallyExclusiveValidator<string, string[]>(
+    vectorStoreDeleteCommand,
+    true,
+    vectorStoreIdOption,
+    idsOption);
 vectorStoreDeleteCommand.SetAction(async parseResult =>
 {
     var account = parseResult.GetValue(accountOption);
     var vectorStoreId = parseResult.GetValue(vectorStoreIdOption);
+    var ids = parseResult.GetValue(idsOption);
     await DeleteVectorStore(
         account!,
-        vectorStoreId!);
+        vectorStoreId,
+        ids);
 });
 
 var vectorStoreFileCommand = new Command("file", "Manage the files in an Azure OpenAI vector store");
@@ -198,6 +237,79 @@ vectorStoreFileShowCommand.SetAction(async parseResult =>
         fileId!);
 });
 
+var fileShowCommand = new Command("show", "Show the details of an Azure OpenAI file")
+{
+    accountOption,
+    fileIdOption
+};
+fileShowCommand.SetAction(async parseResult =>
+{
+    var account = parseResult.GetValue(accountOption);
+    var fileId = parseResult.GetValue(fileIdOption);
+    await ShowFile(
+        account!,
+        fileId);
+});
+
+var fileDeleteCommand = new Command("delete", "Delete an Azure OpenAI file")
+{
+    accountOption,
+    fileIdOption,
+    idsOption
+};
+AddMutuallyExclusiveValidator<string, string[]>(
+    fileDeleteCommand,
+    true,
+    fileIdOption,
+    idsOption);
+fileDeleteCommand.SetAction(async parseResult =>
+{
+    var account = parseResult.GetValue(accountOption);
+    var fileId = parseResult.GetValue(fileIdOption);
+    var ids = parseResult.GetValue(idsOption);
+    await DeleteFile(
+        account!,
+        fileId,
+        ids);
+});
+
+var threadShowCommand = new Command("show", "Show the details of an Azure OpenAI assistant thread")
+{
+    accountOption,
+    threadIdOption
+};
+threadShowCommand.SetAction(async parseResult =>
+{
+    var account = parseResult.GetValue(accountOption);
+    var assistantId = parseResult.GetValue(assistantIdOption);
+    var threadId = parseResult.GetValue(threadIdOption);
+    await ShowThread(
+        account!,
+        threadId!);
+});
+
+var threadDeleteCommand = new Command("delete", "Delete an Azure OpenAI assistant thread")
+{
+    accountOption,
+    threadIdOption,
+    idsOption
+};
+AddMutuallyExclusiveValidator<string, string[]>(
+    threadDeleteCommand,
+    true,
+    threadIdOption,
+    idsOption);
+threadDeleteCommand.SetAction(async parseResult =>
+{
+    var account = parseResult.GetValue(accountOption);
+    var threadId = parseResult.GetValue(threadIdOption);
+    var ids = parseResult.GetValue(idsOption);
+    await DeleteThread(
+        account!,
+        threadId,
+        ids);
+});
+
 rootCommand.Subcommands.Add(assistantCommand);
 assistantCommand.Subcommands.Add(assistantCreateCommand);
 assistantCommand.Subcommands.Add(assistantShowCommand);
@@ -215,14 +327,42 @@ vectorStoreFileCommand.Subcommands.Add(vectorStoreFileListCommand);
 vectorStoreFileCommand.Subcommands.Add(vectorStoreFileAddCommand);
 vectorStoreFileCommand.Subcommands.Add(vectorStoreFileShowCommand);
 
+rootCommand.Subcommands.Add(fileCommand);
+fileCommand.Subcommands.Add(fileShowCommand);
+fileCommand.Subcommands.Add(fileDeleteCommand);
+
+rootCommand.Subcommands.Add(threadCommand);
+threadCommand.Subcommands.Add(threadShowCommand);
+threadCommand.Subcommands.Add(threadDeleteCommand);
+
 ParseResult parseResult = rootCommand.Parse(args);
 return parseResult.Invoke();
+
+
+static void AddMutuallyExclusiveValidator<T1, T2>(
+    Command cmd,
+    bool requireExactlyOne,
+    Option<T1> option1,
+    Option<T2> option2)
+{
+    cmd.Validators.Add(ctx =>
+    {
+        int count = 0;
+        if (ctx.GetValue<T1>(option1) is not null) count++;
+        if (ctx.GetValue<T2>(option2) is not null) count++;
+        if (count > 1)
+            ctx.AddError($"Options {option1.Aliases.First()} and {option2.Aliases.First()} are mutually exclusive.");
+        else if (requireExactlyOne && count == 0)
+            ctx.AddError($"Specify exactly one of {option1.Aliases.First()} and {option2.Aliases.First()}.");
+    });
+}
 
 void CreateAssistant(
     string account,
     string assistantName,
     string modelDeploymentName,
-    string instructionsFile)
+    string? instructionsFile,
+    string? instructions)
 {
     try
     {
@@ -246,7 +386,9 @@ void CreateAssistant(
             new AssistantCreationOptions()
             {
                 Name = assistantName,
-                Instructions = File.ReadAllText(instructionsFile),
+                Instructions = instructionsFile is not null
+                    ? File.ReadAllText(instructionsFile)
+                    : instructions!,
                 Tools =
                     {
                     new CodeInterpreterToolDefinition(),
@@ -362,28 +504,54 @@ void CreateVectorStore(
 
 async Task DeleteVectorStore(
     string account,
-    string vectorStoreId)
+    string? vectorStoreId,
+    string[]? ids)
 {
     try
     {
         var azureOpenAIClient = new AzureOpenAIClient(new Uri($"https://{account}.openai.azure.com/"), new AzureCliCredential());
         var vectorStoreClient = azureOpenAIClient.GetVectorStoreClient();
-        var clientResult = await vectorStoreClient.DeleteVectorStoreAsync(vectorStoreId);
 
-        if (!clientResult.Value.Deleted)
+        if (ids is not null)
+        {
+            var results = new Dictionary<string, string>();
+            foreach (var id in ids)
+            {
+                try
+                {
+                    var clientResult = await vectorStoreClient.DeleteVectorStoreAsync(id);
+                    if (!clientResult.Value.Deleted)
+                        results[id] = "NotDeleted";
+                    else
+                        results[id] = "Deleted";
+                }
+                catch (ClientResultException ex) when (ex.Status == 404)
+                {
+                    results[id] = "NotFound";
+                }
+            }
             Console.WriteLine(
-                JsonSerializer.Serialize(
-                new
-                {
-                    success = false,
-                    error = "Failed to delete vector store."
-                }));
+                JsonSerializer.Serialize(results));
+        }
         else
-            Console.WriteLine(JsonSerializer.Serialize(
-                new
-                {
-                    success = true
-                }));
+        {
+            var clientResult = await vectorStoreClient.DeleteVectorStoreAsync(vectorStoreId);
+
+            if (!clientResult.Value.Deleted)
+                Console.WriteLine(
+                    JsonSerializer.Serialize(
+                    new
+                    {
+                        success = false,
+                        error = "Failed to delete vector store."
+                    }));
+            else
+                Console.WriteLine(JsonSerializer.Serialize(
+                    new
+                    {
+                        success = true
+                    }));
+        }
     }
     catch (Exception ex)
     {
@@ -490,6 +658,176 @@ void ShowVectorStore(
 
         Console.WriteLine(
             ModelReaderWriter.Write(clientResult.Value).ToString());
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine(
+            JsonSerializer.Serialize(
+                new
+                {
+                    error = ex.Message
+                }));
+    }
+}
+
+async Task ShowFile(
+    string account,
+    string fileId)
+{
+    try
+    {
+        var azureOpenAIClient = new AzureOpenAIClient(new Uri($"https://{account}.openai.azure.com/"), new AzureCliCredential());
+        var fileClient = azureOpenAIClient.GetOpenAIFileClient();
+        var clientResult = await fileClient.GetFileAsync(fileId);
+        Console.WriteLine(
+            ModelReaderWriter.Write(clientResult.Value).ToString());
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine(
+            JsonSerializer.Serialize(
+                new
+                {
+                    error = ex.Message
+                }));
+    }
+}
+
+async Task DeleteFile(
+    string account,
+    string? fileId,
+    string[]? ids)
+{
+    try
+    {
+        var azureOpenAIClient = new AzureOpenAIClient(new Uri($"https://{account}.openai.azure.com/"), new AzureCliCredential());
+        var fileClient = azureOpenAIClient.GetOpenAIFileClient();
+
+        if (ids is not null)
+        {
+            var results = new Dictionary<string, string>();
+            foreach (var id in ids)
+            {
+                try
+                {
+                    var clientResult = await fileClient.DeleteFileAsync(id);
+                    if (!clientResult.Value.Deleted)
+                        results[id] = "NotDeleted";
+                    else
+                        results[id] = "Deleted";
+                }
+                catch (ClientResultException ex) when (ex.Status == 404)
+                {
+                    results[id] = "NotFound";
+                }
+            }
+            Console.WriteLine(
+                JsonSerializer.Serialize(results));
+        }
+        else
+        {
+            var clientResult = await fileClient.DeleteFileAsync(fileId);
+
+            if (!clientResult.Value.Deleted)
+                Console.WriteLine(
+                    JsonSerializer.Serialize(
+                    new
+                    {
+                        success = false,
+                        error = "Failed to delete file."
+                    }));
+            else
+                Console.WriteLine(JsonSerializer.Serialize(
+                    new
+                    {
+                        success = true
+                    }));
+        }
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine(
+            JsonSerializer.Serialize(
+                new
+                {
+                    error = ex.Message
+                }));
+    }
+}
+
+async Task ShowThread(
+    string account,
+    string threadId)
+{
+    try
+    {
+        var azureOpenAIClient = new AzureOpenAIClient(new Uri($"https://{account}.openai.azure.com/"), new AzureCliCredential());
+        var assistantClient = azureOpenAIClient.GetAssistantClient();
+        var clientResult = await assistantClient.GetThreadAsync(threadId);
+        Console.WriteLine(
+            ModelReaderWriter.Write(clientResult.Value).ToString());
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine(
+            JsonSerializer.Serialize(
+                new
+                {
+                    error = ex.Message
+                }));
+    }
+}
+
+async Task DeleteThread(
+    string account,
+    string? threadId,
+    string[]? ids)
+{
+    try
+    {
+        var azureOpenAIClient = new AzureOpenAIClient(new Uri($"https://{account}.openai.azure.com/"), new AzureCliCredential());
+        var assistantClient = azureOpenAIClient.GetAssistantClient();
+
+        if (ids is not null)
+        {
+            var results = new Dictionary<string, string>();
+            foreach (var id in ids)
+            {
+                try
+                {
+                    var clientResult = await assistantClient.DeleteThreadAsync(id);
+                    if (!clientResult.Value.Deleted)
+                        results[id] = "NotDeleted";
+                    else
+                        results[id] = "Deleted";
+                }
+                catch (ClientResultException ex) when (ex.Status == 404)
+                {
+                    results[id] = "NotFound";
+                }
+            }
+            Console.WriteLine(
+                JsonSerializer.Serialize(results));
+        }
+        else
+        {
+            var clientResult = await assistantClient.DeleteThreadAsync(threadId);
+
+            if (!clientResult.Value.Deleted)
+                Console.WriteLine(
+                    JsonSerializer.Serialize(
+                    new
+                    {
+                        success = false,
+                        error = "Failed to delete thread."
+                    }));
+            else
+                Console.WriteLine(JsonSerializer.Serialize(
+                    new
+                    {
+                        success = true
+                    }));
+        }
     }
     catch (Exception ex)
     {

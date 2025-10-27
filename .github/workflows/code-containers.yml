@@ -1,9 +1,6 @@
 name: Code Containers
 
 on:
-  push:
-    branches:
-    - release/**
   workflow_dispatch:
     inputs: {}
 
@@ -50,7 +47,7 @@ jobs:
 
   docker_build:
     name: Build Docker Images
-    if: startsWith(github.ref, 'refs/heads/release/') || startsWith(github.ref, 'refs/heads/poc/')
+    if: startsWith(github.ref, 'refs/heads/release/') || startsWith(github.ref, 'refs/heads/poc/') || (github.ref_type == 'tag' && contains(github.ref_name, '-rc')) || (github.ref_type == 'tag' && contains(github.ref_name, '-poc'))
     needs: 
       - generate_matrix
     strategy:
@@ -64,6 +61,6 @@ jobs:
       dockerfile: ${{ matrix.object.dockerfile }}
       registry: ${{ needs.generate_matrix.outputs.registry }}
       tag: ${{ needs.generate_matrix.outputs.docker_tag }}
-      username: e2e-token
+      username: foundationallm
       target: sandbox
     secrets: inherit

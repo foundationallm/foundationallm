@@ -1,9 +1,6 @@
-name: Base Docker Images Build
+name: Build Base Images
 
 on:
-  push:
-    branches:
-    - release/**
   workflow_dispatch:
     inputs: {}
 
@@ -13,6 +10,7 @@ jobs:
     outputs:
       registry: ${{ steps.set-registry.outputs.result }}
       base_images: ${{ steps.set-base-images.outputs.result }}
+      docker_tag: ${{ steps.docker-tag.outputs.docker_tag }}
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
@@ -37,11 +35,23 @@ jobs:
           const fs = require('fs')
           const jsonString = fs.readFileSync('./tests/config/sandbox-registry.json')
           var data = JSON.parse(jsonString)
-          return data.registry    
+          return data.registry
+
+    - name: Set Docker tag
+      id: docker-tag
+      run: |
+        if [ "${GITHUB_REF_TYPE}" = "tag" ]; then
+          DOCKER_TAG="${GITHUB_REF_NAME}"
+        else
+          DOCKER_TAG="${GITHUB_REF_NAME#release/}"
+        fi
+        echo "DOCKER_TAG=$DOCKER_TAG" >> $GITHUB_ENV
+        echo "docker_tag: Latest Tag is : $DOCKER_TAG"
+        echo "docker_tag=$DOCKER_TAG" >> $GITHUB_OUTPUT      
 
   base_docker_build:
     name: Build Base Docker Images
-    if: startsWith(github.ref, 'refs/heads/release/') || startsWith(github.ref, 'refs/heads/poc/')
+    if: (github.ref_type == 'tag' && contains(github.ref_name, '-base'))
     needs: generate_matrix
     strategy:
       fail-fast: false
@@ -53,7 +63,9 @@ jobs:
       context: ${{ matrix.object.context }}
       dockerfile: ${{ matrix.object.dockerfile }}
       registry: ${{ needs.generate_matrix.outputs.registry }}
-      tag: latest
-      username: e2e-token
+      tag: ${{ needs.generate_matrix.outputs.docker_tag }}
+      username: foundationallm
       target: sandbox
     secrets: inherit
+
+
