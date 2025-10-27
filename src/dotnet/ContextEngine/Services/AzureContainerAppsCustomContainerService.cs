@@ -153,6 +153,19 @@ namespace FoundationaLLM.Context.Services
                     content);
 
                 var responseContent = await response.Content.ReadAsStringAsync();
+
+                if (string.IsNullOrWhiteSpace(responseContent))
+                {
+                    _logger.LogError("Empty response received when executing code in code session {CodeSessionId}", codeSessionId);
+                    return new CodeSessionCodeExecuteResponse
+                    {
+                        Status = "Failed",
+                        StandardOutput = string.Empty,
+                        StandardError = "Empty response received from the code execution environment.",
+                        ExecutionResult = "An unexpected response was received from the code execution sandbox. A common reason for this is the container running out of memory.",
+                    };
+                }
+
                 var responseJson = ((JsonElement)JsonSerializer.Deserialize<dynamic>(responseContent)).GetProperty("detail");
 
                 return new CodeSessionCodeExecuteResponse
