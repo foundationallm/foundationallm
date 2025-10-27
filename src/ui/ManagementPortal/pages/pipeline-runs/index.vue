@@ -294,7 +294,7 @@ export default {
 			pipelineRuns: [],
             pipelineNames: [],
             selectedRun: null,
-			stage_metrics_formatted_data: [],
+            stage_metrics_formatted_data: [],
             selectedPipelineName: null as string | null,
             showParametersDialog: false as boolean,
             showAll: true as boolean,
