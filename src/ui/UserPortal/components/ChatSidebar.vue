@@ -641,13 +641,13 @@ import Checkbox from 'primevue/checkbox';
 				this.newConversationMetadata = null;
 			},
 
-		handleSessionSelected(session: Session) {
-			(this.$appStore as any).changeSession(session);
-			const sessionAgent = (this.$appStore as any).getSessionAgent(session);
-			if (sessionAgent) {
-				(this.$appStore as any).setSessionAgent(session, sessionAgent, true);
-			}
-		},
+	handleSessionSelected(session: Session) {
+		(this.$appStore as any).changeSession(session);
+		const sessionAgent = (this.$appStore as any).getSessionAgent(session);
+		if (sessionAgent) {
+			(this.$appStore as any).setSessionAgent(session, sessionAgent, true);
+		}
+	},
 
 		async handleAddSession() {
 			if (this.createProcessing) return;
@@ -665,7 +665,7 @@ import Checkbox from 'primevue/checkbox';
 			this.createProcessing = true;
 
 			try {
-				const currentAgent = this.currentSession ? (this.$appStore as any).getSessionAgent(this.currentSession) : null;
+			const currentAgent = this.currentSession ? (this.$appStore as any).getSessionAgent(this.currentSession) : null;
 				const mostRecentSession = this.sessions[0];
 				if (mostRecentSession) {
 					const isEmptySession = await (this.$appStore as any).isSessionEmpty(mostRecentSession.sessionId);
@@ -682,10 +682,10 @@ import Checkbox from 'primevue/checkbox';
 						return;
 					}
 				}
-				const newSession = await (this.$appStore as any).addSession();
-				if (currentAgent) {
-					(this.$appStore as any).setSessionAgent(newSession, currentAgent, true);
-				}
+			const newSession = await (this.$appStore as any).addSession();
+			if (currentAgent) {
+				(this.$appStore as any).setSessionAgent(newSession, currentAgent, true);
+			}
 				this.handleSessionSelected(newSession);
 
 				this.debounceTimeout = setTimeout(() => {
