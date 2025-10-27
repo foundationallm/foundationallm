@@ -141,38 +141,54 @@ namespace FoundationaLLM.Context.Services
             string endpoint,
             string codeToExecute)
         {
-            var httpClient = await CreateHttpClient();
-
-            var payload = new { code = codeToExecute };
-            var content = new StringContent(JsonSerializer.Serialize(payload), System.Text.Encoding.UTF8, "application/json");
-
-            var response = await httpClient.PostAsync(
-                $"{endpoint}/code/execute?api-version=2024-10-02-preview&identifier={codeSessionId}",
-                content);
-
-            if (!response.IsSuccessStatusCode)
+            try
             {
-                var error = await response.Content.ReadAsStringAsync();
+                var httpClient = await CreateHttpClient();
+
+                var payload = new { code = codeToExecute };
+                var content = new StringContent(JsonSerializer.Serialize(payload), System.Text.Encoding.UTF8, "application/json");
+
+                var response = await httpClient.PostAsync(
+                    $"{endpoint}/code/execute?api-version=2024-10-02-preview&identifier={codeSessionId}",
+                    content);
+
+                var responseContent = await response.Content.ReadAsStringAsync();
+
+                if (string.IsNullOrWhiteSpace(responseContent))
+                {
+                    _logger.LogError("Empty response received when executing code in code session {CodeSessionId}", codeSessionId);
+                    return new CodeSessionCodeExecuteResponse
+                    {
+                        Status = "Failed",
+                        StandardOutput = string.Empty,
+                        StandardError = "Empty response received from the code execution environment.",
+                        ExecutionResult = "An unexpected response was received from the code execution sandbox. A common reason for this is the container running out of memory.",
+                    };
+                }
+
+                var responseJson = ((JsonElement)JsonSerializer.Deserialize<dynamic>(responseContent)).GetProperty("detail");
 
                 return new CodeSessionCodeExecuteResponse
                 {
-                    Status = "Failed",
-                    StandardOutput = "",
-                    StandardError = "",
-                    ExecutionResult = $"Code execution failed: {error}"
+                    Status = response.IsSuccessStatusCode
+                        ? "Succeeded"
+                        : "Failed",
+                    StandardOutput = responseJson.GetProperty("output").ToString(),
+                    StandardError = responseJson.GetProperty("error").ToString(),
+                    ExecutionResult = responseJson.GetProperty("results").ToString(),
                 };
             }
-
-            var responseContent = await response.Content.ReadAsStringAsync();
-            var responseJson = (JsonElement)JsonSerializer.Deserialize<dynamic>(responseContent);
-
-            return new CodeSessionCodeExecuteResponse
+            catch (Exception ex)
             {
-                Status = "Succeeded",
-                StandardOutput = responseJson.GetProperty("output").ToString(),
-                StandardError = "",
-                ExecutionResult = responseJson.GetProperty("results").ToString(),
-            };
+                _logger.LogError(ex, "Error executing code in code session {CodeSessionId}", codeSessionId);
+                return new CodeSessionCodeExecuteResponse
+                {
+                    Status = "Failed",
+                    StandardOutput = string.Empty,
+                    StandardError = ex.Message,
+                    ExecutionResult = "The code execution failed due to a communication issue with the code execution environment.",
+                };
+            }
         }
 
         private async Task<List<CodeSessionFileStoreItem>> GetCodeSessionFileStoreItems(
