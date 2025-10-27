@@ -153,29 +153,17 @@ namespace FoundationaLLM.Context.Services
                     content);
 
                 var responseContent = await response.Content.ReadAsStringAsync();
-                var responseJson = ((JsonElement)JsonSerializer.Deserialize<dynamic>(responseContent));
+                var responseJson = ((JsonElement)JsonSerializer.Deserialize<dynamic>(responseContent)).GetProperty("detail");
 
-                if (response.IsSuccessStatusCode)
+                return new CodeSessionCodeExecuteResponse
                 {
-                    return new CodeSessionCodeExecuteResponse
-                    {
-                        Status = "Succeeded",
-                        StandardOutput = responseJson.GetProperty("output").ToString(),
-                        StandardError = responseJson.GetProperty("error").ToString(),
-                        ExecutionResult = responseJson.GetProperty("results").ToString(),
-                    };
-                }
-                else
-                {
-                    var detail = responseJson.GetProperty("detail");
-                    return new CodeSessionCodeExecuteResponse
-                    {
-                        Status = "Failed",
-                        StandardOutput = detail.GetProperty("output").ToString(),
-                        StandardError = detail.GetProperty("error").ToString(),
-                        ExecutionResult = detail.GetProperty("results").ToString(),
-                    };
-                }
+                    Status = response.IsSuccessStatusCode
+                        ? "Succeeded"
+                        : "Failed",
+                    StandardOutput = responseJson.GetProperty("output").ToString(),
+                    StandardError = responseJson.GetProperty("error").ToString(),
+                    ExecutionResult = responseJson.GetProperty("results").ToString(),
+                };
             }
             catch (Exception ex)
             {
