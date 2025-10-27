@@ -235,14 +235,14 @@
 				</div>
 
                 <label style="font-weight: bold;">Canonical Id</label>
-				<div style="margin-bottom: 1rem">
-					<InputText
+                <div style="margin-bottom: 1rem">
+                    <InputText
                         :readonly="true"
                         type="text"
-						v-model="selectedRun.canonical_run_id"
-						class="w-full"
-					/>
-				</div>
+                        v-model="selectedRun.canonical_run_id"
+                        class="w-full"
+                    />
+                </div>
 
                 <label style="font-weight: bold;">Processor</label>
 				<div style="margin-bottom: 1rem">
