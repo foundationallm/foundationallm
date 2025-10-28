@@ -141,6 +141,10 @@ MCPTransport = tool_module.MCPTransport
 MCPTransportOverrides = input_module.MCPTransportOverrides
 
 
+def _is_verbose() -> bool:
+    return any(arg.startswith('-v') for arg in sys.argv)
+
+
 class _FakeConfig:
     def __init__(self, values: Dict[str, str] | None = None) -> None:
         self._values = values or {}
@@ -314,8 +318,95 @@ class FoundationaLLMMCPClientIntegrationTests(unittest.IsolatedAsyncioTestCase):
 
         config = _FakeConfig()
         tool = FoundationaLLMMCPClientTool(agent_tool, {}, None, config)  # type: ignore[arg-type]
+        if _is_verbose():
+            print(json.dumps({
+                "operation": "list_tools",
+                "arguments": {}
+            }, indent=2))
+
         content, result = await tool._arun(operation="list_tools")
+
+        if _is_verbose():
+            print(json.dumps({
+                "response": json.loads(content)
+            }, indent=2))
         self.assertTrue(result.content)
         payload = json.loads(content)
         self.assertIn("tools", payload)
+
+    @unittest.skipUnless(
+        os.getenv("MSLEARN_MCP_ENDPOINT"),
+        "MSLEARN_MCP_ENDPOINT environment variable is not defined.",
+    )
+    async def test_mslearn_docs_search(self) -> None:
+        endpoint = os.environ["MSLEARN_MCP_ENDPOINT"]
+        agent_tool = AgentTool(
+            name="mslearn",
+            description="Microsoft Learn MCP",
+            package_name="FoundationaLLM",
+            class_name="FoundationaLLMMCPClientTool",
+            properties={
+                "transport": "streamable_http",
+                "streamable_http": {
+                    "url": endpoint,
+                    "headers": {},
+                    "timeout_seconds": 30,
+                    "sse_read_timeout_seconds": 300,
+                    "terminate_on_close": True,
+                },
+                "default_operation_timeout_seconds": 30,
+            },
+        )
+
+        config = _FakeConfig()
+        tool = FoundationaLLMMCPClientTool(agent_tool, {}, None, config)  # type: ignore[arg-type]
+
+        # Discover available tools and assert microsoft_docs_search is present
+        if _is_verbose():
+            print(json.dumps({
+                "operation": "list_tools",
+                "arguments": {}
+            }, indent=2))
+
+        content, _ = await tool._arun(operation="list_tools")
+
+        if _is_verbose():
+            print(json.dumps({
+                "response": json.loads(content)
+            }, indent=2))
+        tools_payload = json.loads(content)
+        tool_names = {t.get("name") for t in tools_payload.get("tools", [])}
+        self.assertIn("microsoft_docs_search", tool_names)
+
+        # Invoke microsoft_docs_search with the specified query
+        query = "How does Azure use Model Context Protocol (MCP)?"
+        if _is_verbose():
+            print(json.dumps({
+                "operation": "call_tool",
+                "arguments": {
+                    "name": "microsoft_docs_search",
+                    "arguments": {"query": query},
+                    "read_timeout_seconds": 30,
+                }
+            }, indent=2))
+
+        content, _ = await tool._arun(
+            operation="call_tool",
+            arguments={
+                "name": "microsoft_docs_search",
+                "arguments": {"query": query},
+                "read_timeout_seconds": 30,
+            },
+        )
+
+        if _is_verbose():
+            print(json.dumps({
+                "response": json.loads(content)
+            }, indent=2))
+
+        payload = json.loads(content)
+        self.assertTrue(isinstance(payload, dict))
+        has_content_list = isinstance(payload.get("content"), list) and len(payload["content"]) > 0
+        has_results_like = any(k in payload for k in ("results", "items", "documents"))
+        self.assertTrue(has_content_list or has_results_like)
 

@@ -153,8 +153,128 @@ Invoke the tool with the following payload to enumerate available tools:
 Run the tests with:
 
 ```bash
-pytest src/python/FoundationaLLMAgentPlugins/test/foundationallm_mcp_client_tool
+pytest test/foundationallm_mcp_client_tool
 ```
 
 > **Note:** The integration test issues live requests; ensure the endpoint is reachable and stable before enabling it in automated pipelines.
+
+### Running the Microsoft Learn search integration test
+
+To invoke the `microsoft_docs_search` tool with the query "How does Azure use Model Context Protocol (MCP)?", set the endpoint and run the targeted test:
+
+```powershell
+$env:MSLEARN_MCP_ENDPOINT = "https://learn.microsoft.com/api/mcp"
+pytest test/foundationallm_mcp_client_tool -k mslearn_docs_search -q
+```
+
+To also print request/response details to stdout, run the test in verbose mode:
+
+```powershell
+$env:MSLEARN_MCP_ENDPOINT = "https://learn.microsoft.com/api/mcp"
+pytest test/foundationallm_mcp_client_tool -k mslearn_docs_search -v -q
+```
+
+### Showing print output
+
+By default, pytest captures `print` output. To force printing to the console, add `-s` (disable capture). You can combine this with verbosity:
+
+```powershell
+$env:MSLEARN_MCP_ENDPOINT = "https://learn.microsoft.com/api/mcp"
+pytest test/foundationallm_mcp_client_tool -k mslearn_docs_search -vv -s
+```
+
+Relevant switches:
+- `-k pattern`: run tests matching the substring or expression (e.g., `mslearn_docs_search`).
+- `-v`: verbose mode. Shows each test node id as it runs, includes deselected/xfail/xpass summaries, and provides richer assertion diffs.
+- `-vv`: very verbose. Everything from `-v`, plus longer/full test node ids (paths and parametrization), more fixture/collection details, and chattier progress output.
+- `-s`: disable output capturing so `print()` statements appear in real time.
+- `-q`: quiet mode; reduces non-essential output (omit when you want more detail).
+
+Alternative (logging instead of prints):
+
+```powershell
+$env:MSLEARN_MCP_ENDPOINT = "https://learn.microsoft.com/api/mcp"
+pytest test/foundationallm_mcp_client_tool -k mslearn_docs_search -vv -o log_cli=true -o log_cli_level=INFO
+```
+
+## Agent prompt: Using the MCP Client Tool with Microsoft Learn MCP
+
+Use this prompt snippet to guide the agent when answering Microsoft technology questions. It enforces correct use of the MCP Client Tool input schema (top-level `operation` and `arguments`) and dynamic tool discovery. Reference: Microsoft Learn MCP Server (`https://github.com/microsoftdocs/mcp`).
+
+### System guidance for the agent
+
+- Always consult Microsoft Learn via the MCP Client Tool first for Microsoft technologies.
+- The MCP Client Tool requires top-level fields: `operation` and `arguments`.
+  - `operation`: one of `list_tools`, `call_tool`, `list_resources`, `read_resource`, `list_prompts`, `get_prompt`, `complete`, `ping`.
+  - `arguments`: object forwarded to the selected operation.
+- Discover tools dynamically using `list_tools`; do not hard-code schemas. Read each tool’s `inputSchema` and shape your `arguments` accordingly.
+- Prefer `microsoft_docs_search` to find relevant content; use `microsoft_docs_fetch` to retrieve full documents when needed. Optionally use `microsoft_code_sample_search` for code examples.
+- Use `response_format: "json"` and set a reasonable `read_timeout_seconds` for long operations.
+- If a call fails due to schema or availability, re-run `list_tools` and retry aligned to the latest `inputSchema`.
+
+### Canonical invocation patterns
+
+- List available tools
+
+```json
+{
+  "operation": "list_tools",
+  "arguments": {}
+}
+```
+
+- Search Microsoft Learn
+
+```json
+{
+  "operation": "call_tool",
+  "arguments": {
+    "name": "microsoft_docs_search",
+    "arguments": {
+      "query": "How does Azure use Model Context Protocol (MCP)?"
+    },
+    "read_timeout_seconds": 30
+  },
+  "response_format": "json"
+}
+```
+
+- Fetch a full document by id (from search results)
+
+```json
+{
+  "operation": "call_tool",
+  "arguments": {
+    "name": "microsoft_docs_fetch",
+    "arguments": {
+      "id": "<document-identifier>"
+    },
+    "read_timeout_seconds": 60
+  },
+  "response_format": "json"
+}
+```
+
+- Search code samples (optional)
+
+```json
+{
+  "operation": "call_tool",
+  "arguments": {
+    "name": "microsoft_code_sample_search",
+    "arguments": {
+      "query": "ASP.NET Core authentication",
+      "language": "csharp"
+    },
+    "read_timeout_seconds": 30
+  },
+  "response_format": "json"
+}
+```
+
+### Answering behavior
+
+- Summarize the most relevant search hits with titles, links, and brief excerpts.
+- When the user asks for details or full content, fetch the document via `microsoft_docs_fetch`.
+- Cite Microsoft Learn links returned by the MCP server in answers.
 
