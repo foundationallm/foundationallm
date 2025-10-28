@@ -152,44 +152,46 @@ class FoundationaLLMCodeInterpreterTool(FoundationaLLMToolBase):
                     "code_to_execute": generated_code
                 })
             )
+
+            # Get an updated list of files from the code interpreter
+            files_list = []
+            if operation_id:
+                files_list_response = await self.context_api_client.post_async(
+                    endpoint = f"/instances/{self.instance_id}/codeSessions/{session_id}/downloadFiles",
+                    data = json.dumps({
+                        "operation_id": operation_id
+                    })
+                )
+                files_list = files_list_response['file_records']
+                # Remove files that were already present in the beginning of the session
+                files_list = {key: value for key, value in files_list.items() if key not in beginning_files_list}
+
+            if files_list:
+                # Download the files from the code interpreter to the user storage container
+                for file_name, file_data in files_list.items():
+                    content_artifacts.append(ContentArtifact(
+                        id = self.name,
+                        title = f'{self.name} (file)',
+                        type = ContentArtifactTypeNames.FILE,
+                        filepath = file_name,
+                        metadata = {
+                            'file_object_id': file_data['file_object_id'],
+                            'original_file_name': file_data['file_name'],
+                            'file_path': file_data['file_path'],
+                            'file_size': str(file_data['file_size_bytes']),
+                            'content_type': file_data['content_type'],
+                            'conversation_id': file_data['conversation_id']
+                        }
+                    ))
         except Exception as e:
+            # Handle cases where the code execution container does not get a chance to return
+            # a response (e.g., crashes, timeouts, etc.)
             code_execution_response = {
                 'status': 'Failed',
                 'execution_result': '',
                 'error_output': str(e),
                 'standard_output': ''
             }
-
-        # Get an updated list of files from the code interpreter
-        files_list = []
-        if operation_id:
-            files_list_response = await self.context_api_client.post_async(
-                endpoint = f"/instances/{self.instance_id}/codeSessions/{session_id}/downloadFiles",
-                data = json.dumps({
-                    "operation_id": operation_id
-                })
-            )
-            files_list = files_list_response['file_records']
-            # Remove files that were already present in the beginning of the session
-            files_list = {key: value for key, value in files_list.items() if key not in beginning_files_list}
-
-        if files_list:
-            # Download the files from the code interpreter to the user storage container
-            for file_name, file_data in files_list.items():
-                content_artifacts.append(ContentArtifact(
-                    id = self.name,
-                    title = f'{self.name} (file)',
-                    type = ContentArtifactTypeNames.FILE,
-                    filepath = file_name,
-                    metadata = {
-                        'file_object_id': file_data['file_object_id'],
-                        'original_file_name': file_data['file_name'],
-                        'file_path': file_data['file_path'],
-                        'file_size': str(file_data['file_size_bytes']),
-                        'content_type': file_data['content_type'],
-                        'conversation_id': file_data['conversation_id']
-                    }
-                ))
 
         final_response = ""
         if code_execution_response['status'] == 'Failed':
@@ -207,7 +209,7 @@ class FoundationaLLMCodeInterpreterTool(FoundationaLLMToolBase):
             status = code_execution_response.get('status', 'Unknown')
             error_output = code_execution_response.get('error_output', '')
             standard_output = code_execution_response.get('standard_output', '')
-            
+
             final_response = (
                 f"Code execution failed with unexpected status '{status}'. "
                 f"Error details: {error_output if error_output else 'No error details available'}. "
