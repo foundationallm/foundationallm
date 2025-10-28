@@ -49,19 +49,19 @@ from foundationallm.models.constants import (
 # user_prompt = "Describe the main project goals"
 # user_prompt = "What are the latest project health ratings?"
 
-# user_identity_json = {
-#     "name": "Experimental Test",
-#     "user_name":"ciprian@foundationaLLM.ai",
-#     "upn":"ciprian@foundationaLLM.ai",
-#     "user_id": "949195b1-f432-4da3-8f7d-5298e3fda432",
-#     "group_ids": ["c54871ba-1fa1-439a-9e86-30d74dfe4a4a"]}
-
 user_identity_json = {
     "name": "Experimental Test",
-    "user_name":"fllm-labuser-60@foundationaLLM.ai",
-    "upn":"fllm-labuser-60@foundationaLLM.ai",
-    "user_id": "5aece9e4-1bfb-4e6e-a570-e5eb68fa63ef",
-    "group_ids": []}
+    "user_name":"ciprian@foundationaLLM.ai",
+    "upn":"ciprian@foundationaLLM.ai",
+    "user_id": "949195b1-f432-4da3-8f7d-5298e3fda432",
+    "group_ids": ["c54871ba-1fa1-439a-9e86-30d74dfe4a4a"]}
+
+# user_identity_json = {
+#     "name": "Experimental Test",
+#     "user_name":"fllm-labuser-60@foundationaLLM.ai",
+#     "upn":"fllm-labuser-60@foundationaLLM.ai",
+#     "user_id": "5aece9e4-1bfb-4e6e-a570-e5eb68fa63ef",
+#     "group_ids": []}
 
 full_request_json_file_name = 'test/full_request.json' # full original langchain request, contains agent, tools, exploded objects
 
