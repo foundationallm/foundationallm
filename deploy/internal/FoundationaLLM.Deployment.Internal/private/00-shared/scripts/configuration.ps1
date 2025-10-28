@@ -16,12 +16,12 @@ function Get-Configuration {
     $appConfigurationTemplate = Get-Content -Path $appConfigurationTemplatePath -Raw | ConvertFrom-Json -AsHashtable
 }
 
-$configurationMapping = (Get-Content -Path "D:/Repos/FoundationaLLM/src/dotnet/Common/Constants/Data/ConfigurationMapping.json" -Raw | ConvertFrom-Json) `
-    | Where-Object { $_.name -eq "ManagementAPI" }
+# $configurationMapping = (Get-Content -Path "D:/Repos/FoundationaLLM/src/dotnet/Common/Constants/Data/ConfigurationMapping.json" -Raw | ConvertFrom-Json) `
+#     | Where-Object { $_.name -eq "ManagementAPI" }
 
-foreach ($configurationSection in $configurationMapping.configuration_options) {
-    Write-Host "Processing configuration section: $($configurationSection)"
-}
+# foreach ($configurationSection in $configurationMapping.configuration_options) {
+#     Write-Host "Processing configuration section: $($configurationSection)"
+# }
 
 
-$appConfigurationTemplate = Get-Content -Path "D:/Repos/FoundationaLLM/src/dotnet/Common/Templates/appconfig.template.json" -Raw | ConvertFrom-Json -AsHashtable
+# $appConfigurationTemplate = Get-Content -Path "D:/Repos/FoundationaLLM/src/dotnet/Common/Templates/appconfig.template.json" -Raw | ConvertFrom-Json -AsHashtable

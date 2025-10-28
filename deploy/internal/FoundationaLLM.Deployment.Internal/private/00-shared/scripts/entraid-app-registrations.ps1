@@ -203,6 +203,8 @@ function Initialize-EntraIDAppRegistrations {
     }
 
     $appRegistrationNames = Get-EntraIDAppRegistrationNames
+    $appRegistrationURIs = Get-EntraIDAppRegistrationURIs
+    $appRegistrationScopes = Get-EntraIDAppRegistrationScopes
 
     # Create FoundationaLLM Core App Registrations
     $params = @{
@@ -212,7 +214,7 @@ function Initialize-EntraIDAppRegistrations {
         appUrlLocal          = "http://localhost:3000/signin-oidc"
         fllmApi              = $appRegistrationNames.CoreAPI
         fllmApiConfigPath    = "$PSScriptRoot/../data/foundationallm-core-api.template.json"
-        fllmApiUri           = "api://FoundationaLLM-Core"
+        fllmApiUri           = $appRegistrationURIs.CoreAPI
         fllmClient           = $appRegistrationNames.UserPortal
         fllmClientConfigPath = "$PSScriptRoot/../data/foundationallm-user-portal.template.json"
     }
@@ -230,7 +232,7 @@ function Initialize-EntraIDAppRegistrations {
         appUrlLocal          = "http://localhost:3001/signin-oidc"
         fllmApi              = $appRegistrationNames.ManagementAPI
         fllmApiConfigPath    = "$PSScriptRoot/../data/foundationallm-management-api.template.json"
-        fllmApiUri           = "api://FoundationaLLM-Management"
+        fllmApiUri           = $appRegistrationURIs.ManagementAPI
         fllmClient           = $appRegistrationNames.ManagementPortal
         fllmClientConfigPath = "$PSScriptRoot/../data/foundationallm-management-portal.template.json"
     }
@@ -247,7 +249,7 @@ function Initialize-EntraIDAppRegistrations {
         createClientApp   = $false
         fllmApi           = $appRegistrationNames.AuthorizationAPI
         fllmApiConfigPath = "$PSScriptRoot/../data/foundationallm-authorization-api.template.json"
-        fllmApiUri        = "api://FoundationaLLM-Authorization"
+        fllmApiUri        = $appRegistrationURIs.AuthorizationAPI
     }
      if ((az ad app list --query "[?displayName=='$($params.fllmApi)']" -o tsv).Count -eq 0) {
         $($fllmAppRegs).Authorization = New-FllmEntraIdApps @params
