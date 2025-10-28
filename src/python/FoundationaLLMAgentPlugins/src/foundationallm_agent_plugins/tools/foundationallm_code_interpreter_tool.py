@@ -144,13 +144,21 @@ class FoundationaLLMCodeInterpreterTool(FoundationaLLMToolBase):
             )
         beginning_files_list = beginning_files_list_response['file_records']
 
-        # Execute the code
-        code_execution_response = await self.context_api_client.post_async(
-            endpoint = f"/instances/{self.instance_id}/codeSessions/{session_id}/executeCode",
-            data = json.dumps({
-                "code_to_execute": generated_code
-            })
-        )
+        try:
+            # Execute the code
+            code_execution_response = await self.context_api_client.post_async(
+                endpoint = f"/instances/{self.instance_id}/codeSessions/{session_id}/executeCode",
+                data = json.dumps({
+                    "code_to_execute": generated_code
+                })
+            )
+        except Exception as e:
+            code_execution_response = {
+                'status': 'Failed',
+                'execution_result': '',
+                'error_output': str(e),
+                'standard_output': ''
+            }
 
         # Get an updated list of files from the code interpreter
         files_list = []
