@@ -154,9 +154,14 @@ namespace FoundationaLLM.Context.Services
 
                 var responseContent = await response.Content.ReadAsStringAsync();
 
-                if (string.IsNullOrWhiteSpace(responseContent))
+                if (!response.IsSuccessStatusCode
+                    || string.IsNullOrWhiteSpace(responseContent))
                 {
-                    _logger.LogError("Empty response received when executing code in code session {CodeSessionId}", codeSessionId);
+                    _logger.LogError(
+                        "Code execution in session {CodeSessionId} returned an unsuccessfull status code {ResponseStatus}. "
+                        + "Raw response content: {ResponseContent}. "
+                        + "Code to execute: {CodeToExecute}",
+                        codeSessionId, response.StatusCode, responseContent, codeToExecute);
                     return new CodeSessionCodeExecuteResponse
                     {
                         Status = "Failed",
@@ -189,7 +194,7 @@ namespace FoundationaLLM.Context.Services
                         Status = "Failed",
                         StandardOutput = string.Empty,
                         StandardError = "Invalid JSON response received from the code execution environment.",
-                        ExecutionResult = "An unexpected response was received from the code execution sandbox. A common reason for this is the container running out of memory.",
+                        ExecutionResult = "An unexpected response was received from the code execution sandbox. A common reason for this is the container timing out on execution.",
                     };
                 }
             }
