@@ -37,8 +37,8 @@ class FoundationaLLMMCPClientToolInput(BaseModel):
 
     operation: str = Field(
         description=(
-            "Name of the MCP client session coroutine to invoke, such as ``list_tools`` "
-            "or ``call_tool``."
+            "Name of the MCP client session coroutine to invoke, such as ``list_tools``, "
+            "``call_tool``, or ``intelligent_execute``."
         )
     )
     arguments: Dict[str, Any] = Field(

@@ -410,3 +410,103 @@ class FoundationaLLMMCPClientIntegrationTests(unittest.IsolatedAsyncioTestCase):
         has_results_like = any(k in payload for k in ("results", "items", "documents"))
         self.assertTrue(has_content_list or has_results_like)
 
+    @unittest.skipIf(
+        not os.getenv("MSLEARN_MCP_ENDPOINT"),
+        "MSLEARN_MCP_ENDPOINT environment variable not set"
+    )
+    async def test_intelligent_execute(self):
+        """Test the intelligent_execute operation with mocked LLM responses."""
+        
+        # Mock LLM responses
+        class MockLLMResponse:
+            def __init__(self, content: str, input_tokens: int = 100, output_tokens: int = 50):
+                self.content = content
+                self.usage_metadata = {
+                    'input_tokens': input_tokens,
+                    'output_tokens': output_tokens
+                }
+        
+        class MockLLM:
+            async def ainvoke(self, messages):
+                # Return different responses based on message content
+                if "execution plan" in str(messages):
+                    # Planning phase response
+                    return MockLLMResponse(json.dumps({
+                        "tools_to_execute": [
+                            {
+                                "operation": "call_tool",
+                                "arguments": {
+                                    "name": "microsoft_docs_search",
+                                    "arguments": {"query": "MCP documentation"},
+                                    "read_timeout_seconds": 30
+                                }
+                            }
+                        ]
+                    }))
+                else:
+                    # Synthesis phase response
+                    return MockLLMResponse("Based on the search results, here's comprehensive information about MCP documentation...")
+        
+        # Mock the get_main_language_model and get_main_prompt methods
+        original_get_main_llm = FoundationaLLMMCPClientTool.get_main_language_model
+        original_get_main_prompt = FoundationaLLMMCPClientTool.get_main_prompt
+        
+        def mock_get_main_llm(self):
+            return MockLLM()
+        
+        def mock_get_main_prompt(self):
+            return "You are an MCP orchestration assistant. Create execution plans for user queries."
+        
+        FoundationaLLMMCPClientTool.get_main_language_model = mock_get_main_llm
+        FoundationaLLMMCPClientTool.get_main_prompt = mock_get_main_prompt
+        
+        try:
+            endpoint = os.getenv("MSLEARN_MCP_ENDPOINT")
+            agent_tool = AgentTool(
+                name="test_mcp_client",
+                type="mcp_client",
+                configuration={
+                    "transport": "streamable_http",
+                    "streamable_http": {
+                        "url": endpoint,
+                        "headers": {},
+                        "timeout_seconds": 30,
+                        "sse_read_timeout_seconds": 300,
+                        "terminate_on_close": True,
+                    },
+                    "default_operation_timeout_seconds": 30,
+                },
+            )
+
+            config = _FakeConfig()
+            tool = FoundationaLLMMCPClientTool(agent_tool, {}, None, config)  # type: ignore[arg-type]
+
+            # Test intelligent_execute
+            content, result = await tool._arun(
+                operation="intelligent_execute",
+                arguments={"prompt": "Search Microsoft Learn for MCP documentation"}
+            )
+
+            # Verify response
+            self.assertIsInstance(content, str)
+            self.assertGreater(len(content), 0)
+            
+            # Verify token tracking
+            self.assertGreater(result.input_tokens, 0)
+            self.assertGreater(result.output_tokens, 0)
+            
+            # Verify artifacts
+            self.assertEqual(len(result.content_artifacts), 1)
+            artifact = result.content_artifacts[0]
+            self.assertEqual(artifact.type, ContentArtifactTypeNames.CONTENT)
+            self.assertEqual(artifact.title, "Intelligent MCP Execution")
+            
+            if _is_verbose():
+                print(f"Intelligent execute response: {content}")
+                print(f"Token usage - Input: {result.input_tokens}, Output: {result.output_tokens}")
+        
+        finally:
+            # Restore original methods
+            FoundationaLLMMCPClientTool.get_main_language_model = original_get_main_llm
+            FoundationaLLMMCPClientTool.get_main_prompt = original_get_main_prompt
+

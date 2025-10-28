@@ -14,6 +14,7 @@ from langchain_core.callbacks import (
     AsyncCallbackManagerForToolRun,
     CallbackManagerForToolRun,
 )
+from langchain_core.messages import SystemMessage, HumanMessage, AIMessage
 from langchain_core.runnables import RunnableConfig
 from langchain_core.tools import ToolException
 from opentelemetry.trace import SpanKind
@@ -146,6 +147,7 @@ class FoundationaLLMMCPClientTool(FoundationaLLMToolBase):
         "get_prompt",
         "complete",
         "ping",
+        "intelligent_execute",
     }
 
     def __init__(
@@ -186,6 +188,10 @@ class FoundationaLLMMCPClientTool(FoundationaLLMToolBase):
 
         # Value adapters for argument normalization.
         self._any_url_adapter = TypeAdapter(HttpUrl)
+
+        # Initialize LLM and orchestration prompt for intelligent_execute
+        self.main_llm = self.get_main_language_model()
+        self.orchestration_prompt = self.get_main_prompt()
 
     def _run(
         self,
@@ -243,6 +249,12 @@ class FoundationaLLMMCPClientTool(FoundationaLLMToolBase):
         if operation not in self._ALLOWED_OPERATIONS:
             raise ToolException(
                 f"Operation '{operation}' is not supported by the MCP client tool."
+            )
+
+        # Route to intelligent_execute for LLM-powered orchestration
+        if operation == "intelligent_execute":
+            return await self._intelligent_execute(
+                arguments, transport_overrides, response_format, runnable_config, original_prompt
             )
 
         with self.tracer.start_as_current_span(
@@ -311,6 +323,181 @@ class FoundationaLLMMCPClientTool(FoundationaLLMToolBase):
                 output_tokens=0,
             ),
         )
+
+    async def _execute_direct_mcp_operation(
+        self, operation: str, arguments: Dict[str, Any], transport_overrides: MCPTransportOverrides
+    ) -> str:
+        """Execute a direct MCP operation and return the content string result."""
+        
+        with self.tracer.start_as_current_span(
+            f"{self.name}.session", kind=SpanKind.CLIENT
+        ) as connect_span:
+            connect_span.set_attribute("mcp.operation", operation)
+            connect_span.set_attribute("mcp.transport", self._mcp_config.transport.value)
+
+            try:
+                async with self._open_session(transport_overrides) as (
+                    session,
+                    connection_details,
+                ):
+                    connect_span.set_attribute(
+                        "mcp.target", connection_details.target
+                    )
+                    if connection_details.session_id:
+                        connect_span.set_attribute(
+                            "mcp.session_id", connection_details.session_id
+                        )
+
+                    with self.tracer.start_as_current_span(
+                        f"{self.name}.request", kind=SpanKind.CLIENT
+                    ) as request_span:
+                        request_span.set_attribute(
+                            "mcp.operation", operation
+                        )
+                        response_model = await self._invoke_operation(
+                            session,
+                            operation,
+                            arguments,
+                        )
+                        result_payload = self._serialize_result(response_model)
+            except Exception as exc:
+                self.logger.exception(
+                    "MCP client tool invocation failed for operation %s", operation
+                )
+                raise ToolException(f"MCP client invocation failed: {exc}") from exc
+
+        content, _ = self._format_response(
+            "json",  # Always use JSON format for internal operations
+            result_payload,
+            connection_details,
+            f"MCP operation: {operation}",
+            json.dumps({"operation": operation, "arguments": arguments}, indent=2),
+        )
+        
+        return content
+
+    async def _intelligent_execute(
+        self,
+        arguments: Dict[str, Any],
+        transport_overrides: MCPTransportOverrides,
+        response_format: str,
+        runnable_config: RunnableConfig | None,
+        original_prompt: str
+    ) -> Tuple[str, FoundationaLLMToolResult]:
+        """LLM-powered orchestration of MCP operations."""
+        
+        # Extract prompt from arguments
+        user_prompt = arguments.get("prompt")
+        if not user_prompt:
+            raise ToolException("Missing required 'prompt' argument for intelligent_execute operation")
+        
+        # Check if LLM is configured
+        if not self.main_llm:
+            raise ToolException("LLM not configured. Please configure main_prompt resource object ID for intelligent_execute operation")
+        
+        if not self.orchestration_prompt:
+            raise ToolException("Orchestration prompt not configured. Please configure main_prompt resource object ID for intelligent_execute operation")
+        
+        # Track token usage
+        input_tokens = 0
+        output_tokens = 0
+        
+        try:
+            # Discovery Phase: Get available tools
+            with self.tracer.start_as_current_span(f'{self.name}_discovery', kind=SpanKind.INTERNAL):
+                tools_response = await self._execute_direct_mcp_operation("list_tools", {}, transport_overrides)
+                available_tools = json.loads(tools_response)
+            
+            # Planning Phase: Use LLM to create execution plan
+            with self.tracer.start_as_current_span(f'{self.name}_orchestration_llm_call', kind=SpanKind.INTERNAL):
+                orchestration_messages = [
+                    SystemMessage(content=self.orchestration_prompt),
+                    HumanMessage(content=f"""
+User Query: {user_prompt}
+
+Available MCP Tools:
+{json.dumps(available_tools, indent=2)}
+
+Please create an execution plan for this request.
+""")
+                ]
+                
+                llm_response = await self.main_llm.ainvoke(orchestration_messages)
+                input_tokens += llm_response.usage_metadata.get('input_tokens', 0)
+                output_tokens += llm_response.usage_metadata.get('output_tokens', 0)
+                
+                # Parse execution plan with fail-fast validation
+                try:
+                    execution_plan = json.loads(llm_response.content)
+                except json.JSONDecodeError as e:
+                    raise ToolException(f"LLM returned invalid JSON execution plan: {e}. Response: {llm_response.content}")
+            
+            # Execution Phase: Execute the planned operations
+            results = []
+            for i, step in enumerate(execution_plan.get("tools_to_execute", [])):
+                with self.tracer.start_as_current_span(f'{self.name}_execution_step_{i}', kind=SpanKind.INTERNAL):
+                    step_operation = step.get("operation")
+                    step_arguments = step.get("arguments", {})
+                    
+                    if not step_operation:
+                        raise ToolException(f"Execution step {i} missing 'operation' field")
+                    
+                    step_result = await self._execute_direct_mcp_operation(
+                        step_operation, step_arguments, transport_overrides
+                    )
+                    results.append(step_result)
+            
+            # Synthesis Phase: Use LLM to synthesize final response
+            with self.tracer.start_as_current_span(f'{self.name}_synthesis_llm_call', kind=SpanKind.INTERNAL):
+                synthesis_messages = [
+                    SystemMessage(content="Synthesize the MCP tool results into a coherent response that addresses the user's query."),
+                    HumanMessage(content=f"""
+Original Query: {user_prompt}
+
+Tool Results:
+{json.dumps(results, indent=2)}
+
+Provide a comprehensive response that addresses the user's query.
+""")
+                ]
+                
+                synthesis_response = await self.main_llm.ainvoke(synthesis_messages)
+                input_tokens += synthesis_response.usage_metadata.get('input_tokens', 0)
+                output_tokens += synthesis_response.usage_metadata.get('output_tokens', 0)
+                
+                final_response = synthesis_response.content
+            
+            # Create content artifact with token tracking
+            content_artifact = self.create_content_artifact(
+                original_prompt,
+                title="Intelligent MCP Execution",
+                tool_input=f"Prompt: {user_prompt}",
+                prompt_tokens=input_tokens,
+                completion_tokens=output_tokens
+            )
+            
+            return (
+                final_response,
+                FoundationaLLMToolResult(
+                    content=final_response,
+                    content_artifacts=[content_artifact],
+                    input_tokens=input_tokens,
+                    output_tokens=output_tokens,
+                ),
+            )
+            
+        except Exception as exc:
+            self.logger.exception("Intelligent execute failed: %s", exc)
+            error_artifact = self.create_error_content_artifact(original_prompt, exc)
+            return (
+                f"Intelligent execute failed: {exc}",
+                FoundationaLLMToolResult(
+                    content=f"Intelligent execute failed: {exc}",
+                    content_artifacts=[error_artifact],
+                    input_tokens=input_tokens,
+                    output_tokens=output_tokens,
+                ),
+            )
 
     async def _invoke_operation(
         self,

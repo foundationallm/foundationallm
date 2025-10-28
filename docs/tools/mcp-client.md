@@ -145,6 +145,56 @@ Invoke the tool with the following payload to enumerate available tools:
 }
 ```
 
+## Intelligent Execute Operation
+
+The MCP Client Tool supports an `intelligent_execute` operation that uses an LLM to orchestrate multi-turn MCP operations. This provides a simplified interface for complex MCP workflows without requiring the agent to manually discover and execute tools.
+
+### Configuration Requirements
+
+To use `intelligent_execute`, you must configure:
+
+1. **Main Prompt Resource Object ID**: Set the `main_prompt` resource object ID in your FoundationaLLM instance configuration
+2. **LLM Configuration**: Ensure a language model is configured for the tool
+
+### Usage
+
+The `intelligent_execute` operation accepts a user prompt and automatically:
+
+1. **Discovers** available MCP tools via `list_tools`
+2. **Plans** the execution strategy using the LLM
+3. **Executes** the planned MCP operations
+4. **Synthesizes** results into a coherent response
+
+```json
+{
+  "operation": "intelligent_execute",
+  "arguments": {
+    "prompt": "Search Microsoft Learn for MCP documentation"
+  }
+}
+```
+
+### Example: Microsoft Learn Search
+
+For MS Learn MCP server, the tool will:
+
+1. Call `list_tools` to discover `microsoft_docs_search`
+2. Use the LLM to map the user prompt to appropriate tool arguments
+3. Execute `call_tool` with `{"name": "microsoft_docs_search", "arguments": {"query": "MCP documentation"}}`
+4. Synthesize the search results into a comprehensive response
+
+### Testing Intelligent Execute
+
+Add tests for the `intelligent_execute` operation:
+
+```python
+def test_intelligent_execute():
+    # Mock LLM responses for planning and synthesis
+    # Mock MCP operations (list_tools, call_tool)
+    # Verify full orchestration flow
+    # Assert token tracking accuracy
+```
+
 ## Testing
 
 - Unit tests under `FoundationaLLMAgentPlugins/test/foundationallm_mcp_client_tool` validate configuration parsing, transport override merging, synchronous/asynchronous execution paths, and artifact generation using mocked sessions.
@@ -205,14 +255,26 @@ Use this prompt snippet to guide the agent when answering Microsoft technology q
 
 - Always consult Microsoft Learn via the MCP Client Tool first for Microsoft technologies.
 - The MCP Client Tool requires top-level fields: `operation` and `arguments`.
-  - `operation`: one of `list_tools`, `call_tool`, `list_resources`, `read_resource`, `list_prompts`, `get_prompt`, `complete`, `ping`.
+  - `operation`: one of `list_tools`, `call_tool`, `list_resources`, `read_resource`, `list_prompts`, `get_prompt`, `complete`, `ping`, `intelligent_execute`.
   - `arguments`: object forwarded to the selected operation.
-- Discover tools dynamically using `list_tools`; do not hard-code schemas. Read each tool’s `inputSchema` and shape your `arguments` accordingly.
+- **Simplified approach**: Use `intelligent_execute` with a user prompt for automatic tool discovery and execution. The tool will handle the multi-step workflow internally.
+- **Manual approach**: Discover tools dynamically using `list_tools`; do not hard-code schemas. Read each tool's `inputSchema` and shape your `arguments` accordingly.
 - Prefer `microsoft_docs_search` to find relevant content; use `microsoft_docs_fetch` to retrieve full documents when needed. Optionally use `microsoft_code_sample_search` for code examples.
 - Use `response_format: "json"` and set a reasonable `read_timeout_seconds` for long operations.
 - If a call fails due to schema or availability, re-run `list_tools` and retry aligned to the latest `inputSchema`.
 
 ### Canonical invocation patterns
+
+- **Intelligent Execute (Recommended)**
+
+```json
+{
+  "operation": "intelligent_execute",
+  "arguments": {
+    "prompt": "Search Microsoft Learn for MCP documentation"
+  }
+}
+```
 
 - List available tools
 
