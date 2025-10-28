@@ -166,17 +166,32 @@ namespace FoundationaLLM.Context.Services
                     };
                 }
 
-                var responseJson = ((JsonElement)JsonSerializer.Deserialize<dynamic>(responseContent)).GetProperty("detail");
-
-                return new CodeSessionCodeExecuteResponse
+                try
                 {
-                    Status = response.IsSuccessStatusCode
+                    var responseJson = ((JsonElement)JsonSerializer.Deserialize<dynamic>(responseContent)).GetProperty("detail");
+
+                    return new CodeSessionCodeExecuteResponse
+                    {
+                        Status = response.IsSuccessStatusCode
                         ? "Succeeded"
                         : "Failed",
-                    StandardOutput = responseJson.GetProperty("output").ToString(),
-                    StandardError = responseJson.GetProperty("error").ToString(),
-                    ExecutionResult = responseJson.GetProperty("results").ToString(),
-                };
+                        StandardOutput = responseJson.GetProperty("output").ToString(),
+                        StandardError = responseJson.GetProperty("error").ToString(),
+                        ExecutionResult = responseJson.GetProperty("results").ToString(),
+                    };
+                }
+                catch (JsonException jsonEx)
+                {
+                    _logger.LogError(jsonEx, "Invalid JSON response received when executing code in code session {CodeSessionId}: {ResponseContent}",
+                        codeSessionId, responseContent);
+                    return new CodeSessionCodeExecuteResponse
+                    {
+                        Status = "Failed",
+                        StandardOutput = string.Empty,
+                        StandardError = "Invalid JSON response received from the code execution environment.",
+                        ExecutionResult = "An unexpected response was received from the code execution sandbox. A common reason for this is the container running out of memory.",
+                    };
+                }
             }
             catch (Exception ex)
             {
