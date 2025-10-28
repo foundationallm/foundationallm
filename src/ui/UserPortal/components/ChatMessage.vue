@@ -1440,12 +1440,22 @@ $textColor: #131833;
 	white-space: pre-wrap;
 	word-wrap: break-word;
 	box-sizing: border-box;
-	scrollbar-width: none;
-	-ms-overflow-style: none;
 }
 
 .artifact-value-content::-webkit-scrollbar {
-	display: none;
+	width: 7px;
+	height: 7px;
+}
+.artifact-value-content::-webkit-scrollbar-track {
+	background: #f1f1f1;
+	border-radius: 4px;
+}
+.artifact-value-content::-webkit-scrollbar-thumb {
+	background: #888;
+	border-radius: 4px;
+}
+.artifact-value-content::-webkit-scrollbar-thumb:hover {
+	background: #555;
 }
 
 .artifact-value-cell .copy-cell-button {
