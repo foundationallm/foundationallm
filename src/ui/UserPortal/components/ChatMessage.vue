@@ -237,7 +237,68 @@
 			style="max-width: 85%"
 		>
 			<div tabindex="0" style="overflow-x: auto">
-				<pre>{{ JSON.stringify(selectedContentArtifact, null, 2) }}</pre>
+				<div v-if="selectedContentArtifact">
+					<h3 style="width: 100%; margin-top: 0; margin-bottom: 12px; font-size: 1.1rem; font-weight: 600; color: #333;">Properties</h3>
+					<table style="width: 100%; border-collapse: collapse; margin-bottom: 24px;">
+						<thead>
+							<tr>
+								<th style="border: 1px solid #ddd; padding: 12px; text-align: left; background-color: #f5f5f5; font-weight: 600;">Property</th>
+								<th style="border: 1px solid #ddd; padding: 12px; text-align: left; background-color: #f5f5f5; font-weight: 600;">Value</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr v-for="(value, key) in getMainProperties(selectedContentArtifact)" :key="`main-${key}`" class="artifact-table-row">
+								<td style="border: 1px solid #ddd; padding: 12px; font-weight: 500; vertical-align: top;">{{ key }}</td>
+								<td class="artifact-value-cell" style="border: 1px solid #ddd; padding: 0; position: relative;">
+									<div class="artifact-value-content">
+										<span>{{ formatPropertyValue(value) }}</span>
+									</div>
+									<Button
+										v-if="value !== null && value !== undefined && value !== ''"
+										class="copy-cell-button"
+										size="small"
+										text
+										icon="pi pi-copy"
+										aria-label="Copy value"
+										@click.stop="handleCopyCellValue(formatPropertyValue(value))"
+									/>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+
+				<!-- Metadata Table -->
+				<div v-if="selectedContentArtifact?.metadata && Object.keys(selectedContentArtifact.metadata).length > 0">
+					<h3 style="margin-top: 0; margin-bottom: 12px; font-size: 1.1rem; font-weight: 600; color: #333;">Metadata</h3>
+					<table style="width: 100%; border-collapse: collapse;">
+						<thead>
+							<tr>
+								<th style="border: 1px solid #ddd; padding: 12px; text-align: left; background-color: #f5f5f5; font-weight: 600;">Property</th>
+								<th style="border: 1px solid #ddd; padding: 12px; text-align: left; background-color: #f5f5f5; font-weight: 600;">Value</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr v-for="(value, key) in selectedContentArtifact.metadata" :key="`meta-${key}`" class="artifact-table-row">
+								<td style="border: 1px solid #ddd; padding: 12px; font-weight: 500; vertical-align: top;">{{ key }}</td>
+								<td class="artifact-value-cell" style="border: 1px solid #ddd; padding: 0; position: relative;">
+									<div class="artifact-value-content">
+										<span>{{ formatPropertyValue(value) }}</span>
+									</div>
+									<Button
+										v-if="value !== null && value !== undefined && value !== ''"
+										class="copy-cell-button"
+										size="small"
+										text
+										icon="pi pi-copy"
+										aria-label="Copy value"
+										@click.stop="handleCopyCellValue(formatPropertyValue(value))"
+									/>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
 			</div>
 
 			<template #footer>
@@ -593,6 +654,51 @@ export default {
 
 	methods: {
 		hideAllPoppers,
+
+		getMainProperties(artifact) {
+			if (!artifact) return {};
+			
+			const mainProperties = {};
+			
+			Object.keys(artifact).forEach(key => {
+				if (key !== 'metadata') {
+					mainProperties[key] = artifact[key];
+				}
+			});
+			
+			return mainProperties;
+		},
+
+		formatPropertyValue(value) {
+			if (value === null || value === undefined || value === '') {
+				return '-';
+			}
+			
+			if (typeof value === 'string') {
+				let formattedValue = value.replace(/\\n/g, '\n').replace(/\\t/g, '\t');
+				formattedValue = formattedValue.replace(/\n*""\n*$/, '').trim();
+				return formattedValue;
+			}
+			
+			return value;
+		},
+
+		async handleCopyCellValue(value) {
+			try {
+				await navigator.clipboard.writeText(value);
+				this.$appStore.addToast({
+					severity: 'success',
+					life: 3000,
+					detail: 'Value copied to clipboard!',
+				});
+			} catch (error) {
+				this.$appStore.addToast({
+					severity: 'error',
+					life: 3000,
+					detail: 'Failed to copy value',
+				});
+			}
+		},
 
 		handleImageClick(event) {
 			const img = event.currentTarget;
@@ -1318,5 +1424,55 @@ $textColor: #131833;
 	.message__button .p-button-icon {
 		margin-right: 0px;
 	}
+}
+
+/* Artifact table cell copy button styles */
+.artifact-value-cell {
+	position: relative;
+}
+
+.artifact-value-content {
+	max-height: 250px;
+	max-width: 100%;
+	overflow-y: auto;
+	overflow-x: auto;
+	padding: 12px;
+	white-space: pre-wrap;
+	word-wrap: break-word;
+	box-sizing: border-box;
+	scrollbar-width: none;
+	-ms-overflow-style: none;
+}
+
+.artifact-value-content::-webkit-scrollbar {
+	display: none;
+}
+
+.artifact-value-cell .copy-cell-button {
+	position: absolute;
+	top: 8px;
+	right: 8px;
+	opacity: 0;
+	transition: opacity 0.2s ease-in-out;
+	background-color: rgba(255, 255, 255, 0.9) !important;
+	border: 1px solid #ddd !important;
+	padding: 4px 8px !important;
+	min-width: auto !important;
+	color: #666 !important;
+	z-index: 10;
+}
+
+.artifact-table-row:hover .copy-cell-button {
+	opacity: 1;
+}
+
+.artifact-value-cell .copy-cell-button:hover {
+	background-color: #f0f0f0 !important;
+	color: #333 !important;
+}
+
+.artifact-value-cell .copy-cell-button:focus {
+	box-shadow: 0 0 0 0.1rem var(--primary-button-bg);
+	opacity: 1;
 }
 </style>
