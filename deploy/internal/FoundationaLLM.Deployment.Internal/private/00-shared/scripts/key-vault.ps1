@@ -24,3 +24,27 @@ function Set-KeyVaultSecrets {
         }
     }
 }
+
+function Set-KeyVaultSecret {
+    param (
+        [Parameter(Mandatory = $true)]
+        [string]$KeyVaultName,
+        [Parameter(Mandatory = $true)]
+        [string]$SecretName,
+        [Parameter(Mandatory = $true)]
+        [string]$SecretValue
+    )
+
+    if ((az keyvault secret list `
+            --vault-name $KeyVaultName `
+            --query "[?name=='$($SecretName)']" -o tsv).Count -eq 0) {
+        Write-Host "Setting secret $SecretName in Key Vault $KeyVaultName..."
+        az keyvault secret set `
+            --vault-name $KeyVaultName `
+            --name $SecretName `
+            --value $SecretValue | Out-Null
+        Write-Host "Secret $SecretName set."
+    } else {
+        Write-Host "Secret $SecretName already exists in Key Vault $KeyVaultName."
+    }
+}

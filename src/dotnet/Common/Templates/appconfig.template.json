@@ -99,7 +99,7 @@
         },
         {
             "key": "FoundationaLLM:ResourceProvidersCache:EnableCache",
-            "value": "false",
+            "value": "true",
             "key_vault_secret_name": null,
             "key_vault_secret_value": null,
             "label": null,
@@ -108,7 +108,7 @@
         },
         {
             "key": "FoundationaLLM:ResourceProvidersCache:AbsoluteCacheExpirationSeconds",
-            "value": "300",
+            "value": "3600",
             "key_vault_secret_name": null,
             "key_vault_secret_value": null,
             "label": null,
@@ -117,7 +117,7 @@
         },
         {
             "key": "FoundationaLLM:ResourceProvidersCache:SlidingCacheExpirationSeconds",
-            "value": "120",
+            "value": "3600",
             "key_vault_secret_name": null,
             "key_vault_secret_value": null,
             "label": null,
@@ -378,7 +378,7 @@
         },
         {
             "key": "FoundationaLLM:APIEndpoints:AuthorizationAPI:Essentials:EnableCache",
-            "value": "false",
+            "value": "true",
             "key_vault_secret_name": null,
             "key_vault_secret_value": null,
             "label": null,
@@ -387,7 +387,7 @@
         },
         {
             "key": "FoundationaLLM:APIEndpoints:AuthorizationAPI:Essentials:AbsoluteCacheExpirationSeconds",
-            "value": "300",
+            "value": "330",
             "key_vault_secret_name": null,
             "key_vault_secret_value": null,
             "label": null,
@@ -396,7 +396,7 @@
         },
         {
             "key": "FoundationaLLM:APIEndpoints:AuthorizationAPI:Essentials:SlidingCacheExpirationSeconds",
-            "value": "120",
+            "value": "125",
             "key_vault_secret_name": null,
             "key_vault_secret_value": null,
             "label": null,
@@ -405,7 +405,7 @@
         },
         {
             "key": "FoundationaLLM:APIEndpoints:AuthorizationAPI:Essentials:CacheSizeLimit",
-            "value": "10000",
+            "value": "12000",
             "key_vault_secret_name": null,
             "key_vault_secret_value": null,
             "label": null,
@@ -414,7 +414,7 @@
         },
         {
             "key": "FoundationaLLM:APIEndpoints:AuthorizationAPI:Essentials:CacheExpirationScanFrequencySeconds",
-            "value": "30",
+            "value": "25",
             "key_vault_secret_name": null,
             "key_vault_secret_value": null,
             "label": null,

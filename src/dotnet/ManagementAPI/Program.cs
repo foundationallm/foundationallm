@@ -83,7 +83,6 @@ namespace FoundationaLLM.Management.API
 
             builder.AddAuthorizationResourceProvider();
             builder.AddConfigurationResourceProvider();
-            builder.AddVectorizationResourceProvider();
             builder.AddAgentResourceProvider();
             builder.AddAzureAIResourceProvider();
             builder.AddPromptResourceProvider();

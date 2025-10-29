@@ -259,7 +259,7 @@ namespace FoundationaLLM.Common.Services.Events
 
                 topic.SubscriptionName = ServiceContext.Production
                     ? $"{topic.SubscriptionPrefix}-{Guid.NewGuid().ToString("N").ToLower()}"
-                    : $"{topic.SubscriptionPrefix}-{_dependencyInjectionContainerSettings.Id:D3}-{ServiceContext.ServiceIdentity!.UPN!.ToLower().NormalizeUserPrincipalName()}";
+                    : $"{topic.SubscriptionPrefix}-{_dependencyInjectionContainerSettings.Id:D3}-{ServiceContext.ServiceIdentity!.UPN!.ToLower().Split('@').First()}";
                 _logger.LogInformation("[AzureEventGridEventService {ServiceIdentifier}] The Azure Event Grid event service is starting to set up the subscription {SubscriptionName} in topic {TopicName}.",
                     _serviceIdentifier, topic.SubscriptionName, topic.Name);
 

@@ -92,6 +92,13 @@ function Get-EntraIDAppRegistrationScopes {
     return $appRegistrationScopes
 }
 
+function New-APIKey {
+
+    $bytes = New-Object byte[] 32
+    [Security.Cryptography.RandomNumberGenerator]::Create().GetBytes($bytes)
+    return [Convert]::ToBase64String($bytes).TrimEnd('=').Replace('+', '-').Replace('/', '_')
+}
+
 function Get-ConfigurationVariables {
     param (
         [string]$TenantId,
@@ -100,28 +107,39 @@ function Get-ConfigurationVariables {
         [string]$UniqueName
     )
 
-    $ResourceGroupNames = Get-ResourceGroupNames -UniqueName $UniqueName
-    $ResourceNames = Get-ResourceNames -UniqueName $UniqueName
-    $AppRegistrationNames = Get-EntraIDAppRegistrationNames
-    $AppRegistrationURIs = Get-EntraIDAppRegistrationURIs
-    $AppRegistrationScopes = Get-EntraIDAppRegistrationScopes
+    $resourceGroupNames = Get-ResourceGroupNames -UniqueName $UniqueName
+    $resourceNames = Get-ResourceNames -UniqueName $UniqueName
+    $appRegistrationNames = Get-EntraIDAppRegistrationNames
+    $appRegistrationScopes = Get-EntraIDAppRegistrationScopes
 
     $configurationVariables = @{
-        AZURE_COSMOS_DB_ENDPOINT = "https://$($ResourceNames.CosmosDBAccount).documents.azure.com:443/"
-        AZURE_EVENT_GRID_ID = "/subscriptions/$($SubscriptionId)/resourceGroups/$($ResourceGroupNames.Core)/providers/Microsoft.EventGrid/namespaces/$($ResourceNames.EventGrid)"
-        AZURE_KEY_VAULT_ENDPOINT = "https://$($ResourceNames.KeyVault).vault.azure.net/"
-        AZURE_STORAGE_ACCOUNT_NAME = $ResourceNames.CoreStorageAccount
-        CONTEXTAPI_KNOWLEDGESERVICE_AZURE_STORAGE_ACCOUNT_NAME = $ResourceNames.ContextStorageAccount
-        ENTRA_AUTH_API_SCOPES = $AppRegistrationScopes.AuthorizationAPI
-        ENTRA_MANAGEMENT_API_CLIENT_ID = ((az ad app list --query "[?displayName=='$($AppRegistrationNames.ManagementAPI)']") | ConvertFrom-Json | Select-Object -ExpandProperty appId)
-        ENTRA_MANAGEMENT_API_SCOPES = $AppRegistrationScopes.ManagementAPI
+
+        # -----------------------------------------------------------
+        # Management API
+        # -----------------------------------------------------------
+
+        APP_INSIGHTS_CONNECTION_STRING = (az monitor app-insights component show --app $resourceNames.AppInsights --resource-group $resourceGroupNames.Core --query "connectionString" -o tsv)
+        AZURE_COSMOS_DB_ENDPOINT = "https://$($resourceNames.CosmosDBAccount).documents.azure.com:443/"
+        AZURE_EVENT_GRID_ID = "/subscriptions/$($SubscriptionId)/resourceGroups/$($resourceGroupNames.Core)/providers/Microsoft.EventGrid/namespaces/$($resourceNames.EventGrid)"
+        AZUREEVENTGRID_API_KEY = (az eventgrid namespace list-key -g $resourceGroupNames.Core --namespace-name $resourceNames.EventGrid --query "key1" -o tsv)
+        AZURE_KEY_VAULT_ENDPOINT = "https://$($resourceNames.KeyVault).vault.azure.net/"
+        AZURE_STORAGE_ACCOUNT_NAME = $resourceNames.CoreStorageAccount
+        CONTEXTAPI_KNOWLEDGESERVICE_AZURE_STORAGE_ACCOUNT_NAME = $resourceNames.ContextStorageAccount
+        ENTRA_AUTH_API_SCOPES = $appRegistrationScopes.AuthorizationAPI
+        ENTRA_MANAGEMENT_API_CLIENT_ID = ((az ad app list --query "[?displayName=='$($appRegistrationNames.ManagementAPI)']") | ConvertFrom-Json | Select-Object -ExpandProperty appId)
+        ENTRA_MANAGEMENT_API_SCOPES = $appRegistrationScopes.ManagementAPI
         ENTRA_MANAGEMENT_API_TENANT_ID = $TenantId
         FOUNDATIONALLM_INSTANCE_ID = $InstanceId
         FOUNDATIONALLM_MANAGEMENT_API_EVENT_GRID_PROFILE = (Get-Content -Raw -LiteralPath "$PSScriptRoot/../data/event-grid-profile.json") `
             -replace "{{SUBSCRIPTION_PREFIX}}", "management"
-        SERVICE_AUTH_API_ENDPOINT_URL = "https://" + (az containerapp ingress show -n $ResourceNames.AuthorizationAPIContainerApp -g $ResourceGroupNames.Core --query "fqdn" -o tsv)
-        SERVICE_MANAGEMENT_API_ENDPOINT_URL = "https://" + (az containerapp ingress show -n $ResourceNames.ManagementAPIContainerApp -g $ResourceGroupNames.Core --query "fqdn" -o tsv)
+        SERVICE_AUTH_API_ENDPOINT_URL = "https://" + (az containerapp ingress show -n $resourceNames.AuthorizationAPIContainerApp -g $resourceGroupNames.Core --query "fqdn" -o tsv)
+        SERVICE_MANAGEMENT_API_ENDPOINT_URL = "https://" + (az containerapp ingress show -n $resourceNames.ManagementAPIContainerApp -g $resourceGroupNames.Core --query "fqdn" -o tsv)
+
+        CONTEXTAPI_API_KEY = New-APIKey
+        DATAPIPELINEAPI_API_KEY = New-APIKey
+        GATEWAYAPI_API_KEY = New-APIKey
     }
 
     return $configurationVariables
 }
+
