@@ -1,0 +1,9 @@
+{
+	"EventProcessingCycleSeconds": 5,
+	"Topics": [
+		{
+			"Name": "resource-providers",
+			"SubscriptionPrefix": "rp-{{SUBSCRIPTION_PREFIX}}"
+		}
+	]
+}

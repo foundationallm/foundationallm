@@ -1,0 +1,19 @@
+{
+    "FoundationaLLMAdmins": [
+        ["Storage Blob Data Contributor", "Data"],
+        ["Storage Blob Data Contributor", "Authorization"],
+        ["Key Vault Secrets Officer", "Core"],
+        ["Key Vault Secrets Officer", "Authorization"]
+    ],
+    "AuthorizationAPIManagedIdentity": [
+        ["Key Vault Secrets Officer", "Authorization"],
+        ["Storage Blob Data Owner", "Authorization"]
+    ],
+    "ManagementAPIManagedIdentity": [
+        ["App Configuration Data Reader", "Core"],
+        ["Key Vault Secrets Officer", "Core"],
+        ["Storage Blob Data Contributor", "Data"],
+        ["EventGrid Contributor", "Core"],
+        ["Cognitive Services OpenAI Contributor", "AIFoundry"]
+    ]
+}

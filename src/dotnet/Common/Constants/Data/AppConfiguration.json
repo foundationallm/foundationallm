@@ -126,7 +126,7 @@
 				"name": "EnableCache",
 				"description": "Setting that indicates whether the resource providers should use caching.",
 				"secret": "",
-				"value": "false",
+				"value": "true",
 				"content_type": "",
 				"first_version": "0.9.4"
 			},
@@ -134,7 +134,7 @@
 				"name": "AbsoluteCacheExpirationSeconds",
 				"description": "Absolute cache expiration in seconds.",
 				"secret": "",
-				"value": "300",
+				"value": "3600",
 				"content_type": "",
 				"first_version": "0.9.4"
 			},
@@ -142,7 +142,7 @@
 				"name": "SlidingCacheExpirationSeconds",
 				"description": "Sets how many seconds the cache entry can be inactive (e.g. not accessed) before it will be removed. This will not extend the entry lifetime beyond the absolute expiration (if set).",
 				"secret": "",
-				"value": "120",
+				"value": "3600",
 				"content_type": "",
 				"first_version": "0.9.4"
 			},
@@ -429,41 +429,6 @@
 		]
 	},
 	{
-		"namespace": "ResourceProviders:Vectorization",
-		"dependency_injection_key": {
-			"description": "Dependency injection key used by the FoundationaLLM.Vectorization resource provider."
-		},
-		"configuration_section": null,
-		"configuration_keys": []
-	},
-	{
-		"namespace": "ResourceProviders:Vectorization:Storage",
-		"dependency_injection_key": {
-			"description": "Dependency injection key used to inject storage settings for the FoundationaLLM.Vectorization resource provider."
-		},
-		"configuration_section": {
-			"description": "Configuration section used to identify the storage settings for the FoundationaLLM.Vectorization resource provider."
-		},
-		"configuration_keys": [
-			{
-				"name": "AuthenticationType",
-				"description": "The type of authentication used to connect to the Azure Blob Storage account used by the FoundationaLLM.Vectorization resource provider. Can be one of: AzureIdentity, AccountKey, or ConnectionString.",
-				"secret": "",
-				"value": "AzureIdentity",
-				"content_type": "",
-				"first_version": "0.8.0"
-			},
-			{
-				"name": "AccountName",
-				"description": "The name of the Azure Blob Storage account used by the FoundationaLLM.Vectorization resource provider.",
-				"secret": "",
-				"value": "${env:AZURE_STORAGE_ACCOUNT_NAME}",
-				"content_type": "",
-				"first_version": "0.8.0"
-			}
-		]
-	},
-	{
 		"namespace": "ResourceProviders:DataPipeline",
 		"dependency_injection_key": {
 			"description": "Dependency injection key used by the FoundationaLLM.DataPipeline resource provider."
@@ -638,7 +603,7 @@
 				"name": "EnableCache",
 				"description": "Setting that indicates whether the Authorization API Client should use caching.",
 				"secret": "",
-				"value": "false",
+				"value": "true",
 				"content_type": "",
 				"first_version": "0.9.1"
 			},
@@ -646,7 +611,7 @@
 				"name": "AbsoluteCacheExpirationSeconds",
 				"description": "Absolute cache expiration in seconds.",
 				"secret": "",
-				"value": "300",
+				"value": "330",
 				"content_type": "",
 				"first_version": "0.9.2"
 			},
@@ -654,7 +619,7 @@
 				"name": "SlidingCacheExpirationSeconds",
 				"description": "Sets how many seconds the cache entry can be inactive (e.g. not accessed) before it will be removed. This will not extend the entry lifetime beyond the absolute expiration (if set).",
 				"secret": "",
-				"value": "120",
+				"value": "125",
 				"content_type": "",
 				"first_version": "0.9.2"
 			},
@@ -662,7 +627,7 @@
 				"name": "CacheSizeLimit",
 				"description": "The maximum number of items that can be stored in the cache.",
 				"secret": "",
-				"value": "10000",
+				"value": "12000",
 				"content_type": "",
 				"first_version": "0.9.2"
 			},
@@ -670,7 +635,7 @@
 				"name": "CacheExpirationScanFrequencySeconds",
 				"description": "Gets or sets the minimum length of time between successive scans for expired items in seconds.",
 				"secret": "",
-				"value": "30",
+				"value": "25",
 				"content_type": "",
 				"first_version": "0.9.2"
 			}
@@ -695,7 +660,7 @@
 				"name": "AppInsightsConnectionString",
 				"description": "The name of the Azure Key Vault secret holding the connection string for the App Insights service used by the Core API.",
 				"secret": "appinsights-connectionstring",
-				"value": "",
+				"value": "${env:APP_INSIGHTS_CONNECTION_STRING}",
 				"content_type": "",
 				"first_version": "0.8.0"
 			}
@@ -883,7 +848,7 @@
 				"name": "APIKey",
 				"description": "The name of the Azure Key Vault secret holding the API key for the Core Worker service.",
 				"secret": "apiendpoints-coreworker-apikey",
-				"value": "",
+				"value": "${env:COREWORKER_API_KEY}",
 				"content_type": "",
 				"first_version": "0.8.0"
 			},
@@ -891,7 +856,7 @@
 				"name": "AppInsightsConnectionString",
 				"description": "The name of the Azure Key Vault secret holding the connection string for the App Insights service used by the Core Worker service.",
 				"secret": "appinsights-connectionstring",
-				"value": "",
+				"value": "${env:APP_INSIGHTS_CONNECTION_STRING}",
 				"content_type": "",
 				"first_version": "0.8.0"
 			}
@@ -908,7 +873,7 @@
 				"name": "APIKey",
 				"description": "The name of the Azure Key Vault secret holding the API key for the Gatekeeper API.",
 				"secret": "apiendpoints-gatekeeperapi-apikey",
-				"value": "",
+				"value": "${env:GATEKEEPERAPI_API_KEY}",
 				"content_type": "",
 				"first_version": "0.8.0"
 			},
@@ -916,7 +881,7 @@
 				"name": "AppInsightsConnectionString",
 				"description": "The name of the Azure Key Vault secret holding the connection string for the App Insights service used by the Gatekeeper API.",
 				"secret": "appinsights-connectionstring",
-				"value": "",
+				"value": "${env:APP_INSIGHTS_CONNECTION_STRING}",
 				"content_type": "",
 				"first_version": "0.8.0"
 			}
@@ -982,7 +947,7 @@
 				"name": "APIKey",
 				"description": "The name of the Azure Key Vault secret holding the API key for the Gatekeeper Integration API.",
 				"secret": "apiendpoints-gatekeeperintegrationapi-apikey",
-				"value": "",
+				"value": "${env:GATEKEEPERINTEGRATIONAPI_API_KEY}",
 				"content_type": "",
 				"first_version": "0.8.0"
 			},
@@ -990,7 +955,7 @@
 				"name": "AppInsightsConnectionString",
 				"description": "The name of the Azure Key Vault secret holding the connection string for the App Insights service used by the Gatekeeper Integration API.",
 				"secret": "appinsights-connectionstring",
-				"value": "",
+				"value": "${env:APP_INSIGHTS_CONNECTION_STRING}",
 				"content_type": "",
 				"first_version": "0.8.0"
 			}
@@ -1007,7 +972,7 @@
 				"name": "APIKey",
 				"description": "The name of the Azure Key Vault secret holding the API key for the Orchestration API.",
 				"secret": "apiendpoints-orchestrationapi-apikey",
-				"value": "",
+				"value": "${env:ORCHESTRATIONAPI_API_KEY}",
 				"content_type": "",
 				"first_version": "0.8.0"
 			},
@@ -1015,7 +980,7 @@
 				"name": "AppInsightsConnectionString",
 				"description": "The name of the Azure Key Vault secret holding the connection string for the App Insights service used by the Orchestration API.",
 				"secret": "appinsights-connectionstring",
-				"value": "",
+				"value": "${env:APP_INSIGHTS_CONNECTION_STRING}",
 				"content_type": "",
 				"first_version": "0.8.0"
 			}
@@ -1065,7 +1030,7 @@
 				"name": "APIKey",
 				"description": "The name of the Azure Key Vault secret holding the API key for the LangChain API.",
 				"secret": "apiendpoints-langchainapi-apikey",
-				"value": "",
+				"value": "${env:LANGCHAINAPI_API_KEY}",
 				"content_type": "",
 				"first_version": "0.8.0"
 			},
@@ -1073,7 +1038,7 @@
 				"name": "AppInsightsConnectionString",
 				"description": "The name of the Azure Key Vault secret holding the connection string for the App Insights service used by the LangChain API.",
 				"secret": "appinsights-connectionstring",
-				"value": "",
+				"value": "${env:APP_INSIGHTS_CONNECTION_STRING}",
 				"content_type": "",
 				"first_version": "0.8.0"
 			}
@@ -1132,7 +1097,7 @@
 				"name": "APIKey",
 				"description": "The name of the Azure Key Vault secret holding the API key for the Semantic Kernel API.",
 				"secret": "apiendpoints-semantickernelapi-apikey",
-				"value": "",
+				"value": "${env:SEMANTICKERNELAPI_API_KEY}",
 				"content_type": "",
 				"first_version": "0.8.0"
 			},
@@ -1140,7 +1105,7 @@
 				"name": "AppInsightsConnectionString",
 				"description": "The name of the Azure Key Vault secret holding the connection string for the App Insights service used by the Semantic Kernel API.",
 				"secret": "appinsights-connectionstring",
-				"value": "",
+				"value": "${env:APP_INSIGHTS_CONNECTION_STRING}",
 				"content_type": "",
 				"first_version": "0.8.0"
 			}
@@ -1182,7 +1147,7 @@
 				"name": "AppInsightsConnectionString",
 				"description": "The name of the Azure Key Vault secret holding the connection string for the App Insights service used by the Management API.",
 				"secret": "appinsights-connectionstring",
-				"value": "",
+				"value": "${env:APP_INSIGHTS_CONNECTION_STRING}",
 				"content_type": "",
 				"first_version": "0.8.0"
 			}
@@ -1255,56 +1220,6 @@
 		]
 	},
 	{
-		"namespace": "APIEndpoints:VectorizationAPI:Essentials",
-		"dependency_injection_key": null,
-		"configuration_section": {
-			"description": "Configuration section used to identify the essential settings for the Vectorization API."
-		},
-		"configuration_keys": [
-			{
-				"name": "APIKey",
-				"description": "The name of the Azure Key Vault secret holding the API key for the Vectorization API.",
-				"secret": "apiendpoints-vectorizationapi-apikey",
-				"value": "",
-				"content_type": "",
-				"first_version": "0.8.0"
-			},
-			{
-				"name": "AppInsightsConnectionString",
-				"description": "The name of the Azure Key Vault secret holding the connection string for the App Insights service used by the Vectorization API.",
-				"secret": "appinsights-connectionstring",
-				"value": "",
-				"content_type": "",
-				"first_version": "0.8.0"
-			}
-		]
-	},
-	{
-		"namespace": "APIEndpoints:VectorizationWorker:Essentials",
-		"dependency_injection_key": null,
-		"configuration_section": {
-			"description": "Configuration section used to identify the essential settings for the Vectorization Worker service."
-		},
-		"configuration_keys": [
-			{
-				"name": "APIKey",
-				"description": "The name of the Azure Key Vault secret holding the API key for the Vectorization Worker service.",
-				"secret": "apiendpoints-vectorizationworker-apikey",
-				"value": "",
-				"content_type": "",
-				"first_version": "0.8.0"
-			},
-			{
-				"name": "AppInsightsConnectionString",
-				"description": "The name of the Azure Key Vault secret holding the connection string for the App Insights service used by the Vectorization worker service.",
-				"secret": "appinsights-connectionstring",
-				"value": "",
-				"content_type": "",
-				"first_version": "0.8.0"
-			}
-		]
-	},
-	{
 		"namespace": "DataPipeline:State",
 		"dependency_injection_key": null,
 		"configuration_section": {
@@ -1364,7 +1279,7 @@
 				"name": "APIKey",
 				"description": "The name of the Azure Key Vault secret holding the API key for the Data Pipeline API.",
 				"secret": "apiendpoints-datapipelineapi-apikey",
-				"value": "",
+				"value": "${env:DATAPIPELINEAPI_API_KEY}",
 				"content_type": "",
 				"first_version": "0.9.7"
 			},
@@ -1372,7 +1287,7 @@
 				"name": "AppInsightsConnectionString",
 				"description": "The name of the Azure Key Vault secret holding the connection string for the App Insights service used by the Data Pipeline API.",
 				"secret": "appinsights-connectionstring",
-				"value": "",
+				"value": "${env:APP_INSIGHTS_CONNECTION_STRING}",
 				"content_type": "",
 				"first_version": "0.9.7"
 			}
@@ -1430,7 +1345,7 @@
 				"name": "APIKey",
 				"description": "The name of the Azure Key Vault secret holding the API key for the Data Pipeline Frontend Worker service.",
 				"secret": "apiendpoints-datapipelinefrontendworker-apikey",
-				"value": "",
+				"value": "${env:DATAPIPELINEFRONTENDWORKER_API_KEY}",
 				"content_type": "",
 				"first_version": "0.9.7"
 			},
@@ -1438,7 +1353,7 @@
 				"name": "AppInsightsConnectionString",
 				"description": "The name of the Azure Key Vault secret holding the connection string for the App Insights service used by the Data Pipeline Frontend Worker service.",
 				"secret": "appinsights-connectionstring",
-				"value": "",
+				"value": "${env:APP_INSIGHTS_CONNECTION_STRING}",
 				"content_type": "",
 				"first_version": "0.9.7"
 			}
@@ -1496,7 +1411,7 @@
 				"name": "APIKey",
 				"description": "The name of the Azure Key Vault secret holding the API key for the Data Pipeline Backend Worker service.",
 				"secret": "apiendpoints-datapipelinebackendworker-apikey",
-				"value": "",
+				"value": "${env:DATAPIPELINEBACKENDWORKER_API_KEY}",
 				"content_type": "",
 				"first_version": "0.9.7"
 			},
@@ -1504,7 +1419,7 @@
 				"name": "AppInsightsConnectionString",
 				"description": "The name of the Azure Key Vault secret holding the connection string for the App Insights service used by the Data Pipeline Backend Worker service.",
 				"secret": "appinsights-connectionstring",
-				"value": "",
+				"value": "${env:APP_INSIGHTS_CONNECTION_STRING}",
 				"content_type": "",
 				"first_version": "0.9.7"
 			}
@@ -1562,7 +1477,7 @@
 				"name": "APIKey",
 				"description": "The name of the Azure Key Vault secret holding the API key for the Context API.",
 				"secret": "apiendpoints-contextapi-apikey",
-				"value": "",
+				"value": "${env:CONTEXTAPI_API_KEY}",
 				"content_type": "",
 				"first_version": "0.9.7"
 			},
@@ -1570,7 +1485,7 @@
 				"name": "AppInsightsConnectionString",
 				"description": "The name of the Azure Key Vault secret holding the connection string for the App Insights service used by the Context API.",
 				"secret": "appinsights-connectionstring",
-				"value": "",
+				"value": "${env:APP_INSIGHTS_CONNECTION_STRING}",
 				"content_type": "",
 				"first_version": "0.9.7"
 			}
@@ -1684,7 +1599,7 @@
 				"name": "APIKey",
 				"description": "The name of the Azure Key Vault secret holding the API key for the Gateway API.",
 				"secret": "apiendpoints-gatewayapi-apikey",
-				"value": "",
+				"value": "${env:GATEWAYAPI_API_KEY}",
 				"content_type": "",
 				"first_version": "0.8.0"
 			},
@@ -1692,7 +1607,7 @@
 				"name": "AppInsightsConnectionString",
 				"description": "The name of the Azure Key Vault secret holding the connection string for the App Insights service used by the Gateway API.",
 				"secret": "appinsights-connectionstring",
-				"value": "",
+				"value": "${env:APP_INSIGHTS_CONNECTION_STRING}",
 				"content_type": "",
 				"first_version": "0.8.0"
 			}
@@ -1750,7 +1665,7 @@
 				"name": "APIKey",
 				"description": "The name of the Azure Key Vault secret holding the API key for the Gateway Adapter API.",
 				"secret": "apiendpoints-gatewayadapterapi-apikey",
-				"value": "",
+				"value": "${env:GATEWAYADAPTER_API_KEY}",
 				"content_type": "",
 				"first_version": "0.8.0"
 			},
@@ -1758,7 +1673,7 @@
 				"name": "AppInsightsConnectionString",
 				"description": "The name of the Azure Key Vault secret holding the connection string for the App Insights service used by the Gateway Adapter API.",
 				"secret": "appinsights-connectionstring",
-				"value": "",
+				"value": "${env:APP_INSIGHTS_CONNECTION_STRING}",
 				"content_type": "",
 				"first_version": "0.8.0"
 			}
@@ -1783,7 +1698,7 @@
 				"name": "APIKey",
 				"description": "The name of the Azure Key Vault secret holding the API key for the State API.",
 				"secret": "apiendpoints-stateapi-apikey",
-				"value": "",
+				"value": "${env:STATEAPI_API_KEY}",
 				"content_type": "",
 				"first_version": "0.8.0"
 			},
@@ -1791,7 +1706,7 @@
 				"name": "AppInsightsConnectionString",
 				"description": "The name of the Azure Key Vault secret holding the connection string for the App Insights service used by the State API.",
 				"secret": "appinsights-connectionstring",
-				"value": "",
+				"value": "${env:APP_INSIGHTS_CONNECTION_STRING}",
 				"content_type": "",
 				"first_version": "0.8.0"
 			}
@@ -1841,7 +1756,7 @@
 				"name": "APIKey",
 				"description": "The name of the Azure Key Vault secret holding the API key for the Azure OpenAI service.",
 				"secret": "apiendpoints-azureopenai-apikey",
-				"value": "",
+				"value": "${env:AZUREOPENAI_API_KEY}",
 				"content_type": "",
 				"first_version": "0.8.0"
 			}
@@ -1878,7 +1793,7 @@
 				"name": "APIKey",
 				"description": "The name of the Azure Key Vault secret holding the API key for the Azure Event Grid service.",
 				"secret": "apiendpoints-azureeventgrid-apikey",
-				"value": "",
+				"value": "${env:AZUREEVENTGRID_API_KEY}",
 				"content_type": "",
 				"first_version": "0.8.0"
 			}
@@ -1926,7 +1841,7 @@
 				"name": "APIKey",
 				"description": "The name of the Azure Key Vault secret holding the API key for the Azure Content Safety service.",
 				"secret": "apiendpoints-azurecontentsafety-apikey",
-				"value": "",
+				"value": "${env:AZURECONTENTSAFETY_API_KEY}",
 				"content_type": "",
 				"first_version": "0.8.0"
 			}
@@ -2334,109 +2249,6 @@
 		]
 	},
 	{
-		"namespace": "Vectorization",
-		"dependency_injection_key": null,
-		"configuration_section": null,
-		"configuration_keys": [
-			{
-				"name": "Worker",
-				"description": "The processing configuration used by the Vectorization Worker service.",
-				"secret": "",
-				"value": "${env:VECTORIZATION_WORKER_CONFIG}",
-				"content_type": "application/json",
-				"first_version": "0.8.0"
-			}
-		]
-	},
-	{
-		"namespace": "Vectorization:Steps",
-		"dependency_injection_key": {
-			"description": "Dependency injection key used to inject the IConfiguration section for vectorization steps."
-		},
-		"configuration_section": {
-			"description": "Configuration section used to identify the settings for vectorization steps."
-		},
-		"configuration_keys": []
-	},
-	{
-		"namespace": "Vectorization:Queues",
-		"dependency_injection_key": {
-			"description": "Dependency injection key used to inject the IConfiguration section for vectorization queues."
-		},
-		"configuration_section": {
-			"description": "Configuration section used to identify the settings for vectorization queues."
-		},
-		"configuration_keys": [
-			{
-				"name": "Extract:AccountName",
-				"description": "The Azure Queue Storage account providing the Extract queue.",
-				"secret": "",
-				"value": "${env:AZURE_STORAGE_ACCOUNT_NAME}",
-				"content_type": "",
-				"first_version": "0.8.0"
-			},
-			{
-				"name": "Partition:AccountName",
-				"description": "The Azure Queue Storage account providing the Partition queue.",
-				"secret": "",
-				"value": "${env:AZURE_STORAGE_ACCOUNT_NAME}",
-				"content_type": "",
-				"first_version": "0.8.0"
-			},
-			{
-				"name": "Embed:AccountName",
-				"description": "The Azure Queue Storage account providing the Embed queue.",
-				"secret": "",
-				"value": "${env:AZURE_STORAGE_ACCOUNT_NAME}",
-				"content_type": "",
-				"first_version": "0.8.0"
-			},
-			{
-				"name": "Index:AccountName",
-				"description": "The Azure Queue Storage account providing the Index queue.",
-				"secret": "",
-				"value": "${env:AZURE_STORAGE_ACCOUNT_NAME}",
-				"content_type": "",
-				"first_version": "0.8.0"
-			}
-		]
-	},
-	{
-		"namespace": "Vectorization:StateService:Storage",
-		"dependency_injection_key": {
-			"description": "Dependency injection key used to inject storage settings for the Vectorization state service."
-		},
-		"configuration_section": {
-			"description": "Configuration section used to identify the settings for the storage account used by the vectorization state service."
-		},
-		"configuration_keys": [
-			{
-				"name": "AuthenticationType",
-				"description": "The type of authentication used to connect to the Azure Blob Storage account used by the Vectorization State service. Can be one of: AzureIdentity, AccountKey, or ConnectionString.",
-				"secret": "",
-				"value": "AzureIdentity",
-				"content_type": "",
-				"first_version": "0.8.0"
-			},
-			{
-				"name": "AccountName",
-				"description": "The name of the Azure Blob Storage account used by the Vectorization State service.",
-				"secret": "",
-				"value": "${env:AZURE_STORAGE_ACCOUNT_NAME}",
-				"content_type": "",
-				"first_version": "0.8.0"
-			}
-		]
-	},
-	{
-		"namespace": "Vectorization:TextEmbedding:Gateway",
-		"dependency_injection_key": {
-			"description": "Dependency injection key used to inject the ITextEmbeddingService implementation that uses the FoundationaLLM Gateway for embedding."
-		},
-		"configuration_section": null,
-		"configuration_keys": []
-	},
-	{
 		"namespace": "DataSources",
 		"dependency_injection_key": null,
 		"configuration_section": {
@@ -2470,22 +2282,6 @@
 				"description": "The settings used by the Management API to process Azure Event Grid events.",
 				"secret": "",
 				"value": "${env:FOUNDATIONALLM_MANAGEMENT_API_EVENT_GRID_PROFILE}",
-				"content_type": "application/json",
-				"first_version": "0.8.0"
-			},
-			{
-				"name": "VectorizationAPI",
-				"description": "The settings used by the Vectorization API to process Azure Event Grid events.",
-				"secret": "",
-				"value": "${env:FOUNDATIONALLM_VECTORIZATION_API_EVENT_GRID_PROFILE}",
-				"content_type": "application/json",
-				"first_version": "0.8.0"
-			},
-			{
-				"name": "VectorizationWorker",
-				"description": "The settings used by the Vectorization Worker to process Azure Event Grid events.",
-				"secret": "",
-				"value": "${env:FOUNDATIONALLM_VECTORIZATION_WORKER_EVENT_GRID_PROFILE}",
 				"content_type": "application/json",
 				"first_version": "0.8.0"
 			},
@@ -2560,22 +2356,6 @@
 		"dependency_injection_key": null,
 		"configuration_section": {
 			"description": "Configuration section used to identify the settings for the events infrastructure used by the Management API."
-		},
-		"configuration_keys": []
-	},
-	{
-		"namespace": "Events:Profiles:VectorizationAPI",
-		"dependency_injection_key": null,
-		"configuration_section": {
-			"description": "Configuration section used to identify the settings for the events infrastructure used by the Vectorization API."
-		},
-		"configuration_keys": []
-	},
-	{
-		"namespace": "Events:Profiles:VectorizationWorker",
-		"dependency_injection_key": null,
-		"configuration_section": {
-			"description": "Configuration section used to identify the settings for the events infrastructure used by the Vectorization Worker service."
 		},
 		"configuration_keys": []
 	},
