@@ -54,22 +54,23 @@ function Initialize-CommonStorage {
         [string]$Location
     )
 
-    $resourceGroupName = "$UniqueName-data"
+    $resourceGroupNames = Get-ResourceGroupNames -UniqueName $UniqueName
     $resourceNames = Get-ResourceNames -UniqueName $UniqueName
-    $storageAccountName = $resourceNames.CoreStorageAccount
+    $coreStorageAccountName = $resourceNames.CoreStorageAccount
+    $contextStorageAccountName = $resourceNames.ContextStorageAccount
     $cosmosDBAccountName = $resourceNames.CosmosDBAccount
 
     Write-Host "Registering namespaces for common services..."
     az provider register --namespace Microsoft.Storage
 
-    Write-Host "Ensuring storage account $storageAccountName exists in resource group '$resourceGroupName'..."
+    Write-Host "Ensuring storage account $coreStorageAccountName exists in resource group $($resourceGroupNames.Data)..."
     if (-not (az storage account check-name `
-        --name $storageAccountName | ConvertFrom-Json).nameAvailable) {
-        Write-Host "Storage account '$storageAccountName' already exists."
+        --name $coreStorageAccountName | ConvertFrom-Json).nameAvailable) {
+        Write-Host "Storage account $coreStorageAccountName already exists."
     } else {
         az storage account create `
-            --name $storageAccountName `
-            --resource-group $resourceGroupName `
+            --name $coreStorageAccountName `
+            --resource-group $($resourceGroupNames.Data) `
             --location $Location `
             --sku Standard_LRS `
             --kind StorageV2 `
@@ -78,30 +79,54 @@ function Initialize-CommonStorage {
             --min-tls-version TLS1_2 | Out-Null
 
         az storage account blob-service-properties update `
-            --account-name $storageAccountName `
+            --account-name $coreStorageAccountName `
             --enable-delete-retention $true `
             --delete-retention-days 30 `
             --enable-container-delete-retention $true `
             --container-delete-retention-days 30 | Out-Null
-        Write-Host "Storage account '$storageAccountName' created."
+        Write-Host "Storage account $coreStorageAccountName created."
     }
 
-    Write-Host "Ensuring Cosmos DB account $cosmosDBAccountName exists in resource group '$resourceGroupName'..."
+    Write-Host "Ensuring storage account $contextStorageAccountName exists in resource group $($resourceGroupNames.Context)..."
+    if (-not (az storage account check-name `
+        --name $contextStorageAccountName | ConvertFrom-Json).nameAvailable) {
+        Write-Host "Storage account $contextStorageAccountName already exists."
+    } else {
+        az storage account create `
+            --name $contextStorageAccountName `
+            --resource-group $($resourceGroupNames.Context) `
+            --location $Location `
+            --sku Standard_LRS `
+            --kind StorageV2 `
+            --allow-shared-key-access $false `
+            --enable-hierarchical-namespace $true `
+            --min-tls-version TLS1_2 | Out-Null
+
+        az storage account blob-service-properties update `
+            --account-name $contextStorageAccountName `
+            --enable-delete-retention $true `
+            --delete-retention-days 30 `
+            --enable-container-delete-retention $true `
+            --container-delete-retention-days 30 | Out-Null
+        Write-Host "Storage account $contextStorageAccountName created."
+    }
+
+    Write-Host "Ensuring Cosmos DB account $cosmosDBAccountName exists in resource group $($resourceGroupNames.Data)..."
     if ((az cosmosdb list `
-        -g $resourceGroupName `
+        -g $($resourceGroupNames.Data) `
         --query "[?name=='$($cosmosDBAccountName)']" -o tsv).Count -eq 0) {
-        
-        Write-Host "Creating Cosmos DB account $cosmosDBAccountName in resource group $resourceGroupName..."
+
+        Write-Host "Creating Cosmos DB account $cosmosDBAccountName in resource group $($resourceGroupNames.Data)..."
         az cosmosdb create `
             --name $cosmosDBAccountName `
-            --resource-group $resourceGroupName `
+            --resource-group $($resourceGroupNames.Data) `
             --kind GlobalDocumentDB `
             --default-consistency-level Session `
             --enable-automatic-failover false `
             --capabilities EnableNoSQLVectorSearch | Out-Null
 
         az resource update `
-            --resource-group $resourceGroupName `
+            --resource-group $($resourceGroupNames.Data) `
             --name $cosmosDBAccountName `
             --resource-type "Microsoft.DocumentDB/databaseAccounts" `
             --set properties.disableLocalAuth=true | Out-Null
@@ -115,14 +140,14 @@ function Initialize-CommonStorage {
     )
 
     foreach ($containerName in $storageContainers) {
-        Write-Host "Ensuring storage container $containerName exists in storage account '$storageAccountName'..."
+        Write-Host "Ensuring storage container $containerName exists in storage account $coreStorageAccountName..."
         if ((az storage container list `
-            --account-name $storageAccountName `
+            --account-name $coreStorageAccountName `
             --auth-mode login `
             --query "[?name=='$($containerName)']" -o tsv).Count -eq 0) {
             
             az storage container create `
-                --account-name $storageAccountName `
+                --account-name $coreStorageAccountName `
                 --auth-mode login `
                 --name $containerName | Out-Null
             Write-Host "Storage container '$containerName' created."
@@ -131,16 +156,16 @@ function Initialize-CommonStorage {
         }
     }
 
-    Write-Host "Ensuring Cosmos DB database $($resourceNames.CosmosDBDatabase) exists in account '$cosmosDBAccountName'..."
+    Write-Host "Ensuring Cosmos DB database $($resourceNames.CosmosDBDatabase) exists in account $cosmosDBAccountName..."
     if ((az cosmosdb sql database list `
         --account-name $cosmosDBAccountName `
-        --resource-group $resourceGroupName `
+        --resource-group $($resourceGroupNames.Data) `
         --query "[?name=='$($resourceNames.CosmosDBDatabase)']" -o tsv).Count -eq 0) {
         
-        Write-Host "Creating Cosmos DB database $($resourceNames.CosmosDBDatabase) in account '$cosmosDBAccountName'..."
+        Write-Host "Creating Cosmos DB database $($resourceNames.CosmosDBDatabase) in account $cosmosDBAccountName..."
         az cosmosdb sql database create `
             --account-name $cosmosDBAccountName `
-            --resource-group $resourceGroupName `
+            --resource-group $($resourceGroupNames.Data) `
             --name $resourceNames.CosmosDBDatabase | Out-Null
         Write-Host "Cosmos DB database '$($resourceNames.CosmosDBDatabase)' created."
     }
@@ -227,7 +252,7 @@ function Initialize-CommonStorage {
 
     foreach ($container in $cosmosDBContainers) {
         Initialize-CosmosDBContainer `
-            -ResourceGroupName $resourceGroupName `
+            -ResourceGroupName $($resourceGroupNames.Data) `
             -AccountName $cosmosDBAccountName `
             -DatabaseName $resourceNames.CosmosDBDatabase `
             -ContainerName $container.Name `
