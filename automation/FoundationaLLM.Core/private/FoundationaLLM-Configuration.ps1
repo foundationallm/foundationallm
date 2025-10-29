@@ -26,3 +26,16 @@ function Merge-AppConfiguration {
 
     return $result
 }
+
+function Merge-APIEndpointConfiguration {
+    param (
+        [hashtable]$Configuration
+    )
+
+    $result = Invoke-ManagementAPI `
+        -Method POST `
+        -RelativeUri "providers/FoundationaLLM.Configuration/apiEndpointConfigurations/$($Configuration['name'])" `
+        -Body $Configuration
+
+    return $result
+}
