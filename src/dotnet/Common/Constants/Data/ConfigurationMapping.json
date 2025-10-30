@@ -11,7 +11,6 @@
 			"APIEndpoints:ManagementAPI:Configuration:Entra:*",
 			"APIEndpoints:ManagementAPI:Essentials:*",
 			"APIEndpoints:AuthorizationAPI:Essentials:*",
-			"APIEndpoints:VectorizationAPI:Essentials:*",
 			"APIEndpoints:GatewayAPI:Essentials:*",
 			"APIEndpoints:DataPipelineAPI:Essentials:*",
 			"APIEndpoints:ContextAPI:Essentials:*",
@@ -27,7 +26,6 @@
 			"ResourceProviders:Plugin:Storage:*",
 			"ResourceProviders:Vector:Storage:*",
 			"ResourceProviders:Context:Storage:*",
-			"ResourceProviders:Vectorization:Storage:*",
 
 			"APIEndpoints:AzureEventGrid:Essentials:*",
 			"APIEndpoints:AzureEventGrid:Configuration:*",
@@ -45,5 +43,62 @@
 
 			".appconfig.featureflag/FoundationaLLM.Agent.PrivateStore"
 		]
+	},
+	{
+		"name": "CoreAPI",
+		"configuration_options": [
+			"Instance:*",
+			"Configuration:*",
+			"ResourceProvidersCache:*",
+
+			"Branding:*",
+			"UserPortal:Configuration:*",
+
+			"APIEndpoints:CoreAPI:Configuration:CosmosDB:*",
+			"APIEndpoints:CoreAPI:Configuration:Entra:*",
+			"APIEndpoints:CoreAPI:Essentials:*",
+			"APIEndpoints:CoreAPI:Configuration:*",
+
+			"APIEndpoints:AuthorizationAPI:Essentials:*",
+			"APIEndpoints:OrchestrationAPI:Essentials:*",
+			"APIEndpoints:GatewayAPI:Essentials:*",
+			"APIEndpoints:GatekeeperAPI:Essentials:*",
+			"APIEndpoints:ContextAPI:Essentials:*",
+			"APIEndpoints:DataPipelineAPI:Essentials:*",
+
+			"ResourceProviders:Agent:Storage:*",
+			"ResourceProviders:Prompt:Storage:*",
+			"ResourceProviders:Attachment:Storage:*",
+			"ResourceProviders:AIModel:Storage:*",
+			"ResourceProviders:AzureAI:Storage:*",
+			"ResourceProviders:Configuration:Storage:*",
+			"ResourceProviders:DataPipeline:Storage:*",
+
+			"Quota:Storage:*",
+
+			"APIEndpoints:AzureEventGrid:Essentials:*",
+			"APIEndpoints:AzureEventGrid:Configuration:*",
+			"Events:Profiles:CoreAPI"
+		]
+	},
+	{
+		"name": "UserPortal",
+		"configuration_options": []
+	},
+	{
+		"name": "OrchestrationAPI",
+		"configuration_options": []
+	},
+	{
+		"name": "LangChainAPI",
+		"configuration_options": []
+	},
+	{
+		"name": "StateAPI",
+		"configuration_options": []
+	},
+	{
+		"name": "GatewayAPI",
+		"configuration_options": []
 	}
 ]

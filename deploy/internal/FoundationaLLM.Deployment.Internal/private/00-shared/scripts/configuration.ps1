@@ -79,6 +79,35 @@ function Initialize-AppConfigurationKey {
     }
 }
 
+function Initialize-AppConfigurationFeatureFlag {
+    param(
+        [string]$Name,
+        [bool]$Enabled,
+        [hashtable]$ResourceNames
+    )
+
+    if ((az appconfig feature list `
+            -n $ResourceNames.AppConfig `
+            --query "[?name=='$Name']" -o tsv).Count -eq 0) {
+        
+        Write-Host "Creating App Configuration feature flag $Name..."
+        az appconfig feature set -n $ResourceNames.AppConfig --feature $Name --yes | Out-Null
+        Write-Host "App Configuration feature flag $Name created."
+    } else {
+        Write-Host "App Configuration feature flag $Name already exists."
+    }
+
+    if ($Enabled) {
+        Write-Host "Enabling App Configuration feature flag $Name..."
+        az appconfig feature enable -n $ResourceNames.AppConfig --feature $Name --yes | Out-Null
+        Write-Host "App Configuration feature flag $Name enabled."
+    } else {
+        Write-Host "Disabling App Configuration feature flag $Name..."
+        az appconfig feature disable -n $ResourceNames.AppConfig --feature $Name --yes | Out-Null
+        Write-Host "App Configuration feature flag $Name disabled."
+    }
+}
+
 function Initialize-Configuration {
     param(
         [string]$TenantId,
@@ -115,7 +144,11 @@ function Initialize-Configuration {
 
     foreach ($configurationOption in $configurationOptions) {
         $wildCardMatch = $configurationOption.EndsWith(":*")
-        $baseKey = "FoundationaLLM:" + $configurationOption.TrimEnd("*")
+        if ($configurationOption.StartsWith(".appconfig.featureflag/")) {
+            $baseKey = $configurationOption
+        } else {
+            $baseKey = "FoundationaLLM:" + $configurationOption.TrimEnd("*")
+        }
 
         foreach ($appConfigurationItem in $appConfigurationTemplate.items) {
             if ($wildCardMatch) {
@@ -131,6 +164,17 @@ function Initialize-Configuration {
     }
 
     foreach ($appConfigurationItem in $matchingAppConfigurationItems) {
+
+        if ($appConfigurationItem.key.StartsWith(".appconfig.featureflag/")) {
+            $featureFlagName = $appConfigurationItem.key.Replace(".appconfig.featureflag/", "")
+            $featureFlagEnabled = [bool]$appConfigurationItem.value
+            Initialize-AppConfigurationFeatureFlag `
+                -Name $featureFlagName `
+                -Enabled $featureFlagEnabled `
+                -ResourceNames $resourceNames
+            continue
+        }
+
         $appConfigurationValue = $appConfigurationItem.value
         $appConfigurationValue = Resolve-ConfigurationVariables `
             -Value $appConfigurationValue `

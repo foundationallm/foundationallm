@@ -48,7 +48,7 @@ function Get-ContainerAppSecrets {
     return $secrets
 }
 
-function Get-ManagementAPIEnvVars {
+function Get-ContainerAppEnvVars {
     param (
         [string]$ResourceGroupName,
         [hashtable]$ResourceNames,

@@ -1,5 +1,20 @@
 [
 	{
+		"namespace": "FeatureFlags",
+		"dependency_injection_key": null,
+		"configuration_section": null,
+		"configuration_keys": [
+			{
+				"name": ".appconfig.featureflag/FoundationaLLM.Agent.PrivateStore",
+				"description": "Feature flag used to enable or disable the agent private store feature",
+				"secret": "",
+				"value": "true",
+				"content_type": "application/vnd.microsoft.appconfig.ff+json;charset=utf-8",
+				"first_version": "0.9.7"
+			}
+		]
+	},
+	{
 		"namespace": "Instance",
 		"dependency_injection_key": null,
 		"configuration_section": {
@@ -717,7 +732,7 @@
 				"name": "CompletionResponsePollingIntervalMilliseconds",
 				"description": "The size in seconds of the polling interval used to check for completion responses.",
 				"secret": "",
-				"value": "{ \\\"value\\\": 10, \\\"value_exceptions\\\": []}",
+				"value": "{ \\\"value\\\": 100, \\\"value_exceptions\\\": []}",
 				"content_type": "application/json",
 				"first_version": "0.8.2"
 			}
@@ -2204,7 +2219,9 @@
 	{
 		"namespace": "ManagementPortal:Authentication:Entra",
 		"dependency_injection_key": null,
-		"configuration_section": null,
+		"configuration_section": {
+			"description": "Configuration section used to identify the settings for Entra ID authentication in the Management Portal."
+		},
 		"configuration_keys": [
 			{
 				"name": "Instance",

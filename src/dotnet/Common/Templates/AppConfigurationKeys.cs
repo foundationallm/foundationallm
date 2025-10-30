@@ -12,6 +12,17 @@ namespace FoundationaLLM.Common.Constants.Configuration
     /// </summary>
     public static class AppConfigurationKeys
     {
+        #region FoundationaLLM:FeatureFlags
+        
+        /// <summary>
+        /// The app configuration key for the .appconfig.featureflag/FoundationaLLM.Agent.PrivateStore setting.
+        /// <para>Value description:<br/>Feature flag used to enable or disable the agent private store feature</para>
+        /// </summary>
+        public const string FeatureFlag_FoundationaLLM_Agent_PrivateStore =
+            ".appconfig.featureflag/FoundationaLLM.Agent.PrivateStore";
+
+        #endregion
+
         #region FoundationaLLM:Instance
         
         /// <summary>
@@ -310,28 +321,6 @@ namespace FoundationaLLM.Common.Constants.Configuration
         /// </summary>
         public const string FoundationaLLM_ResourceProviders_Prompt_Storage_AccountName =
             "FoundationaLLM:ResourceProviders:Prompt:Storage:AccountName";
-
-        #endregion
-
-        #region FoundationaLLM:ResourceProviders:Vectorization
-
-        #endregion
-
-        #region FoundationaLLM:ResourceProviders:Vectorization:Storage
-        
-        /// <summary>
-        /// The app configuration key for the FoundationaLLM:ResourceProviders:Vectorization:Storage:AuthenticationType setting.
-        /// <para>Value description:<br/>The type of authentication used to connect to the Azure Blob Storage account used by the FoundationaLLM.Vectorization resource provider. Can be one of: AzureIdentity, AccountKey, or ConnectionString.</para>
-        /// </summary>
-        public const string FoundationaLLM_ResourceProviders_Vectorization_Storage_AuthenticationType =
-            "FoundationaLLM:ResourceProviders:Vectorization:Storage:AuthenticationType";
-        
-        /// <summary>
-        /// The app configuration key for the FoundationaLLM:ResourceProviders:Vectorization:Storage:AccountName setting.
-        /// <para>Value description:<br/>The name of the Azure Blob Storage account used by the FoundationaLLM.Vectorization resource provider.</para>
-        /// </summary>
-        public const string FoundationaLLM_ResourceProviders_Vectorization_Storage_AccountName =
-            "FoundationaLLM:ResourceProviders:Vectorization:Storage:AccountName";
 
         #endregion
 
@@ -913,42 +902,6 @@ namespace FoundationaLLM.Common.Constants.Configuration
         /// </summary>
         public const string FoundationaLLM_APIEndpoints_ManagementAPI_Configuration_AllowedUploadFileExtensions =
             "FoundationaLLM:APIEndpoints:ManagementAPI:Configuration:AllowedUploadFileExtensions";
-
-        #endregion
-
-        #region FoundationaLLM:APIEndpoints:VectorizationAPI:Essentials
-        
-        /// <summary>
-        /// The app configuration key for the FoundationaLLM:APIEndpoints:VectorizationAPI:Essentials:APIKey setting.
-        /// <para>Value description:<br/>The name of the Azure Key Vault secret holding the API key for the Vectorization API.</para>
-        /// </summary>
-        public const string FoundationaLLM_APIEndpoints_VectorizationAPI_Essentials_APIKey =
-            "FoundationaLLM:APIEndpoints:VectorizationAPI:Essentials:APIKey";
-        
-        /// <summary>
-        /// The app configuration key for the FoundationaLLM:APIEndpoints:VectorizationAPI:Essentials:AppInsightsConnectionString setting.
-        /// <para>Value description:<br/>The name of the Azure Key Vault secret holding the connection string for the App Insights service used by the Vectorization API.</para>
-        /// </summary>
-        public const string FoundationaLLM_APIEndpoints_VectorizationAPI_Essentials_AppInsightsConnectionString =
-            "FoundationaLLM:APIEndpoints:VectorizationAPI:Essentials:AppInsightsConnectionString";
-
-        #endregion
-
-        #region FoundationaLLM:APIEndpoints:VectorizationWorker:Essentials
-        
-        /// <summary>
-        /// The app configuration key for the FoundationaLLM:APIEndpoints:VectorizationWorker:Essentials:APIKey setting.
-        /// <para>Value description:<br/>The name of the Azure Key Vault secret holding the API key for the Vectorization Worker service.</para>
-        /// </summary>
-        public const string FoundationaLLM_APIEndpoints_VectorizationWorker_Essentials_APIKey =
-            "FoundationaLLM:APIEndpoints:VectorizationWorker:Essentials:APIKey";
-        
-        /// <summary>
-        /// The app configuration key for the FoundationaLLM:APIEndpoints:VectorizationWorker:Essentials:AppInsightsConnectionString setting.
-        /// <para>Value description:<br/>The name of the Azure Key Vault secret holding the connection string for the App Insights service used by the Vectorization worker service.</para>
-        /// </summary>
-        public const string FoundationaLLM_APIEndpoints_VectorizationWorker_Essentials_AppInsightsConnectionString =
-            "FoundationaLLM:APIEndpoints:VectorizationWorker:Essentials:AppInsightsConnectionString";
 
         #endregion
 
@@ -1747,75 +1700,6 @@ namespace FoundationaLLM.Common.Constants.Configuration
 
         #endregion
 
-        #region FoundationaLLM:Vectorization
-        
-        /// <summary>
-        /// The app configuration key for the FoundationaLLM:Vectorization:Worker setting.
-        /// <para>Value description:<br/>The processing configuration used by the Vectorization Worker service.</para>
-        /// </summary>
-        public const string FoundationaLLM_Vectorization_Worker =
-            "FoundationaLLM:Vectorization:Worker";
-
-        #endregion
-
-        #region FoundationaLLM:Vectorization:Steps
-
-        #endregion
-
-        #region FoundationaLLM:Vectorization:Queues
-        
-        /// <summary>
-        /// The app configuration key for the FoundationaLLM:Vectorization:Queues:Extract:AccountName setting.
-        /// <para>Value description:<br/>The Azure Queue Storage account providing the Extract queue.</para>
-        /// </summary>
-        public const string FoundationaLLM_Vectorization_Queues_Extract_AccountName =
-            "FoundationaLLM:Vectorization:Queues:Extract:AccountName";
-        
-        /// <summary>
-        /// The app configuration key for the FoundationaLLM:Vectorization:Queues:Partition:AccountName setting.
-        /// <para>Value description:<br/>The Azure Queue Storage account providing the Partition queue.</para>
-        /// </summary>
-        public const string FoundationaLLM_Vectorization_Queues_Partition_AccountName =
-            "FoundationaLLM:Vectorization:Queues:Partition:AccountName";
-        
-        /// <summary>
-        /// The app configuration key for the FoundationaLLM:Vectorization:Queues:Embed:AccountName setting.
-        /// <para>Value description:<br/>The Azure Queue Storage account providing the Embed queue.</para>
-        /// </summary>
-        public const string FoundationaLLM_Vectorization_Queues_Embed_AccountName =
-            "FoundationaLLM:Vectorization:Queues:Embed:AccountName";
-        
-        /// <summary>
-        /// The app configuration key for the FoundationaLLM:Vectorization:Queues:Index:AccountName setting.
-        /// <para>Value description:<br/>The Azure Queue Storage account providing the Index queue.</para>
-        /// </summary>
-        public const string FoundationaLLM_Vectorization_Queues_Index_AccountName =
-            "FoundationaLLM:Vectorization:Queues:Index:AccountName";
-
-        #endregion
-
-        #region FoundationaLLM:Vectorization:StateService:Storage
-        
-        /// <summary>
-        /// The app configuration key for the FoundationaLLM:Vectorization:StateService:Storage:AuthenticationType setting.
-        /// <para>Value description:<br/>The type of authentication used to connect to the Azure Blob Storage account used by the Vectorization State service. Can be one of: AzureIdentity, AccountKey, or ConnectionString.</para>
-        /// </summary>
-        public const string FoundationaLLM_Vectorization_StateService_Storage_AuthenticationType =
-            "FoundationaLLM:Vectorization:StateService:Storage:AuthenticationType";
-        
-        /// <summary>
-        /// The app configuration key for the FoundationaLLM:Vectorization:StateService:Storage:AccountName setting.
-        /// <para>Value description:<br/>The name of the Azure Blob Storage account used by the Vectorization State service.</para>
-        /// </summary>
-        public const string FoundationaLLM_Vectorization_StateService_Storage_AccountName =
-            "FoundationaLLM:Vectorization:StateService:Storage:AccountName";
-
-        #endregion
-
-        #region FoundationaLLM:Vectorization:TextEmbedding:Gateway
-
-        #endregion
-
         #region FoundationaLLM:DataSources
 
         #endregion
@@ -1842,20 +1726,6 @@ namespace FoundationaLLM.Common.Constants.Configuration
         /// </summary>
         public const string FoundationaLLM_Events_Profiles_ManagementAPI =
             "FoundationaLLM:Events:Profiles:ManagementAPI";
-        
-        /// <summary>
-        /// The app configuration key for the FoundationaLLM:Events:Profiles:VectorizationAPI setting.
-        /// <para>Value description:<br/>The settings used by the Vectorization API to process Azure Event Grid events.</para>
-        /// </summary>
-        public const string FoundationaLLM_Events_Profiles_VectorizationAPI =
-            "FoundationaLLM:Events:Profiles:VectorizationAPI";
-        
-        /// <summary>
-        /// The app configuration key for the FoundationaLLM:Events:Profiles:VectorizationWorker setting.
-        /// <para>Value description:<br/>The settings used by the Vectorization Worker to process Azure Event Grid events.</para>
-        /// </summary>
-        public const string FoundationaLLM_Events_Profiles_VectorizationWorker =
-            "FoundationaLLM:Events:Profiles:VectorizationWorker";
         
         /// <summary>
         /// The app configuration key for the FoundationaLLM:Events:Profiles:GatekeeperAPI setting.
@@ -1910,14 +1780,6 @@ namespace FoundationaLLM.Common.Constants.Configuration
         #endregion
 
         #region FoundationaLLM:Events:Profiles:ManagementAPI
-
-        #endregion
-
-        #region FoundationaLLM:Events:Profiles:VectorizationAPI
-
-        #endregion
-
-        #region FoundationaLLM:Events:Profiles:VectorizationWorker
 
         #endregion
 

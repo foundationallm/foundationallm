@@ -91,12 +91,6 @@ namespace FoundationaLLM.Common.Constants.Configuration
             "FoundationaLLM:ResourceProviders:Prompt:Storage:*";
         
         /// <summary>
-        /// Filter for the configuration section used to identify the storage settings for the FoundationaLLM.Vectorization resource provider.
-        /// </summary>
-        public const string FoundationaLLM_ResourceProviders_Vectorization_Storage =
-            "FoundationaLLM:ResourceProviders:Vectorization:Storage:*";
-        
-        /// <summary>
         /// Filter for the configuration section used to identify the storage settings for the FoundationaLLM.DataPipeline resource provider.
         /// </summary>
         public const string FoundationaLLM_ResourceProviders_DataPipeline_Storage =
@@ -239,18 +233,6 @@ namespace FoundationaLLM.Common.Constants.Configuration
         /// </summary>
         public const string FoundationaLLM_APIEndpoints_ManagementAPI_Configuration =
             "FoundationaLLM:APIEndpoints:ManagementAPI:Configuration:*";
-        
-        /// <summary>
-        /// Filter for the configuration section used to identify the essential settings for the Vectorization API.
-        /// </summary>
-        public const string FoundationaLLM_APIEndpoints_VectorizationAPI_Essentials =
-            "FoundationaLLM:APIEndpoints:VectorizationAPI:Essentials:*";
-        
-        /// <summary>
-        /// Filter for the configuration section used to identify the essential settings for the Vectorization Worker service.
-        /// </summary>
-        public const string FoundationaLLM_APIEndpoints_VectorizationWorker_Essentials =
-            "FoundationaLLM:APIEndpoints:VectorizationWorker:Essentials:*";
         
         /// <summary>
         /// Filter for the configuration section for the FoundationaLLM Data Pipeline State service.
@@ -409,22 +391,10 @@ namespace FoundationaLLM.Common.Constants.Configuration
             "FoundationaLLM:UserPortal:Configuration:*";
         
         /// <summary>
-        /// Filter for the configuration section used to identify the settings for vectorization steps.
+        /// Filter for the configuration section used to identify the settings for Entra ID authentication in the Management Portal.
         /// </summary>
-        public const string FoundationaLLM_Vectorization_Steps =
-            "FoundationaLLM:Vectorization:Steps:*";
-        
-        /// <summary>
-        /// Filter for the configuration section used to identify the settings for vectorization queues.
-        /// </summary>
-        public const string FoundationaLLM_Vectorization_Queues =
-            "FoundationaLLM:Vectorization:Queues:*";
-        
-        /// <summary>
-        /// Filter for the configuration section used to identify the settings for the storage account used by the vectorization state service.
-        /// </summary>
-        public const string FoundationaLLM_Vectorization_StateService_Storage =
-            "FoundationaLLM:Vectorization:StateService:Storage:*";
+        public const string FoundationaLLM_ManagementPortal_Authentication_Entra =
+            "FoundationaLLM:ManagementPortal:Authentication:Entra:*";
         
         /// <summary>
         /// Filter for the configuration section used to identify the settings for data sources resources managed by the FoundationaLLM.DataSource resource provider.
@@ -449,18 +419,6 @@ namespace FoundationaLLM.Common.Constants.Configuration
         /// </summary>
         public const string FoundationaLLM_Events_Profiles_ManagementAPI =
             "FoundationaLLM:Events:Profiles:ManagementAPI:*";
-        
-        /// <summary>
-        /// Filter for the configuration section used to identify the settings for the events infrastructure used by the Vectorization API.
-        /// </summary>
-        public const string FoundationaLLM_Events_Profiles_VectorizationAPI =
-            "FoundationaLLM:Events:Profiles:VectorizationAPI:*";
-        
-        /// <summary>
-        /// Filter for the configuration section used to identify the settings for the events infrastructure used by the Vectorization Worker service.
-        /// </summary>
-        public const string FoundationaLLM_Events_Profiles_VectorizationWorker =
-            "FoundationaLLM:Events:Profiles:VectorizationWorker:*";
         
         /// <summary>
         /// Filter for the configuration section used to identify the settings for the events infrastructure used by the Gatekeeper API.

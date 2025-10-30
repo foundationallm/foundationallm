@@ -1,4 +1,4 @@
-function Initialize-ManagementAPI {
+function Initialize-CoreAPI {
     param (
         [string]$UniqueName,
         [string]$Location,
@@ -15,23 +15,23 @@ function Initialize-ManagementAPI {
 
     $coreResourceGroupName = $resourceGroupNames.Core
 
-    Write-Host "Ensuring Management API managed identity exists..."
+    Write-Host "Ensuring Core API managed identity exists..."
     $managedIdentities = @(
-        $resourceNames.ManagementAPIManagedIdentity
+        $resourceNames.CoreAPIManagedIdentity
     )
     Initialize-ManagedIdentities `
         -ManagedIdentityNames $managedIdentities `
         -ResourceGroupName $coreResourceGroupName `
         -Location $Location
 
-    Write-Host "Ensuring Azure role assignments for Management API managed identity exist..."
+    Write-Host "Ensuring Azure role assignments for Core API managed identity exist..."
     Set-ManagedIdentityAzureRoleAssignments `
         -SubscriptionId $SubscriptionId `
-        -ManagedIdentityType "ManagementAPIManagedIdentity" `
+        -ManagedIdentityType "CoreAPIManagedIdentity" `
         -ResourceGroupNames $resourceGroupNames `
         -ResourceNames $resourceNames
 
-    Write-Host "Ensuring Management API container app exists..."
+    Write-Host "Ensuring Core API container app exists..."
 
     $secrets = Get-ContainerAppSecrets `
         -ResourceNames $resourceNames
@@ -39,14 +39,14 @@ function Initialize-ManagementAPI {
         -ResourceGroupName $coreResourceGroupName `
         -ResourceNames $resourceNames `
         -TenantId $TenantId `
-        -ContainerAppIdentity $resourceNames.ManagementAPIManagedIdentity
+        -ContainerAppIdentity $resourceNames.CoreAPIManagedIdentity
 
     Initialize-ContainerApp `
         -ResourceGroupName $coreResourceGroupName `
         -ResourceNames $resourceNames `
         -TenantId $TenantId `
-        -ContainerAppName $resourceNames.ManagementAPIContainerApp `
-        -ContainerAppIdentity $resourceNames.ManagementAPIManagedIdentity `
+        -ContainerAppName $resourceNames.CoreAPIContainerApp `
+        -ContainerAppIdentity $resourceNames.CoreAPIManagedIdentity `
         -Secrets $secrets `
         -EnvironmentVariables $environmentVariables `
         -ContainerImage $ContainerImage `
@@ -54,7 +54,7 @@ function Initialize-ManagementAPI {
         -MaxReplicas 1
 }
 
-function Restart-ManagementAPI {
+function Restart-CoreAPI {
     param (
         [string]$UniqueName
     )
@@ -64,10 +64,10 @@ function Restart-ManagementAPI {
 
     Restart-ContainerApp `
         -ResourceGroupName $resourceGroupNames.Core `
-        -ContainerAppName $resourceNames.ManagementAPIContainerApp
+        -ContainerAppName $resourceNames.CoreAPIContainerApp
 }
 
-function New-ManagementAPIArtifacts {
+function New-CoreAPIArtifacts {
     param (
         [string]$UniqueName
     )

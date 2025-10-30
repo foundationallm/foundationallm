@@ -37,10 +37,12 @@ function Get-ResourceNames {
         AuthorizationAPIManagedIdentity     = "$UniqueName-mi-authorization-api"
         ManagementAPIManagedIdentity        = "$UniqueName-mi-management-api"
         ManagementPortalManagedIdentity     = "$UniqueName-mi-management-portal"
+        CoreAPIManagedIdentity              = "$UniqueName-mi-core-api"
 
         AuthorizationAPIContainerApp        = "$UniqueName-ca-authorization-api"
         ManagementAPIContainerApp           = "$UniqueName-ca-management-api"
         ManagementPortalContainerApp        = "$UniqueName-ca-management-portal"
+        CoreAPIContainerApp                 = "$UniqueName-ca-core-api"
     }
 
     return $resourceNames
@@ -56,6 +58,7 @@ function Get-ContainerImageNames {
         AuthorizationAPI    = "$ContainerRegistry/authorization-api:$Version"
         ManagementAPI       = "$ContainerRegistry/management-api:$Version"
         ManagementPortal    = "$ContainerRegistry/management-ui:$Version"
+        CoreAPI             = "$ContainerRegistry/core-api:$Version"
     }
 
     return $containerImages
@@ -117,11 +120,14 @@ function Get-ConfigurationVariables {
     $appRegistrationScopes = Get-EntraIDAppRegistrationScopes
 
     $managementAPIEndpointURL = "https://" + (az containerapp ingress show -n $resourceNames.ManagementAPIContainerApp -g $resourceGroupNames.Core --query "fqdn" -o tsv)
+    $coreAPIEndpointURL = "https://" + (az containerapp ingress show -n $resourceNames.CoreAPIContainerApp -g $resourceGroupNames.Core --query "fqdn" -o tsv)
 
     # Initialize global variables for the FoundationaLLM.Core module
     $global:InstanceId = $InstanceId
     $global:ManagementAPIBaseUrl = $managementAPIEndpointURL
     $global:ManagementAPIInstanceRelativeUri = "/instances/$($global:InstanceId)"
+    $global:CoreAPIBaseUrl = $coreAPIEndpointURL
+    $global:CoreAPIInstanceRelativeUri = "/instances/$($global:InstanceId)"
 
     $configurationVariables = @{
 
@@ -156,6 +162,16 @@ function Get-ConfigurationVariables {
         ENTRA_MANAGEMENT_UI_TENANT_ID = $TenantId
         ENTRA_MANAGEMENT_UI_SCOPES = $appRegistrationScopes.ManagementPortal
         ENTRA_MANAGEMENT_UI_CLIENT_ID = ((az ad app list --query "[?displayName=='$($appRegistrationNames.ManagementPortal)']") | ConvertFrom-Json | Select-Object -ExpandProperty appId)
+
+        # -----------------------------------------------------------
+        # Core API
+        # -----------------------------------------------------------
+        ENTRA_CORE_API_TENANT_ID = $TenantId
+        ENTRA_CORE_API_CLIENT_ID = ((az ad app list --query "[?displayName=='$($appRegistrationNames.CoreAPI)']") | ConvertFrom-Json | Select-Object -ExpandProperty appId)
+        SERVICE_CORE_API_ENDPOINT_URL = $coreAPIEndpointURL
+
+        ORCHESTRATIONAPI_API_KEY = New-APIKey
+        GATEKEEPERAPI_API_KEY = New-APIKey
     }
 
     return $configurationVariables
