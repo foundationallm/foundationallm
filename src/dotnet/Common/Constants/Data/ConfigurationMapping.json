@@ -33,5 +33,17 @@
 			"APIEndpoints:AzureEventGrid:Configuration:*",
 			"Events:Profiles:ManagementAPI"
 		]
+	},
+	{
+		"name": "ManagementPortal",
+		"configuration_options": [
+			"Instance:Id",
+			"Branding:*",
+
+			"APIEndpoints:ManagementAPI:Configuration:AllowedUploadFileExtensions",
+			"ManagementPortal:Authentication:Entra:*",
+
+			".appconfig.featureflag/FoundationaLLM.Agent.PrivateStore"
+		]
 	}
 ]

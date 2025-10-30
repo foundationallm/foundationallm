@@ -21,24 +21,26 @@ function Get-ResourceNames {
     )
 
     $resourceNames = @{
-        KeyVault                        = "$UniqueName-key-vault"
-        AppConfig                       = "$UniqueName-app-config"
-        AppInsights                     = "$UniqueName-app-insights"
-        EventGrid                       = "$UniqueName-event-grid"
-        LogAnalytics                    = "$UniqueName-log-analytics"
-        ContainerAppsEnvironment        = "$UniqueName-container-apps-env"
-        CoreStorageAccount              = "$($UniqueName.ToLower())fllmcorestorage"
-        CosmosDBAccount                 = "$UniqueName-cosmosdb"
-        CosmosDBDatabase                = "database"
-        AuthStorageAccount              = "$($UniqueName.ToLower())fllmauthstorage"
-        AuthKeyVault                    = "$UniqueName-auth-key-vault"
-        ContextStorageAccount           = "$($UniqueName.ToLower())fllmcontextstorage"
+        KeyVault                            = "$UniqueName-key-vault"
+        AppConfig                           = "$UniqueName-app-config"
+        AppInsights                         = "$UniqueName-app-insights"
+        EventGrid                           = "$UniqueName-event-grid"
+        LogAnalytics                        = "$UniqueName-log-analytics"
+        ContainerAppsEnvironment            = "$UniqueName-container-apps-env"
+        CoreStorageAccount                  = "$($UniqueName.ToLower())fllmcorestorage"
+        CosmosDBAccount                     = "$UniqueName-cosmosdb"
+        CosmosDBDatabase                    = "database"
+        AuthStorageAccount                  = "$($UniqueName.ToLower())fllmauthstorage"
+        AuthKeyVault                        = "$UniqueName-auth-key-vault"
+        ContextStorageAccount               = "$($UniqueName.ToLower())fllmcontextstorage"
 
-        AuthorizationAPIManagedIdentity = "$UniqueName-mi-authorization-api"
-        ManagementAPIManagedIdentity    = "$UniqueName-mi-management-api"
+        AuthorizationAPIManagedIdentity     = "$UniqueName-mi-authorization-api"
+        ManagementAPIManagedIdentity        = "$UniqueName-mi-management-api"
+        ManagementPortalManagedIdentity     = "$UniqueName-mi-management-portal"
 
-        AuthorizationAPIContainerApp    = "$UniqueName-ca-authorization-api"
-        ManagementAPIContainerApp       = "$UniqueName-ca-management-api"
+        AuthorizationAPIContainerApp        = "$UniqueName-ca-authorization-api"
+        ManagementAPIContainerApp           = "$UniqueName-ca-management-api"
+        ManagementPortalContainerApp        = "$UniqueName-ca-management-portal"
     }
 
     return $resourceNames
@@ -51,8 +53,9 @@ function Get-ContainerImageNames {
     )
 
     $containerImages = @{
-        AuthorizationAPI = "$ContainerRegistry/authorization-api:$Version"
-        ManagementAPI    = "$ContainerRegistry/management-api:$Version"
+        AuthorizationAPI    = "$ContainerRegistry/authorization-api:$Version"
+        ManagementAPI       = "$ContainerRegistry/management-api:$Version"
+        ManagementPortal    = "$ContainerRegistry/management-ui:$Version"
     }
 
     return $containerImages
@@ -88,6 +91,7 @@ function Get-EntraIDAppRegistrationScopes {
         CoreAPI             = "Data.Read"
         ManagementAPI       = "Data.Manage"
         AuthorizationAPI    = "api://FoundationaLLM-Authorization"
+        ManagementPortal    = "api://FoundationaLLM-Management/Data.Manage"
     }
     return $appRegistrationScopes
 }
@@ -112,6 +116,13 @@ function Get-ConfigurationVariables {
     $appRegistrationNames = Get-EntraIDAppRegistrationNames
     $appRegistrationScopes = Get-EntraIDAppRegistrationScopes
 
+    $managementAPIEndpointURL = "https://" + (az containerapp ingress show -n $resourceNames.ManagementAPIContainerApp -g $resourceGroupNames.Core --query "fqdn" -o tsv)
+
+    # Initialize global variables for the FoundationaLLM.Core module
+    $global:InstanceId = $InstanceId
+    $global:ManagementAPIBaseUrl = $managementAPIEndpointURL
+    $global:ManagementAPIInstanceRelativeUri = "/instances/$($global:InstanceId)"
+
     $configurationVariables = @{
 
         # -----------------------------------------------------------
@@ -133,13 +144,19 @@ function Get-ConfigurationVariables {
         FOUNDATIONALLM_MANAGEMENT_API_EVENT_GRID_PROFILE = (Get-Content -Raw -LiteralPath "$PSScriptRoot/../data/event-grid-profile.json") `
             -replace "{{SUBSCRIPTION_PREFIX}}", "management"
         SERVICE_AUTH_API_ENDPOINT_URL = "https://" + (az containerapp ingress show -n $resourceNames.AuthorizationAPIContainerApp -g $resourceGroupNames.Core --query "fqdn" -o tsv)
-        SERVICE_MANAGEMENT_API_ENDPOINT_URL = "https://" + (az containerapp ingress show -n $resourceNames.ManagementAPIContainerApp -g $resourceGroupNames.Core --query "fqdn" -o tsv)
+        SERVICE_MANAGEMENT_API_ENDPOINT_URL = $managementAPIEndpointURL
 
         CONTEXTAPI_API_KEY = New-APIKey
         DATAPIPELINEAPI_API_KEY = New-APIKey
         GATEWAYAPI_API_KEY = New-APIKey
+
+        # -----------------------------------------------------------
+        # Management Portal
+        # -----------------------------------------------------------
+        ENTRA_MANAGEMENT_UI_TENANT_ID = $TenantId
+        ENTRA_MANAGEMENT_UI_SCOPES = $appRegistrationScopes.ManagementPortal
+        ENTRA_MANAGEMENT_UI_CLIENT_ID = ((az ad app list --query "[?displayName=='$($appRegistrationNames.ManagementPortal)']") | ConvertFrom-Json | Select-Object -ExpandProperty appId)
     }
 
     return $configurationVariables
 }
-

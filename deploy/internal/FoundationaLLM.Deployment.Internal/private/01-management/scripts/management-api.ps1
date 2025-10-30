@@ -33,9 +33,9 @@ function Initialize-ManagementAPI {
 
     Write-Host "Ensuring Management API container app exists..."
 
-    $secrets = Get-ManagementSecrets `
+    $secrets = Get-ContainerAppSecrets `
         -ResourceNames $resourceNames
-    $environmentVariables = Get-ManagementEnvVars `
+    $environmentVariables = Get-ManagementAPIEnvVars `
         -ResourceGroupName $coreResourceGroupName `
         -ResourceNames $resourceNames `
         -TenantId $TenantId `
@@ -52,4 +52,35 @@ function Initialize-ManagementAPI {
         -ContainerImage $ContainerImage `
         -MinReplicas 1 `
         -MaxReplicas 1
+}
+
+function Restart-ManagementAPI {
+    param (
+        [string]$UniqueName
+    )
+
+    $resourceNames = Get-ResourceNames -UniqueName $UniqueName
+    $resourceGroupNames = Get-ResourceGroupNames -UniqueName $UniqueName
+
+    Restart-ContainerApp `
+        -ResourceGroupName $resourceGroupNames.Core `
+        -ContainerAppName $resourceNames.ManagementAPIContainerApp
+}
+
+function New-ManagementAPIArtifacts {
+    param (
+        [string]$UniqueName
+    )
+
+    $resourceNames = Get-ResourceNames -UniqueName $UniqueName
+    $resourceGroupNames = Get-ResourceGroupNames -UniqueName $UniqueName
+
+    $eventGridHostName = (az eventgrid namespace show -g $resourceGroupNames.Core -n $resourceNames.EventGrid --query "topicsConfiguration.hostname" -o tsv)
+    $packagePath = "$PSScriptRoot\..\"
+
+    Deploy-FoundationaLLMPackage `
+        -PackageRoot $packagePath `
+        -Parameters @{
+            EVENT_GRID_HOSTNAME = $eventGridHostName
+        }
 }

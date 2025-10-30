@@ -3,6 +3,7 @@ function Initialize-AuthorizationAPI {
         [string]$UniqueName,
         [string]$Location,
         [string]$AdminGroupObjectId,
+        [string]$DeploymentUserObjectId,
         [string]$TenantId,
         [string]$SubscriptionId,
         [string]$InstanceId,
@@ -101,6 +102,7 @@ function Initialize-AuthorizationAPI {
         $placeholders = @{
             "FOUNDATIONALLM_INSTANCE_ID"                       = $InstanceId
             "ADMIN_GROUP_OBJECT_ID"                            = $AdminGroupObjectId
+            "DEPLOYMENT_USER_OBJECT_ID"                        = $DeploymentUserObjectId
             "MANAGEMENT_API_MI_OBJECT_ID"                      = (az identity show `
                                                                 --name $resourceNames.ManagementAPIManagedIdentity `
                                                                 --resource-group $coreResourceGroupName `
@@ -109,6 +111,7 @@ function Initialize-AuthorizationAPI {
             "GUID01"                                           = [guid]::NewGuid().ToString()
             "GUID02"                                           = [guid]::NewGuid().ToString()
             "GUID03"                                           = [guid]::NewGuid().ToString()
+            "GUID04"                                           = [guid]::NewGuid().ToString()
         }
         Get-Content "$PSScriptRoot/../data/foundationallm-role-assignments-template.json" -Raw `
             | ForEach-Object { 

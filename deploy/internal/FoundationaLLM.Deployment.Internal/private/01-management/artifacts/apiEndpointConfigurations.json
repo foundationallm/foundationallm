@@ -3,15 +3,12 @@
         "type": "api-endpoint",
         "name": "AzureEventGrid",
         "object_id": "/instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.Configuration/apiEndpoints/AzureEventGrid",
-        "display_name": null,
-        "description": null,
-        "cost_center": null,
         "category": "General",
         "authentication_type": "APIKey",
         "authentication_parameters": {
             "api_key_configuration_name": "FoundationaLLM:APIEndpoints:AzureEventGrid:Essentials:APIKey"
         },
-        "url": "https://evgd-l43jljq2i5ox6.eastus2-1.eventgrid.azure.net",
+        "url": "https://{{EVENT_GRID_HOSTNAME}}",
         "url_exceptions": [],
         "timeout_seconds": 60,
         "retry_strategy_name": "ExponentialBackoff"

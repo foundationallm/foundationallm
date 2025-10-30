@@ -15,5 +15,8 @@
         ["Storage Blob Data Contributor", "Data"],
         ["EventGrid Contributor", "Core"],
         ["Cognitive Services OpenAI Contributor", "AIFoundry"]
+    ],
+    "ManagementPortalManagedIdentity": [
+        ["App Configuration Data Reader", "Core"]
     ]
 }
