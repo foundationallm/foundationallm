@@ -247,36 +247,61 @@ $env:MSLEARN_MCP_ENDPOINT = "https://learn.microsoft.com/api/mcp"
 pytest test/foundationallm_mcp_client_tool -k mslearn_docs_search -vv -o log_cli=true -o log_cli_level=INFO
 ```
 
-## Agent prompt: Using the MCP Client Tool with Microsoft Learn MCP
+## Agent prompt: Using the MCP Client Tool
 
-Use this prompt snippet to guide the agent when answering Microsoft technology questions. It enforces correct use of the MCP Client Tool input schema (top-level `operation` and `arguments`) and dynamic tool discovery. Reference: Microsoft Learn MCP Server (`https://github.com/microsoftdocs/mcp`).
+Use this prompt snippet to guide the agent when working with MCP (Model Context Protocol) servers. 
 
-### System guidance for the agent
+The MCP Client Tool provides a simplified interface where agents can delegate tool discovery, selection, and execution to the tool itself.
 
-- Always consult Microsoft Learn via the MCP Client Tool first for Microsoft technologies.
-- The MCP Client Tool requires top-level fields: `operation` and `arguments`.
-  - `operation`: one of `list_tools`, `call_tool`, `list_resources`, `read_resource`, `list_prompts`, `get_prompt`, `complete`, `ping`, `intelligent_execute`.
-  - `arguments`: object forwarded to the selected operation.
-- **Simplified approach**: Use `intelligent_execute` with a user prompt for automatic tool discovery and execution. The tool will handle the multi-step workflow internally.
-- **Manual approach**: Discover tools dynamically using `list_tools`; do not hard-code schemas. Read each tool's `inputSchema` and shape your `arguments` accordingly.
-- Prefer `microsoft_docs_search` to find relevant content; use `microsoft_docs_fetch` to retrieve full documents when needed. Optionally use `microsoft_code_sample_search` for code examples.
-- Use `response_format: "json"` and set a reasonable `read_timeout_seconds` for long operations.
-- If a call fails due to schema or availability, re-run `list_tools` and retry aligned to the latest `inputSchema`.
+### Primary Approach: Intelligent Execute
 
-### Canonical invocation patterns
+**Use `intelligent_execute` for most scenarios** - this allows the agent to provide a natural language prompt and let the MCP Client Tool handle:
+- Discovering available tools on the MCP server
+- Selecting appropriate tools based on the user's request
+- Executing the tools with proper arguments
+- Synthesizing results into a coherent response
 
-- **Intelligent Execute (Recommended)**
+#### Example Usage
 
 ```json
 {
   "operation": "intelligent_execute",
   "arguments": {
-    "prompt": "Search Microsoft Learn for MCP documentation"
+    "prompt": "Search for information about Azure authentication best practices"
   }
 }
 ```
 
-- List available tools
+For Microsoft Learn MCP server, this would automatically:
+1. Discover the `microsoft_docs_search` tool
+2. Execute the search with appropriate query parameters
+3. Synthesize the results into a comprehensive response
+
+#### More Examples
+
+```json
+{
+  "operation": "intelligent_execute",
+  "arguments": {
+    "prompt": "Find code samples for ASP.NET Core web API development"
+  }
+}
+```
+
+```json
+{
+  "operation": "intelligent_execute",
+  "arguments": {
+    "prompt": "Get the latest documentation on Azure Functions deployment"
+  }
+}
+```
+
+### Manual Approach (Advanced)
+
+When you need precise control over MCP operations, use the manual approach:
+
+#### Discover Available Tools
 
 ```json
 {
@@ -285,15 +310,16 @@ Use this prompt snippet to guide the agent when answering Microsoft technology q
 }
 ```
 
-- Search Microsoft Learn
+#### Call Specific Tools
 
 ```json
 {
   "operation": "call_tool",
   "arguments": {
-    "name": "microsoft_docs_search",
+    "name": "tool_name",
     "arguments": {
-      "query": "How does Azure use Model Context Protocol (MCP)?"
+      "param1": "value1",
+      "param2": "value2"
     },
     "read_timeout_seconds": 30
   },
@@ -301,42 +327,45 @@ Use this prompt snippet to guide the agent when answering Microsoft technology q
 }
 ```
 
-- Fetch a full document by id (from search results)
+#### Other Operations
 
 ```json
 {
-  "operation": "call_tool",
-  "arguments": {
-    "name": "microsoft_docs_fetch",
-    "arguments": {
-      "id": "<document-identifier>"
-    },
-    "read_timeout_seconds": 60
-  },
-  "response_format": "json"
+  "operation": "list_resources",
+  "arguments": {}
 }
 ```
-
-- Search code samples (optional)
 
 ```json
 {
-  "operation": "call_tool",
+  "operation": "read_resource",
   "arguments": {
-    "name": "microsoft_code_sample_search",
-    "arguments": {
-      "query": "ASP.NET Core authentication",
-      "language": "csharp"
-    },
-    "read_timeout_seconds": 30
+    "uri": "resource://path/to/resource"
   },
-  "response_format": "json"
+  "read_timeout_seconds": 60
 }
 ```
 
-### Answering behavior
+### System Guidance for the Agent
 
-- Summarize the most relevant search hits with titles, links, and brief excerpts.
-- When the user asks for details or full content, fetch the document via `microsoft_docs_fetch`.
-- Cite Microsoft Learn links returned by the MCP server in answers.
+- **Prefer `intelligent_execute`** for most user requests - it handles complexity automatically
+- The MCP Client Tool requires top-level fields: `operation` and `arguments`
+- For `intelligent_execute`, simply provide a clear, descriptive prompt in the `arguments.prompt` field
+- Use manual operations only when you need specific control or when `intelligent_execute` doesn't meet your needs
+- Use `response_format: "json"` and set reasonable timeouts for long operations
+- **Token tracking**: The tool automatically tracks LLM token usage for `intelligent_execute` operations
+
+### Configuration Requirements
+
+For `intelligent_execute` to work properly, ensure the tool is configured with:
+1. **Main Model Resource**: An LLM configured as `main_model` resource
+2. **Main Prompt Resource**: An orchestration prompt configured as `main_prompt` resource
+
+### Answering Behavior
+
+- **Default to `intelligent_execute`** for user queries that involve MCP server interactions
+- Provide clear, descriptive prompts that specify what information the user is seeking
+- Let the tool handle tool discovery and execution - don't manually discover tools unless necessary
+- Present the synthesized results in a user-friendly format
+- Include relevant metadata and links returned by the MCP server when appropriate
 

@@ -419,6 +419,8 @@ Available MCP Tools:
 {json.dumps(available_tools, indent=2)}
 
 Please create an execution plan for this request.
+You must return ONLY a valid JSON object with no surrounding text or Markdown code fences.
+Do not include ```json fences or any prose.
 """)
                 ]
                 
