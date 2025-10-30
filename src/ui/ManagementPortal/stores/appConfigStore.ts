@@ -65,8 +65,8 @@ export const useAppConfigStore = defineStore('appConfig', {
 			const [
 				apiUrl,
 				authorizationApiUrl,
-				coreApiUrl,
-				stateApiUrl,
+				// coreApiUrl,
+				// stateApiUrl,
 				// gatekeeperApiUrl,
 				// gatekeeperIntegrationApiUrl,
 				// gatewayApiUrl,
@@ -103,8 +103,8 @@ export const useAppConfigStore = defineStore('appConfig', {
 			] = await Promise.all([
 				api.getConfigValue('FoundationaLLM:APIEndpoints:ManagementAPI:Essentials:APIUrl'),
 				api.getConfigValue('FoundationaLLM:APIEndpoints:AuthorizationAPI:Essentials:APIUrl'),
-				api.getConfigValue('FoundationaLLM:APIEndpoints:CoreAPI:Essentials:APIUrl'),
-				api.getConfigValue('FoundationaLLM:APIEndpoints:StateAPI:Essentials:APIUrl'),
+				// api.getConfigValue('FoundationaLLM:APIEndpoints:CoreAPI:Essentials:APIUrl'),
+				// api.getConfigValue('FoundationaLLM:APIEndpoints:StateAPI:Essentials:APIUrl'),
 				// api.getConfigValue('FoundationaLLM:APIEndpoints:GatekeeperIntegrationAPI:Essentials:APIUrl'),
 				// api.getConfigValue('FoundationaLLM:APIEndpoints:GatewayAPI:Essentials:APIUrl'),
 				// api.getConfigValue('FoundationaLLM:APIEndpoints:LangChainAPI:Essentials:APIUrl'),
@@ -155,8 +155,8 @@ export const useAppConfigStore = defineStore('appConfig', {
 
 			this.apiUrl = apiUrl;
 			this.authorizationApiUrl = authorizationApiUrl;
-			this.coreApiUrl = coreApiUrl;
-			this.stateApiUrl = stateApiUrl;
+			// this.coreApiUrl = coreApiUrl;
+			// this.stateApiUrl = stateApiUrl;
 			// this.gatekeeperApiUrl = gatekeeperApiUrl;
 			// this.gatekeeperIntegrationApiUrl = gatekeeperIntegrationApiUrl;
 			// this.gatewayApiUrl = gatewayApiUrl;
