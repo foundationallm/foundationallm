@@ -169,6 +169,8 @@ function Get-ConfigurationVariables {
         ENTRA_CORE_API_TENANT_ID = $TenantId
         ENTRA_CORE_API_CLIENT_ID = ((az ad app list --query "[?displayName=='$($appRegistrationNames.CoreAPI)']") | ConvertFrom-Json | Select-Object -ExpandProperty appId)
         SERVICE_CORE_API_ENDPOINT_URL = $coreAPIEndpointURL
+        FOUNDATIONALLM_CORE_API_EVENT_GRID_PROFILE = (Get-Content -Raw -LiteralPath "$PSScriptRoot/../data/event-grid-profile-2.json") `
+            -replace "{{SUBSCRIPTION_PREFIX}}", "core"
 
         ORCHESTRATIONAPI_API_KEY = New-APIKey
         GATEKEEPERAPI_API_KEY = New-APIKey
