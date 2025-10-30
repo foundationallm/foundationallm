@@ -12,6 +12,7 @@ function Initialize-ManagementPortal {
 
     $resourceNames = Get-ResourceNames -UniqueName $UniqueName
     $resourceGroupNames = Get-ResourceGroupNames -UniqueName $UniqueName
+    $appRegistrationNames = Get-EntraIDAppRegistrationNames
 
     $coreResourceGroupName = $resourceGroupNames.Core
 
@@ -52,4 +53,8 @@ function Initialize-ManagementPortal {
         -ContainerImage $ContainerImage `
         -MinReplicas 1 `
         -MaxReplicas 3
+
+    Set-AppRegistrationRedirectURI `
+        -AppRegistrationName $appRegistrationNames.ManagementPortal `
+        -RedirectURI ("https://" + (az containerapp ingress show -n $resourceNames.ManagementPortalContainerApp -g $resourceGroupNames.Core --query "fqdn" -o tsv) + "/signin-oidc")
 }

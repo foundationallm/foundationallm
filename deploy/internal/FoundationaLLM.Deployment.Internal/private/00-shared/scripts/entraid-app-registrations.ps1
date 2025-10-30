@@ -259,3 +259,35 @@ function Initialize-EntraIDAppRegistrations {
 
     Write-Host $($fllmAppRegs | ConvertTo-Json)
 }
+
+function Set-AppRegistrationRedirectURI {
+    param (
+        [string]$AppRegistrationName,
+        [string]$RedirectURI
+    )
+
+    $appId = $(az ad app list --query "[?displayName=='$AppRegistrationName'].id" -o tsv)
+
+    $existingRedirectURIs = @(az ad app show --id $appId --query "spa.redirectUris" -o tsv)
+
+    if ($existingRedirectURIs -contains $RedirectURI) {
+        Write-Host "Redirect URI $RedirectURI already exists in App Registration $AppRegistrationName"
+        return
+    }
+
+    $existingRedirectURIs += $RedirectURI
+
+    Write-Host "Adding Redirect URI $RedirectURI to App Registration $AppRegistrationName"
+
+    az rest `
+        --method PATCH `
+        --url "https://graph.microsoft.com/v1.0/applications/$appId" `
+        --header "Content-Type=application/json" `
+        --body "{'spa': {'redirectUris': [$(($existingRedirectURIs | ForEach-Object { "'$($_)'" }) -join " ")]}}"
+
+    Write-Host "Redirect URI added successfully."
+}
+
+
+
+
