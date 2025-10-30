@@ -54,6 +54,9 @@ namespace FoundationaLLM.Common.Services.Security
             // We are prioritizing shorter lock times over the possibility of making multiple Graph API requests.
             var groupIds = await GetGroupMembershipFromGraph(userIdentifier);
 
+            _logger.LogDebug("Group membership: Retrieved {GroupCount} groups for user {UserIdentifier} from Microsoft Graph API.", groupIds.Count, userIdentifier);
+            _logger.LogDebug("Group membership: {GroupIds}", string.Join(",", groupIds));
+
             try
             {
                 await _cacheLock.WaitAsync();
