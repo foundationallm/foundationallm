@@ -1,6 +1,6 @@
 [project]
 name = "foundationallm-agent-plugins"
-version = "0.9.7rc446"
+version = "0.9.7rc454"
 authors = [
   { name="FoundationaLLM", email="dev@foundationallm.ai" },
 ]

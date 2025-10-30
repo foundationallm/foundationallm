@@ -7,3 +7,4 @@ from .foundationallm_kql_tool import FoundationaLLMKQLTool
 from .foundationallm_knowledge_tool import FoundationaLLMKnowledgeTool
 # The FoundationaLLMKnowledgeSearchTool is obsolete and replaced by FoundationaLLMKnowledgeTool.
 from .foundationallm_knowledge_search_tool import FoundationaLLMKnowledgeSearchTool
+from .foundationallm_mcp_client_tool import FoundationaLLMMCPClientTool

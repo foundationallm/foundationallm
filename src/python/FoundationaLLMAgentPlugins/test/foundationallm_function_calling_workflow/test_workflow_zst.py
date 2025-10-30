@@ -76,7 +76,7 @@ conversation_id = request_json['session_id']
 # user_prompt = request_json['user_prompt']
 
 
-user_prompt = "I've uploaded a PNG file. Please use Python to: Load the image. Report its pixel dimensions (width × height). Convert the image to grayscale. Save and display the new grayscale version."
+user_prompt = "How does Azure AI use MCP?"
 
 
 
