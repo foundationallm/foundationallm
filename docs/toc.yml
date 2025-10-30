@@ -64,6 +64,15 @@ items:
       href: development/contributing/git-workflow.md
     - name: Style guide
       href: development/contributing/style-guide.md
+- name: How-to guides
+  href: how-to-guides/index.md
+  items:
+  - name: Create a model agnostic agent with Claude
+    href: how-to-guides/create-model-agnostic-agent-claude.md
+  - name: Create a model agnostic agent with GPT-4o
+    href: how-to-guides/create-model-agnostic-agent-gpt4o.md
+  - name: Run the Perplexity MCP Server
+    href: how-to-guides/perplexity-mcp-server.md
 - name: Setup guides
   href: setup-guides/index.md
   items:
