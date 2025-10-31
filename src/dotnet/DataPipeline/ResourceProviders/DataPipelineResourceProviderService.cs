@@ -250,17 +250,60 @@ namespace FoundationaLLM.DataPipeline.ResourceProviders
                 dataPipelineRunFilter,
                 userIdentity) ?? new List<DataPipelineRun>();
 
-            var totalPagesCount = CalculateTotalPagesCount(result.Count, dataPipelineRunFilter.PageSize);
+            var orderedRuns = OrderDataPipelineRuns(result);
+            var pagedRuns = ApplyPaging(orderedRuns, dataPipelineRunFilter);
+            var totalPagesCount = CalculateTotalPagesCount(orderedRuns.Count, dataPipelineRunFilter.PageSize);
 
             return new ResourceProviderActionResult<ResourceCollection<DataPipelineRun>>(string.Empty, true)
             {
                 Resource = new ResourceCollection<DataPipelineRun>
                 {
                     Name = string.Empty,
-                    Resources = result,
+                    Resources = pagedRuns,
                     TotalPagesCount = totalPagesCount
                 }
             };
+        }
+
+        private static List<DataPipelineRun> OrderDataPipelineRuns(IEnumerable<DataPipelineRun> runs)
+        {
+            var orderedRuns = runs as List<DataPipelineRun> ?? new List<DataPipelineRun>(runs);
+
+            orderedRuns.Sort((left, right) =>
+            {
+                var createdOnComparison = right.CreatedOn.CompareTo(left.CreatedOn);
+                if (createdOnComparison != 0)
+                    return createdOnComparison;
+
+                var leftObjectId = left.ObjectId ?? string.Empty;
+                var rightObjectId = right.ObjectId ?? string.Empty;
+                return string.Compare(rightObjectId, leftObjectId, StringComparison.Ordinal);
+            });
+
+            return orderedRuns;
+        }
+
+        private static List<DataPipelineRun> ApplyPaging(List<DataPipelineRun> runs, DataPipelineRunFilter dataPipelineRunFilter)
+        {
+            var pageSize = dataPipelineRunFilter.PageSize;
+            if (!pageSize.HasValue || pageSize.Value <= 0)
+                return runs;
+
+            var pageNumber = dataPipelineRunFilter.PageNumber.GetValueOrDefault(1);
+            if (pageNumber < 1)
+                pageNumber = 1;
+
+            var skip = (pageNumber - 1) * pageSize.Value;
+
+            if (skip >= runs.Count)
+                return new List<DataPipelineRun>();
+
+            var pagedRuns = new List<DataPipelineRun>(Math.Min(pageSize.Value, runs.Count - skip));
+
+            for (var index = skip; index < runs.Count && pagedRuns.Count < pageSize.Value; index++)
+                pagedRuns.Add(runs[index]);
+
+            return pagedRuns;
         }
 
         private static int CalculateTotalPagesCount(int resourcesCount, int? pageSize)
