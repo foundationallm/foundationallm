@@ -93,6 +93,15 @@ namespace FoundationaLLM.Common.Constants.Configuration
             options.Select(AppConfigurationKeys.FoundationaLLM_Events_Profiles_CoreAPI);
         }
         /// <summary>
+        /// Selects configuration options for CoreWorker.
+        /// </summary>
+        public static void SelectForCoreWorker(
+            AzureAppConfigurationOptions options)
+        {
+            options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_CoreWorker_Essentials);
+            options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_CoreAPI_Configuration_CosmosDB);
+        }
+        /// <summary>
         /// Selects configuration options for UserPortal.
         /// </summary>
         public static void SelectForUserPortal(

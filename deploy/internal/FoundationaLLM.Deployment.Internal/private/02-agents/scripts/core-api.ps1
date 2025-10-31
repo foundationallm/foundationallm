@@ -30,7 +30,8 @@ function Initialize-CoreAPI {
         -ManagedIdentityType "CoreAPIManagedIdentity" `
         -ResourceGroupNames $resourceGroupNames `
         -ResourceNames $resourceNames `
-        -AssignGraphRoles $true
+        -AssignGraphRoles $true `
+        -AssignCosmosDBRoles $true
 
     Write-Host "Ensuring Core API container app exists..."
 

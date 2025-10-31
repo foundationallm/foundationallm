@@ -38,11 +38,13 @@ function Get-ResourceNames {
         ManagementAPIManagedIdentity        = "$UniqueName-mi-management-api"
         ManagementPortalManagedIdentity     = "$UniqueName-mi-management-portal"
         CoreAPIManagedIdentity              = "$UniqueName-mi-core-api"
+        CoreWorkerManagedIdentity           = "$UniqueName-mi-core-worker"
 
         AuthorizationAPIContainerApp        = "$UniqueName-ca-authorization-api"
         ManagementAPIContainerApp           = "$UniqueName-ca-management-api"
         ManagementPortalContainerApp        = "$UniqueName-ca-management-portal"
         CoreAPIContainerApp                 = "$UniqueName-ca-core-api"
+        CoreWorkerContainerApp              = "$UniqueName-ca-core-worker"
     }
 
     return $resourceNames
@@ -59,6 +61,7 @@ function Get-ContainerImageNames {
         ManagementAPI       = "$ContainerRegistry/management-api:$Version"
         ManagementPortal    = "$ContainerRegistry/management-ui:$Version"
         CoreAPI             = "$ContainerRegistry/core-api:$Version"
+        CoreWorker          = "$ContainerRegistry/core-job:$Version"
     }
 
     return $containerImages
@@ -174,6 +177,11 @@ function Get-ConfigurationVariables {
 
         ORCHESTRATIONAPI_API_KEY = New-APIKey
         GATEKEEPERAPI_API_KEY = New-APIKey
+
+        # -----------------------------------------------------------
+        # Core Worker
+        # -----------------------------------------------------------
+        COREWORKER_API_KEY = New-APIKey
     }
 
     return $configurationVariables

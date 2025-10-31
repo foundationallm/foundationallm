@@ -25,5 +25,9 @@
         ["Storage Blob Data Contributor", "Data"],
         ["EventGrid Contributor", "Core"],
         ["Cognitive Services OpenAI Contributor", "AIFoundry"]
+    ],
+    "CoreWorkerManagedIdentity": [
+        ["App Configuration Data Reader", "Core"],
+        ["Key Vault Secrets User", "Core"]
     ]
 }

@@ -82,6 +82,13 @@
 		]
 	},
 	{
+		"name": "CoreWorker",
+		"configuration_options": [
+			"APIEndpoints:CoreWorker:Essentials:*",
+			"APIEndpoints:CoreAPI:Configuration:CosmosDB:*"
+		]
+	},
+	{
 		"name": "UserPortal",
 		"configuration_options": []
 	},

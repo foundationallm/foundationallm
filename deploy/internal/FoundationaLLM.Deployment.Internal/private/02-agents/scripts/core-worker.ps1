@@ -1,4 +1,4 @@
-function Initialize-ManagementAPI {
+function Initialize-CoreWorker {
     param (
         [string]$UniqueName,
         [string]$Location,
@@ -15,25 +15,25 @@ function Initialize-ManagementAPI {
 
     $coreResourceGroupName = $resourceGroupNames.Core
 
-    Write-Host "Ensuring Management API managed identity exists..."
+    Write-Host "Ensuring Core Worker managed identity exists..."
     $managedIdentities = @(
-        $resourceNames.ManagementAPIManagedIdentity
+        $resourceNames.CoreWorkerManagedIdentity
     )
     Initialize-ManagedIdentities `
         -ManagedIdentityNames $managedIdentities `
         -ResourceGroupName $coreResourceGroupName `
         -Location $Location
 
-    Write-Host "Ensuring Azure role assignments for Management API managed identity exist..."
+    Write-Host "Ensuring Azure role assignments for Core Worker managed identity exist..."
     Set-ManagedIdentityAzureRoleAssignments `
         -SubscriptionId $SubscriptionId `
-        -ManagedIdentityType "ManagementAPIManagedIdentity" `
+        -ManagedIdentityType "CoreWorkerManagedIdentity" `
         -ResourceGroupNames $resourceGroupNames `
         -ResourceNames $resourceNames `
-        -AssignGraphRoles $true `
+        -AssignGraphRoles $false `
         -AssignCosmosDBRoles $true
 
-    Write-Host "Ensuring Management API container app exists..."
+    Write-Host "Ensuring Core Worker container app exists..."
 
     $secrets = Get-ContainerAppSecrets `
         -ResourceNames $resourceNames
@@ -41,14 +41,14 @@ function Initialize-ManagementAPI {
         -ResourceGroupName $coreResourceGroupName `
         -ResourceNames $resourceNames `
         -TenantId $TenantId `
-        -ContainerAppIdentity $resourceNames.ManagementAPIManagedIdentity
+        -ContainerAppIdentity $resourceNames.CoreWorkerManagedIdentity
 
     Initialize-ContainerApp `
         -ResourceGroupName $coreResourceGroupName `
         -ResourceNames $resourceNames `
         -TenantId $TenantId `
-        -ContainerAppName $resourceNames.ManagementAPIContainerApp `
-        -ContainerAppIdentity $resourceNames.ManagementAPIManagedIdentity `
+        -ContainerAppName $resourceNames.CoreWorkerContainerApp `
+        -ContainerAppIdentity $resourceNames.CoreWorkerManagedIdentity `
         -Secrets $secrets `
         -EnvironmentVariables $environmentVariables `
         -ContainerImage $ContainerImage `
@@ -56,7 +56,7 @@ function Initialize-ManagementAPI {
         -MaxReplicas 1
 }
 
-function Restart-ManagementAPI {
+function Restart-CoreWorker {
     param (
         [string]$UniqueName
     )
@@ -66,23 +66,5 @@ function Restart-ManagementAPI {
 
     Restart-ContainerApp `
         -ResourceGroupName $resourceGroupNames.Core `
-        -ContainerAppName $resourceNames.ManagementAPIContainerApp
-}
-
-function New-ManagementAPIArtifacts {
-    param (
-        [string]$UniqueName
-    )
-
-    $resourceNames = Get-ResourceNames -UniqueName $UniqueName
-    $resourceGroupNames = Get-ResourceGroupNames -UniqueName $UniqueName
-
-    $eventGridHostName = (az eventgrid namespace show -g $resourceGroupNames.Core -n $resourceNames.EventGrid --query "topicsConfiguration.hostname" -o tsv)
-    $packagePath = "$PSScriptRoot\..\"
-
-    Deploy-FoundationaLLMPackage `
-        -PackageRoot $packagePath `
-        -Parameters @{
-            EVENT_GRID_HOSTNAME = $eventGridHostName
-        }
+        -ContainerAppName $resourceNames.CoreWorkerContainerApp
 }
