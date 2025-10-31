@@ -49,7 +49,10 @@ namespace FoundationaLLM
 
                 return new MicrosoftGraphIdentityManagementService(
                     settings,
-                    new GraphServiceClient(httpClient, ServiceContext.AzureCredential),
+                    new GraphServiceClient(
+                        httpClient,
+                        ServiceContext.AzureCredential,
+                        new[] { "https://graph.microsoft.com/.default" }),
                     sp.GetRequiredService<ILogger<MicrosoftGraphIdentityManagementService>>());
             });
         }
