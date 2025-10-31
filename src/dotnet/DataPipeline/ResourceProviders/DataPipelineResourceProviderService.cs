@@ -248,7 +248,9 @@ namespace FoundationaLLM.DataPipeline.ResourceProviders
             var result = await _dataPipelineServiceClient.GetDataPipelineRunsAsync(
                 resourcePath.InstanceId!,
                 dataPipelineRunFilter,
-                userIdentity);
+                userIdentity) ?? new List<DataPipelineRun>();
+
+            var totalPagesCount = CalculateTotalPagesCount(result.Count, dataPipelineRunFilter.PageSize);
 
             return new ResourceProviderActionResult<ResourceCollection<DataPipelineRun>>(string.Empty, true)
             {
@@ -256,8 +258,20 @@ namespace FoundationaLLM.DataPipeline.ResourceProviders
                 {
                     Name = string.Empty,
                     Resources = result,
+                    TotalPagesCount = totalPagesCount
                 }
             };
+        }
+
+        private static int CalculateTotalPagesCount(int resourcesCount, int? pageSize)
+        {
+            if (resourcesCount == 0)
+                return 0;
+
+            if (!pageSize.HasValue || pageSize.Value <= 0)
+                return 1;
+
+            return (int)Math.Ceiling(resourcesCount / (double)pageSize.Value);
         }
 
         private async Task<ResourceProviderUpsertResult> UpdateDataPipeline(
