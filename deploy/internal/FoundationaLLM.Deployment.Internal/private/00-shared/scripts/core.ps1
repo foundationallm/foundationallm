@@ -39,12 +39,14 @@ function Get-ResourceNames {
         ManagementPortalManagedIdentity     = "$UniqueName-mi-management-portal"
         CoreAPIManagedIdentity              = "$UniqueName-mi-core-api"
         CoreWorkerManagedIdentity           = "$UniqueName-mi-core-worker"
+        UserPortalManagedIdentity           = "$UniqueName-mi-user-portal"
 
         AuthorizationAPIContainerApp        = "$UniqueName-ca-authorization-api"
         ManagementAPIContainerApp           = "$UniqueName-ca-management-api"
         ManagementPortalContainerApp        = "$UniqueName-ca-management-portal"
         CoreAPIContainerApp                 = "$UniqueName-ca-core-api"
         CoreWorkerContainerApp              = "$UniqueName-ca-core-worker"
+        UserPortalContainerApp              = "$UniqueName-ca-user-portal"
     }
 
     return $resourceNames
@@ -62,6 +64,7 @@ function Get-ContainerImageNames {
         ManagementPortal    = "$ContainerRegistry/management-ui:$Version"
         CoreAPI             = "$ContainerRegistry/core-api:$Version"
         CoreWorker          = "$ContainerRegistry/core-job:$Version"
+        UserPortal          = "$ContainerRegistry/chat-ui:$Version"
     }
 
     return $containerImages
@@ -98,6 +101,7 @@ function Get-EntraIDAppRegistrationScopes {
         ManagementAPI       = "Data.Manage"
         AuthorizationAPI    = "api://FoundationaLLM-Authorization"
         ManagementPortal    = "api://FoundationaLLM-Management/Data.Manage"
+        UserPortal          = "api://FoundationaLLM-Core/Data.Read"
     }
     return $appRegistrationScopes
 }
