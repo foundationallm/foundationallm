@@ -29,7 +29,8 @@ function Initialize-ManagementAPI {
         -SubscriptionId $SubscriptionId `
         -ManagedIdentityType "ManagementAPIManagedIdentity" `
         -ResourceGroupNames $resourceGroupNames `
-        -ResourceNames $resourceNames
+        -ResourceNames $resourceNames `
+        -AssignGraphRoles $true
 
     Write-Host "Ensuring Management API container app exists..."
 

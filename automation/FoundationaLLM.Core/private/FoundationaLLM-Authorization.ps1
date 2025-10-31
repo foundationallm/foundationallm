@@ -79,7 +79,12 @@ function Merge-RoleAssignments {
         Write-Host "Assigning roles for [$($securityPrincipal.principal_name)]($($securityPrincipalId))"
 
         foreach ($roleAssignment in $securityPrincipal.role_assignments) {
-            $scope = Get-ObjectId -Name $roleAssignment[2] -Type $roleAssignment[1]
+            if ($roleAssignment.Length -eq 1) {
+                $scope = "/instances/$($global:InstanceId)"
+            } else {
+                $scope = Get-ObjectId -Name $roleAssignment[2] -Type $roleAssignment[1]
+            }
+            
             $roleDefinitionId = $global:RoleDefinitionIds[$roleAssignment[0]]
             Write-Host "Assigning role [$($roleAssignment[0])]($($roleDefinitionId)) to $($scope)"
 

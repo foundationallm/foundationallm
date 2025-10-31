@@ -1,1 +1,1 @@
-Publish-Module -Path ./automation/FoundationaLLM.Core -NuGetApiKey 
+Publish-Module -Path ./automation/FoundationaLLM.Core -NuGetApiKey

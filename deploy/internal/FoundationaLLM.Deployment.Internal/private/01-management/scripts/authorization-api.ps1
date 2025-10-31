@@ -112,6 +112,7 @@ function Initialize-AuthorizationAPI {
             "GUID02"                                           = [guid]::NewGuid().ToString()
             "GUID03"                                           = [guid]::NewGuid().ToString()
             "GUID04"                                           = [guid]::NewGuid().ToString()
+            "GUID05"                                           = [guid]::NewGuid().ToString()
         }
         Get-Content "$PSScriptRoot/../data/foundationallm-role-assignments-template.json" -Raw `
             | ForEach-Object { 

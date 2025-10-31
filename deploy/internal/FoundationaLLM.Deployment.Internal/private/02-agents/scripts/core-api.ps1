@@ -29,7 +29,8 @@ function Initialize-CoreAPI {
         -SubscriptionId $SubscriptionId `
         -ManagedIdentityType "CoreAPIManagedIdentity" `
         -ResourceGroupNames $resourceGroupNames `
-        -ResourceNames $resourceNames
+        -ResourceNames $resourceNames `
+        -AssignGraphRoles $true
 
     Write-Host "Ensuring Core API container app exists..."
 
@@ -75,12 +76,12 @@ function New-CoreAPIArtifacts {
     $resourceNames = Get-ResourceNames -UniqueName $UniqueName
     $resourceGroupNames = Get-ResourceGroupNames -UniqueName $UniqueName
 
-    $eventGridHostName = (az eventgrid namespace show -g $resourceGroupNames.Core -n $resourceNames.EventGrid --query "topicsConfiguration.hostname" -o tsv)
+    $coreAPIManagedIdentityObjectId = (az identity show -n $resourceNames.CoreAPIManagedIdentity -g $resourceGroupNames.Core --query principalId -o tsv)
     $packagePath = "$PSScriptRoot\..\"
 
     Deploy-FoundationaLLMPackage `
         -PackageRoot $packagePath `
         -Parameters @{
-            EVENT_GRID_HOSTNAME = $eventGridHostName
+            CORE_API_MI_OBJECT_ID = $coreAPIManagedIdentityObjectId
         }
 }

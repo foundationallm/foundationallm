@@ -28,7 +28,8 @@ function Set-ManagedIdentityAzureRoleAssignments {
         [string]$SubscriptionId,
         [string]$ManagedIdentityType,
         [hashtable]$ResourceGroupNames,
-        [hashtable]$ResourceNames
+        [hashtable]$ResourceNames,
+        [boolean]$AssignGraphRoles = $false
     )
 
     $miName = $ResourceNames[$ManagedIdentityType]
@@ -51,5 +52,13 @@ function Set-ManagedIdentityAzureRoleAssignments {
             --role "$roleName" `
             --scope "/subscriptions/$SubscriptionId/resourceGroups/$scopeResourceGroupName" `
         | Out-Null
+    }
+
+    if ($AssignGraphRoles) {
+        $miObjectId = (az identity show `
+            --name $miName `
+            --resource-group $ResourceGroupNames.Core `
+            --query principalId -o tsv)
+        Add-MicrosoftGraphRolesToPrincipal -principalId $miObjectId
     }
 }
