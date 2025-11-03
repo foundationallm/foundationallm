@@ -301,7 +301,7 @@
 import mime from 'mime';
 import 'floating-vue/dist/style.css';
 import { hideAllPoppers } from 'floating-vue';
-import { isAgentExpired } from '@/js/helpers';
+import { isAgentExpired, isAgentFileUploadEnabled } from '@/js/helpers';
 
 const DEFAULT_INPUT_TEXT = '';
 
@@ -404,6 +404,10 @@ export default {
 			const currentAgent = this.$appStore.lastSelectedAgent;
 			return currentAgent ? isAgentExpired(currentAgent) : false;
 		},
+
+		currentAgent() {
+			return this.$appStore.lastSelectedAgent;
+		}
 	},
 
 	watch: {
@@ -425,6 +429,19 @@ export default {
 			},
 			immediate: true,
 		},
+
+		currentAgent: {
+			handler(newAgent) {
+				const sessionId = this.$appStore.currentSession.sessionId
+                if (!isAgentFileUploadEnabled(
+					newAgent
+				)) {
+                    // clear local session file buffers
+                    this.clearFilesForSession(sessionId);
+					this.$appStore.deleteAttachmentsForSession(sessionId);
+                }
+			}
+		}
 	},
 
 	async created() {
