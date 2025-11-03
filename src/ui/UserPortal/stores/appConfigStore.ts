@@ -33,9 +33,9 @@ export const useAppConfigStore = defineStore('appConfig', {
 		footerText: null as string | null,
 		noAgentsMessage: null as string | null,
 		defaultAgentWelcomeMessage: null as string | null,
+		agentIconUrl: null as string | null,
 
 		instanceId: null as string | null,
-		agentIconUrl: null as string | null,
 		allowedUploadFileExtensions: null as string | null,
 
 		showMessageRating: null as boolean | null,
@@ -64,38 +64,44 @@ export const useAppConfigStore = defineStore('appConfig', {
 		 */
 		async loadBasicBrandingConfiguration() {
 			try {
-				const getConfigValueSafe = async (key: string, defaultValue: any = null) => {
-					try {
-						return await api.getConfigValue(key);
-					} catch (error) {
-						console.error(`Failed to get config value for key ${key}:`, error);
-						return defaultValue;
-					}
-				};
+				const branding = await api.filterConfigValues('FoundationaLLM:Branding:*');
 
-				// Load only the essential branding values needed for signin page
-				const [logoUrl, logoText, pageTitle, favIconUrl] = await Promise.all([
-					getConfigValueSafe('FoundationaLLM:Branding:LogoUrl'),
-					getConfigValueSafe('FoundationaLLM:Branding:LogoText'),
-					getConfigValueSafe('FoundationaLLM:Branding:PageTitle'),
-					getConfigValueSafe('FoundationaLLM:Branding:FavIconUrl'),
-				]);
+				// Branding configuration - treat missing keys as explicit null
+				// `branding` from the API may be an object mapping keys->values; normalize and provide a safe getter.
+				const configValues = (branding && typeof branding === 'object') ? branding : {};
+				const getBrand = (key: string) => Object.prototype.hasOwnProperty.call(configValues, key) ? configValues[key] : null;
 
-				// Set the branding values
-				if (logoUrl) {
-					this.logoUrl = logoUrl as string;
-				}
-				if (logoText) {
-					this.logoText = logoText as string;
-				}
-				if (pageTitle) {
-					this.pageTitle = pageTitle as string;
-				}
-				if (favIconUrl) {
-					this.favIconUrl = favIconUrl as string;
+				// KioskMode: keep previous boolean parsing but return null if key not present
+				const kioskRaw = getBrand('FoundationaLLM:Branding:KioskMode');
+				if (kioskRaw !== null && kioskRaw !== undefined) {
+						this.isKioskMode = typeof kioskRaw === 'boolean'
+								? (kioskRaw as boolean)
+								: JSON.parse((kioskRaw as string).toLowerCase());
+				} else {
+						this.isKioskMode = false;
 				}
 
-				// console.log('Basic branding configuration loaded successfully');
+				// Simple string-valued branding properties: set to the value or null when absent
+				this.pageTitle = getBrand('FoundationaLLM:Branding:PageTitle') as string ?? null;
+				this.favIconUrl = getBrand('FoundationaLLM:Branding:FavIconUrl') as string ?? null;
+				this.logoUrl = getBrand('FoundationaLLM:Branding:LogoUrl') as string ?? null;
+				this.logoText = getBrand('FoundationaLLM:Branding:LogoText') as string ?? null;
+				this.primaryBg = getBrand('FoundationaLLM:Branding:BackgroundColor') as string ?? null;
+				this.primaryColor = getBrand('FoundationaLLM:Branding:PrimaryColor') as string ?? null;
+				this.secondaryColor = getBrand('FoundationaLLM:Branding:SecondaryColor') as string ?? null;
+				this.accentColor = getBrand('FoundationaLLM:Branding:AccentColor') as string ?? null;
+				this.primaryText = getBrand('FoundationaLLM:Branding:PrimaryTextColor') as string ?? null;
+				this.secondaryText = getBrand('FoundationaLLM:Branding:SecondaryTextColor') as string ?? null;
+				this.accentText = getBrand('FoundationaLLM:Branding:AccentTextColor') as string ?? null;
+				this.primaryButtonBg = getBrand('FoundationaLLM:Branding:PrimaryButtonBackgroundColor') as string ?? null;
+				this.primaryButtonText = getBrand('FoundationaLLM:Branding:PrimaryButtonTextColor') as string ?? null;
+				this.secondaryButtonBg = getBrand('FoundationaLLM:Branding:SecondaryButtonBackgroundColor') as string ?? null;
+				this.secondaryButtonText = getBrand('FoundationaLLM:Branding:SecondaryButtonTextColor') as string ?? null;
+				this.footerText = getBrand('FoundationaLLM:Branding:FooterText') as string ?? null;
+				this.noAgentsMessage = getBrand('FoundationaLLM:Branding:NoAgentsMessage') as string ?? null;
+				this.defaultAgentWelcomeMessage = getBrand('FoundationaLLM:Branding:DefaultAgentWelcomeMessage') as string ?? null;
+				this.agentIconUrl = getBrand('FoundationaLLM:Branding:AgentIconUrl') as string ?? null;
+
 			} catch (error: any) {
 				console.error('Failed to load basic branding configuration:', error);
 				// Don't throw error as this is not critical for app functionality
@@ -111,93 +117,23 @@ export const useAppConfigStore = defineStore('appConfig', {
 				// Reset error state before attempting to load
 				this.hasConfigurationAccessError = false;
 				this.configurationAccessErrorMessage = null;
-				
+
 				const appConfigSetResults = await api.getUserPortalAppConfigurationSet();
-				
+
 				if (appConfigSetResults && appConfigSetResults.length > 0) {
 					const configSet = appConfigSetResults[0].resource;
-					
+
 					if (!configSet || !configSet.configuration_values) {
 						throw new Error('Invalid app configuration set structure');
 					}
-					
+
 					const configValues = configSet.configuration_values;
 
 					// Map configuration values from the app configuration set to store properties
 					if (configValues) {
-						// Instance and API configuration
-						if (configValues['FoundationaLLM:Instance:Id']) {
-							this.instanceId = configValues['FoundationaLLM:Instance:Id'] as string;
-						}
-						if (configValues['FoundationaLLM:APIEndpoints:CoreAPI:Essentials:APIUrl']) {
-							this.apiUrl = configValues['FoundationaLLM:APIEndpoints:CoreAPI:Essentials:APIUrl'] as string;
-						}
+
 						if (configValues['FoundationaLLM:APIEndpoints:CoreAPI:Configuration:AllowedUploadFileExtensions']) {
 							this.allowedUploadFileExtensions = configValues['FoundationaLLM:APIEndpoints:CoreAPI:Configuration:AllowedUploadFileExtensions'] as string;
-						}
-
-						// Branding configuration
-						if (configValues['FoundationaLLM:Branding:KioskMode'] !== undefined) {
-							this.isKioskMode = typeof configValues['FoundationaLLM:Branding:KioskMode'] === 'boolean' 
-								? configValues['FoundationaLLM:Branding:KioskMode'] as boolean
-								: JSON.parse((configValues['FoundationaLLM:Branding:KioskMode'] as string).toLowerCase());
-						}
-						if (configValues['FoundationaLLM:Branding:PageTitle']) {
-							this.pageTitle = configValues['FoundationaLLM:Branding:PageTitle'] as string;
-						}
-						if (configValues['FoundationaLLM:Branding:FavIconUrl']) {
-							this.favIconUrl = configValues['FoundationaLLM:Branding:FavIconUrl'] as string;
-						}
-						if (configValues['FoundationaLLM:Branding:LogoUrl']) {
-							this.logoUrl = configValues['FoundationaLLM:Branding:LogoUrl'] as string;
-						}
-						if (configValues['FoundationaLLM:Branding:LogoText']) {
-							this.logoText = configValues['FoundationaLLM:Branding:LogoText'] as string;
-						}
-						if (configValues['FoundationaLLM:Branding:BackgroundColor']) {
-							this.primaryBg = configValues['FoundationaLLM:Branding:BackgroundColor'] as string;
-						}
-						if (configValues['FoundationaLLM:Branding:PrimaryColor']) {
-							this.primaryColor = configValues['FoundationaLLM:Branding:PrimaryColor'] as string;
-						}
-						if (configValues['FoundationaLLM:Branding:SecondaryColor']) {
-							this.secondaryColor = configValues['FoundationaLLM:Branding:SecondaryColor'] as string;
-						}
-						if (configValues['FoundationaLLM:Branding:AccentColor']) {
-							this.accentColor = configValues['FoundationaLLM:Branding:AccentColor'] as string;
-						}
-						if (configValues['FoundationaLLM:Branding:PrimaryTextColor']) {
-							this.primaryText = configValues['FoundationaLLM:Branding:PrimaryTextColor'] as string;
-						}
-						if (configValues['FoundationaLLM:Branding:SecondaryTextColor']) {
-							this.secondaryText = configValues['FoundationaLLM:Branding:SecondaryTextColor'] as string;
-						}
-						if (configValues['FoundationaLLM:Branding:AccentTextColor']) {
-							this.accentText = configValues['FoundationaLLM:Branding:AccentTextColor'] as string;
-						}
-						if (configValues['FoundationaLLM:Branding:PrimaryButtonBackgroundColor']) {
-							this.primaryButtonBg = configValues['FoundationaLLM:Branding:PrimaryButtonBackgroundColor'] as string;
-						}
-						if (configValues['FoundationaLLM:Branding:PrimaryButtonTextColor']) {
-							this.primaryButtonText = configValues['FoundationaLLM:Branding:PrimaryButtonTextColor'] as string;
-						}
-						if (configValues['FoundationaLLM:Branding:SecondaryButtonBackgroundColor']) {
-							this.secondaryButtonBg = configValues['FoundationaLLM:Branding:SecondaryButtonBackgroundColor'] as string;
-						}
-						if (configValues['FoundationaLLM:Branding:SecondaryButtonTextColor']) {
-							this.secondaryButtonText = configValues['FoundationaLLM:Branding:SecondaryButtonTextColor'] as string;
-						}
-						if (configValues['FoundationaLLM:Branding:FooterText']) {
-							this.footerText = configValues['FoundationaLLM:Branding:FooterText'] as string;
-						}
-						if (configValues['FoundationaLLM:Branding:NoAgentsMessage']) {
-							this.noAgentsMessage = configValues['FoundationaLLM:Branding:NoAgentsMessage'] as string;
-						}
-						if (configValues['FoundationaLLM:Branding:DefaultAgentWelcomeMessage']) {
-							this.defaultAgentWelcomeMessage = configValues['FoundationaLLM:Branding:DefaultAgentWelcomeMessage'] as string;
-						}
-						if (configValues['FoundationaLLM:Branding:AgentIconUrl']) {
-							this.agentIconUrl = configValues['FoundationaLLM:Branding:AgentIconUrl'] as string;
 						}
 
 						// UserPortal configuration
@@ -236,16 +172,16 @@ export const useAppConfigStore = defineStore('appConfig', {
 				}
 			} catch (error: any) {
 				console.error('Failed to load app configuration set:', error);
-				
+
 				// Check if this is a 403 Forbidden error
-				if (error?.status === 403 || error?.statusCode === 403 || 
+				if (error?.status === 403 || error?.statusCode === 403 ||
 					(error?.message && error.message.includes('403')) ||
 					(error?.response?.status === 403)) {
 					this.hasConfigurationAccessError = true;
 					this.configurationAccessErrorMessage = 'Please contact your system administrator to request access.';
 					console.error('Access to UserPortal app configuration set is forbidden (403)');
 				}
-				
+
 				throw error;
 			}
 		},
@@ -341,7 +277,7 @@ export const useAppConfigStore = defineStore('appConfig', {
 				this.isConfigurationLoaded = true;
 			} catch (error: any) {
 				console.error('Failed to load configuration after authentication:', error);
-				
+
 				// If it's a 403 error, we still mark as loaded but keep the error state
 				// This allows the UI to render the access denied message
 				if (this.hasConfigurationAccessError) {
