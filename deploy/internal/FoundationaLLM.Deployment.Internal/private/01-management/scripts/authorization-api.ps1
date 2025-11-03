@@ -141,6 +141,7 @@ function Initialize-AuthorizationAPI {
         Write-Host "Creating policy assignments for FoundationaLLM User group and All Agents Virtual Security Group..."
         $placeholders = @{
             "FOUNDATIONALLM_INSTANCE_ID"                       = $InstanceId
+            "ADMIN_GROUP_OBJECT_ID"                            = $AdminGroupObjectId
             "USER_GROUP_OBJECT_ID"                             = $UserGroupObjectId
             "DEPLOY_TIME"                                      = (Get-Date).ToString("o")
             "GUID01"                                           = [guid]::NewGuid().ToString()
@@ -153,6 +154,12 @@ function Initialize-AuthorizationAPI {
             "GUID08"                                           = [guid]::NewGuid().ToString()
             "GUID09"                                           = [guid]::NewGuid().ToString()
             "GUID10"                                           = [guid]::NewGuid().ToString()
+            "GUID11"                                           = [guid]::NewGuid().ToString()
+            "GUID12"                                           = [guid]::NewGuid().ToString()
+            "GUID13"                                           = [guid]::NewGuid().ToString()
+            "GUID14"                                           = [guid]::NewGuid().ToString()
+            "GUID15"                                           = [guid]::NewGuid().ToString()
+            "GUID16"                                           = [guid]::NewGuid().ToString()
         }
         Get-Content "$PSScriptRoot/../data/foundationallm-policy-assignments-template.json" -Raw `
             | ForEach-Object { 
@@ -162,7 +169,7 @@ function Initialize-AuthorizationAPI {
                 --account-name $authStorageAccountName `
                 --auth-mode login `
                 --container-name "policy-assignments" `
-                --name "$InstanceId.json" `
+                --name "$InstanceId-policy.json" `
                 --data '@-'`
             | Out-Null
         Write-Host "Policy assignments for FoundationaLLM User group and All Agents Virtual Security Group created."
