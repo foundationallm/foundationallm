@@ -40,6 +40,10 @@ function Get-ResourceNames {
         CoreAPIManagedIdentity              = "$UniqueName-mi-core-api"
         CoreWorkerManagedIdentity           = "$UniqueName-mi-core-worker"
         UserPortalManagedIdentity           = "$UniqueName-mi-user-portal"
+        OrchestrationAPIManagedIdentity     = "$UniqueName-mi-orchestration-api"
+        LangChainAPIManagedIdentity         = "$UniqueName-mi-langchain-api"
+        GatewayAPIManagedIdentity           = "$UniqueName-mi-gateway-api"
+        StateAPIManagedIdentity             = "$UniqueName-mi-state-api"
 
         AuthorizationAPIContainerApp        = "$UniqueName-ca-authorization-api"
         ManagementAPIContainerApp           = "$UniqueName-ca-management-api"
@@ -47,6 +51,10 @@ function Get-ResourceNames {
         CoreAPIContainerApp                 = "$UniqueName-ca-core-api"
         CoreWorkerContainerApp              = "$UniqueName-ca-core-worker"
         UserPortalContainerApp              = "$UniqueName-ca-user-portal"
+        OrchestrationAPIContainerApp        = "$UniqueName-ca-orchestration-api"
+        LangChainAPIContainerApp            = "$UniqueName-ca-langchain-api"
+        GatewayAPIContainerApp              = "$UniqueName-ca-gateway-api"
+        StateAPIContainerApp                = "$UniqueName-ca-state-api"
     }
 
     return $resourceNames
@@ -65,6 +73,10 @@ function Get-ContainerImageNames {
         CoreAPI             = "$ContainerRegistry/core-api:$Version"
         CoreWorker          = "$ContainerRegistry/core-job:$Version"
         UserPortal          = "$ContainerRegistry/chat-ui:$Version"
+        OrchestrationAPI    = "$ContainerRegistry/orchestration-api:$Version"
+        LangChainAPI        = "$ContainerRegistry/langchain-api:$Version"
+        GatewayAPI          = "$ContainerRegistry/gateway-api:$Version"
+        StateAPI            = "$ContainerRegistry/state-api:$Version"
     }
 
     return $containerImages
@@ -186,6 +198,13 @@ function Get-ConfigurationVariables {
         ENTRA_CHAT_UI_TENANT_ID = $TenantId
         ENTRA_CHAT_UI_CLIENT_ID = ((az ad app list --query "[?displayName=='$($appRegistrationNames.UserPortal)']") | ConvertFrom-Json | Select-Object -ExpandProperty appId)
         ENTRA_CHAT_UI_SCOPES = $appRegistrationScopes.UserPortal
+
+        # -----------------------------------------------------------
+        # Orchestration API
+        #------------------------------------------------------------
+        GATEKEEPERINTEGRATIONAPI_API_KEY = New-APIKey
+        LANGCHAINAPI_API_KEY = New-APIKey
+        STATEAPI_API_KEY = New-APIKey
     }
 
     return $configurationVariables

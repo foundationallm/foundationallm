@@ -32,5 +32,12 @@
     ],
     "UserPortalManagedIdentity": [
         ["App Configuration Data Reader", "Core"]
+    ],
+    "OrchestrationAPIManagedIdentity": [
+        ["App Configuration Data Reader", "Core"],
+        ["Key Vault Secrets User", "Core"],
+        ["Storage Blob Data Contributor", "Data"],
+        ["EventGrid Contributor", "Core"],
+        ["Storage Queue Data Contributor", "Context"]
     ]
 }

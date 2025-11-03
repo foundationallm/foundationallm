@@ -118,6 +118,23 @@ namespace FoundationaLLM.Common.Constants.Configuration
         public static void SelectForOrchestrationAPI(
             AzureAppConfigurationOptions options)
         {
+            options.Select(AppConfigurationKeyFilters.FoundationaLLM_Instance);
+            options.Select(AppConfigurationKeyFilters.FoundationaLLM_Configuration);
+            options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProvidersCache);
+            options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints);
+            options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_Agent_Storage);
+            options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_AIModel_Storage);
+            options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_Attachment_Storage);
+            options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_AzureAI_Storage);
+            options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_Configuration_Storage);
+            options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_Context_Storage);
+            options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_DataSource_Storage);
+            options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_DataPipeline_Storage);
+            options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_Prompt_Storage);
+            options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_Vector_Storage);
+            options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_AzureEventGrid_Essentials);
+            options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_AzureEventGrid_Configuration);
+            options.Select(AppConfigurationKeys.FoundationaLLM_Events_Profiles_OrchestrationAPI);
         }
         /// <summary>
         /// Selects configuration options for LangChainAPI.

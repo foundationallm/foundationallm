@@ -1,7 +1,8 @@
 function Resolve-ConfigurationVariables {
     param(
         [string]$Value,
-        [hashtable]$ConfigurationVariables
+        [hashtable]$ConfigurationVariables,
+        [bool]$StopOnError = $true
     )
 
     $variablePattern = '\$\{env:([A-Za-z_][A-Za-z0-9_]*)\}'
@@ -13,7 +14,9 @@ function Resolve-ConfigurationVariables {
                 $Value = $Value -replace [regex]::Escape($_.Value), $variableValue
             } else {
                 Write-Host "No matching configuration variable found for '$($_.Groups[1].Value)' in value '$Value'." -ForegroundColor Red
-                throw "Configuration variable '$($_.Groups[1].Value)' not found."
+                if ($StopOnError) {
+                    throw "Configuration variable '$($_.Groups[1].Value)' not found."
+                }
             }
         }
 
@@ -115,7 +118,8 @@ function Initialize-Configuration {
         [string]$InstanceId,
         [string]$UniqueName,
         [string]$FoundationaLLMRepoPath,
-        [string]$ConfigurationCategoryName
+        [string]$ConfigurationCategoryName,
+        [bool]$StopOnError = $true
     )
 
     $resourceNames = Get-ResourceNames -UniqueName $UniqueName
@@ -183,7 +187,8 @@ function Initialize-Configuration {
         $appConfigurationSecretValue = $appConfigurationItem.key_vault_secret_value
         $appConfigurationSecretValue = Resolve-ConfigurationVariables `
             -Value $appConfigurationSecretValue `
-            -ConfigurationVariables $configurationVariables
+            -ConfigurationVariables $configurationVariables `
+            -StopOnError $StopOnError
 
         Initialize-AppConfigurationKey `
             -Key $appConfigurationItem.key `

@@ -100,7 +100,28 @@
 	},
 	{
 		"name": "OrchestrationAPI",
-		"configuration_options": []
+		"configuration_options": [
+			"Instance:*",
+			"Configuration:*",
+			"ResourceProvidersCache:*",
+
+			"APIEndpoints:*",
+
+			"ResourceProviders:Agent:Storage:*",
+			"ResourceProviders:AIModel:Storage:*",
+			"ResourceProviders:Attachment:Storage:*",
+			"ResourceProviders:AzureAI:Storage:*",
+			"ResourceProviders:Configuration:Storage:*",
+			"ResourceProviders:Context:Storage:*",
+			"ResourceProviders:DataSource:Storage:*",
+			"ResourceProviders:DataPipeline:Storage:*",
+			"ResourceProviders:Prompt:Storage:*",
+			"ResourceProviders:Vector:Storage:*",
+
+			"APIEndpoints:AzureEventGrid:Essentials:*",
+			"APIEndpoints:AzureEventGrid:Configuration:*",
+			"Events:Profiles:OrchestrationAPI"
+		]
 	},
 	{
 		"name": "LangChainAPI",
