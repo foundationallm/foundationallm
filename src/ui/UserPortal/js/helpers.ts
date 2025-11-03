@@ -4,6 +4,10 @@ export const isAgentExpired = (agent: ResourceProviderGetResult<AgentBase>): boo
 	return agent.resource.expiration_date !== null && new Date() > new Date(agent.resource.expiration_date)
 }
 
+export const isAgentFileUploadEnabled = (agent: ResourceProviderGetResult<AgentBase>): boolean => {
+	return agent !== null && agent.resource !== null && agent.resource.show_file_upload
+}
+
 // Debounce utility
 export function debounce<T extends (...args: any[]) => any>(func: T, wait: number) {
 	let timeout: ReturnType<typeof setTimeout> | null;

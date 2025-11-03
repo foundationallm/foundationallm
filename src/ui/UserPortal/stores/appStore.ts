@@ -167,10 +167,10 @@ export const useAppStore = defineStore('app', {
 				.replace(' ', 'T')
 				.replace('T', ' ');
 
-					return {
-			name: formattedNow,
-			metadata: '',
-		};
+			return {
+				name: formattedNow,
+				metadata: '',
+			};
 		},
 
 		async getSessions(session?: Session) {
@@ -859,6 +859,11 @@ export const useAppStore = defineStore('app', {
 					}
 				}
 			});
+		},
+
+		async deleteAttachmentsForSession(sessionId: string) {
+			// Remove all attachments that belong to the provided sessionId
+            this.attachments = this.attachments.filter((a) => a.sessionId !== sessionId);
 		},
 
 		async getVirtualUser() {
