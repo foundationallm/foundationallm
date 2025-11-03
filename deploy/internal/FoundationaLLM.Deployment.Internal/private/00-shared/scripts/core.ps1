@@ -129,13 +129,6 @@ function Get-ConfigurationVariables {
     $managementAPIEndpointURL = "https://" + (az containerapp ingress show -n $resourceNames.ManagementAPIContainerApp -g $resourceGroupNames.Core --query "fqdn" -o tsv)
     $coreAPIEndpointURL = "https://" + (az containerapp ingress show -n $resourceNames.CoreAPIContainerApp -g $resourceGroupNames.Core --query "fqdn" -o tsv)
 
-    # Initialize global variables for the FoundationaLLM.Core module
-    $global:InstanceId = $InstanceId
-    $global:ManagementAPIBaseUrl = $managementAPIEndpointURL
-    $global:ManagementAPIInstanceRelativeUri = "/instances/$($global:InstanceId)"
-    $global:CoreAPIBaseUrl = $coreAPIEndpointURL
-    $global:CoreAPIInstanceRelativeUri = "/instances/$($global:InstanceId)"
-
     $configurationVariables = @{
 
         # -----------------------------------------------------------

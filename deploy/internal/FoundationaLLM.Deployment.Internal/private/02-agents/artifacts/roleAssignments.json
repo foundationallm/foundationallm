@@ -5,5 +5,12 @@
         "role_assignments": [
             ["Reader"]
         ]
+    },
+    {
+        "principal_id": "{{USER_GROUP_OBJECT_ID}}",
+        "principal_type": "Group",
+        "role_assignments": [
+            ["Reader", "FoundationaLLM.Configuration/appConfigurationSets", "UserPortal"]
+        ]
     }
 ]

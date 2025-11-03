@@ -77,6 +77,16 @@ function New-ManagementAPIArtifacts {
     $resourceNames = Get-ResourceNames -UniqueName $UniqueName
     $resourceGroupNames = Get-ResourceGroupNames -UniqueName $UniqueName
 
+    $managementAPIEndpointURL = "https://" + (az containerapp ingress show -n $resourceNames.ManagementAPIContainerApp -g $resourceGroupNames.Core --query "fqdn" -o tsv)
+    $coreAPIEndpointURL = "https://" + (az containerapp ingress show -n $resourceNames.CoreAPIContainerApp -g $resourceGroupNames.Core --query "fqdn" -o tsv)
+
+    # Initialize global variables for the FoundationaLLM.Core module
+    $global:InstanceId = $InstanceId
+    $global:ManagementAPIBaseUrl = $managementAPIEndpointURL
+    $global:ManagementAPIInstanceRelativeUri = "/instances/$($global:InstanceId)"
+    $global:CoreAPIBaseUrl = $coreAPIEndpointURL
+    $global:CoreAPIInstanceRelativeUri = "/instances/$($global:InstanceId)"
+
     $eventGridHostName = (az eventgrid namespace show -g $resourceGroupNames.Core -n $resourceNames.EventGrid --query "topicsConfiguration.hostname" -o tsv)
     $packagePath = "$PSScriptRoot\..\"
 

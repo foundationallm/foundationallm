@@ -64,7 +64,7 @@
       "description": "User Access Administrator role on the FoundationaLLM instance for the user performing the deployment.",
       "role_definition_id": "/providers/FoundationaLLM.Authorization/roleDefinitions/fb8e0fd0-f7e2-4957-89d6-19f44f7d6618",
       "principal_id": "{{DEPLOYMENT_USER_OBJECT_ID}}",
-      "principal_type": "Group",
+      "principal_type": "User",
       "scope": "/instances/{{FOUNDATIONALLM_INSTANCE_ID}}",
       "created_on": "{{DEPLOY_TIME}}",
       "updated_on": "{{DEPLOY_TIME}}",

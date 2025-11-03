@@ -30,7 +30,6 @@
     <ProjectReference Include="..\Configuration\Configuration.csproj" />
     <ProjectReference Include="..\DataSource\DataSource.csproj" />
     <ProjectReference Include="..\SemanticKernel\SemanticKernel.csproj" />
-    <ProjectReference Include="..\Vectorization\Vectorization.csproj" />
   </ItemGroup>
 
 </Project>

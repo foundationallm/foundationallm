@@ -5,8 +5,6 @@ using FoundationaLLM.Common.Constants.Configuration;
 using FoundationaLLM.Common.Middleware;
 using FoundationaLLM.Common.Models.Configuration.Branding;
 using FoundationaLLM.Common.OpenAPI;
-using FoundationaLLM.Vectorization.Interfaces;
-using FoundationaLLM.Vectorization.Services.RequestProcessors;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.Extensions.Configuration.AzureAppConfiguration;
 using Microsoft.Extensions.Options;
@@ -72,9 +70,6 @@ namespace FoundationaLLM.Management.API
 
             // Resource validation.
             builder.AddResourceValidatorFactory();
-
-            // Register the remote vectorization processor, for calls into the Vectorization API.            
-            builder.Services.AddSingleton<IVectorizationRequestProcessor, RemoteVectorizationRequestProcessor>();
 
             //----------------------------
             // Resource providers

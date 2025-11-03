@@ -71,11 +71,23 @@ function Restart-CoreAPI {
 
 function New-CoreAPIArtifacts {
     param (
-        [string]$UniqueName
+        [string]$UniqueName,
+        [string]$InstanceId,
+        [string]$UserGroupObjectId
     )
 
     $resourceNames = Get-ResourceNames -UniqueName $UniqueName
     $resourceGroupNames = Get-ResourceGroupNames -UniqueName $UniqueName
+
+    $managementAPIEndpointURL = "https://" + (az containerapp ingress show -n $resourceNames.ManagementAPIContainerApp -g $resourceGroupNames.Core --query "fqdn" -o tsv)
+    $coreAPIEndpointURL = "https://" + (az containerapp ingress show -n $resourceNames.CoreAPIContainerApp -g $resourceGroupNames.Core --query "fqdn" -o tsv)
+
+    # Initialize global variables for the FoundationaLLM.Core module
+    $global:InstanceId = $InstanceId
+    $global:ManagementAPIBaseUrl = $managementAPIEndpointURL
+    $global:ManagementAPIInstanceRelativeUri = "/instances/$($global:InstanceId)"
+    $global:CoreAPIBaseUrl = $coreAPIEndpointURL
+    $global:CoreAPIInstanceRelativeUri = "/instances/$($global:InstanceId)"
 
     $coreAPIManagedIdentityObjectId = (az identity show -n $resourceNames.CoreAPIManagedIdentity -g $resourceGroupNames.Core --query principalId -o tsv)
     $packagePath = "$PSScriptRoot\..\"
@@ -84,5 +96,6 @@ function New-CoreAPIArtifacts {
         -PackageRoot $packagePath `
         -Parameters @{
             CORE_API_MI_OBJECT_ID = $coreAPIManagedIdentityObjectId
+            USER_GROUP_OBJECT_ID  = $UserGroupObjectId
         }
 }
