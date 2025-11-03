@@ -82,6 +82,19 @@ export default {
 	},
 
 	/**
+	 * Retrieves the values of multiple configuration keys.
+	 * @param filter - The filter used to identify the configuration values to retrieve.
+	 * @returns A promise that resolves to the configuration values.
+	 */
+	async filterConfigValues(filter: string) {
+		return await $fetch(`/api/config/`, {
+			params: {
+				filter,
+			},
+		});
+	},
+
+	/**
 	 * Retrieves the UserPortal app configuration set from the management endpoint.
 	 * @returns A promise that resolves to the UserPortal app configuration set.
 	 */
@@ -201,12 +214,12 @@ export default {
 	 */
 	async getSessions(): Promise<Session[]> {
 		const sessions = await this.fetch<Session[]>(`/instances/${this.instanceId}/sessions`);
-		
+
 		// Check if sessions is actually an array
 		if (!Array.isArray(sessions)) {
 			return [];
 		}
-		
+
 		return sessions;
 	},
 
@@ -328,12 +341,12 @@ export default {
 		const agents = (await this.fetch(
 			`/instances/${this.instanceId}/completions/agents`,
 		)) as ResourceProviderGetResult<AgentBase>[];
-		
+
 		// Check if agents is actually an array
 		if (!Array.isArray(agents)) {
 			return [];
 		}
-		
+
 		agents.sort((a, b) => a.resource.name.localeCompare(b.resource.name));
 		return agents;
 	},

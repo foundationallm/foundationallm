@@ -5,6 +5,10 @@ import { AppConfigurationClient } from '@azure/app-configuration';
 
 dns.setDefaultResultOrder('ipv4first');
 
+const allowedFilters = [
+	'FoundationaLLM:Branding:*'
+]
+
 const allowedKeys = [
 	'FoundationaLLM:APIEndpoints:CoreAPI:Essentials:APIUrl',
 	'.appconfig.featureflag/FoundationaLLM-AllowAgentHint',
@@ -49,20 +53,36 @@ const allowedKeys = [
 export default defineEventHandler(async (event) => {
 	const query = getQuery(event);
 	const key = query.key as string;
+	const filter = query.filter as string;
 
 	// Respond with a 400 (Bad Request) if the key to access was not provided.
-	if (!key) {
-		console.error('The query item "key" was not provided.');
-		setResponseStatus(event, 400, 'The query item "key" was not provided.');
+	if (!key && !filter) {
+		console.error('None of the valid query items "key" or "filter" were provided.');
+		setResponseStatus(event, 400, 'None of the valid query items "key" or "filter" were provided.');
+		return '400';
+	}
+
+	if (key && filter) {
+		console.error('Only one of the query items "key" or "filter" should be provided.');
+		setResponseStatus(event, 400, 'Only one of the query items "key" or "filter" should be provided.');
 		return '400';
 	}
 
 	// Respond with a 403 (Forbidden) if the key is not in the allowed keys list.
-	if (!allowedKeys.includes(key)) {
+	if (key && !allowedKeys.includes(key)) {
 		console.error(
 			`Config value "${key}" is not allowed to be accessed, please add it to the list of allowed keys if required.`,
 		);
 		setResponseStatus(event, 403, `Config value "${key}" is not an accessible key.`);
+		return '403';
+	}
+
+	// Respond with a 403 (Forbidden) if the filter is not in the allowed filters list.
+	if (filter && !allowedFilters.includes(filter)) {
+		console.error(
+			`Config filter "${filter}" is not allowed to be accessed, please add it to the list of allowed filters if required.`,
+		);
+		setResponseStatus(event, 403, `Config filter "${filter}" is not an accessible filter.`);
 		return '403';
 	}
 
@@ -77,16 +97,28 @@ export default defineEventHandler(async (event) => {
 	// This will throw a 500 (Internal Server Error) with an error if the connection string is invalid.
 	const appConfigClient = new AppConfigurationClient(config.APP_CONFIG_ENDPOINT);
 
-	try {
-		const setting = await appConfigClient.getConfigurationSetting({ key: key as string });
-		return setting.value;
-	} catch (error) {
-		// Respond with a 404 (Not Found) if the key does not exist in the Azure config service.
-		console.error(
-			`Failed to load config value for "${key}", please ensure it exists and is the correct format.`,
-		);
-		// setResponseStatus(event, 404, `Config value "${key}" not found.`);
-		// return '404';
-		return null;
+	if (key) {
+		try {
+			const setting = await appConfigClient.getConfigurationSetting({ key: key as string });
+			return setting.value;
+		} catch (error) {
+			console.error(
+				`Failed to load the configuration value for "${key}", please ensure it exists and has the correct format.`,
+			);
+			return null;
+		}
+	} else {
+		try {
+			const settings: Record<string, string | null> = {};
+			for await (const s of appConfigClient.listConfigurationSettings({ keyFilter: filter })) {
+					settings[s.key] = s.value;
+			}
+			return settings;
+		} catch (error) {
+			console.error(
+				`Failed to load the configuration values for "${filter}", please ensure they exist and have the correct format.`,
+			);
+			return null;
+		}
 	}
 });
