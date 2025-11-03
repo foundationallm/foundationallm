@@ -2099,7 +2099,9 @@
 	{
 		"namespace": "UserPortal:Authentication:Entra",
 		"dependency_injection_key": null,
-		"configuration_section": null,
+		"configuration_section": {
+			"description": "Configuration section used to identify the settings for Entra ID authentication in the User Portal."
+		},
 		"configuration_keys": [
 			{
 				"name": "Instance",

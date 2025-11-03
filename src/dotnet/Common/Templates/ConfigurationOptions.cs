@@ -107,6 +107,10 @@ namespace FoundationaLLM.Common.Constants.Configuration
         public static void SelectForUserPortal(
             AzureAppConfigurationOptions options)
         {
+            options.Select(AppConfigurationKeys.FoundationaLLM_Instance_Id);
+            options.Select(AppConfigurationKeyFilters.FoundationaLLM_Branding);
+            options.Select(AppConfigurationKeys.FoundationaLLM_APIEndpoints_CoreAPI_Essentials_APIUrl);
+            options.Select(AppConfigurationKeyFilters.FoundationaLLM_UserPortal_Authentication_Entra);
         }
         /// <summary>
         /// Selects configuration options for OrchestrationAPI.

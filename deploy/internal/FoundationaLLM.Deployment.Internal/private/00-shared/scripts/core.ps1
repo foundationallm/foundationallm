@@ -186,6 +186,13 @@ function Get-ConfigurationVariables {
         # Core Worker
         # -----------------------------------------------------------
         COREWORKER_API_KEY = New-APIKey
+
+        # -----------------------------------------------------------
+        # User Portal
+        # -----------------------------------------------------------
+        ENTRA_CHAT_UI_TENANT_ID = $TenantId
+        ENTRA_CHAT_UI_CLIENT_ID = ((az ad app list --query "[?displayName=='$($appRegistrationNames.UserPortal)']") | ConvertFrom-Json | Select-Object -ExpandProperty appId)
+        ENTRA_CHAT_UI_SCOPES = $appRegistrationScopes.UserPortal
     }
 
     return $configurationVariables

@@ -29,5 +29,8 @@
     "CoreWorkerManagedIdentity": [
         ["App Configuration Data Reader", "Core"],
         ["Key Vault Secrets User", "Core"]
+    ],
+    "UserPortalManagedIdentity": [
+        ["App Configuration Data Reader", "Core"]
     ]
 }

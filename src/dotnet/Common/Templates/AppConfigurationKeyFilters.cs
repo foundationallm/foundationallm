@@ -385,6 +385,12 @@ namespace FoundationaLLM.Common.Constants.Configuration
             "FoundationaLLM:Branding:*";
         
         /// <summary>
+        /// Filter for the configuration section used to identify the settings for Entra ID authentication in the User Portal.
+        /// </summary>
+        public const string FoundationaLLM_UserPortal_Authentication_Entra =
+            "FoundationaLLM:UserPortal:Authentication:Entra:*";
+        
+        /// <summary>
         /// Filter for the configuration section used to identify the configuration for the User Portal.
         /// </summary>
         public const string FoundationaLLM_UserPortal_Configuration =

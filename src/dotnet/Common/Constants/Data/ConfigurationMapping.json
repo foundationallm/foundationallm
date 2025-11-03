@@ -90,7 +90,13 @@
 	},
 	{
 		"name": "UserPortal",
-		"configuration_options": []
+		"configuration_options": [
+			"Instance:Id",
+			"Branding:*",
+
+			"APIEndpoints:CoreAPI:Essentials:APIUrl",
+			"UserPortal:Authentication:Entra:*"
+		]
 	},
 	{
 		"name": "OrchestrationAPI",

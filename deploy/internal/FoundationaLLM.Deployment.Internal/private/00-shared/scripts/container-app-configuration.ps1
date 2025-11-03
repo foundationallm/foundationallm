@@ -66,7 +66,7 @@ function Get-ContainerAppEnvVars {
     return $envVarsArgs
 }
 
-function Get-ManagementPortalEnvVars {
+function Get-PortalEnvVars {
     param (
         [string]$ResourceGroupName,
         [hashtable]$ResourceNames,

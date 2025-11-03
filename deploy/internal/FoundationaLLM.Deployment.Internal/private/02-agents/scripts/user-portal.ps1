@@ -1,4 +1,4 @@
-function Initialize-ManagementPortal {
+function Initialize-UserPortal {
     param (
         [string]$UniqueName,
         [string]$Location,
@@ -16,23 +16,23 @@ function Initialize-ManagementPortal {
 
     $coreResourceGroupName = $resourceGroupNames.Core
 
-    Write-Host "Ensuring Management Portal managed identity exists..."
+    Write-Host "Ensuring User Portal managed identity exists..."
     $managedIdentities = @(
-        $resourceNames.ManagementPortalManagedIdentity
+        $resourceNames.UserPortalManagedIdentity
     )
     Initialize-ManagedIdentities `
         -ManagedIdentityNames $managedIdentities `
         -ResourceGroupName $coreResourceGroupName `
         -Location $Location
 
-    Write-Host "Ensuring Azure role assignments for Management Portal managed identity exist..."
+    Write-Host "Ensuring Azure role assignments for User Portal managed identity exist..."
     Set-ManagedIdentityAzureRoleAssignments `
         -SubscriptionId $SubscriptionId `
-        -ManagedIdentityType "ManagementPortalManagedIdentity" `
+        -ManagedIdentityType "UserPortalManagedIdentity" `
         -ResourceGroupNames $resourceGroupNames `
         -ResourceNames $resourceNames
 
-    Write-Host "Ensuring Management Portal container app exists..."
+    Write-Host "Ensuring User Portal container app exists..."
 
     $secrets = Get-ContainerAppSecrets `
         -ResourceNames $resourceNames
@@ -40,14 +40,14 @@ function Initialize-ManagementPortal {
         -ResourceGroupName $coreResourceGroupName `
         -ResourceNames $resourceNames `
         -TenantId $TenantId `
-        -ContainerAppIdentity $resourceNames.ManagementPortalManagedIdentity
+        -ContainerAppIdentity $resourceNames.UserPortalManagedIdentity
 
     Initialize-ContainerApp `
         -ResourceGroupName $coreResourceGroupName `
         -ResourceNames $resourceNames `
         -TenantId $TenantId `
-        -ContainerAppName $resourceNames.ManagementPortalContainerApp `
-        -ContainerAppIdentity $resourceNames.ManagementPortalManagedIdentity `
+        -ContainerAppName $resourceNames.UserPortalContainerApp `
+        -ContainerAppIdentity $resourceNames.UserPortalManagedIdentity `
         -Secrets $secrets `
         -EnvironmentVariables $environmentVariables `
         -ContainerImage $ContainerImage `
@@ -55,6 +55,6 @@ function Initialize-ManagementPortal {
         -MaxReplicas 3
 
     Set-AppRegistrationRedirectURI `
-        -AppRegistrationName $appRegistrationNames.ManagementPortal `
-        -RedirectURI ("https://" + (az containerapp ingress show -n $resourceNames.ManagementPortalContainerApp -g $resourceGroupNames.Core --query "fqdn" -o tsv) + "/signin-oidc")
+        -AppRegistrationName $appRegistrationNames.UserPortal `
+        -RedirectURI ("https://" + (az containerapp ingress show -n $resourceNames.UserPortalContainerApp -g $resourceGroupNames.Core --query "fqdn" -o tsv) + "/signin-oidc")
 }
