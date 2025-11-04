@@ -1347,6 +1347,10 @@ public partial class CoreService(
             }
         }
 
+        // Remove attachments from the current request if the agent does not allow it.
+        if (agent.ShowFileUpload == false)
+            request.Attachments.Clear();
+
         // If there is an attachment in the current message, add it to the file history.
         if (request.Attachments is { Count: > 0 })
         {
