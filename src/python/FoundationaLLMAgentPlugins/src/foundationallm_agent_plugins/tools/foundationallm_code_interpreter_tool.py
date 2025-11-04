@@ -4,7 +4,6 @@ from typing import Optional, Tuple, Type, List, ClassVar, Any
 from uuid import uuid4
 import json
 
-from langchain_azure_dynamic_sessions import SessionsPythonREPLTool
 from langchain_core.callbacks import CallbackManagerForToolRun, AsyncCallbackManagerForToolRun
 from langchain_core.messages import (
     SystemMessage,

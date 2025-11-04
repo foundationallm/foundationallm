@@ -8,7 +8,7 @@ from opentelemetry.sdk.resources import SERVICE_NAME, Resource, SERVICE_INSTANCE
 from opentelemetry.trace import Span, Status, StatusCode, Tracer
 from foundationallm.config import Configuration
 
-from langchain.globals import set_debug, set_verbose
+from langchain_core.globals import set_debug, set_verbose
 
 # Custom filter to exclude trace logs
 class ExcludeTraceLogsFilter(logging.Filter):
