@@ -154,19 +154,19 @@
 		</div>
 
 		<!-- Delete agent dialog -->
-		<Dialog
-			v-focustrap
-			:closable="false"
+		<ConfirmationDialog
+			v-if="dataSourceToDelete !== null"
 			:visible="dataSourceToDelete !== null"
-			modal
 			header="Delete Data Source"
+			confirm-text="Yes"
+			cancel-text="Cancel"
+			confirm-button-severity="danger"
+			@confirm="handleDeleteDataSource"
+			@cancel="dataSourceToDelete = null"
+			@update:visible="dataSourceToDelete = null"
 		>
-			<p>Do you want to delete the data source "{{ dataSourceToDelete.name }}" ?</p>
-			<template #footer>
-				<Button label="Cancel" text @click="dataSourceToDelete = null" />
-				<Button label="Delete" severity="danger" autofocus @click="handleDeleteDataSource" />
-			</template>
-		</Dialog>
+			Do you want to delete the data source "{{ dataSourceToDelete.name }}"?
+		</ConfirmationDialog>
 	</main>
 </template>
 

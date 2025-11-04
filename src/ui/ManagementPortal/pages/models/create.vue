@@ -134,6 +134,7 @@
 <script lang="ts">
 import type { PropType } from 'vue';
 import { debounce } from 'lodash';
+import { useConfirmationStore } from '@/stores/confirmationStore';
 
 import api from '@/js/api';
 
@@ -233,12 +234,19 @@ export default {
 			}
 		},
 
-		handleCancel() {
-			if (!confirm('Are you sure you want to cancel?')) {
-				return;
-			}
+		async handleCancel() {
+			const confirmationStore = useConfirmationStore();
+			const confirmed = await confirmationStore.confirmAsync({
+				title: 'Cancel Model Creation',
+				message: 'Are you sure you want to cancel?',
+				confirmText: 'Yes',
+				cancelText: 'Cancel',
+				confirmButtonSeverity: 'danger',
+			});
 
-			this.$router.push('/models');
+			if (confirmed) {
+				this.$router.push('/models');
+			}
 		},
 
 		handleNameInput(event) {

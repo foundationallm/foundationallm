@@ -168,22 +168,22 @@
 		</DataTable>
 
 		<!-- Delete role assignment dialog -->
-		<Dialog
+		<ConfirmationDialog
+			v-if="roleAssignmentToDelete !== null"
 			:visible="roleAssignmentToDelete !== null"
-			modal
 			header="Delete Role Assignment"
-			:closable="false"
+			confirmText="Yes"
+			cancelText="Cancel"
+			confirm-button-severity="danger"
+			@cancel="roleAssignmentToDelete = null"
+			@confirm="handleDeleteRoleAssignment"
 		>
-			<p>
-				Do you want to delete the role assignment for "{{
-					roleAssignmentToDelete.principal.display_name
+			<div>
+				Are you sure you want to delete the role assignment for "{{
+					roleAssignmentToDelete!.principal.display_name
 				}}"?
-			</p>
-			<template #footer>
-				<Button label="Cancel" text @click="roleAssignmentToDelete = null" />
-				<Button label="Delete" severity="danger" @click="handleDeleteRoleAssignment" />
-			</template>
-		</Dialog>
+			</div>
+		</ConfirmationDialog>
 	</div>
 </template>
 

@@ -529,6 +529,7 @@
 import type { PropType } from 'vue';
 import { debounce } from 'lodash';
 import api from '@/js/api';
+import { useConfirmationStore } from '@/stores/confirmationStore';
 
 export default {
 	name: 'CreatePipeline',
@@ -865,12 +866,19 @@ export default {
 			this.pipeline.starting_stages = nested;
 		},
 
-		handleCancel() {
-			if (!confirm('Are you sure you want to cancel?')) {
-				return;
-			}
+		async handleCancel() {
+			const confirmationStore = useConfirmationStore();
+			const confirmed = await confirmationStore.confirmAsync({
+				title: 'Cancel Pipeline Creation',
+				message: 'Are you sure you want to cancel?',
+				confirmText: 'Yes',
+				cancelText: 'Cancel',
+				confirmButtonSeverity: 'danger',
+			});
 
-			(this as any).$router.push('/pipelines');
+			if (confirmed) {
+				(this as any).$router.push('/pipelines');
+			}
 		},
 
 		handleNameInput(event: Event) {
