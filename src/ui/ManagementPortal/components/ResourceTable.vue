@@ -144,10 +144,6 @@ export default {
 				return 'Prompt';
 			} else if (type === 'aiModels') {
 				return 'AI Model';
-			} else if (type === 'textEmbeddingProfiles') {
-				return 'Embedding Profile';
-			} else if (type === 'indexingProfiles') {
-				return 'Vector Store';
 			} else if (type === 'apiEndpointConfigurations') {
 				return 'API Endpoint';
 			}

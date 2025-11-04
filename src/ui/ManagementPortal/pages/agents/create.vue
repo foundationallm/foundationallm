@@ -672,365 +672,6 @@
 				</div>
 			</section>
 
-			<!-- Knowledge source -->
-			<section aria-labelledby="knowledge-source" class="col-span-2 steps">
-				<h3 id="knowledge-source" class="step-section-header col-span-2">Knowledge Source</h3>
-
-				<div id="aria-inline-context" class="step-header col-span-2">
-					Does this agent have an inline context?
-				</div>
-				<div class="col-span-2">
-					<div class="flex items-center mt-2">
-						<span>
-							<ToggleButton
-								v-model="inline_context"
-								on-label="Yes"
-								on-icon="pi pi-check-circle"
-								off-label="No"
-								off-icon="pi pi-times-circle"
-								aria-labelledby="aria-inline-context"
-							/>
-						</span>
-					</div>
-				</div>
-
-				<template v-if="!inline_context">
-					<div id="aria-dedicated-pipeline" class="step-header col-span-2">
-						Do you want this agent to have a dedicated pipeline?
-					</div>
-					<div class="col-span-2">
-						<div class="flex items-center mt-2">
-							<span>
-								<ToggleButton
-									v-model="dedicated_pipeline"
-									on-label="Yes"
-									on-icon="pi pi-check-circle"
-									off-label="No"
-									off-icon="pi pi-times-circle"
-									aria-labelledby="aria-dedicated-pipeline"
-								/>
-							</span>
-						</div>
-					</div>
-
-					<template v-if="dedicated_pipeline">
-						<div class="step-header">Where is the data?</div>
-					</template>
-					<template v-if="dedicated_pipeline">
-						<div class="step-header">Where should the data be indexed?</div>
-					</template>
-					<template v-else>
-						<div class="step-header">Select your index</div>
-						<div class="step-header">Select the text embedding profile</div>
-					</template>
-
-					<!-- Data source -->
-					<div v-if="dedicated_pipeline">
-						<CreateAgentStepItem
-							v-model="editDataSource"
-							focus-query=".step-container__edit__option"
-						>
-							<template v-if="selectedDataSource">
-								<div class="step-container__header">{{ selectedDataSource.type }}</div>
-								<div>
-									<div v-if="selectedDataSource.object_id !== ''">
-										<span class="step-option__header">Name:</span>
-									</div>
-									<span>{{ selectedDataSource.name }}</span>
-								</div>
-								<!-- <div>
-									<span class="step-option__header">Container name:</span>
-									<span>{{ selectedDataSource.Container.Name }}</span>
-								</div> -->
-
-								<!-- <div>
-									<span class="step-option__header">Data Format(s):</span>
-									<span v-for="format in selectedDataSource.Formats" :key="format" class="mr-1">
-										{{ format }}
-									</span>
-								</div> -->
-							</template>
-							<template v-else>Please select a data source.</template>
-
-							<template #edit>
-								<div class="step-container__edit__header">Please select a data source.</div>
-
-								<div v-for="(group, type) in groupedDataSources" :key="type">
-									<div class="step-container__edit__group-header">{{ type }}</div>
-
-									<div
-										v-for="dataSource in group"
-										:key="dataSource.name"
-										class="step-container__edit__option"
-										:class="{
-											'step-container__edit__option--selected':
-												dataSource.name === selectedDataSource?.name,
-										}"
-										tabindex="0"
-										@click.stop="handleDataSourceSelected(dataSource)"
-										@keydown.enter="handleDataSourceSelected(dataSource)"
-									>
-										<div>
-											<div v-if="dataSource.object_id !== ''">
-												<span class="step-option__header">Name:</span>
-											</div>
-											<span>{{ dataSource.name }}</span>
-										</div>
-										<!-- <div>
-											<span class="step-option__header">Container name:</span>
-											<span>{{ dataSource.Container.Name }}</span>
-										</div> -->
-
-										<!-- <div>
-											<span class="step-option__header">Data Format(s):</span>
-											<span v-for="format in dataSource.Formats" :key="format" class="mr-1">
-												{{ format }}
-											</span>
-										</div> -->
-									</div>
-								</div>
-							</template>
-						</CreateAgentStepItem>
-					</div>
-
-					<!-- Index source -->
-					<CreateAgentStepItem
-						v-model="editIndexSource"
-						focus-query=".step-container__edit__option"
-					>
-						<template v-if="selectedIndexSource">
-							<div v-if="selectedIndexSource.object_id !== ''">
-								<div class="step-container__header">{{ selectedIndexSource.name }}</div>
-								<div>
-									<span class="step-option__header">Index Name:</span>
-									<span>{{ selectedIndexSource.settings.index_name }}</span>
-								</div>
-							</div>
-							<div v-else>
-								<div class="step-container__header">DEFAULT</div>
-								{{ selectedIndexSource.name }}
-							</div>
-						</template>
-						<template v-else>Please select an index source.</template>
-
-						<template #edit>
-							<div class="step-container__edit__header">Please select an index source.</div>
-							<div
-								v-for="indexSource in indexSources"
-								:key="indexSource.name"
-								class="step-container__edit__option"
-								:class="{
-									'step-container__edit__option--selected':
-										indexSource.name === selectedIndexSource?.name,
-								}"
-								tabindex="0"
-								@click.stop="handleIndexSourceSelected(indexSource)"
-								@keydown.enter="handleIndexSourceSelected(indexSource)"
-							>
-								<div v-if="indexSource.object_id !== ''">
-									<div class="step-container__header">{{ indexSource.name }}</div>
-									<div v-if="indexSource.resolved_configuration_references?.Endpoint">
-										<span class="step-option__header">URL:</span>
-										<span>{{ indexSource.resolved_configuration_references?.Endpoint }}</span>
-									</div>
-									<div v-if="indexSource.settings.index_name">
-										<span class="step-option__header">Index Name:</span>
-										<span>{{ indexSource.settings.index_name }}</span>
-									</div>
-								</div>
-								<div v-else>
-									<div class="step-container__header">DEFAULT</div>
-									{{ indexSource.name }}
-								</div>
-							</div>
-						</template>
-					</CreateAgentStepItem>
-
-					<template v-if="dedicated_pipeline">
-						<div class="step-header">Select the text embedding profile</div>
-						<div class="step-header"></div>
-					</template>
-
-					<!-- Text embedding profiles -->
-					<div>
-					<CreateAgentStepItem
-						v-model="editTextEmbeddingProfile"
-						focus-query=".step-container__edit__option"
-					>
-						<template #edit>
-							<div v-if="showValidationErrors && formErrors.selectedTextEmbeddingProfile" class="error-message">{{ formErrors.selectedTextEmbeddingProfile }}</div>
-						</template>
-						<template v-if="selectedTextEmbeddingProfile">
-							<div v-if="selectedTextEmbeddingProfile.object_id !== ''">
-								<div class="step-container__header">{{ selectedTextEmbeddingProfile.name }}</div>
-								<div
-									v-if="selectedTextEmbeddingProfile.resolved_configuration_references?.Endpoint"
-								>
-									<span class="step-option__header">URL:</span>
-									<span>{{
-										selectedTextEmbeddingProfile.resolved_configuration_references.Endpoint
-									}}</span
-									><br />
-									<span class="step-option__header">Deployment:</span>
-									<span>{{
-										selectedTextEmbeddingProfile.resolved_configuration_references.DeploymentName
-									}}</span>
-								</div>
-								<div v-if="selectedTextEmbeddingProfile.settings?.model_name">
-									<span class="step-option__header">Model Name:</span>
-									<span>{{ selectedTextEmbeddingProfile.settings.model_name }}</span>
-								</div>
-							</div>
-							<div v-else>
-								<div class="step-container__header">DEFAULT</div>
-								{{ selectedTextEmbeddingProfile.name }}
-							</div>
-						</template>
-						<template v-else>Please select text embedding profile.</template>
-
-						<template #edit2>
-							<div class="step-container__edit__header">Please select text embedding profile.</div>
-							<div
-								v-for="textEmbeddingProfile in textEmbeddingProfileSources"
-								:key="textEmbeddingProfile.name"
-								class="step-container__edit__option"
-								:class="{
-									'step-container__edit__option--selected':
-										textEmbeddingProfile.name === selectedTextEmbeddingProfile?.name,
-								}"
-								tabindex="0"
-								@click.stop="handleTextEmbeddingProfileSelected(textEmbeddingProfile)"
-								@keydown.enter="handleTextEmbeddingProfileSelected(textEmbeddingProfile)"
-							>
-								<div v-if="textEmbeddingProfile.object_id !== ''">
-									<div class="step-container__header">{{ textEmbeddingProfile.name }}</div>
-									<div v-if="textEmbeddingProfile.resolved_configuration_references?.Endpoint">
-										<span class="step-option__header">URL:</span>
-										<span>{{
-											textEmbeddingProfile.resolved_configuration_references.Endpoint
-										}}</span
-										><br />
-										<span class="step-option__header">Deployment:</span>
-										<span>{{
-											textEmbeddingProfile.resolved_configuration_references.DeploymentName
-										}}</span>
-									</div>
-									<div v-if="textEmbeddingProfile.settings?.model_name">
-										<span class="step-option__header">Model Name:</span>
-										<span>{{ textEmbeddingProfile.settings.model_name }}</span>
-									</div>
-								</div>
-								<div v-else>
-									<div class="step-container__header">DEFAULT</div>
-									{{ textEmbeddingProfile.name }}
-								</div>
-							</div>
-						</template>
-
-					</CreateAgentStepItem>
-						<div v-if="formErrors.selectedTextEmbeddingProfile" class="error-message">{{ formErrors.selectedTextEmbeddingProfile }}</div>
-					 </div>
-					
-					<div></div>
-
-					<template v-if="dedicated_pipeline">
-						<div class="step-header">How should the data be processed for indexing?</div>
-						<div class="step-header">When should the data be indexed?</div>
-
-						<!-- Process indexing -->
-
-						<CreateAgentStepItem focus-query=".chunk-size-input">
-							<div class="step-container__header">Splitting & Chunking</div>
-
-							<div>
-								<span class="step-option__header">Chunk size:</span>
-								<span>{{ chunkSize }}</span>
-							</div>
-
-							<div>
-								<span class="step-option__header">Overlap size:</span>
-								<span>{{ overlapSize == 0 ? 'No Overlap' : overlapSize }}</span>
-							</div>
-
-							<template #edit>
-								<div class="step-container__header">Splitting & Chunking</div>
-
-								<div>
-									<span id="aria-chunk-size" class="step-option__header">Chunk size:</span>
-									<InputText
-										v-model="chunkSize"
-										type="number"
-										class="mt-2 chunk-size-input"
-										aria-label="aria-chunk-size"
-									/>
-								</div>
-
-								<div>
-									<span id="aria-overlap-size" class="step-option__header">Overlap size:</span>
-									<InputText
-										v-model="overlapSize"
-										type="number"
-										class="mt-2"
-										aria-label="aria-overlap-size"
-									/>
-								</div>
-							</template>
-						</CreateAgentStepItem>
-
-						<!-- Trigger -->
-						<CreateAgentStepItem focus-query=".frequency-dropdown span">
-							<div class="step-container__header">Trigger</div>
-							<div>Runs every time a new item is added to the data source.</div>
-
-							<div class="mt-2">
-								<span class="step-option__header">Frequency:</span>
-								<span>{{ triggerFrequency }}</span>
-							</div>
-
-							<div v-if="triggerFrequency === 'Schedule' && triggerFrequencyScheduled">
-								<span class="step-option__header">Schedule:</span>
-								<span>{{ triggerFrequencyScheduled }}</span>
-							</div>
-
-							<template #edit>
-								<div class="step-container__header">Trigger</div>
-								<div>Runs every time a new item is added to the data source.</div>
-
-								<div class="mt-2">
-									<span id="aria-frequency" class="step-option__header">Frequency:</span>
-									<Dropdown
-										v-model="triggerFrequency"
-										class="dropdown--agent frequency-dropdown"
-										:options="triggerFrequencyOptions"
-										placeholder="--Select--"
-										aria-label="aria-frequency"
-									/>
-								</div>
-
-								<div v-if="triggerFrequency === 'Schedule'" class="mt-2">
-									<CronLight
-										v-model="triggerFrequencyScheduled"
-										format="quartz"
-										@error="error = $event"
-									/>
-									<!-- editable cron expression -->
-									<InputText
-										class="mt-4"
-										label="cron expression"
-										:model-value="triggerFrequencyScheduled"
-										:error-messages="error"
-										aria-label="cron expression"
-										@update:model-value="triggerFrequencyNextScheduled = $event"
-										@blur="triggerFrequencyScheduled = triggerFrequencyNextScheduled"
-									/>
-								</div>
-							</template>
-						</CreateAgentStepItem>
-					</template>
-				</template>
-			</section>
-			<!-- End of Knowledge Source -->
-
 			<!-- Workflow -->
 			<div class="step-section-header col-span-2">Workflow</div>
 			<div id="aria-workflow" class="step-header col-span-2">
@@ -1393,35 +1034,16 @@ const getDefaultFormValues = () => {
 		agentDisplayName: '',
 		agentWelcomeMessage: '',
 		object_id: '',
-		text_partitioning_profile_object_id: '',
-		text_embedding_profile_object_id: '',
-		vectorization_data_pipeline_object_id: '',
 		prompt_object_id: '',
-		dedicated_pipeline: true,
-		inline_context: false,
+		inline_context: true,
 		agentType: 'knowledge-management' as CreateAgentRequest['type'],
 
 		cost_center: '',
 		expirationDate: null as string | null,
 
-		editDataSource: false as boolean,
-		selectedDataSource: null as null | AgentDataSource,
-
-		editIndexSource: false as boolean,
-		selectedIndexSource: null as null | AgentIndex,
-
-		editTextEmbeddingProfile: false as boolean,
-		selectedTextEmbeddingProfile: null as null | TextEmbeddingProfile,
-
 		// editAIModel: false as boolean,
 		selectedAIModel: null as null | AIModel,
 
-		chunkSize: 500,
-		overlapSize: 50,
-
-		triggerFrequency: 'Event' as string,
-		triggerFrequencyScheduled: '* * * * *' as string,
-		triggerFrequencyNextScheduled: '' as string,
 		error: '',
 
 		conversationHistory: false as boolean,
@@ -1499,9 +1121,6 @@ export default {
 			nameValidationStatus: null as string | null, // 'valid', 'invalid', or null
 			validationMessage: '' as string,
 
-			dataSources: [] as DataSource[],
-			indexSources: [] as AgentIndex[],
-			textEmbeddingProfileSources: [] as TextEmbeddingProfile[],
 			externalOrchestratorOptions: [] as ExternalOrchestrationService[],
 			aiModelOptions: [] as AIModel[],
 
@@ -1547,16 +1166,6 @@ export default {
 				},
 			],
 
-			triggerFrequencyOptions: ['Event', 'Manual', 'Schedule'],
-
-			triggerFrequencyScheduledOptions: [
-				'Never',
-				'Every 30 minutes',
-				'Hourly',
-				'Every 12 hours',
-				'Daily',
-			],
-
 			gatekeeperContentSafetyOptions: ref([
 				{
 					name: 'Azure Content Safety',
@@ -1594,21 +1203,6 @@ export default {
 			// 	},
 			// ]),
 		};
-	},
-
-	computed: {
-		groupedDataSources() {
-			const grouped = {};
-			this.dataSources.forEach((dataSource) => {
-				if (!grouped[dataSource.type]) {
-					grouped[dataSource.type] = [];
-				}
-
-				grouped[dataSource.type].push(dataSource);
-			});
-
-			return grouped;
-		},
 	},
 
 	watch: {
@@ -1673,19 +1267,6 @@ export default {
 		// api.mockLoadTime = 0;
 
 		try {
-			this.loadingStatusText = 'Retrieving indexes...';
-			const indexSourcesResult = await api.getAgentIndexes(true);
-			this.indexSources = indexSourcesResult.map((result) => result.resource);
-
-			this.loadingStatusText = 'Retrieving text embedding profiles...';
-			const embeddingProfileSourcesResult = await api.getTextEmbeddingProfiles();
-			this.textEmbeddingProfileSources = embeddingProfileSourcesResult.map(
-				(result) => result.resource,
-			);
-
-			this.loadingStatusText = 'Retrieving data sources...';
-			const agentDataSourcesResult = await api.getAgentDataSources(true);
-			this.dataSources = agentDataSourcesResult.map((result) => result.resource);
 
 			this.loadingStatusText = 'Retrieving external orchestration services...';
 			const externalOrchestrationServicesResult = await api.getExternalOrchestrationServices();
@@ -1746,17 +1327,6 @@ export default {
 
 			const agent = agentGetResult.resource;
 			this.virtualSecurityGroupId = agent.virtual_security_group_id;
-
-			if (agent.vectorization && agent.vectorization.text_partitioning_profile_object_id) {
-				this.loadingStatusText = `Retrieving text partitioning profile...`;
-				const textPartitioningProfile = await api.getTextPartitioningProfile(
-					agent.vectorization.text_partitioning_profile_object_id,
-				);
-				if (textPartitioningProfile && textPartitioningProfile.resource) {
-					this.chunkSize = Number(textPartitioningProfile.resource.settings.ChunkSizeTokens);
-					this.overlapSize = Number(textPartitioningProfile.resource.settings.OverlapSizeTokens);
-				}
-			}
 
 			if (agent.prompt_object_id) {
 				this.loadingStatusText = `Retrieving prompt...`;
@@ -1835,37 +1405,6 @@ export default {
 
 			// this.orchestration_settings.orchestrator =
 			// 	agent.orchestration_settings?.orchestrator || this.orchestration_settings.orchestrator;
-
-			if (agent.vectorization) {
-				this.dedicated_pipeline = agent.vectorization.dedicated_pipeline;
-			}
-			this.text_embedding_profile_object_id =
-				agent.vectorization?.text_embedding_profile_object_id ||
-				this.text_embedding_profile_object_id;
-
-			this.triggerFrequency = agent.vectorization?.trigger_type || this.triggerFrequency;
-			this.triggerFrequencyScheduled =
-				agent.vectorization?.trigger_cron_schedule || this.triggerFrequencyScheduled;
-
-			this.selectedIndexSource =
-				this.indexSources.find(
-					(indexSource) =>
-						indexSource.object_id &&
-						agent.vectorization?.indexing_profile_object_ids?.includes(indexSource.object_id),
-				) || null;
-
-			this.selectedTextEmbeddingProfile =
-				this.textEmbeddingProfileSources.find(
-					(textEmbeddingProfile) =>
-						textEmbeddingProfile.object_id ===
-						agent.vectorization?.text_embedding_profile_object_id,
-				) || null;
-
-			this.selectedDataSource =
-				this.dataSources.find(
-					(dataSource) => dataSource.object_id === agent.vectorization?.data_source_object_id,
-				) || null;
-
 			// this.selectedAIModel =
 			// 	this.aiModelOptions.find((aiModel) => aiModel.object_id === agent.ai_model_object_id) ||
 			// 	null;
@@ -2108,21 +1647,6 @@ export default {
 			this.agentType = type;
 		},
 
-		handleDataSourceSelected(dataSource: AgentDataSource) {
-			this.selectedDataSource = dataSource;
-			this.editDataSource = false;
-		},
-
-		handleIndexSourceSelected(indexSource: AgentIndex) {
-			this.selectedIndexSource = indexSource;
-			this.editIndexSource = false;
-		},
-
-		handleTextEmbeddingProfileSelected(textEmbeddingProfile: TextEmbeddingProfile) {
-			this.selectedTextEmbeddingProfile = textEmbeddingProfile;
-			this.editTextEmbeddingProfile = false;
-		},
-
 		// handleAIModelSelected(aiModel: AIModel) {
 		// 	this.selectedAIModel = aiModel;
 		// 	this.editAIModel = false;
@@ -2200,7 +1724,6 @@ export default {
 				const errors: Record<string, string> = {
 					agentName: '',
 					nameValidation: '',
-					selectedTextEmbeddingProfile: '',
 					selectedWorkflow: '',
 					workflowName: '',
 					workflowPackageName: '',
@@ -2220,12 +1743,6 @@ export default {
 				}
 				if (this.nameValidationStatus === 'invalid') {
 					errors.nameValidation = this.validationMessage;
-				}
-
-				if (!this.inline_context && !this.selectedTextEmbeddingProfile) {
-					errors.selectedTextEmbeddingProfile = 'Please select a text embedding profile.';
-				} else {
-					this.text_embedding_profile_object_id = this.selectedTextEmbeddingProfile?.object_id ?? '';
 				}
 
 				if (!this.selectedWorkflow) {
@@ -2303,17 +1820,6 @@ export default {
 				category: 'Workflow',
 			};
 
-			const tokenTextPartitionRequest = {
-				text_splitter: 'TokenTextSplitter',
-				name: this.agentName,
-				settings: {
-					tokenizer: 'MicrosoftBPETokenizer',
-					tokenizer_encoder: 'cl100k_base',
-					chunk_size_tokens: this.chunkSize.toString(),
-					overlap_size_tokens: this.overlapSize.toString(),
-				},
-			};
-
 			let successMessage = null;
 			try {
 				// Handle Prompt creation/update.
@@ -2336,37 +1842,6 @@ export default {
 				// 	const workflowPromptResponse = await api.createOrUpdatePrompt(this.selectedWorkflow.prompt_object_ids.main_prompt, promptRequest);
 				// 	workflowPromptResponse = promptResponse.object_id;
 				// }
-
-				let textPartitioningProfileObjectId = '';
-				let dataSourceObjectId = '';
-				let indexingProfileObjectId = [''];
-
-				if (!this.inline_context) {
-					// Handle TextPartitioningProfile creation/update.
-					const tokenTextPartitionResponse = await api.createOrUpdateTextPartitioningProfile(
-						this.agentName,
-						tokenTextPartitionRequest,
-					);
-					textPartitioningProfileObjectId = tokenTextPartitionResponse.objectId;
-
-					// Select the default data source, if any.
-					dataSourceObjectId = this.selectedDataSource?.object_id ?? '';
-					if (dataSourceObjectId === '' && this.dedicated_pipeline) {
-						const defaultDataSource = await api.getDefaultDataSource();
-						if (defaultDataSource !== null) {
-							dataSourceObjectId = defaultDataSource.object_id;
-						}
-					}
-
-					// Select the default indexing profile, if any.
-					indexingProfileObjectId = [this.selectedIndexSource?.object_id ?? ''];
-					if (indexingProfileObjectId.length === 0) {
-						const defaultAgentIndex = await api.getDefaultAgentIndex();
-						if (defaultAgentIndex !== null) {
-							indexingProfileObjectId = [defaultAgentIndex.object_id];
-						}
-					}
-				}
 
 				let workflow = null;
 				if (this.selectedWorkflow) {
@@ -2433,16 +1908,7 @@ export default {
 					show_view_prompt: this.showViewPrompt,
 					show_file_upload: this.showFileUpload,
 
-					vectorization: {
-						dedicated_pipeline: this.dedicated_pipeline,
-						text_embedding_profile_object_id: this.text_embedding_profile_object_id,
-						indexing_profile_object_ids: indexingProfileObjectId,
-						text_partitioning_profile_object_id: textPartitioningProfileObjectId,
-						data_source_object_id: dataSourceObjectId,
-						vectorization_data_pipeline_object_id: this.vectorization_data_pipeline_object_id,
-						trigger_type: this.triggerFrequency,
-						trigger_cron_schedule: this.triggerFrequencyScheduled,
-					},
+					vectorization: null,
 
 					conversation_history_settings: {
 						enabled: this.conversationHistory,
