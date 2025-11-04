@@ -14,7 +14,6 @@ from azure.storage.blob import BlobServiceClient
 from opentelemetry.trace import SpanKind
 
 # LangChain imports
-from langchain_azure_dynamic_sessions import SessionsPythonREPLTool
 from langchain_core.callbacks import CallbackManagerForToolRun
 from langchain_core.messages import (
     BaseMessage,
@@ -164,10 +163,10 @@ class FoundationaLLMFileAnalysisTool(FoundationaLLMToolBase):
             objects: dict,
             config: Configuration,
     ):
-        self.code_interpreter_tool = SessionsPythonREPLTool(
-            session_id=objects[tool_config.name][self.DYNAMIC_SESSION_ID],
-            pool_management_endpoint=objects[tool_config.name][self.DYNAMIC_SESSION_ENDPOINT]
-        )
+        # self.code_interpreter_tool = SessionsPythonREPLTool(
+        #     session_id=objects[tool_config.name][self.DYNAMIC_SESSION_ID],
+        #     pool_management_endpoint=objects[tool_config.name][self.DYNAMIC_SESSION_ENDPOINT]
+        # )
 
         self.storage_type = tool_config.properties['storage_type']
 
