@@ -132,6 +132,7 @@
 import type { PropType } from 'vue';
 import { debounce } from 'lodash';
 import api from '@/js/api';
+import { useConfirmationStore } from '@/stores/confirmationStore';
 import type { Prompt, CreatePromptRequest } from '@/js/types';
 
 export default {
@@ -203,11 +204,19 @@ export default {
 	},
 
 	methods: {
-		handleCancel() {
-			if (!confirm('Are you sure you want to cancel?')) {
-				return;
+		async handleCancel() {
+			const confirmationStore = useConfirmationStore();
+			const confirmed = await confirmationStore.confirmAsync({
+				title: 'Cancel Prompt Creation',
+				message: 'Are you sure you want to cancel?',
+				confirmText: 'Yes',
+				cancelText: 'Cancel',
+				confirmButtonSeverity: 'danger',
+			});
+
+			if (confirmed) {
+				this.$router.push('/prompts');
 			}
-			this.$router.push('/prompts');
 		},
 
 		async checkName() {

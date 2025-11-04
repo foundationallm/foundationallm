@@ -399,6 +399,7 @@
 import type { PropType } from 'vue';
 import { debounce } from 'lodash';
 import api from '@/js/api';
+import { useConfirmationStore } from '@/stores/confirmationStore';
 import type {
 	DataSource,
 	ConfigurationReferenceMetadata,
@@ -589,12 +590,19 @@ export default {
 			}
 		},
 
-		handleCancel() {
-			if (!confirm('Are you sure you want to cancel?')) {
-				return;
-			}
+		async handleCancel() {
+			const confirmationStore = useConfirmationStore();
+			const confirmed = await confirmationStore.confirmAsync({
+				title: 'Cancel Data Source Creation',
+				message: 'Are you sure you want to cancel?',
+				confirmText: 'Yes',
+				cancelText: 'Cancel',
+				confirmButtonSeverity: 'danger',
+			});
 
-			this.$router.push('/data-sources');
+			if (confirmed) {
+				this.$router.push('/data-sources');
+			}
 		},
 
 		handleNameInput(event) {

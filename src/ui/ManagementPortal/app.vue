@@ -10,6 +10,7 @@
 			<NuxtPage />
 		</NuxtLayout>
 		<Toast position="top-center" />
+		<ConfirmationDialog />
 	</div>
 </template>
 

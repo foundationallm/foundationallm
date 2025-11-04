@@ -144,13 +144,19 @@
 		</div>
 
 		<!-- Delete model/endpoint dialog -->
-		<Dialog :visible="itemToDelete !== null" modal header="Delete Model" :closable="false">
-			<p>Do you want to delete the model "{{ itemToDelete.name }}" ?</p>
-			<template #footer>
-				<Button label="Cancel" text @click="itemToDelete = null" />
-				<Button label="Delete" severity="danger" @click="handleDelete" />
-			</template>
-		</Dialog>
+		<ConfirmationDialog
+			v-if="itemToDelete !== null"
+			:visible="itemToDelete !== null"
+			header="Delete Model"
+			confirm-text="Yes"
+			cancel-text="Cancel"
+			confirm-button-severity="danger"
+			@confirm="handleDelete"
+			@cancel="itemToDelete = null"
+			@update:visible="itemToDelete = null"
+		>
+			Do you want to delete the model "{{ itemToDelete.name }}"?
+		</ConfirmationDialog>
 	</div>
 </template>
 

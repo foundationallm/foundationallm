@@ -817,8 +817,9 @@
 					/>
 					<ConfirmationDialog
 						v-if="workflowResourceToDelete !== null"
+						:visible="workflowResourceToDelete !== null"
 						header="Delete Workflow Resource"
-						confirmText="Delete"
+						confirmText="Yes"
 						@cancel="workflowResourceToDelete = null"
 						@confirm="handleDeleteWorkflowResource"
 					>
@@ -930,8 +931,9 @@
 
 							<ConfirmationDialog
 								v-if="toolToRemove !== null"
+								:visible="toolToRemove !== null"
 								header="Delete Tool"
-								confirmText="Delete Tool"
+								confirmText="Yes"
 								@cancel="toolToRemove = null"
 								@confirm="handleRemoveTool"
 							>
@@ -1018,6 +1020,7 @@ import type {
 	TextEmbeddingProfile,
 	Workflow
 } from '@/js/types';
+import { useConfirmationStore } from '@/stores/confirmationStore';
 import { CronLight } from '@vue-js-cron/light';
 import '@vue-js-cron/light/dist/light.css';
 import { clone, debounce } from 'lodash';
@@ -1605,11 +1608,19 @@ export default {
 			return this.promptCache.get(cacheKey) || [];
 		},
 
-		handleCancel() {
-			if (!confirm('Are you sure you want to cancel?')) {
-				return;
+		async handleCancel() {
+			const confirmationStore = useConfirmationStore();
+			const confirmed = await confirmationStore.confirmAsync({
+				title: 'Cancel Agent Creation',
+				message: 'Are you sure you want to cancel?',
+				confirmText: 'Yes',
+				cancelText: 'Cancel',
+				confirmButtonSeverity: 'danger',
+			});
+
+			if (confirmed) {
+				this.$router.push('/agents/public');
 			}
-			this.$router.push('/agents/public');
 		},
 
 		handleNameInput(event) {

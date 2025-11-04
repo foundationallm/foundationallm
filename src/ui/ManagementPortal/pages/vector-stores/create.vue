@@ -160,6 +160,7 @@
 import type { PropType } from 'vue';
 import { debounce } from 'lodash';
 import api from '@/js/api';
+import { useConfirmationStore } from '@/stores/confirmationStore';
 
 const AzureAISearchIndexerFields = [
 	{
@@ -359,12 +360,19 @@ export default {
 			}
 		},
 
-		handleCancel() {
-			if (!confirm('Are you sure you want to cancel?')) {
-				return;
-			}
+		async handleCancel() {
+			const confirmationStore = useConfirmationStore();
+			const confirmed = await confirmationStore.confirmAsync({
+				title: 'Cancel Vector Store Creation',
+				message: 'Are you sure you want to cancel?',
+				confirmText: 'Yes',
+				cancelText: 'Cancel',
+				confirmButtonSeverity: 'danger',
+			});
 
-			this.$router.push('/vector-stores');
+			if (confirmed) {
+				this.$router.push('/vector-stores');
+			}
 		},
 
 		handleNameInput(event) {

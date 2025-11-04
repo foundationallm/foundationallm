@@ -201,38 +201,38 @@
 			</Column>
 		</DataTable>
 
-		<!-- Delete agent dialog -->
-		<Dialog
-			v-focustrap
-			:visible="agentToDelete !== null"
-			:closable="false"
-			modal
-			header="Delete Agent"
-		>
-			<p>Do you want to delete the agent "{{ agentToDelete.name }}" ?</p>
-			<template #footer>
-				<Button label="Cancel" text @click="agentToDelete = null" />
-				<Button label="Delete" severity="danger" autofocus @click="handleDeleteAgent" />
-			</template>
-		</Dialog>
+	<!-- Delete agent dialog -->
+	<ConfirmationDialog
+		v-if="agentToDelete !== null"
+		:visible="agentToDelete !== null"
+		header="Delete Agent"
+		confirmText="Yes"
+		cancelText="Cancel"
+		confirm-button-severity="danger"
+		@cancel="agentToDelete = null"
+		@confirm="handleDeleteAgent"
+	>
+		<div>
+			Are you sure you want to delete the agent "{{ agentToDelete!.name }}"?
+		</div>
+	</ConfirmationDialog>
 
-		<!-- Set default agent dialog -->
-		<Dialog
-			v-focustrap
-			:visible="agentToSetAsDefault !== null"
-			:closable="false"
-			modal
-			header="Set Default Agent"
-		>
-			<p>
-				Do you want to set the "{{ agentToSetAsDefault.name }}" agent as default?<br />Default
-				agents are automatically selected in the User Portal for new conversations.
-			</p>
-			<template #footer>
-				<Button label="Cancel" text @click="agentToSetAsDefault = null" />
-				<Button label="Set as Default" severity="info" autofocus @click="handleSetDefaultAgent" />
-			</template>
-		</Dialog>
+	<!-- Set default agent dialog -->
+	<ConfirmationDialog
+		v-if="agentToSetAsDefault !== null"
+		:visible="agentToSetAsDefault !== null"
+		header="Set Default Agent"
+		confirmText="Yes"
+		cancelText="Cancel"
+		@cancel="agentToSetAsDefault = null"
+		@confirm="handleSetDefaultAgent"
+	>
+		<div>
+			Are you sure you want to set the "{{ agentToSetAsDefault!.name }}" agent as default?
+			<br />
+			Default agents are automatically selected in the User Portal for new conversations.
+		</div>
+	</ConfirmationDialog>
 	</div>
 </template>
 

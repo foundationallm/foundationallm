@@ -201,6 +201,7 @@
 import { v4 as uuidv4 } from 'uuid';
 import type { PropType } from 'vue';
 import api from '@/js/api';
+import { useConfirmationStore } from '@/stores/confirmationStore';
 
 import type { Role, RoleAssignment } from '@/js/types';
 
@@ -361,12 +362,19 @@ export default {
 			this.loadingPrincipals = false;
 		},
 
-		handleCancel() {
-			if (!confirm('Are you sure you want to cancel?')) {
-				return;
-			}
+		async handleCancel() {
+			const confirmationStore = useConfirmationStore();
+			const confirmed = await confirmationStore.confirmAsync({
+				title: 'Cancel Role Assignment Creation',
+				message: 'Are you sure you want to cancel?',
+				confirmText: 'Yes',
+				cancelText: 'Cancel',
+				confirmButtonSeverity: 'danger',
+			});
 
-			this.$router.push('/security/role-assignments');
+			if (confirmed) {
+				this.$router.push('/security/role-assignments');
+			}
 		},
 
 		handlePrincipalSelected() {

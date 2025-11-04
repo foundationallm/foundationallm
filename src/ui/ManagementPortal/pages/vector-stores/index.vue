@@ -148,19 +148,19 @@
 		</div>
 
 		<!-- Delete agent dialog -->
-		<Dialog
-			v-focustrap
+		<ConfirmationDialog
+			v-if="vectorStoreToDelete !== null"
 			:visible="vectorStoreToDelete !== null"
-			:closable="false"
-			modal
-			header="Delete Data Source"
+			header="Delete Vector Store"
+			confirm-text="Yes"
+			cancel-text="Cancel"
+			confirm-button-severity="danger"
+			@confirm="handleDeleteVectorStore"
+			@cancel="vectorStoreToDelete = null"
+			@update:visible="vectorStoreToDelete = null"
 		>
-			<p>Do you want to delete the vector store "{{ vectorStoreToDelete!.name }}" ?</p>
-			<template #footer>
-				<Button label="Cancel" text @click="vectorStoreToDelete = null" />
-				<Button label="Delete" severity="danger" autofocus @click="handleDeleteVectorStore" />
-			</template>
-		</Dialog>
+			Do you want to delete the vector store "{{ vectorStoreToDelete!.name }}"?
+		</ConfirmationDialog>
 	</main>
 </template>
 
