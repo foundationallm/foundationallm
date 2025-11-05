@@ -86,7 +86,6 @@ namespace FoundationaLLM.Common.Constants.ResourceProviders
         /// Contains all the resource provider names.
         /// </summary>
         public readonly static ImmutableList<string> All = [
-            FoundationaLLM_Vectorization,
             FoundationaLLM_Agent,
             FoundationaLLM_Configuration,
             FoundationaLLM_Prompt,

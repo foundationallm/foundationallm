@@ -88,7 +88,7 @@ function New-ManagementAPIArtifacts {
     $global:CoreAPIInstanceRelativeUri = "/instances/$($global:InstanceId)"
 
     $eventGridHostName = (az eventgrid namespace show -g $resourceGroupNames.Core -n $resourceNames.EventGrid --query "topicsConfiguration.hostname" -o tsv)
-    $packagePath = "$PSScriptRoot\..\"
+    $packagePath = "$PSScriptRoot\..\packages\management-api"
 
     Deploy-FoundationaLLMPackage `
         -PackageRoot $packagePath `

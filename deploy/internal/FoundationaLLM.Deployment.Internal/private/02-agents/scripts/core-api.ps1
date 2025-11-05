@@ -90,7 +90,7 @@ function New-CoreAPIArtifacts {
     $global:CoreAPIInstanceRelativeUri = "/instances/$($global:InstanceId)"
 
     $coreAPIManagedIdentityObjectId = (az identity show -n $resourceNames.CoreAPIManagedIdentity -g $resourceGroupNames.Core --query principalId -o tsv)
-    $packagePath = "$PSScriptRoot\..\"
+    $packagePath = "$PSScriptRoot\..\packages\core-api"
 
     Deploy-FoundationaLLMPackage `
         -PackageRoot $packagePath `
