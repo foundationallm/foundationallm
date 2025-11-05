@@ -1215,7 +1215,7 @@ namespace FoundationaLLM.Common.Constants.Configuration
         
         /// <summary>
         /// The app configuration key for the FoundationaLLM:APIEndpoints:GatewayAPI:Configuration:AzureOpenAIAccounts setting.
-        /// <para>Value description:<br/>The comma-separated list of Azure OpenAI account names used by the Gateway API.</para>
+        /// <para>Value description:<br/>The semicolon-separated list of Azure OpenAI account names used by the Gateway API.</para>
         /// </summary>
         public const string FoundationaLLM_APIEndpoints_GatewayAPI_Configuration_AzureOpenAIAccounts =
             "FoundationaLLM:APIEndpoints:GatewayAPI:Configuration:AzureOpenAIAccounts";
@@ -1749,6 +1749,13 @@ namespace FoundationaLLM.Common.Constants.Configuration
             "FoundationaLLM:Events:Profiles:ContextAPI";
         
         /// <summary>
+        /// The app configuration key for the FoundationaLLM:Events:Profiles:SemanticKernelAPI setting.
+        /// <para>Value description:<br/>The settings used by the Semantic Kernel API to process Azure Event Grid events.</para>
+        /// </summary>
+        public const string FoundationaLLM_Events_Profiles_SemanticKernelAPI =
+            "FoundationaLLM:Events:Profiles:SemanticKernelAPI";
+        
+        /// <summary>
         /// The app configuration key for the FoundationaLLM:Events:Profiles:DataPipelineAPI setting.
         /// <para>Value description:<br/>The settings used by the Data Pipeline API to process Azure Event Grid events.</para>
         /// </summary>
@@ -1792,6 +1799,10 @@ namespace FoundationaLLM.Common.Constants.Configuration
         #endregion
 
         #region FoundationaLLM:Events:Profiles:ContextAPI
+
+        #endregion
+
+        #region FoundationaLLM:Events:Profiles:SemanticKernelAPI
 
         #endregion
 

@@ -2329,6 +2329,14 @@
 				"first_version": "0.9.7"
 			},
 			{
+				"name": "SemanticKernelAPI",
+				"description": "The settings used by the Semantic Kernel API to process Azure Event Grid events.",
+				"secret": "",
+				"value": "${env:FOUNDATIONALLM_SEMANTICKERNEL_API_EVENT_GRID_PROFILE}",
+				"content_type": "application/json",
+				"first_version": "0.9.7"
+			},
+			{
 				"name": "DataPipelineAPI",
 				"description": "The settings used by the Data Pipeline API to process Azure Event Grid events.",
 				"secret": "",
@@ -2399,6 +2407,14 @@
 		"dependency_injection_key": null,
 		"configuration_section": {
 			"description": "Configuration section used to identify the settings for the events infrastructure used by the Context API."
+		},
+		"configuration_keys": []
+	},
+	{
+		"namespace": "Events:Profiles:SemanticKernelAPI",
+		"dependency_injection_key": null,
+		"configuration_section": {
+			"description": "Configuration section used to identify the settings for the events infrastructure used by the Semantic Kernel API."
 		},
 		"configuration_keys": []
 	},
