@@ -20,6 +20,12 @@ namespace FoundationaLLM.AuthorizationEngine.Models
         [JsonPropertyName("policy_assignments")]
         public required List<PolicyAssignment> PolicyAssignments { get; set; } = [];
 
+        [JsonIgnore]
+        public List<PolicyAssignment> InvalidPolicyAssignments { get; set; } = [];
+
+        [JsonIgnore]
+        public Dictionary<string, string> ValidationErrors { get; set; } = [];
+
         /// <summary>
         /// Loads calculated properties for all policy assignments.
         /// </summary>
@@ -28,7 +34,19 @@ namespace FoundationaLLM.AuthorizationEngine.Models
             var allowedInstanceIds = new List<string>() { InstanceId };
 
             foreach (var policyAssignment in PolicyAssignments)
-                policyAssignment.Enrich(allowedInstanceIds);
+                try
+                {
+                    policyAssignment.Enrich(allowedInstanceIds);
+                }
+                catch (Exception ex)
+                {
+                    // If the scope cannot be parsed, we consider the policy assignment invalid
+                    InvalidPolicyAssignments.Add(policyAssignment);
+                    ValidationErrors.Add(policyAssignment.Name, ex.Message);
+                }
+
+            foreach (var invalidPolicyAssignment in InvalidPolicyAssignments)
+                PolicyAssignments.Remove(invalidPolicyAssignment);
         }
     }
 }

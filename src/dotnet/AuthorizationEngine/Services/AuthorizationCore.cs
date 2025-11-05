@@ -86,8 +86,11 @@ namespace FoundationaLLM.AuthorizationEngine.Services
             {
                 foreach (var instanceId in _settings.InstanceIds)
                 {
+                    var refTime = DateTimeOffset.UtcNow;
                     var roleAssignmentStoreFile = $"/{instanceId.ToLower()}.json";
+                    var invalidRoleAssignmentStoreFile = $"/{instanceId.ToLower()}-invalid-{refTime:yyyy-MM-dd-HHmmss}.json";
                     var policyAssignmentStoreFile = $"/{instanceId.ToLower()}-policy.json";
+                    var invalidPolicyAssignmentStoreFile = $"/{instanceId.ToLower()}-invalid-policy-{refTime:yyyy-MM-dd-HHmmss}.json";
                     var secretKeysStoreFile = $"/{instanceId.ToLower()}-secret-keys.json";
                     RoleAssignmentStore? roleAssignmentStore;
                     PolicyAssignmentStore? policyAssignmentStore;
@@ -210,12 +213,64 @@ namespace FoundationaLLM.AuthorizationEngine.Services
                     if (roleAssignmentStore != null)
                     {
                         roleAssignmentStore.EnrichRoleAssignments();
+                        if (roleAssignmentStore.InvalidRoleAssignments.Count > 0)
+                        {
+                            _logger.LogWarning("The role assignment store for instance {InstanceId} contains {InvalidCount} invalid role assignments.",
+                                instanceId,
+                                roleAssignmentStore.InvalidRoleAssignments.Count);
+
+                            await _storageService.WriteFileAsync(
+                                ROLE_ASSIGNMENTS_CONTAINER_NAME,
+                                roleAssignmentStoreFile,
+                                JsonSerializer.Serialize(roleAssignmentStore),
+                                default,
+                                default);
+                            await _storageService.WriteFileAsync(
+                                ROLE_ASSIGNMENTS_CONTAINER_NAME,
+                                invalidRoleAssignmentStoreFile,
+                                JsonSerializer.Serialize(new
+                                {
+                                    invalid_role_assignments = roleAssignmentStore.InvalidRoleAssignments,
+                                    validation_errors = roleAssignmentStore.ValidationErrors
+                                }),
+                                default,
+                                default);
+                            _logger.LogWarning("The invalid role assignments for instance {InstanceId} have been exported to {InvalidRoleAssignmentStoreFile}.",
+                                instanceId,
+                                invalidRoleAssignmentStoreFile);
+                        }
                         _roleAssignmentCaches.AddOrUpdate(instanceId, new RoleAssignmentCache(roleAssignmentStore), (k, v) => v);
                     }
 
                     if (policyAssignmentStore != null)
                     {
                         policyAssignmentStore.EnrichPolicyAssignments();
+                        if (policyAssignmentStore.InvalidPolicyAssignments.Count > 0)
+                        {
+                            _logger.LogWarning("The policy assignment store for instance {InstanceId} contains {InvalidCount} invalid policy assignments.",
+                                instanceId,
+                                policyAssignmentStore.InvalidPolicyAssignments.Count);
+
+                            await _storageService.WriteFileAsync(
+                                POLICY_ASSIGNMENTS_CONTAINER_NAME,
+                                policyAssignmentStoreFile,
+                                JsonSerializer.Serialize(policyAssignmentStore),
+                                default,
+                                default);
+                            await _storageService.WriteFileAsync(
+                                POLICY_ASSIGNMENTS_CONTAINER_NAME,
+                                invalidPolicyAssignmentStoreFile,
+                                JsonSerializer.Serialize(new
+                                {
+                                    invalid_policy_assignments = policyAssignmentStore.InvalidPolicyAssignments,
+                                    validation_errors = policyAssignmentStore.ValidationErrors
+                                }),
+                                default,
+                                default);
+                            _logger.LogWarning("The invalid policy assignments for instance {InstanceId} have been exported to {InvalidPolicyAssignmentStoreFile}.",
+                                instanceId,
+                                invalidPolicyAssignmentStoreFile);
+                        }
                         _policyAssignmentCaches.AddOrUpdate(instanceId, new PolicyAssignmentCache(policyAssignmentStore), (k, v) => v);
                     }
 
