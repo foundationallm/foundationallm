@@ -1,0 +1,9 @@
+[
+    {
+        "principal_id": "{{ORCHESTRATION_API_MI_OBJECT_ID}}",
+        "principal_type": "ServicePrincipal",
+        "role_assignments": [
+            ["Reader"]
+        ]
+    }
+]
