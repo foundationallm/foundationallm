@@ -29,27 +29,7 @@ builder.Configuration.AddAzureAppConfiguration((Action<AzureAppConfigurationOpti
     options.Connect(builder.Configuration[EnvironmentVariables.FoundationaLLM_AppConfig_ConnectionString]);
     options.ConfigureKeyVault(options => { options.SetCredential(ServiceContext.AzureCredential); });
 
-    options.Select(AppConfigurationKeyFilters.FoundationaLLM_Instance);
-    options.Select(AppConfigurationKeyFilters.FoundationaLLM_Configuration);
-    options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProvidersCache);
-    options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints);
-
-    options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_ContextAPI_Essentials);
-    options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_ContextAPI_Configuration);
-
-    options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_AuthorizationAPI_Essentials);
-
-    options.Select(AppConfigurationKeyFilters.FoundationaLLM_Code_CodeExecution_AzureContainerAppsDynamicSessions);
-
-    options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_Agent_Storage);
-    options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_Prompt_Storage);
-    options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_Configuration_Storage);
-    options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_Vector_Storage);
-    options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_Context_Storage);
-
-    options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_AzureEventGrid_Essentials);
-    options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_AzureEventGrid_Configuration);
-    options.Select(AppConfigurationKeys.FoundationaLLM_Events_Profiles_ContextAPI);
+    ConfigurationOptions.SelectForContextAPI(options);
 }));
 
 if (builder.Environment.IsDevelopment())

@@ -99,6 +99,37 @@
 		]
 	},
 	{
+		"name": "StateAPI",
+		"configuration_options": [
+			"Instance:*",
+			"APIEndpoints:StateAPI:Configuration:CosmosDB:*",
+			"APIEndpoints:StateAPI:Essentials:*"
+		]
+	},
+	{
+		"name": "GatewayAPI",
+		"configuration_options": [
+			"Instance:*",
+			"Configuration:*",
+			"ResourceProvidersCache:*",
+
+			"APIEndpoints:CoreAPI:Configuration:CosmosDB:*",
+
+			"APIEndpoints:AuthorizationAPI:Essentials:*",
+			"APIEndpoints:GatewayAPI:Configuration:*",
+			"APIEndpoints:GatewayAPI:Essentials:*",
+
+			"ResourceProviders:Agent:Storage:*",
+			"ResourceProviders:Prompt:Storage:*",
+			"ResourceProviders:Attachment:Storage:*",
+			"ResourceProviders:Configuration:Storage:*",
+
+			"APIEndpoints:AzureEventGrid:Essentials:*",
+			"APIEndpoints:AzureEventGrid:Configuration:*",
+			"Events:Profiles:GatewayAPI"
+		]
+	},
+	{
 		"name": "OrchestrationAPI",
 		"configuration_options": [
 			"Instance:*",
@@ -124,15 +155,29 @@
 		]
 	},
 	{
+		"name": "ContextAPI",
+		"configuration_options": [
+			"Instance:*",
+			"Configuration:*",
+			"ResourceProvidersCache:*",
+
+			"APIEndpoints:*",
+
+			"Code:CodeExecution:AzureContainerAppsDynamicSessions:*",
+
+			"ResourceProviders:Agent:Storage:*",
+			"ResourceProviders:Configuration:Storage:*",
+			"ResourceProviders:Context:Storage:*",
+			"ResourceProviders:Prompt:Storage:*",
+			"ResourceProviders:Vector:Storage:*",
+
+			"APIEndpoints:AzureEventGrid:Essentials:*",
+			"APIEndpoints:AzureEventGrid:Configuration:*",
+			"Events:Profiles:ContextAPI"
+		]
+	},
+	{
 		"name": "LangChainAPI",
-		"configuration_options": []
-	},
-	{
-		"name": "StateAPI",
-		"configuration_options": []
-	},
-	{
-		"name": "GatewayAPI",
 		"configuration_options": []
 	}
 ]

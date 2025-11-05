@@ -1,0 +1,26 @@
+[
+    {
+        "model_format": "OpenAI",
+        "model_name": "gpt-5-chat",
+        "model_version": "2025-10-03",
+        "deployment_type": "GlobalStandard",
+        "deployment_name": "completions-gpt-5-chat",
+        "capacity_units": 50
+    },
+    {
+        "model_format": "OpenAI",
+        "model_name": "gpt-5-mini",
+        "model_version": "2025-08-07",
+        "deployment_type": "GlobalStandard",
+        "deployment_name": "completions-gpt-5-mini",
+        "capacity_units": 200
+    },
+    {
+        "model_format": "OpenAI",
+        "model_name": "text-embedding-3-large",
+        "model_version": "1",
+        "deployment_type": "GlobalStandard",
+        "deployment_name": "embeddings-3-large",
+        "capacity_units": 1000
+    }
+]

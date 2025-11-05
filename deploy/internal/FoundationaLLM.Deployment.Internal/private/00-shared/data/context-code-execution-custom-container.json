@@ -1,0 +1,8 @@
+{
+	"Endpoints": {
+		"Python": [
+			"{{PYTHON_CUSTOM_CONTAINER_ENDPOINT}}"
+		],
+		"CSharp": []
+	}
+}

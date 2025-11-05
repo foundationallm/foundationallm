@@ -40,7 +40,7 @@ function Initialize-AppConfigurationKey {
             -SecretValue $KeyVaultSecretValue
     }
 
-    if ((az appconfig kv list -n $ResourceNames.AppConfig --query "[?key=='$Key']" -o tsv).Count -eq 0) {
+    if ((az appconfig kv list --all -n $ResourceNames.AppConfig --query "[?key=='$Key']" -o tsv).Count -eq 0) {
         Write-Host "Setting App Configuration key $Key..."
 
         if ($KeyVaultSecretName) {
@@ -182,7 +182,8 @@ function Initialize-Configuration {
         $appConfigurationValue = $appConfigurationItem.value
         $appConfigurationValue = Resolve-ConfigurationVariables `
             -Value $appConfigurationValue `
-            -ConfigurationVariables $configurationVariables
+            -ConfigurationVariables $configurationVariables `
+            -StopOnError $StopOnError
 
         $appConfigurationSecretValue = $appConfigurationItem.key_vault_secret_value
         $appConfigurationSecretValue = Resolve-ConfigurationVariables `

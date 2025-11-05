@@ -92,7 +92,7 @@
         },
         {
             "key": "FoundationaLLM:Code:CodeExecution:AzureContainerAppsDynamicSessions:CustomContainer",
-            "value": "{\"Endpoints\": {\"Python\":[], \"CSharp\":[]}",
+            "value": "${env:CONTEXTAPI_CODEEXECUTION_CUSTOMCONTAINER}",
             "key_vault_secret_name": null,
             "key_vault_secret_value": null,
             "label": null,
@@ -1208,7 +1208,7 @@
         },
         {
             "key": "FoundationaLLM:APIEndpoints:ContextAPI:Configuration:KnowledgeService:Embedding",
-            "value": "{\"EmbeddingAPIEndpointConfigurationObjectId\": null, \"ModelDeployments\": {}",
+            "value": "${env:CONTEXTAPI_KNOWLEDGESERVICE_EMBEDDING}",
             "key_vault_secret_name": null,
             "key_vault_secret_value": null,
             "label": null,
@@ -1262,7 +1262,7 @@
         },
         {
             "key": "FoundationaLLM:APIEndpoints:GatewayAPI:Configuration:TokenRateLimitMultiplier",
-            "value": "0.95",
+            "value": "0.70",
             "key_vault_secret_name": null,
             "key_vault_secret_value": null,
             "label": null,

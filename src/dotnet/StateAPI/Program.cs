@@ -8,7 +8,6 @@ using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Middleware;
 using FoundationaLLM.Common.Models.Configuration.CosmosDB;
 using FoundationaLLM.Common.Models.Configuration.Instance;
-using FoundationaLLM.Common.Models.Orchestration;
 using FoundationaLLM.Common.OpenAPI;
 using FoundationaLLM.Common.Services.Security;
 using FoundationaLLM.Common.Text;
@@ -39,9 +38,8 @@ builder.Configuration.AddAzureAppConfiguration(options =>
     {
         options.SetCredential(ServiceContext.AzureCredential);
     });
-    options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_StateAPI_Essentials);
-    options.Select(AppConfigurationKeyFilters.FoundationaLLM_Instance);
-    options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_StateAPI_Configuration_CosmosDB);
+
+    ConfigurationOptions.SelectForStateAPI(options);
 });
 if (builder.Environment.IsDevelopment())
     builder.Configuration.AddJsonFile("appsettings.development.json", true, true);

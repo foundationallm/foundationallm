@@ -113,6 +113,37 @@ namespace FoundationaLLM.Common.Constants.Configuration
             options.Select(AppConfigurationKeyFilters.FoundationaLLM_UserPortal_Authentication_Entra);
         }
         /// <summary>
+        /// Selects configuration options for StateAPI.
+        /// </summary>
+        public static void SelectForStateAPI(
+            AzureAppConfigurationOptions options)
+        {
+            options.Select(AppConfigurationKeyFilters.FoundationaLLM_Instance);
+            options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_StateAPI_Configuration_CosmosDB);
+            options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_StateAPI_Essentials);
+        }
+        /// <summary>
+        /// Selects configuration options for GatewayAPI.
+        /// </summary>
+        public static void SelectForGatewayAPI(
+            AzureAppConfigurationOptions options)
+        {
+            options.Select(AppConfigurationKeyFilters.FoundationaLLM_Instance);
+            options.Select(AppConfigurationKeyFilters.FoundationaLLM_Configuration);
+            options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProvidersCache);
+            options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_CoreAPI_Configuration_CosmosDB);
+            options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_AuthorizationAPI_Essentials);
+            options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_GatewayAPI_Configuration);
+            options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_GatewayAPI_Essentials);
+            options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_Agent_Storage);
+            options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_Prompt_Storage);
+            options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_Attachment_Storage);
+            options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_Configuration_Storage);
+            options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_AzureEventGrid_Essentials);
+            options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_AzureEventGrid_Configuration);
+            options.Select(AppConfigurationKeys.FoundationaLLM_Events_Profiles_GatewayAPI);
+        }
+        /// <summary>
         /// Selects configuration options for OrchestrationAPI.
         /// </summary>
         public static void SelectForOrchestrationAPI(
@@ -137,23 +168,29 @@ namespace FoundationaLLM.Common.Constants.Configuration
             options.Select(AppConfigurationKeys.FoundationaLLM_Events_Profiles_OrchestrationAPI);
         }
         /// <summary>
+        /// Selects configuration options for ContextAPI.
+        /// </summary>
+        public static void SelectForContextAPI(
+            AzureAppConfigurationOptions options)
+        {
+            options.Select(AppConfigurationKeyFilters.FoundationaLLM_Instance);
+            options.Select(AppConfigurationKeyFilters.FoundationaLLM_Configuration);
+            options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProvidersCache);
+            options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints);
+            options.Select(AppConfigurationKeyFilters.FoundationaLLM_Code_CodeExecution_AzureContainerAppsDynamicSessions);
+            options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_Agent_Storage);
+            options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_Configuration_Storage);
+            options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_Context_Storage);
+            options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_Prompt_Storage);
+            options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_Vector_Storage);
+            options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_AzureEventGrid_Essentials);
+            options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_AzureEventGrid_Configuration);
+            options.Select(AppConfigurationKeys.FoundationaLLM_Events_Profiles_ContextAPI);
+        }
+        /// <summary>
         /// Selects configuration options for LangChainAPI.
         /// </summary>
         public static void SelectForLangChainAPI(
-            AzureAppConfigurationOptions options)
-        {
-        }
-        /// <summary>
-        /// Selects configuration options for StateAPI.
-        /// </summary>
-        public static void SelectForStateAPI(
-            AzureAppConfigurationOptions options)
-        {
-        }
-        /// <summary>
-        /// Selects configuration options for GatewayAPI.
-        /// </summary>
-        public static void SelectForGatewayAPI(
             AzureAppConfigurationOptions options)
         {
         }

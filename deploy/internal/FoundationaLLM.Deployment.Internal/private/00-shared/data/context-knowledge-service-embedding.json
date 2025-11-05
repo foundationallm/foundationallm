@@ -1,0 +1,6 @@
+{
+	"EmbeddingAPIEndpointConfigurationObjectId": "/instances/{{FOUNDATIONALLM_INSTANCE_ID}}/providers/FoundationaLLM.Configuration/apiEndpointConfigurations/AzureOpenAI",
+	"ModelDeployments": {
+		"text-embedding-3-large": "embeddings-3-large"
+	}
+}

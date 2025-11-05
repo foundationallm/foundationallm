@@ -13,8 +13,7 @@
         ["App Configuration Data Reader", "Core"],
         ["Key Vault Secrets Officer", "Core"],
         ["Storage Blob Data Contributor", "Data"],
-        ["EventGrid Contributor", "Core"],
-        ["Cognitive Services OpenAI Contributor", "AIFoundry"]
+        ["EventGrid Contributor", "Core"]
     ],
     "ManagementPortalManagedIdentity": [
         ["App Configuration Data Reader", "Core"]
@@ -23,8 +22,7 @@
         ["App Configuration Data Reader", "Core"],
         ["Key Vault Secrets User", "Core"],
         ["Storage Blob Data Contributor", "Data"],
-        ["EventGrid Contributor", "Core"],
-        ["Cognitive Services OpenAI Contributor", "AIFoundry"]
+        ["EventGrid Contributor", "Core"]
     ],
     "CoreWorkerManagedIdentity": [
         ["App Configuration Data Reader", "Core"],
@@ -38,6 +36,17 @@
         ["Key Vault Secrets User", "Core"],
         ["Storage Blob Data Contributor", "Data"],
         ["EventGrid Contributor", "Core"],
-        ["Storage Queue Data Contributor", "Context"]
+        ["Storage Queue Data Contributor", "Context"],
+        ["Azure AI User", "AIFoundry"]
+    ],
+    "StateAPIManagedIdentity": [
+        ["App Configuration Data Reader", "Core"],
+        ["Key Vault Secrets User", "Core"]
+    ],
+    "GatewayAPIManagedIdentity": [
+        ["App Configuration Data Reader", "Core"],
+        ["Key Vault Secrets User", "Core"],
+        ["Storage Blob Data Contributor", "Data"],
+        ["Azure AI User", "AIFoundry"]
     ]
 }

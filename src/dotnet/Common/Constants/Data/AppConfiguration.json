@@ -124,7 +124,7 @@
 				"name": "CustomContainer",
 				"description": "The settings for the Azure Container Apps Dynamic Sessions custom container code execution service.",
 				"secret": "",
-				"value": "{\\\"Endpoints\\\": {\\\"Python\\\":[], \\\"CSharp\\\":[]}",
+				"value": "${env:CONTEXTAPI_CODEEXECUTION_CUSTOMCONTAINER}",
 				"content_type": "application/json",
 				"first_version": "0.9.7"
 			}
@@ -1597,7 +1597,7 @@
 				"name": "KnowledgeService:Embedding",
 				"description": "The settings used for embedding operations.",
 				"secret": "",
-				"value": "{\\\"EmbeddingAPIEndpointConfigurationObjectId\\\": null, \\\"ModelDeployments\\\": {}",
+				"value": "${env:CONTEXTAPI_KNOWLEDGESERVICE_EMBEDDING}",
 				"content_type": "application/json",
 				"first_version": "0.9.7"
 			}
@@ -1637,7 +1637,7 @@
 		"configuration_keys": [
 			{
 				"name": "AzureOpenAIAccounts",
-				"description": "The comma-separated list of Azure OpenAI account names used by the Gateway API.",
+				"description": "The semicolon-separated list of Azure OpenAI account names used by the Gateway API.",
 				"secret": "",
 				"value": "${env:AZURE_OPENAI_ID}",
 				"content_type": "",
@@ -1663,7 +1663,7 @@
 				"name": "TokenRateLimitMultiplier",
 				"description": "The multiplier applied to the token rate limit used to account for differences in tokenization between the Gateway API and the embedding model.",
 				"secret": "",
-				"value": "0.95",
+				"value": "0.70",
 				"content_type": "",
 				"first_version": "0.9.7"
 			}
