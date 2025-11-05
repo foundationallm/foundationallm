@@ -1,4 +1,5 @@
-﻿using FoundationaLLM.Common.Models.ResourceProviders.Authorization;
+﻿using FoundationaLLM.Common.Exceptions;
+using FoundationaLLM.Common.Models.ResourceProviders.Authorization;
 using System.Text.Json.Serialization;
 
 namespace FoundationaLLM.AuthorizationEngine.Models
@@ -20,6 +21,12 @@ namespace FoundationaLLM.AuthorizationEngine.Models
         [JsonPropertyName("role_assignments")]
         public required List<RoleAssignment> RoleAssignments { get; set; } = [];
 
+        [JsonIgnore]
+        public List<RoleAssignment> InvalidRoleAssignments { get; set; } = [];
+
+        [JsonIgnore]
+        public Dictionary<string, string> ValidationErrors { get; set; } = [];
+
         /// <summary>
         /// Loads calculated properties for all role assignments.
         /// </summary>
@@ -28,7 +35,19 @@ namespace FoundationaLLM.AuthorizationEngine.Models
             var allowedInstanceIds = new List<string>() { InstanceId };
 
             foreach (var roleAssignment in RoleAssignments)
-                roleAssignment.Enrich(allowedInstanceIds);
+                try
+                {
+                    roleAssignment.Enrich(allowedInstanceIds);
+                }
+                catch (Exception ex)
+                {
+                    // If the scope cannot be parsed, we consider the role assignment invalid
+                    InvalidRoleAssignments.Add(roleAssignment);
+                    ValidationErrors.Add(roleAssignment.Name, ex.Message);
+                }
+
+            foreach (var invalidRoleAssignment in InvalidRoleAssignments)
+                RoleAssignments.Remove(invalidRoleAssignment);
         }
     }
 }
