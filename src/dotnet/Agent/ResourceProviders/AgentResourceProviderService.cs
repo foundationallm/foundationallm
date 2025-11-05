@@ -344,36 +344,6 @@ namespace FoundationaLLM.Agent.ResourceProviders
             };
 
             agent.ObjectId = resourcePath.GetObjectId(_instanceSettings.Id, _name);
-          
-            if (agent is KnowledgeManagementAgent { Vectorization.DedicatedPipeline: true, InlineContext: false } kmAgent)
-            {
-                // If the agent is new, create the associated vectorization pipeline in an active state so the initial population is done.
-                bool isPipelineActive = existingAgentReference is null;
-                var result = await GetResourceProviderServiceByName(ResourceProviderNames.FoundationaLLM_Vectorization)
-                    .HandlePostAsync(
-                        $"/instances/{_instanceSettings.Id}/providers/{ResourceProviderNames.FoundationaLLM_Vectorization}/{VectorizationResourceTypeNames.VectorizationPipelines}/{kmAgent.Name}",
-                        JsonSerializer.Serialize<VectorizationPipeline>(new VectorizationPipeline
-                        {
-                            Name = kmAgent.Name,
-                            Active = isPipelineActive,
-                            Description = $"Vectorization data pipeline dedicated to the {kmAgent.Name} agent.",
-                            DataSourceObjectId = kmAgent.Vectorization.DataSourceObjectId!,
-                            TextPartitioningProfileObjectId = kmAgent.Vectorization.TextPartitioningProfileObjectId!,
-                            TextEmbeddingProfileObjectId = kmAgent.Vectorization.TextEmbeddingProfileObjectId!,
-                            IndexingProfileObjectId = kmAgent.Vectorization.IndexingProfileObjectIds![0],
-                            TriggerType = (VectorizationPipelineTriggerType)kmAgent.Vectorization.TriggerType!,
-                            TriggerCronSchedule = kmAgent.Vectorization.TriggerCronSchedule
-                        }),
-                        null,
-                        userIdentity);
-
-                if ((result is ResourceProviderUpsertResult resourceProviderResult)
-                    && !string.IsNullOrWhiteSpace(resourceProviderResult.ObjectId))
-                    kmAgent.Vectorization.VectorizationDataPipelineObjectId = resourceProviderResult.ObjectId;
-                else
-                    throw new ResourceProviderException("There was an error attempting to create the associated vectorization pipeline for the agent.",
-                        StatusCodes.Status500InternalServerError);
-            }
 
             if (agent.Workflow is AzureOpenAIAssistantsAgentWorkflow)
             {
