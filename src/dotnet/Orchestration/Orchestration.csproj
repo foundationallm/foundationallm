@@ -27,7 +27,6 @@
     <ProjectReference Include="..\Common\Common.csproj" />
     <ProjectReference Include="..\DataPipeline\DataPipeline.csproj" />
     <ProjectReference Include="..\Prompt\Prompt.csproj" />
-    <ProjectReference Include="..\Vectorization\Vectorization.csproj" />
     <ProjectReference Include="..\Vector\Vector.csproj" />
   </ItemGroup>
   

@@ -61,18 +61,6 @@ namespace FoundationaLLM.Common.Constants.Configuration
             "FoundationaLLM:ResourceProviders:Prompt";
         
         /// <summary>
-        /// Dependency injection key used by the FoundationaLLM.Vectorization resource provider.
-        /// </summary>
-        public const string FoundationaLLM_ResourceProviders_Vectorization =
-            "FoundationaLLM:ResourceProviders:Vectorization";
-        
-        /// <summary>
-        /// Dependency injection key used to inject storage settings for the FoundationaLLM.Vectorization resource provider.
-        /// </summary>
-        public const string FoundationaLLM_ResourceProviders_Vectorization_Storage =
-            "FoundationaLLM:ResourceProviders:Vectorization:Storage";
-        
-        /// <summary>
         /// Dependency injection key used by the FoundationaLLM.DataPipeline resource provider.
         /// </summary>
         public const string FoundationaLLM_ResourceProviders_DataPipeline =
@@ -131,29 +119,5 @@ namespace FoundationaLLM.Common.Constants.Configuration
         /// </summary>
         public const string FoundationaLLM_APIEndpoints_AzurePostgreSQLVectorStore_Configuration =
             "FoundationaLLM:APIEndpoints:AzurePostgreSQLVectorStore:Configuration";
-        
-        /// <summary>
-        /// Dependency injection key used to inject the IConfiguration section for vectorization steps.
-        /// </summary>
-        public const string FoundationaLLM_Vectorization_Steps =
-            "FoundationaLLM:Vectorization:Steps";
-        
-        /// <summary>
-        /// Dependency injection key used to inject the IConfiguration section for vectorization queues.
-        /// </summary>
-        public const string FoundationaLLM_Vectorization_Queues =
-            "FoundationaLLM:Vectorization:Queues";
-        
-        /// <summary>
-        /// Dependency injection key used to inject storage settings for the Vectorization state service.
-        /// </summary>
-        public const string FoundationaLLM_Vectorization_StateService_Storage =
-            "FoundationaLLM:Vectorization:StateService:Storage";
-        
-        /// <summary>
-        /// Dependency injection key used to inject the ITextEmbeddingService implementation that uses the FoundationaLLM Gateway for embedding.
-        /// </summary>
-        public const string FoundationaLLM_Vectorization_TextEmbedding_Gateway =
-            "FoundationaLLM:Vectorization:TextEmbedding:Gateway";
     }
 }

@@ -48,8 +48,8 @@ namespace FoundationaLLM.Core.Examples
             _instanceSettings = _vectorizationTestService.InstanceSettings;
             dataSourceObjectId = $"/instances/{_instanceSettings.Id}/providers/FoundationaLLM.DataSource/dataSources/{dataSourceName}";
             id = Guid.NewGuid().ToString();
-            _settings = GetService<IOptionsMonitor<BlobStorageServiceSettings>>()
-                    .Get(DependencyInjectionKeys.FoundationaLLM_ResourceProviders_Vectorization_Storage);
+            //_settings = GetService<IOptionsMonitor<BlobStorageServiceSettings>>()
+            //        .Get(DependencyInjectionKeys.FoundationaLLM_ResourceProviders_Vectorization_Storage);
             accountNameAppConfigKey = $"FoundationaLLM:DataSources:{dataSourceName}:AccountName";
             authenticationTypeAppConfigKey = $"FoundationaLLM:DataSources:{dataSourceName}:AuthenticationType";
         }

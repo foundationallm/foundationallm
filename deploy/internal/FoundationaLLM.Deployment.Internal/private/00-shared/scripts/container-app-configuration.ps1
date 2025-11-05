@@ -37,7 +37,7 @@ function Get-AuthorizationKeyVaultSecrets {
     return $secrets
 }
 
-function Get-ManagementSecrets {
+function Get-ContainerAppSecrets {
     param (
         [hashtable]$ResourceNames
     )
@@ -48,7 +48,7 @@ function Get-ManagementSecrets {
     return $secrets
 }
 
-function Get-ManagementEnvVars {
+function Get-ContainerAppEnvVars {
     param (
         [string]$ResourceGroupName,
         [hashtable]$ResourceNames,
@@ -62,6 +62,24 @@ function Get-ManagementEnvVars {
     $envVarsArgs += "APPLICATIONINSIGHTS_CONNECTION_STRING=$(az monitor app-insights component show --resource-group $ResourceGroupName --app $ResourceNames.AppInsights --query connectionString -o tsv)"
     $envVarsArgs += "PORT=80"
     $envVarsArgs += "FoundationaLLM_AppConfig_ConnectionString=secretref:appconfig-connection-string"
+
+    return $envVarsArgs
+}
+
+function Get-PortalEnvVars {
+    param (
+        [string]$ResourceGroupName,
+        [hashtable]$ResourceNames,
+        [string]$TenantId,
+        [string]$ContainerAppIdentity
+    )
+
+    $envVarsArgs = @()
+    $envVarsArgs += "AZURE_CLIENT_ID=$(az identity show --name $ContainerAppIdentity --resource-group $ResourceGroupName --query clientId -o tsv)"
+    $envVarsArgs += "AZURE_TENANT_ID=$TenantId"
+    $envVarsArgs += "APPLICATIONINSIGHTS_CONNECTION_STRING=$(az monitor app-insights component show --resource-group $ResourceGroupName --app $ResourceNames.AppInsights --query connectionString -o tsv)"
+    $envVarsArgs += "PORT=80"
+    $envVarsArgs += "NUXT_APP_CONFIG_ENDPOINT=secretref:appconfig-connection-string"
 
     return $envVarsArgs
 }

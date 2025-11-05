@@ -1,0 +1,13 @@
+{
+	"EventProcessingCycleSeconds": 5,
+	"Topics": [
+		{
+			"Name": "resource-providers",
+			"SubscriptionPrefix": "rp-{{SUBSCRIPTION_PREFIX}}"
+		},
+		{
+            "Name": "api-statistics",
+            "SubscriptionPrefix": "as-{{SUBSCRIPTION_PREFIX}}"
+        }
+	]
+}

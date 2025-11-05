@@ -1,12 +1,14 @@
 {
     "items": [
         {
-			"key": ".appconfig.featureflag/FoundationaLLM.Agent.PrivateStore",
-			"value": "{\"id\":\"FoundationaLLM.Agent.PrivateStore\",\"description\":\"\",\"enabled\":false,\"conditions\":{\"client_filters\":[]}}",
-			"label": null,
-			"content_type": "application/vnd.microsoft.appconfig.ff+json;charset=utf-8",
-			"tags": {}
-		},
+            "key": ".appconfig.featureflag/FoundationaLLM.Agent.PrivateStore",
+            "value": "true",
+            "key_vault_secret_name": null,
+            "key_vault_secret_value": null,
+            "label": null,
+            "content_type": "application/vnd.microsoft.appconfig.ff+json;charset=utf-8",
+            "tags": {}
+        },
         {
             "key": "FoundationaLLM:Instance:Id",
             "value": "${env:FOUNDATIONALLM_INSTANCE_ID}",
@@ -90,7 +92,7 @@
         },
         {
             "key": "FoundationaLLM:Code:CodeExecution:AzureContainerAppsDynamicSessions:CustomContainer",
-            "value": "{\"Endpoints\": {\"Python\":[], \"CSharp\":[]}",
+            "value": "${env:CONTEXTAPI_CODEEXECUTION_CUSTOMCONTAINER}",
             "key_vault_secret_name": null,
             "key_vault_secret_value": null,
             "label": null,
@@ -486,7 +488,7 @@
         },
         {
             "key": "FoundationaLLM:APIEndpoints:CoreAPI:Configuration:CompletionResponsePollingIntervalMilliseconds",
-            "value": "{ \"value\": 10, \"value_exceptions\": []}",
+            "value": "{ \"value\": 100, \"value_exceptions\": []}",
             "key_vault_secret_name": null,
             "key_vault_secret_value": null,
             "label": null,
@@ -1206,7 +1208,7 @@
         },
         {
             "key": "FoundationaLLM:APIEndpoints:ContextAPI:Configuration:KnowledgeService:Embedding",
-            "value": "{\"EmbeddingAPIEndpointConfigurationObjectId\": null, \"ModelDeployments\": {}",
+            "value": "${env:CONTEXTAPI_KNOWLEDGESERVICE_EMBEDDING}",
             "key_vault_secret_name": null,
             "key_vault_secret_value": null,
             "label": null,
@@ -1260,7 +1262,7 @@
         },
         {
             "key": "FoundationaLLM:APIEndpoints:GatewayAPI:Configuration:TokenRateLimitMultiplier",
-            "value": "0.95",
+            "value": "0.70",
             "key_vault_secret_name": null,
             "key_vault_secret_value": null,
             "label": null,

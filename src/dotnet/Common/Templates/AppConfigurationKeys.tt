@@ -11,7 +11,7 @@
     string inputFileName = this.Host.ResolvePath($"../Constants/Data/AppConfiguration.json");
     string inputContent = File.ReadAllText(inputFileName);
     var jsonObjects = JsonNode.Parse(inputContent)!;
-    Func<JsonNode, string> getName = n => n.GetValue<string>().Replace(":", "_");
+    Func<JsonNode, string> getName = n => n.GetValue<string>().Replace(":", "_").Replace(".appconfig.featureflag/","");
 #>
 // -------------------------------------------------------------------------------
 //
@@ -35,14 +35,21 @@ namespace FoundationaLLM.Common.Constants.Configuration
 <#
         foreach (var key in jsonObject["configuration_keys"].AsArray())
         {
+            var originalKeyName = key["name"].GetValue<string>();
+            var keyName = originalKeyName.StartsWith(".appconfig.featureflag/")
+                ? $"FeatureFlag_{originalKeyName.Replace(".appconfig.featureflag/","").Replace(".", "_")}"
+                : $"FoundationaLLM_{jsonObject["namespace"].GetValue<string>().Replace(":", "_")}_{originalKeyName.Replace(":", "_")}";
+            var keyValue = originalKeyName.StartsWith(".appconfig.featureflag/")
+                ? originalKeyName
+                : $"FoundationaLLM:{jsonObject["namespace"].GetValue<string>()}:{originalKeyName}";
 #>
         
         /// <summary>
-        /// The app configuration key for the FoundationaLLM:<#=jsonObject["namespace"]#>:<#=key["name"]#> setting.
+        /// The app configuration key for the <#=keyValue#> setting.
         /// <para>Value description:<br/><#=key["description"]#></para>
         /// </summary>
-        public const string FoundationaLLM_<#=getName(jsonObject["namespace"])#>_<#=getName(key["name"])#> =
-            "FoundationaLLM:<#=jsonObject["namespace"]#>:<#=key["name"]#>";
+        public const string <#=keyName#> =
+            "<#=keyValue#>";
 <#
         }
 #>

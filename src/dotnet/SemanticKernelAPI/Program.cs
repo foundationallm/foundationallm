@@ -50,7 +50,6 @@ namespace FoundationaLLM.SemanticKernel.API
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProvidersCache);
 
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints);
-                options.Select(AppConfigurationKeyFilters.FoundationaLLM_Events_Profiles_VectorizationAPI);
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_SemanticKernelAPI_Configuration);
 
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_AuthorizationAPI_Essentials);
@@ -81,10 +80,10 @@ namespace FoundationaLLM.SemanticKernel.API
             // Resource validation
             builder.AddResourceValidatorFactory();
 
-            // Add event services
-            builder.Services.AddAzureEventGridEvents(
-                builder.Configuration,
-                AppConfigurationKeySections.FoundationaLLM_Events_Profiles_VectorizationAPI);
+            //// Add event services
+            //builder.Services.AddAzureEventGridEvents(
+            //    builder.Configuration,
+            //    AppConfigurationKeySections.FoundationaLLM_Events_Profiles_VectorizationAPI);
 
             // Add Azure ARM services
             builder.AddAzureResourceManager();

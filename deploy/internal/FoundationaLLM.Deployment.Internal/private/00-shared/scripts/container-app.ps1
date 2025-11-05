@@ -36,3 +36,15 @@ function Initialize-ContainerApp {
         Write-Host "Container app $ContainerAppName already exists."
     }
 }
+
+function Restart-ContainerApp {
+    param (
+        [string]$ResourceGroupName,
+        [string]$ContainerAppName
+    )
+
+    Write-Host "Retrieving revision for container app: $ContainerAppName"
+    $revision = (az containerapp revision list -n $ContainerAppName -g $ResourceGroupName --query "[0].name" --output tsv)
+    Write-Host "Restarting container app: $ContainerAppName with revision: $revision"
+    az containerapp revision restart --revision $revision -g $ResourceGroupName | Out-Null
+}

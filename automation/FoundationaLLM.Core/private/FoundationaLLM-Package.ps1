@@ -242,6 +242,22 @@ function Deploy-FoundationaLLMPackage {
         }
     }
 
+    if (Test-Path -Path "$($PackageRoot)/artifacts/apiEndpointConfigurations.json") {
+
+        Write-Host "Updating API endpoint configurations..."
+
+        $apiEndpointConfigurations = Get-Content "$($PackageRoot)/artifacts/apiEndpointConfigurations.json" `
+            | Resolve-Placeholders -Parameters $Parameters `
+            | ConvertFrom-Json -AsHashTable
+
+        foreach ($apiEndpointConfiguration in $apiEndpointConfigurations) {
+
+            Write-Host "Updating API endpoint configuration: $($apiEndpointConfiguration.name)"
+            $apiEndpointConfigurationResult = Merge-APIEndpointConfiguration -Configuration $apiEndpointConfiguration
+            Write-Host "API endpoint configuration updated: $($apiEndpointConfigurationResult)" -ForegroundColor Green
+        }
+    }
+
     if (Test-Path -Path "$($PackageRoot)/artifacts/dataSources.json") {
 
         Write-Host "Updating data sources..."

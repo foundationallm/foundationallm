@@ -34,7 +34,9 @@
         .Select(ns =>
             ns["configuration_keys"].AsArray()
             .Select(k => new {
-                Key = $"FoundationaLLM:{(ns["namespace"])}:{(k["name"])}",
+                Key = k["name"].GetValue<string>().StartsWith(".appconfig.featureflag/")
+                    ? k["name"].GetValue<string>()
+                    : $"FoundationaLLM:{(ns["namespace"])}:{(k["name"])}",
                 Value = getValue(k),
                 KeyVaultSecretName = getSecret(k),
                 KeyVaultSecretValue = getSecretValue(k),
@@ -45,13 +47,6 @@
 #>
 {
     "items": [
-        {
-			"key": ".appconfig.featureflag/FoundationaLLM.Agent.PrivateStore",
-			"value": "{\"id\":\"FoundationaLLM.Agent.PrivateStore\",\"description\":\"\",\"enabled\":false,\"conditions\":{\"client_filters\":[]}}",
-			"label": null,
-			"content_type": "application/vnd.microsoft.appconfig.ff+json;charset=utf-8",
-			"tags": {}
-		},
 <#
     for (int i = 0; i < items.Count; i++)
     {

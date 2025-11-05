@@ -3,6 +3,8 @@ function Initialize-AuthorizationAPI {
         [string]$UniqueName,
         [string]$Location,
         [string]$AdminGroupObjectId,
+        [string]$UserGroupObjectId,
+        [string]$DeploymentUserObjectId,
         [string]$TenantId,
         [string]$SubscriptionId,
         [string]$InstanceId,
@@ -101,6 +103,7 @@ function Initialize-AuthorizationAPI {
         $placeholders = @{
             "FOUNDATIONALLM_INSTANCE_ID"                       = $InstanceId
             "ADMIN_GROUP_OBJECT_ID"                            = $AdminGroupObjectId
+            "DEPLOYMENT_USER_OBJECT_ID"                        = $DeploymentUserObjectId
             "MANAGEMENT_API_MI_OBJECT_ID"                      = (az identity show `
                                                                 --name $resourceNames.ManagementAPIManagedIdentity `
                                                                 --resource-group $coreResourceGroupName `
@@ -109,6 +112,8 @@ function Initialize-AuthorizationAPI {
             "GUID01"                                           = [guid]::NewGuid().ToString()
             "GUID02"                                           = [guid]::NewGuid().ToString()
             "GUID03"                                           = [guid]::NewGuid().ToString()
+            "GUID04"                                           = [guid]::NewGuid().ToString()
+            "GUID05"                                           = [guid]::NewGuid().ToString()
         }
         Get-Content "$PSScriptRoot/../data/foundationallm-role-assignments-template.json" -Raw `
             | ForEach-Object { 
@@ -124,6 +129,52 @@ function Initialize-AuthorizationAPI {
         Write-Host "Role assignment for FoundationaLLM Admin group and Management API managed identity created."
     } else {
         Write-Host "Role assignments for FoundationaLLM Admin group and Management API managed identity already exist."
+    }
+
+    Write-Host "Ensuring FoundationaLLM policy assignments for FoundationaLLM User group and All Agents Virtual Security Group exist..."
+    if (-not (az storage blob exists `
+        --account-name $authStorageAccountName `
+        --auth-mode login `
+        --container-name "policy-assignments" `
+        --name "$InstanceId.json" | ConvertFrom-Json).exists) {
+
+        Write-Host "Creating policy assignments for FoundationaLLM User group and All Agents Virtual Security Group..."
+        $placeholders = @{
+            "FOUNDATIONALLM_INSTANCE_ID"                       = $InstanceId
+            "ADMIN_GROUP_OBJECT_ID"                            = $AdminGroupObjectId
+            "USER_GROUP_OBJECT_ID"                             = $UserGroupObjectId
+            "DEPLOY_TIME"                                      = (Get-Date).ToString("o")
+            "GUID01"                                           = [guid]::NewGuid().ToString()
+            "GUID02"                                           = [guid]::NewGuid().ToString()
+            "GUID03"                                           = [guid]::NewGuid().ToString()
+            "GUID04"                                           = [guid]::NewGuid().ToString()
+            "GUID05"                                           = [guid]::NewGuid().ToString()
+            "GUID06"                                           = [guid]::NewGuid().ToString()
+            "GUID07"                                           = [guid]::NewGuid().ToString()
+            "GUID08"                                           = [guid]::NewGuid().ToString()
+            "GUID09"                                           = [guid]::NewGuid().ToString()
+            "GUID10"                                           = [guid]::NewGuid().ToString()
+            "GUID11"                                           = [guid]::NewGuid().ToString()
+            "GUID12"                                           = [guid]::NewGuid().ToString()
+            "GUID13"                                           = [guid]::NewGuid().ToString()
+            "GUID14"                                           = [guid]::NewGuid().ToString()
+            "GUID15"                                           = [guid]::NewGuid().ToString()
+            "GUID16"                                           = [guid]::NewGuid().ToString()
+        }
+        Get-Content "$PSScriptRoot/../data/foundationallm-policy-assignments-template.json" -Raw `
+            | ForEach-Object { 
+                Write-Output "$(Update-TemplateContent -TemplateContent $_ -Placeholders $placeholders)"
+            } `
+            | az storage blob upload `
+                --account-name $authStorageAccountName `
+                --auth-mode login `
+                --container-name "policy-assignments" `
+                --name "$InstanceId-policy.json" `
+                --data '@-'`
+            | Out-Null
+        Write-Host "Policy assignments for FoundationaLLM User group and All Agents Virtual Security Group created."
+    } else {
+        Write-Host "Policy assignments for FoundationaLLM User group and All Agents Virtual Security Group already exist."
     }
 
     Write-Host "Ensuring Azure role assignments for Authorization API managed identity exist..."

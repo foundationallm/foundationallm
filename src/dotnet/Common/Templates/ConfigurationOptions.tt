@@ -48,13 +48,21 @@ namespace FoundationaLLM.Common.Constants.Configuration
         {
             var configurationOption = configurationOptionObject.GetValue<string>();
             var configurationClass = "AppConfigurationKeys";
-            if (configurationOption.EndsWith(":*"))
+            if (configurationOption.StartsWith(".appconfig.featureflag/"))
+            {
+                configurationOption = $"FeatureFlag_{configurationOption.Replace(".appconfig.featureflag/","").Replace(".", "_")}";
+            }
+            else if (configurationOption.EndsWith(":*"))
             {
                 configurationClass = "AppConfigurationKeyFilters";
-                configurationOption = configurationOption.Replace(":*", "");
+                configurationOption = $"FoundationaLLM_{configurationOption.Replace(":*", "").Replace(":", "_")}";
+            }
+            else
+            {
+                configurationOption = $"FoundationaLLM_{configurationOption.Replace(":", "_")}";
             }
 #>
-            options.Select(<#=configurationClass#>.FoundationaLLM_<#=getName(configurationOption)#>);
+            options.Select(<#=configurationClass#>.<#=configurationOption#>);
 <#
         }
 #>

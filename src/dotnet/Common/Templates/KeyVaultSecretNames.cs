@@ -97,30 +97,6 @@ namespace FoundationaLLM.Common.Constants.Configuration
             "foundationallm-appinsights-connectionstring";
 
         /// <summary>
-        /// The name of the Azure Key Vault secret holding the API key for the Vectorization API.
-        /// </summary>
-        public const string FoundationaLLM_APIEndpoints_VectorizationAPI_Essentials_APIKey =
-            "foundationallm-apiendpoints-vectorizationapi-apikey";
-
-        /// <summary>
-        /// The name of the Azure Key Vault secret holding the connection string for the App Insights service used by the Vectorization API.
-        /// </summary>
-        public const string FoundationaLLM_APIEndpoints_VectorizationAPI_Essentials_AppInsightsConnectionString =
-            "foundationallm-appinsights-connectionstring";
-
-        /// <summary>
-        /// The name of the Azure Key Vault secret holding the API key for the Vectorization Worker service.
-        /// </summary>
-        public const string FoundationaLLM_APIEndpoints_VectorizationWorker_Essentials_APIKey =
-            "foundationallm-apiendpoints-vectorizationworker-apikey";
-
-        /// <summary>
-        /// The name of the Azure Key Vault secret holding the connection string for the App Insights service used by the Vectorization worker service.
-        /// </summary>
-        public const string FoundationaLLM_APIEndpoints_VectorizationWorker_Essentials_AppInsightsConnectionString =
-            "foundationallm-appinsights-connectionstring";
-
-        /// <summary>
         /// The name of the Azure Key Vault secret holding the API key for the Data Pipeline API.
         /// </summary>
         public const string FoundationaLLM_APIEndpoints_DataPipelineAPI_Essentials_APIKey =

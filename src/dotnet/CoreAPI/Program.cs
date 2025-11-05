@@ -47,39 +47,8 @@ namespace FoundationaLLM.Core.API
                 {
                     options.SetCredential(ServiceContext.AzureCredential);
                 });
-                options.Select(AppConfigurationKeyFilters.FoundationaLLM_Instance);
-                options.Select(AppConfigurationKeyFilters.FoundationaLLM_Configuration);
-                options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProvidersCache);
 
-                options.Select(AppConfigurationKeyFilters.FoundationaLLM_Branding);
-                options.Select(AppConfigurationKeyFilters.FoundationaLLM_UserPortal_Configuration);
-
-                options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_CoreAPI_Configuration_CosmosDB);
-                options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_CoreAPI_Configuration_Entra);
-                options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_CoreAPI_Essentials);
-                options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_CoreAPI_Configuration);
-
-                options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_OrchestrationAPI_Essentials);
-                options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_AuthorizationAPI_Essentials);
-                options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_GatewayAPI_Essentials);
-                options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_GatekeeperAPI_Essentials);
-                options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_ContextAPI_Essentials);
-                options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_DataPipelineAPI_Essentials);
-
-                options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_Agent_Storage);
-                options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_Prompt_Storage);
-                options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_Attachment_Storage);
-                options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_AIModel_Storage);
-                options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_AzureAI_Storage);
-                options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_Configuration_Storage);
-                //options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_Context_Storage);
-                options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_DataPipeline_Storage);
-
-                options.Select(AppConfigurationKeyFilters.FoundationaLLM_Quota_Storage);
-
-                options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_AzureEventGrid_Essentials);
-                options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_AzureEventGrid_Configuration);
-                options.Select(AppConfigurationKeys.FoundationaLLM_Events_Profiles_CoreAPI);
+                ConfigurationOptions.SelectForCoreAPI(options);
             }));
             if (builder.Environment.IsDevelopment())
                 builder.Configuration.AddJsonFile("appsettings.development.json", true, true);
