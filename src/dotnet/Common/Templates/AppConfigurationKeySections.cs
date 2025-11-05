@@ -445,6 +445,12 @@ namespace FoundationaLLM.Common.Constants.Configuration
             "FoundationaLLM:Events:Profiles:ContextAPI";
         
         /// <summary>
+        /// Configuration section used to identify the settings for the events infrastructure used by the Semantic Kernel API.
+        /// </summary>
+        public const string FoundationaLLM_Events_Profiles_SemanticKernelAPI =
+            "FoundationaLLM:Events:Profiles:SemanticKernelAPI";
+        
+        /// <summary>
         /// Configuration section used to identify the settings for the events infrastructure used by the Data Pipeline API.
         /// </summary>
         public const string FoundationaLLM_Events_Profiles_DataPipelineAPI =

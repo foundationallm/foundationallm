@@ -56,6 +56,8 @@ namespace FoundationaLLM.SemanticKernel.API
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_Configuration_Storage);
 
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_AIModel_Storage);
+
+                options.Select(AppConfigurationKeys.FoundationaLLM_Events_Profiles_SemanticKernelAPI);
             }));
             if (builder.Environment.IsDevelopment())
                 builder.Configuration.AddJsonFile("appsettings.development.json", true, true);
@@ -80,10 +82,10 @@ namespace FoundationaLLM.SemanticKernel.API
             // Resource validation
             builder.AddResourceValidatorFactory();
 
-            //// Add event services
-            //builder.Services.AddAzureEventGridEvents(
-            //    builder.Configuration,
-            //    AppConfigurationKeySections.FoundationaLLM_Events_Profiles_VectorizationAPI);
+            // Add event services
+            builder.Services.AddAzureEventGridEvents(
+                builder.Configuration,
+                AppConfigurationKeySections.FoundationaLLM_Events_Profiles_SemanticKernelAPI);
 
             // Add Azure ARM services
             builder.AddAzureResourceManager();

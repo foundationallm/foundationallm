@@ -1819,6 +1819,15 @@
             "tags": {}
         },
         {
+            "key": "FoundationaLLM:Events:Profiles:SemanticKernelAPI",
+            "value": "${env:FOUNDATIONALLM_SEMANTICKERNEL_API_EVENT_GRID_PROFILE}",
+            "key_vault_secret_name": null,
+            "key_vault_secret_value": null,
+            "label": null,
+            "content_type": "application/json",
+            "tags": {}
+        },
+        {
             "key": "FoundationaLLM:Events:Profiles:DataPipelineAPI",
             "value": "${env:FOUNDATIONALLM_DATAPIPELINE_API_EVENT_GRID_PROFILE}",
             "key_vault_secret_name": null,
