@@ -83,7 +83,7 @@
         },
         {
             "key": "FoundationaLLM:Code:CodeExecution:AzureContainerAppsDynamicSessions:CodeInterpreter",
-            "value": "{\"Endpoints\": {\"Python\":[], \"CSharp\":[]}",
+            "value": "{\"Endpoints\": {\"Python\":[], \"CSharp\":[]}}",
             "key_vault_secret_name": null,
             "key_vault_secret_value": null,
             "label": null,

@@ -31,14 +31,6 @@
     "UserPortalManagedIdentity": [
         ["App Configuration Data Reader", "Core"]
     ],
-    "OrchestrationAPIManagedIdentity": [
-        ["App Configuration Data Reader", "Core"],
-        ["Key Vault Secrets User", "Core"],
-        ["Storage Blob Data Contributor", "Data"],
-        ["EventGrid Contributor", "Core"],
-        ["Storage Queue Data Contributor", "Context"],
-        ["Azure AI User", "AIFoundry"]
-    ],
     "StateAPIManagedIdentity": [
         ["App Configuration Data Reader", "Core"],
         ["Key Vault Secrets User", "Core"]
@@ -48,5 +40,30 @@
         ["Key Vault Secrets User", "Core"],
         ["Storage Blob Data Contributor", "Data"],
         ["Azure AI User", "AIFoundry"]
+    ],
+    "OrchestrationAPIManagedIdentity": [
+        ["App Configuration Data Reader", "Core"],
+        ["Key Vault Secrets User", "Core"],
+        ["Storage Blob Data Contributor", "Data"],
+        ["EventGrid Contributor", "Core"],
+        ["Azure AI User", "AIFoundry"]
+    ],
+    "ContextAPIManagedIdentity": [
+        ["App Configuration Data Reader", "Core"],
+        ["Key Vault Secrets User", "Core"],
+        ["Storage Blob Data Contributor", "Data"],
+        ["Storage Blob Data Contributor", "Context"],
+        ["EventGrid Contributor", "Core"],
+        ["Search Index Data Reader", "Context"],
+        ["Azure ContainerApps Session Executor", "Context"]
+    ],
+    "DataPipelineAPIManagedIdentity": [
+        "Storage Queue Data Message Sender", "Context"
+    ],
+    "DataPipelineFrontendWorkerManagedIdentity": [
+        "Storage Queue Data Contributor", "Context"
+    ],
+    "DataPipelineBackendWorkerManagedIdentity": [
+        "Storage Queue Data Contributor", "Context"
     ]
 }

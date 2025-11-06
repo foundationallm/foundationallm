@@ -116,7 +116,7 @@
 				"name": "CodeInterpreter",
 				"description": "The settings for the Azure Container Apps Dynamic Sessions code interpreter code execution service.",
 				"secret": "",
-				"value": "{\\\"Endpoints\\\": {\\\"Python\\\":[], \\\"CSharp\\\":[]}",
+				"value": "{\\\"Endpoints\\\": {\\\"Python\\\":[], \\\"CSharp\\\":[]}}",
 				"content_type": "application/json",
 				"first_version": "0.9.7"
 			},

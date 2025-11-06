@@ -51,7 +51,8 @@ function Initialize-CosmosDBContainer {
 function Initialize-CommonStorage {
     param (
         [string]$UniqueName,
-        [string]$Location
+        [string]$Location,
+        [string]$InstanceId
     )
 
     $resourceGroupNames = Get-ResourceGroupNames -UniqueName $UniqueName
@@ -155,6 +156,49 @@ function Initialize-CommonStorage {
             Write-Host "Storage container '$containerName' already exists."
         }
     }
+
+    $storageContainers = @(
+        $InstanceId
+    )
+
+    foreach ($containerName in $storageContainers) {
+        Write-Host "Ensuring storage container $containerName exists in storage account $contextStorageAccountName..."
+        if ((az storage container list `
+            --account-name $contextStorageAccountName `
+            --auth-mode login `
+            --query "[?name=='$($containerName)']" -o tsv).Count -eq 0) {
+            
+            az storage container create `
+                --account-name $contextStorageAccountName `
+                --auth-mode login `
+                --name $containerName | Out-Null
+            Write-Host "Storage container '$containerName' created."
+        } else {
+            Write-Host "Storage container '$containerName' already exists."
+        }
+    }
+
+    $queues = @(
+        "frontend-worker",
+        "backend-worker"
+    )   
+
+   foreach ($queueName in $queues) {
+       Write-Host "Ensuring storage queue $queueName exists in storage account $contextStorageAccountName..."
+       if ((az storage queue list `
+           --account-name $contextStorageAccountName `
+           --auth-mode login `
+           --query "[?name=='$($queueName)']" -o tsv).Count -eq 0) {
+
+           az storage queue create `
+               --account-name $contextStorageAccountName `
+               --auth-mode login `
+               --name $queueName | Out-Null
+           Write-Host "Storage queue '$queueName' created."
+       } else {
+           Write-Host "Storage queue '$queueName' already exists."
+       }
+   }
 
     Write-Host "Ensuring Cosmos DB database $($resourceNames.CosmosDBDatabase) exists in account $cosmosDBAccountName..."
     if ((az cosmosdb sql database list `
