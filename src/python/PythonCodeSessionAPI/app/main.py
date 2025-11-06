@@ -106,7 +106,7 @@ async def execute_code(request_body: dict):
                             results[key] = {
                                 "type": "dataframe",
                                 "details": "The dataframe has been saved to a CSV file. A preview of the first ten rows of data has been generated. To view all the data, examine the CSV file that was returned.",
-                                "preview": value.head(10).to_dict(orient="records")
+                                "preview": value.head(10).to_json(orient="records", date_format="iso")
                             }
                         except Exception:
                             # If writing fails, fall back to dropping the value (non-serializable)
@@ -116,7 +116,7 @@ async def execute_code(request_body: dict):
                         results[key] = {
                             "type": "series",
                             "details": "The series data is displayed below.",
-                            "data": value.to_dict()
+                            "data": value.to_json(date_format="iso")
                         }
             except Exception:
                 # If pandas is not available or any import/runtime error occurs, leave results as-is
