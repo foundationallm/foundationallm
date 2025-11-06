@@ -158,7 +158,7 @@ class TestSuiteManager:
                    quick_mode: bool = False, test_index: Optional[int] = None,
                    max_workers: int = 5, output_dir: str = 'results', 
                    timestamp: str = '', verbose: bool = False, 
-                   repeat_test: int = 1) -> Optional[Dict[str, Any]]:
+                   repeat_test: int = 1, no_conversation: bool = False) -> Optional[Dict[str, Any]]:
         """Run a test suite for a specific agent"""
         
         if suite_name == "all":
@@ -168,7 +168,7 @@ class TestSuiteManager:
                 if name != "all":  # Avoid infinite recursion
                     result = self.run_suite(
                         name, agent_name, quick_mode, test_index,
-                        max_workers, output_dir, timestamp, verbose, repeat_test
+                        max_workers, output_dir, timestamp, verbose, repeat_test, no_conversation
                     )
                     if result:
                         all_results[name] = result
@@ -225,10 +225,10 @@ class TestSuiteManager:
                 
                 # Create new dataframe with repeated tests
                 expanded_df = pd.DataFrame(repeated_rows)
-                results_df = execute_tests_from_dataframe(expanded_df, agent_name, max_workers)
+                results_df = execute_tests_from_dataframe(expanded_df, agent_name, max_workers, no_conversation=no_conversation)
             else:
                 print(f"Executing {len(df)} tests...")
-                results_df = execute_tests(csv_path, agent_name, max_workers)
+                results_df = execute_tests(csv_path, agent_name, max_workers, no_conversation=no_conversation)
             
             if results_df is None:
                 print("Test execution failed")

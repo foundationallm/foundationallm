@@ -58,6 +58,9 @@ Examples:
   # Repeat each test 3 times for reliability testing
   python run_tests.py --suite code-interpreter --agent MAA-02 --repeat-test 3
   
+  # Run tests without session creation (no-conversation mode)
+  python run_tests.py --suite code-interpreter --agent MAA-02 --no-conversation
+  
   # Generate HTML report from existing results
   python run_tests.py --report-from-results results/20251021_201101-MAA-02-code-interpreter-results.json
   
@@ -117,6 +120,10 @@ Examples:
                        help='Generate HTML report from existing JSON results file')
     parser.add_argument('--report-from-dir',
                        help='Generate HTML report from all JSON files in directory')
+    
+    # Conversation options
+    parser.add_argument('--no-conversation', action='store_true',
+                       help='Make completion requests without creating or including a session ID')
     
     args = parser.parse_args()
     
@@ -287,7 +294,8 @@ Examples:
                 output_dir=args.output_dir,
                 timestamp=timestamp,
                 verbose=args.verbose,
-                repeat_test=args.repeat_test
+                repeat_test=args.repeat_test,
+                no_conversation=args.no_conversation
             )
             
             if results is None:

@@ -222,6 +222,7 @@ python run_tests.py --report-from-dir results/
 | `--test-index` | Run specific test by index | `--test-index 3` (0-based index) |
 | `--repeat-test` | Number of times to repeat each test | `--repeat-test 3` (default: 1) |
 | `--no-report` | Skip HTML report generation | `--no-report` |
+| `--no-conversation` | Make completion requests without creating or including a session ID | `--no-conversation` |
 
 #### Validation Options
 | Parameter | Purpose | Values/Examples |
@@ -256,6 +257,9 @@ python run_tests.py --suite document-analysis --agent MAA-02 --quick --test-inde
 
 # Repeat tests for reliability analysis
 python run_tests.py --suite code-interpreter --agent MAA-02 --repeat-test 3 --report
+
+# Run tests without session creation (no-conversation mode)
+python run_tests.py --suite code-interpreter --agent MAA-02 --no-conversation
 
 # Generate report from existing results
 python run_tests.py --report-from-results results/20251021_220653-MAA-02-dataframe-tests-results.json

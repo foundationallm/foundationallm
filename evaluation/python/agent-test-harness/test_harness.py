@@ -163,8 +163,11 @@ def create_session():
         # Print the response
         print(f"Session Creation Status Code: {response.status_code}")
         
-        # Return the sessionId
-        return response_json.get('sessionId')
+        # Return the sessionId (handle both camelCase and snake_case)
+        session_id = response_json.get('sessionId') or response_json.get('session_id')
+        if session_id:
+            print(f"Session ID created: {session_id[:20]}..." if len(session_id) > 20 else f"Session ID created: {session_id}")
+        return session_id
         
     except requests.exceptions.RequestException as e:
         print(f"An error occurred: {str(e)}")
@@ -173,7 +176,7 @@ def create_session():
             print(f"Response Text: {e.response.text}")
         return None
 
-def send_completion_request(session_id, agent_name, user_prompt, attachments=[]):
+def send_completion_request(agent_name, user_prompt, attachments=[], session_id=None):
     fllm_endpoint = os.getenv("FLLM_ENDPOINT")
     if not fllm_endpoint:
         print("Error: FLLM_ENDPOINT environment variable is not set")
@@ -198,9 +201,12 @@ def send_completion_request(session_id, agent_name, user_prompt, attachments=[])
     payload = {
         "user_prompt": user_prompt,
         "agent_name": agent_name,
-        "session_id": session_id,
         "attachments": attachments
     }
+    
+    # Only include session_id if provided
+    if session_id is not None:
+        payload["session_id"] = session_id
     
     try:
         print(f"Sending completion request for user prompt: {user_prompt}")
@@ -228,7 +234,7 @@ def send_completion_request(session_id, agent_name, user_prompt, attachments=[])
             print(f"Response Text: {e.response.text}")
         return None
 
-def upload_file_with_progress(file_path, fllm_endpoint, session_id, agent_name):
+def upload_file_with_progress(file_path, fllm_endpoint, agent_name, session_id=None):
 
     # Get file size for progress tracking
     file_size = os.path.getsize(file_path)
@@ -277,9 +283,16 @@ def upload_file_with_progress(file_path, fllm_endpoint, session_id, agent_name):
         
         # Add query parameters
         params = {
-            'sessionId': session_id,
             'agentName': agent_name
         }
+        
+        # Include sessionId if provided (API requires this parameter when session exists)
+        # Check for both None and empty string to ensure we have a valid session ID
+        if session_id is not None and str(session_id).strip():
+            params['sessionId'] = str(session_id).strip()
+            print(f"Uploading file with sessionId: {str(session_id).strip()[:20]}..." if len(str(session_id).strip()) > 20 else f"Uploading file with sessionId: {str(session_id).strip()}")
+        else:
+            print(f"Warning: No sessionId provided for file upload (session_id={session_id})")
         
         # Set up headers with authentication
         # Get access token from environment variable
@@ -317,27 +330,30 @@ def upload_file_with_progress(file_path, fllm_endpoint, session_id, agent_name):
             raise e
 
 
-def process_question(question, answer, filename, agent_name="MAA-02", validation_rules="{}", validation_mode="hybrid"):
+def process_question(question, answer, filename, agent_name="MAA-02", validation_rules="{}", validation_mode="hybrid", no_conversation=False):
 
-    # Time the session creation
-    session_start_time = time.time()
-    session_id = create_session()
-    time.sleep(0.1)
-    session_duration = time.time() - session_start_time
-    
-    if not session_id:
-        print(f"Failed to create session for question: {question}")
-        return {
-            'Question': question,
-            'Answer': answer,
-            'AgentAnswer': '',
-            'OtherAgentContent': [],
-            'Tokens': 0,
-            'SessionRequestDuration': session_duration,
-            'CompletionRequestDuration': 0,
-            'ErrorOccured': 1,
-            'ErrorDetails': 'Failed to create session'
-        }
+    # Time the session creation (skip if no_conversation is True)
+    session_id = None
+    session_duration = 0
+    if not no_conversation:
+        session_start_time = time.time()
+        session_id = create_session()
+        time.sleep(0.1)
+        session_duration = time.time() - session_start_time
+        
+        if not session_id:
+            print(f"Failed to create session for question: {question}")
+            return {
+                'Question': question,
+                'Answer': answer,
+                'AgentAnswer': '',
+                'OtherAgentContent': [],
+                'Tokens': 0,
+                'SessionRequestDuration': session_duration,
+                'CompletionRequestDuration': 0,
+                'ErrorOccured': 1,
+                'ErrorDetails': 'Failed to create session'
+            }
     
     # Normalize filename for output
     input_filename = '' if pd.isna(filename) else str(filename)
@@ -348,19 +364,28 @@ def process_question(question, answer, filename, agent_name="MAA-02", validation
         # Upload the file
         file_path = os.path.join(os.getcwd(), 'uploads', input_filename)
         fllm_endpoint = os.getenv("FLLM_ENDPOINT")
-        upload_response = upload_file_with_progress(file_path, fllm_endpoint, session_id, agent_name)
+        # Note: session_id should be set when not in no-conversation mode
+        # The API requires sessionId parameter when uploading files with a session
+        if no_conversation:
+            # In no-conversation mode, don't pass session_id
+            upload_response = upload_file_with_progress(file_path, fllm_endpoint, agent_name, session_id=None)
+        else:
+            # When we have a session, always pass it (API requires it)
+            if not session_id:
+                print(f"Warning: No session_id available for file upload, but not in no-conversation mode")
+            upload_response = upload_file_with_progress(file_path, fllm_endpoint, agent_name, session_id=session_id)
 
         response = send_completion_request(
-            session_id=session_id,
             agent_name=agent_name,
             user_prompt=question,
-            attachments=[upload_response.get('object_id') or upload_response.get('objectId')]
+            attachments=[upload_response.get('object_id') or upload_response.get('objectId')],
+            session_id=session_id
         )
     else:   
         response = send_completion_request(
-            session_id=session_id,
             agent_name=agent_name,
-            user_prompt=question
+            user_prompt=question,
+            session_id=session_id
         )
     completion_duration = time.time() - completion_start_time
     
@@ -567,7 +592,7 @@ def process_question(question, answer, filename, agent_name="MAA-02", validation
             'ValidationDetails': 'Test execution failed'
         }
 
-def execute_tests(test_file, agent_name, max_workers=5):
+def execute_tests(test_file, agent_name, max_workers=5, no_conversation=False):
     # Read the CSV file with proper handling of quoted fields
     try:
         df = pd.read_csv(test_file, quotechar='"', escapechar='\\')
@@ -582,7 +607,7 @@ def execute_tests(test_file, agent_name, max_workers=5):
     with concurrent.futures.ThreadPoolExecutor(max_workers=max_workers) as executor:
         # Create future objects for each question
         future_to_question = {
-            executor.submit(process_question, row['Question'], row['Answer'], row['Filename'], agent_name, row.get('ValidationRules', '{}'), row.get('ValidationMode', 'hybrid')): index 
+            executor.submit(process_question, row['Question'], row['Answer'], row['Filename'], agent_name, row.get('ValidationRules', '{}'), row.get('ValidationMode', 'hybrid'), no_conversation): index 
             for index, row in df.iterrows()
         }
         
@@ -654,7 +679,7 @@ def execute_tests(test_file, agent_name, max_workers=5):
     return results_df
 
 
-def execute_tests_from_dataframe(df, agent_name, max_workers=5):
+def execute_tests_from_dataframe(df, agent_name, max_workers=5, no_conversation=False):
     """Execute tests from a pandas DataFrame instead of reading from CSV file"""
     # Initialize list to store results
     results = []
@@ -663,7 +688,7 @@ def execute_tests_from_dataframe(df, agent_name, max_workers=5):
     with concurrent.futures.ThreadPoolExecutor(max_workers=max_workers) as executor:
         # Create future objects for each question
         future_to_question = {
-            executor.submit(process_question, row['Question'], row['Answer'], row['Filename'], agent_name, row.get('ValidationRules', '{}'), row.get('ValidationMode', 'hybrid')): index 
+            executor.submit(process_question, row['Question'], row['Answer'], row['Filename'], agent_name, row.get('ValidationRules', '{}'), row.get('ValidationMode', 'hybrid'), no_conversation): index 
             for index, row in df.iterrows()
         }
         
