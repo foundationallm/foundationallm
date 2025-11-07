@@ -18,7 +18,7 @@ from .foundationallm_client import (
 )
 from .llm_refiner import PromptRefiner
 from .optimizer import OptimizationConfig, PromptOptimizationEngine
-from .prompt_catalog import PromptReference, extract_prompt_references
+from .prompt_catalog import PromptReference, extract_prompt_references, select_prompts
 from .storage import OptimizationRunLogger
 
 
@@ -33,18 +33,6 @@ def _load_brief(args: argparse.Namespace) -> str:
             raise FileNotFoundError(f"Brief file not found: {path}")
         return path.read_text(encoding="utf-8")
     raise ValueError("A problem brief is required. Supply --brief or --brief-file.")
-
-
-def _select_prompts(all_prompts: List[PromptReference], selection: Optional[str]) -> List[PromptReference]:
-    if not selection or selection.lower() in {"all", "*"}:
-        return all_prompts
-
-    requested = {item.strip() for item in selection.split(",") if item.strip()}
-    selected = [prompt for prompt in all_prompts if prompt.prompt_name in requested]
-    missing = requested - {prompt.prompt_name for prompt in selected}
-    if missing:
-        raise ValueError(f"Unknown prompt(s) requested: {', '.join(sorted(missing))}")
-    return selected
 
 
 def _print_prompt_catalog(prompts: List[PromptReference]) -> None:
@@ -165,7 +153,7 @@ def main(argv: Optional[List[str]] = None) -> int:
         return 0
 
     try:
-        selected_prompts = _select_prompts(prompt_catalog, args.prompts)
+        selected_prompts = select_prompts(prompt_catalog, args.prompts)
     except ValueError as exc:
         parser.error(str(exc))
         return 2

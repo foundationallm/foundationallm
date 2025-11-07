@@ -5,7 +5,7 @@ Utilities for discovering and representing prompt references within an agent def
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Any, Dict, Iterable, List, Optional
+from typing import Any, Dict, Iterable, List, Optional, Sequence
 
 PROMPT_URI_FRAGMENT = "/providers/FoundationaLLM.Prompt/prompts/"
 
@@ -103,3 +103,31 @@ def extract_prompt_references(agent_resource: Dict[str, Any]) -> List[PromptRefe
 
     # Return sorted references by prompt name for stable CLI output
     return sorted(references.values(), key=lambda ref: ref.prompt_name.lower())
+
+
+def select_prompts(
+    prompts: Sequence[PromptReference],
+    selection: Optional[str],
+) -> List[PromptReference]:
+    """
+    Filter the supplied prompt references based on a user selection string.
+
+    Args:
+        prompts: All prompt references available for the agent.
+        selection: Comma-separated list of prompt names or 'all' for everything.
+
+    Returns:
+        A list containing the subset of prompts in scope for optimisation.
+
+    Raises:
+        ValueError: If any of the requested prompt names are not present.
+    """
+    if not selection or selection.lower() in {"all", "*"}:
+        return list(prompts)
+
+    requested = {item.strip() for item in selection.split(",") if item.strip()}
+    selected = [prompt for prompt in prompts if prompt.prompt_name in requested]
+    missing = requested - {prompt.prompt_name for prompt in selected}
+    if missing:
+        raise ValueError(f"Unknown prompt(s) requested: {', '.join(sorted(missing))}")
+    return selected

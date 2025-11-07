@@ -5,8 +5,11 @@ PROJECT_ROOT = Path(__file__).resolve().parents[2]
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
-from prompt_author.prompt_catalog import extract_prompt_references, PromptReference  # noqa: E402
-from prompt_author.cli import _select_prompts  # noqa: E402
+from prompt_author.prompt_catalog import (  # noqa: E402
+    extract_prompt_references,
+    PromptReference,
+    select_prompts,
+)
 
 
 def _sample_agent_resource():
@@ -56,7 +59,7 @@ def test_select_prompts_filters_requested_subset():
         PromptReference(prompt_name="SecondaryPrompt", object_id="id2"),
     ]
 
-    selected = _select_prompts(prompts, "MainPrompt")
+    selected = select_prompts(prompts, "MainPrompt")
     assert len(selected) == 1
     assert selected[0].prompt_name == "MainPrompt"
 
@@ -67,7 +70,7 @@ def test_select_prompts_validates_unknown_names():
     ]
 
     try:
-        _select_prompts(prompts, "UnknownPrompt")
+        select_prompts(prompts, "UnknownPrompt")
     except ValueError as exc:
         assert "Unknown prompt" in str(exc)
     else:
