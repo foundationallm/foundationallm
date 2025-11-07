@@ -57,6 +57,12 @@
         ["Search Index Data Reader", "Context"],
         ["Azure ContainerApps Session Executor", "Context"]
     ],
+    "LangChainAPIManagedIdentity": [
+        ["App Configuration Data Reader", "Core"],
+        ["Key Vault Secrets User", "Core"],
+        ["Storage Blob Data Contributor", "Data"],
+        ["Azure AI User", "AIFoundry"]
+    ],
     "DataPipelineAPIManagedIdentity": [
         "Storage Queue Data Message Sender", "Context"
     ],

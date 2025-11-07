@@ -178,6 +178,8 @@
 	},
 	{
 		"name": "LangChainAPI",
-		"configuration_options": []
+		"configuration_options": [
+			"PythonSDK:*"
+		]
 	}
 ]

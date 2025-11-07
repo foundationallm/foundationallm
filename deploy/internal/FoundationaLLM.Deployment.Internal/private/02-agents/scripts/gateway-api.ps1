@@ -58,7 +58,9 @@ function Initialize-GatewayAPI {
         -EnvironmentVariables $environmentVariables `
         -ContainerImage $ContainerImage `
         -MinReplicas 1 `
-        -MaxReplicas 1
+        -MaxReplicas 1 `
+        -CPUCores 1 `
+        -Memory 2
 }
 
 function Restart-GatewayAPI {
