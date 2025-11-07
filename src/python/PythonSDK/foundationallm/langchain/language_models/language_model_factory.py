@@ -28,11 +28,13 @@ class LanguageModelFactory:
         self.objects = objects
         self.config = config
 
-    def get_language_model(self,
-                           ai_model_object_id:str,
-                           override_operation_type: OperationTypes = None,
-                           agent_model_parameter_overrides:dict = None,
-                          ) -> BaseLanguageModel:
+    def get_language_model(
+        self,
+        ai_model_object_id:str,
+        override_operation_type: OperationTypes = None,
+        agent_model_parameter_overrides:dict = None,
+        http_async_client = None
+    ) -> BaseLanguageModel:
         """
         Create a language model using the specified endpoint settings.
 
@@ -113,7 +115,8 @@ class LanguageModelFactory:
                                 openai_api_type='azure_ad',
                                 azure_ad_token_provider=token_provider,
                                 azure_deployment=ai_model.deployment_name,
-                                request_timeout=api_endpoint.timeout_seconds
+                                request_timeout=api_endpoint.timeout_seconds,
+                                http_async_client=http_async_client
                             )
                         elif op_type == OperationTypes.ASSISTANTS_API or op_type == OperationTypes.IMAGE_SERVICES:
                             # Assistants API clients can't have deployment as that is assigned at the assistant level.
@@ -143,7 +146,8 @@ class LanguageModelFactory:
                             api_key=api_key,
                             api_version=api_endpoint.api_version,
                             azure_deployment=ai_model.deployment_name,
-                            request_timeout=api_endpoint.timeout_seconds
+                            request_timeout=api_endpoint.timeout_seconds,
+                            http_async_client=http_async_client
                         )
                     elif op_type == OperationTypes.ASSISTANTS_API or op_type == OperationTypes.IMAGE_SERVICES:
                         # Assistants API clients can't have deployment as that is assigned at the assistant level.

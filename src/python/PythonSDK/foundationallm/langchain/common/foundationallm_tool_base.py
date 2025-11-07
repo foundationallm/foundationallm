@@ -52,9 +52,13 @@ class FoundationaLLMToolBase(BaseTool):
         self.tracer: Tracer = Telemetry.get_tracer(self.name)
         self.default_credential = DefaultAzureCredential(exclude_environment_credential=True)
 
-    def get_language_model(self, role: str) -> BaseLanguageModel:
+    def get_language_model(
+        self,
+        role: str,
+        http_async_client=None
+    ) -> BaseLanguageModel:
         """
-        Creates a language model based on the reosurce object identifier with a specified role.
+        Creates a language model based on the resource object identifier with a specified role.
         """
 
         ai_model_definition = self.tool_config.get_resource_object_id_properties(
@@ -62,14 +66,22 @@ class FoundationaLLMToolBase(BaseTool):
             AIModelResourceTypeNames.AI_MODELS,
             ResourceObjectIdPropertyNames.OBJECT_ROLE,
             role)
-        return self.language_model_factory.get_language_model(ai_model_definition.object_id)
+        return self.language_model_factory.get_language_model(
+            ai_model_definition.object_id,
+            http_async_client=http_async_client
+        )
 
-    def get_main_language_model(self) -> BaseLanguageModel:
+    def get_main_language_model(
+        self,
+        http_async_client=None
+    ) -> BaseLanguageModel:
         """
         Creates the main language model of the tool.
         The maine language model is specified by the resource object identifier with the role 'main_model'.
         """
-        return self.get_language_model(ResourceObjectIdPropertyValues.MAIN_MODEL)
+        return self.get_language_model(
+            ResourceObjectIdPropertyValues.MAIN_MODEL,
+            http_async_client=http_async_client)
 
     def get_prompt(self, role: str) -> str:
         """
