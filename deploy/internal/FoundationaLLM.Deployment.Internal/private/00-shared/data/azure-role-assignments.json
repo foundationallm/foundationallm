@@ -1,6 +1,7 @@
 {
     "FoundationaLLMAdmins": [
         ["Storage Blob Data Contributor", "Data"],
+        ["Storage Blob Data Contributor", "Context"],
         ["Storage Blob Data Contributor", "Authorization"],
         ["Key Vault Secrets Officer", "Core"],
         ["Key Vault Secrets Officer", "Authorization"]

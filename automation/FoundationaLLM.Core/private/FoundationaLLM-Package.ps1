@@ -289,4 +289,20 @@ function Deploy-FoundationaLLMPackage {
             Write-Host "Data pipeline updated: $($dataPipeline.name)" -ForegroundColor Green
         }
     }
+
+    if (Test-Path -Path "$($PackageRoot)/artifacts/aiModels.json") {
+
+        Write-Host "Updating AI models..."
+
+        $aiModels = Get-Content "$($PackageRoot)/artifacts/aiModels.json" `
+            | Resolve-Placeholders -Parameters $Parameters `
+            | ConvertFrom-Json -AsHashTable
+
+        foreach ($aiModel in $aiModels) {
+
+            Write-Host "Updating AI model: $($aiModel.name)"
+            $aiModelResult = Merge-AIModel -AIModel $aiModel
+            Write-Host "AI model updated: $($aiModelResult)" -ForegroundColor Green
+        }
+    }
 }

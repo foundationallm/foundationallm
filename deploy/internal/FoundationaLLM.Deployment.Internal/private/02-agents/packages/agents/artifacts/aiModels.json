@@ -1,0 +1,48 @@
+[
+    {
+        "type": "completion",
+        "name": "GPT-5-Chat",
+        "display_name": "GPT-5-Chat",
+        "description": null,
+        "cost_center": null,
+        "endpoint_object_id": {
+            "name": "AzureOpenAI",
+            "type": "FoundationaLLM.Configuration/apiEndpointConfigurations"
+        },
+        "version": "2025-10-03",
+        "deployment_name": "completions-gpt-5-chat",
+        "model_parameters": {
+            "temperature": 0
+        }
+    },
+    {
+        "type": "completion",
+        "name": "GPT-5-Mini",
+        "display_name": "GPT-5-Mini",
+        "description": null,
+        "cost_center": null,
+        "endpoint_object_id": {
+            "name": "AzureOpenAI",
+            "type": "FoundationaLLM.Configuration/apiEndpointConfigurations"
+        },
+        "version": "2025-08-07",
+        "deployment_name": "completions-gpt-5-mini",
+        "model_parameters": {
+            "temperature": 0
+        }
+    },
+    {
+        "type": "embedding",
+        "name": "Text-Embedding-3-Large",
+        "display_name": "Text-Embedding-3-Large",
+        "description": null,
+        "cost_center": null,
+        "endpoint_object_id": {
+            "name": "AzureOpenAI",
+            "type": "FoundationaLLM.Configuration/apiEndpointConfigurations"
+        },
+        "version": "1",
+        "deployment_name": "embeddings-3-large",
+        "model_parameters": {}
+    }
+]   

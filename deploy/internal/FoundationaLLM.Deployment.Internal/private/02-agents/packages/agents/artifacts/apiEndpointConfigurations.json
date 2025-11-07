@@ -1,0 +1,45 @@
+[
+    {
+        "type": "api-endpoint",
+        "name": "AzureOpenAI",
+        "category": "General",
+        "subcategory": "AIModel",
+        "provider": "microsoft",
+        "api_version": "2025-04-01-preview",
+        "operation_type": "chat",
+        "authentication_type": "APIKey",
+        "authentication_parameters": {
+            "api_key_configuration_name": "FoundationaLLM:APIEndpoints:AzureOpenAI:Essentials:APIKey"
+        },
+        "url": "{{AZURE_OPENAI_ENDPOINT}}",
+        "url_exceptions": [],
+        "timeout_seconds": 60,
+        "retry_strategy_name": "ExponentialBackoff"
+    },
+    {
+        "type": "api-endpoint",
+        "name": "AzureAISearch",
+        "category": "General",
+        "subcategory": "Indexing",
+        "authentication_type": "AzureIdentity",
+        "authentication_parameters": {},
+        "url": "{{AZURE_AISEARCH_ENDPOINT}}",
+        "url_exceptions": [],
+        "timeout_seconds": 60,
+        "retry_strategy_name": "ExponentialBackoff"
+    },
+    {
+        "type": "api-endpoint",
+        "name": "ContextAPI",
+        "category": "General",
+        "authentication_type": "APIKey",
+        "authentication_parameters": {
+            "api_key_configuration_name": "FoundationaLLM:APIEndpoints:ContextAPI:Essentials:APIKey",
+            "api_key_header_name": "X-API-KEY"
+        },
+        "url": "{{CONTEXTAPI_ENDPOINT}}",
+        "url_exceptions": [],
+        "timeout_seconds": 2400,
+        "retry_strategy_name": "ExponentialBackoff"
+    }
+]
