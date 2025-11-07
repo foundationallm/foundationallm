@@ -47,6 +47,23 @@ function Deploy-FoundationaLLMPackage {
 
     Write-Host "Deploying package from $($PackageRoot)" -ForegroundColor Blue
 
+    if (Test-Path -Path "$($PackageRoot)/artifacts/workflowTypes.json") {
+
+        Write-Host "Updating workflow types..."
+
+        $workflowTypes = Get-Content "$($PackageRoot)/artifacts/workflowTypes.json" `
+            | Resolve-Placeholders -Parameters $Parameters `
+            | ConvertFrom-Json -AsHashTable
+
+        foreach ($workflowType in $workflowTypes) {
+
+            Write-Host "Updating workflow type: $($workflowType.name)"
+            $workflowTypeResult = Merge-WorkflowType `
+                -WorkflowType $workflowType
+            Write-Host "Workflow type updated: $($workflowTypeResult)" -ForegroundColor Green
+        }
+    }
+
     if (Test-Path -Path "$($PackageRoot)/artifacts/toolTypes.json") {
 
         Write-Host "Updating tool types..."

@@ -1,0 +1,8 @@
+[
+    {
+        "type": "tool",
+        "name": "Knowledge",
+        "display_name": "Knowledge",
+        "description": "Knowledge search tool"
+    }
+]
