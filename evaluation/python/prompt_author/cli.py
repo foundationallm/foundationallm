@@ -189,8 +189,6 @@ def main(argv: Optional[List[str]] = None) -> int:
     context_output_path = context_dir / f"{args.agent}-prompt-context.txt"
     persist_prompt_messages(output_path=context_output_path, messages=prompt_messages)
 
-    print("\n=== Prompt Context Overview ===")
-    print(format_prompt_messages(prompt_messages))
     print(f"\n📝 Aggregated prompt context saved to: {context_output_path}")
 
     config = OptimizationConfig(
