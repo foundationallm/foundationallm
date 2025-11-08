@@ -21,14 +21,7 @@ namespace FoundationaLLM.Core.Examples.Catalogs
             {
                 Name = TestAgentNames.GenericInlineContextAgentName,
                 Description = "A generic agent that can handle inline context completions.",
-                InlineContext = true,
                 SessionsEnabled = true,
-                Vectorization = new AgentVectorizationSettings
-                {
-                    DedicatedPipeline = false,
-                    IndexingProfileObjectIds = null,
-                    TextEmbeddingProfileObjectId = null
-                },
                 ConversationHistorySettings = new AgentConversationHistorySettings
                 {
                     Enabled = true,
@@ -43,14 +36,7 @@ namespace FoundationaLLM.Core.Examples.Catalogs
             {
                 Name = TestAgentNames.SemanticKernelInlineContextAgentName,
                 Description = "SemanticKernel agent that can handle inline context completions.",
-                InlineContext = true,
                 SessionsEnabled = true,
-                Vectorization = new AgentVectorizationSettings
-                {
-                    DedicatedPipeline = false,
-                    IndexingProfileObjectIds = null,
-                    TextEmbeddingProfileObjectId = null,
-                },
                 ConversationHistorySettings = new AgentConversationHistorySettings
                 {
                     Enabled = true,
@@ -65,15 +51,7 @@ namespace FoundationaLLM.Core.Examples.Catalogs
             {
                 Name = TestAgentNames.SemanticKernelAgentName,
                 Description = "SemanticKernel agent that can handle completions.",
-                InlineContext = true,
                 SessionsEnabled = true,
-                Vectorization = new AgentVectorizationSettings
-                {
-                    DedicatedPipeline = false,
-                    IndexingProfileObjectIds = null,
-                    TextEmbeddingProfileObjectId = null,
-                    DataSourceObjectId = null
-                },
                 ConversationHistorySettings = new AgentConversationHistorySettings
                 {
                     Enabled = true,
@@ -88,15 +66,7 @@ namespace FoundationaLLM.Core.Examples.Catalogs
             {
                 Name = TestAgentNames.LangChainAgentName,
                 Description = "LangChain agent that can handle completions.",
-                InlineContext = true,
                 SessionsEnabled = true,
-                Vectorization = new AgentVectorizationSettings
-                {
-                    DedicatedPipeline = false,
-                    IndexingProfileObjectIds = null,
-                    TextEmbeddingProfileObjectId = null,
-                    DataSourceObjectId = null
-                },
                 ConversationHistorySettings = new AgentConversationHistorySettings
                 {
                     Enabled = true,
@@ -111,14 +81,7 @@ namespace FoundationaLLM.Core.Examples.Catalogs
             {
                 Name = TestAgentNames.SemanticKernelSDZWA,
                 Description = "Knowledge Management Agent that queries the San Diego Zoo Wildlife Alliance journals using SemanticKernel.",
-                InlineContext = false,
                 SessionsEnabled = true,
-                Vectorization = new AgentVectorizationSettings
-                {
-                    DedicatedPipeline = false,
-                    IndexingProfileObjectIds = null,
-                    TextEmbeddingProfileObjectId = null
-                },
                 ConversationHistorySettings = new AgentConversationHistorySettings
                 {
                     Enabled = true,
@@ -132,14 +95,7 @@ namespace FoundationaLLM.Core.Examples.Catalogs
             {
                 Name = TestAgentNames.LangChainSDZWA,
                 Description = "Knowledge Management Agent that queries the San Diego Zoo Wildlife Alliance journals using LangChain.",
-                InlineContext = false,
                 SessionsEnabled = true,
-                Vectorization = new AgentVectorizationSettings
-                {
-                    DedicatedPipeline = false,
-                    IndexingProfileObjectIds = null,
-                    TextEmbeddingProfileObjectId = null
-                },
                 ConversationHistorySettings = new AgentConversationHistorySettings
                 {
                     Enabled = true,
@@ -154,14 +110,7 @@ namespace FoundationaLLM.Core.Examples.Catalogs
             {
                 Name = TestAgentNames.ConversationGeneratorAgent,
                 Description = "An agent that creates conversations based on product descriptions.",
-                InlineContext = true,
                 SessionsEnabled = true,
-                Vectorization = new AgentVectorizationSettings
-                {
-                    DedicatedPipeline = false,
-                    IndexingProfileObjectIds = null,
-                    TextEmbeddingProfileObjectId = null
-                },
                 ConversationHistorySettings = new AgentConversationHistorySettings
                 {
                     Enabled = true,
@@ -176,14 +125,7 @@ namespace FoundationaLLM.Core.Examples.Catalogs
             {
                 Name = TestAgentNames.Dune01,
                 Description = "Knowledge Management Agent that queries the Dune books using SemanticKernel.",
-                InlineContext = false,
                 SessionsEnabled = true,
-                Vectorization = new AgentVectorizationSettings
-                {
-                    DedicatedPipeline = false,
-                    IndexingProfileObjectIds = null,
-                    TextEmbeddingProfileObjectId = null
-                },
                 ConversationHistorySettings = new AgentConversationHistorySettings
                 {
                     Enabled = true,
@@ -198,14 +140,7 @@ namespace FoundationaLLM.Core.Examples.Catalogs
             {
                 Name = TestAgentNames.Dune02,
                 Description = "Inline Context Agent that writes poems about Dune suitable for being used in wartime songs.",
-                InlineContext = true,
                 SessionsEnabled = true,
-                Vectorization = new AgentVectorizationSettings
-                {
-                    DedicatedPipeline = false,
-                    IndexingProfileObjectIds = null,
-                    TextEmbeddingProfileObjectId = null
-                },
                 ConversationHistorySettings = new AgentConversationHistorySettings
                 {
                     Enabled = true,
@@ -220,14 +155,7 @@ namespace FoundationaLLM.Core.Examples.Catalogs
             {
                 Name = TestAgentNames.Dune03,
                 Description = "Answers questions about Dune by asking for help from other agents.",
-                InlineContext = true,
                 SessionsEnabled = true,
-                Vectorization = new AgentVectorizationSettings
-                {
-                    DedicatedPipeline = false,
-                    IndexingProfileObjectIds = null,
-                    TextEmbeddingProfileObjectId = null
-                },
                 ConversationHistorySettings = new AgentConversationHistorySettings
                 {
                     Enabled = true,
@@ -242,14 +170,7 @@ namespace FoundationaLLM.Core.Examples.Catalogs
             {
                 Name = TestAgentNames.LangChainDune,
                 Description = "Knowledge Management Agent that queries the Dune books using LangChain.",
-                InlineContext = false,
                 SessionsEnabled = true,
-                Vectorization = new AgentVectorizationSettings
-                {
-                    DedicatedPipeline = false,
-                    IndexingProfileObjectIds = null,
-                    TextEmbeddingProfileObjectId = null
-                },
                 ConversationHistorySettings = new AgentConversationHistorySettings
                 {
                     Enabled = true,

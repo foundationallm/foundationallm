@@ -8,8 +8,7 @@ namespace FoundationaLLM.Common.Tests.Models.Agents
         {
             Name = "Test_agent",
             ObjectId = "Test_objectid",
-            Type = AgentTypes.KnowledgeManagement,
-            Vectorization = new AgentVectorizationSettings()
+            Type = AgentTypes.KnowledgeManagement
         };
 
         [Fact]
@@ -17,20 +16,6 @@ namespace FoundationaLLM.Common.Tests.Models.Agents
         {
             // Assert
             Assert.Equal(AgentTypes.KnowledgeManagement, _knowledgeManagementAgent.Type);
-        }
-
-        [Fact]
-        public void KnowledgeManagementAgent_IndexingProfile_DefaultIsNull()
-        {
-            // Assert
-            Assert.Null(_knowledgeManagementAgent.Vectorization.IndexingProfileObjectIds);
-        }
-
-        [Fact]
-        public void KnowledgeManagementAgent_EmbeddingProfile_DefaultIsNull()
-        {
-            // Assert
-            Assert.Null(_knowledgeManagementAgent.Vectorization.TextEmbeddingProfileObjectId);
         }
     }
 }
