@@ -34,6 +34,20 @@ Set the required environment variables before running the tool:
 | `AZURE_OPENAI_API_VERSION` | *(Optional)* API version (defaults to `2024-02-15-preview`). |
 | `AZURE_OPENAI_DEPLOYMENT` | Deployment name (model) used for chat completions. |
 
+### Obtaining the Management Bearer Token
+
+Before running the CLI:
+
+1. Sign in with the Azure CLI:
+   ```bash
+   az login
+   ```
+2. Request a management token with the required scope:
+   ```bash
+   az account get-access-token --scope api://FoundationaLLM-Management/Data.Manage
+   ```
+3. Copy only the `accessToken` value (without surrounding quotes) from the command output and export it as `FLLM_MGMT_BEARER_TOKEN`.
+
 For automated evaluations, the AgentEvals harness expects any additional dependencies defined in its README (CSV datasets, `.env`, etc.).
 
 ---
