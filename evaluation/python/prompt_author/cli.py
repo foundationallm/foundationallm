@@ -48,7 +48,7 @@ def build_arg_parser() -> argparse.ArgumentParser:
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
     )
 
-    parser.add_argument("--agent-id", required=True, help="Name of the agent whose prompts will be optimised.")
+    parser.add_argument("--agent", required=True, help="Name of the agent whose prompts will be optimised.")
     parser.add_argument(
         "--prompts",
         help="Comma-separated list of prompt names to optimise. Use 'all' to target every prompt.",
@@ -138,14 +138,14 @@ def main(argv: Optional[List[str]] = None) -> int:
         return 2
 
     try:
-        agent = management_client.get_agent(args.agent_id)
+        agent = management_client.get_agent(args.agent)
     except FoundationaLLMClientError as exc:
-        parser.error(f"Unable to load agent '{args.agent_id}': {exc}")
+        parser.error(f"Unable to load agent '{args.agent}': {exc}")
         return 2
 
     prompt_catalog = extract_prompt_references(agent.resource)
     if not prompt_catalog:
-        parser.error(f"No prompts found for agent '{args.agent_id}'.")
+        parser.error(f"No prompts found for agent '{args.agent}'.")
         return 2
 
     if args.list_prompts:
@@ -183,7 +183,7 @@ def main(argv: Optional[List[str]] = None) -> int:
     elif args.suite and (args.no_eval or args.dry_run):
         print("⚠️  Evaluation suite specified but evaluation disabled; skipping automated tests.")
 
-    logger = OptimizationRunLogger(base_dir=history_dir, agent_name=args.agent_id)
+    logger = OptimizationRunLogger(base_dir=history_dir, agent_name=args.agent)
 
     config = OptimizationConfig(
         max_iterations=args.max_iterations,
@@ -207,7 +207,7 @@ def main(argv: Optional[List[str]] = None) -> int:
     )
 
     outcomes = engine.optimise_prompts(
-        agent_name=args.agent_id,
+        agent_name=args.agent,
         prompt_refs=selected_prompts,
         optimization_brief=brief,
     )

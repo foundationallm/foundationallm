@@ -40,14 +40,14 @@ For automated evaluations, the AgentEvals harness expects any additional depende
 From the repository root:
 
 ```bash
-python3 -m prompt_author.cli --agent-id AGENT_NAME --brief "Explain the problem and success criteria."
+python3 -m prompt_author.cli --agent AGENT_NAME --brief "Explain the problem and success criteria."
 ```
 
 Key switches:
 
 | Switch | Description |
 | --- | --- |
-| `--agent-id` | Required. Agent whose prompts will be optimised. |
+| `--agent` | Required. Agent whose prompts will be optimised. |
 | `--prompts` | Comma-separated prompt names. Use `all` (default) to optimise every prompt referenced by the agent. |
 | `--list-prompts` | Print the agent’s prompt catalogue and exit (no modifications). |
 | `--brief` / `--brief-file` | Provide the optimisation brief inline or via a file. Exactly one is required for optimisation runs. |
@@ -64,7 +64,7 @@ Key switches:
 
 ```bash
 python3 -m prompt_author.cli \
-  --agent-id SupportAssistant \
+  --agent SupportAssistant \
   --prompts MainPrompt \
   --brief-file ./briefs/support-upgrade.md \
   --suite conversational \
@@ -76,7 +76,7 @@ python3 -m prompt_author.cli \
 ### Example: List Prompts, No Changes
 
 ```bash
-python3 -m prompt_author.cli --agent-id SupportAssistant --list-prompts
+python3 -m prompt_author.cli --agent SupportAssistant --list-prompts
 ```
 
 ### Output Layout
