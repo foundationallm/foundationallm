@@ -90,6 +90,7 @@ output/
   backups/           # JSON backups of every original prompt
   history/           # Iteration history per prompt (JSON manifest + revised payloads)
   evaluations/       # AgentEvals CSV/JSON artefacts (when enabled)
+  context/           # Aggregated prompt transcripts (system/user/tool) for review
 ```
 
 Each history entry records the LLM’s reasoning, confidence, evaluation summary, and file paths, making it easy to audit or roll back.

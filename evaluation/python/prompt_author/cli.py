@@ -9,6 +9,11 @@ import sys
 from pathlib import Path
 from typing import List, Optional
 
+from .conversation_context import (
+    build_prompt_messages,
+    format_prompt_messages,
+    persist_prompt_messages,
+)
 from .evaluator import PromptEvaluator
 from .foundationallm_client import (
     AzureOpenAILLMClient,
@@ -161,6 +166,7 @@ def main(argv: Optional[List[str]] = None) -> int:
     backup_dir = base_output_dir / "backups"
     history_dir = base_output_dir / "history"
     evaluation_dir = base_output_dir / "evaluations"
+    context_dir = base_output_dir / "context"
 
     try:
         completion_client = AzureOpenAILLMClient()
@@ -176,6 +182,19 @@ def main(argv: Optional[List[str]] = None) -> int:
         print("⚠️  Evaluation suite specified but evaluation disabled; skipping automated tests.")
 
     logger = OptimizationRunLogger(base_dir=history_dir, agent_name=args.agent)
+
+    # Build aggregated prompt context view
+    prompt_messages = build_prompt_messages(
+        management_client=management_client,
+        prompt_refs=prompt_catalog,
+        selected_prompt_names=[prompt.prompt_name for prompt in selected_prompts],
+    )
+    context_output_path = context_dir / f"{args.agent}-prompt-context.txt"
+    persist_prompt_messages(output_path=context_output_path, messages=prompt_messages)
+
+    print("\n=== Prompt Context Overview ===")
+    print(format_prompt_messages(prompt_messages))
+    print(f"\n📝 Aggregated prompt context saved to: {context_output_path}")
 
     config = OptimizationConfig(
         max_iterations=args.max_iterations,

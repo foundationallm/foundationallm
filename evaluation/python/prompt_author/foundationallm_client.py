@@ -16,8 +16,15 @@ from dataclasses import dataclass
 from datetime import datetime
 from typing import Any, Dict, List, Optional
 
-import requests
-from openai import AzureOpenAI
+try:
+    import requests
+except ImportError:  # pragma: no cover - optional for unit tests
+    requests = None
+
+try:
+    from openai import AzureOpenAI
+except ImportError:  # pragma: no cover - optional for unit tests
+    AzureOpenAI = None
 
 
 class FoundationaLLMClientError(RuntimeError):
@@ -83,6 +90,10 @@ class FoundationaLLMManagementClient:
         path: str,
         payload: Optional[Dict[str, Any]] = None,
     ) -> Any:
+        if requests is None:
+            raise FoundationaLLMClientError(
+                "The 'requests' package is required for management API access. Install 'requests' to continue."
+            )
         url = f"{self.endpoint.rstrip('/')}/{path.lstrip('/')}"
         response = requests.request(
             method=method.upper(),
@@ -215,6 +226,10 @@ class AzureOpenAILLMClient:
         deployment: Optional[str] = None,
         default_temperature: float = 0.2,
     ) -> None:
+        if AzureOpenAI is None:
+            raise FoundationaLLMClientError(
+                "The 'openai' package is required for Azure OpenAI interactions. Install 'openai' to continue."
+            )
         self.endpoint = (endpoint or os.getenv("AZURE_OPENAI_ENDPOINT", "")).strip()
         self.api_key = (api_key or os.getenv("AZURE_OPENAI_API_KEY", "")).strip()
         self.api_version = (api_version or os.getenv("AZURE_OPENAI_API_VERSION", "2024-02-15-preview")).strip()
