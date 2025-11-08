@@ -32,11 +32,13 @@ class FoundationaLLMAgentToolPluginManager(ToolPluginManagerBase):
         tool_config: AgentTool,
         objects: dict,
         user_identity: UserIdentity,
-        config: Configuration) -> FoundationaLLMToolBase:
+        config: Configuration,
+        intercept_http_calls: bool = False
+    ) -> FoundationaLLMToolBase:
 
         match tool_config.class_name:
             case FoundationaLLMAgentToolPluginManager.FOUNDATIONALLM_CODE_INTERPRETER_TOOL_CLASS:
-                return FoundationaLLMCodeInterpreterTool(tool_config, objects, user_identity, config)
+                return FoundationaLLMCodeInterpreterTool(tool_config, objects, user_identity, config, intercept_http_calls=intercept_http_calls)
             case FoundationaLLMAgentToolPluginManager.FOUNDATIONALLM_SQL_TOOL_CLASS:
                 return FoundationaLLMSQLTool(tool_config, objects, user_identity, config)
             case FoundationaLLMAgentToolPluginManager.FOUNDATIONALLM_DATABRICKS_TOOL_CLASS:
@@ -52,5 +54,5 @@ class FoundationaLLMAgentToolPluginManager(ToolPluginManagerBase):
             case _:
                 raise ValueError(f'Unknown tool class: {tool_config.class_name}')
 
-    def refresh_tools():
+    def refresh_tools(self):
         print('Refreshing tools...')

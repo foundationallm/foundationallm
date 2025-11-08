@@ -2,7 +2,11 @@ from abc import ABC, abstractmethod
 from typing import List
 from foundationallm.config import Configuration, UserIdentity
 from foundationallm.langchain.common import FoundationaLLMWorkflowBase
-from foundationallm.models.agents import AgentTool, ExternalAgentWorkflow
+from foundationallm.models.agents import (
+    AgentTool,
+    GenericAgentWorkflow,
+    ExternalAgentWorkflow
+)
 from foundationallm.operations import OperationsManager
 from foundationallm.plugins import PluginManagerTypes
 
@@ -16,7 +20,7 @@ class WorkflowPluginManagerBase(ABC):
 
     @abstractmethod
     def create_workflow(self,
-        workflow_config: ExternalAgentWorkflow,
+        workflow_config: GenericAgentWorkflow | ExternalAgentWorkflow,
         objects: dict,
         tools: List[AgentTool],
         operations_manager: OperationsManager,
@@ -26,7 +30,7 @@ class WorkflowPluginManagerBase(ABC):
         Create a workflow instance based on the given configuration and tools.
         Parameters
             ----------
-            workflow_config : ExternalAgentWorkflow
+            workflow_config : GenericAgentWorkflow | ExternalAgentWorkflow
                 The workflow assigned to the agent.
             objects : dict
                 The exploded objects assigned from the agent.
@@ -40,5 +44,5 @@ class WorkflowPluginManagerBase(ABC):
         pass
 
     @abstractmethod
-    def refresh_tools():
+    def refresh_tools(self):
         pass

@@ -28,6 +28,7 @@ from foundationallm.models.constants import (
 from foundationallm.models.orchestration import CompletionRequestObjectKeys, ContentArtifact
 from foundationallm.models.resource_providers.configuration import APIEndpointConfiguration
 from foundationallm.services import HttpClientService
+from foundationallm.utils import LoggingAsyncHttpClient
 
 from .foundationallm_code_interpreter_tool_input import FoundationaLLMCodeInterpreterToolInput
 
@@ -42,7 +43,9 @@ class FoundationaLLMCodeInterpreterTool(FoundationaLLMToolBase):
         tool_config: AgentTool,
         objects: dict,
         user_identity:UserIdentity,
-        config: Configuration):
+        config: Configuration,
+        intercept_http_calls: bool = False
+    ):
         """ Initializes the FoundationaLLMCodeInterpreterTool class with the tool configuration,
             exploded objects collection, user_identity, and platform configuration. """
         super().__init__(tool_config, objects, user_identity, config)
@@ -57,7 +60,9 @@ class FoundationaLLMCodeInterpreterTool(FoundationaLLMToolBase):
         else:
             raise ToolException("The Context API endpoint configuration is required to use the Code Interpreter tool.")
         self.instance_id = objects.get(CompletionRequestObjectKeys.INSTANCE_ID, None)
-        self.main_llm = self.get_main_language_model()
+        self.main_llm = self.get_main_language_model(
+            http_async_client=LoggingAsyncHttpClient(timeout=30.0)
+        ) if intercept_http_calls else self.get_main_language_model()
 
     def _run(
         self,

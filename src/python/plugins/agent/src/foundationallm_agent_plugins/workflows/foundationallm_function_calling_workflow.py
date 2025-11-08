@@ -25,7 +25,10 @@ from foundationallm.langchain.common import (
     FoundationaLLMToolBase
 )
 from foundationallm.langchain.language_models import LanguageModelFactory
-from foundationallm.models.agents import ExternalAgentWorkflow
+from foundationallm.models.agents import (
+    GenericAgentWorkflow,
+    ExternalAgentWorkflow
+)
 from foundationallm.models.constants import (
     AgentCapabilityCategories,
     ContentArtifactTypeNames,
@@ -60,7 +63,7 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
     """
 
     def __init__(self,
-                 workflow_config: ExternalAgentWorkflow,
+                 workflow_config: GenericAgentWorkflow | ExternalAgentWorkflow,
                  objects: Dict,
                  tools: List[FoundationaLLMToolBase],
                  operations_manager: OperationsManager,
@@ -71,7 +74,7 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
 
         Parameters
         ----------
-        workflow_config : ExternalAgentWorkflow
+        workflow_config : GenericAgentWorkflow | ExternalAgentWorkflow
             The workflow assigned to the agent.
         objects : dict
             The exploded objects assigned from the agent.

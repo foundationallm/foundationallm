@@ -959,7 +959,7 @@ namespace FoundationaLLM.Agent.ResourceProviders
 
             AgentFileReference agentPrivateFile = null!;
             var agent = await LoadResource<AgentBase>(resourcePath.MainResourceId!);
-            if (agent!.HasExternalWorkflow()
+            if (agent!.HasGenericWorkflow()
                 && agent.Workflow!.ClassName == AgentWorkflowNames.FoundationaLLMFunctionCallingWorkflow)
             {
                 // Use the Context API to store the file.

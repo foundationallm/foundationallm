@@ -1,0 +1,7 @@
+{
+    "display_name": "FoundationaLLM Agent Plugins - Azure AI (Python)",
+    "description": "The FoundationaLLM Agent Azure AI plugins package for Python.",
+    "plugin_managers": [
+        "FoundationaLLMAgentToolAzureAIPluginManager"
+    ]
+}
