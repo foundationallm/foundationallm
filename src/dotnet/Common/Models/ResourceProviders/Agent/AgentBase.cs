@@ -130,7 +130,8 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.Agent
         /// Checks whether the agent uses an external workflow.
         /// </summary>
         /// <returns></returns>
-        public bool HasExternalWorkflow() =>
-            Workflow != null && Workflow is ExternalAgentWorkflow;
+        public bool HasGenericWorkflow() =>
+            Workflow != null
+            && (Workflow is ExternalAgentWorkflow || Workflow is GenericAgentWorkflow);
     }
 }

@@ -7,7 +7,11 @@ from foundationallm.config import Configuration, UserIdentity
 from foundationallm.langchain.common import FoundationaLLMWorkflowBase
 from foundationallm.langchain.exceptions import LangChainException
 from foundationallm.langchain.workflows.azure_ai.azure_ai_agent_service_workflow import AzureAIAgentServiceWorkflow
-from foundationallm.models.agents import AgentTool, ExternalAgentWorkflow
+from foundationallm.models.agents import (
+    AgentTool,
+    GenericAgentWorkflow,
+    ExternalAgentWorkflow
+)
 from foundationallm.operations import OperationsManager
 from foundationallm.plugins import PluginManager, PluginManagerTypes
 
@@ -29,7 +33,7 @@ class WorkflowFactory:
 
     def get_workflow(
         self,
-        workflow_config: ExternalAgentWorkflow,
+        workflow_config: GenericAgentWorkflow | ExternalAgentWorkflow,
         objects: dict,
         tools: List[AgentTool],
         user_identity: UserIdentity,
@@ -40,7 +44,7 @@ class WorkflowFactory:
 
         Parameters
         ----------
-        workflow_config : ExternalAgentWorkflow
+        workflow_config : GenericAgentWorkflow | ExternalAgentWorkflow
             The workflow assigned to the agent.
         objects : dict
             The exploded objects assigned from the agent.
@@ -52,13 +56,7 @@ class WorkflowFactory:
             The application configuration for FoundationaLLM.
         """     
         if workflow_config.package_name == "FoundationaLLM":
-             # internal workflows
-            AZURE_AI_AGENT_SERVICE_WORKFLOW_CLASS_NAME = "AzureAIAgentServiceWorkflow"
-
-            if workflow_config.class_name == AZURE_AI_AGENT_SERVICE_WORKFLOW_CLASS_NAME:                                
-                return AzureAIAgentServiceWorkflow(workflow_config, objects, tools, user_identity, config, self.operations_manager)
-
-            raise LangChainException(f"FoundationaLLM workflow class {workflow_config.class_name} is not supported by the workflow factory.")
+            raise LangChainException(f"The legacy FoundationaLLM virtual package is not supported by the workflow factory anymore.")
         else:
             workflow_plugin_manager = None
 

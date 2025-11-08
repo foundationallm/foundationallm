@@ -1,6 +1,6 @@
 from typing import Any, Self, Literal
 from foundationallm.langchain.exceptions import LangChainException
-from foundationallm.utils import object_utils
+from foundationallm.utils import ObjectUtils
 from .agent_workflow_base import AgentWorkflowBase
 
 class ExternalAgentWorkflow(AgentWorkflowBase):
@@ -16,7 +16,7 @@ class ExternalAgentWorkflow(AgentWorkflowBase):
         workflow: ExternalAgentWorkflow = None
 
         try:
-            workflow = ExternalAgentWorkflow(**object_utils.translate_keys(obj))
+            workflow = ExternalAgentWorkflow(**ObjectUtils.translate_keys(obj))
         except Exception as e:
             raise LangChainException(f"The External Agent Workflow object provided is invalid. {str(e)}", 400)
         
