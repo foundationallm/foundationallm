@@ -125,13 +125,6 @@ def main(argv: Optional[List[str]] = None) -> int:
     args = parser.parse_args(argv)
 
     try:
-        brief = _load_brief(args)
-    except Exception as exc:
-        parser.error(str(exc))
-        return 2
-
-    # Management client will validate env configuration.
-    try:
         management_client = FoundationaLLMManagementClient()
     except FoundationaLLMClientError as exc:
         parser.error(str(exc))
@@ -151,6 +144,12 @@ def main(argv: Optional[List[str]] = None) -> int:
     if args.list_prompts:
         _print_prompt_catalog(prompt_catalog)
         return 0
+
+    try:
+        brief = _load_brief(args)
+    except Exception as exc:
+        parser.error(str(exc))
+        return 2
 
     try:
         selected_prompts = select_prompts(prompt_catalog, args.prompts)
