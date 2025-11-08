@@ -29,7 +29,10 @@ Set the required environment variables before running the tool:
 | `FLLM_MGMT_BEARER_TOKEN` | Bearer token with `api://FoundationaLLM-Management/Data.Manage` scope. |
 | `FLLM_ENDPOINT` | Core API base URL. |
 | `FLLM_ACCESS_TOKEN` | Access token for the agent completions API. |
-| `FLLM_PROMPT_OPTIMIZER_AGENT` | *(Optional)* Agent name that will act as the LLM improving prompts (can also be provided via `--optimizer-agent`). |
+| `AZURE_OPENAI_ENDPOINT` | Azure OpenAI endpoint used for LLM-based prompt refinement. |
+| `AZURE_OPENAI_API_KEY` | API key for the Azure OpenAI resource. |
+| `AZURE_OPENAI_API_VERSION` | *(Optional)* API version (defaults to `2024-02-15-preview`). |
+| `AZURE_OPENAI_DEPLOYMENT` | Deployment name (model) used for chat completions. |
 
 For automated evaluations, the AgentEvals harness expects any additional dependencies defined in its README (CSV datasets, `.env`, etc.).
 
@@ -51,7 +54,6 @@ Key switches:
 | `--prompts` | Comma-separated prompt names. Use `all` (default) to optimise every prompt referenced by the agent. |
 | `--list-prompts` | Print the agent’s prompt catalogue and exit (no modifications). |
 | `--brief` / `--brief-file` | Provide the optimisation brief inline or via a file. Exactly one is required for optimisation runs. |
-| `--optimizer-agent` | Override the agent that performs LLM refinement (defaults to `FLLM_PROMPT_OPTIMIZER_AGENT`). |
 | `--suite` | AgentEvals suite to execute after each revision (e.g. `code-interpreter`). |
 | `--max-iterations` | Maximum refinement iterations per prompt (default: 5). |
 | `--target-pass-rate` | Evaluation pass-rate threshold that determines convergence (default: 0.9). |

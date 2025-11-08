@@ -14,9 +14,10 @@ import os
 import pathlib
 from dataclasses import dataclass
 from datetime import datetime
-from typing import Any, Dict, Optional
+from typing import Any, Dict, List, Optional
 
 import requests
+from openai import AzureOpenAI
 
 
 class FoundationaLLMClientError(RuntimeError):
@@ -200,104 +201,73 @@ class FoundationaLLMManagementClient:
         return backup_path
 
 
-class FoundationaLLMCompletionClient:
+class AzureOpenAILLMClient:
     """
-    Client for interacting with the FoundationaLLM Core API completions surface.
+    Lightweight wrapper around Azure OpenAI chat completions for prompt refinement.
     """
 
     def __init__(
         self,
+        *,
         endpoint: Optional[str] = None,
-        access_token: Optional[str] = None,
-        default_agent: Optional[str] = None,
-        timeout_seconds: int = 60,
+        api_key: Optional[str] = None,
+        api_version: Optional[str] = None,
+        deployment: Optional[str] = None,
+        default_temperature: float = 0.2,
     ) -> None:
-        self.endpoint = _ensure_trailing_slash(
-            endpoint or os.getenv("FLLM_ENDPOINT", "").strip()
-        )
-        self.access_token = (access_token or os.getenv("FLLM_ACCESS_TOKEN", "")).strip()
-        self.default_agent = default_agent or os.getenv("FLLM_PROMPT_OPTIMIZER_AGENT", "").strip()
-        self.timeout_seconds = timeout_seconds
+        self.endpoint = (endpoint or os.getenv("AZURE_OPENAI_ENDPOINT", "")).strip()
+        self.api_key = (api_key or os.getenv("AZURE_OPENAI_API_KEY", "")).strip()
+        self.api_version = (api_version or os.getenv("AZURE_OPENAI_API_VERSION", "2024-02-15-preview")).strip()
+        self.deployment = (deployment or os.getenv("AZURE_OPENAI_DEPLOYMENT", "")).strip()
+        self.default_temperature = default_temperature
 
         if not self.endpoint:
             raise FoundationaLLMAuthenticationError(
-                "Missing FoundationaLLM Core API endpoint. Set FLLM_ENDPOINT or pass endpoint explicitly."
+                "Missing Azure OpenAI endpoint. Set AZURE_OPENAI_ENDPOINT or provide endpoint explicitly."
             )
-        if not self.access_token:
+        if not self.api_key:
             raise FoundationaLLMAuthenticationError(
-                "Missing FoundationaLLM access token. Set FLLM_ACCESS_TOKEN or provide access_token explicitly."
+                "Missing Azure OpenAI API key. Set AZURE_OPENAI_API_KEY or provide api_key explicitly."
             )
-
-    def _core_headers(self) -> Dict[str, str]:
-        return {
-            "X-AGENT-ACCESS-TOKEN": self.access_token,
-            "Content-Type": "application/json",
-        }
-
-    def _core_request(self, method: str, path: str, payload: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
-        url = f"{self.endpoint.rstrip('/')}/{path.lstrip('/')}"
-        response = requests.request(
-            method=method.upper(),
-            url=url,
-            headers=self._core_headers(),
-            json=payload,
-            timeout=self.timeout_seconds,
-        )
-
-        if response.status_code == 401:
+        if not self.deployment:
             raise FoundationaLLMAuthenticationError(
-                "Core API returned 401 Unauthorized. Confirm the access token is valid."
+                "Missing Azure OpenAI deployment name. Set AZURE_OPENAI_DEPLOYMENT or provide deployment explicitly."
             )
 
         try:
-            response.raise_for_status()
-        except requests.HTTPError as exc:
-            raise FoundationaLLMClientError(
-                f"Core API request failed ({method.upper()} {url}): {response.status_code} {response.text}"
-            ) from exc
+            self.client = AzureOpenAI(
+                azure_endpoint=self.endpoint,
+                api_key=self.api_key,
+                api_version=self.api_version,
+            )
+        except Exception as exc:  # pragma: no cover - Azure client init errors
+            raise FoundationaLLMClientError(f"Failed to initialize Azure OpenAI client: {exc}") from exc
 
-        try:
-            return response.json()
-        except json.JSONDecodeError as exc:
-            raise FoundationaLLMClientError(
-                f"Unable to decode Core API JSON response from {url}: {exc}"
-            ) from exc
-
-    def create_session(self, session_name: Optional[str] = None) -> str:
-        session_payload = {"name": session_name} if session_name else {}
-        response = self._core_request("POST", "sessions", payload=session_payload)
-        session_id = response.get("sessionId") or response.get("session_id")
-        if not session_id:
-            raise FoundationaLLMClientError("Session creation response did not include sessionId.")
-        return session_id
-
-    def complete(
+    def chat_completion(
         self,
-        prompt: str,
+        messages: List[Dict[str, str]],
         *,
-        agent_name: Optional[str] = None,
-        session_id: Optional[str] = None,
-        attachments: Optional[list[str]] = None,
-        conversation: Optional[list[Dict[str, Any]]] = None,
-    ) -> Dict[str, Any]:
+        temperature: Optional[float] = None,
+        max_tokens: int = 2000,
+    ) -> str:
         """
-        Submit a completion request using the provided prompt.
+        Execute a chat completion and return the assistant's textual response.
         """
-        agent_to_use = agent_name or self.default_agent
-        if not agent_to_use:
-            raise ValueError(
-                "No agent specified for completion request. Provide agent_name or configure FLLM_PROMPT_OPTIMIZER_AGENT."
+        try:
+            response = self.client.chat.completions.create(
+                model=self.deployment,
+                messages=messages,
+                temperature=self._clamp_temperature(temperature),
+                max_tokens=max_tokens,
             )
+        except Exception as exc:  # pragma: no cover - Azure API failures
+            raise FoundationaLLMClientError(f"Azure OpenAI chat completion failed: {exc}") from exc
 
-        session = session_id or self.create_session()
-        payload: Dict[str, Any] = {
-            "user_prompt": prompt,
-            "agent_name": agent_to_use,
-            "session_id": session,
-        }
-        if attachments:
-            payload["attachments"] = attachments
-        if conversation:
-            payload["conversation"] = conversation
+        try:
+            return response.choices[0].message.content.strip()
+        except (AttributeError, IndexError, KeyError) as exc:
+            raise FoundationaLLMClientError("Azure OpenAI response did not contain message content.") from exc
 
-        return self._core_request("POST", "completions", payload=payload)
+    def _clamp_temperature(self, temperature: Optional[float]) -> float:
+        value = self.default_temperature if temperature is None else temperature
+        return max(0.0, min(1.0, value))

@@ -5,15 +5,14 @@ Command-line entry point for prompt authoring and optimisation.
 from __future__ import annotations
 
 import argparse
-import os
 import sys
 from pathlib import Path
 from typing import List, Optional
 
 from .evaluator import PromptEvaluator
 from .foundationallm_client import (
+    AzureOpenAILLMClient,
     FoundationaLLMClientError,
-    FoundationaLLMCompletionClient,
     FoundationaLLMManagementClient,
 )
 from .llm_refiner import PromptRefiner
@@ -98,10 +97,6 @@ def build_arg_parser() -> argparse.ArgumentParser:
     )
     parser.add_argument("--verbose", action="store_true", help="Enable verbose logging.")
     parser.add_argument(
-        "--optimizer-agent",
-        help="Name of the agent that will be used as the LLM for prompt refinement.",
-    )
-    parser.add_argument(
         "--no-eval",
         action="store_true",
         help="Skip automated evaluation runs (rely solely on LLM reasoning).",
@@ -167,11 +162,8 @@ def main(argv: Optional[List[str]] = None) -> int:
     history_dir = base_output_dir / "history"
     evaluation_dir = base_output_dir / "evaluations"
 
-    if args.optimizer_agent:
-        os.environ["FLLM_PROMPT_OPTIMIZER_AGENT"] = args.optimizer_agent
-
     try:
-        completion_client = FoundationaLLMCompletionClient(default_agent=args.optimizer_agent)
+        completion_client = AzureOpenAILLMClient()
     except FoundationaLLMClientError as exc:
         parser.error(str(exc))
         return 2

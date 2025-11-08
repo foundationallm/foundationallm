@@ -9,7 +9,7 @@ import textwrap
 from dataclasses import dataclass, field
 from typing import Any, Dict, Optional
 
-from .foundationallm_client import FoundationaLLMCompletionClient, FoundationaLLMClientError
+from .foundationallm_client import AzureOpenAILLMClient, FoundationaLLMClientError
 
 
 @dataclass
@@ -18,22 +18,7 @@ class PromptImprovementResult:
     reasoning: str
     confidence: Optional[float] = None
     additional_notes: Dict[str, Any] = field(default_factory=dict)
-    raw_response: Dict[str, Any] = field(default_factory=dict)
-
-
-def _extract_text_from_completion(response: Dict[str, Any]) -> str:
-    content_items = response.get("content") or response.get("choices") or []
-    if isinstance(content_items, list):
-        parts = []
-        for item in content_items:
-            if isinstance(item, dict):
-                value = item.get("value") or item.get("text") or ""
-                if value:
-                    parts.append(str(value))
-        return "\n".join(parts).strip()
-    if isinstance(content_items, str):
-        return content_items
-    return ""
+    raw_response: Optional[str] = None
 
 
 def _ensure_json_payload(text: str) -> Dict[str, Any]:
@@ -118,7 +103,7 @@ class PromptRefiner:
     Wraps LLM interactions required to iteratively improve prompt bodies.
     """
 
-    def __init__(self, completion_client: FoundationaLLMCompletionClient) -> None:
+    def __init__(self, completion_client: AzureOpenAILLMClient) -> None:
         self.completion_client = completion_client
 
     def improve_prompt(
@@ -135,21 +120,25 @@ class PromptRefiner:
         """
         Request an improved prompt body from the LLM, capturing reasoning.
         """
-        llm_prompt = textwrap.dedent(
-            f"""
-            You are an expert AI prompt engineer improving prompts used by the agent "{agent_name}".
-            You will receive the current prompt body along with a design brief describing
-            the problem and the definition of success. You must produce a JSON object
-            with the following keys:
-              - reasoning: step-by-step explanation of the changes and why they solve the brief.
-              - revised_prompt: the updated prompt body that should replace the existing one.
-              - confidence: number between 0 and 1 representing your confidence in the revision.
-              - suggested_evaluation: optional guidance to refine further testing.
-            If the prompt already satisfies the brief, explain why and return the existing prompt.
-            Respond ONLY with JSON matching this schema.
+        system_message = textwrap.dedent(
+            """
+            You are an expert AI prompt engineer. Your job is to rewrite prompts so that
+            they produce reliable, high-quality responses that align with the given goals.
+            Always respond with a JSON object containing:
+              - reasoning: A concise, step-by-step explanation of the changes.
+              - revised_prompt: The updated prompt text after applying improvements.
+              - confidence: A value between 0 and 1 estimating how confident you are that the revision meets the goal.
+              - suggested_evaluation: Optional guidance for further testing.
+            If no changes are required, return the original prompt in revised_prompt and explain why.
+            """
+        ).strip()
 
+        user_message = textwrap.dedent(
+            f"""
+            Agent Name: {agent_name}
             Prompt Name: {prompt_name}
             Prompt Context: {context_summary or "n/a"}
+
             Optimization Brief:
             {optimization_brief.strip()}
 
@@ -166,17 +155,19 @@ class PromptRefiner:
         ).strip()
 
         try:
-            completion_response = self.completion_client.complete(
-                prompt=llm_prompt,
+            raw_text = self.completion_client.chat_completion(
+                messages=[
+                    {"role": "system", "content": system_message},
+                    {"role": "user", "content": user_message},
+                ],
+                temperature=0.2,
+                max_tokens=1800,
             )
         except FoundationaLLMClientError as exc:
             raise
 
-        raw_text = _extract_text_from_completion(completion_response)
         if not raw_text:
-            raise FoundationaLLMClientError(
-                "Prompt refinement LLM response did not include textual content."
-            )
+            raise FoundationaLLMClientError("Prompt refinement LLM returned an empty response.")
 
         payload = _ensure_json_payload(raw_text)
 
@@ -198,5 +189,5 @@ class PromptRefiner:
             reasoning=reasoning.strip(),
             confidence=float(confidence) if isinstance(confidence, (int, float, str)) and str(confidence).strip() else None,
             additional_notes=additional_notes,
-            raw_response=completion_response,
+            raw_response=raw_text,
         )
