@@ -124,12 +124,13 @@ class PromptRefiner:
             """
             You are an expert AI prompt engineer. Your job is to rewrite prompts so that
             they produce reliable, high-quality responses that align with the given goals.
-            Always respond with a JSON object containing:
+            You must respond ONLY with a valid JSON object. Do not include any text before or after the JSON.
+            The JSON must contain exactly these keys:
               - reasoning: A concise, step-by-step explanation of the changes.
               - revised_prompt: The updated prompt text after applying improvements.
-              - confidence: A value between 0 and 1 estimating how confident you are that the revision meets the goal.
-              - suggested_evaluation: Optional guidance for further testing.
-            If no changes are required, return the original prompt in revised_prompt and explain why.
+              - confidence: A number between 0 and 1 estimating how confident you are that the revision meets the goal.
+              - suggested_evaluation: Optional guidance for further testing (can be null or empty string).
+            If no changes are required, return the original prompt in revised_prompt and explain why in reasoning.
             """
         ).strip()
 
