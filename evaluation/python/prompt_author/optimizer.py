@@ -129,7 +129,33 @@ class PromptOptimizationEngine:
                 iteration_index=iteration,
             )
 
-            candidate_payload = apply_prompt_body(current_payload, improvement.revised_body)
+            # Display suggestion and handle confirmation
+            print(f"\n=== Suggested Improvement for {prompt_name} ===")
+            print(improvement.revised_body)
+            print(f"Confidence: {improvement.confidence}")
+            print(f"Reasoning: {improvement.reasoning}")
+            import sys
+            sys.stdout.flush()
+
+            apply = True  # Default to apply
+            try:
+                if sys.stdin.isatty():
+                    response = input("\nApply this change? (y/n): ").strip().lower()
+                    apply = response.startswith('y')
+                else:
+                    print("\nNon-interactive mode: auto-applying change.")
+            except (EOFError, KeyboardInterrupt):
+                apply = False
+                print("\nInput interrupted: skipping change.")
+
+            if not apply:
+                candidate_payload = current_payload  # Revert to original
+                improvement.revised_body = current_body
+                print("Change skipped.")
+            else:
+                candidate_payload = apply_prompt_body(current_payload, improvement.revised_body)
+                print("Change applied.")
+            sys.stdout.flush()
 
             evaluation_result: Optional[EvaluationResult] = None
             if not self.config.dry_run:
