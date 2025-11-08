@@ -77,9 +77,27 @@ def build_prompt_messages(
             )
         )
 
-    # Stable ordering: system > tool > other > user (if any), then alphabetical.
-    role_weights = {"system": 0, "tool": 1, "other": 2, "user": 3}
-    messages.sort(key=lambda msg: (role_weights.get(msg.role, 99), msg.name.lower()))
+    # Custom ordering to match agent execution sequence
+    def get_sort_key(msg: PromptMessage) -> int:
+        role = msg.role
+        name_lower = msg.name.lower()
+        # Desired order: workflow-main, workflow-router, workflow-files, tool-router, tool-main, workflow-final, others
+        if role == "system" and "main" in name_lower:
+            return 0  # workflow-main
+        elif role == "system" and "router" in name_lower:
+            return 1  # workflow-router
+        elif role == "system" and "files" in name_lower:
+            return 2  # workflow-files
+        elif role == "tool" and "router" in name_lower:
+            return 3  # tool-router
+        elif role == "tool" and "main" in name_lower:
+            return 4  # tool-main
+        elif role == "system" and "final" in name_lower:
+            return 5  # workflow-final
+        else:
+            return 6  # others
+
+    messages.sort(key=lambda msg: (get_sort_key(msg), msg.name.lower()))
     return messages
 
 
