@@ -41,9 +41,7 @@ def _load_brief(args: argparse.Namespace) -> str:
 
 def _print_prompt_catalog(prompts: List[PromptReference]) -> None:
     for prompt in prompts:
-        contexts = ", ".join(prompt.contexts) if prompt.contexts else "n/a"
-        role = prompt.role or "unknown"
-        print(f"- {prompt.prompt_name} (role={role}, contexts={contexts})")
+        print(prompt.prompt_name)
 
 
 def build_arg_parser() -> argparse.ArgumentParser:
