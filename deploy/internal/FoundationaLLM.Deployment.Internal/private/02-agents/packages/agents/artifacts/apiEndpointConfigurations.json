@@ -41,5 +41,61 @@
         "url_exceptions": [],
         "timeout_seconds": 2400,
         "retry_strategy_name": "ExponentialBackoff"
+    },
+    {
+        "type": "api-endpoint",
+        "name": "OrchestrationAPI",
+        "category": "General",
+        "authentication_type": "APIKey",
+        "authentication_parameters": {
+            "api_key_configuration_name": "FoundationaLLM:APIEndpoints:OrchestrationAPI:Essentials:APIKey",
+            "api_key_header_name": "X-API-KEY"
+        },
+        "url": "{{ORCHESTRATIONAPI_ENDPOINT}}",
+        "url_exceptions": [],
+        "timeout_seconds": 2400,
+        "retry_strategy_name": "ExponentialBackoff"
+    },
+    {
+        "type": "api-endpoint",
+        "name": "LangChainAPI",
+        "category": "Orchestration",
+        "authentication_type": "APIKey",
+        "authentication_parameters": {
+            "api_key_configuration_name": "FoundationaLLM:APIEndpoints:LangChainAPI:Essentials:APIKey",
+            "api_key_header_name": "X-API-KEY"
+        },
+        "url": "{{LANGCHAINAPI_ENDPOINT}}",
+        "url_exceptions": [],
+        "timeout_seconds": 1800,
+        "retry_strategy_name": "ExponentialBackoff"
+    },
+    {
+        "type": "api-endpoint",
+        "name": "StateAPI",
+        "category": "General",
+        "authentication_type": "APIKey",
+        "authentication_parameters": {
+            "api_key_configuration_name": "FoundationaLLM:APIEndpoints:StateAPI:Essentials:APIKey",
+            "api_key_header_name": "X-API-KEY"
+        },
+        "url": "{{STATEAPI_ENDPOINT}}",
+        "url_exceptions": [],
+        "timeout_seconds": 2400,
+        "retry_strategy_name": "ExponentialBackoff"
+    },
+    {
+        "type": "api-endpoint",
+        "name": "GatewayAPI",
+        "category": "General",
+        "authentication_type": "APIKey",
+        "authentication_parameters": {
+            "api_key_configuration_name": "FoundationaLLM:APIEndpoints:GatewayAPI:Essentials:APIKey",
+            "api_key_header_name": "X-API-KEY"
+        },
+        "url": "{{GATEWAYAPI_ENDPOINT}}",
+        "url_exceptions": [],
+        "timeout_seconds": 1200,
+        "retry_strategy_name": "ExponentialBackoff"
     }
 ]

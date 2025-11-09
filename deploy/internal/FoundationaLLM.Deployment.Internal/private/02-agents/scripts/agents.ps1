@@ -22,6 +22,10 @@ function New-AgentsArtifacts {
 
     $azureOpenAIEndpoint = ((az cognitiveservices account show -g $resourceGroupNames.AIFoundry -n $resourceNames.AIFoundry) | ConvertFrom-Json).properties.endpoint
     $contextAPIEndpoint = "https://" + (az containerapp ingress show -n $resourceNames.ContextAPIContainerApp -g $resourceGroupNames.Core --query "fqdn" -o tsv)
+    $orchestrationAPIEndpoint = "https://" + (az containerapp ingress show -n $resourceNames.OrchestrationAPIContainerApp -g $resourceGroupNames.Core --query "fqdn" -o tsv)
+    $langChainAPIEndpoint = "https://" + (az containerapp ingress show -n $resourceNames.LangChainAPIContainerApp -g $resourceGroupNames.Core --query "fqdn" -o tsv)
+    $stateAPIEndpoint = "https://" + (az containerapp ingress show -n $resourceNames.StateAPIContainerApp -g $resourceGroupNames.Core --query "fqdn" -o tsv)
+    $gatewayAPIEndpoint = "https://" + (az containerapp ingress show -n $resourceNames.GatewayAPIContainerApp -g $resourceGroupNames.Core --query "fqdn" -o tsv)
 
     Deploy-FoundationaLLMPackage `
         -PackageRoot $packagePath `
@@ -29,6 +33,10 @@ function New-AgentsArtifacts {
             AZURE_OPENAI_ENDPOINT = $azureOpenAIEndpoint
             AZURE_AISEARCH_ENDPOINT = "https://$($resourceNames.AISearch).search.windows.net"
             CONTEXTAPI_ENDPOINT = $contextAPIEndpoint
+            ORCHESTRATIONAPI_ENDPOINT = $orchestrationAPIEndpoint
+            LANGCHAINAPI_ENDPOINT = $langChainAPIEndpoint
+            STATEAPI_ENDPOINT = $stateAPIEndpoint
+            GATEWAYAPI_ENDPOINT = $gatewayAPIEndpoint
         }
 }
 
