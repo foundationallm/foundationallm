@@ -108,6 +108,15 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
                     .OrderBy(su => su.SchemaVersion)
                     .ToList();
 
+                if (requiredUpgrades.Count == 0)
+                {
+                    _logger.LogInformation(
+                        "No schema upgrades are required for the resource references store of the {ResourceProviderName} resource provider. The current schema version is {CurrentSchemaVersion}.",
+                        _resourceProvider.Name,
+                        persistedReferencesList.SchemaVersion);
+                    return true;
+                }
+
                 _logger.LogInformation(
                     "Starting to run schema upgrades from version {StartVersion} to version {EndVersion} for the resource references store of the {ResourceProviderName} resource provider...",
                     persistedReferencesList.SchemaVersion,
