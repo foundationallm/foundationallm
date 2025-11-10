@@ -7,6 +7,11 @@
     public class ResourceReferenceList<T> where T : ResourceReference
     {
         /// <summary>
+        /// Gets or sets the schema version of the resource reference list.
+        /// </summary>
+        public int SchemaVersion { get; set; } = 1;
+
+        /// <summary>
         /// The dictionary of resource references indexed by their unique names.
         /// </summary>
         public required List<T> ResourceReferences { get; set; }
