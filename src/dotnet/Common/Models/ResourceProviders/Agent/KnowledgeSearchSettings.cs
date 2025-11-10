@@ -19,5 +19,10 @@
         /// The object identifier of the knowledge unit used for the agent private store files.
         /// </summary>
         public required string AgentPrivateStoreKnowledgeUnitObjectId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the maximum context size in characters for content items processed by data pipelines.
+        /// </summary>
+        public int MaxContentSizeCharacters { get; set; } = 10000000;
     }
 }

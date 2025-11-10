@@ -88,7 +88,12 @@ namespace FoundationaLLM.Plugins.DataPipeline
                     DisplayName = "Text Extraction Data Pipeline Stage (FoundationaLLM)",
                     Description = "Provides the FoundationaLLM standard implementation for text extraction data pipeline stages.",
                     Category = PluginCategoryNames.DataPipelineStage,
-                    Parameters = [],
+                    Parameters = [
+                        new() {
+                            Name = PluginParameterNames.TEXTEXTRACTION_DATAPIPELINESTAGE_MAXCONTENTSIZECHARACTERS,
+                            Type = PluginParameterTypes.Int,
+                            Description = "The maximum allowed content item size in characters."
+                        }],
                     Dependencies = [
                         new() {
                             SelectionType = PluginDependencySelectionTypes.Multiple,
