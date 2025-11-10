@@ -33,7 +33,7 @@ namespace FoundationaLLM.Orchestration.Tests.Services
             var request = new LLMCompletionRequest
             {
                 OperationId = "TestOperationId",
-                Agent = new KnowledgeManagementAgent() { Name = "Test_name", ObjectId = "Test_id", Type = "Test_type" },
+                Agent = new GenericAgent() { Name = "Test_name", ObjectId = "Test_id", Type = "Test_type" },
                 UserPrompt = ""
             };
             var responseContent = System.Text.Json.JsonSerializer.Serialize(new LLMCompletionResponse { OperationId = request.OperationId, Completion = "Completion response" });

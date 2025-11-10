@@ -136,60 +136,6 @@ namespace FoundationaLLM.Common.Models.Orchestration.Request
                 || string.IsNullOrWhiteSpace(prompt.Prefix))
                 throw new OrchestrationException("The prompt object provided in the request's objects is invalid.");
 
-            if (Agent is KnowledgeManagementAgent kmAgent
-                && kmAgent.Vectorization != null)
-            {
-                if (!string.IsNullOrWhiteSpace(kmAgent.Vectorization.TextEmbeddingProfileObjectId))
-                {
-                    if (!Objects.TryGetValue(
-                            kmAgent.Vectorization.TextEmbeddingProfileObjectId, out var textEmbeddingProfileObject))
-                        throw new OrchestrationException("The text embedding profile object is missing from the request's objects.");
-
-                    var textEmbeddingProfile = textEmbeddingProfileObject is JsonElement textEmbeddingProfileJsonElement
-                        ? textEmbeddingProfileJsonElement.Deserialize<TextEmbeddingProfile>()
-                        : textEmbeddingProfileObject as TextEmbeddingProfile;
-
-                    // All embedding is accomplished via the Gateway with a non-deterministic endpoint, requires the embedding model name (not deployment) in settings.                                       
-                    if (textEmbeddingProfile == null)                       
-                        throw new OrchestrationException("The text embedding profile object provided in the request's objects is invalid.");
-
-                    if (textEmbeddingProfile.Settings == null)
-                        throw new OrchestrationException("The text embedding profile settings must contain a model_name item.");
-
-                    if (textEmbeddingProfile.Settings.ContainsKey(VectorizationSettingsNames.EmbeddingProfileModelName))
-                        throw new OrchestrationException("The text embedding profile settings must contain a model_name item.");
-                   
-                    _hasTextEmbeddingProfile = true;
-                }
-
-                if ((kmAgent.Vectorization.IndexingProfileObjectIds ?? []).Count > 0)
-                {
-                    for (int i = 0; i < kmAgent.Vectorization.IndexingProfileObjectIds!.Count; i++)
-                    {
-                        var indexingProfileObjectId = kmAgent.Vectorization.IndexingProfileObjectIds[i];
-
-                        if (string.IsNullOrEmpty(indexingProfileObjectId))
-                            throw new OrchestrationException($"The indexing profile object id at index {i} is invalid.");
-
-                        if (!Objects.TryGetValue(
-                                indexingProfileObjectId, out var indexingProfileObject))
-                            throw new OrchestrationException($"The indexing profile object with id {indexingProfileObjectId} is missing from the request's objects.");
-
-                        var indexingProfile = indexingProfileObject is JsonElement indexingProfileJsonElement
-                            ? indexingProfileJsonElement.Deserialize<IndexingProfile>()
-                            : indexingProfileObject as IndexingProfile;
-
-                        if (indexingProfile == null
-                            || indexingProfile.Settings == null
-                            || !indexingProfile.Settings.TryGetValue("index_name", out var indexName)
-                            || string.IsNullOrWhiteSpace(indexName))
-                            throw new OrchestrationException($"The indexing profile object with id {indexingProfileObjectId} provided in the request's objects is invalid.");
-                    }
-
-                    _hasIndexingProfiles = true;
-                }
-            }
-
             _valid = true;
         }
 
@@ -294,70 +240,6 @@ namespace FoundationaLLM.Common.Models.Orchestration.Request
                 : (promptObject as MultipartPrompt)!;
 
                 return _prompt;
-            }
-        }
-
-        /// <summary>
-        /// The <see cref="TextEmbeddingProfile"/> object from the Objects dictionary. Ensure the Validate method is called before accessing this property.
-        /// <para>
-        /// This object is supposed to be added to the Objects dictionary by the instantiator of this request based on the object identifier set on the agent's vectorization settings.
-        /// </para>
-        /// </summary>
-        [JsonIgnore]
-        public TextEmbeddingProfile? TextEmbeddingProfile
-        {
-            get
-            {
-                if (_textEmbeddingProfile != null)
-                    return _textEmbeddingProfile;
-
-                Validate();
-
-                if (!_hasTextEmbeddingProfile)
-                    return null;
-
-                var textEmbeddingProfileObject = Objects[(Agent as KnowledgeManagementAgent)!.Vectorization.TextEmbeddingProfileObjectId!];
-
-                _textEmbeddingProfile = textEmbeddingProfileObject is JsonElement textEmbeddingProfileJsonElement
-                       ? textEmbeddingProfileJsonElement.Deserialize<TextEmbeddingProfile>()!
-                       : (textEmbeddingProfileObject as TextEmbeddingProfile)!;
-
-                return _textEmbeddingProfile;
-            }
-        }
-
-        /// <summary>
-        /// The list of <see cref="IndexingProfile"/> objects from the Objects dictionary. Ensure the Validate method is called before accessing this property.
-        /// <para>
-        /// These objects are supposed to be added to the Objects dictionary by the instantiator of this request based on the object identifiers set on the agent's vectorization settings.
-        /// </para>
-        /// </summary>
-        [JsonIgnore]
-        public List<IndexingProfile>? IndexingProfiles
-        {
-            get
-            {
-                if (_indexingProfiles != null)
-                    return _indexingProfiles;
-
-                Validate();
-
-                if (!_hasIndexingProfiles)
-                    return null;
-
-                _indexingProfiles = (Agent as KnowledgeManagementAgent)!.Vectorization.IndexingProfileObjectIds!
-                    .Select(indexingProfileObjectId =>
-                        {
-                            var indexingProfileObject = Objects[indexingProfileObjectId];
-
-                            return indexingProfileObject is JsonElement indexingProfileJsonElement
-                                ? indexingProfileJsonElement.Deserialize<IndexingProfile>()!
-                                : (indexingProfileObject as IndexingProfile)!;
-                        })
-                    .ToList();
-
-
-                return _indexingProfiles;
             }
         }
 

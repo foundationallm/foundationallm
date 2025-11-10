@@ -38,6 +38,7 @@ using Microsoft.Extensions.Options;
 using System.Data;
 using System.Text;
 using System.Text.Json;
+using System.Text.Json.Nodes;
 
 namespace FoundationaLLM.Agent.ResourceProviders
 {
@@ -280,7 +281,7 @@ namespace FoundationaLLM.Agent.ResourceProviders
             ResourceProviderUpsertOptions? options = null) =>
             resource.GetType() switch
             {
-                Type t when t == typeof(KnowledgeManagementAgent) =>
+                Type t when t == typeof(GenericAgent) =>
                     ((await UpdateAgent(
                         resourcePath,
                         (resource as AgentBase)!,
@@ -1920,6 +1921,53 @@ namespace FoundationaLLM.Agent.ResourceProviders
                 new OrchestrationContext { CurrentUserIdentity = userIdentity },
                 _serviceProvider.GetRequiredService<IHttpClientFactoryService>(),
                 _serviceProvider.GetRequiredService<ILogger<ContextServiceClient>>());
+
+        #endregion
+
+        #region Schema upgrades
+
+        /// <inheritdoc/>
+        protected override List<ResourceReferenceListSchemaUpgrade<AgentReference>> GetResourceReferenceSchemaUpgrades() =>
+            [
+                new ResourceReferenceListSchemaUpgrade<AgentReference>
+                {
+                    SchemaVersion = 2,
+                    ResourceReferenceUpgradeAction = UpgradeAgentResourceSchema_V1_to_V2
+                }
+            ];
+
+        private async Task UpgradeAgentResourceSchema_V1_to_V2(
+            AgentReference agentReference,
+            IStorageService storage,
+            ILogger logger)
+        {
+            if (agentReference.Type == "knowledge-management"
+                && !agentReference.Deleted)
+            {
+                logger.LogInformation("Upgrading Agent resource {AgentName} from schema version 1 to 2...",
+                    agentReference.Name);
+
+                agentReference.Type = AgentTypes.GenericAgent;
+
+                var agentFile = await storage.ReadFileAsync(
+                    _storageContainerName,
+                    agentReference.Filename,
+                    CancellationToken.None);
+
+                var jsonNode = JsonNode.Parse(agentFile.ToString());
+                jsonNode!["type"] = AgentTypes.GenericAgent;
+
+                await storage.WriteFileAsync(
+                    _storageContainerName,
+                    agentReference.Filename,
+                    jsonNode!.ToJsonString(),
+                    "application/json",
+                    CancellationToken.None);
+
+                logger.LogInformation("Successfully upgraded Agent resource {AgentName} from schema version 1 to 2...",
+                    agentReference.Name);
+            }
+        }
 
         #endregion
     }

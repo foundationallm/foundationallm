@@ -8,7 +8,7 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.Agent
     /// Base agent metadata model.
     /// </summary>
     [JsonPolymorphic(TypeDiscriminatorPropertyName = "type")]
-    [JsonDerivedType(typeof(KnowledgeManagementAgent), "knowledge-management")]
+    [JsonDerivedType(typeof(GenericAgent), "generic-agent")]
     public class AgentBase : ResourceBase
     {
         /// <inheritdoc/>
@@ -108,7 +108,7 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.Agent
         public Type AgentType =>
             Type switch
             {
-                AgentTypes.KnowledgeManagement => typeof(KnowledgeManagementAgent),
+                AgentTypes.GenericAgent => typeof(GenericAgent),
                 _ => throw new ResourceProviderException($"The agent type {Type} is not supported.")
             };
 
