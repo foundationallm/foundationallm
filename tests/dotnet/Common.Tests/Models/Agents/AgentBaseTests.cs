@@ -5,13 +5,13 @@ namespace FoundationaLLM.Common.Tests.Models.Agents
 {
     public class AgentBaseTests
     {
-        private AgentBase _agentBase = new AgentBase { Type = AgentTypes.KnowledgeManagement, Name = "Test_agent", ObjectId = "Test_objectid" };
+        private AgentBase _agentBase = new AgentBase { Type = AgentTypes.GenericAgent, Name = "Test_agent", ObjectId = "Test_objectid" };
 
         [Fact]
         public void AgentType_KnowledgeManagement_ReturnsCorrectType()
         {
             // Assert
-            Assert.Equal(typeof(KnowledgeManagementAgent), _agentBase.AgentType);
+            Assert.Equal(typeof(GenericAgent), _agentBase.AgentType);
         }
 
         [Fact]

@@ -19,7 +19,7 @@ namespace FoundationaLLM.Agent.Models.Resources
             Type switch
             {
                 AgentTypes.Basic => typeof(AgentBase),
-                AgentTypes.KnowledgeManagement => typeof(KnowledgeManagementAgent),
+                AgentTypes.GenericAgent => typeof(GenericAgent),
                 AgentTypes.Workflow => typeof(Workflow),
                 AgentTypes.Tool => typeof(Tool),
                 AgentTypes.AgentTemplate => typeof(AgentTemplate),

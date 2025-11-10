@@ -15,9 +15,9 @@ namespace FoundationaLLM.Core.Examples.Catalogs
         /// <summary>
         /// Catalog of knowledge management agents.
         /// </summary>
-        public static readonly List<KnowledgeManagementAgent> KnowledgeManagementAgents =
+        public static readonly List<GenericAgent> KnowledgeManagementAgents =
         [
-            new KnowledgeManagementAgent
+            new GenericAgent
             {
                 Name = TestAgentNames.GenericInlineContextAgentName,
                 Description = "A generic agent that can handle inline context completions.",
@@ -32,7 +32,7 @@ namespace FoundationaLLM.Core.Examples.Catalogs
                     UseSystemSetting = false
                 }
             },
-            new KnowledgeManagementAgent
+            new GenericAgent
             {
                 Name = TestAgentNames.SemanticKernelInlineContextAgentName,
                 Description = "SemanticKernel agent that can handle inline context completions.",
@@ -47,7 +47,7 @@ namespace FoundationaLLM.Core.Examples.Catalogs
                     UseSystemSetting = false
                 }
             },
-            new KnowledgeManagementAgent
+            new GenericAgent
             {
                 Name = TestAgentNames.SemanticKernelAgentName,
                 Description = "SemanticKernel agent that can handle completions.",
@@ -62,7 +62,7 @@ namespace FoundationaLLM.Core.Examples.Catalogs
                     UseSystemSetting = false
                 }
             },
-            new KnowledgeManagementAgent
+            new GenericAgent
             {
                 Name = TestAgentNames.LangChainAgentName,
                 Description = "LangChain agent that can handle completions.",
@@ -77,7 +77,7 @@ namespace FoundationaLLM.Core.Examples.Catalogs
                     UseSystemSetting = false
                 }
             },
-            new KnowledgeManagementAgent
+            new GenericAgent
             {
                 Name = TestAgentNames.SemanticKernelSDZWA,
                 Description = "Knowledge Management Agent that queries the San Diego Zoo Wildlife Alliance journals using SemanticKernel.",
@@ -91,7 +91,7 @@ namespace FoundationaLLM.Core.Examples.Catalogs
                 {
                     UseSystemSetting = false
                 }            },
-            new KnowledgeManagementAgent
+            new GenericAgent
             {
                 Name = TestAgentNames.LangChainSDZWA,
                 Description = "Knowledge Management Agent that queries the San Diego Zoo Wildlife Alliance journals using LangChain.",
@@ -106,7 +106,7 @@ namespace FoundationaLLM.Core.Examples.Catalogs
                     UseSystemSetting = false
                 }
             },
-            new KnowledgeManagementAgent
+            new GenericAgent
             {
                 Name = TestAgentNames.ConversationGeneratorAgent,
                 Description = "An agent that creates conversations based on product descriptions.",
@@ -121,7 +121,7 @@ namespace FoundationaLLM.Core.Examples.Catalogs
                     UseSystemSetting = false
                 }
             },
-            new KnowledgeManagementAgent
+            new GenericAgent
             {
                 Name = TestAgentNames.Dune01,
                 Description = "Knowledge Management Agent that queries the Dune books using SemanticKernel.",
@@ -136,7 +136,7 @@ namespace FoundationaLLM.Core.Examples.Catalogs
                     UseSystemSetting = false
                 }
             },
-            new KnowledgeManagementAgent
+            new GenericAgent
             {
                 Name = TestAgentNames.Dune02,
                 Description = "Inline Context Agent that writes poems about Dune suitable for being used in wartime songs.",
@@ -151,7 +151,7 @@ namespace FoundationaLLM.Core.Examples.Catalogs
                     UseSystemSetting = false
                 }
             },
-            new KnowledgeManagementAgent
+            new GenericAgent
             {
                 Name = TestAgentNames.Dune03,
                 Description = "Answers questions about Dune by asking for help from other agents.",
@@ -166,7 +166,7 @@ namespace FoundationaLLM.Core.Examples.Catalogs
                     UseSystemSetting = false
                 }
             },
-            new KnowledgeManagementAgent
+            new GenericAgent
             {
                 Name = TestAgentNames.LangChainDune,
                 Description = "Knowledge Management Agent that queries the Dune books using LangChain.",

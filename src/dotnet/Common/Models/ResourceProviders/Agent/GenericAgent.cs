@@ -3,14 +3,14 @@
 namespace FoundationaLLM.Common.Models.ResourceProviders.Agent
 {
     /// <summary>
-    /// The Knowledge Management agent metadata model.
+    /// The Generic agent metadata model.
     /// </summary>
-    public class KnowledgeManagementAgent : AgentBase
+    public class GenericAgent : AgentBase
     {
         /// <summary>
         /// Set default property values.
         /// </summary>
-        public KnowledgeManagementAgent() =>
-            Type = AgentTypes.KnowledgeManagement;
+        public GenericAgent() =>
+            Type = AgentTypes.GenericAgent;
     }
 }

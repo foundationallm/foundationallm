@@ -4,18 +4,18 @@ namespace FoundationaLLM.Common.Tests.Models.Agents
 {
     public class KnowledgeManagementAgentTests
     {
-        private KnowledgeManagementAgent _knowledgeManagementAgent = new KnowledgeManagementAgent()
+        private GenericAgent _knowledgeManagementAgent = new GenericAgent()
         {
             Name = "Test_agent",
             ObjectId = "Test_objectid",
-            Type = AgentTypes.KnowledgeManagement
+            Type = AgentTypes.GenericAgent
         };
 
         [Fact]
         public void KnowledgeManagementAgent_Type_IsKnowledgeManagement()
         {
             // Assert
-            Assert.Equal(AgentTypes.KnowledgeManagement, _knowledgeManagementAgent.Type);
+            Assert.Equal(AgentTypes.GenericAgent, _knowledgeManagementAgent.Type);
         }
     }
 }

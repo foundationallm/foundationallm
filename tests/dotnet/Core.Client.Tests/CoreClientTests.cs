@@ -223,7 +223,7 @@ namespace FoundationaLLM.Client.Core.Tests
             // Arrange
             var agents = new List<ResourceProviderGetResult<AgentBase>> { new ResourceProviderGetResult<AgentBase>
                 {
-                    Resource = new KnowledgeManagementAgent
+                    Resource = new GenericAgent
                     {
                         Name = "TestAgent",
                         Description = "Test Agent Description"

@@ -6,14 +6,14 @@ using FoundationaLLM.Common.Models.ResourceProviders.Agent;
 namespace FoundationaLLM.Agent.Validation.Metadata
 {
     /// <summary>
-    /// Validator for the <see cref="KnowledgeManagementAgent"/> model.
+    /// Validator for the <see cref="GenericAgent"/> model.
     /// </summary>
-    public class KnowledgeManagementAgentValidator : AbstractValidator<KnowledgeManagementAgent>
+    public class GenericAgentValidator : AbstractValidator<GenericAgent>
     {
         /// <summary>
-        /// Configures the validation rules for the <see cref="KnowledgeManagementAgent"/> model.
+        /// Configures the validation rules for the <see cref="GenericAgent"/> model.
         /// </summary>
-        public KnowledgeManagementAgentValidator()
+        public GenericAgentValidator()
         {
             Include(new AgentBaseValidator());
 

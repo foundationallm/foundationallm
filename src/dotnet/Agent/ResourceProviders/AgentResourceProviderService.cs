@@ -280,7 +280,7 @@ namespace FoundationaLLM.Agent.ResourceProviders
             ResourceProviderUpsertOptions? options = null) =>
             resource.GetType() switch
             {
-                Type t when t == typeof(KnowledgeManagementAgent) =>
+                Type t when t == typeof(GenericAgent) =>
                     ((await UpdateAgent(
                         resourcePath,
                         (resource as AgentBase)!,

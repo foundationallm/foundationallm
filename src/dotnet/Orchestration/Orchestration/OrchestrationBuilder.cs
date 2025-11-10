@@ -94,7 +94,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                 callContext.CurrentUserIdentity!,
                 logger);
 
-            if (result.Agent.AgentType == typeof(KnowledgeManagementAgent))
+            if (result.Agent.AgentType == typeof(GenericAgent))
             {
                 var orchestrator = !string.IsNullOrWhiteSpace(result.Agent.Workflow?.WorkflowHost)
                     ? result.Agent.Workflow.WorkflowHost
@@ -130,7 +130,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                 var kmOrchestration = new AgentOrchestration(
                     instanceId,
                     result.Agent.ObjectId!,
-                    (KnowledgeManagementAgent)result.Agent,
+                    (GenericAgent)result.Agent,
                     originalRequest.SessionId!,
                     result.APIEndpointConfiguration!.Url,
                     result.ExplodedObjectsManager.GetExplodedObjects() ?? [],

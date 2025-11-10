@@ -18,10 +18,10 @@ namespace FoundationaLLM.Common.Tests.Models.Agents
         public void KnowledgeManagementAgentType_IsCorrect()
         {
             // Arrange & Act
-            var agentType = AgentTypes.KnowledgeManagement;
+            var agentType = AgentTypes.GenericAgent;
 
             // Assert
-            Assert.Equal("knowledge-management", agentType);
+            Assert.Equal("generic-agent", agentType);
         }
     }
 }
