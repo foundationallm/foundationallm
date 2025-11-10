@@ -406,7 +406,9 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                     var contextServiceResponse = await contextServiceClient.CreateCodeSession(
                         instanceId,
                         agentName,
-                        originalRequest.SessionId!,
+                        originalRequest.SessionId
+                            ?? originalRequest.OperationId
+                            ?? $"temporary-{Guid.NewGuid().ToString().ToLower()}",
                         tool.Name,
                         codeSessionProvider,
                         codeSessionLanguage);
