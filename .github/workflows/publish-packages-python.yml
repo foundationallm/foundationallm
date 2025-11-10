@@ -50,12 +50,42 @@ jobs:
 
     - name: Build Python FoundationaLLMAgentPlugins Package
       run: |
-        cd ./src/python/FoundationaLLMAgentPlugins/src
+        cd ./src/python/plugins/agent_core/pkg
         python -m pip install --upgrade build
         python -m build
 
     - name: Publish Python FoundationaLLMAgentPlugins Package to PyPI
-      working-directory: ./src/python/FoundationaLLMAgentPlugins/src/dist
+      working-directory: ./src/python/plugins/agent_core/pkg/dist
+      env:
+        TWINE_USERNAME: __token__
+        TWINE_PASSWORD: ${{ secrets.PYPI_API_KEY }}
+      run: |
+        python -m pip install --upgrade twine
+        python -m twine upload --repository-url https://upload.pypi.org/legacy/ *.tar.gz *.whl
+
+    - name: Build Python FoundationaLLMAgentPlugins Experimental Package
+      run: |
+        cd ./src/python/plugins/agent_experimental/pkg
+        python -m pip install --upgrade build
+        python -m build
+
+    - name: Publish Python FoundationaLLMAgentPlugins Experimental Package to PyPI
+      working-directory: ./src/python/plugins/agent_experimental/pkg/dist
+      env:
+        TWINE_USERNAME: __token__
+        TWINE_PASSWORD: ${{ secrets.PYPI_API_KEY }}
+      run: |
+        python -m pip install --upgrade twine
+        python -m twine upload --repository-url https://upload.pypi.org/legacy/ *.tar.gz *.whl
+
+    - name: Build Python FoundationaLLMAgentPlugins AzureAI Package
+      run: |
+        cd ./src/python/plugins/agent_azure_ai/pkg
+        python -m pip install --upgrade build
+        python -m build
+
+    - name: Publish Python FoundationaLLMAgentPlugins AzureAI Package to PyPI
+      working-directory: ./src/python/plugins/agent_azure_ai/pkg/dist
       env:
         TWINE_USERNAME: __token__
         TWINE_PASSWORD: ${{ secrets.PYPI_API_KEY }}
