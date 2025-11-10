@@ -12,7 +12,7 @@ from foundationallm.models.agents import KnowledgeManagementCompletionRequest
 from foundationallm.models.orchestration import OrchestrationSettings
 from foundationallm.models.language_models import LanguageModelType, LanguageModelProvider
 from foundationallm.langchain.language_models import LanguageModelFactory
-from foundationallm.langchain.agents import LangChainKnowledgeManagementAgent
+from foundationallm.langchain.agents import GenericAgent
 
 @pytest.fixture
 def test_config():
@@ -24,7 +24,7 @@ def test_azure_ai_search_service_completion_request():
          user_prompt=""" 
             When did the State of the Union Address take place?
          """,
-         agent=KnowledgeManagementAgent(
+         agent=GenericAgent(
             name="sotu",
             type="knowledge-management",
             description="Knowledge Management Agent that queries the State of the Union speech transcript.",

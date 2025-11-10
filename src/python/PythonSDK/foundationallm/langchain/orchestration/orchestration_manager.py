@@ -1,5 +1,8 @@
 from foundationallm.config import Configuration, UserIdentity
-from foundationallm.langchain.agents import AgentFactory, LangChainAgentBase
+from foundationallm.langchain.agents import (
+    AgentFactory,
+    AgentBase
+)
 from foundationallm.operations import OperationsManager
 from foundationallm.plugins import PluginManager
 from foundationallm.models.orchestration import (
@@ -43,13 +46,15 @@ class OrchestrationManager:
             user_identity = user_identity
         )
 
-    def __create_agent(self,
-                       completion_request: CompletionRequestBase,
-                       config: Configuration,
-                       plugin_manager: PluginManager,
-                       operations_manager: OperationsManager,
-                       instance_id: str,
-                       user_identity: UserIdentity) -> LangChainAgentBase:
+    def __create_agent(
+        self,
+        completion_request: CompletionRequestBase,
+        config: Configuration,
+        plugin_manager: PluginManager,
+        operations_manager: OperationsManager,
+        instance_id: str,
+        user_identity: UserIdentity
+    ) -> AgentBase:
         """Creates an agent for executing completion requests."""
         return AgentFactory().get_agent(
             completion_request.agent.type,
