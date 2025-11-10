@@ -1,4 +1,4 @@
-function Initialize-ManagementAPI {
+function Initialize-LangChainAPI {
     param (
         [string]$UniqueName,
         [string]$Location,
@@ -15,50 +15,48 @@ function Initialize-ManagementAPI {
 
     $coreResourceGroupName = $resourceGroupNames.Core
 
-    Write-Host "Ensuring Management API managed identity exists..."
+    Write-Host "Ensuring LangChain API managed identity exists..."
     $managedIdentities = @(
-        $resourceNames.ManagementAPIManagedIdentity
+        $resourceNames.LangChainAPIManagedIdentity
     )
     Initialize-ManagedIdentities `
         -ManagedIdentityNames $managedIdentities `
         -ResourceGroupName $coreResourceGroupName `
         -Location $Location
 
-    Write-Host "Ensuring Azure role assignments for Management API managed identity exist..."
+    Write-Host "Ensuring Azure role assignments for LangChain API managed identity exist..."
     Set-ManagedIdentityAzureRoleAssignments `
         -SubscriptionId $SubscriptionId `
-        -ManagedIdentityType "ManagementAPIManagedIdentity" `
+        -ManagedIdentityType "LangChainAPIManagedIdentity" `
         -ResourceGroupNames $resourceGroupNames `
         -ResourceNames $resourceNames `
-        -AssignGraphRoles $true `
-        -AssignCosmosDBRoles $true
+        -AssignGraphRoles $false `
+        -AssignCosmosDBRoles $false
 
-    Write-Host "Ensuring Management API container app exists..."
+    Write-Host "Ensuring LangChain API container app exists..."
 
-    $secrets = Get-ContainerAppSecrets `
-        -ResourceNames $resourceNames
-    $environmentVariables = Get-ContainerAppEnvVars `
+    $environmentVariables = Get-LangChainContainerAppEnvVars `
         -ResourceGroupName $coreResourceGroupName `
         -ResourceNames $resourceNames `
         -TenantId $TenantId `
-        -ContainerAppIdentity $resourceNames.ManagementAPIManagedIdentity
+        -ContainerAppIdentity $resourceNames.LangChainAPIManagedIdentity
 
     Initialize-ContainerApp `
         -ResourceGroupName $coreResourceGroupName `
         -ResourceNames $resourceNames `
         -TenantId $TenantId `
-        -ContainerAppName $resourceNames.ManagementAPIContainerApp `
-        -ContainerAppIdentity $resourceNames.ManagementAPIManagedIdentity `
-        -Secrets $secrets `
+        -ContainerAppName $resourceNames.LangChainAPIContainerApp `
+        -ContainerAppIdentity $resourceNames.LangChainAPIManagedIdentity `
+        -Secrets $null `
         -EnvironmentVariables $environmentVariables `
         -ContainerImage $ContainerImage `
         -MinReplicas 1 `
         -MaxReplicas 1 `
-        -CPUCores 1 `
-        -Memory 2
+        -CPUCores 4 `
+        -Memory 8
 }
 
-function Restart-ManagementAPI {
+function Restart-LangChainAPI {
     param (
         [string]$UniqueName
     )
@@ -68,12 +66,16 @@ function Restart-ManagementAPI {
 
     Restart-ContainerApp `
         -ResourceGroupName $resourceGroupNames.Core `
-        -ContainerAppName $resourceNames.ManagementAPIContainerApp
+        -ContainerAppName $resourceNames.LangChainAPIContainerApp
 }
 
-function New-ManagementAPIArtifacts {
+function New-LangChainAPIArtifacts {
     param (
-        [string]$UniqueName
+        [string]$UniqueName,
+        [string]$InstanceId,
+        [string]$UserGroupObjectId,
+        [string]$PythonPluginsVersion,
+        [string]$DotnetPluginsVersion
     )
 
     $resourceNames = Get-ResourceNames -UniqueName $UniqueName
@@ -89,12 +91,13 @@ function New-ManagementAPIArtifacts {
     $global:CoreAPIBaseUrl = $coreAPIEndpointURL
     $global:CoreAPIInstanceRelativeUri = "/instances/$($global:InstanceId)"
 
-    $eventGridHostName = (az eventgrid namespace show -g $resourceGroupNames.Core -n $resourceNames.EventGrid --query "topicsConfiguration.hostname" -o tsv)
-    $packagePath = "$PSScriptRoot\..\packages\management-api"
+    $packagePath = "$PSScriptRoot\..\packages\langchain-api"
 
     Deploy-FoundationaLLMPackage `
         -PackageRoot $packagePath `
         -Parameters @{
-            EVENT_GRID_HOSTNAME = $eventGridHostName
+            PYTHON_PLUGINS_VERSION = $PythonPluginsVersion
+            DOTNET_PLUGINS_VERSION = $DotnetPluginsVersion
         }
 }
+

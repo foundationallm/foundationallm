@@ -27,14 +27,16 @@ function Get-ResourceNames {
         EventGrid                           = "$UniqueName-event-grid"
         LogAnalytics                        = "$UniqueName-log-analytics"
         ContainerAppsEnvironment            = "$UniqueName-container-apps-env"
-        CoreStorageAccount                  = "$($UniqueName.ToLower())fllmcorestorage"
+        CoreStorageAccount                  = "$($UniqueName.ToLower())core"
         CosmosDBAccount                     = "$UniqueName-cosmosdb"
         CosmosDBDatabase                    = "database"
-        AuthStorageAccount                  = "$($UniqueName.ToLower())fllmauthstorage"
+        AuthStorageAccount                  = "$($UniqueName.ToLower())auth"
         AuthKeyVault                        = "$UniqueName-auth-key-vault"
-        ContextStorageAccount               = "$($UniqueName.ToLower())fllmcontextstorage"
+        ContextStorageAccount               = "$($UniqueName.ToLower())context"
         AIFoundry                           = "$UniqueName-ai-foundry"
         AISearch                            = "$UniqueName-ai-search"
+        CodeContainerAppsEnvironment        = "$UniqueName-code-container-apps-env"
+        PythonCodeContainerSessionPool      = "$UniqueName-python-code-container"
 
         AuthorizationAPIManagedIdentity     = "$UniqueName-mi-authorization-api"
         ManagementAPIManagedIdentity        = "$UniqueName-mi-management-api"
@@ -71,17 +73,19 @@ function Get-ContainerImageNames {
     )
 
     $containerImages = @{
-        AuthorizationAPI    = "$ContainerRegistry/authorization-api:$Version"
-        ManagementAPI       = "$ContainerRegistry/management-api:$Version"
-        ManagementPortal    = "$ContainerRegistry/management-ui:$Version"
-        CoreAPI             = "$ContainerRegistry/core-api:$Version"
-        CoreWorker          = "$ContainerRegistry/core-job:$Version"
-        UserPortal          = "$ContainerRegistry/chat-ui:$Version"
-        OrchestrationAPI    = "$ContainerRegistry/orchestration-api:$Version"
-        LangChainAPI        = "$ContainerRegistry/langchain-api:$Version"
-        GatewayAPI          = "$ContainerRegistry/gateway-api:$Version"
-        StateAPI            = "$ContainerRegistry/state-api:$Version"
-        ContextAPI          = "$ContainerRegistry/context-api:$Version"
+        AuthorizationAPI                    = "$ContainerRegistry/authorization-api:$Version"
+        ManagementAPI                       = "$ContainerRegistry/management-api:$Version"
+        ManagementPortal                    = "$ContainerRegistry/management-ui:$Version"
+        CoreAPI                             = "$ContainerRegistry/core-api:$Version"
+        CoreWorker                          = "$ContainerRegistry/core-job:$Version"
+        UserPortal                          = "$ContainerRegistry/chat-ui:$Version"
+        OrchestrationAPI                    = "$ContainerRegistry/orchestration-api:$Version"
+        LangChainAPI                        = "$ContainerRegistry/langchain-api:$Version"
+        GatewayAPI                          = "$ContainerRegistry/gateway-api:$Version"
+        StateAPI                            = "$ContainerRegistry/state-api:$Version"
+        ContextAPI                          = "$ContainerRegistry/context-api:$Version"
+
+        PythonCodeSessionAPI                = "$ContainerRegistry/python-codesession-api:$Version"
     }
 
     return $containerImages
@@ -90,11 +94,11 @@ function Get-ContainerImageNames {
 function Get-EntraIDAppRegistrationNames {
 
     $appRegistrationNames = @{
-        AuthorizationAPI    = "FoundationaLLM-Authorization-API"
-        CoreAPI             = "FoundationaLLM-Core-API"
-        ManagementAPI       = "FoundationaLLM-Management-API"
-        ManagementPortal    = "FoundationaLLM-Management-Portal"
-        UserPortal          = "FoundationaLLM-User-Portal"
+        AuthorizationAPI                    = "FoundationaLLM-Authorization-API"
+        CoreAPI                             = "FoundationaLLM-Core-API"
+        ManagementAPI                       = "FoundationaLLM-Management-API"
+        ManagementPortal                    = "FoundationaLLM-Management-Portal"
+        UserPortal                          = "FoundationaLLM-User-Portal"
     }
 
     return $appRegistrationNames
@@ -103,9 +107,9 @@ function Get-EntraIDAppRegistrationNames {
 function Get-EntraIDAppRegistrationURIs {
 
     $appRegistrationURIs = @{
-        AuthorizationAPI    = "api://FoundationaLLM-Authorization"
-        CoreAPI             = "api://FoundationaLLM-Core"
-        ManagementAPI       = "api://FoundationaLLM-Management"
+        AuthorizationAPI                    = "api://FoundationaLLM-Authorization"
+        CoreAPI                             = "api://FoundationaLLM-Core"
+        ManagementAPI                       = "api://FoundationaLLM-Management"
     }
 
     return $appRegistrationURIs
@@ -114,11 +118,11 @@ function Get-EntraIDAppRegistrationURIs {
 function Get-EntraIDAppRegistrationScopes {
 
     $appRegistrationScopes = @{
-        CoreAPI             = "Data.Read"
-        ManagementAPI       = "Data.Manage"
-        AuthorizationAPI    = "api://FoundationaLLM-Authorization"
-        ManagementPortal    = "api://FoundationaLLM-Management/Data.Manage"
-        UserPortal          = "api://FoundationaLLM-Core/Data.Read"
+        CoreAPI                             = "Data.Read"
+        ManagementAPI                       = "Data.Manage"
+        AuthorizationAPI                    = "api://FoundationaLLM-Authorization"
+        ManagementPortal                    = "api://FoundationaLLM-Management/Data.Manage"
+        UserPortal                          = "api://FoundationaLLM-Core/Data.Read"
     }
     return $appRegistrationScopes
 }
@@ -146,6 +150,7 @@ function Get-ConfigurationVariables {
     $managementAPIEndpointURL = "https://" + (az containerapp ingress show -n $resourceNames.ManagementAPIContainerApp -g $resourceGroupNames.Core --query "fqdn" -o tsv)
     $coreAPIEndpointURL = "https://" + (az containerapp ingress show -n $resourceNames.CoreAPIContainerApp -g $resourceGroupNames.Core --query "fqdn" -o tsv)
     $stateAPIEndpointURL = "https://" + (az containerapp ingress show -n $resourceNames.StateAPIContainerApp -g $resourceGroupNames.Core --query "fqdn" -o tsv)
+    $pythonCustomContainerEndpointURL = (az containerapp sessionpool show --name $resourceNames.PythonCodeContainerSessionPool --resource-group $resourceGroupNames.Context --query "properties.poolManagementEndpoint" -o tsv)
 
     $configurationVariables = @{
 
@@ -238,7 +243,7 @@ function Get-ConfigurationVariables {
         # Context API
         #------------------------------------------------------------
         CONTEXTAPI_CODEEXECUTION_CUSTOMCONTAINER = (Get-Content -Raw -LiteralPath "$PSScriptRoot/../data/context-code-execution-custom-container.json") `
-            -replace "{{PYTHON_CUSTOM_CONTAINER_ENDPOINT}}", "python-endpoint"
+            -replace "{{PYTHON_CUSTOM_CONTAINER_ENDPOINT}}", $pythonCustomContainerEndpointURL
         FOUNDATIONALLM_CONTEXT_API_EVENT_GRID_PROFILE = (Get-Content -Raw -LiteralPath "$PSScriptRoot/../data/event-grid-profile.json") `
             -replace "{{SUBSCRIPTION_PREFIX}}", "context"
     }

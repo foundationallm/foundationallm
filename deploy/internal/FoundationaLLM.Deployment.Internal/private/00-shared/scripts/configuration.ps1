@@ -30,17 +30,19 @@ function Initialize-AppConfigurationKey {
         [string]$KeyVaultSecretName,
         [string]$KeyVaultSecretValue,
         [string]$ContentType,
-        [hashtable]$ResourceNames
+        [hashtable]$ResourceNames,
+        [bool]$Force = $false
     )
 
     if ($KeyVaultSecretName) {
         Set-KeyVaultSecret `
             -KeyVaultName $ResourceNames.KeyVault `
             -SecretName $KeyVaultSecretName `
-            -SecretValue $KeyVaultSecretValue
+            -SecretValue $KeyVaultSecretValue `
+            -Force $Force
     }
 
-    if ((az appconfig kv list --all -n $ResourceNames.AppConfig --query "[?key=='$Key']" -o tsv).Count -eq 0) {
+    if ($Force -or (az appconfig kv list --all -n $ResourceNames.AppConfig --query "[?key=='$Key']" -o tsv).Count -eq 0) {
         Write-Host "Setting App Configuration key $Key..."
 
         if ($KeyVaultSecretName) {
@@ -86,10 +88,11 @@ function Initialize-AppConfigurationFeatureFlag {
     param(
         [string]$Name,
         [bool]$Enabled,
-        [hashtable]$ResourceNames
+        [hashtable]$ResourceNames,
+        [bool]$Force = $false
     )
 
-    if ((az appconfig feature list `
+    if ($Force -or (az appconfig feature list `
             -n $ResourceNames.AppConfig `
             --query "[?name=='$Name']" -o tsv).Count -eq 0) {
         
@@ -119,7 +122,8 @@ function Initialize-Configuration {
         [string]$UniqueName,
         [string]$FoundationaLLMRepoPath,
         [string]$ConfigurationCategoryName,
-        [bool]$StopOnError = $true
+        [bool]$StopOnError = $true,
+        [bool]$Force = $false
     )
 
     $resourceNames = Get-ResourceNames -UniqueName $UniqueName
@@ -175,7 +179,8 @@ function Initialize-Configuration {
             Initialize-AppConfigurationFeatureFlag `
                 -Name $featureFlagName `
                 -Enabled $featureFlagEnabled `
-                -ResourceNames $resourceNames
+                -ResourceNames $resourceNames `
+                -Force $Force
             continue
         }
 
@@ -197,6 +202,7 @@ function Initialize-Configuration {
             -KeyVaultSecretName $appConfigurationItem.key_vault_secret_name `
             -KeyVaultSecretValue $appConfigurationSecretValue `
             -ContentType $appConfigurationItem.content_type `
-            -ResourceNames $resourceNames
+            -ResourceNames $resourceNames `
+            -Force $Force
     }
 }

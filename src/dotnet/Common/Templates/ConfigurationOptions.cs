@@ -193,6 +193,7 @@ namespace FoundationaLLM.Common.Constants.Configuration
         public static void SelectForLangChainAPI(
             AzureAppConfigurationOptions options)
         {
+            options.Select(AppConfigurationKeyFilters.FoundationaLLM_PythonSDK);
         }
     }
 }
