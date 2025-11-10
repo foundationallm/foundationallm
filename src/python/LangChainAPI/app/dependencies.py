@@ -49,9 +49,10 @@ async def resolve_completion_request(request_body: dict = Body(...)) -> Completi
     agent_type = request_body.get("agent", {}).get("type", None)
 
     match agent_type:
-        case "knowledge-management":
+        case "generic-agent":
             request = KnowledgeManagementCompletionRequest(**request_body)
             request.agent.type = agent_type
             return request
         case _:
+            logger.error("Unsupported agent type: %s", agent_type)
             raise ValueError(f"Unsupported agent type: {agent_type}")
