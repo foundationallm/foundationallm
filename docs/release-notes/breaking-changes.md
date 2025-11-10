@@ -9,6 +9,7 @@
 
 The `FoundationaLLM.Agent` resource provider schema is updated to version 2. The schema changes are as follows:
 - The agent type `knowledge-management` is replaced with `generic-agent`.
+- The agent workflow type `external-agent-workflow` is replaced with `generic-agent-workflow`.
 
 ### Artifact changes
 
