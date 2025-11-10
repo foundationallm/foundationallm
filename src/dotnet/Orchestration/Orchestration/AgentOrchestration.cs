@@ -569,6 +569,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                             {
                                 { DataPipelineTriggerParameterNames.DataSourceContextFileContextFileObjectId, contextFileResponse.Result.FileObjectId},
                                 { DataPipelineTriggerParameterNames.DataSourceContextFileContentAction, ContentItemActions.AddOrUpdate },
+                                { DataPipelineTriggerParameterNames.StageExtractMaxContentSizeCharacters, knowledgeSearchSettings.MaxContentSizeCharacters },
                                 { DataPipelineTriggerParameterNames.StageEmbedKnowledgeUnitObjectId, knowledgeSearchSettings.ConversationKnowledgeUnitObjectId },
                                 { DataPipelineTriggerParameterNames.StageIndexKnowledgeUnitObjectId, knowledgeSearchSettings.ConversationKnowledgeUnitObjectId },
                                 { DataPipelineTriggerParameterNames.StageIndexVectorStoreId, _vectorStoreId },

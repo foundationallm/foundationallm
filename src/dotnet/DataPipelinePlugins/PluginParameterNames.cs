@@ -9,6 +9,8 @@
 
         public const string SHAREPOINTONLINE_DATASOURCE_DOCUMENTLIBRARIES = "DocumentLibraries";
 
+        public const string TEXTEXTRACTION_DATAPIPELINESTAGE_MAXCONTENTSIZECHARACTERS = "MaxContentSizeCharacters";
+
         public const string TEXTPARTITIONING_DATAPIPELINESTAGE_PARITTIONINGSTRATETGY = "PartitioningStrategy";
 
         public const string GATEWAYTEXTEMBEDDING_DATAPIPELINESTAGE_KNOWLEDGEUNITOBJECTID = "KnowledgeUnitObjectId";

@@ -117,7 +117,10 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.Agent
             {
                 FileUploadDataPipelineObjectId = ResourceObjectIds[dataPipelineResourceObjectIds[0]].ObjectId,
                 ConversationKnowledgeUnitObjectId = ResourceObjectIds[conversationKnowledgeUnitObjectIds[0]].ObjectId,
-                AgentPrivateStoreKnowledgeUnitObjectId = ResourceObjectIds[agentPrivateStoreKnowledgeUnitObjectIds[0]].ObjectId
+                AgentPrivateStoreKnowledgeUnitObjectId = ResourceObjectIds[agentPrivateStoreKnowledgeUnitObjectIds[0]].ObjectId,
+                MaxContentSizeCharacters = TryGetPropertyValue<int>(AgentToolPropertyNames.MaxContentSizeCharacters, out var maxContextSize)
+                    ? maxContextSize
+                    : 10000000
             }
             : null;
     }

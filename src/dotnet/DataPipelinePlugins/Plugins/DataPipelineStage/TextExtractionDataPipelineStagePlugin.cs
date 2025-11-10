@@ -10,6 +10,7 @@ using FoundationaLLM.Common.Models.Plugins;
 using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders.DataPipeline;
 using FoundationaLLM.Common.Services.Plugins;
+using Microsoft.Extensions.Logging;
 using System.Text.Json;
 
 namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
@@ -60,6 +61,13 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
             if (!string.IsNullOrWhiteSpace(dataPipelineRunWorkItem.PreviousStage))
                 throw new PluginException(
                     $"The plugin {Name} can only be used for data pipeline starting stages.");
+
+            int maxContentSizeCharacters = 10000000; //10 million characters, ~2.5 million tokens
+
+            if (pluginParameters.TryGetValue(
+                PluginParameterNames.TEXTEXTRACTION_DATAPIPELINESTAGE_MAXCONTENTSIZECHARACTERS,
+                out var maxContentSizeCharactersObject))
+                maxContentSizeCharacters = (int)maxContentSizeCharactersObject;
 
             var dataSourcePluginName = ResourcePath.GetResourcePath(
                 dataPipelineDefinition.DataSource.PluginObjectId).ResourceId;
@@ -192,6 +200,17 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
 
             // Enforce new line normalization
             textContent = textContent.Replace("\r\n", "\n").Replace("\r", "\n");
+
+            if (textContent.Length > maxContentSizeCharacters)
+            {
+                _logger.LogWarning(
+                    "The {PluginName} plugin for the {Stage} stage ignored the work item {WorkItemId} because its size exceeds {MaxContentSizeCharacters} characters.",
+                    Name,
+                    dataPipelineRunWorkItem.Stage,
+                    dataPipelineRunWorkItem.Id,
+                    maxContentSizeCharacters);
+                textContent = string.Empty;
+            }
 
             await _dataPipelineStateService.SaveDataPipelineRunWorkItemArtifacts(
                 dataPipelineDefinition,
