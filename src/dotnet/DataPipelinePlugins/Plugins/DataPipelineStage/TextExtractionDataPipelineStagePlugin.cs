@@ -201,6 +201,7 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
             // Enforce new line normalization
             textContent = textContent.Replace("\r\n", "\n").Replace("\r", "\n");
 
+            string? warningMessage = null;
             if (textContent.Length > maxContentSizeCharacters)
             {
                 _logger.LogWarning(
@@ -209,6 +210,7 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
                     dataPipelineRunWorkItem.Stage,
                     dataPipelineRunWorkItem.Id,
                     maxContentSizeCharacters);
+                warningMessage = $"The extracted text content size exceeds the maximum allowed size of {maxContentSizeCharacters} characters and has been discarded.";
                 textContent = string.Empty;
             }
 
@@ -231,7 +233,7 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
                 ]);
 
             return
-                new PluginResult(true, false);
+                new PluginResult(true, false, WarningMessage: warningMessage);
         }
     }
 }
