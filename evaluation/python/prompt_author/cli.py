@@ -110,6 +110,11 @@ def build_arg_parser() -> argparse.ArgumentParser:
         help="Plan the optimisation without altering prompts or running evaluation.",
     )
     parser.add_argument(
+        "--yes",
+        action="store_true",
+        help="Automatically approve all prompt improvements without interactive confirmation.",
+    )
+    parser.add_argument(
         "--output-dir",
         default="prompt-author-output",
         help="Directory for logs, backups, and evaluation artefacts.",
@@ -191,17 +196,18 @@ def main(argv: Optional[List[str]] = None) -> int:
 
     print(f"\n📝 Aggregated prompt context saved to: {context_output_path}")
 
-    config = OptimizationConfig(
-        max_iterations=args.max_iterations,
-        target_pass_rate=args.target_pass_rate,
-        suite_name=args.suite if not args.no_eval else None,
-        quick_mode=args.quick,
-        test_index=args.test_index,
-        repeat_test=args.repeat_test,
-        max_workers=args.workers,
-        verbose=args.verbose,
-        dry_run=args.dry_run,
-    )
+      config = OptimizationConfig(
+          max_iterations=args.max_iterations,
+          target_pass_rate=args.target_pass_rate,
+          suite_name=args.suite if not args.no_eval else None,
+          quick_mode=args.quick,
+          test_index=args.test_index,
+          repeat_test=args.repeat_test,
+          max_workers=args.workers,
+          verbose=args.verbose,
+          dry_run=args.dry_run,
+          auto_approve=args.yes,
+      )
 
     engine = PromptOptimizationEngine(
         management_client=management_client,

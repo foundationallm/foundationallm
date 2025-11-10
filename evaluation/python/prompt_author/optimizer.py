@@ -26,6 +26,7 @@ class OptimizationConfig:
     max_workers: int = 5
     verbose: bool = False
     dry_run: bool = False
+    auto_approve: bool = False
 
 
 @dataclass
@@ -139,7 +140,9 @@ class PromptOptimizationEngine:
 
             apply = True  # Default to apply
             try:
-                if sys.stdin.isatty():
+                if self.config.auto_approve:
+                    print("\nAuto-approve mode: applying change.")
+                elif sys.stdin.isatty():
                     response = input("\nApply this change? (y/n): ").strip().lower()
                     apply = response.startswith('y')
                 else:

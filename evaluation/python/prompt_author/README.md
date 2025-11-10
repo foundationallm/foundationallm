@@ -73,6 +73,7 @@ Key switches:
 | `--target-pass-rate` | Evaluation pass-rate threshold that determines convergence (default: 0.9). |
 | `--quick` | Use quick-mode when running evaluations (limits the suite size). |
 | `--dry-run` | Perform discovery and LLM refinement without writing prompts or running evaluations. |
+| `--yes` | Automatically approve all prompt improvements without interactive confirmation. |
 | `--no-eval` | Skip AgentEvals runs even if `--suite` is provided. |
 | `--output-dir` | Destination for backups, revision history, and evaluation artefacts (default: `prompt-author-output/`). |
 
@@ -87,6 +88,17 @@ python3 -m prompt_author.cli \
   --max-iterations 4 \
   --target-pass-rate 0.95 \
   --workers 3
+```
+
+### Example: Automated Optimisation (No Human Interaction)
+
+```bash
+python3 -m prompt_author.cli \
+  --agent SupportAssistant \
+  --prompts MainPrompt \
+  --brief "Improve response clarity and accuracy" \
+  --suite conversational \
+  --yes
 ```
 
 ### Example: List Prompts, No Changes
