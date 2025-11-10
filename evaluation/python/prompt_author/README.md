@@ -27,8 +27,6 @@ Set the required environment variables before running the tool:
 | --- | --- |
 | `FLLM_MGMT_ENDPOINT` | Management API base URL, including `/instances/{instanceId}/` and trailing slash. |
 | `FLLM_MGMT_BEARER_TOKEN` | Bearer token with `api://FoundationaLLM-Management/Data.Manage` scope. |
-| `FLLM_ENDPOINT` | Core API base URL. |
-| `FLLM_ACCESS_TOKEN` | Access token for the agent completions API. |
 | `AZURE_OPENAI_ENDPOINT` | Azure OpenAI endpoint used for LLM-based prompt refinement. |
 | `AZURE_OPENAI_API_KEY` | API key for the Azure OpenAI resource. |
 | `AZURE_OPENAI_API_VERSION` | *(Optional)* API version (defaults to `2024-02-15-preview`). |
