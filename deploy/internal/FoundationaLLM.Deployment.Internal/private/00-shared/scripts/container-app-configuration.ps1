@@ -83,3 +83,21 @@ function Get-PortalEnvVars {
 
     return $envVarsArgs
 }
+
+function Get-LangChainContainerAppEnvVars {
+    param (
+        [string]$ResourceGroupName,
+        [hashtable]$ResourceNames,
+        [string]$TenantId,
+        [string]$ContainerAppIdentity
+    )
+
+    $envVarsArgs = @()
+    $envVarsArgs += "AZURE_CLIENT_ID=$(az identity show --name $ContainerAppIdentity --resource-group $ResourceGroupName --query clientId -o tsv)"
+    $envVarsArgs += "AZURE_TENANT_ID=$TenantId"
+    $envVarsArgs += "APPLICATIONINSIGHTS_CONNECTION_STRING=$(az monitor app-insights component show --resource-group $ResourceGroupName --app $ResourceNames.AppInsights --query connectionString -o tsv)"
+    $envVarsArgs += "PORT=80"
+    $envVarsArgs += "FOUNDATIONALLM_APP_CONFIGURATION_URI=https://$($ResourceNames.AppConfig).azconfig.io"
+
+    return $envVarsArgs
+}

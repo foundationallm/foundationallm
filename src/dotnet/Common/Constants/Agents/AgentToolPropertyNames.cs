@@ -39,5 +39,10 @@
         /// Represents the list of knowledge unit vector store metadata filters
         /// </summary>
         public const string KnowledgeUnitVectorStoreFilters = "knowledge_unit_vector_store_filters";
+
+        /// <summary>
+        /// Represents the maximum content size in characters for content items processed by data pipelines.
+        /// </summary>
+        public const string MaxContentSizeCharacters = "max_content_size_characters";
     }
 }

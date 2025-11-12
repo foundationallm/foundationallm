@@ -294,18 +294,6 @@ namespace FoundationaLLM.Core.Examples.Services
 
             // TODO: Create any other dependencies for the agent here.
 
-            bool inlineContext = ((KnowledgeManagementAgent)agent).InlineContext;
-            if (!inlineContext)
-            {
-                if(!string.IsNullOrEmpty(indexingProfileName))
-                    ((KnowledgeManagementAgent)agent).Vectorization.IndexingProfileObjectIds = [(await GetIndexingProfile(indexingProfileName)).ObjectId];
-
-                if (!string.IsNullOrEmpty(textEmbeddingProfileName))
-                    ((KnowledgeManagementAgent)agent).Vectorization.TextEmbeddingProfileObjectId = (await GetTextEmbeddingProfile(textEmbeddingProfileName)).ObjectId;
-
-                if (!string.IsNullOrEmpty(textPartitioningProfileName))
-                    ((KnowledgeManagementAgent)agent).Vectorization.TextPartitioningProfileObjectId = (await GetTextPartitioningProfile(textPartitioningProfileName)).ObjectId;
-            }
 
             // Create the agent.
             var response = await managementClient.Agents.UpsertAgentAsync(agent);

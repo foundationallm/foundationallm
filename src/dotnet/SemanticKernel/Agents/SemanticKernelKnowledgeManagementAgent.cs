@@ -55,38 +55,7 @@ namespace FoundationaLLM.SemanticKernel.Core.Agents
             _agentDescriptions = _request.OtherAgentsDescriptions;
             _prompt = _request.Prompt.Prefix!;
 
-            #region Vectorization (text embedding and indexing) - optional
-
-            var textEmbeddingProfile = _request.TextEmbeddingProfile;
-            var indexingProfiles = _request.IndexingProfiles;
-
-            if (textEmbeddingProfile != null)
-            {
-                // Get the text embedding ai model for deployment name and endpoint URL from its API endpoint configuration.
-                if (textEmbeddingProfile.Settings==null)
-                    throw new SemanticKernelException("The text embedding profile settings cannot be null. Requires: model_name", StatusCodes.Status400BadRequest);
-
-                if (!textEmbeddingProfile.Settings.ContainsKey(VectorizationSettingsNames.EmbeddingProfileModelName))
-                    throw new SemanticKernelException("The text embedding profile settings must contain the 'model_name' key.", StatusCodes.Status400BadRequest);
-            }
-
-            if ((indexingProfiles ?? []).Count > 0)
-            {
-                var indexingProfile = indexingProfiles![0];
-
-                if (indexingProfile == null
-                    || !await ValidateAndMapIndexingProfileConfiguration(indexingProfile)
-                    || indexingProfile.Settings == null
-                    || !indexingProfile.Settings.TryGetValue("index_name", out var indexName)
-                    || string.IsNullOrWhiteSpace(indexName))
-                    throw new SemanticKernelException("The indexing profile object provided in the request's objects is invalid.", StatusCodes.Status400BadRequest);
-
-                _indexerName = indexingProfile.Indexer.ToString();
-                _indexName = indexName;
-                _indexerType = indexingProfile.Indexer;
-            }
-
-            #endregion
+            
         }
 
         /// <summary>

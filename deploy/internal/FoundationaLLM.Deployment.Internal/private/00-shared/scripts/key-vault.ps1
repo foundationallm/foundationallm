@@ -32,10 +32,11 @@ function Set-KeyVaultSecret {
         [Parameter(Mandatory = $true)]
         [string]$SecretName,
         [Parameter(Mandatory = $true)]
-        [string]$SecretValue
+        [string]$SecretValue,
+        [bool]$Force = $false
     )
 
-    if ((az keyvault secret list `
+    if ($Force -or (az keyvault secret list `
             --vault-name $KeyVaultName `
             --query "[?name=='$($SecretName)']" -o tsv).Count -eq 0) {
         Write-Host "Setting secret $SecretName in Key Vault $KeyVaultName..."

@@ -10,7 +10,17 @@
         "principal_id": "{{USER_GROUP_OBJECT_ID}}",
         "principal_type": "Group",
         "role_assignments": [
-            ["Reader", "FoundationaLLM.Configuration/appConfigurationSets", "UserPortal"]
+            ["Reader", "FoundationaLLM.Configuration/appConfigurationSets", "UserPortal"],
+            ["Attachments Contributor"],
+            ["Conversations Contributor"]
+        ]
+    },
+    {
+        "principal_id": "5bb493a2-5909-4771-93ba-d83b7b5a1de9",
+        "principal_type": "Group",
+        "role_assignments": [
+            ["Attachments Contributor"],
+            ["Conversations Contributor"]
         ]
     }
 ]

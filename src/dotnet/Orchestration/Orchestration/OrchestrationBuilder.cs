@@ -94,7 +94,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                 callContext.CurrentUserIdentity!,
                 logger);
 
-            if (result.Agent.AgentType == typeof(KnowledgeManagementAgent))
+            if (result.Agent.AgentType == typeof(GenericAgent))
             {
                 var orchestrator = !string.IsNullOrWhiteSpace(result.Agent.Workflow?.WorkflowHost)
                     ? result.Agent.Workflow.WorkflowHost
@@ -130,7 +130,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                 var kmOrchestration = new AgentOrchestration(
                     instanceId,
                     result.Agent.ObjectId!,
-                    (KnowledgeManagementAgent)result.Agent,
+                    (GenericAgent)result.Agent,
                     originalRequest.SessionId!,
                     result.APIEndpointConfiguration!.Url,
                     result.ExplodedObjectsManager.GetExplodedObjects() ?? [],
@@ -406,7 +406,9 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                     var contextServiceResponse = await contextServiceClient.CreateCodeSession(
                         instanceId,
                         agentName,
-                        originalRequest.SessionId!,
+                        originalRequest.SessionId
+                            ?? originalRequest.OperationId
+                            ?? $"temporary-{Guid.NewGuid().ToString().ToLower()}",
                         tool.Name,
                         codeSessionProvider,
                         codeSessionLanguage);

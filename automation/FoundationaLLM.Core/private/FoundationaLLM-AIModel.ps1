@@ -21,6 +21,10 @@ function Merge-AIModel {
         [hashtable]$AIModel
     )
 
+    $AIModel['endpoint_object_id'] = (Get-ObjectId `
+        -Name $AIModel['endpoint_object_id']['name'] `
+        -Type $AIModel['endpoint_object_id']['type'])
+
     return Invoke-ManagementAPI `
         -Method POST `
         -RelativeUri "providers/FoundationaLLM.AIModel/aiModels/$($AIModel.name)" `

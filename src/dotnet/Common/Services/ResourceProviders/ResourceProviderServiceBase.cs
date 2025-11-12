@@ -222,6 +222,12 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
                         _storageService,
                         _logger);
 
+                    var upgradeSuccess = await _resourceReferenceStore.RunSchemaUpgrades(
+                        GetResourceReferenceSchemaUpgrades());
+                    if (!upgradeSuccess)
+                        throw new ResourceProviderException(
+                            $"The resource provider {_name} failed to run resource reference schema upgrades during initialization.");
+
                     await _resourceReferenceStore.LoadResourceReferences();
                 }
 
@@ -339,6 +345,16 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
         /// </summary>
         /// <returns>A dictionary of <see cref="ResourceTypeDescriptor"/> objects with details about the resource types.</returns>
         protected virtual Dictionary<string, ResourceTypeDescriptor> GetResourceTypes() => [];
+
+        /// <summary>
+        /// Retrieves a list of schema upgrades for resource references.
+        /// </summary>
+        /// <remarks>This method returns a collection of schema upgrade definitions that can be applied to
+        /// resource references of type <typeparamref name="TResourceReference"/>. Override this method in a derived
+        /// class to provide custom schema upgrade logic.</remarks>
+        /// <returns>A list of <see cref="ResourceReferenceListSchemaUpgrade{TResourceReference}"/> objects representing the
+        /// schema upgrades.  The list is empty by default.</returns>
+        protected virtual List<ResourceReferenceListSchemaUpgrade<TResourceReference>> GetResourceReferenceSchemaUpgrades() => [];
 
         #endregion
 

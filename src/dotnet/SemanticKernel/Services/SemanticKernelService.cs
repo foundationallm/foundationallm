@@ -129,7 +129,7 @@ namespace FoundationaLLM.SemanticKernel.Core.Services
             {
                 var completion = completionRequest.Agent switch
                 {
-                    KnowledgeManagementAgent => await (new SemanticKernelKnowledgeManagementAgent(
+                    GenericAgent => await (new SemanticKernelKnowledgeManagementAgent(
                         completionRequest,
                         _resourceProviderServices,
                         _loggerFactory,

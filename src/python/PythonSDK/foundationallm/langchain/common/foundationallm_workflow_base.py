@@ -8,7 +8,10 @@ from typing import List, Optional
 from azure.identity import DefaultAzureCredential
 
 from foundationallm.config import Configuration, UserIdentity
-from foundationallm.models.agents import ExternalAgentWorkflow
+from foundationallm.models.agents import (
+    GenericAgentWorkflow,
+    ExternalAgentWorkflow
+)
 from foundationallm.models.messages.message_history_item import MessageHistoryItem
 from foundationallm.models.orchestration import CompletionResponse, FileHistoryItem
 from foundationallm.operations import OperationsManager
@@ -21,7 +24,7 @@ class FoundationaLLMWorkflowBase(ABC):
     FoundationaLLM base class for workflows that uses the agent workflow model for its configuration.
     """
     def __init__(self,
-                 workflow_config: ExternalAgentWorkflow,
+                 workflow_config: GenericAgentWorkflow | ExternalAgentWorkflow,
                  objects: dict,
                  tools: List[FoundationaLLMToolBase],
                  operations_manager: OperationsManager,
@@ -32,7 +35,7 @@ class FoundationaLLMWorkflowBase(ABC):
 
         Parameters
         ----------
-        workflow_config : ExternalAgentWorkflow
+        workflow_config : GenericAgentWorkflow | ExternalAgentWorkflow
             The workflow assigned to the agent.
         objects : dict
             The exploded objects assigned from the agent.
@@ -73,4 +76,3 @@ class FoundationaLLMWorkflowBase(ABC):
         message_history : List[MessageHistoryItem]
             The message history.
         """
-        pass

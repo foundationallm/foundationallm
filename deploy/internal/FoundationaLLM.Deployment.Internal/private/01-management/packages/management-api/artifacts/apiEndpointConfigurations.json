@@ -2,7 +2,6 @@
     {
         "type": "api-endpoint",
         "name": "AzureEventGrid",
-        "object_id": "/instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.Configuration/apiEndpoints/AzureEventGrid",
         "category": "General",
         "authentication_type": "APIKey",
         "authentication_parameters": {
