@@ -24,7 +24,8 @@ class FoundationaLLMAgentWorkflowPluginManager(WorkflowPluginManagerBase):
         tools: List[AgentTool],
         operations_manager: OperationsManager,
         user_identity: UserIdentity,
-        config: Configuration) -> FoundationaLLMWorkflowBase:
+        config: Configuration,
+        intercept_http_calls: bool = False) -> FoundationaLLMWorkflowBase:
         """
         Creates a workflow instance based on the workflow configuration.
 
@@ -47,7 +48,14 @@ class FoundationaLLMAgentWorkflowPluginManager(WorkflowPluginManagerBase):
             The workflow instance.
         """
         if workflow_config.class_name == FoundationaLLMAgentWorkflowPluginManager.FOUNDATIONALLM_FUNCTION_CALLING_WORKFLOW_CLASS_NAME:
-            return FoundationaLLMFunctionCallingWorkflow(workflow_config, objects, tools, operations_manager, user_identity, config)
+            return FoundationaLLMFunctionCallingWorkflow(
+                workflow_config,
+                objects,
+                tools,
+                operations_manager,
+                user_identity,
+                config,
+                intercept_http_calls=intercept_http_calls)
         raise ValueError(f'Unknown workflow name: {workflow_config.name}')
 
     def refresh_tools(self):

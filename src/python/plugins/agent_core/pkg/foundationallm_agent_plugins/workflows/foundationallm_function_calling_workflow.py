@@ -55,6 +55,7 @@ from foundationallm.models.resource_providers.configuration import APIEndpointCo
 from foundationallm.operations import OperationsManager
 from foundationallm.services import HttpClientService
 from foundationallm.telemetry import Telemetry
+from foundationallm.utils import LoggingAsyncHttpClient
 
 class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
     """
@@ -68,7 +69,8 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
                  tools: List[FoundationaLLMToolBase],
                  operations_manager: OperationsManager,
                  user_identity: UserIdentity,
-                 config: Configuration):
+                 config: Configuration,
+                 intercept_http_calls: bool = False):
         """
         Initializes the FoundationaLLMWorkflowBase class with the workflow configuration.
 
@@ -94,7 +96,7 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
             'An error occurred while processing the request.') \
             if workflow_config.properties else 'An error occurred while processing the request.'
 
-        self.__create_workflow_llm()
+        self.__create_workflow_llm(intercept_http_calls=intercept_http_calls)
         self.__create_context_client()
 
         self.instance_id = objects.get(CompletionRequestObjectKeys.INSTANCE_ID, None)
@@ -330,7 +332,9 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
             )
             return retvalue
 
-    def __create_workflow_llm(self):
+    def __create_workflow_llm(
+            self,
+            intercept_http_calls: bool = False):
         """ Creates the workflow LLM instance and saves it to self.workflow_llm. """
         language_model_factory = LanguageModelFactory(self.objects, self.config)
         model_object_id = self.workflow_config.get_resource_object_id_properties(
@@ -340,7 +344,14 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
             ResourceObjectIdPropertyValues.MAIN_MODEL
         )
         if model_object_id:
-            self.workflow_llm = language_model_factory.get_language_model(model_object_id.object_id)
+            self.workflow_llm = \
+                language_model_factory.get_language_model(
+                    model_object_id.object_id,
+                    http_async_client=LoggingAsyncHttpClient(timeout=30.0)
+                ) if intercept_http_calls else \
+                language_model_factory.get_language_model(
+                    model_object_id.object_id
+                )
         else:
             error_msg = 'No main model found in workflow configuration'
             self.logger.error(error_msg)

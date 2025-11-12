@@ -7,7 +7,7 @@ import os
 import sys
 import uuid
 
-sys.path.append('src')
+sys.path.append('pkg')
 from foundationallm.operations.operations_manager import OperationsManager
 from foundationallm_agent_plugins import (
     FoundationaLLMAgentToolPluginManager,
@@ -132,7 +132,8 @@ workflow = workflow_plugin_manager.create_workflow(
     tools,
     operations_manager,
     user_identity,
-    config
+    config,
+    intercept_http_calls=True
 )
 response = asyncio.run(
     workflow.invoke_async(
