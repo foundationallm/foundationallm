@@ -14,6 +14,10 @@ import re
 from typing import Dict, List, Any, Optional
 import pandas as pd
 from openai import AzureOpenAI
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 
 class TestGenerator:
@@ -83,22 +87,57 @@ class TestGenerator:
                     elif isinstance(value, str) and value.strip() == '':
                         original_row_dict[key] = ''
                 
-                # Generate variations (just the question variations)
-                variation_questions = self._generate_variation_questions(
-                    seed_question, expansion_strategy, expansion_count, validation_rules, validation_mode
-                )
-                
-                print(f"Generated {len(variation_questions)} variations")
-                
-                # Add original test (preserve all columns, no extra fields)
-                original_test = original_row_dict.copy()
-                expanded_tests.append(original_test)
-                
-                # Add generated variations (preserve all columns, only change Question)
-                for variation_question in variation_questions:
-                    variation_test = original_row_dict.copy()
-                    variation_test['Question'] = variation_question
-                    expanded_tests.append(variation_test)
+                # Generate variations
+                # For variations strategy, use question-only generation
+                # For edge-cases and negative-tests, use full variation generation (can modify multiple fields)
+                if expansion_strategy == 'variations':
+                    variation_questions = self._generate_variation_questions(
+                        seed_question, expansion_strategy, expansion_count, validation_rules, validation_mode
+                    )
+                    
+                    print(f"Generated {len(variation_questions)} variations")
+                    
+                    # Add original test (preserve all columns, no extra fields)
+                    original_test = original_row_dict.copy()
+                    expanded_tests.append(original_test)
+                    
+                    # Add generated variations (preserve all columns, only change Question)
+                    for variation_question in variation_questions:
+                        variation_test = original_row_dict.copy()
+                        variation_test['Question'] = variation_question
+                        expanded_tests.append(variation_test)
+                else:
+                    # For edge-cases and negative-tests, use full variation generation
+                    # This allows modification of Question, Filename, ExpectedAnswer, ValidationRules, etc.
+                    answer_column = 'Answer' if 'Answer' in df.columns else 'ExpectedAnswer'
+                    full_variations = self._generate_variations(
+                        seed_question, seed_filename, seed_expected,
+                        expansion_strategy, expansion_count,
+                        validation_rules, validation_mode, answer_column
+                    )
+                    
+                    print(f"Generated {len(full_variations)} variations")
+                    
+                    # Add original test (preserve all columns, no extra fields)
+                    original_test = original_row_dict.copy()
+                    expanded_tests.append(original_test)
+                    
+                    # Add generated variations (may modify multiple fields)
+                    for variation in full_variations:
+                        variation_test = original_row_dict.copy()
+                        # Update fields that were modified in the variation
+                        if 'Question' in variation:
+                            variation_test['Question'] = variation['Question']
+                        # For edge-cases, never modify the Filename - always preserve original
+                        if expansion_strategy != 'edge-cases' and 'Filename' in variation:
+                            variation_test['Filename'] = variation['Filename']
+                        if answer_column in variation:
+                            variation_test[answer_column] = variation[answer_column]
+                        if 'ValidationRules' in variation:
+                            variation_test['ValidationRules'] = variation['ValidationRules']
+                        if 'ValidationMode' in variation:
+                            variation_test['ValidationMode'] = variation['ValidationMode']
+                        expanded_tests.append(variation_test)
             
             # Deduplicate if requested
             if deduplicate:
@@ -374,13 +413,15 @@ Generate {count} edge case scenarios for this test. Consider:
 - Special characters or encoding issues
 - Unusual file formats or corrupted data
 
+IMPORTANT: Do NOT modify the Filename field. Keep it exactly as: {seed_filename if seed_filename else '(empty)'}
+
 Original Question: {seed_question}
 Original File: {seed_filename}
 Expected Answer: {seed_expected}
 
 Generate {count} edge cases in this format:
 Question: [edge case question]
-Filename: [modified filename or empty]
+Filename: {seed_filename}
 ExpectedAnswer: [expected response for edge case]
 ValidationRules: [rules for edge case]
 ValidationMode: rule
@@ -456,7 +497,10 @@ GenerationStrategy: combinations
                     'GenerationStrategy': strategy
                 }
             elif line.startswith('Filename:'):
-                current_variation['Filename'] = line.replace('Filename:', '').strip()
+                # For edge-cases strategy, never modify the Filename - preserve original
+                if strategy != 'edge-cases':
+                    current_variation['Filename'] = line.replace('Filename:', '').strip()
+                # For edge-cases, ignore any Filename changes from LLM
             elif line.startswith('ExpectedAnswer:') or line.startswith('Answer:'):
                 # Support both column names in LLM response
                 current_variation[answer_column] = line.replace('ExpectedAnswer:', '').replace('Answer:', '').strip()
@@ -587,7 +631,7 @@ GenerationStrategy: combinations
             for i, edge_case in enumerate(edge_cases[:count]):
                 variations.append({
                     'Question': edge_case,
-                    'Filename': '',
+                    'Filename': seed_filename,  # Always preserve original filename for edge-cases
                     answer_column: 'Error or edge case handling',  # Use detected column name
                     'ValidationRules': validation_rules,  # Use passed validation rules
                     'ValidationMode': validation_mode,  # Use passed validation mode

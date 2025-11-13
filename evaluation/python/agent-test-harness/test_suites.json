@@ -78,5 +78,15 @@
     "csv_file": "test-data\\who-are-you\\TestQuestions-who-are-you.csv",
     "description": "Tests for who-are-you",
     "quick_mode_limit": 5
+  },
+  "code-interpreter-edge-cases": {
+    "csv_file": "test-data\\code-interpreter-edge-cases\\TestQuestions-code-interpreter-edge-cases.csv",
+    "description": "Tests for code-interpreter-edge-cases",
+    "quick_mode_limit": 5
+  },
+  "who-are-you-negative": {
+    "csv_file": "test-data\\who-are-you-negative\\TestQuestions-who-are-you-negative.csv",
+    "description": "Tests for who-are-you-negative",
+    "quick_mode_limit": 5
   }
 }
