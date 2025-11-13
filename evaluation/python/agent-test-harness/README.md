@@ -1,4 +1,4 @@
-# FoundationaLLM Agent Test Harness
+# FoundationaLLM Agent Evaluations
 
 A comprehensive test framework for FoundationaLLM agents that provides automated test execution, validation, and result management with support for both quick regression testing and comprehensive release validation.
 
@@ -57,7 +57,6 @@ python run_tests.py --suite code-interpreter --agent MAA-02 --quick --report
 ### 📊 Results Management
 - **Multiple output formats**: CSV, JSON, and HTML reports
 - **Visual dashboard**: Interactive HTML reports with detailed analysis
-- **Baseline comparison**: Track changes over time
 - **Performance metrics**: Token usage, duration, artifact counts
 
 ### 🧪 Test Generation
@@ -89,16 +88,11 @@ python run_tests.py --suite code-interpreter --agent MAA-02 --repeat-test 3
 python run_tests.py --suite all --agent MAA-02  --report
 
 # Cross-agent comparison
-python run_tests.py --suite code-interpreter --agents MAA-02,MAA-04,MAA-02 --compare
+python run_tests.py --suite code-interpreter --agents MAA-02,MAA-04,MAA-06 --report
 
 # Repeat tests for reliability analysis
 python run_tests.py --suite code-interpreter --agent MAA-02 --repeat-test 5
 
-# Baseline comparison
-python run_tests.py --suite all --agent MAA-02 --baseline results/baseline-MAA-02.json
-
-# Save baseline
-python run_tests.py --suite all --agent MAA-02 --save-baseline
 ```
 
 ### Test Generation
@@ -229,12 +223,6 @@ python run_tests.py --report-from-dir results/
 | `--strict` | Exit on validation failure | `--strict` |
 | `--verbose` | Detailed output | `--verbose` |
 
-#### Baseline Operations
-| Parameter | Purpose | Values/Examples |
-|-----------|---------|-----------------|
-| `--baseline` | Compare against baseline | `--baseline results/baseline-MAA-02.json` |
-| `--save-baseline` | Save current results as baseline | `--save-baseline` |
-
 #### Report Generation
 | Parameter | Purpose | Values/Examples |
 |-----------|---------|-----------------|
@@ -260,8 +248,6 @@ python run_tests.py --suite code-interpreter --agent MAA-02 --repeat-test 3 --re
 # Generate report from existing results
 python run_tests.py --report-from-results results/20251021_220653-MAA-02-dataframe-tests-results.json
 
-# Baseline comparison
-python run_tests.py --suite all --agent MAA-02 --baseline results/baseline-MAA-02.json --compare
 ```
 
 ### generate_tests.py - Test Generation
@@ -672,8 +658,6 @@ python run_tests.py --suite code-interpreter --agent MAA-02 --verbose
 # Comprehensive pre-release testing
 python run_tests.py --suite all --agent MAA-02  --report --workers 10
 
-# Compare against previous release
-python run_tests.py --suite all --agent MAA-02 --baseline results/baseline-v1.2.3.json
 ```
 
 ## 🔍 Troubleshooting
@@ -704,7 +688,6 @@ python run_tests.py --suite code-interpreter --agent MAA-02 --dry-run
 - **Test Generation**: Use `generate_tests.py` to expand test coverage
 - **Validation**: Configure validation rules in CSV files
 - **Reports**: Generate HTML dashboards for detailed analysis
-- **Baselines**: Save and compare results over time
 
 For more information, see the inline help:
 ```powershell
