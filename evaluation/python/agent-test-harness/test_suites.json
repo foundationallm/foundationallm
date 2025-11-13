@@ -68,5 +68,15 @@
     "csv_file": "test-data\\image-processing\\TestQuestions-image-processing.csv",
     "description": "Tests for image-processing",
     "quick_mode_limit": 5
+  },
+  "my-generated-tests": {
+    "csv_file": "test-data\\my-generated-tests\\TestQuestions-my-generated-tests.csv",
+    "description": "Tests for my-generated-tests",
+    "quick_mode_limit": 5
+  },
+  "who-are-you": {
+    "csv_file": "test-data\\who-are-you\\TestQuestions-who-are-you.csv",
+    "description": "Tests for who-are-you",
+    "quick_mode_limit": 5
   }
 }

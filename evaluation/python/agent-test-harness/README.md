@@ -290,6 +290,45 @@ python run_tests.py --suite all --agent MAA-02 --baseline results/baseline-MAA-0
 | `negative-tests` | Create negative test cases | Invalid inputs, error conditions |
 | `combinations` | Combine multiple operations | Multi-step workflows, complex scenarios |
 
+#### Variations Strategy Details
+
+The `variations` strategy generates question variations while preserving all original test data:
+
+**Key Features:**
+- **Preserves all source columns**: All columns from the input CSV are preserved exactly as they appear
+- **Only modifies Question field**: Variations are identical to the original test except for the `Question` column
+- **No extra columns**: Does not add `GeneratedFrom` or `GenerationStrategy` columns
+- **Preserves validation settings**: Maintains original `ValidationRules` and `ValidationMode` values
+- **Handles empty values correctly**: Empty filenames remain empty (no "nan" values)
+
+**How it works:**
+1. Reads the input CSV and detects all columns
+2. For each seed test, generates N question variations using:
+   - LLM-based generation (if Azure OpenAI is configured), or
+   - Rule-based generation (fallback with word replacements, prefixes, rephrasing)
+3. Creates output rows that are exact copies of the original row, with only the `Question` field changed
+4. Output CSV has the same structure and columns as the input CSV
+
+**Example:**
+```csv
+# Input (TestQuestions-seed.csv)
+Question,Filename,Answer,ValidationRules,ValidationMode
+Who are you?,,I am a helpful assistant.,"{""llm_validation"": true}",llm
+
+# Output (TestQuestions-variations.csv) with --count 3
+Question,Filename,Answer,ValidationRules,ValidationMode
+Who are you?,,I am a helpful assistant.,"{""llm_validation"": true}",llm
+Can you tell me who are you?,,I am a helpful assistant.,"{""llm_validation"": true}",llm
+I would like to know who are you?,,I am a helpful assistant.,"{""llm_validation"": true}",llm
+What can you tell me about who are you?,,I am a helpful assistant.,"{""llm_validation"": true}",llm
+```
+
+**Usage:**
+```powershell
+# Generate 9 variations from a seed test
+python generate_tests.py --input seed-tests.csv --output variations.csv --strategy variations --count 9
+```
+
 #### Interactive Validation Modes
 | Mode | Purpose | Validation Rules Asked |
 |------|---------|----------------------|
