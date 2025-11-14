@@ -1,4 +1,4 @@
-# FoundationaLLM Agent Test Harness
+# FoundationaLLM Agent Evaluations
 
 A comprehensive test framework for FoundationaLLM agents that provides automated test execution, validation, and result management with support for both quick regression testing and comprehensive release validation.
 
@@ -57,7 +57,6 @@ python run_tests.py --suite code-interpreter --agent MAA-02 --quick --report
 ### 📊 Results Management
 - **Multiple output formats**: CSV, JSON, and HTML reports
 - **Visual dashboard**: Interactive HTML reports with detailed analysis
-- **Baseline comparison**: Track changes over time
 - **Performance metrics**: Token usage, duration, artifact counts
 
 ### 🧪 Test Generation
@@ -89,16 +88,11 @@ python run_tests.py --suite code-interpreter --agent MAA-02 --repeat-test 3
 python run_tests.py --suite all --agent MAA-02  --report
 
 # Cross-agent comparison
-python run_tests.py --suite code-interpreter --agents MAA-02,MAA-04,MAA-02 --compare
+python run_tests.py --suite code-interpreter --agents MAA-02,MAA-04,MAA-06 --report
 
 # Repeat tests for reliability analysis
 python run_tests.py --suite code-interpreter --agent MAA-02 --repeat-test 5
 
-# Baseline comparison
-python run_tests.py --suite all --agent MAA-02 --baseline results/baseline-MAA-02.json
-
-# Save baseline
-python run_tests.py --suite all --agent MAA-02 --save-baseline
 ```
 
 ### Test Generation
@@ -106,8 +100,8 @@ python run_tests.py --suite all --agent MAA-02 --save-baseline
 # Interactive mode - create new test suite
 python generate_tests.py --interactive --suite-name my-custom-tests
 
-# Generate test variations
-python generate_tests.py --input seed-tests.csv --output expanded-tests.csv --strategy variations --count 5
+# Generate test variations using suite names
+python generate_tests.py --input-suite code-interpreter --output-suite code-interpreter-variations --strategy variations --count 9
 
 # Generate edge cases
 python generate_tests.py --input seed-tests.csv --output edge-cases.csv --strategy edge-cases --count 3
@@ -229,12 +223,6 @@ python run_tests.py --report-from-dir results/
 | `--strict` | Exit on validation failure | `--strict` |
 | `--verbose` | Detailed output | `--verbose` |
 
-#### Baseline Operations
-| Parameter | Purpose | Values/Examples |
-|-----------|---------|-----------------|
-| `--baseline` | Compare against baseline | `--baseline results/baseline-MAA-02.json` |
-| `--save-baseline` | Save current results as baseline | `--save-baseline` |
-
 #### Report Generation
 | Parameter | Purpose | Values/Examples |
 |-----------|---------|-----------------|
@@ -260,8 +248,6 @@ python run_tests.py --suite code-interpreter --agent MAA-02 --repeat-test 3 --re
 # Generate report from existing results
 python run_tests.py --report-from-results results/20251021_220653-MAA-02-dataframe-tests-results.json
 
-# Baseline comparison
-python run_tests.py --suite all --agent MAA-02 --baseline results/baseline-MAA-02.json --compare
 ```
 
 ### generate_tests.py - Test Generation
@@ -278,6 +264,8 @@ python run_tests.py --suite all --agent MAA-02 --baseline results/baseline-MAA-0
 |-----------|---------|-----------------|
 | `--input` | Input CSV file | `--input seed-tests.csv` |
 | `--output` | Output CSV file | `--output expanded-tests.csv` |
+| `--input-suite` | Input test suite name (alternative to --input) | `--input-suite code-interpreter` |
+| `--output-suite` | Output test suite name (alternative to --output, creates suite if needed) | `--output-suite code-interpreter-variations` |
 | `--strategy` | Generation strategy | `variations`, `edge-cases`, `negative-tests`, `combinations` |
 | `--count` | Number of tests to generate | `--count 5` |
 | `--append` | Append to existing file | `--append` |
@@ -289,6 +277,151 @@ python run_tests.py --suite all --agent MAA-02 --baseline results/baseline-MAA-0
 | `edge-cases` | Generate edge cases | Boundary conditions, extreme inputs |
 | `negative-tests` | Create negative test cases | Invalid inputs, error conditions |
 | `combinations` | Combine multiple operations | Multi-step workflows, complex scenarios |
+
+#### Variations Strategy Details
+
+The `variations` strategy generates question variations while preserving all original test data:
+
+**Key Features:**
+- **Preserves all source columns**: All columns from the input CSV are preserved exactly as they appear
+- **Only modifies Question field**: Variations are identical to the original test except for the `Question` column
+- **No extra columns**: Does not add `GeneratedFrom` or `GenerationStrategy` columns
+- **Preserves validation settings**: Maintains original `ValidationRules` and `ValidationMode` values
+- **Handles empty values correctly**: Empty filenames remain empty (no "nan" values)
+
+**How it works:**
+1. Reads the input CSV and detects all columns
+2. For each seed test, generates N question variations using:
+   - LLM-based generation (if Azure OpenAI is configured), or
+   - Rule-based generation (fallback with word replacements, prefixes, rephrasing)
+3. Creates output rows that are exact copies of the original row, with only the `Question` field changed
+4. Output CSV has the same structure and columns as the input CSV
+
+**Example:**
+```csv
+# Input (TestQuestions-seed.csv)
+Question,Filename,Answer,ValidationRules,ValidationMode
+Who are you?,,I am a helpful assistant.,"{""llm_validation"": true}",llm
+
+# Output (TestQuestions-variations.csv) with --count 3
+Question,Filename,Answer,ValidationRules,ValidationMode
+Who are you?,,I am a helpful assistant.,"{""llm_validation"": true}",llm
+Can you tell me who are you?,,I am a helpful assistant.,"{""llm_validation"": true}",llm
+I would like to know who are you?,,I am a helpful assistant.,"{""llm_validation"": true}",llm
+What can you tell me about who are you?,,I am a helpful assistant.,"{""llm_validation"": true}",llm
+```
+
+**Usage:**
+```powershell
+# Generate 9 variations using suite names (recommended)
+python generate_tests.py --input-suite code-interpreter --output-suite code-interpreter-variations --strategy variations --count 9
+
+# Or using CSV file paths
+python generate_tests.py --input seed-tests.csv --output variations.csv --strategy variations --count 9
+```
+
+#### Edge-Cases Strategy Details
+
+The `edge-cases` strategy generates test cases that probe boundary conditions, extreme inputs, and unusual scenarios:
+
+**Key Features:**
+- **Tests boundary conditions**: Empty inputs, minimal data, very large inputs
+- **Handles special cases**: Special characters, Unicode, encoding issues
+- **File format variations**: Unusual file formats, corrupted data, missing files
+- **Preserves original structure**: All source columns are preserved (same as variations strategy)
+- **LLM-powered or rule-based**: Uses Azure OpenAI for sophisticated edge cases, falls back to simple patterns
+
+**How it works:**
+1. For each seed test, generates N edge case scenarios using:
+   - **LLM-based generation** (if Azure OpenAI is configured): Creates sophisticated edge cases considering boundary conditions, encoding issues, file format problems, etc.
+   - **Rule-based generation** (fallback): Generates simple patterns like "Empty:", "Large:", "Special chars:", "Unicode:", "Minimal:" prefixes
+2. Edge cases may modify:
+   - The question (to test edge scenarios)
+   - The filename (to test with missing/invalid files)
+   - The expected answer (to reflect proper edge case handling)
+3. Output rows preserve all original columns, with modifications only to relevant fields
+
+**Example:**
+```csv
+# Input (TestQuestions-seed.csv)
+Question,Filename,Answer,ValidationRules,ValidationMode
+What text is in sample.txt?,sample.txt,"The file contains important data","{""contains"": [""data""]}",hybrid
+
+# Output (TestQuestions-edge-cases.csv) with --count 3 (LLM-generated)
+Question,Filename,Answer,ValidationRules,ValidationMode
+What text is in sample.txt?,sample.txt,"The file contains important data","{""contains"": [""data""]}",hybrid
+What text is in sample.txt?,,Error: File not found or empty,"{""contains"": [""error"", ""not found""]}",rule
+What text is in a 10GB file?,large-file.txt,"Processing very large file...","{""contains"": [""large"", ""processing""]}",rule
+What text is in file-with-特殊字符.txt?,file-with-特殊字符.txt,"File contains Unicode characters","{""contains"": [""unicode""]}",rule
+```
+
+**Usage:**
+```powershell
+# Generate edge cases using suite names (recommended)
+python generate_tests.py --input-suite document-analysis --output-suite document-analysis-edge-cases --strategy edge-cases --count 5
+
+# Or using CSV file paths
+python generate_tests.py --input seed-tests.csv --output edge-cases.csv --strategy edge-cases --count 5
+```
+
+**Note:** For best results, configure Azure OpenAI credentials in your `.env` file. The LLM will generate more sophisticated edge cases than the basic rule-based fallback.
+
+#### Negative-Tests Strategy Details
+
+The `negative-tests` strategy generates test cases that should fail or produce errors, testing error handling and validation:
+
+**Key Features:**
+- **Invalid inputs**: Tests with malformed or invalid data
+- **Missing information**: Tests with required information omitted
+- **Contradictory instructions**: Tests with conflicting requirements
+- **Unsupported operations**: Tests with operations that aren't supported
+- **Error validation**: Expected answers typically indicate errors or clarifications
+- **Preserves original structure**: All source columns are preserved
+- **Full field modification**: Unlike variations (which only change Question), negative-tests can modify multiple fields
+
+**How it works:**
+1. For each seed test, generates N negative test scenarios using:
+   - **LLM-based generation** (if Azure OpenAI is configured): Creates sophisticated negative tests considering:
+     - Invalid inputs (malformed data, special characters, XSS attempts)
+     - Missing required information
+     - Contradictory instructions (e.g., "create and delete simultaneously")
+     - Unsupported operations
+   - **Rule-based generation** (fallback): **Currently not implemented** - if LLM is unavailable, no negative tests will be generated
+2. Negative tests typically modify:
+   - The question (to include invalid/missing/contradictory elements)
+   - The filename (to point to invalid or missing files)
+   - The expected answer (to indicate proper error handling or clarification)
+   - Validation rules (to check for error messages or appropriate responses)
+   - Validation mode (typically set to "rule" for negative tests)
+3. Output rows preserve all original columns, with modifications to reflect negative test scenarios
+
+**Example:**
+```csv
+# Input (TestQuestions-seed.csv)
+Question,Filename,Answer,ValidationRules,ValidationMode
+Create a PDF with 'Hello World',,A PDF file containing Hello World,"{""artifact_count"": 1, ""artifact_types"": [""File""]}",hybrid
+
+# Output (TestQuestions-negative-tests.csv) with --count 3 (LLM-generated)
+Question,Filename,Answer,ValidationRules,ValidationMode
+Create a PDF with 'Hello World',,A PDF file containing Hello World,"{""artifact_count"": 1, ""artifact_types"": [""File""]}",hybrid
+Create a PDF with 'Hello World' and also delete it,,Error: Contradictory instructions - cannot create and delete simultaneously,"{""contains"": [""error"", ""contradictory""]}",rule
+Create a PDF with invalid characters: <script>alert('xss')</script>,,Error: Invalid characters detected in input,"{""contains"": [""error"", ""invalid""]}",rule
+Create a PDF with no content specified,,Error: Missing required content for PDF creation,"{""contains"": [""error"", ""missing""]}",rule
+```
+
+**Usage:**
+```powershell
+# Generate negative tests using suite names (recommended)
+python generate_tests.py --input-suite code-interpreter --output-suite code-interpreter-negative --strategy negative-tests --count 5
+
+# Or using CSV file paths
+python generate_tests.py --input seed-tests.csv --output negative-tests.csv --strategy negative-tests --count 5
+```
+
+**Important Notes:**
+- **LLM Required**: This strategy requires Azure OpenAI credentials to be configured in your `.env` file. Without the LLM, no negative tests will be generated (the rule-based fallback is not implemented for this strategy).
+- **Error-focused**: Expected answers typically indicate errors or clarifications, and validation rules often check for error messages (e.g., `{"contains": ["error", "invalid"]}`).
+- **Full field modification**: Unlike the variations strategy which only modifies the Question field, negative-tests can modify Question, Filename, ExpectedAnswer, ValidationRules, and ValidationMode to create comprehensive error scenarios.
 
 #### Interactive Validation Modes
 | Mode | Purpose | Validation Rules Asked |
@@ -317,11 +450,14 @@ python generate_tests.py --interactive --suite-name my-custom-tests
 # Add tests to existing suite
 python generate_tests.py --interactive --existing-suite code-interpreter
 
-# Generate test variations
-python generate_tests.py --input seed-tests.csv --output variations.csv --strategy variations --count 10
+# Generate test variations using suite names (recommended)
+python generate_tests.py --input-suite code-interpreter --output-suite code-interpreter-variations --strategy variations --count 9
 
-# Generate edge cases
-python generate_tests.py --input seed-tests.csv --output edge-cases.csv --strategy edge-cases --count 5
+# Generate edge cases using suite names
+python generate_tests.py --input-suite document-analysis --output-suite document-analysis-edge-cases --strategy edge-cases --count 5
+
+# Generate variations using CSV file paths
+python generate_tests.py --input seed-tests.csv --output variations.csv --strategy variations --count 10
 
 # Generate negative tests
 python generate_tests.py --input seed-tests.csv --output negative-tests.csv --strategy negative-tests --count 3
@@ -522,8 +658,6 @@ python run_tests.py --suite code-interpreter --agent MAA-02 --verbose
 # Comprehensive pre-release testing
 python run_tests.py --suite all --agent MAA-02  --report --workers 10
 
-# Compare against previous release
-python run_tests.py --suite all --agent MAA-02 --baseline results/baseline-v1.2.3.json
 ```
 
 ## 🔍 Troubleshooting
@@ -554,7 +688,6 @@ python run_tests.py --suite code-interpreter --agent MAA-02 --dry-run
 - **Test Generation**: Use `generate_tests.py` to expand test coverage
 - **Validation**: Configure validation rules in CSV files
 - **Reports**: Generate HTML dashboards for detailed analysis
-- **Baselines**: Save and compare results over time
 
 For more information, see the inline help:
 ```powershell

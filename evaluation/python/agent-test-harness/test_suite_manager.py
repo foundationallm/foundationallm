@@ -207,10 +207,14 @@ class TestSuiteManager:
                 if test_index >= len(df):
                     print(f"Error: Test index {test_index} out of range (max: {len(df)-1})")
                     return None
-                df = df.iloc[[test_index]]
+                df = df.iloc[[test_index]].reset_index(drop=True)
                 print(f"Running specific test at index {test_index}")
             
             # Run the tests
+            # If we have a filtered dataframe (from quick_mode or test_index), use execute_tests_from_dataframe
+            # Otherwise, use execute_tests with the CSV path
+            has_filtered_dataframe = quick_mode or test_index is not None
+            
             if repeat_test > 1:
                 print(f"Executing {len(df)} tests, repeating each test {repeat_test} times...")
                 # Create expanded dataframe with repeated tests
@@ -226,7 +230,12 @@ class TestSuiteManager:
                 # Create new dataframe with repeated tests
                 expanded_df = pd.DataFrame(repeated_rows)
                 results_df = execute_tests_from_dataframe(expanded_df, agent_name, max_workers)
+            elif has_filtered_dataframe:
+                # Use dataframe-based execution when we have a filtered dataframe
+                print(f"Executing {len(df)} tests...")
+                results_df = execute_tests_from_dataframe(df, agent_name, max_workers)
             else:
+                # Use CSV-based execution when no filtering is applied
                 print(f"Executing {len(df)} tests...")
                 results_df = execute_tests(csv_path, agent_name, max_workers)
             
@@ -235,14 +244,50 @@ class TestSuiteManager:
                 return None
             
             # Convert results to dictionary format
+            # Convert DataFrame to dict and ensure all values are JSON-serializable
+            results_records = results_df.to_dict('records')
+            # Clean up any pandas types (Series, Timestamp, etc.) that might be in the records
+            def clean_for_json(obj):
+                """Recursively convert pandas types to native Python types"""
+                import numpy as np
+                if isinstance(obj, pd.Series):
+                    return obj.to_dict()
+                elif isinstance(obj, (pd.Timestamp, pd.DatetimeTZDtype)):
+                    return obj.isoformat() if hasattr(obj, 'isoformat') else str(obj)
+                elif isinstance(obj, (np.integer, np.int64, np.int32)):
+                    return int(obj)
+                elif isinstance(obj, (np.floating, np.float64, np.float32)):
+                    return float(obj)
+                elif isinstance(obj, np.ndarray):
+                    return obj.tolist()
+                elif isinstance(obj, dict):
+                    return {k: clean_for_json(v) for k, v in obj.items()}
+                elif isinstance(obj, list):
+                    return [clean_for_json(item) for item in obj]
+                elif pd.isna(obj):
+                    return None
+                else:
+                    return obj
+            
+            cleaned_results = [clean_for_json(record) for record in results_records]
+            
+            # Calculate passed/failed tests safely
+            if 'ErrorOccured' in results_df.columns:
+                passed_tests = len(results_df[results_df['ErrorOccured'] == 0])
+                failed_tests = len(results_df[results_df['ErrorOccured'] == 1])
+            else:
+                # If ErrorOccured column doesn't exist, assume all passed
+                passed_tests = len(results_df)
+                failed_tests = 0
+            
             results = {
                 'suite_name': suite_name,
                 'agent_name': agent_name,
                 'timestamp': timestamp,
                 'total_tests': len(results_df),
-                'passed_tests': len(results_df[results_df.get('ErrorOccured', 1) == 0]),
-                'failed_tests': len(results_df[results_df.get('ErrorOccured', 1) == 1]),
-                'results': results_df.to_dict('records')
+                'passed_tests': passed_tests,
+                'failed_tests': failed_tests,
+                'results': cleaned_results
             }
             
             # Save results
