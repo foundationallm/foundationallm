@@ -3,7 +3,7 @@
 > [!NOTE]
 > This section is for changes that are not yet released but will affect future releases.
 
-## Starting from 0.9.7-rc47
+## Starting from 0.9.7-rc472
 
 ### Configuration changes
 
