@@ -22,9 +22,13 @@
 				v-model:filters="filters"
 				filterDisplay="menu"
 				paginator
-				:rows="10"
-				:rowsPerPageOptions="[10, 25, 50, 100]"
+				lazy
+				:rows="rowsPerPage"
+				:rowsPerPageOptions="rowsPerPageOptions"
+				:first="(currentPage - 1) * rowsPerPage"
+				:totalRecords="totalRecords"
 				:paginatorTemplate="'FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink RowsPerPageDropdown'"
+				@page="handlePageChange"
 				:value="pipelineRuns"
 				striped-rows
 				scrollable
@@ -305,6 +309,11 @@ export default {
             selectedRun: null,
             stage_metrics_formatted_data: [],
             selectedPipelineName: null as string | null,
+            rowsPerPageOptions: [10, 25, 50, 100] as number[],
+            rowsPerPage: 10 as number,
+            currentPage: 1 as number,
+            totalPages: 0 as number,
+            totalRecords: 0 as number,
             showParametersDialog: false as boolean,
             showAll: true as boolean,
             completed: true as boolean,
@@ -345,6 +354,11 @@ export default {
 		},
 
 		async getPipelineRuns() {
+            this.currentPage = 1;
+            await this.fetchPipelineRuns();
+		},
+
+        async fetchPipelineRuns() {
 			this.loading = true;
 			try {
 
@@ -352,11 +366,23 @@ export default {
                     data_pipeline_name_filter: this.selectedPipelineName,
                     completed: this.showAll ? null : this.completed,
                     successful: this.showAll ? null : this.successful,
+                    page_number: this.currentPage,
+                    page_size: this.rowsPerPage,
                     //start_time: "2025-06-26",
 			    };
 
                 var response = await api.getPipelineRuns(this.selectedPipelineName || '', payload);
-				this.pipelineRuns = response.resource.resources;
+                const collection = response?.resource ?? {};
+				this.pipelineRuns = collection.resources || [];
+                this.totalPages = collection.total_pages_count || 0;
+
+                if (this.totalPages === 0) {
+                    this.totalRecords = 0;
+                } else if (this.currentPage >= this.totalPages) {
+                    this.totalRecords = (this.totalPages - 1) * this.rowsPerPage + this.pipelineRuns.length;
+                } else {
+                    this.totalRecords = this.totalPages * this.rowsPerPage;
+                }
 
 			} catch (error) {
 				this.$toast.add({
@@ -367,6 +393,12 @@ export default {
 			}
 			this.loading = false;
 		},
+
+        async handlePageChange(event: any) {
+            this.rowsPerPage = event.rows;
+            this.currentPage = event.page + 1;
+            await this.fetchPipelineRuns();
+        },
 
         getFormattedDate(date) {
             return date.toString().replace('T', ' ').replace('Z', '').slice(0, 19);
