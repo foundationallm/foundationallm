@@ -11,6 +11,14 @@
 				"value": "true",
 				"content_type": "application/vnd.microsoft.appconfig.ff+json;charset=utf-8",
 				"first_version": "0.9.7"
+			},
+			{
+				"name": ".appconfig.featureflag/FoundationaLLM.Agent.SelfService",
+				"description": "Feature flag used to enable or disable the agent self service feature",
+				"secret": "",
+				"value": "false",
+				"content_type": "application/vnd.microsoft.appconfig.ff+json;charset=utf-8",
+				"first_version": "0.9.7"
 			}
 		]
 	},

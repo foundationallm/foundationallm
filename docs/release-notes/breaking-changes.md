@@ -3,11 +3,18 @@
 > [!NOTE]
 > This section is for changes that are not yet released but will affect future releases.
 
+## Starting from 0.9.7-rc472
+
+### Configuration changes
+
+A new feature flag named `FoundationaLLM.Agent.SelfService` has been added. This flag enables or disables the self-service capabilities for agents in the FoundationaLLM User Portal and the Core API. The default value is `true`.
+
 ## Starting from 0.9.7-rc470
 
 ### Schema changes
 
 The `FoundationaLLM.Agent` resource provider schema is updated to version 2. The schema changes are as follows:
+
 - The agent type `knowledge-management` is replaced with `generic-agent`.
 - The agent workflow type `external-agent-workflow` is replaced with `generic-agent-workflow`.
 
