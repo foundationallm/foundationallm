@@ -55,6 +55,9 @@ export const useAppConfigStore = defineStore('appConfig', {
 			callbackPath: null as string | null,
 			timeoutInMinutes: 60,
 		},
+
+		// Feature flags
+		agentSelfServiceFeatureEnabled: false,
 	}),
 	getters: {},
 	actions: {
@@ -231,6 +234,20 @@ export const useAppConfigStore = defineStore('appConfig', {
 			this.auth.timeoutInMinutes = authTimeoutInMinutes;
 		},
 
+		async loadFeatureFlags() {
+			const agentSelfServiceFlag = await this.getConfigValueSafe(
+				'.appconfig.featureflag/FoundationaLLM.Agent.SelfService',
+				'{"enabled": true}',
+			);
+			try {
+				const parsedFlag = JSON.parse(agentSelfServiceFlag);
+				this.agentSelfServiceFeatureEnabled = parsedFlag.enabled === true;
+			} catch (error) {
+				console.error('Failed to parse agent self-service feature flag:', error);
+				this.agentSelfServiceFeatureEnabled = false; // Default to enabled if parsing fails
+			}
+		},
+
 		/**
 		 * Helper method to safely get configuration values with default fallback.
 		 */
@@ -265,6 +282,7 @@ export const useAppConfigStore = defineStore('appConfig', {
 		async loadFullConfiguration() {
 			// Load the app configuration set (this is the only supported approach)
 			await this.loadAppConfigurationSet();
+			await this.loadFeatureFlags();
 		},
 
 		/**

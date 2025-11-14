@@ -14,11 +14,13 @@ namespace FoundationaLLM.Common.Models.Configuration.Users
         /// </summary>
         [JsonPropertyName("id")]
         public string Id { get; set; } = UPN;
+
         /// <summary>
         /// The document type.
         /// </summary>
         [JsonPropertyName("type")]
         public string Type { get; set; } = nameof(UserProfile);
+
         /// <summary>
         /// The user principal name.
         /// </summary>
@@ -39,5 +41,11 @@ namespace FoundationaLLM.Common.Models.Configuration.Users
         /// </remarks>
         [JsonPropertyName("agents")]
         public List<string> Agents { get; set; } = [];
+
+        /// <summary>
+        /// Gets or sets the date and time when the user profile was last updated.
+        /// </summary>
+        [JsonPropertyName("updated_on")]
+        public DateTimeOffset UpdatedOn { get; set; } = DateTimeOffset.MinValue;
     }
 }

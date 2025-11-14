@@ -85,6 +85,8 @@
 
 <script lang="ts">
 import type { Message, Session, ResourceProviderGetResult, Agent } from '@/js/types';
+import { useAppStore } from '@/stores/appStore';
+import { useAppConfigStore } from '@/stores/appConfigStore';
 
 export default {
 	name: 'ChatThread',
@@ -94,6 +96,12 @@ export default {
 	},
 
 	emits: ['session-updated'],
+
+	setup() {
+		const $appStore = useAppStore();
+		const $appConfigStore = useAppConfigStore();
+		return { $appStore, $appConfigStore };
+	},
 
 	data() {
 		return {
@@ -170,26 +178,36 @@ export default {
 	},
 
 	created() {
-		if (
-			!this.$appConfigStore.showLastConversionOnStartup &&
-			(this.currentSession as Session)?.is_temp
-		) {
-			this.isLoading = false;
-			const sessionAgent = this.$appStore.getSessionAgent(this.currentSession as Session);
-			if (sessionAgent) {
-				this.welcomeMessage = this.getWelcomeMessage(sessionAgent);
-			} else {
-				// If no agent is selected yet, wait for agents to load
-				this.$watch(
-					() => this.$appStore.getSessionAgent(this.currentSession as Session),
-					(newAgent: ResourceProviderGetResult<Agent> | null) => {
+		// Wait for app initialization before setting welcome message
+    const unwatchInitialized = this.$watch(
+			() => this.$appStore.isInitialized,
+			(isInitialized) => {
+				if (isInitialized) {
+					if (
+						!this.$appConfigStore.showLastConversionOnStartup &&
+						(this.currentSession as Session)?.is_temp
+					) {
 						this.isLoading = false;
-						this.welcomeMessage = this.getWelcomeMessage(newAgent);
-					},
-					{ immediate: true },
-				);
-			}
-		}
+						const sessionAgent = this.$appStore.getSessionAgent(this.currentSession as Session);
+						if (sessionAgent) {
+							this.welcomeMessage = this.getWelcomeMessage(sessionAgent);
+						} else {
+							// If no agent is selected yet, wait for agents to load
+							this.$watch(
+								() => this.$appStore.getSessionAgent(this.currentSession as Session),
+								(newAgent: ResourceProviderGetResult<Agent> | null) => {
+									this.isLoading = false;
+									this.welcomeMessage = this.getWelcomeMessage(newAgent);
+								},
+								{ immediate: true },
+							);
+						}
+					}
+					unwatchInitialized(); // Stop watching after initialization
+				}
+			},
+			{ immediate: true } // Check immediately in case already initialized
+		);
 	},
 
 	methods: {
@@ -198,25 +216,25 @@ export default {
 			if (!agent) {
 				return 'Enable at least one agent in Settings -> Agents so you can start new conversations.';
 			}
-			
+
 			// Check if the agent is accessible to the user
 			const userProfile = this.$appStore.userProfiles;
 			const enabledAgentIds = userProfile?.agents || [];
-			
+
 			// If user has no enabled agents, show no agents message
 			if (enabledAgentIds.length === 0) {
 				return 'Enable at least one agent in Settings -> Agents so you can start new conversations.';
 			}
-			
+
 			// Check if current agent is in user's enabled agents
-			const foundAgent = enabledAgentIds.find((agentId: any) => 
+			const foundAgent = enabledAgentIds.find((agentId: any) =>
 				agentId == agent.resource.object_id
 			);
-			
+
 			if (!foundAgent) {
 				return 'Enable at least one agent in Settings -> Agents so you can start new conversations.';
 			}
-			
+
 			// Agent is accessible, show its welcome message
 			const welcomeMessage = agent?.resource?.properties?.welcome_message?.trim();
 			return (

@@ -64,7 +64,7 @@
 							}"
 							@keydown="handleChatKeydown($event, session)"
 						>
-							<!-- Chat name -->	
+							<!-- Chat name -->
 							<VTooltip :auto-hide="isMobile" :popper-triggers="isMobile ? [] : ['hover']">
 								<span class="chat__name" tabindex="-1" @keydown.esc="hideAllPoppers">{{
 									session.display_name
@@ -273,40 +273,40 @@
 							/>
 						</div>
 					</div>
-					
+
 					<div class="csm-table-container-1 mb-4">
 						<table class="csm-table-1">
 							<thead>
 								<tr>
 									<th>Name</th>
 									<th>Enabled</th>
-									<th>Edit</th>
+									<th v-if="$appConfigStore.agentSelfServiceFeatureEnabled">Edit</th>
 								</tr>
 							</thead>
 							<tbody>
 								<tr v-for="getAgents in filteredAgents" :key="getAgents.object_id">
 									<td>{{ getAgents.display_name || getAgents.name }}</td>
 									<td>
-										<div 
+										<div
 											class="custom-checkbox"
-											:class="{ 
+											:class="{
 												'checked': getAgents.enabled,
-												'disabled': getAgents.isFeatured
+												'disabled': isCurrentAgent(getAgents) && getAgents.enabled
 											}"
-											@click="getAgents.isFeatured ? null : toggleAgentStatus(getAgents)"
+											@click="isCurrentAgent(getAgents) && getAgents.enabled ? null : toggleAgentStatus(getAgents)"
 											:aria-label="`Toggle agent status - ${getAgents.enabled ? 'enabled' : 'disabled'}${getAgents.isFeatured ? ' (featured agent)' : ''}`"
 											role="checkbox"
 											:aria-checked="getAgents.enabled"
-											:tabindex="getAgents.isFeatured ? -1 : 0"
-											@keydown.enter="getAgents.isFeatured ? null : toggleAgentStatus(getAgents)"
-											@keydown.space.prevent="getAgents.isFeatured ? null : toggleAgentStatus(getAgents)"
+											:tabindex="isCurrentAgent(getAgents) && getAgents.enabled ? -1 : 0"
+											@keydown.enter="isCurrentAgent(getAgents) && getAgents.enabled ? null : toggleAgentStatus(getAgents)"
+											@keydown.space.prevent="isCurrentAgent(getAgents) && getAgents.enabled ? null : toggleAgentStatus(getAgents)"
 										>
 											<i v-if="getAgents.enabled" class="pi pi-check"></i>
 										</div>
 									</td>
-									<td>
-										<Button 
-											link 
+									<td v-if="$appConfigStore.agentSelfServiceFeatureEnabled">
+										<Button
+											link
 											class="csm-table-edit-btn-1"
 											:disabled="getAgents.isReadonly"
 											:class="{'csm-table-edit-btn-strong': getAgents.enabled, 'csm-table-edit-btn-faded': !getAgents.enabled}"
@@ -318,19 +318,19 @@
 								</tr>
 							</tbody>
 						</table>
-						
+
 						<!-- Loading state -->
 						<div v-if="loadingAgents2" class="loading-container">
 							<i class="pi pi-spin pi-spinner" style="font-size: 2rem"></i>
 							<p>Loading agents...</p>
 						</div>
-						
+
 						<!-- Empty Message -->
 						<div v-else-if="filteredAgents.length === 0 && !loadingAgents2" class="empty-state">
 							<i class="pi pi-info-circle" style="font-size: 2rem; color: #6c757d;"></i>
 							<p>{{ getEmptyMessage() }}</p>
 						</div>
-						
+
 						<!-- Error Message -->
 						<div v-else-if="agentError2" class="error-message">
 							<i class="pi pi-exclamation-triangle" style="font-size: 2rem; color: #e74c3c;"></i>
@@ -340,9 +340,9 @@
 
 					<!-- Permission Request Link -->
 					<div v-if="!hasAgentsContributorRole || !hasPromptsContributorRole">
-						<nuxt-link 
-							v-if="$appConfigStore.agentManagementPermissionRequestUrl" 
-							:to="$appConfigStore.agentManagementPermissionRequestUrl" 
+						<nuxt-link
+							v-if="$appConfigStore.agentManagementPermissionRequestUrl && $appConfigStore.agentSelfServiceFeatureEnabled"
+							:to="$appConfigStore.agentManagementPermissionRequestUrl"
 							external
 							target="_blank"
 							class="p-component csm-only-text-btn-1"
@@ -387,8 +387,8 @@
 			<template #footer>
 				<div class="flex w-full justify-between items-center px-2">
 					<div class="w-full max-w-[50%] px-2">
-						<nuxt-link 
-							v-if="activeTabIndex !== 1"
+						<nuxt-link
+							v-if="activeTabIndex !== 1 && $appConfigStore.agentSelfServiceFeatureEnabled"
 							to="/manage-agents"
 							class="p-component csm-only-text-btn-1">
 							Manage Agents <i class="pi pi-external-link ml-1"></i>
@@ -410,12 +410,16 @@
 </template>
 
 <script lang="ts">
-	import eventBus from '@/js/eventBus';
+import eventBus from '@/js/eventBus';
 import { isAgentExpired, isAgentReadonly } from '@/js/helpers';
 import type { AgentOption, Session } from '@/js/types';
 import '@/styles/loading.scss';
 import { hideAllPoppers } from 'floating-vue';
 import Checkbox from 'primevue/checkbox';
+import { useAppStore } from '@/stores/appStore';
+import { useAppConfigStore } from '@/stores/appConfigStore';
+import { useAuthStore } from '@/stores/authStore';
+
 	declare const process: any;
 
 	import api from '@/js/api';
@@ -425,6 +429,13 @@ import Checkbox from 'primevue/checkbox';
 
 		components: {
 			Checkbox,
+		},
+
+		setup() {
+			const $appStore = useAppStore();
+			const $appConfigStore = useAppConfigStore();
+			const $authStore = useAuthStore();
+			return { $appStore, $appConfigStore, $authStore };
 		},
 
 		data() {
@@ -474,12 +485,12 @@ import Checkbox from 'primevue/checkbox';
 
 			filteredAgents(): AgentOption[] {
 				let filtered = this.agentOptions2;
-				
+
 				// Filter by enabled status if checkbox is checked
 				if (this.showEnabledOnly) {
 					filtered = filtered.filter((agent: AgentOption) => agent.enabled);
 				}
-				
+
 				// Filter by search term if provided
 				if (this.agentSearchTerm.trim()) {
 					const searchTerm = this.agentSearchTerm.toLowerCase().trim();
@@ -488,7 +499,7 @@ import Checkbox from 'primevue/checkbox';
 						return name.includes(searchTerm);
 					});
 				}
-				
+
 				return filtered;
 			},
 		},
@@ -537,7 +548,7 @@ import Checkbox from 'primevue/checkbox';
 
 			// Listen for the agent change event.
 			eventBus.on('agentChanged', this.handleAddSession);
-			
+
 		},
 
 		async mounted() {
@@ -545,27 +556,27 @@ import Checkbox from 'primevue/checkbox';
 			if (process.client && window) {
 				window.addEventListener('config-loaded', this.handleConfigLoaded);
 				window.addEventListener('auth-updated', this.handleAuthUpdated);
-				
+
 				// Check if configuration is already loaded and trigger update
 				if (this.$appConfigStore.logoUrl) {
-					this.handleConfigLoaded({ detail: { 
-						logoUrl: this.$appConfigStore.logoUrl, 
-						logoText: this.$appConfigStore.logoText 
+					this.handleConfigLoaded({ detail: {
+						logoUrl: this.$appConfigStore.logoUrl,
+						logoText: this.$appConfigStore.logoText
 					}} as CustomEvent);
 				}
-				
+
 				// Check if authentication is already available and trigger update
 				if (this.$authStore.currentAccount) {
-					this.handleAuthUpdated({ detail: { 
+					this.handleAuthUpdated({ detail: {
 						isAuthenticated: this.$authStore.isAuthenticated,
-						currentAccount: this.$authStore.currentAccount 
+						currentAccount: this.$authStore.currentAccount
 					}} as CustomEvent);
 				}
-				
+
 				// Start polling for authentication changes (fallback if events don't work)
 				this.startAuthPolling();
 			}
-			
+
 			await this.setAgentOptions();
 			await this.loadUserProfile();
 			await this.loadgetAgents();
@@ -575,13 +586,13 @@ import Checkbox from 'primevue/checkbox';
 		unmounted() {
 			// Remove the agent change event listener.
 			eventBus.off('agentChanged', this.handleAddSession);
-			
+
 			// Remove config loaded event listener
 			if (process.client && window) {
 				window.removeEventListener('config-loaded', this.handleConfigLoaded);
 				window.removeEventListener('auth-updated', this.handleAuthUpdated);
 			}
-			
+
 			// Clear auth polling interval
 			if (this.authPollingInterval) {
 				clearInterval(this.authPollingInterval);
@@ -593,33 +604,33 @@ import Checkbox from 'primevue/checkbox';
 			handleConfigLoaded(event: CustomEvent) {
 				this.configLoadedTrigger = Date.now();
 			},
-			
+
 			handleAuthUpdated(event: CustomEvent) {
 				this.authStateTrigger = Date.now();
-				
+
 				// If we have authentication, stop polling
 				if (this.$authStore.currentAccount && this.authPollingInterval) {
 					clearInterval(this.authPollingInterval);
 					this.authPollingInterval = null;
 				}
 			},
-			
+
 			startAuthPolling() {
 				let pollCount = 0;
 				const maxPolls = 30; // 15 seconds with 500ms intervals
-				
+
 				this.authPollingInterval = setInterval(() => {
 					pollCount++;
-					
+
 					// Check if we have authentication now
 					if (this.$authStore.currentAccount) {
-						this.handleAuthUpdated({ detail: { 
+						this.handleAuthUpdated({ detail: {
 							isAuthenticated: this.$authStore.isAuthenticated,
-							currentAccount: this.$authStore.currentAccount 
+							currentAccount: this.$authStore.currentAccount
 						}} as CustomEvent);
 						return; // handleAuthUpdated will clear the interval
 					}
-					
+
 					// Stop polling after max attempts
 					if (pollCount >= maxPolls) {
 						if (this.authPollingInterval) {
@@ -799,22 +810,22 @@ import Checkbox from 'primevue/checkbox';
 			async loadgetAgents() {
 				this.loadingAgents2 = true;
 				this.agentError2 = '';
-				
-				 
+
+
 				try {
 					const response = await api.getAllowedAgents();
 
 					const agentsArray = Array.isArray(response) ? response : [];
-					
+
 					this.agentOptions2 = agentsArray.map((ResourceProviderGetResult: any, index: number): AgentOption => {
 						const agent = ResourceProviderGetResult.resource || ResourceProviderGetResult;
-						
+
 						// Check if this agent is in the user's selected agents list
 						const isAgentSelected = this.userProfile?.agents?.includes(agent.object_id) || false;
-						
+
 						// Check if this agent is a featured agent (by name, as per memory: resource names are reliable identifiers)
 						const isFeaturedAgent = this.featuredAgentNames.includes(agent.name);
-						
+
 						return {
 							object_id: agent.object_id,
 							name: agent.name || 'Unknown Agent',
@@ -823,7 +834,7 @@ import Checkbox from 'primevue/checkbox';
 							value: agent.object_id,
 							type: agent.type,
 							description: agent.description,
-							enabled: isFeaturedAgent ? true : isAgentSelected, // Featured agents are always enabled
+							enabled: isAgentSelected,
 							isReadonly: isAgentReadonly(ResourceProviderGetResult.roles || []),
 							isFeatured: isFeaturedAgent, // Add featured flag for UI logic
 						};
@@ -842,23 +853,34 @@ import Checkbox from 'primevue/checkbox';
 				await this.loadgetAgents();
 			},
 
+			isCurrentAgent(agent: AgentOption): boolean {
+				const currentAgent = (this.$appStore as any).getSessionAgent((this.$appStore as any).currentSession);
+				if (!currentAgent) return false;
+				return currentAgent.resource?.object_id === agent.object_id;
+			},
 
 			selectAgent(getAgents: AgentOption) {
 				this.$emit('agent-selected', getAgents);
 			},
 
 			async toggleAgentStatus(agent: AgentOption) {
-				// Prevent toggling featured agents
-				if (agent.isFeatured) {
+
+				// Prevent disabling the current conversation's agent
+				if (this.isCurrentAgent(agent) && agent.enabled) {
+					(this.$appStore as any).addToast({
+						severity: 'warn',
+						life: 5000,
+						detail: 'Cannot disable the agent currently being used in this conversation.',
+					});
 					return;
 				}
-				
+
 				const originalStatus = agent.enabled;
-				
+
 				try {
 					// Toggle the enabled status optimistically
 					agent.enabled = !agent.enabled;
-					
+
 					// Make API call to update the agent status on the server
 					if (agent.enabled) {
 						await api.addAgentToUserProfile(agent.object_id!);
@@ -882,7 +904,7 @@ import Checkbox from 'primevue/checkbox';
 							}
 						}
 					}
-					
+
 					// Update the global app store user profile
 					this.$appStore.updateUserProfileAgent(agent.object_id!, agent.enabled);
 
@@ -896,7 +918,7 @@ import Checkbox from 'primevue/checkbox';
 				} catch (error) {
 					// Revert the change if the API call fails
 					agent.enabled = originalStatus;
-					
+
 					console.error('Failed to update agent status:', error);
 					(this.$appStore as any).addToast({
 						severity: 'error',
@@ -911,7 +933,7 @@ import Checkbox from 'primevue/checkbox';
 				// Navigate to create-agent page with agent data for editing
 				this.$router.push({
 					path: '/create-agent',
-					query: { 
+					query: {
 						edit: 'true',
 						agentName: agent.name,
 						agentId: agent.object_id,
@@ -1376,7 +1398,7 @@ import Checkbox from 'primevue/checkbox';
 		color: #0d2c6c !important;
 		filter: drop-shadow(0 0 6px #0d2c6c88);
 	}
-	
+
 	/* Custom checkbox styling */
 	.custom-checkbox {
 		width: 21px;
@@ -1392,35 +1414,35 @@ import Checkbox from 'primevue/checkbox';
 		position: relative;
 		margin: 0 auto;
 	}
-	
+
 	.custom-checkbox:hover {
 		border-color: #5472d4;
 		background-color: rgba(84, 114, 212, 0.1);
 	}
-	
+
 	.custom-checkbox.checked {
 		background-color: #5472d4;
 		border-color: #5472d4;
 	}
-	
+
 	.custom-checkbox.checked i {
 		color: white;
 		font-size: 12px;
 		font-weight: bold;
 	}
-	
+
 	.custom-checkbox.disabled {
 		cursor: not-allowed;
 		opacity: 0.6;
 		background-color: #e9ecef !important;
 		border-color: #adb5bd !important;
 	}
-	
+
 	.custom-checkbox.disabled:hover {
 		background-color: #e9ecef !important;
 		border-color: #adb5bd !important;
 	}
-	
+
 	.custom-checkbox.disabled.checked {
 		background-color: #6c757d !important;
 		border-color: #6c757d !important;
@@ -1434,7 +1456,7 @@ import Checkbox from 'primevue/checkbox';
 	.csm-sEnabled-checkbox-1 label{
 		cursor: pointer;
 	}
-	
+
 	/* Permission request container styling */
 	.permission-request-container {
 		padding: 16px;
@@ -1443,7 +1465,7 @@ import Checkbox from 'primevue/checkbox';
 		border: 1px solid #e9ecef;
 		border-radius: 8px;
 	}
-	
+
 	.permission-request-message {
 		display: flex;
 		align-items: center;
@@ -1452,14 +1474,14 @@ import Checkbox from 'primevue/checkbox';
 		font-size: 14px;
 		color: #6c757d;
 	}
-	
+
 	.permission-request-link {
 		color: #5472d4;
 		text-decoration: none;
 		font-weight: 500;
 		transition: color 0.2s ease;
 	}
-	
+
 	.permission-request-link:hover {
 		color: #1746a2;
 		text-decoration: underline;
