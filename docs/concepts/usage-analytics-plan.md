@@ -307,10 +307,11 @@ Analysis of model usage and performance.
    - Partitioned by date and dimension
    - Optimized for query performance
 
-2. **Power BI Dataset**
-   - Import aggregated data
-   - Create semantic model
-   - Enable self-service analytics
+2. **Management Portal Dashboard**
+   - Custom Vue.js components
+   - PrimeVue Charts for visualizations
+   - Real-time data fetching from API
+   - Responsive design
 
 ## Analytics Queries
 
@@ -396,68 +397,142 @@ ORDER BY fileCount DESC
 
 ## Dashboard Design
 
-### Agent Analytics Dashboard
+The analytics dashboard will be built as a custom component within the FoundationaLLM Management Portal, integrated into the existing Nuxt.js application structure.
 
-#### Overview Section
-- Total agents
-- Total conversations
-- Total tokens consumed
-- Average response time
-- Active users (anonymized count)
+### Management Portal Integration
 
-#### Agent Performance Table
-Columns:
-- Agent Name
-- Unique Users (anonymized)
-- Total Conversations
-- Total Tokens
-- Avg Tokens per Session
-- Avg Response Time (ms)
-- P95 Response Time (ms)
-- Error Rate (%)
-- Most Used Tools
-- Avg Files per Conversation
+#### Navigation Structure
+- **New Sidebar Section**: "Analytics" section added to sidebar
+  - Icon: `pi pi-chart-line`
+  - Main Analytics page: `/analytics`
+  - Agent Analytics: `/analytics/agents`
+  - Tool Analytics: `/analytics/tools`
+  - Model Analytics: `/analytics/models`
 
-#### Agent Usage Trends
-- Line chart: Conversations over time by agent
+#### Dashboard Pages
+
+**Main Analytics Page** (`/analytics/index.vue`)
+- Overview cards with key metrics
+- Quick links to detailed analytics
+- Recent activity summary
+
+**Agent Analytics Dashboard** (`/analytics/agents/index.vue`)
+
+*Overview Section*
+- Metric cards:
+  - Total agents
+  - Total conversations
+  - Total tokens consumed
+  - Average response time
+  - Active users (anonymized count)
+
+*Agent Performance Table*
+- Sortable, filterable DataTable component
+- Columns:
+  - Agent Name
+  - Unique Users (anonymized)
+  - Total Conversations
+  - Total Tokens
+  - Avg Tokens per Session
+  - Avg Response Time (ms)
+  - P95 Response Time (ms)
+  - Error Rate (%)
+  - Most Used Tools
+  - Avg Files per Conversation
+- Row actions: Click to view agent detail
+
+*Agent Usage Trends*
+- Line chart: Conversations over time by agent (PrimeVue Chart)
 - Line chart: Token consumption over time
 - Line chart: Response time trends
 - Bar chart: Top agents by usage
 
-#### Agent Deep Dive
+*Agent Deep Dive* (`/analytics/agents/[agentName].vue`)
 - Agent selector dropdown
-- Conversation length distribution
-- Tool usage frequency
-- File type distribution
-- Response time distribution
-- Error analysis
+- Conversation length distribution (histogram)
+- Tool usage frequency (pie/bar chart)
+- File type distribution (pie chart)
+- Response time distribution (histogram)
+- Error analysis (table)
+- Tool combinations visualization
 
-### Tool Analytics Dashboard
+**Tool Analytics Dashboard** (`/analytics/tools/index.vue`)
 
-#### Tool Overview
-- Total unique tools
-- Most popular tools
-- Tools by agent
-- Tool usage trends
+*Tool Overview*
+- Metric cards:
+  - Total unique tools
+  - Most popular tools count
+  - Tools by agent count
+- Tool usage trends (line chart)
 
-#### Tool Performance
+*Tool Performance Table*
+- Tool name
+- Usage frequency
 - Average execution time
 - Success rate
-- Error analysis
-- Tool efficiency metrics
+- Error count
+- Agents using tool
 
-### Model Analytics Dashboard
+**Model Analytics Dashboard** (`/analytics/models/index.vue`)
 
-#### Model Usage
-- Model selection distribution
-- Model usage by agent
-- Model switching patterns
+*Model Usage*
+- Model selection distribution (pie chart)
+- Model usage by agent (stacked bar chart)
+- Model switching patterns (line chart)
 
-#### Model Performance
-- Response time by model
+*Model Performance Table*
+- Model name
+- Usage count
+- Average response time
 - Token efficiency
-- Cost analysis
-- Error rates
+- Cost per request
+- Error rate
+
+### Frontend Components
+
+#### Chart Components
+- **UsageChart.vue**: Reusable line/bar chart component
+- **DistributionChart.vue**: Histogram/pie chart component
+- **MetricCard.vue**: Metric display card component
+- **AnalyticsTable.vue**: Enhanced table with sorting/filtering
+
+#### Data Fetching
+- **Analytics API Client**: Extend `/js/api.ts` with analytics methods
+- **Server-side Proxy**: Use Nuxt server API routes if needed for CORS
+- **Real-time Updates**: Optional WebSocket or polling for live data
+
+### Backend API Endpoints
+
+#### Management API Controller
+
+**AnalyticsController.cs** (`/src/dotnet/ManagementAPI/Controllers/AnalyticsController.cs`)
+
+Endpoints:
+- `GET /instances/{instanceId}/analytics/overview`
+  - Returns overview metrics
+- `GET /instances/{instanceId}/analytics/agents`
+  - Returns agent analytics summary
+- `GET /instances/{instanceId}/analytics/agents/{agentName}`
+  - Returns detailed agent analytics
+- `GET /instances/{instanceId}/analytics/tools`
+  - Returns tool analytics
+- `GET /instances/{instanceId}/analytics/models`
+  - Returns model analytics
+- `GET /instances/{instanceId}/analytics/agents/{agentName}/tools`
+  - Returns tool combinations for agent
+- `GET /instances/{instanceId}/analytics/agents/{agentName}/files`
+  - Returns file analytics for agent
+
+#### Analytics Service
+
+**AnalyticsService.cs** (`/src/dotnet/Common/Services/Analytics/`)
+
+Service layer that:
+- Executes Cosmos DB queries
+- Executes Application Insights KQL queries
+- Performs anonymization
+- Aggregates data
+- Returns structured analytics results
 
 ## Implementation Plan
 
@@ -516,37 +591,150 @@ Columns:
 - Implement error handling
 - Implement monitoring
 
-#### 4.2 Real-time Processing
-- Implement streaming aggregations
-- Implement real-time dashboards
-- Implement alerting
+#### 4.2 Real-time Processing (Optional)
+- Implement WebSocket or polling for live updates
+- Implement real-time dashboard refresh
+- Implement alerting (future enhancement)
 
-### Phase 5: Dashboard Development (Weeks 7-8)
+### Phase 5: Backend API Development (Weeks 7-8)
 
-#### 5.1 Power BI Dashboards
-- Agent analytics dashboard
-- Tool analytics dashboard
-- Model analytics dashboard
-- Executive summary dashboard
+#### 5.1 Analytics Service Implementation
+- Create `AnalyticsService` interface and implementation
+- Implement Cosmos DB query execution
+- Implement Application Insights KQL query execution
+- Implement data anonymization
+- Implement aggregation logic
+- Add error handling and logging
 
-#### 5.2 Application Insights Workbooks
-- Real-time monitoring
-- Performance dashboards
-- Error tracking
+#### 5.2 Management API Controller
+- Create `AnalyticsController` in ManagementAPI
+- Implement all analytics endpoints
+- Add authentication/authorization
+- Add input validation
+- Add response caching (optional)
+- Add API documentation
 
-### Phase 6: Testing and Validation (Week 9)
+#### 5.3 Data Models
+- Create analytics response models
+- Define TypeScript types for frontend
+- Add model validation
 
-#### 6.1 Data Quality Testing
+### Phase 6: Frontend Dashboard Development (Weeks 9-10)
+
+#### 6.1 Management Portal Integration
+- Add Analytics section to sidebar
+- Create analytics page structure
+- Add navigation routing
+- Integrate with existing auth system
+
+#### 6.2 Chart Components
+- Install/configure charting library (PrimeVue Charts or Chart.js)
+- Create reusable chart components
+- Create metric card components
+- Create table components with sorting/filtering
+
+#### 6.3 Analytics Pages
+- Main analytics overview page
+- Agent analytics page with charts and tables
+- Agent detail page
+- Tool analytics page
+- Model analytics page
+
+#### 6.4 API Integration
+- Extend `api.ts` with analytics methods
+- Add data fetching logic
+- Add loading states
+- Add error handling
+- Add refresh functionality
+
+#### 6.5 UI/UX Polish
+- Responsive design
+- Loading indicators
+- Empty states
+- Error messages
+- Tooltips and help text
+
+### Phase 7: Testing and Validation (Week 11)
+
+#### 7.1 Data Quality Testing
 - Verify query accuracy
 - Validate aggregations
 - Test edge cases
 - Performance testing
 
-#### 6.2 Privacy Testing
+#### 7.2 Privacy Testing
 - Verify anonymization
 - Test for content leakage
 - Security audit
 - Compliance validation
+
+## Implementation Details
+
+### Backend Architecture
+
+#### Analytics Service Structure
+```
+/src/dotnet/Common/Services/Analytics/
+  - IAnalyticsService.cs (interface)
+  - AnalyticsService.cs (implementation)
+  - Models/
+    - AgentAnalyticsSummary.cs
+    - ToolAnalyticsSummary.cs
+    - ModelAnalyticsSummary.cs
+    - AnalyticsOverview.cs
+  - Queries/
+    - CosmosDBQueries.cs (query builders)
+    - ApplicationInsightsQueries.cs (KQL query builders)
+  - Anonymization/
+    - IAnonymizationService.cs
+    - AnonymizationService.cs
+```
+
+#### Management API Controller
+```
+/src/dotnet/ManagementAPI/Controllers/
+  - AnalyticsController.cs
+    - GET /instances/{instanceId}/analytics/overview
+    - GET /instances/{instanceId}/analytics/agents
+    - GET /instances/{instanceId}/analytics/agents/{agentName}
+    - GET /instances/{instanceId}/analytics/tools
+    - GET /instances/{instanceId}/analytics/models
+```
+
+### Frontend Architecture
+
+#### Management Portal Structure
+```
+/src/ui/ManagementPortal/
+  - pages/
+    - analytics/
+      - index.vue (overview)
+      - agents/
+        - index.vue (agent list)
+        - [agentName].vue (agent detail)
+      - tools/
+        - index.vue (tool analytics)
+      - models/
+        - index.vue (model analytics)
+  - components/
+    - analytics/
+      - UsageChart.vue
+      - DistributionChart.vue
+      - MetricCard.vue
+      - AnalyticsTable.vue
+  - js/
+    - api.ts (extend with analytics methods)
+```
+
+### Charting Library
+
+**Recommended**: PrimeVue Charts (already included in Management Portal)
+- Line charts for trends
+- Bar charts for comparisons
+- Pie charts for distributions
+- DataTable for tabular data
+
+**Alternative**: Chart.js with vue-chartjs wrapper
 
 ## Configuration
 
@@ -561,9 +749,9 @@ Columns:
     "ApplicationInsightsConnectionString": "...",
     "LogAnalyticsWorkspaceId": "...",
     "DataLakeConnectionString": "...",
-    "AggregationSchedule": "0 0 * * *", // Daily at midnight
+    "CacheDurationMinutes": 5,
     "RetentionDays": 90,
-    "EnableRealTimeDashboard": true
+    "EnableRealTimeUpdates": false
   }
 }
 ```

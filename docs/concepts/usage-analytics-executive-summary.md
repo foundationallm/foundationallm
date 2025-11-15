@@ -83,7 +83,8 @@ Analysis of model usage and performance
 - **Anonymization**: One-way hashing of user identities with secure salt
 - **Aggregation**: Temporal and dimensional aggregation of existing data
 - **Analysis**: Query-based analytics on existing data stores
-- **Storage**: Aggregated results in Analytics Data Lake and Power BI
+- **API Layer**: Management API endpoints serving analytics data
+- **Dashboard**: Custom Vue.js dashboard in Management Portal
 
 ### Analytics Capabilities
 1. **Agent Analytics**: Usage, performance, tool combinations, file patterns
@@ -91,16 +92,23 @@ Analysis of model usage and performance
 3. **Model Analytics**: Model selection, performance, cost analysis
 4. **Business Intelligence**: Capacity planning, cost analysis, quality metrics
 
+### Dashboard Integration
+- **Custom Dashboard**: Built within Management Portal (Nuxt.js/Vue.js)
+- **Chart Library**: PrimeVue Charts for visualizations
+- **Real-time Updates**: API-driven data fetching with refresh capability
+- **Responsive Design**: Works on desktop and tablet devices
+
 ## Implementation Timeline
 
 - **Phase 1** (Week 1): Data Exploration - Document existing data sources and schemas
 - **Phase 2** (Weeks 2-3): Query Development - Develop analytics queries for all data sources
 - **Phase 3** (Week 4): Anonymization - Implement anonymization and privacy validation
 - **Phase 4** (Weeks 5-6): Aggregation Pipeline - Build batch and real-time processing
-- **Phase 5** (Weeks 7-8): Dashboard Development - Create Power BI and App Insights dashboards
-- **Phase 6** (Week 9): Testing and Validation - Privacy validation, performance testing
+- **Phase 5** (Weeks 7-8): Backend API Development - Analytics service and Management API controller
+- **Phase 6** (Weeks 9-10): Frontend Dashboard Development - Management Portal integration
+- **Phase 7** (Week 11): Testing and Validation - Privacy validation, performance testing
 
-**Total Duration**: 9 weeks
+**Total Duration**: 11 weeks
 
 ## Privacy & Security
 
