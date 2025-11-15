@@ -1,4 +1,4 @@
-﻿using FoundationaLLM.Common.Models.Azure.CosmosDB;
+using FoundationaLLM.Common.Models.Azure.CosmosDB;
 using FoundationaLLM.Common.Models.Configuration.Users;
 using FoundationaLLM.Common.Models.Conversation;
 using FoundationaLLM.Common.Models.Orchestration;
@@ -297,6 +297,16 @@ public interface IAzureCosmosDBService
     /// <param name="cancellationToken">Cancellation token for async calls.</param>
     /// <returns></returns>
     Task DeleteAgentFile(AgentFileReference agentFile, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Executes a query against a Cosmos DB container and returns the results.
+    /// </summary>
+    /// <typeparam name="T">The type of items to return.</typeparam>
+    /// <param name="containerName">The name of the container to query.</param>
+    /// <param name="query">The query definition.</param>
+    /// <param name="cancellationToken">Cancellation token for async calls.</param>
+    /// <returns>A list of items matching the query.</returns>
+    Task<List<T>> QueryItemsAsync<T>(string containerName, QueryDefinition query, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Creates a new container for vector search.

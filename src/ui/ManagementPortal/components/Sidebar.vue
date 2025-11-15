@@ -61,6 +61,38 @@
 				</ul>
 				<!-- <div class="sidebar__item">Performance</div> -->
 
+				<!-- Analytics -->
+				<h3 class="sidebar__section-header">
+					<span class="pi pi-chart-bar" aria-hidden="true"></span>
+					<span>Analytics</span>
+				</h3>
+				<ul>
+					<li>
+						<NuxtLink
+							to="/analytics"
+							class="sidebar__item"
+							:class="{ 'router-link-active': isRouteActive('/analytics') }"
+							>Overview</NuxtLink
+						>
+					</li>
+					<li>
+						<NuxtLink
+							to="/analytics/users"
+							class="sidebar__item"
+							:class="{ 'router-link-active': isRouteActive('/analytics/users') }"
+							>Users</NuxtLink
+						>
+					</li>
+					<li>
+						<NuxtLink
+							to="/analytics/agents"
+							class="sidebar__item"
+							:class="{ 'router-link-active': isRouteActive('/analytics/agents') }"
+							>Agents</NuxtLink
+						>
+					</li>
+				</ul>
+
 				<!-- Data Catalog -->
 				<h3 class="sidebar__section-header">
 					<span class="pi pi-database" aria-hidden="true"></span>
