@@ -62,12 +62,13 @@ Analysis of model usage and performance
 - **Aggregated Metrics**: Token counts, request volumes, response times
 - **Agent Metadata**: Agent names, agent types, workflow types
 - **Resource Usage**: Model names, token consumption, feature usage
-- **Anonymized Identifiers**: Hashed user IDs for correlation only
+- **Username/UPN**: Displayed for operational abuse detection (required for security)
 - **Temporal Patterns**: Usage trends, peak times, growth patterns
+- **User Behavior**: Usage patterns, activity timelines (without content)
 
 ### ❌ What We Never Analyze
 - **Message Content**: User prompts, completions, conversation text
-- **PII**: User names, email addresses, UPNs (in raw form)
+- **Sensitive PII**: Email addresses, full names (beyond username/UPN)
 - **Sensitive Metadata**: File names, attachment content, document identifiers
 - **Full Prompts**: System prompts or prompt templates with actual content
 
@@ -90,7 +91,9 @@ Analysis of model usage and performance
 1. **Agent Analytics**: Usage, performance, tool combinations, file patterns
 2. **Tool Analytics**: Tool usage across agents, tool performance
 3. **Model Analytics**: Model selection, performance, cost analysis
-4. **Business Intelligence**: Capacity planning, cost analysis, quality metrics
+4. **User Analytics**: Top users, usage patterns, abuse detection
+5. **Business Intelligence**: Capacity planning, cost analysis, quality metrics
+6. **Abuse Detection**: Anomaly detection, risk scoring, security monitoring
 
 ### Dashboard Integration
 - **Custom Dashboard**: Built within Management Portal (Nuxt.js/Vue.js)
@@ -98,17 +101,26 @@ Analysis of model usage and performance
 - **Real-time Updates**: API-driven data fetching with refresh capability
 - **Responsive Design**: Works on desktop and tablet devices
 
-## Implementation Timeline
+## Implementation Approach
 
-- **Phase 1** (Week 1): Data Exploration - Document existing data sources and schemas
-- **Phase 2** (Weeks 2-3): Query Development - Develop analytics queries for all data sources
-- **Phase 3** (Week 4): Anonymization - Implement anonymization and privacy validation
-- **Phase 4** (Weeks 5-6): Aggregation Pipeline - Build batch and real-time processing
-- **Phase 5** (Weeks 7-8): Backend API Development - Analytics service and Management API controller
-- **Phase 6** (Weeks 9-10): Frontend Dashboard Development - Management Portal integration
-- **Phase 7** (Week 11): Testing and Validation - Privacy validation, performance testing
+### Backend Components
+- **Analytics Service**: Query execution, data aggregation, anonymization
+- **Abuse Detection Service**: Risk scoring, anomaly detection, pattern recognition
+- **Management API Controller**: REST endpoints for all analytics data
+- **Data Models**: Structured response models for frontend consumption
 
-**Total Duration**: 11 weeks
+### Frontend Components
+- **Dashboard Pages**: Overview, Agents, Tools, Models, Users
+- **Chart Components**: Reusable visualization components
+- **Abuse Detection UI**: Anomaly alerts, risk indicators, user flags
+- **API Integration**: Data fetching and state management
+
+### Key Implementation Areas
+1. **Query Development**: Cosmos DB and Application Insights queries
+2. **Anomaly Detection**: Statistical analysis and rule-based detection
+3. **Risk Scoring**: Multi-factor abuse risk calculation
+4. **Dashboard UI**: Interactive charts, tables, and visualizations
+5. **Privacy Safeguards**: Content filtering, username-only display
 
 ## Privacy & Security
 
