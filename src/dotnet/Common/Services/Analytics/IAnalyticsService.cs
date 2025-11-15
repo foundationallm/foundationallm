@@ -1,0 +1,60 @@
+using FoundationaLLM.Common.Models.Analytics;
+
+namespace FoundationaLLM.Common.Services.Analytics
+{
+    /// <summary>
+    /// Service for retrieving analytics data.
+    /// </summary>
+    public interface IAnalyticsService
+    {
+        /// <summary>
+        /// Gets analytics overview for the platform.
+        /// </summary>
+        Task<AnalyticsOverview> GetAnalyticsOverviewAsync(string instanceId, DateTime? startDate, DateTime? endDate, CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// Gets analytics summary for all agents.
+        /// </summary>
+        Task<List<AgentAnalyticsSummary>> GetAllAgentsAnalyticsAsync(string instanceId, DateTime? startDate, DateTime? endDate, CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// Gets analytics summary for a specific agent.
+        /// </summary>
+        Task<AgentAnalyticsSummary> GetAgentAnalyticsSummaryAsync(string instanceId, string agentName, DateTime? startDate, DateTime? endDate, CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// Gets tool combinations used with an agent.
+        /// </summary>
+        Task<Dictionary<string, int>> GetAgentToolCombinationsAsync(string instanceId, string agentName, DateTime? startDate, DateTime? endDate, CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// Gets file analytics for an agent.
+        /// </summary>
+        Task<FileAnalyticsSummary> GetAgentFileAnalyticsAsync(string instanceId, string agentName, DateTime? startDate, DateTime? endDate, CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// Gets analytics summary for all tools.
+        /// </summary>
+        Task<List<ToolAnalyticsSummary>> GetToolAnalyticsAsync(string instanceId, DateTime? startDate, DateTime? endDate, CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// Gets analytics summary for all models.
+        /// </summary>
+        Task<List<ModelAnalyticsSummary>> GetModelAnalyticsAsync(string instanceId, DateTime? startDate, DateTime? endDate, CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// Gets top users by specified criteria.
+        /// </summary>
+        Task<List<TopUserSummary>> GetTopUsersAsync(string instanceId, int topCount, UserSortBy sortBy, DateTime? startDate, DateTime? endDate, CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// Gets detailed analytics summary for a user.
+        /// </summary>
+        Task<UserAnalyticsSummary> GetUserAnalyticsSummaryAsync(string instanceId, string username, DateTime? startDate, DateTime? endDate, CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// Gets user activity timeline.
+        /// </summary>
+        Task<UserActivityTimeline> GetUserActivityTimelineAsync(string instanceId, string username, DateTime? startDate, DateTime? endDate, CancellationToken cancellationToken = default);
+    }
+}

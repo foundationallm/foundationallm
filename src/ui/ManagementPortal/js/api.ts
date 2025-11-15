@@ -83,6 +83,79 @@ export default {
 	},
 
 	/*
+		Analytics
+	 */
+	async getAnalyticsOverview(startDate?: string, endDate?: string) {
+		const params: any = {};
+		if (startDate) params.startDate = startDate;
+		if (endDate) params.endDate = endDate;
+		return await this.fetch(`/api/analytics/overview?api-version=${this.apiVersion}`, {
+			method: 'GET',
+			params,
+		});
+	},
+
+	async getAllAgentsAnalytics(startDate?: string, endDate?: string) {
+		const params: any = {};
+		if (startDate) params.startDate = startDate;
+		if (endDate) params.endDate = endDate;
+		return await this.fetch(`/api/analytics/agents?api-version=${this.apiVersion}`, {
+			method: 'GET',
+			params,
+		});
+	},
+
+	async getAgentAnalytics(agentName: string, startDate?: string, endDate?: string) {
+		const params: any = {};
+		if (startDate) params.startDate = startDate;
+		if (endDate) params.endDate = endDate;
+		return await this.fetch(`/api/analytics/agents/${agentName}?api-version=${this.apiVersion}`, {
+			method: 'GET',
+			params,
+		});
+	},
+
+	async getTopUsers(topCount: number = 10, sortBy: string = 'Requests', startDate?: string, endDate?: string) {
+		const params: any = { topCount, sortBy };
+		if (startDate) params.startDate = startDate;
+		if (endDate) params.endDate = endDate;
+		return await this.fetch(`/api/analytics/users/top?api-version=${this.apiVersion}`, {
+			method: 'GET',
+			params,
+		});
+	},
+
+	async getUserAnalytics(username: string, startDate?: string, endDate?: string) {
+		const params: any = {};
+		if (startDate) params.startDate = startDate;
+		if (endDate) params.endDate = endDate;
+		return await this.fetch(`/api/analytics/users/${username}?api-version=${this.apiVersion}`, {
+			method: 'GET',
+			params,
+		});
+	},
+
+	async getUserAbuseIndicators(username: string, startDate?: string, endDate?: string) {
+		const params: any = {};
+		if (startDate) params.startDate = startDate;
+		if (endDate) params.endDate = endDate;
+		return await this.fetch(`/api/analytics/users/${username}/abuse-indicators?api-version=${this.apiVersion}`, {
+			method: 'GET',
+			params,
+		});
+	},
+
+	async detectUserAnomalies(startDate?: string, endDate?: string) {
+		const params: any = {};
+		if (startDate) params.startDate = startDate;
+		if (endDate) params.endDate = endDate;
+		return await this.fetch(`/api/analytics/anomalies?api-version=${this.apiVersion}`, {
+			method: 'GET',
+			params,
+		});
+	},
+
+	/*
 		Data Sources
 	 */
 	async checkDataSourceName(name: string, type: string): Promise<CheckNameResponse> {
