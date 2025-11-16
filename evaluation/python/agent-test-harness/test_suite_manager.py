@@ -19,7 +19,7 @@ from test_harness import execute_tests, process_question, execute_tests_from_dat
 class TestSuiteManager:
     """Manages test suites and their execution"""
     
-    def __init__(self, config_file: str = "test_suites.json"):
+    def __init__(self, config_file: str = "test-suites/test_suites.json"):
         self.config_file = config_file
         self.config = self._load_config()
         self.base_dir = Path(__file__).parent
@@ -31,32 +31,32 @@ class TestSuiteManager:
             # Create default configuration
             default_config = {
                 "code-interpreter": {
-                    "csv_file": "test-data/code-interpreter/TestQuestions-code-interpreter.csv",
+                    "csv_file": "test-suites/code-interpreter/TestQuestions-code-interpreter.csv",
                     "description": "Tests for code execution and file generation",
                     "quick_mode_limit": 5
                 },
                 "document-analysis": {
-                    "csv_file": "test-data/document-analysis/TestQuestions-document-analysis.csv",
+                    "csv_file": "test-suites/document-analysis/TestQuestions-document-analysis.csv",
                     "description": "Tests for document analysis and processing",
                     "quick_mode_limit": 3
                 },
                 "file-operations": {
-                    "csv_file": "test-data/file-operations/TestQuestions-file-operations.csv",
+                    "csv_file": "test-suites/file-operations/TestQuestions-file-operations.csv",
                     "description": "Tests for file creation, conversion, and manipulation",
                     "quick_mode_limit": 4
                 },
                 "routing": {
-                    "csv_file": "test-data/routing/TestQuestions-routing.csv",
+                    "csv_file": "test-suites/routing/TestQuestions-routing.csv",
                     "description": "Tests for agent routing and task delegation",
                     "quick_mode_limit": 5
                 },
                 "conversational": {
-                    "csv_file": "test-data/conversational/TestQuestions-conversational.csv",
+                    "csv_file": "test-suites/conversational/TestQuestions-conversational.csv",
                     "description": "Tests for general conversation and Q&A",
                     "quick_mode_limit": 3
                 },
                 "knowledge-retrieval": {
-                    "csv_file": "test-data/knowledge-retrieval/TestQuestions-knowledge-retrieval.csv",
+                    "csv_file": "test-suites/knowledge-retrieval/TestQuestions-knowledge-retrieval.csv",
                     "description": "Tests for knowledge base queries and retrieval",
                     "quick_mode_limit": 4
                 }
@@ -226,9 +226,14 @@ class TestSuiteManager:
                 # Create new dataframe with repeated tests
                 expanded_df = pd.DataFrame(repeated_rows)
                 results_df = execute_tests_from_dataframe(expanded_df, agent_name, max_workers)
-            else:
+            elif test_index is not None or quick_mode:
+                # Use dataframe when filtering is applied (test_index or quick_mode)
                 print(f"Executing {len(df)} tests...")
-                results_df = execute_tests(csv_path, agent_name, max_workers)
+                results_df = execute_tests_from_dataframe(df, agent_name, max_workers)
+            else:
+                # Use CSV file when no filtering is applied
+                print(f"Executing {len(df)} tests...")
+                results_df = execute_tests(csv_path, agent_name, max_workers, output_dir=output_dir)
             
             if results_df is None:
                 print("Test execution failed")

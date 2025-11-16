@@ -567,7 +567,7 @@ def process_question(question, answer, filename, agent_name="MAA-02", validation
             'ValidationDetails': 'Test execution failed'
         }
 
-def execute_tests(test_file, agent_name, max_workers=5):
+def execute_tests(test_file, agent_name, max_workers=5, output_dir=None):
     # Read the CSV file with proper handling of quoted fields
     try:
         df = pd.read_csv(test_file, quotechar='"', escapechar='\\')
@@ -642,14 +642,21 @@ def execute_tests(test_file, agent_name, max_workers=5):
     ]
     # Only use columns that exist (older runs may not have all fields)
     summary_columns = [c for c in summary_columns if c in results_df.columns]
-    results_df.to_csv('test_results.csv', index=False, columns=summary_columns)
     
-    # Save full-fidelity JSON
-    try:
-        with open('test_results.json', 'w', encoding='utf-8') as f:
-            json.dump(results, f, ensure_ascii=False, indent=2)
-    except Exception as e:
-        print(f"Warning: could not write test_results.json: {e}\n")
+    # Save files to output_dir if provided, otherwise skip (test_suite_manager handles saving)
+    if output_dir:
+        import os
+        os.makedirs(output_dir, exist_ok=True)
+        csv_path = os.path.join(output_dir, 'test_results.csv')
+        json_path = os.path.join(output_dir, 'test_results.json')
+        results_df.to_csv(csv_path, index=False, columns=summary_columns)
+        
+        # Save full-fidelity JSON
+        try:
+            with open(json_path, 'w', encoding='utf-8') as f:
+                json.dump(results, f, ensure_ascii=False, indent=2)
+        except Exception as e:
+            print(f"Warning: could not write test_results.json: {e}\n")
     
     return results_df
 

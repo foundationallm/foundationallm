@@ -49,11 +49,8 @@ Examples:
   # Comprehensive validation with LLM
   python run_tests.py --suite all --agent MAA-06 --report
   
-  # Compare against baseline
-  python run_tests.py --suite all --agent MAA-06 --baseline results/baseline-MAA-06.json
-  
-  # Cross-agent comparison
-  python run_tests.py --suite code-interpreter --agents MAA-02,MAA-04,MAA-06 --compare
+  # Cross-agent comparison (report generated automatically)
+  python run_tests.py --suite code-interpreter --agents MAA-02,MAA-04,MAA-06 --report
   
   # Repeat each test 3 times for reliability testing
   python run_tests.py --suite code-interpreter --agent MAA-02 --repeat-test 3
@@ -72,7 +69,7 @@ Examples:
     parser.add_argument('--agent', 
                        help='Agent name to test (e.g., MAA-06)')
     parser.add_argument('--agents',
-                       help='Comma-separated list of agents for comparison (e.g., MAA-02,MAA-04,MAA-06)')
+                       help='Comma-separated list of agents to test (e.g., MAA-02,MAA-04,MAA-06)')
     
     # Test execution options
     parser.add_argument('--quick', action='store_true',
@@ -99,12 +96,6 @@ Examples:
                        help='Skip HTML report generation')
     parser.add_argument('--verbose', action='store_true',
                        help='Verbose output for debugging')
-    
-    # Baseline comparison
-    parser.add_argument('--baseline',
-                       help='Compare against baseline results file')
-    parser.add_argument('--save-baseline', action='store_true',
-                       help='Save current results as baseline')
     
     # Utility options
     parser.add_argument('--validate-csv',
@@ -323,17 +314,6 @@ Examples:
             report_path = os.path.join(args.output_dir, f"summary-{timestamp}-{suite_name}.html")
             reporter.generate_report(all_results, report_path, timestamp)
             print(f"\n📊 HTML report generated: {report_path}")
-        
-        # Handle baseline operations
-        if args.save_baseline and len(agents) == 1:
-            baseline_path = os.path.join(args.output_dir, f"baseline-{agents[0]}.json")
-            with open(baseline_path, 'w', encoding='utf-8') as f:
-                json.dump(all_results[agents[0]], f, indent=2)
-            print(f"💾 Baseline saved: {baseline_path}")
-        
-        if args.baseline and os.path.exists(args.baseline):
-            print(f"\n📈 Comparing against baseline: {args.baseline}")
-            # TODO: Implement baseline comparison logic
         
         print(f"\n✅ Test execution completed successfully")
         

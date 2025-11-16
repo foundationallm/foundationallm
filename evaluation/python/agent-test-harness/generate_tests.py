@@ -375,7 +375,7 @@ GenerationStrategy: combinations
             print(f"Error validating test file: {e}")
             return False
     
-    def create_interactive_suite(self, suite_name: str, output_dir: str = "test-data") -> bool:
+    def create_interactive_suite(self, suite_name: str, output_dir: str = "test-suites") -> bool:
         """Create a new test suite interactively"""
         try:
             # Create suite directory
@@ -448,7 +448,7 @@ GenerationStrategy: combinations
         """Add tests to an existing test suite interactively"""
         try:
             # Load test suite configuration
-            config_file = "test_suites.json"
+            config_file = "test-suites/test_suites.json"
             if not os.path.exists(config_file):
                 print(f"❌ Error: {config_file} not found")
                 return False
@@ -573,7 +573,7 @@ GenerationStrategy: combinations
         """Check if a test suite already exists"""
         try:
             # Load test suites configuration
-            with open('test_suites.json', 'r') as f:
+            with open('test-suites/test_suites.json', 'r') as f:
                 suites = json.load(f)
             
             return suite_name in suites
@@ -729,7 +729,7 @@ GenerationStrategy: combinations
     def _update_test_suites_config(self, suite_name: str, csv_file: str):
         """Update test_suites.json with new suite"""
         try:
-            config_file = "test_suites.json"
+            config_file = "test-suites/test_suites.json"
             
             # Load existing config
             if os.path.exists(config_file):
@@ -775,7 +775,7 @@ Examples:
   python generate_tests.py --input seed-tests.csv --output edge-cases.csv --strategy edge-cases --count 3
   
   # Append to existing test suite
-  python generate_tests.py --input seed.csv --output test-data/code-interpreter/TestQuestions-code-interpreter.csv --append
+  python generate_tests.py --input seed.csv --output test-suites/code-interpreter/TestQuestions-code-interpreter.csv --append
   
   # Generate with deduplication
   python generate_tests.py --input seed.csv --output expanded.csv --deduplicate
@@ -830,7 +830,7 @@ Examples:
             # Check if suite already exists when creating new one
             if generator.suite_exists(args.suite_name):
                 print(f"\n⚠️  Test suite '{args.suite_name}' already exists!")
-                print(f"📁 CSV file: test-data/{args.suite_name}/TestQuestions-{args.suite_name}.csv")
+                print(f"📁 CSV file: test-suites/{args.suite_name}/TestQuestions-{args.suite_name}.csv")
                 print(f"📊 This suite already has tests in it.")
                 print(f"\n❓ What would you like to do?")
                 print(f"  1. Append new tests to existing suite '{args.suite_name}'")

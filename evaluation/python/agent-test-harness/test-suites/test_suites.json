@@ -1,72 +1,77 @@
 {
   "code-interpreter": {
-    "csv_file": "test-data/code-interpreter/TestQuestions-code-interpreter.csv",
+    "csv_file": "test-suites/code-interpreter/TestQuestions-code-interpreter.csv",
     "description": "Tests for code execution and file generation",
     "quick_mode_limit": 5
   },
   "document-analysis": {
-    "csv_file": "test-data/document-analysis/TestQuestions-document-analysis.csv",
+    "csv_file": "test-suites/document-analysis/TestQuestions-document-analysis.csv",
     "description": "Tests for document analysis and processing",
     "quick_mode_limit": 3
   },
   "file-operations": {
-    "csv_file": "test-data/file-operations/TestQuestions-file-operations.csv",
+    "csv_file": "test-suites/file-operations/TestQuestions-file-operations.csv",
     "description": "Tests for file creation, conversion, and manipulation",
     "quick_mode_limit": 4
   },
   "routing": {
-    "csv_file": "test-data/routing/TestQuestions-routing.csv",
+    "csv_file": "test-suites/routing/TestQuestions-routing.csv",
     "description": "Tests for agent routing and task delegation",
     "quick_mode_limit": 5
   },
   "conversational": {
-    "csv_file": "test-data/conversational/TestQuestions-conversational.csv",
+    "csv_file": "test-suites/conversational/TestQuestions-conversational.csv",
     "description": "Tests for general conversation and Q&A",
     "quick_mode_limit": 3
   },
   "knowledge-retrieval": {
-    "csv_file": "test-data/knowledge-retrieval/TestQuestions-knowledge-retrieval.csv",
+    "csv_file": "test-suites/knowledge-retrieval/TestQuestions-knowledge-retrieval.csv",
     "description": "Tests for knowledge base queries and retrieval",
     "quick_mode_limit": 4
   },
   "dataframe-tests": {
-    "csv_file": "test-data/dataframe-tests/TestQuestions-dataframe-tests.csv",
+    "csv_file": "test-suites/dataframe-tests/TestQuestions-dataframe-tests.csv",
     "description": "Tests for dataframe-tests",
     "quick_mode_limit": 5
   },
   "file-type-detection": {
-    "csv_file": "test-data\\file-type-detection\\TestQuestions-file-type-detection.csv",
+    "csv_file": "test-suites/file-type-detection/TestQuestions-file-type-detection.csv",
     "description": "Tests for file-type-detection",
     "quick_mode_limit": 5
   },
   "image-analysis": {
-    "csv_file": "test-data\\image-analysis\\TestQuestions-image-analysis.csv",
+    "csv_file": "test-suites/image-analysis/TestQuestions-image-analysis.csv",
     "description": "Tests for image-analysis",
     "quick_mode_limit": 5
   },
   "code-file-analysis": {
-    "csv_file": "test-data\\code-file-analysis\\TestQuestions-code-file-analysis.csv",
+    "csv_file": "test-suites/code-file-analysis/TestQuestions-code-file-analysis.csv",
     "description": "Tests for code-file-analysis",
     "quick_mode_limit": 5
   },
   "test-hybrid-validation": {
-    "csv_file": "test-data\\test-hybrid-validation\\TestQuestions-test-hybrid-validation.csv",
+    "csv_file": "test-suites/test-hybrid-validation/TestQuestions-test-hybrid-validation.csv",
     "description": "Tests for test-hybrid-validation",
     "quick_mode_limit": 5
   },
   "multi-file-analysis": {
-    "csv_file": "test-data\\multi-file-analysis\\TestQuestions-multi-file-analysis.csv",
+    "csv_file": "test-suites/multi-file-analysis/TestQuestions-multi-file-analysis.csv",
     "description": "Tests for multi-file-analysis",
     "quick_mode_limit": 5
   },
   "compressed-file-analysis": {
-    "csv_file": "test-data\\compressed-file-analysis\\TestQuestions-compressed-file-analysis.csv",
+    "csv_file": "test-suites/compressed-file-analysis/TestQuestions-compressed-file-analysis.csv",
     "description": "Tests for compressed-file-analysis",
     "quick_mode_limit": 5
   },
   "image-processing": {
-    "csv_file": "test-data\\image-processing\\TestQuestions-image-processing.csv",
+    "csv_file": "test-suites/image-processing/TestQuestions-image-processing.csv",
     "description": "Tests for image-processing",
+    "quick_mode_limit": 5
+  },
+  "who-are-you": {
+    "csv_file": "test-suites/who-are-you/TestQuestions-who-are-you.csv",
+    "description": "Tests for who-are-you",
     "quick_mode_limit": 5
   }
 }

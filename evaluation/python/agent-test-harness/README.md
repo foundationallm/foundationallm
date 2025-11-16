@@ -38,7 +38,7 @@ A comprehensive test framework for FoundationaLLM agents that provides automated
 ### Run Your First Test
 ```powershell
 # Quick test
-python run_tests.py --suite code-interpreter --agent MAA-02 --quick --report
+python run_tests.py --suite who-are-you --agent MAA-02 --quick --report
 ```
 
 ## 📋 Test Framework Features
@@ -57,7 +57,6 @@ python run_tests.py --suite code-interpreter --agent MAA-02 --quick --report
 ### 📊 Results Management
 - **Multiple output formats**: CSV, JSON, and HTML reports
 - **Visual dashboard**: Interactive HTML reports with detailed analysis
-- **Baseline comparison**: Track changes over time
 - **Performance metrics**: Token usage, duration, artifact counts
 
 ### 🧪 Test Generation
@@ -71,16 +70,16 @@ python run_tests.py --suite code-interpreter --agent MAA-02 --quick --report
 ### Basic Test Execution
 ```powershell
 # Run a specific test suite
-python run_tests.py --suite code-interpreter --agent MAA-02
+python run_tests.py --suite who-are-you --agent MAA-02
 
 # Quick mode (first N tests)
-python run_tests.py --suite code-interpreter --agent MAA-02 --quick
+python run_tests.py --suite who-are-you --agent MAA-02 --quick
 
 # Specific test by index
-python run_tests.py --suite code-interpreter --agent MAA-02 --test-index 3
+python run_tests.py --suite who-are-you --agent MAA-02 --test-index 3
 
 # Repeat each test 3 times for reliability testing
-python run_tests.py --suite code-interpreter --agent MAA-02 --repeat-test 3
+python run_tests.py --suite who-are-you --agent MAA-02 --repeat-test 3
 ```
 
 ### Advanced Testing
@@ -88,17 +87,11 @@ python run_tests.py --suite code-interpreter --agent MAA-02 --repeat-test 3
 # Comprehensive validation with LLM
 python run_tests.py --suite all --agent MAA-02  --report
 
-# Cross-agent comparison
-python run_tests.py --suite code-interpreter --agents MAA-02,MAA-04,MAA-02 --compare
+# Cross-agent comparison (report generated automatically)
+python run_tests.py --suite who-are-you --agents MAA-02,MAA-04,MAA-06 --report
 
 # Repeat tests for reliability analysis
-python run_tests.py --suite code-interpreter --agent MAA-02 --repeat-test 5
-
-# Baseline comparison
-python run_tests.py --suite all --agent MAA-02 --baseline results/baseline-MAA-02.json
-
-# Save baseline
-python run_tests.py --suite all --agent MAA-02 --save-baseline
+python run_tests.py --suite who-are-you --agent MAA-02 --repeat-test 5
 ```
 
 ### Test Generation
@@ -113,7 +106,7 @@ python generate_tests.py --input seed-tests.csv --output expanded-tests.csv --st
 python generate_tests.py --input seed-tests.csv --output edge-cases.csv --strategy edge-cases --count 3
 
 # Append to existing suite
-python generate_tests.py --input seed.csv --output test-data/code-interpreter/TestQuestions-code-interpreter.csv --append
+python generate_tests.py --input seed.csv --output test-suites/code-interpreter/TestQuestions-code-interpreter.csv --append
 ```
 
 ### Interactive Test Suite Creation
@@ -192,7 +185,7 @@ python run_tests.py --report-from-dir results/ --output-dir reports/
 python run_tests.py --list-suites
 
 # Validate CSV format
-python run_tests.py --validate-csv code-interpreter
+python run_tests.py --validate-csv who-are-you
 
 # Dry run (validate config)
 python run_tests.py --suite all --agent MAA-02 --dry-run
@@ -211,7 +204,7 @@ python run_tests.py --report-from-dir results/
 #### Basic Parameters
 | Parameter | Purpose | Values/Examples |
 |-----------|---------|-----------------|
-| `--suite` | Test suite to run | `code-interpreter`, `document-analysis`, `file-operations`, `routing`, `dataframe-tests`, `all` |
+| `--suite` | Test suite to run | `who-are-you`, `code-interpreter`, `document-analysis`, `file-operations`, `routing`, `dataframe-tests`, `all` |
 | `--agent` | Single agent to test | `MAA-02`, `MAA-04`, `MAA-06`, etc. |
 | `--agents` | Multiple agents (comma-separated) | `MAA-02,MAA-04,MAA-06` |
 
@@ -229,12 +222,6 @@ python run_tests.py --report-from-dir results/
 | `--strict` | Exit on validation failure | `--strict` |
 | `--verbose` | Detailed output | `--verbose` |
 
-#### Baseline Operations
-| Parameter | Purpose | Values/Examples |
-|-----------|---------|-----------------|
-| `--baseline` | Compare against baseline | `--baseline results/baseline-MAA-02.json` |
-| `--save-baseline` | Save current results as baseline | `--save-baseline` |
-
 #### Report Generation
 | Parameter | Purpose | Values/Examples |
 |-----------|---------|-----------------|
@@ -246,22 +233,19 @@ python run_tests.py --report-from-dir results/
 #### Examples
 ```powershell
 # Basic test execution
-python run_tests.py --suite code-interpreter --agent MAA-02
+python run_tests.py --suite who-are-you --agent MAA-02
 
 # Multi-agent comparison with validation
-python run_tests.py --suite dataframe-tests --agents MAA-02,MAA-04,MAA-06 --report
+python run_tests.py --suite who-are-you --agents MAA-02,MAA-04,MAA-06 --report
 
 # Quick test with specific test
-python run_tests.py --suite document-analysis --agent MAA-02 --quick --test-index 2
+python run_tests.py --suite who-are-you --agent MAA-02 --quick --test-index 2
 
 # Repeat tests for reliability analysis
-python run_tests.py --suite code-interpreter --agent MAA-02 --repeat-test 3 --report
+python run_tests.py --suite who-are-you --agent MAA-02 --repeat-test 3 --report
 
 # Generate report from existing results
 python run_tests.py --report-from-results results/20251021_220653-MAA-02-dataframe-tests-results.json
-
-# Baseline comparison
-python run_tests.py --suite all --agent MAA-02 --baseline results/baseline-MAA-02.json --compare
 ```
 
 ### generate_tests.py - Test Generation
@@ -336,15 +320,15 @@ python generate_tests.py --input seed-tests.csv --output combinations.csv --stra
 | Parameter | Purpose | Values/Examples |
 |-----------|---------|-----------------|
 | `--list-suites` | List all available test suites | `--list-suites` |
-| `--validate-csv` | Validate CSV format for a test suite | `--validate-csv code-interpreter` |
+| `--validate-csv` | Validate CSV format for a test suite | `--validate-csv who-are-you` |
 | `--dry-run` | Validate configuration without executing tests | `--dry-run` |
 
 #### Test Suite Operations
 | Operation | Purpose | Command Example |
 |-----------|---------|-----------------|
 | **List Suites** | Show all available test suites with descriptions | `python run_tests.py --list-suites` |
-| **Validate CSV** | Check CSV format and structure for a specific suite | `python run_tests.py --validate-csv code-interpreter` |
-| **Dry Run** | Validate configuration without running tests | `python run_tests.py --suite code-interpreter --agent MAA-02 --dry-run` |
+| **Validate CSV** | Check CSV format and structure for a specific suite | `python run_tests.py --validate-csv who-are-you` |
+| **Dry Run** | Validate configuration without running tests | `python run_tests.py --suite who-are-you --agent MAA-02 --dry-run` |
 
 #### Dry-Run Validation Details
 The `--dry-run` switch performs comprehensive configuration validation without executing tests:
@@ -355,7 +339,7 @@ The `--dry-run` switch performs comprehensive configuration validation without e
 - Output directory creation
 
 **Test Suite Validation:**
-- Suite existence in `test_suites.json`
+- Suite existence in `test-suites/test_suites.json`
 - CSV file path configuration
 - CSV file existence verification
 
@@ -377,11 +361,11 @@ The `--dry-run` switch performs comprehensive configuration validation without e
 - CI/CD environment validation
 
 #### Test Suite Configuration
-Test suites are configured in `test_suites.json` with the following structure:
+Test suites are configured in `test-suites/test_suites.json` with the following structure:
 ```json
 {
   "suite-name": {
-    "csv_file": "test-data/suite-name/TestQuestions-suite-name.csv",
+    "csv_file": "test-suites/suite-name/TestQuestions-suite-name.csv",
     "description": "Description of the test suite",
     "quick_mode_limit": 5
   }
@@ -394,13 +378,13 @@ Test suites are configured in `test_suites.json` with the following structure:
 python run_tests.py --list-suites
 
 # Validate CSV format for a specific suite
-python run_tests.py --validate-csv code-interpreter
+python run_tests.py --validate-csv who-are-you
 
 # Validate configuration without running tests
-python run_tests.py --suite document-analysis --agent MAA-02 --dry-run
+python run_tests.py --suite who-are-you --agent MAA-02 --dry-run
 
 # Check if a suite exists and is properly configured
-python run_tests.py --suite dataframe-tests --agent MAA-02 --dry-run --verbose
+python run_tests.py --suite who-are-you --agent MAA-02 --dry-run --verbose
 ```
 
 ## 📁 Test Data Structure
@@ -426,7 +410,7 @@ Question,Filename,ExpectedAnswer,ValidationRules,ValidationMode
 
 ### Test Suite Organization
 ```
-test-data/
+test-suites/
 ├── code-interpreter/
 │   └── TestQuestions-code-interpreter.csv
 ├── document-analysis/
@@ -460,11 +444,11 @@ AZURE_OPENAI_DEPLOYMENT=gpt-4
 ```
 
 ### Test Suite Configuration
-Edit `test_suites.json` to add new test suites:
+Edit `test-suites/test_suites.json` to add new test suites:
 ```json
 {
   "my-feature": {
-    "csv_file": "test-data/my-feature/TestQuestions-my-feature.csv",
+    "csv_file": "test-suites/my-feature/TestQuestions-my-feature.csv",
     "description": "Tests for my custom feature",
     "quick_mode_limit": 5
   }
@@ -512,18 +496,15 @@ python run_tests.py --suite all --agent MAA-02 --output-dir ./ci-results
 ### Development Testing
 ```powershell
 # Quick regression test
-python run_tests.py --suite code-interpreter --agent MAA-02 --quick 
+python run_tests.py --suite who-are-you --agent MAA-02 --quick 
 # Debug mode
-python run_tests.py --suite code-interpreter --agent MAA-02 --verbose
+python run_tests.py --suite who-are-you --agent MAA-02 --verbose
 ```
 
 ### Release Validation
 ```powershell
 # Comprehensive pre-release testing
 python run_tests.py --suite all --agent MAA-02  --report --workers 10
-
-# Compare against previous release
-python run_tests.py --suite all --agent MAA-02 --baseline results/baseline-v1.2.3.json
 ```
 
 ## 🔍 Troubleshooting
@@ -543,10 +524,10 @@ python run_tests.py --suite all --agent MAA-02 --baseline results/baseline-v1.2.
 python run_tests.py --list-suites
 
 # Validate CSV format
-python run_tests.py --validate-csv code-interpreter
+python run_tests.py --validate-csv who-are-you
 
 # Dry run to check configuration
-python run_tests.py --suite code-interpreter --agent MAA-02 --dry-run
+python run_tests.py --suite who-are-you --agent MAA-02 --dry-run
 ```
 
 ## 📚 Additional Resources
@@ -554,7 +535,6 @@ python run_tests.py --suite code-interpreter --agent MAA-02 --dry-run
 - **Test Generation**: Use `generate_tests.py` to expand test coverage
 - **Validation**: Configure validation rules in CSV files
 - **Reports**: Generate HTML dashboards for detailed analysis
-- **Baselines**: Save and compare results over time
 
 For more information, see the inline help:
 ```powershell

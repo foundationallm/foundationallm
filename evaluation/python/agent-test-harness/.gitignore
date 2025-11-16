@@ -1,4 +1,5 @@
-uploads/
+uploads/*
+!uploads/sample_upload.txt
 .env*
 .venv/
 *.csv
