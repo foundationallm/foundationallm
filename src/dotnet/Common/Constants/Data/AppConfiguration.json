@@ -81,6 +81,159 @@
 		]
 	},
 	{
+		"namespace": "Analytics",
+		"dependency_injection_key": null,
+		"configuration_section": {
+			"description": "Configuration section used to identify the settings for analytics."
+		},
+		"configuration_keys": [
+			{
+				"name": "Enabled",
+				"description": "The flag indicating whether analytics is enabled",
+				"secret": "",
+				"value": "false",
+				"content_type": "",
+				"first_version": "0.9.7"
+			},
+			{
+				"name": "AnonymizationSalt",
+				"description": "Salt value used for anonymization.",
+				"secret": "foundationallm-analytics-anonymizationsalt",
+				"value": "${env:ANALYTICS_ANONYMIZATIONSALT}",
+				"content_type": "",
+				"first_version": "0.9.7"
+			},
+			{
+				"name": "LogAnalyticsWorkspaceId",
+				"description": "The identifier of the Log Analytics workspace.",
+				"secret": "",
+				"value": "${env:ANALYTICS_LOG_ANALYTICS_WORKSPACEID}",
+				"content_type": "",
+				"first_version": "0.9.7"
+			},
+			{
+				"name": "LogAnalyticsSharedKey",
+				"description": "The shared key of the Log Analytics workspace.",
+				"secret": "foundationallm-analytics-loganalytics-sharedkey",
+				"value": "${env:ANALYTICS_LOG_ANALYTICS_SHAREDKEY}",
+				"content_type": "",
+				"first_version": "0.9.7"
+			},
+			{
+				"name": "CacheDurationMinutes",
+				"description": "The duration of caching in minutes.",
+				"secret": "",
+				"value": "5",
+				"content_type": "",
+				"first_version": "0.9.7"
+			},
+			{
+				"name": "RetentionDays",
+				"description": "The duration of retention in days.",
+				"secret": "",
+				"value": "90",
+				"content_type": "",
+				"first_version": "0.9.7"
+			},
+			{
+				"name": "EnableRealTimeUpdates",
+				"description": "The flag indicating whether real time updates are enabled.",
+				"secret": "",
+				"value": "false",
+				"content_type": "",
+				"first_version": "0.9.7"
+			},
+			{
+				"name": "AbuseDetection:Enabled",
+				"description": "Enable or disable the abuse detection subsystem (true/false).",
+				"secret": "",
+				"value": "true",
+				"content_type": "",
+				"first_version": "0.9.7"
+			},
+			{
+				"name": "AbuseDetection:HighRequestRateThreshold",
+				"description": "Number of requests within the monitored interval considered a high request rate and subject to mitigation.",
+				"secret": "",
+				"value": "100",
+				"content_type": "",
+				"first_version": "0.9.7"
+			},
+			{
+				"name": "AbuseDetection:ExtremeRequestRateThreshold",
+				"description": "Number of requests within the monitored interval considered an extreme request rate for aggressive throttling or blocking.",
+				"secret": "",
+				"value": "500",
+				"content_type": "",
+				"first_version": "0.9.7"
+			},
+			{
+				"name": "AbuseDetection:RapidFireThreshold",
+				"description": "Count of rapid consecutive requests from the same source that, when exceeded within the RapidFireWindowMinutes, indicate rapid-fire abuse.",
+				"secret": "",
+				"value": "20",
+				"content_type": "",
+				"first_version": "0.9.7"
+			},
+			{
+				"name": "AbuseDetection:RapidFireWindowMinutes",
+				"description": "Time window in minutes used to evaluate rapid-fire request behavior for the RapidFireThreshold.",
+				"secret": "",
+				"value": "1",
+				"content_type": "",
+				"first_version": "0.9.7"
+			},
+			{
+				"name": "AbuseDetection:ContinuousUsageHours",
+				"description": "Number of continuous hours of activity from a single user or client considered suspicious and subject to further checks.",
+				"secret": "",
+				"value": "20",
+				"content_type": "",
+				"first_version": "0.9.7"
+			},
+			{
+				"name": "AbuseDetection:AgentHoppingThreshold",
+				"description": "Number of distinct agents accessed within the AgentHoppingWindowMinutes that indicates agent-hopping abuse.",
+				"secret": "",
+				"value": "10",
+				"content_type": "",
+				"first_version": "0.9.7"
+			},
+			{
+				"name": "AbuseDetection:AgentHoppingWindowMinutes",
+				"description": "Time window in minutes used to evaluate agent-hopping behavior for the AgentHoppingThreshold.",
+				"secret": "",
+				"value": "60",
+				"content_type": "",
+				"first_version": "0.9.7"
+			},
+			{
+				"name": "AbuseDetection:FileUploadAbuseCount",
+				"description": "Maximum number of file uploads within the monitored period considered abusive and subject to rate limiting.",
+				"secret": "",
+				"value": "50",
+				"content_type": "",
+				"first_version": "0.9.7"
+			},
+			{
+				"name": "AbuseDetection:FileUploadAbuseSizeGB",
+				"description": "Total uploaded file size in gigabytes within the monitored period that, when exceeded, is considered abusive.",
+				"secret": "",
+				"value": "1",
+				"content_type": "",
+				"first_version": "0.9.7"
+			},
+			{
+				"name": "AbuseDetection:HighErrorRateThreshold",
+				"description": "Percentage (0-100) of error responses within the monitored interval considered a high error rate that may indicate abuse or system issues.",
+				"secret": "",
+				"value": "30",
+				"content_type": "",
+				"first_version": "0.9.7"
+			}
+		]
+	},
+	{
 		"namespace": "PythonSDK",
 		"dependency_injection_key": null,
 		"configuration_section": {
