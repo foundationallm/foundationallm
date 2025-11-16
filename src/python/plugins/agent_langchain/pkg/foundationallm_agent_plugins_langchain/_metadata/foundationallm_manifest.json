@@ -1,0 +1,7 @@
+{
+    "display_name": "FoundationaLLM Agent Plugins LangChain (Python)",
+    "description": "The FoundationaLLM Agent plugins (built on LangChain) package for Python.",
+    "plugin_managers": [
+        "FoundationaLLMAgentWorkflowLangChainPluginManager"
+    ]
+}

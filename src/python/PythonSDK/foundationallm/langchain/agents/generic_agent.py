@@ -13,6 +13,9 @@ from foundationallm.models.agents import (
     GenericAgentWorkflow,
     AzureAIAgentServiceAgentWorkflow,
     AzureOpenAIAssistantsAgentWorkflow,
+    LangChainAgentWorkflow,
+    LangGraphReactAgentWorkflow,
+    LangChainExpressionLanguageAgentWorkflow,
     ExternalAgentWorkflow
 )
 from foundationallm.models.constants import (
@@ -174,7 +177,7 @@ class GenericAgent(AgentBase):
         self._validate_request(request)
 
         agent = request.agent
-        
+
         #----------------------------------------------------------------------
         # Legacy Azure OpenAI Assistants API agent workflow
         #----------------------------------------------------------------------
@@ -198,8 +201,8 @@ class GenericAgent(AgentBase):
             )
             prompt_object_id = prompt_object_properties.object_id
             prompt = ObjectUtils.get_object_by_id(prompt_object_id, request.objects, MultipartPrompt)
-            
-            language_model_factory = LanguageModelFactory(request.objects, self.config)              
+
+            language_model_factory = LanguageModelFactory(request.objects, self.config)
 
             # Used by image analysis
             ai_model = ObjectUtils.get_object_by_id(ai_model_object_id, request.objects, AIModelBase)
@@ -220,7 +223,7 @@ class GenericAgent(AgentBase):
             # Legacy Assistants API implementation
 
             assistant_id = agent.workflow.assistant_id
-            
+
             # create the service
             assistant_svc = OpenAIAssistantsApiService(
                 azure_openai_client=language_model_factory.get_language_model(ai_model_object_id, override_operation_type=OperationTypes.ASSISTANTS_API),
@@ -244,7 +247,7 @@ class GenericAgent(AgentBase):
                 await assistant_svc.add_thread_message_async(
                     thread_id = assistant_req.thread_id,
                     role = "user",
-                    content = "Analyze any attached images.", 
+                    content = "Analyze any attached images.",
                     attachments = []
                 )
                 # Add assistant message
@@ -315,9 +318,15 @@ class GenericAgent(AgentBase):
         # Plugin-based agent workflows
         #----------------------------------------------------------------------
 
-        if isinstance(agent.workflow, (GenericAgentWorkflow, AzureAIAgentServiceAgentWorkflow, ExternalAgentWorkflow)):
+        if isinstance(agent.workflow, (
+            GenericAgentWorkflow,
+            AzureAIAgentServiceAgentWorkflow,
+            LangChainAgentWorkflow,
+            LangGraphReactAgentWorkflow,
+            LangChainExpressionLanguageAgentWorkflow,
+            ExternalAgentWorkflow)):
 
-            with self.tracer.start_as_current_span('langchain_prepare_external_workflow', kind=SpanKind.SERVER) as span:
+            with self.tracer.start_as_current_span('langchain_prepare_plugin_workflow', kind=SpanKind.SERVER) as span:
                 span.set_attribute("agent_name", agent.name)
                 span.set_attribute("conversation_id", request.session_id if request.session_id is not None else '')
                 span.set_attribute("operation_id", request.operation_id)
@@ -348,11 +357,11 @@ class GenericAgent(AgentBase):
                     self.user_identity,
                     self.config)
 
-            with self.tracer.start_as_current_span('langchain_invoke_external_workflow', kind=SpanKind.SERVER) as span:
+            with self.tracer.start_as_current_span('langchain_invoke_plugin_workflow', kind=SpanKind.SERVER) as span:
                 span.set_attribute("agent_name", agent.name)
                 span.set_attribute("conversation_id", request.session_id if request.session_id is not None else '')
                 span.set_attribute("operation_id", request.operation_id)
-                
+
                 response = await workflow.invoke_async(
                     operation_id=request.operation_id,
                     user_prompt=request.user_prompt,
@@ -365,7 +374,7 @@ class GenericAgent(AgentBase):
                 # Ensure the user prompt rewrite is returned in the response
                 response.user_prompt_rewrite = request.user_prompt_rewrite
             return response
-        
+
         # The agent workflow type is not supported.
 
         return CompletionResponse(

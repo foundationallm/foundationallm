@@ -1001,7 +1001,7 @@
 				<Button label="Cancel" severity="secondary" @click="handleCancel" />
 			</div>
 		</div>
-		
+
 	</main>
 </template>
 
@@ -1039,7 +1039,7 @@ const getDefaultFormValues = () => {
 		object_id: '',
 		prompt_object_id: '',
 		inline_context: true,
-		agentType: 'knowledge-management' as CreateAgentRequest['type'],
+		agentType: 'generic-agent' as CreateAgentRequest['type'],
 
 		cost_center: '',
 		expirationDate: null as string | null,
@@ -1319,7 +1319,7 @@ export default {
 				detail: error?.response?._data || error,
 				life: 5000,
 				closable: true,
-				
+
 			});
 		}
 
@@ -1521,7 +1521,7 @@ export default {
 		 */
 		async loadPromptsIfNeeded(context: 'userPromptRewrite' | 'workflowResource' | 'editMode' = 'userPromptRewrite', filterCriteria?: string): Promise<void> {
 			const cacheKey = `${context}_${filterCriteria || 'default'}`;
-			
+
 			// Check if prompts are already cached for this context
 			if (this.promptCache.has(cacheKey)) {
 				this.promptOptions = this.promptCache.get(cacheKey)!;
@@ -1550,15 +1550,15 @@ export default {
 					// In edit mode, only load prompts related to this agent
 					// This includes prompts with the agent name in their name or description
 					const agentName = this.agentName.toLowerCase();
-					filteredPrompts = filteredPrompts.filter(prompt => 
+					filteredPrompts = filteredPrompts.filter(prompt =>
 						prompt.name.toLowerCase().includes(agentName) ||
 						prompt.description?.toLowerCase().includes(agentName) ||
 						prompt.category === 'Workflow' // Include workflow-related prompts
 					);
 				} else if (context === 'workflowResource') {
 					// For workflow resources, filter to relevant prompt categories
-					filteredPrompts = filteredPrompts.filter(prompt => 
-						prompt.category === 'Workflow' || 
+					filteredPrompts = filteredPrompts.filter(prompt =>
+						prompt.category === 'Workflow' ||
 						prompt.category === 'System' ||
 						prompt.name.toLowerCase().includes('workflow')
 					);
@@ -1567,7 +1567,7 @@ export default {
 				// Apply additional filter criteria if provided
 				if (filterCriteria) {
 					const criteria = filterCriteria.toLowerCase();
-					filteredPrompts = filteredPrompts.filter(prompt => 
+					filteredPrompts = filteredPrompts.filter(prompt =>
 						prompt.name.toLowerCase().includes(criteria) ||
 						prompt.description?.toLowerCase().includes(criteria)
 					);
