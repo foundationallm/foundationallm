@@ -326,6 +326,17 @@ class GenericAgent(AgentBase):
             LangChainExpressionLanguageAgentWorkflow,
             ExternalAgentWorkflow)):
 
+            # Ensure legacy agents do not require definition changes to use
+            # the plugin-based workflows
+
+            if isinstance(agent.workflow, (LangGraphReactAgentWorkflow)):
+                agent.workflow.package_name = "foundationallm-agents-plugins-langchain"
+                agent.workflow.class_name = "FoundationaLLMLangChainLCELWorkflow"
+
+            if isinstance(agent.workflow, (LangChainExpressionLanguageAgentWorkflow)):
+                agent.workflow.package_name = "foundationallm-agents-plugins-langchain"
+                agent.workflow.class_name = "FoundationaLLMLangGraphReActAgentWorkflow"
+
             with self.tracer.start_as_current_span('langchain_prepare_plugin_workflow', kind=SpanKind.SERVER) as span:
                 span.set_attribute("agent_name", agent.name)
                 span.set_attribute("conversation_id", request.session_id if request.session_id is not None else '')
