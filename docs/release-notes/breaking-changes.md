@@ -3,6 +3,30 @@
 > [!NOTE]
 > This section is for changes that are not yet released but will affect future releases.
 
+## Starting from 0.9.7-rc477
+
+### Artifact changes
+
+A new workflow resource must be added to support the `LangChainAgentWorkflow`. Ensure the reference is added to `_resource-references.json` as well.
+
+```json
+{
+    "type": "langchain-agent-workflow",
+    "name": "LangChainAgentWorkflow",
+    "object_id": "/instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.Agent/workflows/LangChainAgentWorkflow",
+    "display_name": "LangChainAgentWorkflow",
+    "description": "LangChain Agent workflow",
+    "cost_center": null,
+    "properties": null,
+    "created_on": "2025-11-16T00:00:00+00:00",
+    "updated_on": "0001-01-01T00:00:00+00:00",
+    "created_by": "SYSTEM",
+    "updated_by": null,
+    "deleted": false,
+    "expiration_date": null
+}
+```
+
 ## Starting from 0.9.7-rc472
 
 ### Configuration changes
