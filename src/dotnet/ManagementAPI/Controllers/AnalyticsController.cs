@@ -1,6 +1,5 @@
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Analytics;
-using FoundationaLLM.Common.Services.Analytics;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

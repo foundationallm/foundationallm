@@ -1,6 +1,6 @@
 using FoundationaLLM.Common.Models.Analytics;
 
-namespace FoundationaLLM.Common.Services.Analytics
+namespace FoundationaLLM.Common.Interfaces
 {
     /// <summary>
     /// Service for retrieving analytics data.

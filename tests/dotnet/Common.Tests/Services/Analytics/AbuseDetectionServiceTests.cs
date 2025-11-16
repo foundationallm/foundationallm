@@ -1,8 +1,10 @@
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Analytics;
+using FoundationaLLM.Common.Models.Configuration.Analytics;
 using FoundationaLLM.Common.Services.Analytics;
 using FoundationaLLM.Common.Services.Azure;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using NSubstitute;
 using Xunit;
 
@@ -12,20 +14,18 @@ namespace FoundationaLLM.Common.Tests.Services.Analytics
     {
         private readonly IAzureCosmosDBService _cosmosDBService;
         private readonly IAnalyticsService _analyticsService;
-        private readonly IAzureAppConfigurationService _appConfigurationService;
         private readonly ILogger<AbuseDetectionService> _logger;
         private readonly AbuseDetectionService _service;
+        private readonly AnalyticsSettings analyticsSettings = new();
 
         public AbuseDetectionServiceTests()
         {
             _cosmosDBService = Substitute.For<IAzureCosmosDBService>();
             _analyticsService = Substitute.For<IAnalyticsService>();
-            _appConfigurationService = Substitute.For<IAzureAppConfigurationService>();
             _logger = Substitute.For<ILogger<AbuseDetectionService>>();
             _service = new AbuseDetectionService(
-                _cosmosDBService,
                 _analyticsService,
-                _appConfigurationService,
+                Options.Create<AnalyticsSettings>(analyticsSettings),
                 _logger);
         }
 
@@ -55,10 +55,6 @@ namespace FoundationaLLM.Common.Tests.Services.Analytics
                     Username = username,
                     Entries = new List<UserActivityEntry>()
                 });
-
-            _appConfigurationService
-                .GetConfigurationSettingAsync(Arg.Any<string>())
-                .Returns((string?)null);
 
             // Act
             var result = await _service.CalculateAbuseRiskScoreAsync(instanceId, username, startDate, endDate);
@@ -95,10 +91,6 @@ namespace FoundationaLLM.Common.Tests.Services.Analytics
                     Username = username,
                     Entries = new List<UserActivityEntry>()
                 });
-
-            _appConfigurationService
-                .GetConfigurationSettingAsync(Arg.Any<string>())
-                .Returns((string?)null);
 
             // Act
             var result = await _service.DetectAbuseIndicatorsAsync(instanceId, username, startDate, endDate);

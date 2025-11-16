@@ -1,6 +1,7 @@
-using FoundationaLLM.Common.Services.Azure;
-using Microsoft.Extensions.Configuration;
+using FoundationaLLM.Common.Interfaces;
+using FoundationaLLM.Common.Models.Configuration.Analytics;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -9,16 +10,13 @@ namespace FoundationaLLM.Common.Services.Analytics
     /// <summary>
     /// Service for anonymizing user identifiers using secure hashing.
     /// </summary>
-    /// <param name="keyVaultService">The Azure Key Vault service for retrieving the anonymization salt.</param>
-    /// <param name="appConfigurationService">The Azure App Configuration service.</param>
+    /// <param name="analyticsSettings">The analytics settings.</param>
     /// <param name="logger">The logger.</param>
     public class AnonymizationService(
-        IAzureKeyVaultService keyVaultService,
-        IAzureAppConfigurationService appConfigurationService,
+        IOptions<AnalyticsSettings> analyticsSettings,
         ILogger<AnonymizationService> logger) : IAnonymizationService
     {
-        private readonly IAzureKeyVaultService _keyVaultService = keyVaultService;
-        private readonly IAzureAppConfigurationService _appConfigurationService = appConfigurationService;
+        private readonly AnalyticsSettings _analyticsSettings = analyticsSettings.Value;
         private readonly ILogger<AnonymizationService> _logger = logger;
         private string? _cachedSalt;
 
@@ -74,33 +72,12 @@ namespace FoundationaLLM.Common.Services.Analytics
 
             try
             {
-                var saltKey = _appConfigurationService.GetConfigurationSettingAsync("FoundationaLLM:Analytics:AnonymizationSalt").Result;
-                if (string.IsNullOrWhiteSpace(saltKey))
+                _cachedSalt = _analyticsSettings.AnonymizationSalt;
+                if (string.IsNullOrWhiteSpace(_cachedSalt))
                 {
                     _logger.LogWarning("AnonymizationSalt configuration key not found. Using default salt (not recommended for production).");
                     _cachedSalt = "default-salt-not-secure";
                     return _cachedSalt;
-                }
-
-                // If it's a Key Vault reference, extract the secret name
-                if (saltKey.StartsWith("@Microsoft.KeyVault(SecretUri="))
-                {
-                    var uriStart = saltKey.IndexOf("SecretUri=") + 10;
-                    var uriEnd = saltKey.IndexOf(")", uriStart);
-                    var secretUri = saltKey.Substring(uriStart, uriEnd - uriStart);
-                    var secretName = secretUri.Split('/').Last();
-
-                    _cachedSalt = _keyVaultService.GetSecretValueAsync(secretName).Result;
-                }
-                else
-                {
-                    _cachedSalt = saltKey;
-                }
-
-                if (string.IsNullOrWhiteSpace(_cachedSalt))
-                {
-                    _logger.LogWarning("AnonymizationSalt is empty. Using default salt (not recommended for production).");
-                    _cachedSalt = "default-salt-not-secure";
                 }
 
                 return _cachedSalt;

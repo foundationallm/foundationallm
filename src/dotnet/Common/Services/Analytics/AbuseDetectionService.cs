@@ -1,39 +1,28 @@
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Analytics;
-using FoundationaLLM.Common.Services.Azure;
-using Microsoft.Extensions.Configuration;
+using FoundationaLLM.Common.Models.Configuration.Analytics;
 using Microsoft.Extensions.Logging;
-using System.Collections.Concurrent;
+using Microsoft.Extensions.Options;
 
 namespace FoundationaLLM.Common.Services.Analytics
 {
     /// <summary>
     /// Service for detecting abuse patterns and calculating risk scores.
     /// </summary>
-    /// <param name="cosmosDBService">The Cosmos DB service.</param>
     /// <param name="analyticsService">The analytics service.</param>
-    /// <param name="appConfigurationService">The App Configuration service.</param>
+    /// <param name="analyticsSettings">The analytics settings.</param>
     /// <param name="logger">The logger.</param>
     public class AbuseDetectionService(
-        IAzureCosmosDBService cosmosDBService,
         IAnalyticsService analyticsService,
-        IAzureAppConfigurationService appConfigurationService,
+        IOptions<AnalyticsSettings> analyticsSettings,
         ILogger<AbuseDetectionService> logger) : IAbuseDetectionService
     {
-        private readonly IAzureCosmosDBService _cosmosDBService = cosmosDBService;
         private readonly IAnalyticsService _analyticsService = analyticsService;
-        private readonly IAzureAppConfigurationService _appConfigurationService = appConfigurationService;
+        private readonly AnalyticsSettings _analyticsSettings = analyticsSettings.Value;
         private readonly ILogger<AbuseDetectionService> _logger = logger;
 
-        private int _highRequestRateThreshold = 100;
-        private int _extremeRequestRateThreshold = 500;
-        private int _rapidFireThreshold = 20;
-        private int _rapidFireWindowMinutes = 1;
         private int _continuousUsageHours = 20;
         private int _agentHoppingThreshold = 10;
-        private int _agentHoppingWindowMinutes = 60;
-        private int _fileUploadAbuseCount = 50;
-        private double _fileUploadAbuseSizeGB = 1.0;
         private double _highErrorRateThreshold = 30.0;
 
         /// <inheritdoc/>
@@ -41,8 +30,6 @@ namespace FoundationaLLM.Common.Services.Analytics
         {
             try
             {
-                await LoadConfigurationAsync();
-
                 var indicators = await DetectAbuseIndicatorsAsync(instanceId, username, startDate, endDate, cancellationToken);
 
                 var factors = new Dictionary<string, double>();
@@ -99,8 +86,6 @@ namespace FoundationaLLM.Common.Services.Analytics
         {
             try
             {
-                await LoadConfigurationAsync();
-
                 var start = startDate ?? DateTime.UtcNow.AddDays(-7);
                 var end = endDate ?? DateTime.UtcNow;
 
@@ -130,8 +115,6 @@ namespace FoundationaLLM.Common.Services.Analytics
         {
             try
             {
-                await LoadConfigurationAsync();
-
                 var start = startDate ?? DateTime.UtcNow.AddDays(-1);
                 var end = endDate ?? DateTime.UtcNow;
 
@@ -187,29 +170,7 @@ namespace FoundationaLLM.Common.Services.Analytics
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error detecting user anomalies");
-                return new List<UserAnomaly>();
-            }
-        }
-
-        private async Task LoadConfigurationAsync()
-        {
-            try
-            {
-                var highRequestRate = await _appConfigurationService.GetConfigurationSettingAsync("FoundationaLLM:Analytics:AbuseDetection:HighRequestRateThreshold");
-                if (!string.IsNullOrWhiteSpace(highRequestRate) && int.TryParse(highRequestRate, out var threshold))
-                    _highRequestRateThreshold = threshold;
-
-                var extremeRequestRate = await _appConfigurationService.GetConfigurationSettingAsync("FoundationaLLM:Analytics:AbuseDetection:ExtremeRequestRateThreshold");
-                if (!string.IsNullOrWhiteSpace(extremeRequestRate) && int.TryParse(extremeRequestRate, out var extremeThreshold))
-                    _extremeRequestRateThreshold = extremeThreshold;
-
-                var rapidFire = await _appConfigurationService.GetConfigurationSettingAsync("FoundationaLLM:Analytics:AbuseDetection:RapidFireThreshold");
-                if (!string.IsNullOrWhiteSpace(rapidFire) && int.TryParse(rapidFire, out var rapidFireThreshold))
-                    _rapidFireThreshold = rapidFireThreshold;
-            }
-            catch (Exception ex)
-            {
-                _logger.LogWarning(ex, "Error loading abuse detection configuration, using defaults");
+                return [];
             }
         }
 
@@ -227,7 +188,7 @@ namespace FoundationaLLM.Common.Services.Analytics
                 {
                     var requestsPerHour = userAnalytics.TotalRequests / hours;
 
-                    if (requestsPerHour > _extremeRequestRateThreshold)
+                    if (requestsPerHour > _analyticsSettings.AbuseDetection.ExtremeRequestRateThreshold)
                     {
                         indicators.Add(new AbuseIndicator
                         {
@@ -238,7 +199,7 @@ namespace FoundationaLLM.Common.Services.Analytics
                             Metrics = new Dictionary<string, object> { ["requestsPerHour"] = requestsPerHour }
                         });
                     }
-                    else if (requestsPerHour > _highRequestRateThreshold)
+                    else if (requestsPerHour > _analyticsSettings.AbuseDetection.HighRequestRateThreshold)
                     {
                         indicators.Add(new AbuseIndicator
                         {
@@ -270,7 +231,7 @@ namespace FoundationaLLM.Common.Services.Analytics
             {
                 var timeline = await _analyticsService.GetUserActivityTimelineAsync(instanceId, username, startDate, endDate);
 
-                if (timeline.Entries.Count > _rapidFireThreshold)
+                if (timeline.Entries.Count > _analyticsSettings.AbuseDetection.RapidFireThreshold)
                 {
                     // Check for rapid-fire requests
                     var rapidRequests = 0;
@@ -281,7 +242,7 @@ namespace FoundationaLLM.Common.Services.Analytics
                             rapidRequests++;
                     }
 
-                    if (rapidRequests > _rapidFireThreshold)
+                    if (rapidRequests > _analyticsSettings.AbuseDetection.RapidFireThreshold)
                     {
                         indicators.Add(new AbuseIndicator
                         {
@@ -394,30 +355,20 @@ namespace FoundationaLLM.Common.Services.Analytics
             return Math.Min(100, score);
         }
 
-        private double CalculateTokenScore(List<AbuseIndicator> indicators)
-        {
+        private double CalculateTokenScore(List<AbuseIndicator> indicators) =>
             // Similar to volume score but focused on token consumption
-            return CalculateVolumeScore(indicators.Where(i => i.Type.Contains("Token")).ToList());
-        }
+            CalculateVolumeScore(indicators.Where(i => i.Type.Contains("Token")).ToList());
 
-        private double CalculateErrorScore(List<AbuseIndicator> indicators)
-        {
-            return CalculateVolumeScore(indicators.Where(i => i.Type.Contains("Error")).ToList());
-        }
+        private double CalculateErrorScore(List<AbuseIndicator> indicators) =>
+            CalculateVolumeScore(indicators.Where(i => i.Type.Contains("Error")).ToList());
 
-        private double CalculateTemporalScore(List<AbuseIndicator> indicators)
-        {
-            return CalculateVolumeScore(indicators);
-        }
+        private double CalculateTemporalScore(List<AbuseIndicator> indicators) =>
+            CalculateVolumeScore(indicators);
 
-        private double CalculateBehavioralScore(List<AbuseIndicator> indicators)
-        {
-            return CalculateVolumeScore(indicators);
-        }
+        private double CalculateBehavioralScore(List<AbuseIndicator> indicators) =>
+            CalculateVolumeScore(indicators);
 
-        private double CalculateResourceScore(List<AbuseIndicator> indicators)
-        {
-            return CalculateVolumeScore(indicators);
-        }
+        private double CalculateResourceScore(List<AbuseIndicator> indicators) =>
+            CalculateVolumeScore(indicators);
     }
 }

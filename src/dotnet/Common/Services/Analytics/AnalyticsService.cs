@@ -1,10 +1,8 @@
 using FoundationaLLM.Common.Constants;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Analytics;
-using FoundationaLLM.Common.Models.Conversation;
 using Microsoft.Azure.Cosmos;
 using Microsoft.Extensions.Logging;
-using System.Diagnostics;
 
 namespace FoundationaLLM.Common.Services.Analytics
 {

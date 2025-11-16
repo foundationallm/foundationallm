@@ -5,7 +5,6 @@ using FoundationaLLM.Common.Constants.Configuration;
 using FoundationaLLM.Common.Middleware;
 using FoundationaLLM.Common.Models.Configuration.Branding;
 using FoundationaLLM.Common.OpenAPI;
-using FoundationaLLM.Common.Services.Analytics;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.Extensions.Configuration.AzureAppConfiguration;
 using Microsoft.Extensions.Options;
@@ -94,7 +93,7 @@ namespace FoundationaLLM.Management.API
             builder.AddAzureCosmosDBService();
 
             // Add analytics services
-            builder.Services.AddAnalyticsServices();
+            builder.AddAnalyticsServices();
 
             // Add authentication configuration.
             var e2ETestEnvironmentValue = Environment.GetEnvironmentVariable(EnvironmentVariables.FoundationaLLM_Environment) ?? string.Empty;

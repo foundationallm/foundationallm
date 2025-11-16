@@ -1,4 +1,4 @@
-namespace FoundationaLLM.Common.Services.Analytics
+namespace FoundationaLLM.Common.Interfaces
 {
     /// <summary>
     /// Service for anonymizing user identifiers.
