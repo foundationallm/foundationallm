@@ -331,11 +331,11 @@ class GenericAgent(AgentBase):
 
             if isinstance(agent.workflow, (LangGraphReactAgentWorkflow)):
                 agent.workflow.package_name = "foundationallm_agent_plugins_langchain"
-                agent.workflow.class_name = "FoundationaLLMLangChainLCELWorkflow"
+                agent.workflow.class_name = "FoundationaLLMLangGraphReActAgentWorkflow"
 
             if isinstance(agent.workflow, (LangChainExpressionLanguageAgentWorkflow)):
                 agent.workflow.package_name = "foundationallm_agent_plugins_langchain"
-                agent.workflow.class_name = "FoundationaLLMLangGraphReActAgentWorkflow"
+                agent.workflow.class_name = "FoundationaLLMLangChainLCELWorkflow"
 
             with self.tracer.start_as_current_span('langchain_prepare_plugin_workflow', kind=SpanKind.SERVER) as span:
                 span.set_attribute("agent_name", agent.name)
