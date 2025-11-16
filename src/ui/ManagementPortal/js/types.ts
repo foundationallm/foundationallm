@@ -78,7 +78,7 @@ export type AgentWorkflow = {
 };
 
 export type Agent = ResourceBase & {
-	type: 'knowledge-management' | 'analytics';
+	type: 'generic-agent';
 	inline_context: boolean;
 
 	show_message_tokens?: boolean;
@@ -382,7 +382,7 @@ export type FilterRequest = {
 // };
 
 export type CreateAgentRequest = ResourceBase & {
-	type: 'knowledge-management' | 'analytics';
+	type: 'generic-agent';
 	inline_context: boolean;
 
 	show_message_tokens?: boolean;

@@ -706,7 +706,7 @@ export default {
 	 */
 	async checkAgentNameAvailability(name: string): Promise<ResourceNameCheckResult> {
 		const payload: ResourceName = {
-			type: 'knowledge-management',
+			type: 'generic-agent',
 			name,
 		};
 		return await this.fetch<ResourceNameCheckResult>(
