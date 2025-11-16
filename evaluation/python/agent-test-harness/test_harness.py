@@ -679,49 +679,54 @@ def execute_tests_from_dataframe(df, agent_name, max_workers=5):
             index = future_to_question[future]
             try:
                 result = future.result()
+                # Get the row to access metadata
+                row_data = df.iloc[index]
+                # Use original test index if available, otherwise use current index
+                ordinal_index = row_data.get('_original_test_index', index)
                 if result:
                     # Add repeat information if available
-                    if '_repeat_index' in df.iloc[index]:
-                        result['RepeatIndex'] = df.iloc[index]['_repeat_index']
-                        result['OriginalIndex'] = df.iloc[index]['_original_index']
-                    result['Ordinal'] = index + 1
+                    if '_repeat_index' in row_data:
+                        result['RepeatIndex'] = row_data['_repeat_index']
+                        result['OriginalIndex'] = row_data['_original_index']
+                    result['Ordinal'] = ordinal_index + 1
                     results.append(result)
                 else:
                     # Get the original question from the DataFrame
-                    original_question = df.iloc[index]['Question']
+                    original_question = row_data['Question']
                     print(f"Failed to process question: {original_question}")
                     # Create a failed result entry
                     failed_result = {
                         'Question': original_question,
-                        'Filename': df.iloc[index]['Filename'],
-                        'Answer': df.iloc[index]['Answer'],
+                        'Filename': row_data['Filename'],
+                        'Answer': row_data['Answer'],
                         'AgentAnswer': 'Failed to process',
                         'ErrorOccured': 1,
                         'ErrorDetails': 'Test execution failed',
-                        'Ordinal': index + 1
+                        'Ordinal': ordinal_index + 1
                     }
                     # Add repeat information if available
-                    if '_repeat_index' in df.iloc[index]:
-                        failed_result['RepeatIndex'] = df.iloc[index]['_repeat_index']
-                        failed_result['OriginalIndex'] = df.iloc[index]['_original_index']
+                    if '_repeat_index' in row_data:
+                        failed_result['RepeatIndex'] = row_data['_repeat_index']
+                        failed_result['OriginalIndex'] = row_data['_original_index']
                     results.append(failed_result)
             except Exception as e:
                 print(f"Error processing question at index {index}: {e}")
                 # Create a failed result entry
-                original_question = df.iloc[index]['Question']
+                row_data = df.iloc[index]
+                ordinal_index = row_data.get('_original_test_index', index)
                 failed_result = {
-                    'Question': original_question,
-                    'Filename': df.iloc[index]['Filename'],
-                    'Answer': df.iloc[index]['Answer'],
+                    'Question': row_data['Question'],
+                    'Filename': row_data['Filename'],
+                    'Answer': row_data['Answer'],
                     'AgentAnswer': 'Failed to process',
                     'ErrorOccured': 1,
                     'ErrorDetails': str(e),
-                    'Ordinal': index + 1
+                    'Ordinal': ordinal_index + 1
                 }
                 # Add repeat information if available
-                if '_repeat_index' in df.iloc[index]:
-                    failed_result['RepeatIndex'] = df.iloc[index]['_repeat_index']
-                    failed_result['OriginalIndex'] = df.iloc[index]['_original_index']
+                if '_repeat_index' in row_data:
+                    failed_result['RepeatIndex'] = row_data['_repeat_index']
+                    failed_result['OriginalIndex'] = row_data['_original_index']
                 results.append(failed_result)
     
     # Convert results to DataFrame

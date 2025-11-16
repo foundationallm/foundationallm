@@ -19,59 +19,63 @@ from test_harness import execute_tests, process_question, execute_tests_from_dat
 class TestSuiteManager:
     """Manages test suites and their execution"""
     
-    def __init__(self, config_file: str = "test-suites/test_suites.json"):
-        self.config_file = config_file
-        self.config = self._load_config()
+    def __init__(self, config_file: str = "test-suites/test_suites.json", test_suites_dir: Optional[Path] = None):
         self.base_dir = Path(__file__).parent
+        
+        # Determine test-suites directory
+        if test_suites_dir is not None:
+            self.test_suites_dir = Path(test_suites_dir).resolve()
+            # Config file is in the test-suites directory
+            self.config_file = self.test_suites_dir / "test_suites.json"
+        else:
+            # Default: use test-suites/ relative to script
+            self.test_suites_dir = self.base_dir / "test-suites"
+            self.config_file = self.base_dir / config_file
+        
+        self.config = self._load_config()
     
     def _load_config(self) -> Dict[str, Any]:
         """Load test suite configuration"""
-        config_path = Path(__file__).parent / self.config_file
+        # self.config_file is already a Path object
+        config_path = self.config_file if isinstance(self.config_file, Path) else self.base_dir / self.config_file
+        
         if not config_path.exists():
             # Create default configuration
-            default_config = {
-                "code-interpreter": {
-                    "csv_file": "test-suites/code-interpreter/TestQuestions-code-interpreter.csv",
-                    "description": "Tests for code execution and file generation",
-                    "quick_mode_limit": 5
-                },
-                "document-analysis": {
-                    "csv_file": "test-suites/document-analysis/TestQuestions-document-analysis.csv",
-                    "description": "Tests for document analysis and processing",
-                    "quick_mode_limit": 3
-                },
-                "file-operations": {
-                    "csv_file": "test-suites/file-operations/TestQuestions-file-operations.csv",
-                    "description": "Tests for file creation, conversion, and manipulation",
-                    "quick_mode_limit": 4
-                },
-                "routing": {
-                    "csv_file": "test-suites/routing/TestQuestions-routing.csv",
-                    "description": "Tests for agent routing and task delegation",
-                    "quick_mode_limit": 5
-                },
-                "conversational": {
-                    "csv_file": "test-suites/conversational/TestQuestions-conversational.csv",
-                    "description": "Tests for general conversation and Q&A",
-                    "quick_mode_limit": 3
-                },
-                "knowledge-retrieval": {
-                    "csv_file": "test-suites/knowledge-retrieval/TestQuestions-knowledge-retrieval.csv",
-                    "description": "Tests for knowledge base queries and retrieval",
-                    "quick_mode_limit": 4
+            # Use relative paths from test_suites_dir
+            default_config = {}
+            suite_names = ["code-interpreter", "document-analysis", "file-operations", 
+                          "routing", "conversational", "knowledge-retrieval"]
+            for suite_name in suite_names:
+                # Paths relative to test_suites_dir
+                csv_path = f"{suite_name}/TestQuestions-{suite_name}.csv"
+                default_config[suite_name] = {
+                    "csv_file": csv_path,
+                    "description": f"Tests for {suite_name}",
+                    "quick_mode_limit": 5 if suite_name in ["code-interpreter", "routing"] else (3 if suite_name in ["document-analysis", "conversational"] else 4)
                 }
-            }
             self._save_config(default_config)
             return default_config
         
         with open(config_path, 'r') as f:
-            return json.load(f)
+            config = json.load(f)
+            # Normalize CSV paths: strip 'test-suites/' prefix if present
+            # since paths should be relative to test_suites_dir
+            for suite_name, suite_config in config.items():
+                csv_file = suite_config.get('csv_file', '')
+                if csv_file.startswith('test-suites/'):
+                    suite_config['csv_file'] = csv_file[len('test-suites/'):]
+            return config
     
     def _save_config(self, config: Dict[str, Any]):
         """Save test suite configuration"""
-        config_path = Path(__file__).parent / self.config_file
+        # self.config_file is already a Path object
+        config_path = self.config_file if isinstance(self.config_file, Path) else self.base_dir / self.config_file
+        # Ensure parent directory exists
+        config_path.parent.mkdir(parents=True, exist_ok=True)
+        # Sort keys alphabetically
+        sorted_config = dict(sorted(config.items()))
         with open(config_path, 'w') as f:
-            json.dump(config, f, indent=2)
+            json.dump(sorted_config, f, indent=2)
     
     def list_suites(self) -> Dict[str, Any]:
         """List all available test suites"""
@@ -104,7 +108,8 @@ class TestSuiteManager:
             print(f"Error: No CSV file specified for suite '{suite_name}'")
             return False
         
-        csv_path = self.base_dir / csv_file
+        # CSV paths are relative to test_suites_dir
+        csv_path = self.test_suites_dir / csv_file
         if not csv_path.exists():
             print(f"Error: CSV file not found: {csv_path}")
             return False
@@ -118,7 +123,8 @@ class TestSuiteManager:
             raise ValueError(f"Feature '{feature}' not found in configuration")
         
         csv_file = config.get('csv_file')
-        csv_path = self.base_dir / csv_file
+        # CSV paths are relative to test_suites_dir
+        csv_path = self.test_suites_dir / csv_file
         
         if not csv_path.exists():
             raise FileNotFoundError(f"CSV file not found: {csv_path}")
@@ -181,7 +187,8 @@ class TestSuiteManager:
             return None
         
         csv_file = config.get('csv_file')
-        csv_path = self.base_dir / csv_file
+        # CSV paths are relative to test_suites_dir
+        csv_path = self.test_suites_dir / csv_file
         
         if not csv_path.exists():
             print(f"Error: CSV file not found: {csv_path}")
@@ -207,7 +214,10 @@ class TestSuiteManager:
                 if test_index >= len(df):
                     print(f"Error: Test index {test_index} out of range (max: {len(df)-1})")
                     return None
-                df = df.iloc[[test_index]]
+                # Store original index before resetting
+                df = df.iloc[[test_index]].copy()
+                df['_original_test_index'] = test_index
+                df = df.reset_index(drop=True)
                 print(f"Running specific test at index {test_index}")
             
             # Run the tests
@@ -306,3 +316,84 @@ class TestSuiteManager:
             print(f"Removed test suite: {name}")
         else:
             print(f"Test suite '{name}' not found")
+    
+    def sync_test_index(self):
+        """Synchronize test suites in test-suites folder with test_suites.json"""
+        if not self.test_suites_dir.exists():
+            print(f"Error: test-suites directory not found: {self.test_suites_dir}")
+            return
+        
+        # Track changes
+        added_count = 0
+        removed_count = 0
+        updated_count = 0
+        
+        # Step 1: Scan test-suites folder for subdirectories
+        found_suites = {}
+        for item in self.test_suites_dir.iterdir():
+            # Skip files (like test_suites.json) and special directories
+            if item.is_dir() and item.name != "__pycache__" and item.name != "test_suites.json":
+                suite_name = item.name
+                csv_file = item / f"TestQuestions-{suite_name}.csv"
+                
+                if csv_file.exists():
+                    # Path relative to test_suites_dir
+                    csv_file_rel = f"{suite_name}/TestQuestions-{suite_name}.csv"
+                    found_suites[suite_name] = {
+                        'csv_file': csv_file_rel,
+                        'path': csv_file
+                    }
+        
+        # Step 2: Add missing suites from folder to JSON
+        for suite_name, suite_info in found_suites.items():
+            if suite_name not in self.config:
+                # Add new entry
+                self.config[suite_name] = {
+                    "csv_file": suite_info['csv_file'],
+                    "description": f"Tests for {suite_name}",
+                    "quick_mode_limit": 5
+                }
+                print(f"Added new test suite: {suite_name}")
+                added_count += 1
+            else:
+                # Verify path matches
+                expected_path = self.test_suites_dir / suite_info['csv_file']
+                current_path = self.test_suites_dir / self.config[suite_name].get('csv_file', '')
+                
+                if expected_path != current_path and expected_path.exists():
+                    # Update path if it's different but the expected path exists
+                    self.config[suite_name]['csv_file'] = suite_info['csv_file']
+                    print(f"Updated path for test suite: {suite_name}")
+                    updated_count += 1
+        
+        # Step 3: Check JSON entries for non-existent paths
+        suites_to_remove = []
+        for suite_name, suite_config in list(self.config.items()):
+            csv_file = suite_config.get('csv_file', '')
+            # CSV paths are relative to test_suites_dir
+            csv_path = self.test_suites_dir / csv_file
+            
+            if not csv_path.exists():
+                print(f"\nTest suite '{suite_name}' in JSON points to non-existent path: {csv_path}")
+                response = input("Remove this entry from test_suites.json? (y/n): ").strip().lower()
+                if response == 'y':
+                    suites_to_remove.append(suite_name)
+        
+        # Remove confirmed entries
+        for suite_name in suites_to_remove:
+            del self.config[suite_name]
+            print(f"Removed test suite entry: {suite_name}")
+            removed_count += 1
+        
+        # Step 4: Save updated config (already sorted by _save_config)
+        if added_count > 0 or removed_count > 0 or updated_count > 0:
+            self._save_config(self.config)
+            print(f"\nSync complete:")
+            if added_count > 0:
+                print(f"  Added {added_count} new test suite(s)")
+            if removed_count > 0:
+                print(f"  Removed {removed_count} test suite(s)")
+            if updated_count > 0:
+                print(f"  Updated {updated_count} test suite(s)")
+        else:
+            print("No changes needed - test suites are in sync")

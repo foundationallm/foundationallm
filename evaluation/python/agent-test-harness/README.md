@@ -109,6 +109,21 @@ python generate_tests.py --input seed-tests.csv --output edge-cases.csv --strate
 python generate_tests.py --input seed.csv --output test-suites/code-interpreter/TestQuestions-code-interpreter.csv --append
 ```
 
+### Custom Test-Suites Directory
+```powershell
+# Run tests from a custom test-suites directory
+python run_tests.py --test-suites-dir /path/to/custom-test-suites --suite who-are-you --agent MAA-02
+
+# List suites from a custom directory
+python run_tests.py --test-suites-dir /path/to/custom-test-suites --list-suites
+
+# Sync test suites in a custom directory
+python run_tests.py --test-suites-dir /path/to/custom-test-suites --sync-test-index
+
+# Validate CSV in a custom directory
+python run_tests.py --test-suites-dir /path/to/custom-test-suites --validate-csv who-are-you
+```
+
 ### Interactive Test Suite Creation
 ```powershell
 # Create a new test suite interactively
@@ -190,6 +205,9 @@ python run_tests.py --validate-csv who-are-you
 # Dry run (validate config)
 python run_tests.py --suite all --agent MAA-02 --dry-run
 
+# Use custom test-suites directory
+python run_tests.py --test-suites-dir /path/to/custom-test-suites --suite who-are-you --agent MAA-02
+
 # Generate HTML report from existing results
 python run_tests.py --report-from-results results/20251021_201101-MAA-02-code-interpreter-results.json
 
@@ -207,6 +225,7 @@ python run_tests.py --report-from-dir results/
 | `--suite` | Test suite to run | `who-are-you`, `code-interpreter`, `document-analysis`, `file-operations`, `routing`, `dataframe-tests`, `all` |
 | `--agent` | Single agent to test | `MAA-02`, `MAA-04`, `MAA-06`, etc. |
 | `--agents` | Multiple agents (comma-separated) | `MAA-02,MAA-04,MAA-06` |
+| `--test-suites-dir` | Path to custom test-suites directory | `--test-suites-dir /path/to/custom-test-suites` (default: `test-suites/` relative to script) |
 
 #### Execution Control
 | Parameter | Purpose | Values/Examples |
@@ -322,6 +341,7 @@ python generate_tests.py --input seed-tests.csv --output combinations.csv --stra
 | `--list-suites` | List all available test suites | `--list-suites` |
 | `--validate-csv` | Validate CSV format for a test suite | `--validate-csv who-are-you` |
 | `--dry-run` | Validate configuration without executing tests | `--dry-run` |
+| `--test-suites-dir` | Path to custom test-suites directory | `--test-suites-dir /path/to/custom-test-suites` |
 
 #### Test Suite Operations
 | Operation | Purpose | Command Example |
@@ -372,6 +392,19 @@ Test suites are configured in `test-suites/test_suites.json` with the following 
 }
 ```
 
+**Custom Test-Suites Directory:**
+You can specify a custom location for test suites using the `--test-suites-dir` parameter. This is useful for:
+- Using different test suites for different environments
+- Sharing test suites across multiple projects
+- Organizing test suites in a custom directory structure
+
+When using `--test-suites-dir`, the system expects:
+- A directory containing a `test_suites.json` configuration file (or it will create a default one)
+- Subdirectories for each test suite (e.g., `who-are-you/`, `code-interpreter/`)
+- CSV files following the naming pattern: `TestQuestions-{suite-name}.csv`
+
+**Note:** CSV file paths in `test_suites.json` should be relative to the test-suites directory (e.g., `who-are-you/TestQuestions-who-are-you.csv`), not absolute paths.
+
 #### Examples
 ```powershell
 # List all available test suites
@@ -385,6 +418,15 @@ python run_tests.py --suite who-are-you --agent MAA-02 --dry-run
 
 # Check if a suite exists and is properly configured
 python run_tests.py --suite who-are-you --agent MAA-02 --dry-run --verbose
+
+# Use a custom test-suites directory
+python run_tests.py --test-suites-dir /path/to/custom-test-suites --suite who-are-you --agent MAA-02
+
+# List suites from a custom directory
+python run_tests.py --test-suites-dir /path/to/custom-test-suites --list-suites
+
+# Sync test suites in a custom directory
+python run_tests.py --test-suites-dir /path/to/custom-test-suites --sync-test-index
 ```
 
 ## 📁 Test Data Structure

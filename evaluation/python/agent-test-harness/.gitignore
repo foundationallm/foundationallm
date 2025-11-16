@@ -1,3 +1,4 @@
+test-suites-private/
 uploads/*
 !uploads/sample_upload.txt
 .env*
