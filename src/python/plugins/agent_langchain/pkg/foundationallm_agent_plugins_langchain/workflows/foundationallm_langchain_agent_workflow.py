@@ -4,8 +4,17 @@ Description: FoundationaLLM agent workflow based on the built-in LangChain ReAct
 """
 
 import time
+from dataclasses import dataclass
 from typing import Dict, List, Optional
 from opentelemetry.trace import SpanKind
+
+from langchain_core.messages import (
+    AIMessage,
+    BaseMessage,
+    HumanMessage,
+    ToolMessage
+)
+from langchain.agents import create_agent
 
 from foundationallm.langchain.common import (
     FoundationaLLMWorkflowBase,
@@ -32,6 +41,10 @@ from foundationallm.models.orchestration import (
 )
 from foundationallm.operations import OperationsManager
 
+@dataclass
+class Context:
+    original_user_prompt: str
+    recursion_limit: int
 
 class FoundationaLLMLangChainAgentWorkflow(FoundationaLLMWorkflowBase):
     """
@@ -121,7 +134,51 @@ class FoundationaLLMLangChainAgentWorkflow(FoundationaLLMWorkflowBase):
         llm_prompt = user_prompt_rewrite or user_prompt
         workflow_main_prompt = self.create_workflow_main_prompt()
 
+        message_list = self.__get_message_list(
+            llm_prompt,
+            message_history,
+            objects
+        )
+
+        graph = create_agent(
+            model=self.workflow_llm,
+            tools=self.tools,
+            system_prompt=workflow_main_prompt,
+            context_schema=Context
+        )
+
+        # This is a port of the previous graph recursion limit handling
+        # TODO: Clarify if this still has an effect with the new LangGraph implementation
+        graph_recursion_limit = self.workflow_config.properties.get('graph_recursion_limit', None) if self.workflow_config.properties else None
+
+        response = await graph.ainvoke(
+            { "messages": message_list },
+            context=Context(
+                original_user_prompt=llm_prompt,
+                recursion_limit=graph_recursion_limit))
+
+        # TODO: process tool messages with analysis results AIMessage with content='' but has addition_kwargs={'tool_calls';[...]}
+
+        # Get ContentArtifact items from ToolMessages
+        tool_messages = [message for message in response["messages"] if isinstance(message, ToolMessage)]
+        for tool_message in tool_messages:
+            if tool_message.artifact is not None:
+                # if the tool message artifact is a list, check if it contains a ContentArtifact item
+                if isinstance(tool_message.artifact, list):
+                    for item in tool_message.artifact:
+                        if isinstance(item, ContentArtifact):
+                            content_artifacts.append(item)
+
+        final_message = response["messages"][-1]
+        response_content = OpenAITextMessageContentItem(
+            value = final_message.content,
+            agent_capability_category = AgentCapabilityCategories.FOUNDATIONALLM_KNOWLEDGE_MANAGEMENT
+        )
+
         workflow_end_time = time.time()
+        output_tokens = final_message.usage_metadata["output_tokens"] or 0
+        input_tokens = final_message.usage_metadata["input_tokens"] or 0
+
 
         workflow_content_artifact = self.create_workflow_execution_content_artifact(
                 llm_prompt,
@@ -130,22 +187,51 @@ class FoundationaLLMLangChainAgentWorkflow(FoundationaLLMWorkflowBase):
                 workflow_end_time - workflow_start_time)
         content_artifacts.append(workflow_content_artifact)
 
-        response_content = []
-        final_response_content = OpenAITextMessageContentItem(
-            value= 'Welcome to the LangChain Agent workflow',
-            agent_capability_category=AgentCapabilityCategories.FOUNDATIONALLM_KNOWLEDGE_MANAGEMENT
-        )
-        response_content.append(final_response_content)
-
         retvalue = CompletionResponse(
-                operation_id=operation_id,
-                content = response_content,
-                content_artifacts=content_artifacts,
-                user_prompt=llm_prompt,
-                full_prompt=workflow_main_prompt,
-                completion_tokens=output_tokens,
-                prompt_tokens=input_tokens,
-                total_tokens=output_tokens + input_tokens,
-                total_cost=0
-            )
+            operation_id=operation_id,
+            content = [response_content],
+            content_artifacts=content_artifacts,
+            user_prompt=llm_prompt,
+            full_prompt=workflow_main_prompt,
+            completion_tokens=output_tokens,
+            prompt_tokens=input_tokens,
+            total_tokens=output_tokens + input_tokens,
+            total_cost=0
+        )
         return retvalue
+
+    def __get_message_list(
+        self,
+        llm_prompt: str,
+        message_history: List[MessageHistoryItem],
+        objects: dict
+    ) -> List[BaseMessage]:
+        """
+        Returns the message history in the format required by the workflow.
+
+        Parameters
+        ----------
+        llm_prompt : str
+            The LLM prompt to be processed.
+        message_history : List[MessageHistoryItem]
+            The message history to be processed.
+        objects : dict
+            The exploded objects assigned from the agent. This is used to pass additional context to the workflow.
+        """
+
+        if objects is None:
+            objects = {}
+
+        # Convert message history to LangChain message types
+        messages = []
+        for message in message_history:
+            # Convert MessageHistoryItem to appropriate LangChain message type
+            if message.sender == "User":
+                messages.append(HumanMessage(content=message.text))
+            else:
+                messages.append(AIMessage(content=message.text))
+
+        return [
+            *messages,
+            HumanMessage(content=llm_prompt)
+        ]

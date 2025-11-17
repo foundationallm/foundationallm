@@ -35,9 +35,11 @@ from foundationallm.models.orchestration import (
     ContentArtifact,
     FileHistoryItem
 )
+from foundationallm.models.resource_providers.ai_models import AIModelBase
+from foundationallm.models.resource_providers.configuration import APIEndpointConfiguration
 from foundationallm.operations import OperationsManager
 from foundationallm.telemetry import Telemetry
-from foundationallm.utils import LoggingAsyncHttpClient
+from foundationallm.utils import LoggingAsyncHttpClient, ObjectUtils
 
 class FoundationaLLMWorkflowBase(ABC):
     """
@@ -224,3 +226,23 @@ class FoundationaLLMWorkflowBase(ABC):
             warning_message = 'No final prompt found in workflow configuration'
             self.logger.warning(warning_message)
             return None
+
+    def get_workflow_main_model_definition(
+        self
+    ) -> AIModelBase:
+        main_model_properties = self.workflow_config.get_resource_object_id_properties(
+            ResourceProviderNames.FOUNDATIONALLM_AIMODEL,
+            AIModelResourceTypeNames.AI_MODELS,
+            ResourceObjectIdPropertyNames.OBJECT_ROLE,
+            ResourceObjectIdPropertyValues.MAIN_MODEL
+        )
+        main_model_object_id = main_model_properties.object_id
+        ai_model = ObjectUtils.get_object_by_id(main_model_object_id, self.objects, AIModelBase)
+        return ai_model
+
+    def get_ai_model_api_endpoint_configuration(
+        self,
+        ai_model: AIModelBase
+    ) -> APIEndpointConfiguration:
+        api_endpoint = ObjectUtils.get_object_by_id(ai_model.endpoint_object_id, self.objects, APIEndpointConfiguration)
+        return api_endpoint

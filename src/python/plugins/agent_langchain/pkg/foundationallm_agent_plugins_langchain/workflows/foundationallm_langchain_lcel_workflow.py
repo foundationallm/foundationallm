@@ -5,17 +5,22 @@ Description: FoundationaLLM agent workflow based on LangChain LCEL.
 
 import time
 from typing import Dict, List, Optional
-from logging import Logger
-from opentelemetry.trace import Tracer, SpanKind
+from opentelemetry.trace import SpanKind
 
-from foundationallm.langchain.common import (
-    FoundationaLLMWorkflowBase,
-    FoundationaLLMToolBase
-)
+from langchain_classic.callbacks import get_openai_callback
+from langchain_core.output_parsers import StrOutputParser
+from langchain_core.prompts import PromptTemplate
+from langchain_core.runnables import RunnablePassthrough, RunnableLambda
+
 from foundationallm.config import (
     Configuration,
     UserIdentity
 )
+from foundationallm.langchain.common import (
+    FoundationaLLMWorkflowBase,
+    FoundationaLLMToolBase
+)
+from foundationallm.langchain.exceptions import LangChainException
 from foundationallm.models.agents import (
     GenericAgentWorkflow,
     AgentWorkflowBase
@@ -23,6 +28,7 @@ from foundationallm.models.agents import (
 from foundationallm.models.constants import (
     AgentCapabilityCategories
 )
+from foundationallm.models.language_models import LanguageModelProvider
 from foundationallm.models.messages import MessageHistoryItem
 from foundationallm.models.orchestration import (
     CompletionRequestObjectKeys,
@@ -122,7 +128,48 @@ class FoundationaLLMLangChainLCELWorkflow(FoundationaLLMWorkflowBase):
         llm_prompt = user_prompt_rewrite or user_prompt
         workflow_main_prompt = self.create_workflow_main_prompt()
 
+        # Get the prompt template.
+        prompt_template = self.__get_prompt_template(
+            workflow_main_prompt,
+            message_history
+        )
+
+        chain_context = { "context": RunnablePassthrough() }
+
+        # Compose LCEL chain
+        chain = (
+            chain_context
+            | prompt_template
+            | RunnableLambda(self.__record_full_prompt)
+            | self.workflow_llm
+        )
+
+        retvalue = None
+
+        ai_model = self.get_workflow_main_model_definition()
+        api_endpoint = self.get_ai_model_api_endpoint_configuration(ai_model)
+
+        if api_endpoint.provider == LanguageModelProvider.MICROSOFT or api_endpoint.provider == LanguageModelProvider.OPENAI:
+            # OpenAI compatible models
+            with get_openai_callback() as cb:
+                # add output parser to openai callback
+                chain = chain | StrOutputParser()
+                try:
+                    with self.tracer.start_as_current_span('langchain_invoke_lcel_chain', kind=SpanKind.SERVER):
+                        completion = await chain.ainvoke(llm_prompt)
+
+                except Exception as e:
+                    raise LangChainException(f"An unexpected exception occurred when executing the completion request: {str(e)}", 500)
+        else:
+            with self.tracer.start_as_current_span('langchain_invoke_lcel_chain', kind=SpanKind.SERVER):
+                completion = await chain.ainvoke(llm_prompt)
+
         workflow_end_time = time.time()
+
+        response_content = OpenAITextMessageContentItem(
+            value = completion.content,
+            agent_capability_category = AgentCapabilityCategories.FOUNDATIONALLM_KNOWLEDGE_MANAGEMENT
+        )
 
         workflow_content_artifact = self.create_workflow_execution_content_artifact(
                 llm_prompt,
@@ -131,22 +178,78 @@ class FoundationaLLMLangChainLCELWorkflow(FoundationaLLMWorkflowBase):
                 workflow_end_time - workflow_start_time)
         content_artifacts.append(workflow_content_artifact)
 
-        response_content = []
-        final_response_content = OpenAITextMessageContentItem(
-            value= 'Welcome to the LangChain LCEL workflow',
-            agent_capability_category=AgentCapabilityCategories.FOUNDATIONALLM_KNOWLEDGE_MANAGEMENT
-        )
-        response_content.append(final_response_content)
-
         retvalue = CompletionResponse(
                 operation_id=operation_id,
-                content = response_content,
+                content = [response_content],
                 content_artifacts=content_artifacts,
                 user_prompt=llm_prompt,
-                full_prompt=workflow_main_prompt,
-                completion_tokens=output_tokens,
-                prompt_tokens=input_tokens,
-                total_tokens=output_tokens + input_tokens,
+                full_prompt=self.full_prompt.text,
+                completion_tokens = completion.usage_metadata["output_tokens"],
+                prompt_tokens = completion.usage_metadata["input_tokens"],
+                total_tokens = completion.usage_metadata["total_tokens"],
                 total_cost=0
             )
         return retvalue
+
+    def __build_conversation_history(
+        self,
+        messages:List[MessageHistoryItem]=None
+    ) -> str:
+        """
+        Builds a chat history string from a list of MessageHistoryItem objects to
+        be added to the prompt for the completion request.
+
+        Parameters
+        ----------
+        messages : List[MessageHistoryItem]
+            The list of messages from which to build the chat history.
+        message_count : int
+            The number of messages to include in the chat history.
+        """
+        if messages is None or len(messages)==0:
+            return ""
+        chat_history = "Chat History:\n"
+        for msg in messages:
+            chat_history += msg.sender + ": " + msg.text + "\n"
+        chat_history += "\n\n"
+        return chat_history
+
+    def __get_prompt_template(
+        self,
+        prompt: str,
+        message_history: List[MessageHistoryItem]
+    ) -> PromptTemplate:
+        """
+        Build a prompt template.
+        """
+        prompt_builder = ''
+
+        # Add the prefix, if it exists.
+        if prompt.prefix is not None:
+            prompt_builder = f'{prompt.prefix}\n\n'
+
+        # Add the message history, if it exists.
+        prompt_builder += self.__build_conversation_history(message_history)
+
+        # Insert the context into the template.
+        prompt_builder += '{context}'
+
+        # Create the prompt template.
+        return PromptTemplate.from_template(prompt_builder)
+
+    def __record_full_prompt(self, prompt: str) -> str:
+        """
+        Records the full prompt for the completion request.
+
+        Parameters
+        ----------
+        prompt : str
+            The prompt that is populated with context.
+
+        Returns
+        -------
+        str
+            Returns the full prompt.
+        """
+        self.full_prompt = prompt
+        return prompt
