@@ -158,37 +158,70 @@ class FoundationaLLMLangChainLCELWorkflow(FoundationaLLMWorkflowBase):
                     with self.tracer.start_as_current_span('langchain_invoke_lcel_chain', kind=SpanKind.SERVER):
                         completion = await chain.ainvoke(llm_prompt)
 
+                    workflow_end_time = time.time()
+
+                    response_content = OpenAITextMessageContentItem(
+                        value = completion,
+                        agent_capability_category = AgentCapabilityCategories.FOUNDATIONALLM_KNOWLEDGE_MANAGEMENT
+                    )
+
+                    output_tokens = cb.completion_tokens
+                    input_tokens = cb.prompt_tokens
+
+                    workflow_content_artifact = self.create_workflow_execution_content_artifact(
+                            llm_prompt,
+                            input_tokens,
+                            output_tokens,
+                            workflow_end_time - workflow_start_time)
+                    content_artifacts.append(workflow_content_artifact)
+
+                    retvalue = CompletionResponse(
+                            operation_id=operation_id,
+                            content = [response_content],
+                            content_artifacts=content_artifacts,
+                            user_prompt=llm_prompt,
+                            full_prompt=self.full_prompt.text,
+                            completion_tokens = output_tokens,
+                            prompt_tokens = input_tokens,
+                            total_tokens = input_tokens + output_tokens,
+                            total_cost = cb.total_cost
+                        )
+
                 except Exception as e:
                     raise LangChainException(f"An unexpected exception occurred when executing the completion request: {str(e)}", 500)
         else:
             with self.tracer.start_as_current_span('langchain_invoke_lcel_chain', kind=SpanKind.SERVER):
                 completion = await chain.ainvoke(llm_prompt)
 
-        workflow_end_time = time.time()
+            workflow_end_time = time.time()
 
-        response_content = OpenAITextMessageContentItem(
-            value = completion.content,
-            agent_capability_category = AgentCapabilityCategories.FOUNDATIONALLM_KNOWLEDGE_MANAGEMENT
-        )
-
-        workflow_content_artifact = self.create_workflow_execution_content_artifact(
-                llm_prompt,
-                input_tokens,
-                output_tokens,
-                workflow_end_time - workflow_start_time)
-        content_artifacts.append(workflow_content_artifact)
-
-        retvalue = CompletionResponse(
-                operation_id=operation_id,
-                content = [response_content],
-                content_artifacts=content_artifacts,
-                user_prompt=llm_prompt,
-                full_prompt=self.full_prompt.text,
-                completion_tokens = completion.usage_metadata["output_tokens"],
-                prompt_tokens = completion.usage_metadata["input_tokens"],
-                total_tokens = completion.usage_metadata["total_tokens"],
-                total_cost=0
+            response_content = OpenAITextMessageContentItem(
+                value = completion.content,
+                agent_capability_category = AgentCapabilityCategories.FOUNDATIONALLM_KNOWLEDGE_MANAGEMENT
             )
+
+            output_tokens = completion.usage_metadata["output_tokens"]
+            input_tokens = completion.usage_metadata["input_tokens"]
+
+            workflow_content_artifact = self.create_workflow_execution_content_artifact(
+                    llm_prompt,
+                    input_tokens,
+                    output_tokens,
+                    workflow_end_time - workflow_start_time)
+            content_artifacts.append(workflow_content_artifact)
+
+            retvalue = CompletionResponse(
+                    operation_id=operation_id,
+                    content = [response_content],
+                    content_artifacts=content_artifacts,
+                    user_prompt=llm_prompt,
+                    full_prompt=self.full_prompt.text,
+                    completion_tokens = output_tokens,
+                    prompt_tokens = input_tokens,
+                    total_tokens = input_tokens + output_tokens,
+                    total_cost=0
+                )
+
         return retvalue
 
     def __build_conversation_history(
@@ -222,11 +255,8 @@ class FoundationaLLMLangChainLCELWorkflow(FoundationaLLMWorkflowBase):
         """
         Build a prompt template.
         """
-        prompt_builder = ''
 
-        # Add the prefix, if it exists.
-        if prompt.prefix is not None:
-            prompt_builder = f'{prompt.prefix}\n\n'
+        prompt_builder = f'{prompt}\n\n'
 
         # Add the message history, if it exists.
         prompt_builder += self.__build_conversation_history(message_history)
