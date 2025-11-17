@@ -98,6 +98,8 @@ The following configuration values are obsolete and must be removed:
 
 All User Portal users must have read permission on the `/instances/<instance_id_>/providers/FoundationaLLM.Configuration/appConfigurationSets/UserPortal` scope.
 
+`AllAgentsVirtualSecurityGroup` (`5bb493a2-5909-4771-93ba-d83b7b5a1de9`) must have read permission on the `/instances/<instance_id_>/providers/FoundationaLLM.Configuration/appConfigurationSets/UserPortal` scope.
+
 All Management Portal users must have read permissions on the `/instances/<instance_id_>/providers/FoundationaLLM.Configuration/appConfigurationSets/ManagementPortal` scope.
 
 ## Starting from 0.9.7-rc365
