@@ -341,17 +341,7 @@
 				if (!this.$appStore.getSessionAgent(this.currentSession) && this.currentSession) {
 					let selectedAgent = null;
 
-					if (nonFeaturedAgents.length > 0 && enabledAgentIds.length > 0) {
-						const profileOtherAgents = nonFeaturedAgents.filter(agent =>
-							enabledAgentIds.some(agentId => agentId == agent.value.resource.object_id)
-						);
-
-						if (profileOtherAgents.length > 0) {
-							selectedAgent = profileOtherAgents[0];
-						}
-					}
-
-					if (!selectedAgent && featuredAgents.length > 0) {
+					if (featuredAgents.length > 0) {
 						selectedAgent = featuredAgents[0];
 					}
 

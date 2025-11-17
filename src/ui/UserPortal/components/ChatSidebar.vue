@@ -291,15 +291,15 @@
 											class="custom-checkbox"
 											:class="{
 												'checked': getAgents.enabled,
-												'disabled': isCurrentAgent(getAgents) && getAgents.enabled
+												'disabled': preventDisable(getAgents)
 											}"
-											@click="isCurrentAgent(getAgents) && getAgents.enabled ? null : toggleAgentStatus(getAgents)"
+											@click="preventDisable(getAgents) ? null : toggleAgentStatus(getAgents)"
 											:aria-label="`Toggle agent status - ${getAgents.enabled ? 'enabled' : 'disabled'}${getAgents.isFeatured ? ' (featured agent)' : ''}`"
 											role="checkbox"
 											:aria-checked="getAgents.enabled"
-											:tabindex="isCurrentAgent(getAgents) && getAgents.enabled ? -1 : 0"
-											@keydown.enter="isCurrentAgent(getAgents) && getAgents.enabled ? null : toggleAgentStatus(getAgents)"
-											@keydown.space.prevent="isCurrentAgent(getAgents) && getAgents.enabled ? null : toggleAgentStatus(getAgents)"
+											:tabindex="preventDisable(getAgents) ? -1 : 0"
+											@keydown.enter="preventDisable(getAgents) ? null : toggleAgentStatus(getAgents)"
+											@keydown.space.prevent="preventDisable(getAgents) ? null : toggleAgentStatus(getAgents)"
 										>
 											<i v-if="getAgents.enabled" class="pi pi-check"></i>
 										</div>
@@ -660,59 +660,59 @@ import { useAuthStore } from '@/stores/authStore';
 				}
 			},
 
-		async handleAddSession() {
-			if (this.createProcessing) return;
+			async handleAddSession() {
+				if (this.createProcessing) return;
 
-			if (this.debounceTimeout) {
-				(this.$appStore as any).addToast({
-					severity: 'warn',
-					summary: 'Warning',
-					detail: 'Please wait before creating another session.',
-					life: 3000,
-				});
-				return;
-			}
+				if (this.debounceTimeout) {
+					(this.$appStore as any).addToast({
+						severity: 'warn',
+						summary: 'Warning',
+						detail: 'Please wait before creating another session.',
+						life: 3000,
+					});
+					return;
+				}
 
-			this.createProcessing = true;
+				this.createProcessing = true;
 
-			try {
-			const currentAgent = this.currentSession ? (this.$appStore as any).getSessionAgent(this.currentSession) : null;
-				const mostRecentSession = this.sessions[0];
-				if (mostRecentSession) {
-					const isEmptySession = await (this.$appStore as any).isSessionEmpty(mostRecentSession.sessionId);
-					if (isEmptySession) {
-						const timestamp = (this.$appStore as any).getDefaultChatSessionProperties().name;
-						await (this.$appStore as any).updateConversation(mostRecentSession, timestamp, mostRecentSession.metadata || '');
-						if (currentAgent) {
-							(this.$appStore as any).setSessionAgent(mostRecentSession, currentAgent, true);
+				try {
+				const currentAgent = this.currentSession ? (this.$appStore as any).getSessionAgent(this.currentSession) : null;
+					const mostRecentSession = this.sessions[0];
+					if (mostRecentSession) {
+						const isEmptySession = await (this.$appStore as any).isSessionEmpty(mostRecentSession.sessionId);
+						if (isEmptySession) {
+							const timestamp = (this.$appStore as any).getDefaultChatSessionProperties().name;
+							await (this.$appStore as any).updateConversation(mostRecentSession, timestamp, mostRecentSession.metadata || '');
+							if (currentAgent) {
+								(this.$appStore as any).setSessionAgent(mostRecentSession, currentAgent, true);
+							}
+							this.handleSessionSelected(mostRecentSession);
+							this.debounceTimeout = setTimeout(() => {
+								this.debounceTimeout = null;
+							}, 2000);
+							return;
 						}
-						this.handleSessionSelected(mostRecentSession);
-						this.debounceTimeout = setTimeout(() => {
-							this.debounceTimeout = null;
-						}, 2000);
-						return;
 					}
-				}
-				const newSession = await (this.$appStore as any).addSession();
-				if (currentAgent) {
-					(this.$appStore as any).setSessionAgent(newSession, currentAgent, true);
-				}
-				this.handleSessionSelected(newSession);
+					const newSession = await (this.$appStore as any).addSession();
+					if (currentAgent) {
+						(this.$appStore as any).setSessionAgent(newSession, currentAgent, true);
+					}
+					this.handleSessionSelected(newSession);
 
-				this.debounceTimeout = setTimeout(() => {
-					this.debounceTimeout = null;
-				}, 2000);
-			} catch (error) {
-				(this.$appStore as any).addToast({
-					severity: 'error',
-					summary: 'Error',
-					detail: 'Could not create a new session. Please try again.',
-					life: 5000,
-				});
-			} finally {
-				this.createProcessing = false; // Re-enable the button
-			}
-		},
+					this.debounceTimeout = setTimeout(() => {
+						this.debounceTimeout = null;
+					}, 2000);
+				} catch (error) {
+					(this.$appStore as any).addToast({
+						severity: 'error',
+						summary: 'Error',
+						detail: 'Could not create a new session. Please try again.',
+						life: 5000,
+					});
+				} finally {
+					this.createProcessing = false; // Re-enable the button
+				}
+			},
 
 			handleUpdateConversation() {
 				let metadataJson = this.newConversationMetadata;
@@ -825,6 +825,7 @@ import { useAuthStore } from '@/stores/authStore';
 
 						// Check if this agent is a featured agent (by name, as per memory: resource names are reliable identifiers)
 						const isFeaturedAgent = this.featuredAgentNames.includes(agent.name);
+						const isFirstFeaturedAgent = this.featuredAgentNames.length > 0 && agent.name === this.featuredAgentNames[0];
 
 						return {
 							object_id: agent.object_id,
@@ -837,6 +838,7 @@ import { useAuthStore } from '@/stores/authStore';
 							enabled: isAgentSelected,
 							isReadonly: isAgentReadonly(ResourceProviderGetResult.roles || []),
 							isFeatured: isFeaturedAgent, // Add featured flag for UI logic
+							isFirstFeatured: isFirstFeaturedAgent
 						};
 					});
 				} catch (error) {
@@ -859,6 +861,12 @@ import { useAuthStore } from '@/stores/authStore';
 				return currentAgent.resource?.object_id === agent.object_id;
 			},
 
+			preventDisable(agent: AgentOption): boolean {
+				// Prevent disabling if it's the current agent in use
+				return agent.enabled
+					&& (this.isCurrentAgent(agent) || agent.isFirstFeatured);
+			},
+
 			selectAgent(getAgents: AgentOption) {
 				this.$emit('agent-selected', getAgents);
 			},
@@ -866,7 +874,7 @@ import { useAuthStore } from '@/stores/authStore';
 			async toggleAgentStatus(agent: AgentOption) {
 
 				// Prevent disabling the current conversation's agent
-				if (this.isCurrentAgent(agent) && agent.enabled) {
+				if (this.preventDisable(agent)) {
 					(this.$appStore as any).addToast({
 						severity: 'warn',
 						life: 5000,
