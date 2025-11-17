@@ -1,9 +1,30 @@
 test-suites-private/
+*.csv
 uploads/*
+!uploads/archive.zip
+!uploads/Biden-SOTU.doc
+!uploads/cat_selfie.jpg
+!uploads/JAVA File.JAVA
+!uploads/JPEG File.jpeg
+!uploads/JS File.js
+!uploads/JSON File.json
+!uploads/Large PNG.png
+!uploads/MD File.md
+!uploads/money.pptx
+!uploads/one-pager.docx
+!uploads/PHP File.php
+!uploads/PNG File.png
+!uploads/Price Data.csv
+!uploads/RB File.RB
+!uploads/read.c
+!uploads/Sample_10k_Income.csv
+!uploads/Sample_10k_Income.xlsx
+!uploads/sample_library.xml
 !uploads/sample_upload.txt
+!uploads/TS File.ts
+!uploads/Zillow_Transactions_New.xlsx
 .env*
 .venv/
-*.csv
 test_results.json
 test_results*
 old_test_results*
