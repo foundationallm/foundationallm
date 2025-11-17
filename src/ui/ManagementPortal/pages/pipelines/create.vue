@@ -182,14 +182,21 @@
 					<div
 						v-for="(stage, index) in selectedStagePlugins"
 						:key="index"
-						class="stage-item"
+						class="stage-wrapper"
+						:class="{ 'stage-wrapper--root': index === 0 }"
+						:style="getStageWrapperStyle(index)"
 						draggable="true"
 						@dragstart="handleDragStart(index)"
 						@dragover.prevent
 						@drop="handleDrop(index)"
 					>
+				<div v-if="index > 0" class="stage-connector">
+					<span class="stage-connector__dot"></span>
+				</div>
+				<div class="stage-item">
 						<div class="stage-header">
-							<div class="mb-2">
+							<div class="stage-header__titles">
+							<div class="stage-name">
 								<label>Stage Name:</label>
 								<InputText
 									v-model="stage.name"
@@ -197,11 +204,15 @@
 									@input="handleStageNameInput($event, index)"
 								/>
 							</div>
-							<Button icon="pi pi-trash" severity="danger" @click="stageToDelete = index" />
+						</div>
+						<div class="stage-header__actions">
+							<Button icon="pi pi-trash" severity="danger"
+								class="stage-action-button stage-action-button--danger" @click="stageToDelete = index" />
 							<Button
-								:icon="stage.collapsed ? 'pi pi-chevron-down' : 'pi pi-chevron-up'"
+								:icon="stage.collapsed ? 'pi pi-chevron-down' : 'pi pi-chevron-up'" class="stage-action-button"
 								@click="toggleStageCollapse(index)"
 							/>
+						</div>
 						</div>
 						<div v-if="!stage.collapsed" class="stage-content">
 							<div class="mb-2">
@@ -228,7 +239,7 @@
 									class="parameter-item"
 								>
 									<label>{{ param.parameter_metadata.name }}:</label>
-									<div style="font-size: 12px; color: #666">
+									<div class="parameter-description">
 										{{ param.parameter_metadata.description }}
 									</div>
 									<template
@@ -338,7 +349,7 @@
 										class="parameter-item"
 									>
 										<label>{{ param.parameter_metadata.name }}:</label>
-										<div style="font-size: 12px; color: #666">
+										<div class="parameter-description">
 											{{ param.parameter_metadata.description }}
 										</div>
 										<template
@@ -381,7 +392,8 @@
 							</div>
 						</div>
 					</div>
-					<Button label="Add Stage" icon="pi pi-plus" @click="addStage" />
+				</div>
+				<Button label="Add Stage" icon="pi pi-plus" class="add-stage-button" @click="addStage" />
 				</div>
 			</div>
 
@@ -1245,6 +1257,12 @@ export default {
 			this.selectedStagePlugins[index].collapsed = !this.selectedStagePlugins[index].collapsed;
 		},
 
+		getStageWrapperStyle(index: number) {
+			return {
+				'--indent': index.toString(),
+			};
+		},
+
 		handleTriggerNameChange(triggerIndex: number) {
 			const previousName = this.previousTriggerNames[triggerIndex];
 			const newName = this.pipeline.triggers[triggerIndex].name;
@@ -1323,30 +1341,135 @@ input {
 .stages-container {
 	display: flex;
 	flex-direction: column;
-	gap: 16px;
+	gap: 20px;
+}
+
+.stage-wrapper {
+	position: relative;
+	--indent: 0;
+	padding-left: calc(var(--indent) * 32px);
+}
+
+.stage-wrapper--root {
+	padding-left: 0;
 }
 
 .stage-item {
-	border: 1px solid #e1e1e1;
-	padding: 16px;
-	border-radius: 4px;
+	position: relative;
+	padding: 20px;
+	border-radius: 16px;
+	border: 1px solid #d7ddff;
+	width: calc(100% - var(--indent) * 32px);
+	max-width: 100%;
+	backdrop-filter: blur(6px);
+}
+
+.stage-connector {
+	position: absolute;
+	top: -12px;
+	bottom: -12px;
+	left: calc(var(--indent) * 32px - 18px);
+	width: 18px;
+	pointer-events: none;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.stage-wrapper--root .stage-connector {
+	display: none;
+}
+
+.stage-connector::before {
+	content: '';
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 50%;
+	width: 2px;
+	transform: translateX(-50%);
+	background: linear-gradient(180deg, rgba(76, 99, 255, 0.3) 0%, rgba(76, 99, 255, 0.75) 100%);
+	border-radius: 999px;
+}
+
+.stage-connector__dot {
+	position: absolute;
+	bottom: -6px;
+	left: 50%;
+	transform: translate(-50%, 50%);
+	width: 12px;
+	height: 12px;
+	border-radius: 50%;
+	background: #4c63ff;
+}
+
+.stage-header {
+	display: flex;
+	align-items: flex-start;
+	justify-content: space-between;
+	gap: 16px;
+	margin-bottom: 16px;
+}
+
+.stage-header__titles {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+	flex: 1;
+}
+
+.stage-header__actions {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+}
+
+.stage-order {
+	display: inline-flex;
+	align-items: center;
+	align-self: flex-start;
+	padding: 4px 12px;
+	border-radius: 999px;
+	background: rgba(76, 99, 255, 0.12);
+	color: #3f4cff;
+	font-size: 12px;
+	font-weight: 600;
+	letter-spacing: 0.02em;
+	text-transform: uppercase;
+}
+
+.stage-name label {
+	font-weight: 600;
+	color: #222;
+}
+
+.stage-content {
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+	margin-top: 8px;
+	padding-top: 16px;
+	border-top: 1px solid rgba(76, 99, 255, 0.12);
+}
+
+.parameter-item {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+	border-radius: 12px;
+	padding: 12px;
+}
+
+.parameter-description {
+	font-size: 12px;
+	color: #6b7280;
+	line-height: 1.4;
 }
 
 .trigger-item {
 	border: 1px solid #e1e1e1;
 	padding: 16px;
 	border-radius: 4px;
-}
-
-.stage-header {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	margin-bottom: 16px;
-
-	h3 {
-		margin: 0;
-	}
 }
 
 .trigger-header {
@@ -1356,22 +1479,13 @@ input {
 	margin-bottom: 16px;
 }
 
-.stage-content {
-	display: flex;
-	flex-direction: column;
-	gap: 8px;
-}
-
-.parameter-item {
-	display: flex;
-	flex-direction: column;
-	gap: 4px;
-	margin-bottom: 8px;
-}
-
 .trigger-container {
 	display: flex;
 	flex-direction: column;
 	gap: 8px;
+}
+
+.add-stage-button {
+	margin-top:30px;
 }
 </style>
