@@ -40,7 +40,7 @@
             "request": "launch",
             "program": "${workspaceFolder}/src/python/plugins/agent_core/test/foundationallm_function_calling_workflow/test_workflow_zst.py",
             "console": "integratedTerminal",
-            "python": "${workspaceFolder}/src/python/FoundationaLLMAgentPlugins/.venv/Scripts/python.exe",
+            "python": "${workspaceFolder}/src/python/plugins/agent_core/.venv/Scripts/python.exe",
             "cwd" : "${workspaceFolder}/src/python/plugins/agent_core/pkg",
             "justMyCode": false,
             "env" : {

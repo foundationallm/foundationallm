@@ -8,7 +8,7 @@ import sys
 import uuid
 from pathlib import Path
 
-#ys.path.append('src')
+sys.path.append('pkg')
 #repo_root = Path(__file__).resolve().parents[6]  # C:\Repos\foundationallm
 #sys.path.append(str(repo_root / "src" / "python" / "plugins" / "agent_core" / "pkg"))
 from foundationallm.operations.operations_manager import OperationsManager
@@ -66,7 +66,7 @@ user_identity_json = {
     "user_id": "4a0cc1d0-b7e9-4db8-883b-e72192f40602",
     "group_ids": []}
 
-full_request_json_file_name = 'full_request.json' # full original langchain request, contains agent, tools, exploded objects
+full_request_json_file_name = 'test/full_request.json' # full original langchain request, contains agent, tools, exploded objects
 
 user_identity = UserIdentity.from_json(user_identity_json)
 config = Configuration()
