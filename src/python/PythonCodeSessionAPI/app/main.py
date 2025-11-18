@@ -10,6 +10,7 @@ import mimetypes
 import os
 import shutil
 import sys
+from utils import ExtendedJSONEncoder
 
 from fastapi import (
     FastAPI,
@@ -124,10 +125,10 @@ async def execute_code(request_body: dict):
             except Exception:
                 # If pandas is not available or any import/runtime error occurs, leave results as-is
                 pass
-
+        serialized_results = get_json_serializable_dict(results)
         return {
             'detail':{
-                'results': get_json_serializable_dict(results),
+                'results': serialized_results,
                 'output': standard_output,
                 'error': standard_error
             }
@@ -275,8 +276,8 @@ def get_json_serializable_dict(d: dict) -> dict:
     result = {}
     for key, value in d.items():
         try:
-            json.dumps(value)
-            result[key] = value
+            str_value = json.dumps(value, cls=ExtendedJSONEncoder)
+            result[key] = str_value
         except (TypeError, OverflowError):
             pass
     return result
