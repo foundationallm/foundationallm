@@ -35,19 +35,12 @@ namespace FoundationaLLM.DataPipeline.Clients
             ILogger<RemoteDataPipelineServiceClient> logger)
         {
             _instanceSettings = instanceOptions.Value;
-            _httpClientTask = CreateHttpClient(
+            _httpClientTask = httpClientFactoryService.CreateClient(
                 _instanceSettings.Id,
-                httpClientFactoryService);
-            _logger = logger;
-        }
-
-        private static async Task<HttpClient> CreateHttpClient(
-            string instanceId,
-            IHttpClientFactoryService httpClientFactory) =>
-           await httpClientFactory.CreateClient(
-                instanceId,
                 HttpClientNames.DataPipelineAPI,
                 ServiceContext.ServiceIdentity!);
+            _logger = logger;
+        }
 
         /// <inheritdoc/>
         public IEnumerable<IResourceProviderService> ResourceProviders { set { } }
