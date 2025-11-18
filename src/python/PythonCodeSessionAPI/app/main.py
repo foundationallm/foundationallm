@@ -103,10 +103,13 @@ async def execute_code(request_body: dict):
                         try:
                             value.to_csv(file_path, index=False)
                             # Replace DataFrame with a serializable summary
+                            preview_df = value.head(10).reset_index()
+                            preview_df.rename(columns={"index": ""}, inplace=True)  # optional, nicer heading
+                            preview = preview_df.to_dict(orient="records")
                             results[key] = {
                                 "type": "dataframe",
                                 "details": "The dataframe has been saved to a CSV file. A preview of the first ten rows of data has been generated. To view all the data, examine the CSV file that was returned.",
-                                "preview": value.head(10).to_dict(orient="records")
+                                "preview": preview
                             }
                         except Exception:
                             # If writing fails, fall back to dropping the value (non-serializable)
