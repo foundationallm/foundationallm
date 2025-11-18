@@ -1,7 +1,8 @@
 ﻿using System.Text.Json;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
-using Microsoft.OpenApi.Models;
+using Microsoft.OpenApi;
+using Microsoft.OpenApi.Reader;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace FoundationaLLM.Common.OpenAPI
@@ -56,10 +57,10 @@ namespace FoundationaLLM.Common.OpenAPI
                 {
                     // REF: https://github.com/Microsoft/aspnet-api-versioning/issues/429#issuecomment-605402330
                     var json = JsonSerializer.Serialize(description.DefaultValue, modelMetadata.ModelType);
-                    parameter.Schema.Default = OpenApiAnyFactory.CreateFromJson(json);
+                    //parameter.Schema.Default = OpenApiAnyFactory.CreateFromJson(json);
                 }
 
-                parameter.Required |= description.IsRequired;
+                //parameter.Required |= description.IsRequired;
             }
         }
     }

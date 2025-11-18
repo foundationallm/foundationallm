@@ -305,7 +305,7 @@ namespace FoundationaLLM.DataPipelineEngine.Services
 
                 var result = await artifactsPaths
                     .ToAsyncEnumerable()
-                    .SelectAwait(async path =>
+                    .Select(async (string path, CancellationToken ct) =>
                     {
                         var fileContent = await _storageService.ReadFileAsync(
                             dataPipelineRun.InstanceId,
@@ -389,7 +389,7 @@ namespace FoundationaLLM.DataPipelineEngine.Services
 
             var result = await artifactsPaths
                 .ToAsyncEnumerable()
-                .SelectAwait(async path =>
+                .Select(async (string path, CancellationToken ct) =>
                 {
                     var fileContent = await _storageService.ReadFileAsync(
                         dataPipelineRun.InstanceId,

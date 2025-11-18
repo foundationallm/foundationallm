@@ -398,7 +398,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
 
             var legacyAttachments = legacyAttachmentObjectIds
                 .ToAsyncEnumerable()
-                .SelectAwait(async x => await _attachmentResourceProvider.GetResourceAsync<AttachmentFile>(x, _callContext.CurrentUserIdentity!));
+                .Select(async (string x, CancellationToken ct) => await _attachmentResourceProvider.GetResourceAsync<AttachmentFile>(x, _callContext.CurrentUserIdentity!));
             
             await foreach (var attachment in legacyAttachments)
             {
@@ -538,7 +538,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
 
             var contextAttachmentResponses = contextAttachmentObjectIds
                 .ToAsyncEnumerable()
-                .SelectAwait(async x => await _contextServiceClient.GetFileRecord(_instanceId, x));
+                .Select(async (string x, CancellationToken ct) => await _contextServiceClient.GetFileRecord(_instanceId, x));
             await foreach(var contextFileResponse in contextAttachmentResponses)
             {
                 if (contextFileResponse.Success)

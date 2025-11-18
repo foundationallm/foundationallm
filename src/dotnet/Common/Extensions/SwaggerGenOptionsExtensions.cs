@@ -1,6 +1,6 @@
 ﻿using FoundationaLLM.Common.Constants;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.OpenApi.Models;
+using Microsoft.OpenApi;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace FoundationaLLM.Common.Extensions
@@ -25,19 +25,8 @@ namespace FoundationaLLM.Common.Extensions
                 Scheme = Swagger.SecuritySchemeName
             });
 
-            options.AddSecurityRequirement(new OpenApiSecurityRequirement {
-                {
-                    new OpenApiSecurityScheme()
-                    {
-                        Reference = new OpenApiReference
-                        {
-                            Type = ReferenceType.SecurityScheme,
-                            Id = Swagger.SecuritySchemeReferenceId
-                        },
-                        In = ParameterLocation.Header
-                    },
-                    new List<string>()
-                }
+            options.AddSecurityRequirement(document => new OpenApiSecurityRequirement {
+                [new OpenApiSecuritySchemeReference("ApiKey", document)] = []
             });
         }
     }

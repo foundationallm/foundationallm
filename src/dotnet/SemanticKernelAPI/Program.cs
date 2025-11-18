@@ -12,6 +12,7 @@ using FoundationaLLM.Common.OpenAPI;
 using FoundationaLLM.Common.Services.Security;
 using FoundationaLLM.Common.Validation;
 using Microsoft.Extensions.Options;
+using Microsoft.OpenApi;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace FoundationaLLM.SemanticKernel.API
@@ -161,7 +162,7 @@ namespace FoundationaLLM.SemanticKernel.API
             app.UseExceptionHandler();
 
             // Configure the HTTP request pipeline.
-            app.UseSwagger(p => p.SerializeAsV2 = true);
+            app.UseSwagger(options => options.OpenApiVersion = OpenApiSpecVersion.OpenApi2_0);
             app.UseSwaggerUI(
                 options =>
                 {
