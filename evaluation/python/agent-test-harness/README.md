@@ -107,9 +107,19 @@ python generate_tests.py --input seed-tests.csv --output edge-cases.csv --strate
 
 # Append to existing suite
 python generate_tests.py --input seed.csv --output test-suites/code-interpreter/TestQuestions-code-interpreter.csv --append
+
+# Create test suite in custom directory
+python generate_tests.py --test-suites-dir /path/to/custom-test-suites --interactive --suite-name my-custom-tests
+
+# Add tests to existing suite in custom directory
+python generate_tests.py --test-suites-dir /path/to/custom-test-suites --interactive --existing-suite code-interpreter
 ```
 
 ### Custom Test-Suites Directory
+
+The `--test-suites-dir` switch allows you to maintain test suites in directories outside the repository (e.g., for local-only test suites that shouldn't be checked into source control). When not provided, the default `test-suites/` directory (relative to the script) is used.
+
+#### Using with run_tests.py
 ```powershell
 # Run tests from a custom test-suites directory
 python run_tests.py --test-suites-dir /path/to/custom-test-suites --suite who-are-you --agent MAA-02
@@ -123,6 +133,17 @@ python run_tests.py --test-suites-dir /path/to/custom-test-suites --sync-test-in
 # Validate CSV in a custom directory
 python run_tests.py --test-suites-dir /path/to/custom-test-suites --validate-csv who-are-you
 ```
+
+#### Using with generate_tests.py
+```powershell
+# Create a new test suite in a custom directory
+python generate_tests.py --test-suites-dir /path/to/custom-test-suites --interactive --suite-name my-local-tests
+
+# Add tests to an existing suite in a custom directory
+python generate_tests.py --test-suites-dir /path/to/custom-test-suites --interactive --existing-suite code-interpreter
+```
+
+**Note:** The custom directory must exist and contain a `test_suites.json` file (or one will be created when you add your first suite). All suite CSV files and the configuration file will be created relative to the specified directory.
 
 ### Interactive Test Suite Creation
 ```powershell
@@ -275,6 +296,7 @@ python run_tests.py --report-from-results results/20251021_220653-MAA-02-datafra
 | `--interactive` | Enable interactive mode | `--interactive` |
 | `--suite-name` | Name for new test suite | `--suite-name my-custom-tests` |
 | `--existing-suite` | Add to existing suite | `--existing-suite code-interpreter` |
+| `--test-suites-dir` | Path to test-suites directory (default: test-suites/) | `--test-suites-dir /path/to/custom-test-suites` |
 
 #### File-based Generation
 | Parameter | Purpose | Values/Examples |
@@ -284,6 +306,7 @@ python run_tests.py --report-from-results results/20251021_220653-MAA-02-datafra
 | `--strategy` | Generation strategy | `variations`, `edge-cases`, `negative-tests`, `combinations` |
 | `--count` | Number of tests to generate | `--count 5` |
 | `--append` | Append to existing file | `--append` |
+| `--test-suites-dir` | Path to test-suites directory (default: test-suites/) | `--test-suites-dir /path/to/custom-test-suites` |
 
 #### Generation Strategies
 | Strategy | Purpose | Example Output |

@@ -205,8 +205,9 @@ def send_completion_request(session_id, agent_name, user_prompt, attachments=[])
     try:
         print(f"Sending completion request for user prompt: {user_prompt}")
 
-        # Make the POST request
-        response = requests.post(url, headers=headers, json=payload)
+        # Make the POST request with timeout to prevent hanging
+        # Set timeout to 300 seconds (5 minutes) for long-running completions
+        response = requests.post(url, headers=headers, json=payload, timeout=300)
         
         # Check if the request was successful
         response.raise_for_status()
@@ -221,6 +222,14 @@ def send_completion_request(session_id, agent_name, user_prompt, attachments=[])
         
         return response_json
         
+    except requests.exceptions.Timeout as e:
+        print(f"Request timeout: The completion request took longer than 5 minutes")
+        print(f"Error details: {str(e)}")
+        return None
+    except requests.exceptions.ChunkedEncodingError as e:
+        print(f"Response ended prematurely: The server closed the connection before completing the response")
+        print(f"Error details: {str(e)}")
+        return None
     except requests.exceptions.RequestException as e:
         print(f"An error occurred: {str(e)}")
         if hasattr(e, 'response') and e.response is not None:
@@ -710,10 +719,15 @@ def execute_tests_from_dataframe(df, agent_name, max_workers=5):
                         failed_result['OriginalIndex'] = row_data['_original_index']
                     results.append(failed_result)
             except Exception as e:
-                print(f"Error processing question at index {index}: {e}")
-                # Create a failed result entry
+                # Get the row to access metadata
                 row_data = df.iloc[index]
                 ordinal_index = row_data.get('_original_test_index', index)
+                # Show both current and original index for clarity
+                if ordinal_index != index:
+                    print(f"Error processing question at index {index} (original index {ordinal_index}): {e}")
+                else:
+                    print(f"Error processing question at index {index}: {e}")
+                # Create a failed result entry
                 failed_result = {
                     'Question': row_data['Question'],
                     'Filename': row_data['Filename'],
