@@ -172,9 +172,9 @@ namespace FoundationaLLM.SemanticKernel.Core.Agents
             }
         }
 
-        private Kernel BuildKernel()
-        {
-            return null;
+        private Kernel? BuildKernel() => null;
+        //{
+            //return null;
 
             //var credential = ServiceContext.AzureCredential;
 
@@ -259,6 +259,6 @@ namespace FoundationaLLM.SemanticKernel.Core.Agents
             //}
 
             //return kernel;
-        }
+        //}
     }
 }

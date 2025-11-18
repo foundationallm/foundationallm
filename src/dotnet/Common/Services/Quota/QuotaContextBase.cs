@@ -1,6 +1,6 @@
 ﻿using FoundationaLLM.Common.Models.Quota;
 using Microsoft.Extensions.Logging;
-using Microsoft.OpenApi.Models;
+using Microsoft.OpenApi;
 
 namespace FoundationaLLM.Common.Services.Quota
 {

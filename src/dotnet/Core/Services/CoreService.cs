@@ -987,7 +987,7 @@ public partial class CoreService(
                 var contextAttachmentResult =
                     contextAttachmentIds
                     .ToAsyncEnumerable()
-                    .SelectAwait(async x => await _contextServiceClient.GetFileRecord(instanceId, x));
+                    .Select(async (string x, CancellationToken ct) => await _contextServiceClient.GetFileRecord(instanceId, x));
                 await foreach (var attachment in contextAttachmentResult)
                 {
                     attachmentReferences.Add(AttachmentDetail.FromContextFileRecord(attachment.Result!));

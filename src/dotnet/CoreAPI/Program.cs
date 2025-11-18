@@ -13,7 +13,7 @@ using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Extensions.Options;
-using Microsoft.OpenApi.Models;
+using Microsoft.OpenApi;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace FoundationaLLM.Core.API
@@ -193,19 +193,9 @@ namespace FoundationaLLM.Core.API
                     // Integrate xml comments
                     options.IncludeXmlComments(filePath);
 
-                    options.AddSecurityRequirement(new OpenApiSecurityRequirement
+                    options.AddSecurityRequirement(document => new OpenApiSecurityRequirement
                     {
-                        {
-                            new OpenApiSecurityScheme
-                            {
-                                Reference = new OpenApiReference
-                                {
-                                    Id = "azure_auth",
-                                    Type = ReferenceType.SecurityScheme
-                                }
-                            },
-                            [ "user_impersonation" ]
-                        }
+                        [new OpenApiSecuritySchemeReference("azure_auth", document)] = ["user_impersonation"]
                     });
 
                     options.AddSecurityDefinition("azure_auth", new OpenApiSecurityScheme

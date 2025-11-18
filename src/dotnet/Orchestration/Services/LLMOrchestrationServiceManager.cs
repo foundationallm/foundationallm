@@ -98,7 +98,7 @@ namespace FoundationaLLM.Orchestration.Core.Services
 
             var serviceStatuses = GetOrchestrationServices(serviceProvider)
                 .ToAsyncEnumerable()
-                .SelectAwait(async x => await x.GetStatus(instanceId));
+                .Select(async (ILLMOrchestrationService x, CancellationToken ct) => await x.GetStatus(instanceId));
 
             await foreach (var serviceStatus in serviceStatuses)
                 result.Add(serviceStatus);
