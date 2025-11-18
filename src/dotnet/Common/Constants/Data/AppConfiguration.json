@@ -1858,7 +1858,9 @@
 	{
 		"namespace": "APIEndpoints:AzureContentSafety:Essentials",
 		"dependency_injection_key": null,
-		"configuration_section": null,
+		"configuration_section": {
+			"description": "Configuration section used to identify the essential settings for the Azure Content Safety service."
+		},
 		"configuration_keys": [
 			{
 				"name": "APIKey",
