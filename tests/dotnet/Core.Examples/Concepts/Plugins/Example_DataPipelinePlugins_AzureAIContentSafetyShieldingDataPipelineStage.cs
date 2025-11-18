@@ -50,10 +50,10 @@ namespace FoundationaLLM.Core.Examples.Concepts.Plugins
                 dataPipelineRun!.DataPipelineObjectId,
                 ServiceContext.ServiceIdentity!);
 
-            WriteLine("============ FoundationaLLM Data Pipeline Plugins - Azure AI Indexing Data Pipeline Stage Tests ============");
+            WriteLine("============ FoundationaLLM Data Pipeline Plugins - Azure AI Content Safety Shielding Data Pipeline Stage Tests ============");
 
             var dataSourcePlugin = packageManager.GetDataPipelineStagePlugin(
-                PluginNames.AZUREAISEARCHINDEXING_DATAPIPELINESTAGE,
+                PluginNames.AZUREAICONTENTSAFETYSHIELDING_DATAPIPELINESTAGE,
                 pluginParameters,
                 packageManagerResolver,
                 MainServiceContainer.ServiceProvider);
@@ -70,19 +70,9 @@ namespace FoundationaLLM.Core.Examples.Concepts.Plugins
         new()
         {
             {
-                "work-item-ptNkaLhZOkqujDU2W5fjhA",
-                "run-20250924-114010-koNWof6FX0e7ry5x-8FQ4w-TAfGit69y0OhQOwAAtltKw",
-                new Dictionary<string, object>
-                {
-                    {
-                        PluginParameterNames.AZUREAISEARCHINDEXING_DATAPIPELINESTAGE_KNOWLEDGEUNITOBJECTID,
-                        "instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.Context/knowledgeUnits/AgentPrivateStores"
-                    },
-                    {
-                        PluginParameterNames.AZUREAISEARCHINDEXING_DATAPIPELINESTAGE_VECTORSTOREID,
-                        "MAA-02"
-                    }
-                }
+                "work-item-rBPxshT5ZUuEMuAEYwN35Q",
+                "run-20251118-122705-NNNGZrPRk0-y8ckX4c8-5g-TAfGit69y0OhQOwAAtltKw",
+                new Dictionary<string, object>()
             }
         };
     }

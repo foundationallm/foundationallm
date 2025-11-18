@@ -330,8 +330,8 @@ namespace FoundationaLLM
         /// Registers the Azure Content Safety <see cref="IContentSafetyService"/> implementation with the dependency injection container.
         /// </summary>
         /// <param name="services">The <see cref="IServiceCollection"/> dependency injection container service collection.</param>
-        /// <param name="configuration">The <see cref="IConfigurationManager"/> application configuration manager.</param>
-        public static void AddAzureContentSafetyService(this IServiceCollection services, IConfigurationManager configuration)
+        /// <param name="configuration">The <see cref="IConfiguration"/> application configuration manager.</param>
+        public static void AddAzureContentSafetyService(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddOptions<AzureContentSafetySettings>()
                 .Bind(configuration.GetSection(AppConfigurationKeySections.FoundationaLLM_APIEndpoints_AzureContentSafety_Configuration));
