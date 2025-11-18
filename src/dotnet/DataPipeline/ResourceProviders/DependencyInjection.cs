@@ -85,7 +85,10 @@ namespace FoundationaLLM
         /// <param name="configuration">The <see cref="IConfiguration"/> configuration provider.</param>
         public static void AddRemoteDataPipelineServiceClient(
             this IServiceCollection services,
-            IConfiguration configuration) =>
+            IConfiguration configuration)
+        {
             services.AddSingleton<IDataPipelineServiceClient, RemoteDataPipelineServiceClient>();
+            services.ActivateSingleton<IDataPipelineServiceClient>();
+        }
     }
 }

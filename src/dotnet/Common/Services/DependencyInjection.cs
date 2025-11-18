@@ -336,7 +336,8 @@ namespace FoundationaLLM
             services.AddOptions<AzureContentSafetySettings>()
                 .Bind(configuration.GetSection(AppConfigurationKeySections.FoundationaLLM_APIEndpoints_AzureContentSafety_Configuration));
 
-            services.AddScoped<IContentSafetyService, AzureContentSafetyService>();
+            services.AddSingleton<IContentSafetyService, AzureContentSafetyService>();
+            services.ActivateSingleton<IContentSafetyService>();
         }
 
         /// <summary>

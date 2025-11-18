@@ -67,6 +67,8 @@ namespace FoundationaLLM.Gatekeeper.API
             if (builder.Environment.IsDevelopment())
                 builder.Configuration.AddJsonFile("appsettings.development.json", true, true);
 
+            builder.AddInstanceProperties();
+
             // Add authorization services.
             builder.AddIdentitiyManagement();
             builder.AddAuthorizationServiceClient();

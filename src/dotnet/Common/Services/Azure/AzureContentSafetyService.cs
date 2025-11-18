@@ -1,8 +1,10 @@
-﻿using FoundationaLLM.Common.Clients;
+﻿using FoundationaLLM.Common.Authentication;
+using FoundationaLLM.Common.Clients;
 using FoundationaLLM.Common.Constants;
 using FoundationaLLM.Common.Exceptions;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Configuration.ContentSafety;
+using FoundationaLLM.Common.Models.Configuration.Instance;
 using FoundationaLLM.Common.Models.ContentSafety;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -15,39 +17,44 @@ namespace FoundationaLLM.Common.Services
     /// </summary>
     public class AzureContentSafetyService : IContentSafetyService
     {
-        private readonly IOrchestrationContext _callContext;
+        private readonly InstanceSettings _instanceSettings;
         private readonly IHttpClientFactoryService _httpClientFactoryService;
         private readonly AzureContentSafetySettings _settings;
         private readonly ILogger _logger;
+        private readonly Task<IAzureAIContentSafetyClient> _clientTask;
 
         /// <summary>
         /// Constructor for the Azure Content Safety service.
         /// </summary>
-        /// <param name="callContext">Stores context information extracted from the current HTTP request. This information
-        /// is primarily used to inject HTTP headers into downstream HTTP calls.</param>
+        /// <param name="instanceOptions">The instance settings options.</param>
         /// <param name="httpClientFactoryService">The HTTP client factory service.</param>
         /// <param name="options">The configuration options for the Azure Content Safety service.</param>
         /// <param name="logger">The logger for the Azure Content Safety service.</param>
         public AzureContentSafetyService(
-            IOrchestrationContext callContext,
+            IOptions<InstanceSettings> instanceOptions,
             IHttpClientFactoryService httpClientFactoryService,
             IOptions<AzureContentSafetySettings> options,
             ILogger<AzureContentSafetyService> logger)
         {
-            _callContext = callContext;
+            _instanceSettings = instanceOptions.Value;
             _httpClientFactoryService = httpClientFactoryService;
             _settings = options.Value;
             _logger = logger;
+            _clientTask = _httpClientFactoryService.CreateClient<IAzureAIContentSafetyClient>(
+                _instanceSettings.Id,
+                HttpClientNames.AzureContentSafety,
+                ServiceContext.ServiceIdentity!,
+                AzureAIContentSafetyClient.BuildClient,
+                new Dictionary<string, object>()
+                {
+                    { HttpClientFactoryServiceKeyNames.EnableRetry, true }
+                });
         }
 
         /// <inheritdoc/>
         public async Task<ContentSafetyAnalysisResult> AnalyzeText(string content)
         {
-            var client = await _httpClientFactoryService.CreateClient<IAzureAIContentSafetyClient>(
-                _callContext.InstanceId!,
-                HttpClientNames.AzureContentSafety,
-                _callContext.CurrentUserIdentity!,
-                AzureAIContentSafetyClient.BuildClient);
+            var client = await _clientTask;
 
             AnalyzeTextResult? results = null;
             try
@@ -106,11 +113,7 @@ namespace FoundationaLLM.Common.Services
         /// <inheritdoc/>
         public async Task<ContentSafetyAnalysisResult> DetectPromptInjection(string content)
         {
-            var client = await _httpClientFactoryService.CreateClient<IAzureAIContentSafetyClient>(
-                _callContext.InstanceId!,
-                HttpClientNames.AzureContentSafety,
-                _callContext.CurrentUserIdentity!,
-                AzureAIContentSafetyClient.BuildClient);
+            var client = await _clientTask;
 
             try
             {
@@ -140,15 +143,7 @@ namespace FoundationaLLM.Common.Services
             IEnumerable<ContentSafetyDocument> documents,
             CancellationToken cancellationToken)
         {
-            var client = await _httpClientFactoryService.CreateClient<IAzureAIContentSafetyClient>(
-                _callContext.InstanceId!,
-                HttpClientNames.AzureContentSafety,
-                _callContext.CurrentUserIdentity!,
-                AzureAIContentSafetyClient.BuildClient,
-                new Dictionary<string, object>()
-                {
-                    { HttpClientFactoryServiceKeyNames.EnableRetry, true }
-                });
+            var client = await _clientTask;
 
             try
             {
