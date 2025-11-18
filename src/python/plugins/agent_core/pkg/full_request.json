@@ -1,0 +1,583 @@
+{
+    "agent": {
+        "type": "generic-agent",
+        "name": "MAA-02",
+        "object_id": "/instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.Agent/agents/MAA-02",
+        "display_name": "Model Agnostic Agent 02 (GPT-4o)",
+        "description": "Model agnostic agent using GPT-4o and Python custom containers.",
+        "cost_center": "",
+        "sessions_enabled": true,
+        "text_rewrite_settings": {
+            "user_prompt_rewrite_enabled": false,
+            "user_prompt_rewrite_settings": {
+                "user_prompt_rewrite_ai_model_object_id": null,
+                "user_prompt_rewrite_prompt_object_id": null,
+                "user_prompts_window_size": 3
+            }
+        },
+        "cache_settings": {
+            "semantic_cache_enabled": false,
+            "semantic_cache_settings": {
+                "embedding_ai_model_object_id": null,
+                "embedding_dimensions": 2048,
+                "minimum_similarity_threshold": 0.97
+            }
+        },
+        "conversation_history_settings": {
+            "enabled": true,
+            "max_history": 10,
+            "history_content_artifact_types": null
+        },
+        "gatekeeper_settings": {
+            "use_system_setting": false,
+            "options": []
+        },
+        "workflow": {
+            "type": "generic-agent-workflow",
+            "name": "Agent-Workflow",
+            "package_name": "foundationallm_agent_plugins",
+            "class_name": "FoundationaLLMFunctionCallingWorkflow",
+            "workflow_host": "LangChain",
+            "resource_object_ids": {
+                "/instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.AIModel/aiModels/GPT4oCompletionAIModel": {
+                    "object_id": "/instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.AIModel/aiModels/GPT4oCompletionAIModel",
+                    "properties": {
+                        "object_role": "main_model",
+                        "model_parameters": {
+                            "temperature": 0.0
+                        }
+                    }
+                },
+                "/instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.Prompt/prompts/MAA-02-Workflow-Main": {
+                    "object_id": "/instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.Prompt/prompts/MAA-02-Workflow-Main",
+                    "properties": {
+                        "object_role": "main_prompt"
+                    }
+                },
+                "/instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.Prompt/prompts/MAA-02-Workflow-Router": {
+                    "object_id": "/instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.Prompt/prompts/MAA-02-Workflow-Router",
+                    "properties": {
+                        "object_role": "router_prompt"
+                    }
+                },
+                "/instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.Prompt/prompts/MAA-02-Workflow-Files": {
+                    "object_id": "/instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.Prompt/prompts/MAA-02-Workflow-Files",
+                    "properties": {
+                        "object_role": "files_prompt"
+                    }
+                },
+                "/instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.Prompt/prompts/MAA-02-Workflow-Final": {
+                    "object_id": "/instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.Prompt/prompts/MAA-02-Workflow-Final",
+                    "properties": {
+                        "object_role": "final_prompt"
+                    }
+                },
+                "/instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.Agent/workflows/GenericAgentWorkflow": {
+                    "object_id": "/instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.Agent/workflows/GenericAgentWorkflow",
+                    "properties": {}
+                }
+            },
+            "properties": null
+        },
+        "tools": [
+            {
+                "name": "Code",
+                "description": "This tool takes as input a plain language question and it will write Python code, execute the Python code and return the result. This tool only accepts plain text language as input, not Python code.",
+                "category": "Generic",
+                "package_name": "foundationallm_agent_plugins",
+                "class_name": "FoundationaLLMCodeInterpreterTool",
+                "resource_object_ids": {
+                    "/instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.AIModel/aiModels/GPT4oCompletionAIModel": {
+                        "object_id": "/instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.AIModel/aiModels/GPT4oCompletionAIModel",
+                        "properties": {
+                            "object_role": "main_model",
+                            "model_parameters": {
+                                "temperature": 0.2
+                            }
+                        }
+                    },
+                    "/instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.Prompt/prompts/MAA-02-Tool-Code-Main": {
+                        "object_id": "/instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.Prompt/prompts/MAA-02-Tool-Code-Main",
+                        "properties": {
+                            "object_role": "main_prompt"
+                        }
+                    },
+                    "/instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.Prompt/prompts/MAA-02-Tool-Code-Router": {
+                        "object_id": "/instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.Prompt/prompts/MAA-02-Tool-Code-Router",
+                        "properties": {
+                            "object_role": "router_prompt"
+                        }
+                    }
+                },
+                "properties": {
+                    "code_session_required": true,
+                    "code_session_endpoint_provider": "AzureContainerAppsCustomContainer",
+                    "code_session_language": "Python"
+                }
+            },
+            {
+                "name": "Knowledge",
+                "description": "Answers questions or provides summaries based on documents or other available knowledge.",
+                "category": "Generic",
+                "package_name": "foundationallm_agent_plugins",
+                "class_name": "FoundationaLLMKnowledgeTool",
+                "resource_object_ids": {
+                    "/instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.AIModel/aiModels/GPT4oCompletionAIModel": {
+                        "object_id": "/instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.AIModel/aiModels/GPT4oCompletionAIModel",
+                        "properties": {
+                            "object_role": "main_model"
+                        }
+                    },
+                    "/instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.Prompt/prompts/MAA-02-Tool-Knowledge-Main": {
+                        "object_id": "/instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.Prompt/prompts/MAA-02-Tool-Knowledge-Main",
+                        "properties": {
+                            "object_role": "main_prompt"
+                        }
+                    },
+                    "/instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.Prompt/prompts/MAA-02-Tool-Knowledge-Router": {
+                        "object_id": "/instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.Prompt/prompts/MAA-02-Tool-Knowledge-Router",
+                        "properties": {
+                            "object_role": "router_prompt"
+                        }
+                    },
+                    "/instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.DataPipeline/dataPipelines/DefaultFileUpload": {
+                        "object_id": "/instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.DataPipeline/dataPipelines/DefaultFileUpload",
+                        "properties": {
+                            "object_role": "file_upload_data_pipeline"
+                        }
+                    },
+                    "/instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.Context/knowledgeUnits/Conversations": {
+                        "object_id": "/instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.Context/knowledgeUnits/Conversations",
+                        "properties": {
+                            "object_role": "conversation_knowledge_unit"
+                        }
+                    },
+                    "/instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.Context/knowledgeUnits/AgentPrivateStores": {
+                        "object_id": "/instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.Context/knowledgeUnits/AgentPrivateStores",
+                        "properties": {
+                            "object_role": "agent_private_store_knowledge_unit"
+                        }
+                    },
+                    "/instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.Context/knowledgeSources/Agents": {
+                        "object_id": "/instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.Context/knowledgeSources/Agents",
+                        "properties": {
+                            "object_role": "knowledge_source"
+                        }
+                    }
+                },
+                "properties": {
+                    "max_content_size_characters": 10000000,
+                    "vector_store_provider": "conversation",
+                    "vector_store_query": {
+                        "text_chunks_max_count": 20,
+                        "text_chunks_similarity_threshold": 0.1,
+                        "use_semantic_ranking": false,
+                        "use_hybrid_search": false
+                    },
+                    "knowledge_graph_query": null,
+                    "knowledge_unit_vector_store_filters": [
+                        {
+                            "knowledge_unit_id": "Conversations",
+                            "vector_store_id": null,
+                            "vector_store_metadata_filter": null
+                        },
+                        {
+                            "knowledge_unit_id": "AgentPrivateStores",
+                            "vector_store_id": null,
+                            "vector_store_metadata_filter": null
+                        }
+                    ]
+                }
+            }
+        ],
+        "virtual_security_group_id": "cb30b29d-b222-479d-87f7-77e9c126d91e",
+        "show_message_tokens": true,
+        "show_message_rating": true,
+        "show_view_prompt": true,
+        "show_file_upload": true,
+        "owner_user_id": null,
+        "properties": {
+            "welcome_message": "Welcome to Model Agnostic Agent 02 (GPT-4o). How can I assist you today?"
+        },
+        "created_on": "0001-01-01T00:00:00+00:00",
+        "updated_on": "2025-11-14T14:59:12.5700674+00:00",
+        "created_by": null,
+        "updated_by": "ciprian@foundationaLLM.ai",
+        "deleted": false,
+        "expiration_date": null,
+        "inheritable_authorizable_actions": [
+            "FoundationaLLM.Agent/workflows/read",
+            "FoundationaLLM.Agent/tools/read",
+            "FoundationaLLM.Prompt/prompts/read",
+            "FoundationaLLM.AIModel/aiModels/read",
+            "FoundationaLLM.Configuration/apiEndpointConfigurations/read",
+            "FoundationaLLM.DataPipeline/dataPipelines/read",
+            "FoundationaLLM.Vector/vectorDatabases/read",
+            "FoundationaLLM.Context/knowledgeSources/read",
+            "FoundationaLLM.Context/knowledgeUnits/read",
+            "FoundationaLLM.DataSource/dataSources/read",
+            "FoundationaLLM.AzureAI/projects/read"
+        ]
+    },
+    "objects": {
+        "/instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.AIModel/aiModels/GPT4oCompletionAIModel": {
+            "type": "completion",
+            "name": "GPT4oCompletionAIModel",
+            "object_id": "/instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.AIModel/aiModels/GPT4oCompletionAIModel",
+            "display_name": "GPT-4o",
+            "description": null,
+            "cost_center": null,
+            "endpoint_object_id": "/instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.Configuration/apiEndpointConfigurations/AzureOpenAI",
+            "version": "0.0",
+            "deployment_name": "completions4o",
+            "model_parameters": {
+                "temperature": 0.0
+            },
+            "properties": null,
+            "created_on": "0001-01-01T00:00:00+00:00",
+            "updated_on": "0001-01-01T00:00:00+00:00",
+            "created_by": null,
+            "updated_by": null,
+            "deleted": false,
+            "expiration_date": null,
+            "inheritable_authorizable_actions": []
+        },
+        "/instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.Configuration/apiEndpointConfigurations/AzureOpenAI": {
+            "type": "api-endpoint",
+            "name": "AzureOpenAI",
+            "object_id": "/instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.Configuration/apiEndpointConfigurations/AzureOpenAI",
+            "display_name": null,
+            "description": "",
+            "cost_center": null,
+            "category": "General",
+            "subcategory": "AIModel",
+            "authentication_type": "APIKey",
+            "url": "https://openai-l43jljq2i5ox6.openai.azure.com/",
+            "status_endpoint": null,
+            "url_exceptions": [],
+            "authentication_parameters": {
+                "api_key_configuration_name": "FoundationaLLM:APIEndpoints:AzureOpenAI:Essentials:APIKey",
+                "api_key_header_name": "api-key"
+            },
+            "timeout_seconds": 60,
+            "retry_strategy_name": "ExponentialBackoff",
+            "provider": "microsoft",
+            "api_version": "2024-12-01-preview",
+            "operation_type": "chat",
+            "properties": null,
+            "created_on": "0001-01-01T00:00:00+00:00",
+            "updated_on": "2025-06-23T09:38:54.5260937+00:00",
+            "created_by": null,
+            "updated_by": "ZoinerTejada@foundationaLLM.ai",
+            "deleted": false,
+            "expiration_date": null,
+            "inheritable_authorizable_actions": []
+        },
+        "/instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.Agent/workflows/GenericAgentWorkflow": {
+            "type": "generic-agent-workflow",
+            "name": "GenericAgentWorkflow",
+            "object_id": "/instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.Agent/workflows/GenericAgentWorkflow",
+            "display_name": "GenericAgentWorkflow",
+            "description": "Generic agent workflow",
+            "cost_center": null,
+            "properties": null,
+            "created_on": "2024-11-08T10:08:27.1953263+00:00",
+            "updated_on": "0001-01-01T00:00:00+00:00",
+            "created_by": "andrei@foundationaLLM.ai",
+            "updated_by": null,
+            "deleted": false,
+            "expiration_date": null,
+            "inheritable_authorizable_actions": []
+        },
+        "GatewayAPIEndpointConfiguration": {
+            "type": "api-endpoint",
+            "name": "GatewayAPI",
+            "object_id": "/instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.Configuration/apiEndpointConfigurations/GatewayAPI",
+            "display_name": null,
+            "description": null,
+            "cost_center": null,
+            "category": "General",
+            "subcategory": null,
+            "authentication_type": "APIKey",
+            "url": "https://cagatewayapil43jljq2i5ox6.lemondesert-a0804c39.eastus2.azurecontainerapps.io",
+            "status_endpoint": "/status",
+            "url_exceptions": [
+                {
+                    "user_principal_name": "carey@foundationallm.ai",
+                    "url": "https://localhost:7209/",
+                    "enabled": false
+                },
+                {
+                    "user_principal_name": "andrei@foundationallm.ai",
+                    "url": "https://localhost:7209/",
+                    "enabled": false
+                },
+                {
+                    "user_principal_name": "ciprian@foundationallm.ai",
+                    "url": "https://localhost:7209/",
+                    "enabled": false
+                }
+            ],
+            "authentication_parameters": {
+                "api_key_configuration_name": "FoundationaLLM:APIEndpoints:GatewayAPI:Essentials:APIKey",
+                "api_key_header_name": "X-API-KEY"
+            },
+            "timeout_seconds": 1200,
+            "retry_strategy_name": "ExponentialBackoff",
+            "provider": null,
+            "api_version": null,
+            "operation_type": null,
+            "properties": null,
+            "created_on": "0001-01-01T00:00:00-05:00",
+            "updated_on": "0001-01-01T00:00:00-05:00",
+            "created_by": "SYSTEM",
+            "updated_by": null,
+            "deleted": false,
+            "expiration_date": null,
+            "inheritable_authorizable_actions": []
+        },
+        "ContextAPIEndpointConfiguration": {
+            "type": "api-endpoint",
+            "name": "ContextAPI",
+            "object_id": "/instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.Configuration/apiEndpointConfigurations/ContextAPI",
+            "display_name": null,
+            "description": null,
+            "cost_center": null,
+            "category": "General",
+            "subcategory": null,
+            "authentication_type": "APIKey",
+            "url": "https://cacontextapil43jljq2i5ox6.lemondesert-a0804c39.eastus2.azurecontainerapps.io",
+            "status_endpoint": "/instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/status",
+            "url_exceptions": [
+                {
+                    "user_principal_name": "ciprian@foundationallm.ai",
+                    "url": "https://localhost:6004/",
+                    "enabled": false
+                },
+                {
+                    "user_principal_name": "carey@foundationallm.ai",
+                    "url": "https://localhost:6004/",
+                    "enabled": false
+                }
+            ],
+            "authentication_parameters": {
+                "api_key_configuration_name": "FoundationaLLM:APIEndpoints:ContextAPI:Essentials:APIKey",
+                "api_key_header_name": "X-API-KEY"
+            },
+            "timeout_seconds": 2400,
+            "retry_strategy_name": "ExponentialBackoff",
+            "provider": null,
+            "api_version": null,
+            "operation_type": null,
+            "properties": null,
+            "created_on": "0001-01-01T00:00:00-05:00",
+            "updated_on": "2025-02-25T11:10:55.3458874-05:00",
+            "created_by": null,
+            "updated_by": "ciprian@foundationaLLM.ai",
+            "deleted": false,
+            "expiration_date": null,
+            "inheritable_authorizable_actions": []
+        },
+        "FoundationaLLM.InstanceId": "8ac6074c-bdde-43cb-a140-ec0002d96d2b",
+        "Agent.AgentName": "MAA-02",
+        "Agent.AgentObjectId": "/instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.Agent/agents/MAA-02",
+        "Code": {
+            "code_session_endpoint": "https://fllm-custom-sessions-python.lemonflower-458b550e.eastus.azurecontainerapps.io",
+            "code_session_id": "code-20251118-005759-xmubtexaqk6aad5wifolwg-code"
+        },
+        "/instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.Prompt/prompts/MAA-02-Tool-Code-Main": {
+            "type": "multipart",
+            "name": "MAA-02-Tool-Code-Main",
+            "object_id": "/instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.Prompt/prompts/MAA-02-Tool-Code-Main",
+            "display_name": "Model Agnostic Agent 02 (GPT-4o) Agent Code Tool Main Prompt",
+            "description": "Tool main prompt for the Code tool of the Model Agnostic Agent 02 (GPT-4o) agent. Provides the main instructions for the tool.",
+            "cost_center": null,
+            "prefix": "You are an expert Python programmer. Write clear, correct, and efficient Python code. \n\nYou produce only Python code, not plain language.\n\nWhen instructed to convert a DOC to a text file, always rewrite this to request to \u0022convert this DOC to a text file using textract\u0022.\n\nWhen instructed to produce a PDF file always use the default system font. In the text you produce do not use any Unicode characters like the en dash (\u2013) instead use only ASCII characters.\n\n- Use idiomatic Python style (PEP 8).\n- Do not add comments or anything else than the Python source code.\n- Ensure the code is ready to run as-is, without any extra characters or details.\n- Never use the **show()** function when generating code that uses the **matplotlib** library. Always use use **savefig()** instead of **show()**.\n- Always assume files are loaded and saved from the \u0027/mnt/data/\u0027 directory.\n- When referring to existing files, always ensure the names match the names from the AVAILABLE_FILE_NAMES section.\n- Each line in the AVAILABLE_FILE_NAMES sections contains exactly one file name enclosed by / characters. Treat each line as a verbatim filename.\n- Do not alter the file names in any way (no trimming, renaming, dropping leading numbers, or removing any characters) except for removing the leading and trailing / characters. Example: /1. file.pdf/ must appear exactly as 1. file.pdf whenever referenced.\n- If the file name contains any \u0060 (backtick) characters, do not interpret, process, or remove them in any way. Example: /test\u0060X.doc/ must appear exactly as test\u0060X.doc whenever referenced.\n- If no specific file is referenced by the prompt, and there is a file in the AVAILABLE_FILE_NAMES section, assume it refers to that file.\n- If asked to format as a table, do not write code to produce markdown. Just provide the data and assume the calling agent will format it.\n\nOutput and return rule:\nAlways end your Python code with the variable names you want to return to the agent, either as a single variable (e.g., result), a tuple (e.g., (data, summary)), or a list (e.g., [output, metadata]), a function call that returns the result or prints the result to standard out, or an empty string if a file was saved and there is no standard output.\n\nWhen generating code, be sure to generate code using the libraries that are installed which are listed in INSTALLED_LIBRARIES section.\n\nWhen provided a **DOCX** file, be sure to follow these additional rules:\n- To count the number of words in a PPTX, use **Document** class from the docx library.\n- You cannot count the number pages **for a DOCX file**. Throw a Python error in this case.\n- Always use **Document** from the docx library.\n- Never use **textract**.\n\nWhen provided a PPTX file, be sure to follow these additional rules:\n- To count the number of pages in a PPTX, use **Presentation** class.\n- To count the number of words in a PPTX, use **Presentation** class.\n- Always use **Presentation** from the pptx library.\n\nWhen provided a PDF file, be sure to follow these additional rules:\n- To count the number of words in a PDF always use **pypdf**.\n- Always use **pypdf** instead of PYPDF2.\n- When using pypdf use the **PdfReader** class.\n- Never use **PyPDF2**.\n- Never use **textract**.\n\nWhen provided **DOC** file, be sure to follow these additional rules:\n- textract is available from the textract-py3 library, which is an installed library (you have textract-py3==2.1.1 installed). \n- Always convert DOC files into text files using textract. \n- Always extract text from DOC files using textract. \n- You cannot count the number pages **for a DOC file**. Throw a Python error in this case.\n- Never use python-docx for extracting text from DOC files.\n- Never use python-docx for converting DOC files into text files.\n- Never use docx2python for extracting text from DOC files.\n- Never use docx2python for converting DOC files into text files.\n\nIf the request asks for a downloadable file of the code, structure your code as follows:\n1. Define the Python code to be saved\n2. Save the code to a file in the /mnt/data/ directory using code like: \n\tfile.write(code_content)\n\nFEW SHOT EXAMPLES:\nInput: Create a downloadable Python file that prints \u0027Hello, World!\u0027\nOutput: with open(\u0027/mnt/data/hello_world.py\u0027, \u0027w\u0027) as file:\\n    file.write(\\\u0022print(\u0027Hello, World!\u0027)\\\\n\\\u0022)\\n\n\nInput: Create a downloadable Python file\nOutput: with open(\u0027/mnt/data/code.py\u0027, \u0027w\u0027) as file:\\n    file.write(\\\u0022print(\u0027Hello!\u0027)\\\\n\\\u0022)\\n\n\n\nAVAILABLE_FILE_NAMES:\n{{file_names}}\nEND_AVAILABLE_FILE_NAMES\n\nINSTALLED_LIBRARIES:\nfastapi==0.115.12\nuvicorn==0.34.0\npython-multipart==0.0.20\npandas==2.2.3\npyarrow==19.0.1\nnumpy==2.2.4\nmatplotlib==3.10.1\npypdf==4.3.1\nfpdf2==2.8.2\nxlsxwriter==3.2.2\nopenpyxl==3.1.5\npython-pptx==1.0.2\ntextract-py3==2.1.1\npython-docx==1.2.0\ndocx2python==3.5.0\nrdflib==7.1.4\nscikit-learn==1.6.1\nEND_INSTALLED_LIBRARIES\n\nYou must always create Python code.\nYou must never write plain language, even if the answer is simple.",
+            "suffix": "",
+            "category": "Tool",
+            "properties": {},
+            "created_on": "0001-01-01T00:00:00+00:00",
+            "updated_on": "2025-11-14T14:59:08.6814318+00:00",
+            "created_by": null,
+            "updated_by": "ciprian@foundationaLLM.ai",
+            "deleted": false,
+            "expiration_date": null,
+            "inheritable_authorizable_actions": []
+        },
+        "Knowledge": {},
+        "/instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.Prompt/prompts/MAA-02-Tool-Knowledge-Main": {
+            "type": "multipart",
+            "name": "MAA-02-Tool-Knowledge-Main",
+            "object_id": "/instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.Prompt/prompts/MAA-02-Tool-Knowledge-Main",
+            "display_name": "Model Agnostic Agent 02 (GPT-4o) Agent Knowledge Tool Main Prompt",
+            "description": "Tool main prompt for the Knowledge tool of the Model Agnostic Agent 02 (GPT-4o) agent. Provides the main instructions for the tool.",
+            "cost_center": null,
+            "prefix": "Answer the question using only the context provided.\n\nContext:\n{{context}}\n\nQuestion:\n{{prompt}}",
+            "suffix": "",
+            "category": "Tool",
+            "properties": {},
+            "created_on": "0001-01-01T00:00:00+00:00",
+            "updated_on": "2025-11-14T14:59:04.4833647+00:00",
+            "created_by": null,
+            "updated_by": "ciprian@foundationaLLM.ai",
+            "deleted": false,
+            "expiration_date": null,
+            "inheritable_authorizable_actions": []
+        },
+        "/instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.Context/knowledgeUnits/Conversations": {
+            "type": "knowledge-unit",
+            "name": "Conversations",
+            "object_id": "/instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.Context/knowledgeUnits/Conversations",
+            "display_name": null,
+            "description": null,
+            "cost_center": null,
+            "vector_database_object_id": "/instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.Vector/vectorDatabases/ConversationFiles",
+            "vector_store_id": null,
+            "has_knowledge_graph": false,
+            "knowledge_graph_vector_database_object_id": null,
+            "properties": null,
+            "created_on": "0001-01-01T00:00:00+00:00",
+            "updated_on": "2025-09-02T21:57:28.4675317+00:00",
+            "created_by": null,
+            "updated_by": "ciprian@foundationaLLM.ai",
+            "deleted": false,
+            "expiration_date": null,
+            "inheritable_authorizable_actions": []
+        },
+        "/instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.Context/knowledgeUnits/AgentPrivateStores": {
+            "type": "knowledge-unit",
+            "name": "AgentPrivateStores",
+            "object_id": "/instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.Context/knowledgeUnits/AgentPrivateStores",
+            "display_name": null,
+            "description": null,
+            "cost_center": null,
+            "vector_database_object_id": "/instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.Vector/vectorDatabases/AgentPrivateStoreFiles",
+            "vector_store_id": null,
+            "has_knowledge_graph": false,
+            "knowledge_graph_vector_database_object_id": null,
+            "properties": null,
+            "created_on": "0001-01-01T00:00:00+00:00",
+            "updated_on": "2025-09-02T21:57:26.2823592+00:00",
+            "created_by": null,
+            "updated_by": "ciprian@foundationaLLM.ai",
+            "deleted": false,
+            "expiration_date": null,
+            "inheritable_authorizable_actions": []
+        },
+        "ToolNames": [
+            "Code",
+            "Knowledge"
+        ],
+        "/instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.Prompt/prompts/MAA-02-Workflow-Main": {
+            "type": "multipart",
+            "name": "MAA-02-Workflow-Main",
+            "object_id": "/instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.Prompt/prompts/MAA-02-Workflow-Main",
+            "display_name": "Model Agnostic Agent 02 (GPT-4o) Agent Workflow Main Prompt",
+            "description": "Workflow main prompt for the The Model Agnostic Agent 02 (GPT-4o) agent. Provides the main instructions for the agent.",
+            "cost_center": null,
+            "prefix": "You are a helpful assistant that answers questions in a polite way.\n",
+            "suffix": "",
+            "category": "Workflow",
+            "properties": {},
+            "created_on": "0001-01-01T00:00:00+00:00",
+            "updated_on": "2025-11-14T14:58:55.7205006+00:00",
+            "created_by": null,
+            "updated_by": "ciprian@foundationaLLM.ai",
+            "deleted": false,
+            "expiration_date": null,
+            "inheritable_authorizable_actions": []
+        },
+        "/instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.Prompt/prompts/MAA-02-Workflow-Router": {
+            "name": "MAA-02-Workflow-Router",
+            "object_id": "/instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.Prompt/prompts/MAA-02-Workflow-Router",
+            "display_name": "Model Agnostic Agent 02 (GPT-4o) Agent Workflow Router Prompt",
+            "description": "Workflow router prompt for the Model Agnostic Agent 02 (GPT-4o) agent. Provides instructions that are specific for the selection of tools.",
+            "cost_center": null,
+            "prefix": "You must always answer based on the information you have, using the available tools.\nDo not ask the user for more information, content or clarification.\n\nIf a tool provides one or more URL values in its response, make sure to use those URL values VERBATIM.\nOnly use URL values provided by the tool results in your response.\nIf the tool result does not provide a URL, you should NOT provide a URL in your response.\nNever create URL values to files you think exist, and never make any URL up!\nIf asked to graph an equation, use the code tool for the result exclusively and assume it will answer with a graph. Your response should be only \u0022Here you go.\u0022\nIf asked to produce a file (pdf, docx, doc, txt, etc.), invoke the code tool for the result exclusively and assume it will answer with the file. \n\nIf asked to graph an equation, make sure you follow these rules:\n- Do not provide any text that says things like \u0022here is the graph\u0022, instead just say exactly \u0022Here you go.\u0022\n- Do not respond with any kind of reference, for example do not do this \u0022Here you go.\\n\\n![Graph](graph.png)\u0022\n- Do not provide any additional response besides the result of the code tool. \n- Do not try to produce a graph yourself\n- Do not provide a link to an existing graph \n- Do not try to provide an attachment\n- Do not provide a [Graph] link\n- Do not link to an image, png or jpg that was not provided by the code tool \n- Do not repeat the python code used to create the graph.\n\nYou must use one or more of the following available tools:\n- Code: This tool takes as input a plain language question and it will write Python code, execute the Python code and return the result. This tool only accepts plain text language as input, not Python code.\n- Knowledge: Answers questions or provides summaries based on documents or other available knowledge.\n\n\nAdditional instructions for the usage of the tools:\n\n\nCODE TOOL\n\nPurpose:\n- Run Python to operate on attached files and return computed results.\n\nInput requirements:\n- Accepts only plain-language instructions. Do not include Python code in the tool input.\n- If files are attached, reference them by name in the plain-language instruction. Do not paste file contents.\n\nWHEN TO SELECT \u0022Code\u0022 (MUST):\n- A file is attached AND the user asks to compute, analyze, extract, transform, validate, filter, search, count, list, compare, convert, split, merge, or generate anything involving the file(s).\n- The task requires extracting metadata or content from a file (e.g., word count, page count, text extraction).\n- The user asks to generate any file (CSV, Excel, JSON, ZIP, etc.).\n- The user wants to process archives (.zip) or tabular/structured data.\n\nSupported file types (non-exhaustive):\n- .docx, .pptx, .pdf, .txt, .md\n- .csv, .tsv, .xlsx, .xls, .json, .jsonl, .xml\n- .zip\n(If a file type is not listed but the request clearly requires reading the file, SELECT \u0022Code\u0022.)\n\nWHEN NOT TO SELECT \u0022Code\u0022 (NEVER):\n- The user only asks for a summary or high-level description that does not require executing code or reading file contents.\n- The user explicitly requests a non-Python programming task.\n\nTie-breaker:\n- If a file is attached and you are uncertain whether the task requires reading it, SELECT \u0022Code\u0022.\n\nOutput format:\n- AgentAnswer: Code\n\nTool input to provide:\n- Pass the user\u2019s original question verbatim, mentioning the attached filename(s). Do not generate Python code.\n- Always pass the file names if any files are provided.\n\n**Knowledge**:\nAnswers questions or provides summaries based on documents or other available knowledge.\nNever use this tool when:\n- Code generation is required.\n- The file name is listed in the CONTEXT_FILES section.\n- The file name indicates it is a code file (.c, .cpp, .cs, .css, .html, .java, .js, .json, .md, .php, .py, .rb, .sh, .tex, .ts).\n\n\nDo not generate any Python code when invoking tools.\n\nOnly after using one or more tools and you still do not know the answer, say \u0022I don\u0027t know\u0022 or \u0022I don\u0027t have that information.\u0022.\n\nToday\u0027s date is 2025-11-18.",
+            "suffix": "",
+            "category": "Workflow",
+            "properties": {},
+            "created_on": "0001-01-01T00:00:00+00:00",
+            "updated_on": "2025-11-14T14:58:58.0045975+00:00",
+            "created_by": null,
+            "updated_by": "ciprian@foundationaLLM.ai",
+            "deleted": false,
+            "expiration_date": null,
+            "inheritable_authorizable_actions": []
+        },
+        "/instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.Prompt/prompts/MAA-02-Workflow-Files": {
+            "name": "MAA-02-Workflow-Files",
+            "object_id": "/instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.Prompt/prompts/MAA-02-Workflow-Files",
+            "display_name": "Model Agnostic Agent 02 (GPT-4o) Agent Workflow Files Prompt",
+            "description": "Workflow files prompt for the Model Agnostic Agent 02 (GPT-4o) agent. Provides instructions that are specific for the identification of the files that are relevant to the question.",
+            "cost_center": null,
+            "prefix": "\nYou should determine the files relevant to the question and use them to answer the question. If the question does not refer to any files, you can answer directly without using any files.\nAlways attempt to identify the relevant files and pass their names as parameters to the selected tools, except when the file name is listed in the CONTEXT_FILES section below.\n\nYou have access to the files listed below in the CONVERSATION_FILES, ATTACHED_FILES, and CONTEXT_FILES sections.\nEach line in the CONVERSATION_FILES, ATTACHED_FILES, and CONTEXT_FILES sections contains exactly one file name enclosed by / characters. Treat each line as a verbatim filename. \nDo not alter the file name in any way (no trimming, renaming, dropping leading numbers, or removing any characters) except for removing the leading and trailing / characters. Example: /1. file.pdf/ must appear exactly as 1. file.pdf whenever referenced.\nIf the file name contains any \u0060 (backtick) characters, do not interpret, process, or remove them in any way. Example: /test\u0060X.doc/ must appear exactly as test\u0060X.doc whenever referenced.\n\nIf a section is empty, it means there are no files in that section.\nThe CONVERSATION_FILES section contains files that are part of the conversation.\nThe ATTACHED_FILES section contains files that are attached to the question. \nThe CONTEXT_FILES section contains files whose content is provided in the question.\n\nCONVERSATION_FILES:\n{{conversation_files}}\nEND_CONVERSATION_FILES\n\nATTACHED_FILES:\n{{attached_files}}\nEND_ATTACHED_FILES\n\nCONTEXT_FILES:\n{{context_files}}\nEND_CONTEXT_FILES\n\nIf the question refers to one or more files and no file names are specified, follow these steps:\n\n1. If there are files in the ATTACHED_FILES section, use them to answer the question.\n2. If there are no files in the ATTACHED_FILES section, attempt to use the files in the CONVERSATION_FILES section to answer the question.\n3. If there are no files in the CONVERSATION_FILES section either, attempt to use the files in the CONTEXT_FILES section to answer the question.\n4. If there are no files in either section, answer the question directly without using any files.\n\nWhen using tools, always pass the file names exactly as they appear in the relevant sections, including any special characters.\nDo not remove any characters from the file names when referencing them except for the leading and trailing / characters.\nDo not use tools for files that are listed in the CONTEXT_FILES section. You can only use tools for files that are listed in the CONVERSATION_FILES or ATTACHED_FILES sections.\n\nIf a user asks \u0022what files did I upload?\u0022 or \u0022list the names of all the files I uploaded?\u0022 or a similar question, you should respond by listing the files available in CONVERSATION_FILES, ATTACHED FILES and CONTEXT_FILES as one single list. \nWhen asked to provide a count of the number of files, first make one list across all three lists: CONTEXT_FILES \u002B CONVERSATION_FILES \u002B ATTACHED_FILES. Do not forget to count the files in CONTEXT_FILES! Make sure you list only unique filenames. Then count the total number of files in your list.\nIMPORTANT: when providing filenames to answer a user prompt, do not include the forward slash / characters that surround the file name.",
+            "suffix": "",
+            "category": "Workflow",
+            "properties": {},
+            "created_on": "0001-01-01T00:00:00+00:00",
+            "updated_on": "2025-11-14T14:58:59.8773935+00:00",
+            "created_by": null,
+            "updated_by": "ciprian@foundationaLLM.ai",
+            "deleted": false,
+            "expiration_date": null,
+            "inheritable_authorizable_actions": []
+        },
+        "Workflow.Invocation.ConversationFiles": [
+            "Price Data.xlsx"
+        ],
+        "Workflow.Invocation.AttachedFiles": [
+            "Price Data.xlsx"
+        ],
+        "/instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.Prompt/prompts/MAA-02-Workflow-Final": {
+            "type": "multipart",
+            "name": "MAA-02-Workflow-Final",
+            "object_id": "/instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.Prompt/prompts/MAA-02-Workflow-Final",
+            "display_name": "Model Agnostic Agent 02 (GPT-4o) Agent Workflow Final Prompt",
+            "description": "Workflow final prompt for the Model Agnostic Agent 02 (GPT-4o) agent. Provides instructions to build the final response based on the results provided by tools.",
+            "cost_center": null,
+            "prefix": "Respond to the question specified in the QUESTION section.\nAlways assume that you have already completed all the tasks resulting from the question.\nYou have access to the additional information specified in the TOOL_RESULTS section.\n\nTOOL_RESULTS:\n{{tool_results}}\nEND_TOOL_RESULTS\n\nQUESTION:\n{{prompt}}\nEND_QUESTION\n\nWhen producing your response, follow these rules:\n\n- Do not repeat the instructions from the question.\n- Use the information provided in the TOOL_RESULTS section and avoid summarizing it when responding.\n- If the TOOL_RESULTS section is empty, attempt to respond directly.\n- Do not create or suggest any download link.\n\nToday\u0027s date is 2025-11-18.",
+            "suffix": "",
+            "category": "Workflow",
+            "properties": {},
+            "created_on": "0001-01-01T00:00:00+00:00",
+            "updated_on": "2025-11-14T14:59:02.2688987+00:00",
+            "created_by": null,
+            "updated_by": "ciprian@foundationaLLM.ai",
+            "deleted": false,
+            "expiration_date": null,
+            "inheritable_authorizable_actions": []
+        },
+        "Tracing.TraceCompletionRequest": true
+    },
+    "attachments": [
+        {
+            "original_file_name": "Price Data.xlsx",
+            "content_type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            "provider": "FoundationaLLM.Context",
+            "provider_file_name": "file/users/zoinertejada-foundationallm-ai/20251118-005759-xmUbtEXAqk6AaD5WIfolWg/file-20251118-010028-vyRqWWq3V025InZ9YgnKHg.xlsx",
+            "provider_storage_account_name": null,
+            "embed_content_in_request": false
+        }
+    ],
+    "operation_id": "83d4657c-12b6-4399-9d6f-c77da5b94943",
+    "long_running_operation": false,
+    "session_id": "20251118-005759-xmUbtEXAqk6AaD5WIfolWg",
+    "user_prompt": "What files have I uploaded?",
+    "user_prompt_rewrite": null,
+    "message_history": [],
+    "file_history": [
+        {
+            "order": 1,
+            "current_message_attachment": true,
+            "original_file_name": "Price Data.xlsx",
+            "object_id": "/instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.Context/files/file-20251118-010028-vyRqWWq3V025InZ9YgnKHg",
+            "file_path": "file/users/zoinertejada-foundationallm-ai/20251118-005759-xmUbtEXAqk6AaD5WIfolWg/file-20251118-010028-vyRqWWq3V025InZ9YgnKHg.xlsx",
+            "content_type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            "secondary_provider": null,
+            "secondary_provider_object_id": null,
+            "embed_content_in_request": false
+        }
+    ],
+    "metadata": null
+}
