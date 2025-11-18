@@ -1,7 +1,7 @@
 ﻿using FoundationaLLM.Common.Interfaces;
-using FoundationaLLM.Gatekeeper.Core.Models.ConfigurationOptions;
-using FoundationaLLM.Gatekeeper.Core.Models.ContentSafety;
-using FoundationaLLM.Gatekeeper.Core.Services;
+using FoundationaLLM.Common.Models.Configuration.ContentSafety;
+using FoundationaLLM.Common.Models.ContentSafety;
+using FoundationaLLM.Common.Services;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using NSubstitute;
@@ -27,18 +27,18 @@ namespace Gatekeeper.Tests.Services
         {
             // Arrange
             var content = "This is a content.";
-            var expectedResult = new AnalyzeTextFilterResult
+            var expectedResult = new ContentSafetyAnalysisResult
             {
-                Safe = false,
-                Reason = "The content safety service was unable to validate the prompt text due to an internal error."
+                SafeContent = false,
+                Details = "The content safety service was unable to validate the prompt text due to an internal error."
             };
 
             // Act
             var result = await _testedService.AnalyzeText(content);
 
             // Assert
-            Assert.Equal(expectedResult.Safe, result.Safe);
-            Assert.Equal(expectedResult.Reason, result.Reason);
+            Assert.Equal(expectedResult.SafeContent, result.SafeContent);
+            Assert.Equal(expectedResult.Details, result.Details);
         }
     }
 }

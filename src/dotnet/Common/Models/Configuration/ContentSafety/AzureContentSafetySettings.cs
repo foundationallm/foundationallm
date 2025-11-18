@@ -1,4 +1,4 @@
-﻿namespace FoundationaLLM.Gatekeeper.Core.Models.ConfigurationOptions;
+﻿namespace FoundationaLLM.Common.Models.Configuration.ContentSafety;
 
 /// <summary>
 /// Provides configuration options for the Azure Content Safety service.

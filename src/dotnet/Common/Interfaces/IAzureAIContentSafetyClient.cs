@@ -14,7 +14,7 @@ namespace FoundationaLLM.Common.Interfaces
         /// <param name="request">The request containing the text to analyze.</param>
         /// <param name="cancellationToken">The optional cancellation token used to signal a cancellation request.</param>
         /// <returns>A task that represents the asynchronous operation. The task result contains an  <see
-        /// cref="ClientResult<AnalyzeTextResult>"/> object with the results of the analysis.</returns>
+        /// cref="ClientResult"/> object with the results of the analysis.</returns>
         Task<ClientResult<AnalyzeTextResult>> AnalyzeText(
             AnalyzeTextRequest request,
             CancellationToken cancellationToken = default);
@@ -25,7 +25,7 @@ namespace FoundationaLLM.Common.Interfaces
         /// <param name="request">The request containing the user prompt and associated documents.</param>
         /// <param name="cancellationToken">The optional cancellation token used to signal a cancellation request.</param>
         /// <returns>A task that represents the asynchronous operation. The task result contains an  <see
-        /// cref="ClientResult<AnalyzeTextResult>"/> object with the results of the analysis.</returns>
+        /// cref="ClientResult"/> object with the results of the analysis.</returns>
         Task<ClientResult<ShieldPromptResult>> ShieldPrompt(
             ShieldPromptRequest request,
             CancellationToken cancellationToken = default);

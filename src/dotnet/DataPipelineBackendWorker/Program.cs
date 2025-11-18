@@ -91,6 +91,7 @@ builder.AddTokenizers();
 //---------------------------
 builder.AddOrchestrationContext();
 builder.Services.AddScoped<IUserClaimsProviderService, NoOpUserClaimsProviderService>();
+builder.AddAzureContentSafetyService();
 
 //----------------------------
 // Resource providers
