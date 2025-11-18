@@ -92,8 +92,8 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
                 dataPipelineRunWorkItem.Stage,
                 successfullyProcessedPartsCount,
                 changedContentItemParts.Count,
-                unsafeParts.Count,
-                dataPipelineRunWorkItem.Id);
+                dataPipelineRunWorkItem.Id,
+                unsafeParts.Count);
 
             if (unsafeParts.Count > 0)
             {
