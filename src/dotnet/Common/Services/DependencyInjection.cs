@@ -4,6 +4,7 @@ using FoundationaLLM.Common.Constants;
 using FoundationaLLM.Common.Constants.Authorization;
 using FoundationaLLM.Common.Constants.Configuration;
 using FoundationaLLM.Common.Interfaces;
+using FoundationaLLM.Common.Models.Configuration.ContentSafety;
 using FoundationaLLM.Common.Models.Configuration.CosmosDB;
 using FoundationaLLM.Common.Services;
 using FoundationaLLM.Common.Services.API;
@@ -316,6 +317,26 @@ namespace FoundationaLLM
             });
 
             services.AddSingleton<IAzureCosmosDBService, AzureCosmosDBService>();
+        }
+
+        /// <summary>
+        /// Registers the Azure Content Safety <see cref="IContentSafetyService"/> implementation with the dependency injection container.
+        /// </summary>
+        /// <param name="builder">The <see cref="IHostApplicationBuilder"/> application builder managing the dependency injection container.</param>
+        public static void AddAzureContentSafetyService(this IHostApplicationBuilder builder) =>
+            builder.Services.AddAzureContentSafetyService(builder.Configuration);
+
+        /// <summary>
+        /// Registers the Azure Content Safety <see cref="IContentSafetyService"/> implementation with the dependency injection container.
+        /// </summary>
+        /// <param name="services">The <see cref="IServiceCollection"/> dependency injection container service collection.</param>
+        /// <param name="configuration">The <see cref="IConfigurationManager"/> application configuration manager.</param>
+        public static void AddAzureContentSafetyService(this IServiceCollection services, IConfigurationManager configuration)
+        {
+            services.AddOptions<AzureContentSafetySettings>()
+                .Bind(configuration.GetSection(AppConfigurationKeySections.FoundationaLLM_APIEndpoints_AzureContentSafety_Configuration));
+
+            services.AddScoped<IContentSafetyService, AzureContentSafetyService>();
         }
 
         /// <summary>

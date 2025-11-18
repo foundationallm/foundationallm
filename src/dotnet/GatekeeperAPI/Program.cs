@@ -117,9 +117,7 @@ namespace FoundationaLLM.Gatekeeper.API
                 .Bind(builder.Configuration.GetSection(AppConfigurationKeySections.FoundationaLLM_APIEndpoints_EnkryptGuardrails_Configuration));
             builder.Services.AddScoped<IEnkryptGuardrailsService, EnkryptGuardrailsService>();
 
-            builder.Services.AddOptions<AzureContentSafetySettings>()
-                .Bind(builder.Configuration.GetSection(AppConfigurationKeySections.FoundationaLLM_APIEndpoints_AzureContentSafety_Configuration));
-            builder.Services.AddScoped<IContentSafetyService, AzureContentSafetyService>();
+            builder.AddAzureContentSafetyService();
             builder.Services.AddScoped<IGatekeeperIntegrationAPIService, GatekeeperIntegrationAPIService>();
 
             builder.Services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
