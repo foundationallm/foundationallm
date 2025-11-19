@@ -66,7 +66,7 @@ user_identity_json = {
     "user_id": "4a0cc1d0-b7e9-4db8-883b-e72192f40602",
     "group_ids": []}
 
-full_request_json_file_name = 'test/full_request.json' # full original langchain request, contains agent, tools, exploded objects
+full_request_json_file_name = '../test/full_request.json' # full original langchain request, contains agent, tools, exploded objects
 
 user_identity = UserIdentity.from_json(user_identity_json)
 config = Configuration()
@@ -79,7 +79,7 @@ conversation_id = request_json['session_id']
 # user_prompt = request_json['user_prompt']
 
 
-user_prompt = "what data is in this excel file"
+user_prompt = "Make the code with the updates available for download as .PY file named `sum_of_numbers.py`"
 
 
 
