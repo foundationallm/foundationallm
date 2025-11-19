@@ -245,10 +245,14 @@ namespace FoundationaLLM.Context.Services
                 CancellationToken.None);
 
             // Bypass owner check is not needed here as we have already retrieved the file record above.
+            // Cover both cases (bypassOwnerCheck = True/False) we are sending the UPN from the file record.
+            // In the case of bypassOwnerCheck = True, we've already validated the file record can be deleted
+            // even if the calling user is not the owner of the file record. We need to send in the correct
+            // UPN to allow the more efficient point delete operation in Cosmos DB.
             await _cosmosDBService.DeleteFileRecord(
                 instanceId,
                 fileId,
-                userIdentity.UPN!);
+                fileRecord.UPN);
         }
 
         public async Task<bool> ShouldBypassOwnerCheck(
