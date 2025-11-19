@@ -228,13 +228,14 @@ namespace FoundationaLLM.Context.Services
             string fileId,
             UnifiedUserIdentity userIdentity)
         {
-            //NOTE: We do not allow bypassing the ownership check for file deletion.
+            var bypassOwnerCheck = await ShouldBypassOwnerCheck(
+                instanceId, userIdentity);
 
             var fileRecord = await _cosmosDBService.GetFileRecord(
                 instanceId,
                 fileId,
                 userIdentity.UPN!,
-                false);
+                bypassOwnerCheck);
 
             await _storageService.DeleteFileAsync(
                 instanceId,
@@ -243,6 +244,7 @@ namespace FoundationaLLM.Context.Services
                     : $"file/{fileRecord.FilePath}",
                 CancellationToken.None);
 
+            // Bypass owner check is not needed here as we have already retrieved the file record above.
             await _cosmosDBService.DeleteFileRecord(
                 instanceId,
                 fileId,

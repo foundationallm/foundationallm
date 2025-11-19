@@ -1,5 +1,6 @@
 ﻿using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Configuration.ContentSafety;
+using FoundationaLLM.Common.Models.Configuration.Instance;
 using FoundationaLLM.Common.Models.ContentSafety;
 using FoundationaLLM.Common.Services;
 using Microsoft.Extensions.Logging;
@@ -14,12 +15,12 @@ namespace Gatekeeper.Tests.Services
 
         private readonly ILogger<AzureContentSafetyService> _logger = Substitute.For<ILogger<AzureContentSafetyService>>();
         private readonly IOptions<AzureContentSafetySettings> _settings = Substitute.For<IOptions<AzureContentSafetySettings>>();
-        private readonly IOrchestrationContext _callContext = Substitute.For<IOrchestrationContext>();
+        private readonly IOptions<InstanceSettings> _instanceSettings = Substitute.For<IOptions<InstanceSettings>>();
         private readonly IHttpClientFactoryService _httpClientFactoryService = Substitute.For<IHttpClientFactoryService>();
 
         public AzureContentSafetyServiceTests()
         {
-            _testedService = new AzureContentSafetyService(_callContext, _httpClientFactoryService, _settings, _logger);
+            _testedService = new AzureContentSafetyService(_instanceSettings, _httpClientFactoryService, _settings, _logger);
         }
 
         [Fact]
