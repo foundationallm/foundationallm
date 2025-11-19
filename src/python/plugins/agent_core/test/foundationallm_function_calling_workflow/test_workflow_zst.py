@@ -6,8 +6,11 @@ import json
 import os
 import sys
 import uuid
+from pathlib import Path
 
-sys.path.append('src')
+sys.path.append('pkg')
+#repo_root = Path(__file__).resolve().parents[6]  # C:\Repos\foundationallm
+#sys.path.append(str(repo_root / "src" / "python" / "plugins" / "agent_core" / "pkg"))
 from foundationallm.operations.operations_manager import OperationsManager
 from foundationallm_agent_plugins import (
     FoundationaLLMAgentToolPluginManager,
@@ -76,7 +79,7 @@ conversation_id = request_json['session_id']
 # user_prompt = request_json['user_prompt']
 
 
-user_prompt = "I've uploaded a PNG file. Please use Python to: Load the image. Report its pixel dimensions (width × height). Convert the image to grayscale. Save and display the new grayscale version."
+user_prompt = "what data is in this excel file"
 
 
 

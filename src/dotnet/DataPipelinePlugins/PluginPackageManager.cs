@@ -132,6 +132,15 @@ namespace FoundationaLLM.Plugins.DataPipeline
                     ]
                 },
                 new() {
+                    ObjectId = $"/instances/{instanceId}/providers/FoundationaLLM.Plugin/plugins/{PluginNames.AZUREAICONTENTSAFETYSHIELDING_DATAPIPELINESTAGE}",
+                    Name = PluginNames.AZUREAICONTENTSAFETYSHIELDING_DATAPIPELINESTAGE,
+                    DisplayName = "Azure AI Content Safety Shielding Data Pipeline Stage (FoundationaLLM)",
+                    Description = "Provides the FoundationaLLM standard implementation for cotent shielding data pipeline stages.",
+                    Category = PluginCategoryNames.DataPipelineStage,
+                    Parameters = [],
+                    Dependencies = []
+                },
+                new() {
                     ObjectId = $"/instances/{instanceId}/providers/FoundationaLLM.Plugin/plugins/{PluginNames.GATEWAYTEXTEMBEDDING_DATAPIPELINESTAGE}",
                     Name = PluginNames.GATEWAYTEXTEMBEDDING_DATAPIPELINESTAGE,
                     DisplayName = "Gateway Text Embedding Data Pipeline Stage (FoundationaLLM)",
@@ -532,6 +541,8 @@ namespace FoundationaLLM.Plugins.DataPipeline
             PluginNames.TEXTEXTRACTION_DATAPIPELINESTAGE => new TextExtractionDataPipelineStagePlugin(
                 pluginParameters, this, packageManagerResolver, serviceProvider),
             PluginNames.TEXTPARTITIONING_DATAPIPELINESTAGE => new TextPartitioningDataPipelineStagePlugin(
+                pluginParameters, this, packageManagerResolver, serviceProvider),
+            PluginNames.AZUREAICONTENTSAFETYSHIELDING_DATAPIPELINESTAGE => new AzureAIContentSafetyShieldingDataPipelineStagePlugin(
                 pluginParameters, this, packageManagerResolver, serviceProvider),
             PluginNames.GATEWAYTEXTEMBEDDING_DATAPIPELINESTAGE => new GatewayTextEmbeddingDataPipelineStagePlugin(
                 pluginParameters, this, packageManagerResolver, serviceProvider),
