@@ -183,14 +183,14 @@
 						v-for="(stage, index) in selectedStagePlugins"
 						:key="index"
 						class="stage-wrapper"
-						:class="{ 'stage-wrapper--root': index === 0 }"
+						:class="{ 'stage-wrapper--root': !stage.parentName }"
 						:style="getStageWrapperStyle(index)"
 						draggable="true"
 						@dragstart="handleDragStart(index)"
 						@dragover.prevent
 						@drop="handleDrop(index)"
 					>
-				<div v-if="index > 0" class="stage-connector">
+				<div v-if="stage.parentName" class="stage-connector">
 					<span class="stage-connector__dot"></span>
 				</div>
 				<div class="stage-item">
@@ -206,6 +206,8 @@
 							</div>
 						</div>
 						<div class="stage-header__actions">
+							<Button icon="pi pi-plus" severity="success"
+								class="stage-action-button stage-action-button--success" @click="addStageAtIndex(index)" />
 							<Button icon="pi pi-trash" severity="danger"
 								class="stage-action-button stage-action-button--danger" @click="stageToDelete = index" />
 							<Button
@@ -847,13 +849,55 @@ export default {
 		},
 
 		addStage() {
+			let stageNumber = this.selectedStagePlugins.length + 1;
+			let stageName = `Stage${stageNumber}`;
+			while (this.selectedStagePlugins.some((s: any) => s.name === stageName)) {
+				stageNumber++;
+				stageName = `Stage${stageNumber}`;
+			}
 			this.selectedStagePlugins.push({
-				name: `Stage${this.selectedStagePlugins.length + 1}`,
+				name: stageName,
 				description: '',
 				plugin_object_id: '',
 				plugin_parameters: null,
 				plugin_dependencies: [],
 				collapsed: false,
+				parentName: null,
+			});
+			this.transformPipelineStages();
+		},
+
+		addStageAtIndex(parentIndex: number) {
+			const parentStage = this.selectedStagePlugins[parentIndex];
+			if (!parentStage) {
+				return;
+			}
+
+			const parentName = parentStage.name;
+
+			let stageNumber = this.selectedStagePlugins.length + 1;
+			let stageName = `Stage${stageNumber}`;
+			while (this.selectedStagePlugins.some((s) => s.name === stageName)) {
+				stageNumber++;
+				stageName = `Stage${stageNumber}`;
+			}
+
+			let insertIndex = parentIndex + 1;
+			while (
+				insertIndex < this.selectedStagePlugins.length &&
+				this.isDescendantOf(this.selectedStagePlugins[insertIndex], parentName)
+			) {
+				insertIndex++;
+			}
+
+			this.selectedStagePlugins.splice(insertIndex, 0, {
+				name: stageName,
+				description: '',
+				plugin_object_id: '',
+				plugin_parameters: null,
+				plugin_dependencies: [],
+				collapsed: false,
+				parentName,
 			});
 			this.transformPipelineStages();
 		},
@@ -865,17 +909,46 @@ export default {
 		},
 
 		transformPipelineStages() {
-			const nested = this.selectedStagePlugins.reduceRight((acc, stage) => {
-				const { collapsed, ...stageData } = stage; // Exclude collapsed property
-				return [
-					{
-						...stageData,
-						next_stages: acc,
-					},
-				];
-			}, []);
+			const stageMap = new Map<string, any>();
+			const roots: any[] = [];
+			this.selectedStagePlugins.forEach((stage: any) => {
+				const { collapsed, parentName, ...stageData } = stage;
+				stageMap.set(stage.name, {
+					...stageData,
+					next_stages: [],
+				});
+			});
+			this.selectedStagePlugins.forEach((stage: any) => {
+				const node = stageMap.get(stage.name);
+				if (!stage.parentName) {
+					roots.push(node);
+				} else {
+					const parentNode = stageMap.get(stage.parentName);
+					if (parentNode) {
+						parentNode.next_stages.push(node);
+					} else {
+						roots.push(node);
+					}
+				}
+			});
 
-			this.pipeline.starting_stages = nested;
+			this.pipeline.starting_stages = roots;
+		},
+
+		isDescendantOf(stage: any, ancestorName: string) {
+			let currentParentName = stage.parentName as string | null;
+
+			while (currentParentName) {
+				if (currentParentName === ancestorName) {
+					return true;
+				}
+				const parentStage = this.selectedStagePlugins.find(
+					(s: any) => s.name === currentParentName,
+				);
+				currentParentName = parentStage ? parentStage.parentName : null;
+			}
+
+			return false;
 		},
 
 		async handleCancel() {
@@ -909,8 +982,17 @@ export default {
 		},
 
 		handleStageNameInput(event: Event, index: number) {
+			const oldName = this.selectedStagePlugins[index].name;
 			const sanitizedValue = (this as any).$filters.sanitizeNameInput(event);
 			this.selectedStagePlugins[index].name = sanitizedValue;
+
+			this.selectedStagePlugins.forEach((stage: any) => {
+				if (stage.parentName === oldName) {
+					stage.parentName = sanitizedValue;
+				}
+			});
+
+			this.transformPipelineStages();
 		},
 
 		async handleCreatePipeline() {
@@ -951,7 +1033,7 @@ export default {
 			}
 		},
 
-		async handleNextStages(stages: any[]) {
+		async handleNextStages(stages: any[], parentName: string | null = null) {
 			for (const stage of stages) {
 				this.selectedStagePlugins.push({
 					name: stage.name,
@@ -960,6 +1042,7 @@ export default {
 					plugin_parameters: stage.plugin_parameters,
 					plugin_dependencies: stage.plugin_dependencies,
 					collapsed: true,
+					parentName,
 				});
 
 				this.selectedDependencyIdsMap[stage.name] =
@@ -982,7 +1065,7 @@ export default {
 
 				this.loadStagePluginDependencies(stage.plugin_object_id);
 				if (stage.next_stages) {
-					await this.handleNextStages(stage.next_stages);
+					await this.handleNextStages(stage.next_stages, stage.name);
 				}
 			}
 		},
@@ -1258,9 +1341,26 @@ export default {
 		},
 
 		getStageWrapperStyle(index: number) {
+			const stage = this.selectedStagePlugins[index];
+			const depth = this.getStageDepth(stage);
 			return {
-				'--indent': index.toString(),
+				'--indent': depth.toString(),
 			};
+		},
+
+		getStageDepth(stage: any) {
+			let depth = 0;
+			let currentParentName = stage.parentName as string | null;
+
+			while (currentParentName) {
+				depth++;
+				const parentStage = this.selectedStagePlugins.find(
+					(s: any) => s.name === currentParentName,
+				);
+				currentParentName = parentStage ? parentStage.parentName : null;
+			}
+
+			return depth;
 		},
 
 		handleTriggerNameChange(triggerIndex: number) {
@@ -1348,10 +1448,14 @@ input {
 	position: relative;
 	--indent: 0;
 	padding-left: calc(var(--indent) * 32px);
+	margin-top:20px;
 }
 
 .stage-wrapper--root {
 	padding-left: 0;
+}
+.stage-wrapper--root:not(:first-child) {
+	margin-top: 16px;
 }
 
 .stage-item {
@@ -1371,6 +1475,21 @@ input {
 	left: calc(var(--indent) * 32px - 18px);
 	width: 18px;
 	pointer-events: none;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.stage-connector__add-button {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	pointer-events: auto;
+	z-index: 10;
+	width: 24px;
+	height: 24px;
+	padding: 0;
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -1487,5 +1606,24 @@ input {
 
 .add-stage-button {
 	margin-top:30px;
+}
+
+.stage-action-button {
+	min-width: 32px;
+	height: 32px;
+	padding: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.stage-action-button--success {
+	background-color: #22c55e;
+	border-color: #22c55e;
+}
+
+.stage-action-button--success:hover {
+	background-color: #16a34a;
+	border-color: #16a34a;
 }
 </style>
