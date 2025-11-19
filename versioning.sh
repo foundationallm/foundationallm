@@ -4,8 +4,15 @@
 RAW_TAG="${GITHUB_REF#refs/tags/}"
 echo "The raw tag is: '$RAW_TAG'"
 
-# Extract version from branch name (format: 1.0.0 or 1.0.0-alpha1 or 1.0.0-beta1 or 1.0.0-rc1 or 1.0.0-poc1 or 1.0.0-base1)
-if [[ "$RAW_TAG" =~ ^(nuget-|pypi-)?([0-9]+\.[0-9]+\.[0-9]+(-(alpha|beta|rc|poc|base)[1-9][0-9]{2})?)$ ]]; then
+# Extract version from branch name (format: 1.0.0 or 1.0.0-alpha1 or 1.0.0-beta1
+# or 1.0.0-rc1 or 1.0.0-poc1 or 1.0.0-base1)
+# Build the regex in readable pieces so it's easier to maintain.
+VERSION_REGEX='^(nuget-|pypi-|context_api-)?'
+VERSION_REGEX+='([0-9]+\.[0-9]+\.[0-9]+'
+VERSION_REGEX+='(-(alpha|beta|rc|poc|base)[1-9][0-9]{2})?'
+VERSION_REGEX+=')$'
+
+if [[ "$RAW_TAG" =~ $VERSION_REGEX ]]; then
   VERSION="${BASH_REMATCH[2]}"
 else
   VERSION="0.0.0"
