@@ -93,15 +93,6 @@ class FoundationaLLMCodeInterpreterTool(FoundationaLLMToolBase):
                 if RunnableConfigKeys.ORIGINAL_USER_PROMPT_REWRITE in runnable_config['configurable'] \
                 else None
 
-        if 'file_history' in runnable_config['configurable']:
-            file_history = runnable_config['configurable']['file_history']
-        else:
-            file_history = []
-
-        #file_object_ids = [next((f.object_id for f in file_history if f.original_file_name == file_name), None) for file_name in file_names]
-        #if None in file_object_ids:
-        #    raise ToolException(f"Some of the requested files [{file_names}] are not available in the file history.")
-
         session_id = runnable_config['configurable'][self.tool_config.name][self.DYNAMIC_SESSION_ID]
 
         llm_prompt = prompt or user_prompt_rewrite or user_prompt
