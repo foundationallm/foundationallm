@@ -150,7 +150,10 @@ export default {
 				throw error;
 			}
 			// For other errors, format them
-			throw new Error(formatError(error));
+			const formattedError = new Error(formatError(error));
+			(formattedError as any).status = error.status;
+			(formattedError as any).statusText = error.statusText;
+			throw formattedError;
 		}
 	},
 
