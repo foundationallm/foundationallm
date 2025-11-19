@@ -526,6 +526,15 @@ import { useAuthStore } from '@/stores/authStore';
 				},
 				immediate: true,
 			},
+			'$appConfigStore.isFeaturedAgentNamesLoaded': {
+				async handler(newVal) {
+					if (newVal) {
+						// Refresh agents now that config (and featuredAgentNames) is loaded
+        		await this.loadAllowedAgents();
+					}
+				},
+				immediate: true,
+			},
 			'$authStore.isAuthenticated': {
 				handler(newVal) {
 					if (newVal) {
@@ -579,7 +588,7 @@ import { useAuthStore } from '@/stores/authStore';
 
 			await this.setAgentOptions();
 			await this.loadUserProfile();
-			await this.loadgetAgents();
+			await this.loadAllowedAgents();
 			await this.checkContributorRoles();
 		},
 
@@ -807,7 +816,12 @@ import { useAuthStore } from '@/stores/authStore';
 				}
 			},
 
-			async loadgetAgents() {
+			async loadAllowedAgents() {
+
+				if (!this.$appConfigStore.isFeaturedAgentNamesLoaded) {
+					return; // the watcher will re-invoke this when the featured agent names are available.
+				}
+
 				this.loadingAgents2 = true;
 				this.agentError2 = '';
 
@@ -852,7 +866,7 @@ import { useAuthStore } from '@/stores/authStore';
 
 			async refreshAgents() {
 				await this.loadUserProfile();
-				await this.loadgetAgents();
+				await this.loadAllowedAgents();
 			},
 
 			isCurrentAgent(agent: AgentOption): boolean {

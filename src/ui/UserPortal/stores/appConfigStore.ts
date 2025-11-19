@@ -5,6 +5,7 @@ export const useAppConfigStore = defineStore('appConfig', {
 	state: () => ({
 		// Loading states
 		isConfigurationLoaded: false,
+		isFeaturedAgentNamesLoaded: false,
 		hasConfigurationAccessError: false,
 		configurationAccessErrorMessage: null as string | null,
 
@@ -167,6 +168,7 @@ export const useAppConfigStore = defineStore('appConfig', {
 						}
 						if (configValues['FoundationaLLM:UserPortal:Configuration:FeaturedAgentNames']) {
 							this.featuredAgentNames = configValues['FoundationaLLM:UserPortal:Configuration:FeaturedAgentNames'] as string;
+							this.isFeaturedAgentNamesLoaded = true;
 						}
 						if (configValues['FoundationaLLM:UserPortal:Configuration:AgentManagementPermissionRequestUrl']) {
 							this.agentManagementPermissionRequestUrl = configValues['FoundationaLLM:UserPortal:Configuration:AgentManagementPermissionRequestUrl'] as string;
