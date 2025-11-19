@@ -1,11 +1,15 @@
-﻿using FoundationaLLM.Common.Constants.DataPipelines;
+﻿using FoundationaLLM.Common.Authentication;
+using FoundationaLLM.Common.Constants.DataPipelines;
+using FoundationaLLM.Common.Extensions;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Interfaces.Plugins;
 using FoundationaLLM.Common.Models.ContentSafety;
 using FoundationaLLM.Common.Models.DataPipelines;
 using FoundationaLLM.Common.Models.Plugins;
+using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders.DataPipeline;
 using FoundationaLLM.Common.Services.Plugins;
+using FoundationaLLM.Common.Utils;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
@@ -98,12 +102,57 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
             if (unsafeParts.Count > 0)
             {
                 _logger.LogWarning(
-                    "The {PluginName} plugin for the {Stage} stage detected {UnsafePartsCount} unsafe parts in work item {WorkItemId}. This is a critical situation that prevents further processing.",
+                    "The {PluginName} plugin for the {Stage} stage detected {UnsafePartsCount} unsafe parts in work item {WorkItemId}. The unsafe part identifiers are {UnsafePartIds}. This is a critical situation that prevents further processing.",
                     Name,
                     dataPipelineRunWorkItem.Stage,
                     unsafeParts.Count,
+                    dataPipelineRunWorkItem.Id,
+                    string.Join(',', unsafeParts.Select(p => p.Key)));
+
+                // Notifying the data source that prompt injection was detected.
+                // Each data source plugin can handle this notification as needed.
+                var dataSourcePluginName = ResourcePath.GetResourcePath(
+                dataPipelineDefinition.DataSource.PluginObjectId).ResourceId;
+
+                // This plugin might originate from a different package manager instance,
+                // so we need to resolve the package manager for the data source plugin.
+                var dataSourcePackageManager = await _packageManagerResolver.GetPluginPackageManager(
+                    dataPipelineDefinition.DataSource.PluginObjectId,
+                    ServiceContext.ServiceIdentity!);
+
+                var dataSourcePlugin =
+                    dataSourcePackageManager.GetDataSourcePlugin(
+                        dataSourcePluginName!,
+                        dataPipelineDefinition.DataSource.DataSourceObjectId,
+                        dataPipelineRun.TriggerParameterValues.FilterKeys(
+                            $"DataSource.{dataPipelineDefinition.DataSource.Name}."),
+                        _packageManagerResolver,
+                        _serviceProvider);
+
+                _logger.LogWarning(
+                    "The {PluginName} plugin is notifying the data source plugin {DataSourcePluginName} about prompt injection detected in work item {WorkItemId}.",
+                    Name,
+                    dataSourcePluginName,
                     dataPipelineRunWorkItem.Id);
-                return new PluginResult(false, true, ErrorMessage: "Prompt injection detected in content.");
+
+                try
+                {
+                    await RetryHelper.ExecuteWithRetryAsync(async () =>
+                        await dataSourcePlugin.HandleUnsafeContentItem(dataPipelineRunWorkItem.ContentItemCanonicalId));
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(
+                        ex,
+                        "The {PluginName} plugin encountered an error while notifying the data source plugin {DataSourcePluginName} about prompt injection detected in work item {WorkItemId}.",
+                        Name,
+                        dataSourcePluginName,
+                        dataPipelineRunWorkItem.Id);
+
+                    return new PluginResult(false, true, ErrorMessage: "Prompt injection detected in content. Data source plugin was not able to handle the unsafe content item successfully.");
+                }
+
+                return new PluginResult(false, true, ErrorMessage: "Prompt injection detected in content. Data source plugin handled the unsafe content item successfully.");
             }
 
             foreach (var contentItemPart in changedContentItemParts)
