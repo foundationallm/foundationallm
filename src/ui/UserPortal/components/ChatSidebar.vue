@@ -477,12 +477,6 @@ import { useAuthStore } from '@/stores/authStore';
 				return (this.$appStore as any).currentSession;
 			},
 
-			featuredAgentNames(): string[] {
-				const featuredNamesString = (this.$appConfigStore as any).featuredAgentNames;
-				if (!featuredNamesString) return [];
-				return featuredNamesString.split(',').map((name: string) => name.trim()).filter((name: string) => name.length > 0);
-			},
-
 			filteredAgents(): AgentOption[] {
 				let filtered = this.agentOptions2;
 
@@ -838,8 +832,8 @@ import { useAuthStore } from '@/stores/authStore';
 						const isAgentSelected = this.userProfile?.agents?.includes(agent.object_id) || false;
 
 						// Check if this agent is a featured agent (by name, as per memory: resource names are reliable identifiers)
-						const isFeaturedAgent = this.featuredAgentNames.includes(agent.name);
-						const isFirstFeaturedAgent = this.featuredAgentNames.length > 0 && agent.name === this.featuredAgentNames[0];
+						const isFeaturedAgent = this.$appConfigStore.featuredAgentNames?.includes(agent.name);
+						const isPinnedFeaturedAgent = this.$appConfigStore.pinnedFeaturedAgentNames?.includes(agent.name);
 
 						return {
 							object_id: agent.object_id,
@@ -852,7 +846,7 @@ import { useAuthStore } from '@/stores/authStore';
 							enabled: isAgentSelected,
 							isReadonly: isAgentReadonly(ResourceProviderGetResult.roles || []),
 							isFeatured: isFeaturedAgent, // Add featured flag for UI logic
-							isFirstFeatured: isFirstFeaturedAgent
+							isPinnedFeatured: isPinnedFeaturedAgent
 						};
 					});
 				} catch (error) {
@@ -878,7 +872,7 @@ import { useAuthStore } from '@/stores/authStore';
 			preventDisable(agent: AgentOption): boolean {
 				// Prevent disabling if it's the current agent in use
 				return agent.enabled
-					&& (this.isCurrentAgent(agent) || agent.isFirstFeatured);
+					&& (this.isCurrentAgent(agent) || agent.isPinnedFeatured);
 			},
 
 			selectAgent(getAgents: AgentOption) {

@@ -44,7 +44,8 @@ export const useAppConfigStore = defineStore('appConfig', {
 		showMessageTokens: null as boolean | null,
 		showViewPrompt: null as boolean | null,
 		showFileUpload: null as boolean | null,
-		featuredAgentNames: null as string | null,
+		featuredAgentNames: [] as string[] | null,
+		pinnedFeaturedAgentNames: [] as string[] | null,
 		agentManagementPermissionRequestUrl: null as string | null,
 
 		// Auth: These settings configure the MSAL authentication.
@@ -167,7 +168,12 @@ export const useAppConfigStore = defineStore('appConfig', {
 								: JSON.parse((configValues['FoundationaLLM:UserPortal:Configuration:ShowFileUpload'] as string).toLowerCase());
 						}
 						if (configValues['FoundationaLLM:UserPortal:Configuration:FeaturedAgentNames']) {
-							this.featuredAgentNames = configValues['FoundationaLLM:UserPortal:Configuration:FeaturedAgentNames'] as string;
+							const featuredAgentNamesString = configValues['FoundationaLLM:UserPortal:Configuration:FeaturedAgentNames'] as string;
+
+							this.featuredAgentNames = featuredAgentNamesString.split(',').map((name: string) => name.trim()).filter((name: string) => name.length > 0);
+							this.pinnedFeaturedAgentNames = this.featuredAgentNames.filter(name => name.endsWith('|*')).map(name => name.replace(/\|\*$/, ''));
+							this.featuredAgentNames = this.featuredAgentNames.map(name => name.replace(/\|\*$/, ''));
+
 							this.isFeaturedAgentNamesLoaded = true;
 						}
 						if (configValues['FoundationaLLM:UserPortal:Configuration:AgentManagementPermissionRequestUrl']) {

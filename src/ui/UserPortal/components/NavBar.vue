@@ -302,10 +302,7 @@
 				}
 
 				// Get featured agent names from config
-				const featuredAgentNames = this.$appConfigStore.featuredAgentNames;
-				const featuredAgentNamesList = featuredAgentNames
-					? featuredAgentNames.split(',').map((name: string) => name.trim())
-					: [];
+				const featuredAgentNamesList = this.$appConfigStore.featuredAgentNames;
 
 				// Separate agents into featured and non-featured
 				const featuredAgents: AgentDropdownOption[] = [];
