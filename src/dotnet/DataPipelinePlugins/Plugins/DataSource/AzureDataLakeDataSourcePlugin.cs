@@ -25,10 +25,16 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataSource
         protected override string Name => PluginNames.AZUREDATALAKE_DATASOURCE;
 
         /// <inheritdoc/>
-        public async Task<List<DataPipelineContentItem>> GetContentItems() => throw new NotImplementedException();
+        public async Task<List<DataPipelineContentItem>> GetContentItems() =>
+            throw new NotImplementedException();
 
         /// <inheritdoc/>
         public async Task<PluginResult<ContentItemRawContent>> GetContentItemRawContent(
-            ContentIdentifier contentItemIdentifier) => throw new NotImplementedException();
+            ContentIdentifier contentItemIdentifier) =>
+            throw new NotImplementedException();
+
+        /// <inheritdoc/>
+        public async Task HandleUnsafeContentItem(string canonicalContentItemIdentifier) =>
+            throw new NotImplementedException();
     }
 }

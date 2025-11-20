@@ -25,7 +25,8 @@ class WorkflowPluginManagerBase(ABC):
         tools: List[AgentTool],
         operations_manager: OperationsManager,
         user_identity: UserIdentity,
-        config: Configuration) -> FoundationaLLMWorkflowBase:
+        config: Configuration,
+        intercept_http_calls: bool = False) -> FoundationaLLMWorkflowBase:
         """
         Create a workflow instance based on the given configuration and tools.
         Parameters

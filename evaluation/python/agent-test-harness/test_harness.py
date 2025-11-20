@@ -674,47 +674,168 @@ def execute_tests_from_dataframe(df, agent_name, max_workers=5):
                 result = future.result()
                 if result:
                     # Add repeat information if available
-                    if '_repeat_index' in df.iloc[index]:
-                        result['RepeatIndex'] = df.iloc[index]['_repeat_index']
-                        result['OriginalIndex'] = df.iloc[index]['_original_index']
-                    result['Ordinal'] = index + 1
+                    # Use .loc for index-based access (iterrows() returns index label, not position)
+                    row_data = df.loc[index] if index in df.index else df.iloc[0]
+                    # Check if column exists in the Series index (column names)
+                    if '_repeat_index' in row_data.index if hasattr(row_data, 'index') else '_repeat_index' in row_data:
+                        # Extract scalar values from Series if needed
+                        repeat_idx = row_data['_repeat_index']
+                        orig_idx = row_data['_original_index']
+                        # Extract scalar values from Series - use .item() to ensure scalar
+                        try:
+                            if isinstance(repeat_idx, pd.Series):
+                                repeat_idx = repeat_idx.item() if len(repeat_idx) > 0 else None
+                            elif hasattr(repeat_idx, 'item'):
+                                repeat_idx = repeat_idx.item()
+                            # Convert to int if not None and not NaN
+                            if repeat_idx is not None:
+                                try:
+                                    result['RepeatIndex'] = int(float(repeat_idx))
+                                except (ValueError, TypeError):
+                                    result['RepeatIndex'] = None
+                            else:
+                                result['RepeatIndex'] = None
+                        except (ValueError, TypeError, AttributeError):
+                            result['RepeatIndex'] = None
+                        
+                        try:
+                            if isinstance(orig_idx, pd.Series):
+                                orig_idx = orig_idx.item() if len(orig_idx) > 0 else None
+                            elif hasattr(orig_idx, 'item'):
+                                orig_idx = orig_idx.item()
+                            # Convert to int if not None and not NaN
+                            if orig_idx is not None:
+                                try:
+                                    result['OriginalIndex'] = int(float(orig_idx))
+                                except (ValueError, TypeError):
+                                    result['OriginalIndex'] = None
+                            else:
+                                result['OriginalIndex'] = None
+                        except (ValueError, TypeError, AttributeError):
+                            result['OriginalIndex'] = None
+                    result['Ordinal'] = int(index) + 1
                     results.append(result)
                 else:
                     # Get the original question from the DataFrame
-                    original_question = df.iloc[index]['Question']
+                    # Use .loc for index-based access (iterrows() returns index label, not position)
+                    row_data = df.loc[index] if index in df.index else df.iloc[0]
+                    # Extract scalar values from Series if needed - use .item() to ensure scalar
+                    try:
+                        original_question = row_data['Question']
+                        if isinstance(original_question, pd.Series):
+                            original_question = original_question.item() if len(original_question) > 0 else ''
+                        original_question = str(original_question) if original_question is not None else ''
+                    except (KeyError, AttributeError):
+                        original_question = ''
+                    
+                    try:
+                        filename_val = row_data.get('Filename', '') if hasattr(row_data, 'get') else row_data['Filename'] if 'Filename' in row_data.index else ''
+                        if isinstance(filename_val, pd.Series):
+                            filename_val = filename_val.item() if len(filename_val) > 0 else ''
+                        filename_val = str(filename_val) if filename_val is not None else ''
+                    except (KeyError, AttributeError):
+                        filename_val = ''
+                    
+                    try:
+                        answer_val = row_data.get('Answer', '') if hasattr(row_data, 'get') else row_data['Answer'] if 'Answer' in row_data.index else ''
+                        if isinstance(answer_val, pd.Series):
+                            answer_val = answer_val.item() if len(answer_val) > 0 else ''
+                        answer_val = str(answer_val) if answer_val is not None else ''
+                    except (KeyError, AttributeError):
+                        answer_val = ''
+                    
                     print(f"Failed to process question: {original_question}")
                     # Create a failed result entry
                     failed_result = {
                         'Question': original_question,
-                        'Filename': df.iloc[index]['Filename'],
-                        'Answer': df.iloc[index]['Answer'],
+                        'Filename': filename_val,
+                        'Answer': answer_val,
                         'AgentAnswer': 'Failed to process',
                         'ErrorOccured': 1,
                         'ErrorDetails': 'Test execution failed',
-                        'Ordinal': index + 1
+                        'Ordinal': int(index) + 1
                     }
                     # Add repeat information if available
-                    if '_repeat_index' in df.iloc[index]:
-                        failed_result['RepeatIndex'] = df.iloc[index]['_repeat_index']
-                        failed_result['OriginalIndex'] = df.iloc[index]['_original_index']
+                    # Check if column exists in the Series index (column names)
+                    if '_repeat_index' in row_data.index if hasattr(row_data, 'index') else '_repeat_index' in row_data:
+                        # Extract scalar values from Series if needed
+                        repeat_idx = row_data['_repeat_index']
+                        orig_idx = row_data['_original_index']
+                        # Ensure we have scalar values, not Series
+                        if isinstance(repeat_idx, pd.Series):
+                            repeat_idx = repeat_idx.iloc[0] if len(repeat_idx) > 0 else None
+                        if isinstance(orig_idx, pd.Series):
+                            orig_idx = orig_idx.iloc[0] if len(orig_idx) > 0 else None
+                        # Use safe NaN check
+                        failed_result['RepeatIndex'] = int(repeat_idx) if repeat_idx is not None and not pd.isna(repeat_idx) else None
+                        failed_result['OriginalIndex'] = int(orig_idx) if orig_idx is not None and not pd.isna(orig_idx) else None
                     results.append(failed_result)
             except Exception as e:
                 print(f"Error processing question at index {index}: {e}")
                 # Create a failed result entry
-                original_question = df.iloc[index]['Question']
+                # Use .loc for index-based access (iterrows() returns index label, not position)
+                try:
+                    row_data = df.loc[index] if index in df.index else df.iloc[0]
+                except (KeyError, IndexError):
+                    # Fallback: use first row if index access fails
+                    row_data = df.iloc[0]
+                # Extract scalar values from Series if needed
+                original_question = row_data.get('Question', 'Unknown')
+                if isinstance(original_question, pd.Series):
+                    original_question = str(original_question.iloc[0]) if len(original_question) > 0 else 'Unknown'
+                filename_val = row_data.get('Filename', '')
+                if isinstance(filename_val, pd.Series):
+                    filename_val = str(filename_val.iloc[0]) if len(filename_val) > 0 else ''
+                answer_val = row_data.get('Answer', '')
+                if isinstance(answer_val, pd.Series):
+                    answer_val = str(answer_val.iloc[0]) if len(answer_val) > 0 else ''
                 failed_result = {
                     'Question': original_question,
-                    'Filename': df.iloc[index]['Filename'],
-                    'Answer': df.iloc[index]['Answer'],
+                    'Filename': filename_val,
+                    'Answer': answer_val,
                     'AgentAnswer': 'Failed to process',
                     'ErrorOccured': 1,
                     'ErrorDetails': str(e),
-                    'Ordinal': index + 1
+                    'Ordinal': int(index) + 1
                 }
                 # Add repeat information if available
-                if '_repeat_index' in df.iloc[index]:
-                    failed_result['RepeatIndex'] = df.iloc[index]['_repeat_index']
-                    failed_result['OriginalIndex'] = df.iloc[index]['_original_index']
+                # Check if column exists in the Series index (column names)
+                if '_repeat_index' in row_data.index if hasattr(row_data, 'index') else '_repeat_index' in row_data:
+                    # Extract scalar values from Series if needed
+                    repeat_idx = row_data['_repeat_index']
+                    orig_idx = row_data['_original_index']
+                    # Extract scalar values from Series - use .item() to ensure scalar
+                    try:
+                        if isinstance(repeat_idx, pd.Series):
+                            repeat_idx = repeat_idx.item() if len(repeat_idx) > 0 else None
+                        elif hasattr(repeat_idx, 'item'):
+                            repeat_idx = repeat_idx.item()
+                        # Convert to int if not None and not NaN
+                        if repeat_idx is not None:
+                            try:
+                                failed_result['RepeatIndex'] = int(float(repeat_idx))
+                            except (ValueError, TypeError):
+                                failed_result['RepeatIndex'] = None
+                        else:
+                            failed_result['RepeatIndex'] = None
+                    except (ValueError, TypeError, AttributeError):
+                        failed_result['RepeatIndex'] = None
+                    
+                    try:
+                        if isinstance(orig_idx, pd.Series):
+                            orig_idx = orig_idx.item() if len(orig_idx) > 0 else None
+                        elif hasattr(orig_idx, 'item'):
+                            orig_idx = orig_idx.item()
+                        # Convert to int if not None and not NaN
+                        if orig_idx is not None:
+                            try:
+                                failed_result['OriginalIndex'] = int(float(orig_idx))
+                            except (ValueError, TypeError):
+                                failed_result['OriginalIndex'] = None
+                        else:
+                            failed_result['OriginalIndex'] = None
+                    except (ValueError, TypeError, AttributeError):
+                        failed_result['OriginalIndex'] = None
                 results.append(failed_result)
     
     # Convert results to DataFrame

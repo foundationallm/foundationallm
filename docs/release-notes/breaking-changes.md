@@ -3,11 +3,42 @@
 > [!NOTE]
 > This section is for changes that are not yet released but will affect future releases.
 
+## Starting from 0.9.7-rc477
+
+### Artifact changes
+
+A new workflow resource must be added to support the `LangChainAgentWorkflow`. Ensure the reference is added to `_resource-references.json` as well.
+
+```json
+{
+    "type": "langchain-agent-workflow",
+    "name": "LangChainAgentWorkflow",
+    "object_id": "/instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.Agent/workflows/LangChainAgentWorkflow",
+    "display_name": "LangChainAgentWorkflow",
+    "description": "LangChain Agent workflow",
+    "cost_center": null,
+    "properties": null,
+    "created_on": "2025-11-16T00:00:00+00:00",
+    "updated_on": "0001-01-01T00:00:00+00:00",
+    "created_by": "SYSTEM",
+    "updated_by": null,
+    "deleted": false,
+    "expiration_date": null
+}
+```
+
+## Starting from 0.9.7-rc472
+
+### Configuration changes
+
+A new feature flag named `FoundationaLLM.Agent.SelfService` has been added. This flag enables or disables the self-service capabilities for agents in the FoundationaLLM User Portal and the Core API. The default value is `true`.
+
 ## Starting from 0.9.7-rc470
 
 ### Schema changes
 
 The `FoundationaLLM.Agent` resource provider schema is updated to version 2. The schema changes are as follows:
+
 - The agent type `knowledge-management` is replaced with `generic-agent`.
 - The agent workflow type `external-agent-workflow` is replaced with `generic-agent-workflow`.
 
@@ -66,6 +97,8 @@ The following configuration values are obsolete and must be removed:
 ### Permissions changes
 
 All User Portal users must have read permission on the `/instances/<instance_id_>/providers/FoundationaLLM.Configuration/appConfigurationSets/UserPortal` scope.
+
+`AllAgentsVirtualSecurityGroup` (`5bb493a2-5909-4771-93ba-d83b7b5a1de9`) must have read permission on the `/instances/<instance_id_>/providers/FoundationaLLM.Configuration/appConfigurationSets/UserPortal` scope.
 
 All Management Portal users must have read permissions on the `/instances/<instance_id_>/providers/FoundationaLLM.Configuration/appConfigurationSets/ManagementPortal` scope.
 

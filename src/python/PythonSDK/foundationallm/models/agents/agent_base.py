@@ -10,6 +10,7 @@ from foundationallm.models.agents import (
     GenericAgentWorkflow,
     AzureAIAgentServiceAgentWorkflow,
     AzureOpenAIAssistantsAgentWorkflow,
+    LangChainAgentWorkflow,
     LangChainExpressionLanguageAgentWorkflow,
     LangGraphReactAgentWorkflow,
     ExternalAgentWorkflow,
@@ -33,6 +34,7 @@ class AgentBase(ResourceBase):
                 GenericAgentWorkflow,
                 AzureAIAgentServiceAgentWorkflow,
                 AzureOpenAIAssistantsAgentWorkflow,
+                LangChainAgentWorkflow,
                 LangChainExpressionLanguageAgentWorkflow,
                 LangGraphReactAgentWorkflow,
                 ExternalAgentWorkflow

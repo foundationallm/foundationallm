@@ -1,0 +1,47 @@
+name: User Portal Release
+
+on:
+  push:
+    tags:
+    - "user_portal-0.*.*"
+    - "user_portal-0.*.*-alpha*"
+    - "user_portal-0.*.*-beta*"
+    - "user_portal-0.*.*-rc*"
+    - "user_portal-1.*.*"
+    - "user_portal-1.*.*-alpha*"
+    - "user_portal-1.*.*-beta*"
+    - "user_portal-1.*.*-rc*"
+    - "user_portal-2.*.*"
+    - "user_portal-2.*.*-alpha*"
+    - "user_portal-2.*.*-beta*"
+    - "user_portal-2.*.*-rc*"
+  workflow_dispatch:
+    inputs: {}
+
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    outputs:
+      docker_tag: ${{ steps.docker-tag.outputs.docker_tag }}
+    steps:
+    - name: Set Docker Tag
+      id: docker-tag
+      run: |
+        DOCKER_TAG="${GITHUB_REF_NAME#user_portal-}"
+        echo "DOCKER_TAG=$DOCKER_TAG" >> $GITHUB_ENV
+        echo "docker_tag: Latest Tag is : $DOCKER_TAG"
+        echo "docker_tag=$DOCKER_TAG" >> $GITHUB_OUTPUT
+  docker_build:
+    name: Build Docker Image
+    needs:
+      - prepare
+    uses: ./.github/workflows/build-docker-image.yml
+    with:
+      image: chat-ui
+      context: ./src/ui/UserPortal
+      dockerfile: ./src/ui/UserPortal/Dockerfile
+      registry: foundationallm.azurecr.io
+      tag: ${{ needs.prepare.outputs.docker_tag }}
+      username: foundationallm
+      target: sandbox
+    secrets: inherit

@@ -28,22 +28,23 @@
             "name": "Agent Plugins - Debug Workflow",
             "type": "debugpy",
             "request": "launch",
-            "program": "${workspaceFolder}/src/python/plugins/agent/test/foundationallm_function_calling_workflow/test_workflow.py",
+            "program": "${workspaceFolder}/src/python/plugins/agent_core/test/foundationallm_function_calling_workflow/test_workflow.py",
             "console": "integratedTerminal",
-            "python": "${workspaceFolder}/src/python/plugins/agent/.venv/Scripts/python.exe",
-            "cwd" : "${workspaceFolder}/src/python/plugins/agent",
+            "python": "${workspaceFolder}/src/python/plugins/agent_core/.venv/Scripts/python.exe",
+            "cwd" : "${workspaceFolder}/src/python/plugins/agent_core",
             "justMyCode": false
         },
         {
             "name": "Agent Plugins - Debug ZST Workflow",
             "type": "debugpy",
             "request": "launch",
-            "program": "${workspaceFolder}/src/python/plugins/agent/test/foundationallm_function_calling_workflow/test_workflow_zst.py",
+            "program": "${workspaceFolder}/src/python/plugins/agent_core/test/foundationallm_function_calling_workflow/test_workflow_zst.py",
             "console": "integratedTerminal",
-            "python": "${workspaceFolder}/src/python/plugins/agent/.venv/Scripts/python.exe",
-            "cwd" : "${workspaceFolder}/src/python/plugins/agent",
+            "python": "${workspaceFolder}/src/python/plugins/agent_core/.venv/Scripts/python.exe",
+            "cwd" : "${workspaceFolder}/src/python/plugins/agent_core/pkg",
             "justMyCode": false,
             "env" : {
+                "PYTHONPATH": "${workspaceFolder}/src/python/PythonSDK;${workspaceFolder}/src/python/plugins/agent_core/pkg",
                 "FOUNDATIONALLM_APP_CONFIGURATION_URI": "https://appcs-l43jljq2i5ox6.azconfig.io"
             }
         },

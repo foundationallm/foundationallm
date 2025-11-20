@@ -405,4 +405,7 @@ dist
 certs.zip
 
 src/python/PythonSDK/MANIFEST.in
+
 /evaluation/python/agent-test-harness/results
+/evaluation/python/prompt-author-output/context
+/evaluation/python/prompt-author-output/history

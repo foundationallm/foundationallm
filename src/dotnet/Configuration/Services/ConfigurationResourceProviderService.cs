@@ -215,6 +215,12 @@ namespace FoundationaLLM.Configuration.Services
                         ?? throw new ResourceProviderException(
                             $"The resource {resourcePath.ResourceTypeInstances[0].ResourceId!} of type {resourcePath.ResourceTypeInstances[0].ResourceType} could not be loaded.",
                             StatusCodes.Status500InternalServerError);
+                case Type t when t == typeof(AppConfigurationSet):
+                    var appConfigurationSets = LoadAppConfigurationSets(resourcePath, authorizationResult);
+                    return appConfigurationSets.FirstOrDefault()?.Resource as T
+                        ?? throw new ResourceProviderException(
+                            $"The resource {resourcePath.ResourceTypeInstances[0].ResourceId!} of type {resourcePath.ResourceTypeInstances[0].ResourceType} could not be loaded.",
+                            StatusCodes.Status500InternalServerError);
                 default:
                     throw new ResourceProviderException(
                         $"The resource type {typeof(T).Name} is not supported by the {_name} resource provider.",

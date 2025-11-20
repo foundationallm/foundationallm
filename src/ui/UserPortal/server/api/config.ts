@@ -12,6 +12,7 @@ const allowedFilters = [
 const allowedKeys = [
 	'FoundationaLLM:APIEndpoints:CoreAPI:Essentials:APIUrl',
 	'.appconfig.featureflag/FoundationaLLM-AllowAgentHint',
+	'.appconfig.featureflag/FoundationaLLM.Agent.SelfService',
 	'FoundationaLLM:Branding:AllowAgentSelection',
 	'FoundationaLLM:Branding:KioskMode',
 	'FoundationaLLM:Branding:PageTitle',

@@ -194,6 +194,7 @@ export interface AgentOption {
 	enabled: boolean;
 	isReadonly?: boolean;
 	isFeatured?: boolean;
+	isFirstFeatured? boolean;
 }
 
 export interface FileStoreConnector {

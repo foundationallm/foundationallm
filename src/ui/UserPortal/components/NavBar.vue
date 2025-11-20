@@ -112,6 +112,8 @@
 	import { isAgentExpired } from '@/js/helpers';
 	import type { Session } from '@/js/types';
 	import '@/styles/navbar.scss';
+	import { useAppStore } from '@/stores/appStore';
+	import { useAppConfigStore } from '@/stores/appConfigStore';
 
 	interface AgentDropdownOption {
 		label: string;
@@ -131,6 +133,12 @@
 	export default {
 		name: 'NavBar',
 
+		setup() {
+			const $appStore = useAppStore();
+			const $appConfigStore = useAppConfigStore();
+			return { $appStore, $appConfigStore };
+		},
+
 		data() {
 			return {
 				agentSelection: null as AgentDropdownOption | null,
@@ -139,6 +147,7 @@
 				virtualUser: null as string | null,
 				isMobile: window.screen.width < 950,
 				emptyAgentsMessage: null as string | null,
+				hasAvailableAgents: false as boolean,
 			};
 		},
 
@@ -148,7 +157,7 @@
 			},
 
 			showNoAgentsMessage() {
-				return this.$appStore.isInitialized && this.agentOptions.length === 0 && this.emptyAgentsMessage !== null;
+				return this.$appStore.isInitialized && !this.hasAvailableAgents && this.emptyAgentsMessage !== null;
 			},
 		},
 
@@ -240,6 +249,10 @@
 			},
 
 			async setAgentOptions() {
+
+				this.hasAvailableAgents = this.$appStore.agents.some(
+					(agent: any) => !isAgentExpired(agent));
+
 				// Check if configuration is loaded, if not try to load it
 				if (this.$appConfigStore.featuredAgentNames === null) {
 					try {
@@ -261,18 +274,17 @@
 				const enabledAgentIds = userProfile?.agents || [];
 
 				// Filter out expired agents, disabled agents, and agents not enabled in user profile
-				// but keep the currently selected agent even if it doesn't meet these criteria				
+				// but keep the currently selected agent even if it doesn't meet these criteria
 				const filteredAgents = this.$appStore.agents.filter((agent: any) => {
 					const isExpiredOrDisabled = isAgentExpired(agent) || agent.enabled === false;
-					
+
 					// Check if agent is in user profile by exact matching object_id
-					const foundAgent = enabledAgentIds.find((agentId: any) => 
+					const foundAgent = enabledAgentIds.find((agentId: any) =>
 						agentId == agent.resource.object_id
 					);
-					const isNotInUserProfile = enabledAgentIds.length > 0 && !foundAgent;
-					
-					// Include if: (not expired AND not disabled AND in user profile) OR is current agent
-					return (!isExpiredOrDisabled && !isNotInUserProfile) || isCurrentAgent(agent);
+
+					// Include if: (not expired AND not disabled AND in user profile)
+					return (!isExpiredOrDisabled && foundAgent)
 				});
 
 				// Map filtered agents to dropdown options - no additional filtering needed since filtering was done above
@@ -291,7 +303,7 @@
 
 				// Get featured agent names from config
 				const featuredAgentNames = this.$appConfigStore.featuredAgentNames;
-				const featuredAgentNamesList = featuredAgentNames 
+				const featuredAgentNamesList = featuredAgentNames
 					? featuredAgentNames.split(',').map((name: string) => name.trim())
 					: [];
 
@@ -318,7 +330,7 @@
 				this.virtualUser = await this.$appStore.getVirtualUser();
 
 				this.agentOptionsGroup = [];
-				
+
 				// Add Featured group if there are featured agents
 				if (featuredAgents.length > 0) {
 					this.agentOptionsGroup.push({
@@ -328,26 +340,18 @@
 				}
 				if (!this.$appStore.getSessionAgent(this.currentSession) && this.currentSession) {
 					let selectedAgent = null;
-					
-					if (nonFeaturedAgents.length > 0 && enabledAgentIds.length > 0) {
-						const profileOtherAgents = nonFeaturedAgents.filter(agent => 
-							enabledAgentIds.some(agentId => agentId == agent.value.resource.object_id)
-						);
-						
-						if (profileOtherAgents.length > 0) {
-							selectedAgent = profileOtherAgents[0];
-						}
-					}
-					
-					if (!selectedAgent && featuredAgents.length > 0) {
+
+					if (featuredAgents.length > 0) {
 						selectedAgent = featuredAgents[0];
 					}
-					
+
 					if (selectedAgent) {
 						this.agentSelection = selectedAgent;
 						this.$appStore.setSessionAgent(this.currentSession, selectedAgent.value, false);
 					}
 				}
+
+
 
 				// Add Other Agents group if there are non-featured agents
 				if (nonFeaturedAgents.length > 0) {

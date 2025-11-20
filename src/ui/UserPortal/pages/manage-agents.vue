@@ -12,6 +12,18 @@
         </div>
     </div>
 
+		<div v-if="!$appConfigStore.agentSelfServiceFeatureEnabled" class="access-denied-overlay">
+        <div class="access-denied-container">
+            <div class="access-denied-icon">
+                <i class="pi pi-ban" style="font-size: 4rem; color: #e74c3c;"></i>
+            </div>
+            <h2 class="access-denied-title">Feature not available</h2>
+            <p class="access-denied-message">
+                	This feature is currently disabled.
+            </p>
+        </div>
+    </div>
+
     <!-- Normal Page Content -->
     <div v-else>
         <header role="banner">
@@ -35,7 +47,7 @@
 
             <div class="flex flex-wrap items-center -mx-4 mb-5">
                 <div class="w-full max-w-full md:max-w-[50%] px-4 mb-5 text-center md:text-left">
-                    <nuxt-link 
+                    <nuxt-link
                         v-if="hasAgentsContributorRole && hasPromptsContributorRole"
                         :to="{ path: '/create-agent', query: { returnTo: 'manage-agents' } }"
                         class="p-button p-component create-agent-button">
@@ -45,34 +57,34 @@
 
                 <div class="w-full max-w-full md:max-w-[50%] px-4 mb-5">
                     <div class="flex items-center relative">
-                        <InputText 
-                            type="text" 
-                            class="w-full" 
-                            name="searchTabelInput1" 
-                            id="searchTabelInput1" 
+                        <InputText
+                            type="text"
+                            class="w-full"
+                            name="searchTabelInput1"
+                            id="searchTabelInput1"
                             placeholder="Search by name"
                             v-model="searchByName"
                         />
 
-                        <Button 
-                            aria-label="Clear Search" 
-                            severity="primary" 
-                            icon="pi pi-times" 
+                        <Button
+                            aria-label="Clear Search"
+                            severity="primary"
+                            icon="pi pi-times"
                             class="min-h-[40px] min-w-[40px] w-auto absolute top-0 right-0 z-[2]"
                             @click="clearSearch"
                             v-if="searchByName"
                         />
-                        <Button 
-                            aria-label="Search Users" 
-                            severity="primary" 
-                            icon="pi pi-search" 
+                        <Button
+                            aria-label="Search Users"
+                            severity="primary"
+                            icon="pi pi-search"
                             class="min-h-[40px] min-w-[40px] w-auto absolute top-0 right-0 z-[2]"
                             v-else
                         />
                     </div>
                 </div>
             </div>
-            
+
             <div class="csm-table-area-1">
                 <!-- Loading State -->
                 <div v-if="loading" class="loading-container">
@@ -88,7 +100,7 @@
                 </div>
 
                 <!-- Data Table -->
-                <DataTable 
+                <DataTable
                     v-else
                     :value="filteredAgents"
                     scrollable
@@ -98,9 +110,9 @@
                     class="p-datatable-sm csm-dataTable-1"
                     tableStyle="min-width: 50rem"
                 >
-                    <Column 
-                        header="Name" 
-                        :sortable="true" 
+                    <Column
+                        header="Name"
+                        :sortable="true"
                         style="min-width: 200px"
                     >
                         <template #body="slotProps">
@@ -110,9 +122,9 @@
                         </template>
                     </Column>
 
-                    <Column 
-                        header="Description" 
-                        :sortable="false" 
+                    <Column
+                        header="Description"
+                        :sortable="false"
                         style="min-width: 250px; max-width: 250px;"
                     >
                         <template #body="slotProps">
@@ -122,9 +134,9 @@
                         </template>
                     </Column>
 
-                    <Column 
-                        header="Owner" 
-                        :sortable="true" 
+                    <Column
+                        header="Owner"
+                        :sortable="true"
                         style="min-width: 200px"
                     >
                         <template #body="slotProps">
@@ -134,9 +146,9 @@
                         </template>
                     </Column>
 
-                    <Column 
-                        header="Role" 
-                        :sortable="true" 
+                    <Column
+                        header="Role"
+                        :sortable="true"
                         style="min-width: 150px"
                     >
                         <template #body="slotProps">
@@ -146,9 +158,9 @@
                         </template>
                     </Column>
 
-                    <Column 
-                        header="Expiration" 
-                        :sortable="true" 
+                    <Column
+                        header="Expiration"
+                        :sortable="true"
                         style="min-width: 120px"
                     >
                         <template #body="slotProps">
@@ -158,8 +170,8 @@
                         </template>
                     </Column>
 
-                    <Column 
-                        header="Actions" 
+                    <Column
+                        header="Actions"
                         style="min-width: 80px"
                     >
                         <template #body="slotProps">
@@ -228,7 +240,7 @@ export default defineComponent({
 
         // Computed property
         const filteredAgents = computed(() => {
-            let filtered = agents.value.filter(agent => 
+            let filtered = agents.value.filter(agent =>
                 agent.roles.includes('Owner') || agent.roles.includes('Contributor')
             );
 
@@ -248,7 +260,7 @@ export default defineComponent({
         const loadAgents = async () => {
             loading.value = true;
             error.value = null;
-            
+
             try {
                 agents.value = await api.getAllowedAgents();
 
@@ -300,7 +312,7 @@ export default defineComponent({
                 }
             } catch (err) {
                 console.error('Failed to load agents:', err);
-                const errorMessage = err instanceof Error 
+                const errorMessage = err instanceof Error
                     ? `Failed to load agents: ${err.message}`
                     : 'Failed to load agents. Please try again later.';
                 error.value = errorMessage;
@@ -330,7 +342,7 @@ export default defineComponent({
 
         const formatExpirationDate = (expirationDate: string | null): string => {
             if (!expirationDate) return 'Never';
-            
+
             try {
                 const date = new Date(expirationDate);
                 return date.toLocaleDateString(DEFAULT_LOCALE);

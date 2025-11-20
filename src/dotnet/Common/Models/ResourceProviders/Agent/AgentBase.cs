@@ -132,6 +132,12 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.Agent
         /// <returns></returns>
         public bool HasGenericWorkflow() =>
             Workflow != null
-            && (Workflow is ExternalAgentWorkflow || Workflow is GenericAgentWorkflow);
+            && (
+                Workflow is GenericAgentWorkflow
+                || Workflow is LangChainAgentWorkflow
+                || Workflow is LangChainExpressionLanguageAgentWorkflow
+                || Workflow is LangGraphReactAgentWorkflow
+                || Workflow is ExternalAgentWorkflow
+            );
     }
 }

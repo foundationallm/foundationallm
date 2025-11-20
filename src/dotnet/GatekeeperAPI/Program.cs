@@ -53,6 +53,8 @@ namespace FoundationaLLM.Gatekeeper.API
 
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_GatekeeperAPI_Configuration);
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_GatekeeperAPI_Essentials);
+                options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_AzureContentSafety_Essentials);
+
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_CoreAPI_Configuration_CosmosDB);
                 options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_Configuration_Storage);
 
@@ -66,6 +68,8 @@ namespace FoundationaLLM.Gatekeeper.API
             }));
             if (builder.Environment.IsDevelopment())
                 builder.Configuration.AddJsonFile("appsettings.development.json", true, true);
+
+            builder.AddInstanceProperties();
 
             // Add authorization services.
             builder.AddIdentitiyManagement();
@@ -117,9 +121,7 @@ namespace FoundationaLLM.Gatekeeper.API
                 .Bind(builder.Configuration.GetSection(AppConfigurationKeySections.FoundationaLLM_APIEndpoints_EnkryptGuardrails_Configuration));
             builder.Services.AddScoped<IEnkryptGuardrailsService, EnkryptGuardrailsService>();
 
-            builder.Services.AddOptions<AzureContentSafetySettings>()
-                .Bind(builder.Configuration.GetSection(AppConfigurationKeySections.FoundationaLLM_APIEndpoints_AzureContentSafety_Configuration));
-            builder.Services.AddScoped<IContentSafetyService, AzureContentSafetyService>();
+            builder.AddAzureContentSafetyService();
             builder.Services.AddScoped<IGatekeeperIntegrationAPIService, GatekeeperIntegrationAPIService>();
 
             builder.Services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
