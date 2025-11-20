@@ -287,7 +287,7 @@ namespace FoundationaLLM.Context.ResourceProviders
                     ? parentResourceInstance.Name
                     : null);
 
-            if (contextResponse.Success)
+            if (contextResponse.IsSuccess)
                 return contextResponse.Result!.Resource;
             else
                 throw new ResourceProviderException(
@@ -313,7 +313,7 @@ namespace FoundationaLLM.Context.ResourceProviders
                     ? parentResourceInstance.Name
                     : null);
 
-            if (contextResponse.Success)
+            if (contextResponse.IsSuccess)
                 return contextResponse.Result!.Resource;
             else
                 throw new ResourceProviderException(
@@ -354,7 +354,7 @@ namespace FoundationaLLM.Context.ResourceProviders
                                    .Select(sarp => sarp.ResourceName!)
                                    .ToList());
             }
-            if (contextResponse.Success)
+            if (contextResponse.IsSuccess)
                 return [..
                         contextResponse.Result!
                 ];
@@ -397,7 +397,7 @@ namespace FoundationaLLM.Context.ResourceProviders
                                    .ToList());
             }
 
-            if (contextResponse.Success)
+            if (contextResponse.IsSuccess)
                 return [..
                         contextResponse.Result!
                 ];
@@ -449,7 +449,7 @@ namespace FoundationaLLM.Context.ResourceProviders
                     var knowledgeUnitResult = await contextServiceClient!.UpsertKnowledgeUnit(
                         resourcePath.InstanceId!,
                         knowledgeUnit);
-                    if (knowledgeUnitResult.Success)
+                    if (knowledgeUnitResult.IsSuccess)
                         return (knowledgeUnitResult.Result! as ResourceProviderUpsertResult<T>)!;
                     throw new ResourceProviderException(
                         $"The following error occured when upserting knowledge unit {knowledgeUnit.Name} in the {_name} resource provider: {knowledgeUnitResult.ErrorMessage ?? "N/A"}.",
@@ -459,7 +459,7 @@ namespace FoundationaLLM.Context.ResourceProviders
                     var knowledgeSourceResult = await contextServiceClient!.UpsertKnowledgeSource(
                         resourcePath.InstanceId!,
                         knowledgeSource);
-                    if (knowledgeSourceResult.Success)
+                    if (knowledgeSourceResult.IsSuccess)
                         return (knowledgeSourceResult.Result! as ResourceProviderUpsertResult<T>)!;
                     throw new ResourceProviderException(
                         $"The following error occured when upserting knowledge source {knowledgeSource.Name} in the {_name} resource provider: {knowledgeSourceResult.ErrorMessage ?? "N/A"}.",
@@ -513,7 +513,7 @@ namespace FoundationaLLM.Context.ResourceProviders
                 resourcePath.InstanceId!,
                 resourcePath.MainResourceId!,
                 actionPayload);
-            if (actionResult.Success)
+            if (actionResult.IsSuccess)
                 return actionResult.Result!;
 
             _logger.LogError(

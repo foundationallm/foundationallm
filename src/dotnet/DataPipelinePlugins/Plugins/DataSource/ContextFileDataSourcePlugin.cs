@@ -84,7 +84,7 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataSource
                 resourcePath.InstanceId!,
                 contentItemCanonicalId);
 
-            return response.Success
+            return response.IsSuccess
                 ? new PluginResult<ContentItemRawContent>(
                     new ContentItemRawContent
                     {

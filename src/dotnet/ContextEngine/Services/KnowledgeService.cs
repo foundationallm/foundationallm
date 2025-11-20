@@ -92,7 +92,7 @@ namespace FoundationaLLM.Context.Services
                 parentResourceInstance: agent);
             return new ContextServiceResponse<ResourceProviderGetResult<KnowledgeUnit>>
             {
-                Success = true,
+                IsSuccess = true,
                 Result = new ResourceProviderGetResult<KnowledgeUnit>
                 {
                     Resource = knowledgeUnit,
@@ -124,7 +124,7 @@ namespace FoundationaLLM.Context.Services
                 parentResourceInstance: agent);
             return new ContextServiceResponse<ResourceProviderGetResult<KnowledgeSource>>
             {
-                Success = true,
+                IsSuccess = true,
                 Result = new ResourceProviderGetResult<KnowledgeSource>
                 {
                     Resource = knowledgeSource,
@@ -144,7 +144,7 @@ namespace FoundationaLLM.Context.Services
                 userIdentity);
             return new ContextServiceResponse<IEnumerable<ResourceProviderGetResult<KnowledgeUnit>>>
             {
-                Success = true,
+                IsSuccess = true,
                 Result = listRequest.KnowledgeResourceNames is null
                     ? knowledgeUnitResults
                         .OrderBy(r => r.Resource.Name)
@@ -165,7 +165,7 @@ namespace FoundationaLLM.Context.Services
                 userIdentity);
             return new ContextServiceResponse<IEnumerable<ResourceProviderGetResult<KnowledgeSource>>>
             {
-                Success = true,
+                IsSuccess = true,
                 Result = listRequest.KnowledgeResourceNames is null
                     ? knowledgeSourceResults
                         .OrderBy(r => r.Resource.Name)
@@ -188,7 +188,7 @@ namespace FoundationaLLM.Context.Services
                     userIdentity);
             return new ContextServiceResponse<ResourceProviderUpsertResult<KnowledgeUnit>>
             {
-                Success = true,
+                IsSuccess = true,
                 Result = upsertResult
             };
         }
@@ -206,7 +206,7 @@ namespace FoundationaLLM.Context.Services
                     userIdentity);
             return new ContextServiceResponse<ResourceProviderUpsertResult<KnowledgeSource>>
             {
-                Success = true,
+                IsSuccess = true,
                 Result = upsertResult
             };
         }
@@ -235,7 +235,7 @@ namespace FoundationaLLM.Context.Services
 
             return new ContextServiceResponse<ResourceProviderActionResult>
             {
-                Success = result.IsSuccess,
+                IsSuccess = result.IsSuccess,
                 ErrorMessage = result.ErrorMessage,
                 Result = result
             };
@@ -328,7 +328,7 @@ namespace FoundationaLLM.Context.Services
                 return new ContextKnowledgeSourceQueryResponse
                 {
                     Source = knowledgeSourceId,
-                    Success = false,
+                    IsSuccess = false,
                     ErrorMessage = $"An error occurred while querying the knowledge source {knowledgeSourceId} from instance {instanceId}."
                 };
             }
@@ -354,7 +354,7 @@ namespace FoundationaLLM.Context.Services
                 if (!knowledgeUnit.HasKnowledgeGraph)
                     return new ContextKnowledgeUnitRenderGraphResponse
                     {
-                        Success = false,
+                        IsSuccess = false,
                         ErrorMessage = $"The knowledge unit {knowledgeUnitId} from instance {instanceId} does not contain a knowledge graph."
                     };
 
@@ -364,7 +364,7 @@ namespace FoundationaLLM.Context.Services
                 if (string.IsNullOrWhiteSpace(vectorStoreId))
                     return new ContextKnowledgeUnitRenderGraphResponse
                     {
-                        Success = false,
+                        IsSuccess = false,
                         ErrorMessage = $"The knowledge unit {knowledgeUnitId} from instance {instanceId} does not have a vector store identifier specified and none was provided in the rendering request."
                     };
 
@@ -386,7 +386,7 @@ namespace FoundationaLLM.Context.Services
 
                 var renderResponse = new ContextKnowledgeUnitRenderGraphResponse
                 {
-                    Success = true
+                    IsSuccess = true
                 };
 
                 if (queryRequest is null)
@@ -415,7 +415,7 @@ namespace FoundationaLLM.Context.Services
                     knowledgeUnitId, instanceId);
                 return new ContextKnowledgeUnitRenderGraphResponse
                 {
-                    Success = false,
+                    IsSuccess = false,
                     ErrorMessage = $"An error occurred while rendering the knowledge graph for knowledge unit {knowledgeUnitId} from instance {instanceId}."
                 };
             }

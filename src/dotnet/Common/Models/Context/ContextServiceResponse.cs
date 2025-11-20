@@ -10,8 +10,8 @@ namespace FoundationaLLM.Common.Models.Context
         /// <summary>
         /// Gets or sets a value indicating whether the operation was successful.
         /// </summary>
-        [JsonPropertyName("success")]
-        public required bool Success { get; set; }
+        [JsonPropertyName("is_success")]
+        public required bool IsSuccess { get; set; }
 
         /// <summary>
         /// Gets or sets the error message if the operation was not successful.

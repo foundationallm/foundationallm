@@ -6,6 +6,8 @@ using FoundationaLLM.Common.Models.Context;
 using FoundationaLLM.Common.Models.Context.Knowledge;
 using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders.Context;
+using FoundationaLLM.Common.Models.Services;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
@@ -26,7 +28,7 @@ namespace FoundationaLLM.Common.Clients
         private readonly ILogger<ContextServiceClient> _logger = logger;
 
         /// <inheritdoc/>
-        public async Task<ContextServiceResponse<ContextFileContent>> GetFileContent(
+        public async Task<Result<ContextFileContent>> GetFileContent(
             string instanceId,
             string fileId)
         {
@@ -41,25 +43,24 @@ namespace FoundationaLLM.Common.Clients
 
                 if (responseMessage.IsSuccessStatusCode)
                 {
-                    return new ContextServiceResponse<ContextFileContent>
-                    {
-                        Success = true,
-                        Result = new ContextFileContent
+                    return Result<ContextFileContent>.Success(
+                        new ContextFileContent
                         {
                             FileContent = await responseMessage.Content.ReadAsStreamAsync(),
                             FileName = responseMessage!.Content.Headers.ContentDisposition!.FileNameStar!,
                             ContentType = responseMessage!.Content.Headers.ContentType!.MediaType!
-                        }
-                    };
+                        });
                 }
 
                 _logger.LogError(
                     "An error occurred while retrieving the file content. Status code: {StatusCode}.",
                     responseMessage.StatusCode);
 
+                return await Result<ContextServiceClient>.FailureFromHttpResponse(responseMessage);
+
                 return new ContextServiceResponse<ContextFileContent>
                 {
-                    Success = false,
+                    IsSuccess = false,
                     ErrorMessage = "The service responded with an error status code."
                 };
             }
@@ -68,7 +69,7 @@ namespace FoundationaLLM.Common.Clients
                 _logger.LogError(ex, "An error occurred while retrieving the file content.");
                 return new ContextServiceResponse<ContextFileContent>
                 {
-                    Success = false,
+                    IsSuccess = false,
                     ErrorMessage = "An error occurred while retrieving the file content."
                 };
             }
@@ -96,12 +97,12 @@ namespace FoundationaLLM.Common.Clients
                     return response == null
                         ? new ContextServiceResponse<ContextFileRecord>
                         {
-                            Success = false,
+                            IsSuccess = false,
                             ErrorMessage = $"An error occurred deserializing the response from the service for file {fileId}."
                         }
                         : new ContextServiceResponse<ContextFileRecord>
                         {
-                            Success = true,
+                            IsSuccess = true,
                             Result = response
                         };
                 }
@@ -112,7 +113,7 @@ namespace FoundationaLLM.Common.Clients
 
                 return new ContextServiceResponse<ContextFileRecord>
                 {
-                    Success = false,
+                    IsSuccess = false,
                     ErrorMessage = $"The service responded with an error status code for file {fileId}."
                 };
             }
@@ -121,7 +122,7 @@ namespace FoundationaLLM.Common.Clients
                 _logger.LogError(ex, "An error occurred while retrieving the file record for file {FileId}.", fileId);
                 return new ContextServiceResponse<ContextFileRecord>
                 {
-                    Success = false,
+                    IsSuccess = false,
                     ErrorMessage = $"An error occurred while retrieving the file record for file {fileId}."
                 };
             }
@@ -144,7 +145,7 @@ namespace FoundationaLLM.Common.Clients
                 if (responseMessage.IsSuccessStatusCode)
                     return new ContextServiceResponse
                     {
-                        Success = true
+                        IsSuccess = true
                     };
 
                 _logger.LogError(
@@ -153,7 +154,7 @@ namespace FoundationaLLM.Common.Clients
 
                 return new ContextServiceResponse
                 {
-                    Success = false,
+                    IsSuccess = false,
                     ErrorMessage = $"The service responded with an error status code for file {fileId}."
                 };
             }
@@ -162,7 +163,7 @@ namespace FoundationaLLM.Common.Clients
                 _logger.LogError(ex, "An error occurred while deleting the file record for file {FileId}.", fileId);
                 return new ContextServiceResponse
                 {
-                    Success = false,
+                    IsSuccess = false,
                     ErrorMessage = $"An error occurred while deleting the file record for file {fileId}."
                 };
             }
@@ -172,6 +173,7 @@ namespace FoundationaLLM.Common.Clients
         /// <inheritdoc/>
         public async Task<ContextServiceResponse<ContextFileRecord>> CreateFileForConversation(
             string instanceId,
+            string agentName,
             string conversationId,
             string fileName,
             string fileContentType,
@@ -179,6 +181,7 @@ namespace FoundationaLLM.Common.Clients
             await CreateFile(
                 instanceId,
                 $"conversations/{conversationId}",
+                $"agentName={agentName}",
                 fileName,
                 fileContentType,
                 fileContent);
@@ -193,6 +196,7 @@ namespace FoundationaLLM.Common.Clients
             await CreateFile(
                 instanceId,
                 $"agents/{agentName}",
+                null,
                 fileName,
                 fileContentType,
                 fileContent);
@@ -201,6 +205,7 @@ namespace FoundationaLLM.Common.Clients
         public async Task<ContextServiceResponse<ContextFileRecord>> CreateFile(
             string instanceId,
             string resourceRoute,
+            string? queryParameters,
             string fileName,
             string fileContentType,
             Stream fileContent)
@@ -222,8 +227,12 @@ namespace FoundationaLLM.Common.Clients
                 };
                 multipartFormDataContent.Add(streamContent);
 
+                queryParameters = string.IsNullOrWhiteSpace(queryParameters)
+                    ? string.Empty
+                    : $"?{queryParameters}";
+
                 var responseMessage = await client.PostAsync(
-                    $"instances/{instanceId}/{resourceRoute}/files",
+                    $"instances/{instanceId}/{resourceRoute}/files{queryParameters}",
                     multipartFormDataContent);
 
                 if (responseMessage.IsSuccessStatusCode)
@@ -234,12 +243,12 @@ namespace FoundationaLLM.Common.Clients
                     return response == null
                         ? new ContextServiceResponse<ContextFileRecord>
                         {
-                            Success = false,
+                            IsSuccess = false,
                             ErrorMessage = "An error occurred deserializing the response from the service."
                         }
                         : new ContextServiceResponse<ContextFileRecord>
                         {
-                            Success = true,
+                            IsSuccess = true,
                             Result = response
                         };
                 }
@@ -250,7 +259,7 @@ namespace FoundationaLLM.Common.Clients
 
                 return new ContextServiceResponse<ContextFileRecord>
                 {
-                    Success = false,
+                    IsSuccess = false,
                     ErrorMessage = "The service responded with an error status code."
                 };
             }
@@ -259,7 +268,7 @@ namespace FoundationaLLM.Common.Clients
                 _logger.LogError(ex, "An error occurred while creating a file.");
                 return new ContextServiceResponse<ContextFileRecord>
                 {
-                    Success = false,
+                    IsSuccess = false,
                     ErrorMessage = "An error occurred while creating a file."
                 };
             }
@@ -301,12 +310,12 @@ namespace FoundationaLLM.Common.Clients
                     return response == null
                         ? new ContextServiceResponse<CreateCodeSessionResponse>
                         {
-                            Success = false,
+                            IsSuccess = false,
                             ErrorMessage = "An error occurred deserializing the response from the service."
                         }
                         : new ContextServiceResponse<CreateCodeSessionResponse>
                         {
-                            Success = true,
+                            IsSuccess = true,
                             Result = response
                         };
                 }
@@ -317,7 +326,7 @@ namespace FoundationaLLM.Common.Clients
 
                 return new ContextServiceResponse<CreateCodeSessionResponse>
                 {
-                    Success = false,
+                    IsSuccess = false,
                     ErrorMessage = "The service responded with an error status code."
                 };
             }
@@ -326,7 +335,7 @@ namespace FoundationaLLM.Common.Clients
                 _logger.LogError(ex, "An error occurred while creating a code session.");
                 return new ContextServiceResponse<CreateCodeSessionResponse>
                 {
-                    Success = false,
+                    IsSuccess = false,
                     ErrorMessage = "An error occurred while creating a code session."
                 };
             }
@@ -384,7 +393,7 @@ namespace FoundationaLLM.Common.Clients
                     responseMessage.StatusCode);
                 return new ContextServiceResponse<ResourceProviderGetResult<T>>
                 {
-                    Success = false,
+                    IsSuccess = false,
                     ErrorMessage = $"The service responded with error status code {responseMessage.StatusCode}.",
                 };
             }
@@ -395,7 +404,7 @@ namespace FoundationaLLM.Common.Clients
                     knowledgeResourceType);
                 return new ContextServiceResponse<ResourceProviderGetResult<T>>
                 {
-                    Success = false,
+                    IsSuccess = false,
                     ErrorMessage = $"An error occurred while retrieving the knowledge resource {knowledgeResourceId} of type {knowledgeResourceType}: {ex.Message}."
                 };
             }
@@ -449,7 +458,7 @@ namespace FoundationaLLM.Common.Clients
                     responseMessage.StatusCode);
                 return new ContextServiceResponse<IEnumerable<ResourceProviderGetResult<T>>>
                 {
-                    Success = false,
+                    IsSuccess = false,
                     ErrorMessage = $"The service responded with error status code {responseMessage.StatusCode}.",
                 };
             }
@@ -459,7 +468,7 @@ namespace FoundationaLLM.Common.Clients
                     knowledgeResourceType);
                 return new ContextServiceResponse<IEnumerable<ResourceProviderGetResult<T>>>
                 {
-                    Success = false,
+                    IsSuccess = false,
                     ErrorMessage = $"An error occurred while retrieving the knowledge resources of type {knowledgeResourceType}: {ex.Message}."
                 };
             }
@@ -510,7 +519,7 @@ namespace FoundationaLLM.Common.Clients
                     responseMessage.StatusCode);
                 return new ContextServiceResponse<ResourceProviderUpsertResult<T>>
                 {
-                    Success = false,
+                    IsSuccess = false,
                     ErrorMessage = $"The service responded with error status code {responseMessage.StatusCode}."
                 };
             }
@@ -520,7 +529,7 @@ namespace FoundationaLLM.Common.Clients
                     resource.Name);
                 return new ContextServiceResponse<ResourceProviderUpsertResult<T>>
                 {
-                    Success = false,
+                    IsSuccess = false,
                     ErrorMessage = $"An error occurred while upserting the knowledge resource {resource.Name}: {ex.Message}."
                 };
             }
@@ -556,7 +565,7 @@ namespace FoundationaLLM.Common.Clients
 
                 return new ContextServiceResponse<ResourceProviderActionResult>
                 {
-                    Success = false,
+                    IsSuccess = false,
                     ErrorMessage = "The service responded with an error status code."
                 };
             }
@@ -566,7 +575,7 @@ namespace FoundationaLLM.Common.Clients
 
                 return new ContextServiceResponse<ResourceProviderActionResult>
                 {
-                    Success = false,
+                    IsSuccess = false,
                     ErrorMessage = "An error occurred while setting the knowledge graph for the knowledge unit."
                 };
             }
@@ -603,7 +612,7 @@ namespace FoundationaLLM.Common.Clients
                 return new ContextKnowledgeSourceQueryResponse
                 {
                     Source = knowledgeSourceId,
-                    Success = false,
+                    IsSuccess = false,
                     ErrorMessage = "The service responded with an error status code."
                 };
             }
@@ -614,7 +623,7 @@ namespace FoundationaLLM.Common.Clients
                 return new ContextKnowledgeSourceQueryResponse
                 {
                     Source = knowledgeSourceId,
-                    Success = false,
+                    IsSuccess = false,
                     ErrorMessage = "An error occurred while querying the knowledge source."
                 };
             }
@@ -650,7 +659,7 @@ namespace FoundationaLLM.Common.Clients
 
                 return new ContextKnowledgeUnitRenderGraphResponse
                 {
-                    Success = false,
+                    IsSuccess = false,
                     ErrorMessage = "The service responded with an error status code."
                 };
             }
@@ -660,7 +669,7 @@ namespace FoundationaLLM.Common.Clients
 
                 return new ContextKnowledgeUnitRenderGraphResponse
                 {
-                    Success = false,
+                    IsSuccess = false,
                     ErrorMessage = "An error occurred while rendering the knowledge source's graph."
                 };
             }

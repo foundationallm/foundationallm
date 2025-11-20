@@ -229,6 +229,7 @@ namespace FoundationaLLM.Context.Services
                     var fileRecord = await _fileService.CreateFileForConversation(
                     codeSessionRecord.InstanceId,
                     ContextRecordOrigins.CodeSession,
+                    null,
                     codeSessionRecord.ConversationId,
                     newFileStoreItem.Name,
                     newFileStoreItem.ContentType,

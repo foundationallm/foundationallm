@@ -71,7 +71,7 @@ namespace FoundationaLLM.Context.Services
                     return new ContextKnowledgeSourceQueryResponse
                     {
                         Source = _knowledgeUnit.Name,
-                        Success = false,
+                        IsSuccess = false,
                         ErrorMessage = $"The knowledge unit {_knowledgeUnit.Name} does not have a vector store identifier specified and none was provided in the query request."
                     };
 
@@ -85,7 +85,7 @@ namespace FoundationaLLM.Context.Services
                 var queryResponse = new ContextKnowledgeSourceQueryResponse
                 {
                     Source = _knowledgeUnit.Name,
-                    Success = true
+                    IsSuccess = true
                 };
 
                 if (queryRequest.VectorStoreQuery is not null)
@@ -150,7 +150,7 @@ namespace FoundationaLLM.Context.Services
                         return new ContextKnowledgeSourceQueryResponse
                         {
                             Source = _knowledgeUnit.Name,
-                            Success = false,
+                            IsSuccess = false,
                             ErrorMessage = $"The knowledge unit {_knowledgeUnit.Name} does not have a knowledge graph vector database."
                         };
 
@@ -261,7 +261,7 @@ namespace FoundationaLLM.Context.Services
                 return new ContextKnowledgeSourceQueryResponse
                 {
                     Source = _knowledgeUnit.Name,
-                    Success = false,
+                    IsSuccess = false,
                     ErrorMessage = $"Invalid query request: {ex.Message}"
                 };
             }
@@ -272,7 +272,7 @@ namespace FoundationaLLM.Context.Services
                 return new ContextKnowledgeSourceQueryResponse
                 {
                     Source = _knowledgeUnit.Name,
-                    Success = false,
+                    IsSuccess = false,
                     ErrorMessage = $"An error occurred while querying the knowledge source {_knowledgeUnit.Name}."
                 };
             }

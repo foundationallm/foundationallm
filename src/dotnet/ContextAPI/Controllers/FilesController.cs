@@ -29,11 +29,13 @@ namespace FoundationaLLM.Context.API.Controllers
         /// </summary>
         /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
         /// <param name="conversationId">The conversation identifier.</param>
+        /// <param name="agentName">The name of the agent.</param>
         /// <returns></returns>
         [HttpPost("conversations/{conversationId}/files")]
         public async Task<IActionResult> UploadFileForConversation(
             string instanceId,
-            string conversationId)
+            string conversationId,
+            [FromQuery] string agentName)
         {
             var formFiles = HttpContext.Request.HasFormContentType ? HttpContext.Request.Form?.Files : null;
             IFormFile? formFile = (formFiles != null && formFiles.Count > 0) ? formFiles[0] : null;
@@ -51,6 +53,7 @@ namespace FoundationaLLM.Context.API.Controllers
             var fileRecord = await _fileService.CreateFileForConversation(
                 instanceId,
                 ContextRecordOrigins.UserUpload,
+                agentName,
                 conversationId,
                 fileName,
                 contentType,

@@ -99,6 +99,8 @@ builder.AddConfigurationResourceProvider();
 //builder.AddConversationResourceProvider();
 builder.AddVectorResourceProvider();
 builder.AddContextResourceProvider(proxyMode: false);
+builder.AddRemoteDataPipelineServiceClient(); // Required by the DataPipeline resource provider.
+builder.AddDataPipelineResourceProvider();
 
 // Add API Key Authorization
 builder.Services.AddHttpContextAccessor();

@@ -413,7 +413,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                         codeSessionProvider,
                         codeSessionLanguage);
 
-                    if (contextServiceResponse.Success)
+                    if (contextServiceResponse.IsSuccess)
                     {
                         toolParameters.Add(
                             AgentToolPropertyNames.CodeSessionEndpoint,

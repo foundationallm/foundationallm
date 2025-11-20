@@ -764,12 +764,13 @@ public partial class CoreService(
        
         var serviceResult = await _contextServiceClient.CreateFileForConversation(
             instanceId,
+            agentName,
             sessionId,
             attachmentFile.OriginalFileName,
             attachmentFile.ContentType!,
             new MemoryStream(attachmentFile.Content!));
 
-            if (serviceResult.Success)
+            if (serviceResult.IsSuccess)
             {
                 return new ResourceProviderUpsertResult<AttachmentFile>
                 {
@@ -838,7 +839,7 @@ public partial class CoreService(
 
                     var responseMessage = await _contextServiceClient.GetFileContent(instanceId, fileId);
 
-                    if (responseMessage.Success)
+                    if (responseMessage.IsSuccess)
                     {
                         var content = new MemoryStream();
                         await responseMessage.Result!.FileContent!.CopyToAsync(content);
@@ -891,7 +892,7 @@ public partial class CoreService(
                         var contextServiceResponse = await _contextServiceClient.DeleteFileRecord(resourcePath.InstanceId!, resourcePath.MainResourceId!);
                         results[rawResourcePath] = new ResourceProviderDeleteResult()
                         {
-                            Deleted = contextServiceResponse.Success
+                            Deleted = contextServiceResponse.IsSuccess
                         };
                         break;
                     default:
@@ -1322,7 +1323,7 @@ public partial class CoreService(
                                 var fileResponse = await _contextServiceClient.GetFileRecord(
                                     instanceId,
                                     resourcePath.MainResourceId!);
-                                if (fileResponse.Success)
+                                if (fileResponse.IsSuccess)
                                 {
                                     fileHistory.Add(FileHistoryItem.FromContextFileRecord(
                                         fileResponse.Result!,
@@ -1369,7 +1370,7 @@ public partial class CoreService(
                         var fileResponse = await _contextServiceClient.GetFileRecord(
                             instanceId,
                             resourcePath.MainResourceId!);
-                        if (fileResponse.Success)
+                        if (fileResponse.IsSuccess)
                         {
                             fileHistory.Add(FileHistoryItem.FromContextFileRecord(
                                 fileResponse.Result!,

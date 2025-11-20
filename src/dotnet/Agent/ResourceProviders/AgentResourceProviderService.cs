@@ -973,7 +973,7 @@ namespace FoundationaLLM.Agent.ResourceProviders
                     formFile.ContentType!,
                     new MemoryStream(formFile.BinaryContent.ToArray()));
 
-                if (!contextServiceResult.Success)
+                if (!contextServiceResult.IsSuccess)
                     throw new ResourceProviderException(
                         $"Failed to add the file {formFile.FileName} to the FoundationaLLM file store.",
                         StatusCodes.Status500InternalServerError);

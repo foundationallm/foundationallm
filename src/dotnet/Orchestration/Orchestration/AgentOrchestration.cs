@@ -541,7 +541,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                 .SelectAwait(async x => await _contextServiceClient.GetFileRecord(_instanceId, x));
             await foreach(var contextFileResponse in contextAttachmentResponses)
             {
-                if (contextFileResponse.Success)
+                if (contextFileResponse.IsSuccess)
                 {
                     candidateResult[contextFileResponse.Result!.FileObjectId] = new AttachmentProperties
                     {

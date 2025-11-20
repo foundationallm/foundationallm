@@ -39,7 +39,7 @@ namespace FoundationaLLM.Context.Services
 
             var queryResponse = ConsolidateResponses(queryResponses);
 
-            if (!queryResponse.Success)
+            if (!queryResponse.IsSuccess)
                 return queryResponse;
 
             return (queryRequest.FormatResponse ?? false)
@@ -54,13 +54,13 @@ namespace FoundationaLLM.Context.Services
                 // If there's only one response, return it directly
                 return queryResponses.First();
 
-            foreach (var response in queryResponses.Where(qr => !qr.Success))
+            foreach (var response in queryResponses.Where(qr => !qr.IsSuccess))
                 _logger.LogWarning(
                     "Knowledge unit {KnowledgeUnitId} failed to process the query with error: {ErrorMessage}",
                     response.Source,
                     response.ErrorMessage);
 
-            if (!queryResponses.Any(qr => qr.Success))
+            if (!queryResponses.Any(qr => qr.IsSuccess))
             {
                 _logger.LogError(
                     "All knowledge unit queries failed for knowledge source {KnowledgeSourceId}.",
@@ -70,7 +70,7 @@ namespace FoundationaLLM.Context.Services
                 return new ContextKnowledgeSourceQueryResponse
                 {
                     Source = _knowledgeSourceId,
-                    Success = false,
+                    IsSuccess = false,
                     ErrorMessage = "None of the knowledge unit queries returned a successful response."
                 };
             }
@@ -78,11 +78,11 @@ namespace FoundationaLLM.Context.Services
             var consolidatedResponse = new ContextKnowledgeSourceQueryResponse
             {
                 Source = _knowledgeSourceId,
-                Success = true,
+                IsSuccess = true,
                 VectorStoreResponse = new ContextVectorStoreResponse(),
                 KnowledgeGraphResponse = new ContextKnowledgeGraphResponse()
             };
-            foreach (var response in queryResponses.Where(qr => qr.Success))
+            foreach (var response in queryResponses.Where(qr => qr.IsSuccess))
             {
                 if (response.VectorStoreResponse is not null)
                 {

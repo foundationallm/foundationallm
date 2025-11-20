@@ -13,6 +13,7 @@ namespace FoundationaLLM.Context.Interfaces
         /// </summary>
         /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
         /// <param name="origin">The origin of the file.</param>
+        /// <param name="agentName">The name of the agent.</param>
         /// <param name="conversationId">The conversation identifier.</param>
         /// <param name="fileName">The original name of the file.</param>
         /// <param name="contentType">The content type of the file.</param>
@@ -23,6 +24,7 @@ namespace FoundationaLLM.Context.Interfaces
         Task<ContextFileRecord> CreateFileForConversation(
             string instanceId,
             string origin,
+            string? agentName,
             string conversationId,
             string fileName,
             string contentType,
