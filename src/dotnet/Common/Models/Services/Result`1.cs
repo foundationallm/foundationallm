@@ -45,5 +45,16 @@ namespace FoundationaLLM.Common.Models.Services
             var error = await DomainError.FromHttpResponse(response);
             return Failure(error);
         }
+
+        /// <summary>
+        /// Creates a failed result with the specified error message.
+        /// </summary>
+        /// <param name="errorMessage">The error message that describes the reason for the failure. Cannot be null or empty.</param>
+        /// <returns>A failed result containing the specified error message.</returns>
+        public static Result<T> FailureFromErrorMessage(string errorMessage)
+        {
+            var error = DomainError.FromErrorMessage(errorMessage);
+            return Failure(error);
+        }
     }
 }

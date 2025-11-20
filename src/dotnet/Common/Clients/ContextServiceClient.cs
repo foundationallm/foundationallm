@@ -7,7 +7,6 @@ using FoundationaLLM.Common.Models.Context.Knowledge;
 using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders.Context;
 using FoundationaLLM.Common.Models.Services;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
@@ -56,27 +55,18 @@ namespace FoundationaLLM.Common.Clients
                     "An error occurred while retrieving the file content. Status code: {StatusCode}.",
                     responseMessage.StatusCode);
 
-                return await Result<ContextServiceClient>.FailureFromHttpResponse(responseMessage);
-
-                return new ContextServiceResponse<ContextFileContent>
-                {
-                    IsSuccess = false,
-                    ErrorMessage = "The service responded with an error status code."
-                };
+                return await Result<ContextFileContent>.FailureFromHttpResponse(responseMessage);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "An error occurred while retrieving the file content.");
-                return new ContextServiceResponse<ContextFileContent>
-                {
-                    IsSuccess = false,
-                    ErrorMessage = "An error occurred while retrieving the file content."
-                };
+                return Result<ContextFileContent>.FailureFromErrorMessage(
+                    "An error occurred while retrieving the file content.");
             }
         }
 
         /// <inheritdoc/>
-        public async Task<ContextServiceResponse<ContextFileRecord>> GetFileRecord(
+        public async Task<Result<ContextFileRecord>> GetFileRecord(
             string instanceId,
             string fileId)
         {
@@ -95,16 +85,9 @@ namespace FoundationaLLM.Common.Clients
                     var response = JsonSerializer.Deserialize<ContextFileRecord>(responseContent);
 
                     return response == null
-                        ? new ContextServiceResponse<ContextFileRecord>
-                        {
-                            IsSuccess = false,
-                            ErrorMessage = $"An error occurred deserializing the response from the service for file {fileId}."
-                        }
-                        : new ContextServiceResponse<ContextFileRecord>
-                        {
-                            IsSuccess = true,
-                            Result = response
-                        };
+                        ? Result<ContextFileRecord>.FailureFromErrorMessage(
+                            $"An error occurred deserializing the response from the service for file {fileId}.")
+                        : Result<ContextFileRecord>.Success(response);
                 }
 
                 _logger.LogError(

@@ -1,6 +1,4 @@
-﻿using Azure.Core;
-using Azure.Core.Pipeline;
-using FoundationaLLM.Common.Authentication;
+﻿using FoundationaLLM.Common.Authentication;
 using FoundationaLLM.Common.Constants;
 using FoundationaLLM.Common.Constants.Authentication;
 using FoundationaLLM.Common.Constants.ResourceProviders;

@@ -63,11 +63,37 @@ namespace FoundationaLLM.Common.Models.Services
 
             return new DomainError
             {
-                Type = problem?.Type ?? "unknown-error",
+                Type = problem?.Type ?? "http-error",
                 Title = problem?.Title ?? $"HTTP {response.StatusCode}",
                 Detail = problem?.Detail ?? response.ReasonPhrase,
                 Extensions = (problem?.Extensions ?? new Dictionary<string, object?>()).AsReadOnly()
             };
         }
+
+        /// <summary>
+        /// Creates a new instance of the DomainError class using the specified error message as the detail.
+        /// </summary>
+        /// <param name="errorMessage">The error message that describes the domain error. Cannot be null.</param>
+        /// <returns>A DomainError instance with the specified error message set as the detail.</returns>
+        public static DomainError FromErrorMessage(string errorMessage) =>
+            new()
+            {
+                Type = "generic-error",
+                Title = "Generic Error",
+                Detail = errorMessage
+            };
+
+        /// <summary>
+        /// Creates a new DomainError instance that represents the specified exception.
+        /// </summary>
+        /// <param name="ex">The exception to convert into a DomainError. Cannot be null.</param>
+        /// <returns>A DomainError instance containing information from the specified exception.</returns>
+        public static DomainError FromException(Exception ex) =>
+            new()
+            {
+                Type = "exception",
+                Title = ex.GetType().Name,
+                Detail = ex.Message
+            };
     }
 }
