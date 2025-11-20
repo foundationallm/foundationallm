@@ -6,6 +6,7 @@ export const useAppConfigStore = defineStore('appConfig', {
 		// Loading states
 		isConfigurationLoaded: false,
 		isFeaturedAgentNamesLoaded: false,
+		isAppConfigurationSetLoaded: false,
 		hasConfigurationAccessError: false,
 		configurationAccessErrorMessage: null as string | null,
 
@@ -181,6 +182,7 @@ export const useAppConfigStore = defineStore('appConfig', {
 						}
 					}
 				}
+				this.isAppConfigurationSetLoaded = true;
 			} catch (error: any) {
 				console.error('Failed to load app configuration set:', error);
 
