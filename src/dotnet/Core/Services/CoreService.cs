@@ -792,7 +792,8 @@ public partial class CoreService(
             }
             else
                 throw new CoreServiceException(
-                    serviceResult.Error?.Detail);
+                    serviceResult.Error?.Detail,
+                    serviceResult.Error?.Status ?? StatusCodes.Status500InternalServerError);
         
     }
 

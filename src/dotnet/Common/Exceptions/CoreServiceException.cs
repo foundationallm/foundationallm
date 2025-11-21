@@ -1,14 +1,16 @@
-﻿namespace FoundationaLLM.Common.Exceptions
+﻿using Microsoft.AspNetCore.Http;
+
+namespace FoundationaLLM.Common.Exceptions
 {
     /// <summary>
     /// Represents an error with accessing content.
     /// </summary>
-    public class CoreServiceException : Exception
+    public class CoreServiceException : HttpStatusCodeException
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="CoreServiceException"/> class with a default message.
         /// </summary>
-        public CoreServiceException()
+        public CoreServiceException() : this(null, StatusCodes.Status500InternalServerError)
         {
         }
 
@@ -16,7 +18,9 @@
         /// Initializes a new instance of the <see cref="CoreServiceException"/> class with its message set to <paramref name="message"/>.
         /// </summary>
         /// <param name="message">A string that describes the error.</param>
-        public CoreServiceException(string? message) : base(message)
+        /// <param name="statusCode">The HTTP status code associated with the exception.</param>
+        public CoreServiceException(string? message, int statusCode = StatusCodes.Status500InternalServerError) :
+            base(message, statusCode)
         {
         }
 
@@ -25,7 +29,9 @@
         /// </summary>
         /// <param name="message">A string that describes the error.</param>
         /// <param name="innerException">The exception that is the cause of the current exception.</param>
-        public CoreServiceException(string? message, Exception? innerException) : base(message, innerException)
+        /// <param name="statusCode">The HTTP status code associated with the exception.</param>
+        public CoreServiceException(string? message, Exception? innerException, int statusCode = StatusCodes.Status500InternalServerError) :
+            base(message, innerException, statusCode)
         {
         }
     }

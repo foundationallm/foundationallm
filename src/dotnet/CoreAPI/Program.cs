@@ -261,10 +261,15 @@ namespace FoundationaLLM.Core.API
                         if (exceptionHandlerPathFeature?.Error is ResourceProviderException)
                         {
                             var statusCode = ((ResourceProviderException)exceptionHandlerPathFeature.Error)?.StatusCode;
-
                             if (statusCode == StatusCodes.Status403Forbidden)
                                 await Results.Problem(statusCode: StatusCodes.Status403Forbidden).ExecuteAsync(context);
                         }
+
+                        if (exceptionHandlerPathFeature?.Error is CoreServiceException coreServiceException
+                            && coreServiceException.StatusCode == StatusCodes.Status422UnprocessableEntity)
+                            await Results.Problem(
+                                statusCode: coreServiceException.StatusCode,
+                                title: "The request does not meet the content safety standards.").ExecuteAsync(context);
 
                         await Results.Problem().ExecuteAsync(context);
                     }));
