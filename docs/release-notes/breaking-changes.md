@@ -3,6 +3,20 @@
 > [!NOTE]
 > This section is for changes that are not yet released but will affect future releases.
 
+## Starting from 0.9.7-rc487
+
+### Artifact changes
+
+The new data pipeline `ShieldedFileContent` is available.
+
+### Role assignment changes
+
+The following role assignments must be added to the Context API's Managed Identity:
+
+| Name | Type | Target |
+| --- | --- | --- |
+| `Data Pipelines Execution Manager` | FoundationaLLM | FoundationaLLM instance.|
+
 ## Starting from 0.9.7-rc477
 
 ### Artifact changes
