@@ -258,6 +258,11 @@ namespace FoundationaLLM.Core.API
                     {
                         var exceptionHandlerPathFeature = context.Features.Get<IExceptionHandlerPathFeature>();
 
+                        if (context.Response.HasStarted)
+                            return;
+
+                        context.Response.Clear();
+
                         if (exceptionHandlerPathFeature?.Error is ResourceProviderException)
                         {
                             var statusCode = ((ResourceProviderException)exceptionHandlerPathFeature.Error)?.StatusCode;
