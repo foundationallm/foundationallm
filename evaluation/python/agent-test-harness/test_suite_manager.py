@@ -13,7 +13,7 @@ from typing import Dict, List, Optional, Any
 import sys
 
 # Import the existing test harness
-from test_harness import execute_tests, process_question, execute_tests_from_dataframe
+from test_harness import execute_tests, execute_tests_from_dataframe, execute_tests_single_conversation
 
 
 class TestSuiteManager:
@@ -164,7 +164,7 @@ class TestSuiteManager:
                    quick_mode: bool = False, test_index: Optional[int] = None,
                    max_workers: int = 5, output_dir: str = 'results', 
                    timestamp: str = '', verbose: bool = False, 
-                   repeat_test: int = 1) -> Optional[Dict[str, Any]]:
+                   repeat_test: int = 1, single_conversation: bool = False) -> Optional[Dict[str, Any]]:
         """Run a test suite for a specific agent"""
         
         if suite_name == "all":
@@ -174,7 +174,8 @@ class TestSuiteManager:
                 if name != "all":  # Avoid infinite recursion
                     result = self.run_suite(
                         name, agent_name, quick_mode, test_index,
-                        max_workers, output_dir, timestamp, verbose, repeat_test
+                        max_workers, output_dir, timestamp, verbose, repeat_test,
+                        single_conversation
                     )
                     if result:
                         all_results[name] = result
@@ -221,7 +222,15 @@ class TestSuiteManager:
                 print(f"Running specific test at index {test_index}")
             
             # Run the tests
-            if repeat_test > 1:
+            if single_conversation and repeat_test > 1:
+                print("Warning: --repeat-test is not supported with --single-conversation. Ignoring repeat setting.")
+            if single_conversation and max_workers != 1:
+                print("Info: --single-conversation forces sequential execution. Ignoring --workers value.")
+            
+            if single_conversation:
+                print(f"Executing {len(df)} tests in single conversation mode...")
+                results_df = execute_tests_single_conversation(df, agent_name)
+            elif repeat_test > 1:
                 print(f"Executing {len(df)} tests, repeating each test {repeat_test} times...")
                 # Create expanded dataframe with repeated tests
                 repeated_rows = []
@@ -250,6 +259,10 @@ class TestSuiteManager:
                 return None
             
             # Convert results to dictionary format
+            conversation_session_id = ''
+            if single_conversation and not results_df.empty and 'ConversationSessionId' in results_df.columns:
+                conversation_session_id = results_df['ConversationSessionId'].iloc[0]
+
             results = {
                 'suite_name': suite_name,
                 'agent_name': agent_name,
@@ -257,7 +270,9 @@ class TestSuiteManager:
                 'total_tests': len(results_df),
                 'passed_tests': len(results_df[results_df.get('ErrorOccured', 1) == 0]),
                 'failed_tests': len(results_df[results_df.get('ErrorOccured', 1) == 1]),
-                'results': results_df.to_dict('records')
+                'results': results_df.to_dict('records'),
+                'conversation_mode': single_conversation,
+                'conversation_session_id': conversation_session_id
             }
             
             # Save results

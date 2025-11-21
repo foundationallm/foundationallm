@@ -83,6 +83,8 @@ Examples:
                        help='Number of times to repeat each test (default: 1)')
     parser.add_argument('--dry-run', action='store_true',
                        help='Validate configuration without executing tests')
+    parser.add_argument('--single-conversation', action='store_true',
+                       help='Run entire suite within a single ordered conversation session')
     
     # Validation options
     parser.add_argument('--strict', action='store_true',
@@ -306,7 +308,8 @@ Examples:
                 output_dir=args.output_dir,
                 timestamp=timestamp,
                 verbose=args.verbose,
-                repeat_test=args.repeat_test
+                repeat_test=args.repeat_test,
+                single_conversation=args.single_conversation
             )
             
             if results is None:

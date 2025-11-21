@@ -45,7 +45,8 @@ class HTMLReporter:
                 'total_failed': 0,
                 'total_errors': 0,
                 'overall_pass_rate': 0,
-                'total_duration': 0
+                'total_duration': 0,
+                'conversation_agents': []
             }
         }
         
@@ -62,6 +63,8 @@ class HTMLReporter:
                 report_data['summary']['total_failed'] += agent_data['failed_tests']
                 report_data['summary']['total_errors'] += agent_data['error_tests']
                 report_data['summary']['total_duration'] += agent_data['total_duration']
+                if agent_data.get('conversation_mode'):
+                    report_data['summary']['conversation_agents'].append(agent_name)
             else:
                 # Multi-suite results
                 for suite_name, suite_results in agent_results.items():
@@ -76,6 +79,8 @@ class HTMLReporter:
                         report_data['summary']['total_failed'] += suite_data['failed_tests']
                         report_data['summary']['total_errors'] += suite_data['error_tests']
                         report_data['summary']['total_duration'] += suite_data['total_duration']
+                        if suite_data.get('conversation_mode'):
+                            report_data['summary']['conversation_agents'].append(f"{agent_name}-{suite_name}")
         
         # Calculate overall pass rate (treating errors as failures)
         if report_data['summary']['total_tests'] > 0:
@@ -124,6 +129,8 @@ class HTMLReporter:
         
         test_results = results.get('results', [])
         total_tests = len(test_results)
+        conversation_mode = results.get('conversation_mode', False)
+        conversation_session_id = results.get('conversation_session_id', '')
         
         # Count passed/failed tests
         passed_tests = 0
@@ -133,9 +140,13 @@ class HTMLReporter:
         
         # Analyze test results
         test_analysis = []
-        for i, test in enumerate(test_results):
+        indexed_tests = list(enumerate(test_results))
+        indexed_tests.sort(key=lambda item: item[1].get('Ordinal', item[0] + 1))
+
+        for original_index, test in indexed_tests:
             error_occurred = test.get('ErrorOccured', 1)
             validation_passed = test.get('ValidationPassed', -1)
+            ordinal = test.get('Ordinal', original_index + 1)
             
             if error_occurred == 1:
                 error_tests += 1
@@ -164,7 +175,8 @@ class HTMLReporter:
             total_duration += test_duration
             
             test_analysis.append({
-                'index': f"{agent_name}-{i}",
+                'index': f"{agent_name}-{ordinal}",
+                'ordinal': ordinal,
                 'question': test.get('Question', ''),
                 'status': status,
                 'agent_answer': test.get('AgentAnswer', ''),
@@ -177,7 +189,9 @@ class HTMLReporter:
                 'artifacts_count': len(artifacts_produced),
                 'artifacts_produced': artifacts_produced,
                 'artifacts_expected': artifacts_expected,
-                'code_failed': test.get('CodeToolFailed', False)
+                'code_failed': test.get('CodeToolFailed', False),
+                'conversation_turn': test.get('ConversationTurn'),
+                'conversation_session_id': test.get('ConversationSessionId')
             })
         
         return {
@@ -190,7 +204,9 @@ class HTMLReporter:
             'total_duration': total_duration,
             'test_analysis': test_analysis,
             'suite_name': results.get('suite_name', 'unknown'),
-            'timestamp': results.get('timestamp', '')
+            'timestamp': results.get('timestamp', ''),
+            'conversation_mode': conversation_mode,
+            'conversation_session_id': conversation_session_id
         }
     
     def _generate_html(self, report_data: Dict[str, Any], timestamp: str) -> str:
@@ -288,6 +304,11 @@ class HTMLReporter:
             border-radius: 8px;
             border-left: 4px solid #667eea;
         }
+        .conversation-note {
+            margin-top: 10px;
+            color: #495057;
+            font-size: 0.95em;
+        }
         
         .suite-info h3 {
             color: #495057;
@@ -362,6 +383,16 @@ class HTMLReporter:
             font-size: 1.5em;
             font-weight: bold;
         }
+        .conversation-badge {
+            margin-left: 12px;
+            background: #0d6efd;
+            color: #fff;
+            font-size: 0.55em;
+            text-transform: uppercase;
+            padding: 4px 8px;
+            border-radius: 999px;
+            letter-spacing: 0.05em;
+        }
         
         .agent-stats {
             display: flex;
@@ -385,6 +416,11 @@ class HTMLReporter:
         .agent-content {
             padding: 30px;
             display: none;
+        }
+        .conversation-session {
+            margin-bottom: 15px;
+            font-size: 0.95em;
+            color: #495057;
         }
         
         .agent-content.expanded {
@@ -419,6 +455,16 @@ class HTMLReporter:
             font-weight: 500;
             flex: 1;
             margin-right: 20px;
+        }
+        .turn-badge {
+            display: inline-block;
+            background: #e7f1ff;
+            color: #0d6efd;
+            font-size: 0.75em;
+            font-weight: 600;
+            padding: 2px 8px;
+            border-radius: 999px;
+            margin-right: 8px;
         }
         
         .test-status {
@@ -935,11 +981,14 @@ class HTMLReporter:
         """Generate summary section HTML"""
         summary = report_data['summary']
         
+        conversation_agents = sorted(set(report_data['summary']['conversation_agents']))
+        
         return f"""
         <section class="summary">
             <h2>📊 Test Summary</h2>
             <div class="suite-info">
                 <h3>📁 Test Suite: {report_data.get('suite_name', 'Unknown')}</h3>
+                {'<p class="conversation-note">Single-conversation mode enabled for: ' + ', '.join(conversation_agents) + '. Tests below follow execution order.</p>' if conversation_agents else ''}
             </div>
             <div class="stats-grid">
                 <div class="stat-card">
@@ -982,7 +1031,7 @@ class HTMLReporter:
             agents_html += f"""
             <section class="agent-section">
                 <div class="agent-header" onclick="toggleAgent('{agent_name}')">
-                    <div class="agent-name">{agent_data['agent_name']}</div>
+                    <div class="agent-name">{agent_data['agent_name']}{'<span class="conversation-badge">Single Conversation</span>' if agent_data.get('conversation_mode') else ''}</div>
                     <div class="agent-stats">
                         <div class="agent-stat">
                             <div class="agent-stat-number">{agent_data['total_tests']}</div>
@@ -1012,8 +1061,9 @@ class HTMLReporter:
                     <div class="expand-icon" id="icon-{agent_name}">▼</div>
                 </div>
                 <div class="agent-content" id="content-{agent_name}">
+                    {'<p class="conversation-session">Session ID: ' + agent_data.get('conversation_session_id', '') + '</p>' if agent_data.get('conversation_mode') and agent_data.get('conversation_session_id') else ''}
                     <div class="test-results">
-                        {self._generate_test_results_html(agent_data['test_analysis'])}
+                        {self._generate_test_results_html(agent_data['test_analysis'], agent_data.get('conversation_mode', False), agent_data.get('conversation_session_id', ''))}
                     </div>
                 </div>
             </section>
@@ -1021,18 +1071,21 @@ class HTMLReporter:
         
         return agents_html
     
-    def _generate_test_results_html(self, test_analysis: List[Dict[str, Any]]) -> str:
+    def _generate_test_results_html(self, test_analysis: List[Dict[str, Any]], conversation_mode: bool, conversation_session_id: str) -> str:
         """Generate HTML for test results"""
         tests_html = ""
         
         for test in test_analysis:
             status_class = test['status']
             status_text = test['status'].upper()
+            turn_badge = ''
+            if conversation_mode and test.get('conversation_turn'):
+                turn_badge = f"<span class='turn-badge'>Turn {test['conversation_turn']}</span>"
             
             # Use a string with no indentation to avoid nesting issues
             tests_html += f"""<div class="test-item">
 <div class="test-header" onclick="toggleTest('test-{test['index']}')">
-<div class="test-question">{test['question'][:100]}{'...' if len(test['question']) > 100 else ''}</div>
+<div class="test-question">{turn_badge}{test['question'][:100]}{'...' if len(test['question']) > 100 else ''}</div>
 <div class="test-status {status_class}">{status_text}</div>
 </div>
 <div class="test-details" id="test-{test['index']}">

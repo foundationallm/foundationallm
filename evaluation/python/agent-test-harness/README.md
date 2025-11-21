@@ -92,7 +92,19 @@ python run_tests.py --suite who-are-you --agents MAA-02,MAA-04,MAA-06 --report
 
 # Repeat tests for reliability analysis
 python run_tests.py --suite who-are-you --agent MAA-02 --repeat-test 5
+
+# Run the entire suite as a single ordered conversation
+python run_tests.py --suite conversational --agent MAA-02 --single-conversation --report
 ```
+
+### Single Conversation Mode
+
+Use the `--single-conversation` switch when you need the harness to execute every test in the suite as part of one persistent conversation session. This mode is useful for multi-turn workflows where later prompts depend on earlier context.
+
+- Tests are executed strictly in the CSV order, regardless of the `--workers` setting (parallelism is disabled).
+- A single session is created and reused for every turn; the HTML report highlights the `Single Conversation` badge, shows the shared session ID, and lists tests in execution order with turn numbers.
+- Results JSON/CSV files include `ConversationMode`, `ConversationTurn`, and `ConversationSessionId` fields so downstream automation can replay or validate the interaction sequence.
+- `--repeat-test` is ignored when conversation mode is enabled (each prompt must stay unique).
 
 ### Test Generation
 ```powershell

@@ -326,13 +326,17 @@ def upload_file_with_progress(file_path, fllm_endpoint, session_id, agent_name):
             raise e
 
 
-def process_question(question, answer, filename, agent_name="MAA-02", validation_rules="{}", validation_mode="hybrid"):
+def process_question(question, answer, filename, agent_name="MAA-02", validation_rules="{}", validation_mode="hybrid",
+                     session_id=None, conversation_turn=None, conversation_mode=False):
 
-    # Time the session creation
-    session_start_time = time.time()
-    session_id = create_session()
-    time.sleep(0.1)
-    session_duration = time.time() - session_start_time
+    # Time the session creation (only when not reusing)
+    session_duration = 0
+    reused_session = session_id is not None
+    if not reused_session:
+        session_start_time = time.time()
+        session_id = create_session()
+        time.sleep(0.1)
+        session_duration = time.time() - session_start_time
     
     if not session_id:
         print(f"Failed to create session for question: {question}")
@@ -542,7 +546,10 @@ def process_question(question, answer, filename, agent_name="MAA-02", validation
             'ValidationMode': validation_mode,
             'ValidationPassed': validation_passed,
             'ValidationScore': validation_score,
-            'ValidationDetails': validation_details
+            'ValidationDetails': validation_details,
+            'ConversationMode': conversation_mode,
+            'ConversationTurn': conversation_turn if conversation_mode else None,
+            'ConversationSessionId': session_id if conversation_mode else ''
         }
     else:
         print(f"Failed to get completion for question: {question}")
@@ -573,7 +580,10 @@ def process_question(question, answer, filename, agent_name="MAA-02", validation
             'ProducedFilesSummary': '[]',
             'ValidationPassed': -1,
             'ValidationScore': 0,
-            'ValidationDetails': 'Test execution failed'
+            'ValidationDetails': 'Test execution failed',
+            'ConversationMode': conversation_mode,
+            'ConversationTurn': conversation_turn if conversation_mode else None,
+            'ConversationSessionId': session_id if conversation_mode else ''
         }
 
 def execute_tests(test_file, agent_name, max_workers=5, output_dir=None):
@@ -618,7 +628,10 @@ def execute_tests(test_file, agent_name, max_workers=5, output_dir=None):
                         'SessionRequestDuration': 0,
                         'CompletionRequestDuration': 0,
                         'ErrorOccured': 1,
-                        'ErrorDetails': 'Result was None'
+                        'ErrorDetails': 'Result was None',
+                        'ConversationMode': False,
+                        'ConversationTurn': None,
+                        'ConversationSessionId': ''
                     })
             except Exception as e:
                 # Get the original question from the DataFrame
@@ -635,7 +648,10 @@ def execute_tests(test_file, agent_name, max_workers=5, output_dir=None):
                     'SessionRequestDuration': 0,
                     'CompletionRequestDuration': 0,
                     'ErrorOccured': 1,
-                    'ErrorDetails': str(e)
+                    'ErrorDetails': str(e),
+                    'ConversationMode': False,
+                    'ConversationTurn': None,
+                    'ConversationSessionId': ''
                 })
                 print(f"Error processing question at index {index}: {str(e)}")
     
@@ -647,7 +663,8 @@ def execute_tests(test_file, agent_name, max_workers=5, output_dir=None):
         'Question','Filename','AgentAnswerPreview','ErrorOccured','ErrorDetails','Tokens',
         'SessionRequestDuration','CompletionRequestDuration','CodeArtifactCount',
         'CodeToolFailed','CodeToolError','CodeToolResult',
-        'ProducedFilesCount','ProducedFilesSummary','ArtifactsSummary'
+        'ProducedFilesCount','ProducedFilesSummary','ArtifactsSummary',
+        'ConversationMode','ConversationTurn','ConversationSessionId'
     ]
     # Only use columns that exist (older runs may not have all fields)
     summary_columns = [c for c in summary_columns if c in results_df.columns]
@@ -711,7 +728,10 @@ def execute_tests_from_dataframe(df, agent_name, max_workers=5):
                         'AgentAnswer': 'Failed to process',
                         'ErrorOccured': 1,
                         'ErrorDetails': 'Test execution failed',
-                        'Ordinal': ordinal_index + 1
+                        'Ordinal': ordinal_index + 1,
+                        'ConversationMode': False,
+                        'ConversationTurn': None,
+                        'ConversationSessionId': ''
                     }
                     # Add repeat information if available
                     if '_repeat_index' in row_data:
@@ -735,7 +755,10 @@ def execute_tests_from_dataframe(df, agent_name, max_workers=5):
                     'AgentAnswer': 'Failed to process',
                     'ErrorOccured': 1,
                     'ErrorDetails': str(e),
-                    'Ordinal': ordinal_index + 1
+                    'Ordinal': ordinal_index + 1,
+                    'ConversationMode': False,
+                    'ConversationTurn': None,
+                    'ConversationSessionId': ''
                 }
                 # Add repeat information if available
                 if '_repeat_index' in row_data:
@@ -750,6 +773,58 @@ def execute_tests_from_dataframe(df, agent_name, max_workers=5):
     else:
         print("No results to return")
         return None
+
+
+def execute_tests_single_conversation(df, agent_name):
+    """Execute tests sequentially using a single shared conversation session"""
+    if df is None or df.empty:
+        print("No tests to execute")
+        return None
+
+    df = df.reset_index(drop=True)
+    session_id = create_session()
+    if not session_id:
+        print("Failed to create session for single conversation run")
+        return None
+    time.sleep(0.1)
+
+    results = []
+    for ordinal, (_, row) in enumerate(df.iterrows(), start=1):
+        result = process_question(
+            row['Question'],
+            row['Answer'],
+            row['Filename'],
+            agent_name,
+            row.get('ValidationRules', '{}'),
+            row.get('ValidationMode', 'hybrid'),
+            session_id=session_id,
+            conversation_turn=ordinal,
+            conversation_mode=True
+        )
+
+        if result:
+            result['Ordinal'] = ordinal
+            result['ConversationTurn'] = ordinal
+            result['ConversationSessionId'] = session_id
+            results.append(result)
+        else:
+            results.append({
+                'Question': row['Question'],
+                'Filename': row['Filename'],
+                'Answer': row['Answer'],
+                'AgentAnswer': '',
+                'ErrorOccured': 1,
+                'ErrorDetails': 'Failed to process question',
+                'Ordinal': ordinal,
+                'ConversationMode': True,
+                'ConversationTurn': ordinal,
+                'ConversationSessionId': session_id
+            })
+
+    if results:
+        return pd.DataFrame(results)
+
+    return None
 
 
 if __name__ == "__main__":
