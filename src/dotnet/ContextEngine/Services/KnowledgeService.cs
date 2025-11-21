@@ -14,6 +14,7 @@ using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders.Agent;
 using FoundationaLLM.Common.Models.ResourceProviders.Context;
 using FoundationaLLM.Common.Models.ResourceProviders.Vector;
+using FoundationaLLM.Common.Models.Services;
 using FoundationaLLM.Common.Services.Azure;
 using FoundationaLLM.Context.Exceptions;
 using FoundationaLLM.Context.Interfaces;
@@ -21,6 +22,7 @@ using FoundationaLLM.Context.Models;
 using FoundationaLLM.Context.Models.Configuration;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
+using Microsoft.Graph.Models.Partners.Billing;
 using OpenAI.Embeddings;
 using System.ClientModel.Primitives;
 
@@ -71,178 +73,216 @@ namespace FoundationaLLM.Context.Services
         private readonly SemaphoreSlim _cacheLock = new(1, 1);
 
         /// <inheritdoc/>
-        public async Task<ContextServiceResponse<ResourceProviderGetResult<KnowledgeUnit>>> GetKnowledgeUnit(
+        public async Task<Result<ResourceProviderGetResult<KnowledgeUnit>>> GetKnowledgeUnit(
             string instanceId,
             string knowledgeUnitId,
             string? agentName,
             UnifiedUserIdentity userIdentity)
         {
-            // If the query is submitted on behalf of an agent, retrieve the agent resource.
-            AgentBase agent = null!;
-            if (agentName is not null)
-                agent = await _agentResourceProvider.GetResourceAsync<AgentBase>(
-                    instanceId,
-                    agentName,
-                    userIdentity);
-
-            var knowledgeUnit = await _contextResourceProvider.GetResourceAsync<KnowledgeUnit>(
-                instanceId,
-                knowledgeUnitId,
-                userIdentity,
-                parentResourceInstance: agent);
-            return new ContextServiceResponse<ResourceProviderGetResult<KnowledgeUnit>>
+            try
             {
-                Success = true,
-                Result = new ResourceProviderGetResult<KnowledgeUnit>
-                {
-                    Resource = knowledgeUnit,
-                    Actions = [],
-                    Roles = []
-                }
-            };
+                // If the query is submitted on behalf of an agent, retrieve the agent resource.
+                AgentBase agent = null!;
+                if (agentName is not null)
+                    agent = await _agentResourceProvider.GetResourceAsync<AgentBase>(
+                        instanceId,
+                        agentName,
+                        userIdentity);
+
+                var knowledgeUnit = await _contextResourceProvider.GetResourceAsync<KnowledgeUnit>(
+                    instanceId,
+                    knowledgeUnitId,
+                    userIdentity,
+                    parentResourceInstance: agent);
+                return Result<ResourceProviderGetResult<KnowledgeUnit>>.Success(
+                    new ResourceProviderGetResult<KnowledgeUnit>
+                    {
+                        Resource = knowledgeUnit,
+                        Actions = [],
+                        Roles = []
+                    });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while retrieving the knowledge unit {KnowledgeUnitId} from instance {InstanceId}.",
+                    knowledgeUnitId, instanceId);
+                return Result<ResourceProviderGetResult<KnowledgeUnit>>.FailureFromException(ex);
+            }
         }
 
         /// <inheritdoc/>
-        public async Task<ContextServiceResponse<ResourceProviderGetResult<KnowledgeSource>>> GetKnowledgeSource(
+        public async Task<Result<ResourceProviderGetResult<KnowledgeSource>>> GetKnowledgeSource(
             string instanceId,
             string knowledgeSourceId,
             string? agentName,
             UnifiedUserIdentity userIdentity)
         {
-            // If the query is submitted on behalf of an agent, retrieve the agent resource.
-            AgentBase agent = null!;
-            if (agentName is not null)
-                agent = await _agentResourceProvider.GetResourceAsync<AgentBase>(
+            try
+            {
+                // If the query is submitted on behalf of an agent, retrieve the agent resource.
+                AgentBase agent = null!;
+                if (agentName is not null)
+                    agent = await _agentResourceProvider.GetResourceAsync<AgentBase>(
+                        instanceId,
+                        agentName,
+                        userIdentity);
+
+                var knowledgeSource = await _contextResourceProvider.GetResourceAsync<KnowledgeSource>(
                     instanceId,
-                    agentName,
+                    knowledgeSourceId,
+                    userIdentity,
+                    parentResourceInstance: agent);
+                return Result<ResourceProviderGetResult<KnowledgeSource>>.Success(
+                    new ResourceProviderGetResult<KnowledgeSource>
+                    {
+                        Resource = knowledgeSource,
+                        Actions = [],
+                        Roles = []
+                    });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while retrieving the knowledge source {KnowledgeSourceId} from instance {InstanceId}.",
+                    knowledgeSourceId, instanceId);
+                return Result<ResourceProviderGetResult<KnowledgeSource>>.FailureFromException(ex);
+            }
+        }
+
+        public async Task<Result<IEnumerable<ResourceProviderGetResult<KnowledgeUnit>>>> GetKnowledgeUnits(
+            string instanceId,
+            ContextKnowledgeResourceListRequest listRequest,
+            UnifiedUserIdentity userIdentity)
+        {
+            try
+            {
+                var knowledgeUnitResults = await _contextResourceProvider.GetResourcesAsync<KnowledgeUnit>(
+                    instanceId,
                     userIdentity);
-
-            var knowledgeSource = await _contextResourceProvider.GetResourceAsync<KnowledgeSource>(
-                instanceId,
-                knowledgeSourceId,
-                userIdentity,
-                parentResourceInstance: agent);
-            return new ContextServiceResponse<ResourceProviderGetResult<KnowledgeSource>>
+                return Result<IEnumerable<ResourceProviderGetResult<KnowledgeUnit>>>.Success(
+                    listRequest.KnowledgeResourceNames is null
+                        ? knowledgeUnitResults
+                            .OrderBy(r => r.Resource.Name)
+                        : knowledgeUnitResults
+                            .Where(r => listRequest.KnowledgeResourceNames.Contains(r.Resource.Name))
+                            .OrderBy(r => r.Resource.Name));
+            }
+            catch (Exception ex)
             {
-                Success = true,
-                Result = new ResourceProviderGetResult<KnowledgeSource>
-                {
-                    Resource = knowledgeSource,
-                    Actions = [],
-                    Roles = []
-                }
-            };
+                _logger.LogError(ex, "An error occurred while retrieving knowledge units from instance {InstanceId}.",
+                    instanceId);
+                return Result<IEnumerable<ResourceProviderGetResult<KnowledgeUnit>>>.FailureFromException(ex);
+            }
         }
 
-        public async Task<ContextServiceResponse<IEnumerable<ResourceProviderGetResult<KnowledgeUnit>>>> GetKnowledgeUnits(
+        /// <inheritdoc />
+        public async Task<Result<IEnumerable<ResourceProviderGetResult<KnowledgeSource>>>> GetKnowledgeSources(
             string instanceId,
             ContextKnowledgeResourceListRequest listRequest,
             UnifiedUserIdentity userIdentity)
         {
-            var knowledgeUnitResults = await _contextResourceProvider.GetResourcesAsync<KnowledgeUnit>(
-                instanceId,
-                userIdentity);
-            return new ContextServiceResponse<IEnumerable<ResourceProviderGetResult<KnowledgeUnit>>>
+            try
             {
-                Success = true,
-                Result = listRequest.KnowledgeResourceNames is null
-                    ? knowledgeUnitResults
-                        .OrderBy(r => r.Resource.Name)
-                    : knowledgeUnitResults
-                        .Where(r => listRequest.KnowledgeResourceNames.Contains(r.Resource.Name))
-                        .OrderBy(r => r.Resource.Name)
-            };
+                var knowledgeSourceResults = await _contextResourceProvider.GetResourcesAsync<KnowledgeSource>(
+                    instanceId,
+                    userIdentity);
+                return Result<IEnumerable<ResourceProviderGetResult<KnowledgeSource>>>.Success(
+                    listRequest.KnowledgeResourceNames is null
+                        ? knowledgeSourceResults
+                            .OrderBy(r => r.Resource.Name)
+                        : knowledgeSourceResults
+                            .Where(r => listRequest.KnowledgeResourceNames.Contains(r.Resource.Name))
+                            .OrderBy(r => r.Resource.Name));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while retrieving knowledge sources from instance {InstanceId}.",
+                    instanceId);
+                return Result<IEnumerable<ResourceProviderGetResult<KnowledgeSource>>>.FailureFromException(ex);
+            }
         }
 
         /// <inheritdoc />
-        public async Task<ContextServiceResponse<IEnumerable<ResourceProviderGetResult<KnowledgeSource>>>> GetKnowledgeSources(
-            string instanceId,
-            ContextKnowledgeResourceListRequest listRequest,
-            UnifiedUserIdentity userIdentity)
-        {
-            var knowledgeSourceResults = await _contextResourceProvider.GetResourcesAsync<KnowledgeSource>(
-                instanceId,
-                userIdentity);
-            return new ContextServiceResponse<IEnumerable<ResourceProviderGetResult<KnowledgeSource>>>
-            {
-                Success = true,
-                Result = listRequest.KnowledgeResourceNames is null
-                    ? knowledgeSourceResults
-                        .OrderBy(r => r.Resource.Name)
-                    : knowledgeSourceResults
-                        .Where(r => listRequest.KnowledgeResourceNames.Contains(r.Resource.Name))
-                        .OrderBy(r => r.Resource.Name)
-            };
-        }
-
-        /// <inheritdoc />
-        public async Task<ContextServiceResponse<ResourceProviderUpsertResult<KnowledgeUnit>>> UpsertKnowledgeUnit(
+        public async Task<Result<ResourceProviderUpsertResult<KnowledgeUnit>>> UpsertKnowledgeUnit(
             string instanceId,
             KnowledgeUnit knowledgeUnit,
             UnifiedUserIdentity userIdentity)
         {
-            var upsertResult =
-                await _contextResourceProvider.UpsertResourceAsync<KnowledgeUnit, ResourceProviderUpsertResult<KnowledgeUnit>>(
-                    instanceId,
-                    knowledgeUnit,
-                    userIdentity);
-            return new ContextServiceResponse<ResourceProviderUpsertResult<KnowledgeUnit>>
+            try
             {
-                Success = true,
-                Result = upsertResult
-            };
+                var upsertResult =
+                    await _contextResourceProvider.UpsertResourceAsync<KnowledgeUnit, ResourceProviderUpsertResult<KnowledgeUnit>>(
+                        instanceId,
+                        knowledgeUnit,
+                        userIdentity);
+                return Result<ResourceProviderUpsertResult<KnowledgeUnit>>.Success(upsertResult);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while upserting the knowledge unit {KnowledgeUnitId} in instance {InstanceId}.",
+                    knowledgeUnit.Name, instanceId);
+                return Result<ResourceProviderUpsertResult<KnowledgeUnit>>.FailureFromException(ex);
+            }
         }
 
         /// <inheritdoc />
-        public async Task<ContextServiceResponse<ResourceProviderUpsertResult<KnowledgeSource>>> UpsertKnowledgeSource(
+        public async Task<Result<ResourceProviderUpsertResult<KnowledgeSource>>> UpsertKnowledgeSource(
             string instanceId,
             KnowledgeSource knowledgeSource,
             UnifiedUserIdentity userIdentity)
         {
-            var upsertResult =
-                await _contextResourceProvider.UpsertResourceAsync<KnowledgeSource, ResourceProviderUpsertResult<KnowledgeSource>>(
-                    instanceId,
-                    knowledgeSource,
-                    userIdentity);
-            return new ContextServiceResponse<ResourceProviderUpsertResult<KnowledgeSource>>
+            try
             {
-                Success = true,
-                Result = upsertResult
-            };
+                var upsertResult =
+                    await _contextResourceProvider.UpsertResourceAsync<KnowledgeSource, ResourceProviderUpsertResult<KnowledgeSource>>(
+                        instanceId,
+                        knowledgeSource,
+                        userIdentity);
+                return Result<ResourceProviderUpsertResult<KnowledgeSource>>.Success(upsertResult);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while upserting the knowledge source {KnowledgeSourceId} in instance {InstanceId}.",
+                    knowledgeSource.Name, instanceId);
+                return Result<ResourceProviderUpsertResult<KnowledgeSource>>.FailureFromException(ex);
+            }
         }
 
         /// <inheritdoc />
-        public async Task<ContextServiceResponse<ResourceProviderActionResult>> SetKnowledgeUnitGraph(
+        public async Task<Result<ResourceProviderActionResult>> SetKnowledgeUnitGraph(
             string instanceId,
             string knowledgeUnitId,
             ContextKnowledgeUnitSetGraphRequest setGraphRequest,
             UnifiedUserIdentity userIdentity)
         {
-            var result = await _contextResourceProvider.ExecuteResourceActionAsync<
-                KnowledgeUnit,
-                ContextKnowledgeUnitSetGraphRequest,
-                ResourceProviderActionResult>(
-                instanceId,
-                knowledgeUnitId,
-                ResourceProviderActions.SetGraph,
-                setGraphRequest,
-                userIdentity);
-
-            // If the knowledge source is cached, remove it from the cache.
-            RemoveKnowledgeUnitFromCache(
-                instanceId,
-                knowledgeUnitId);
-
-            return new ContextServiceResponse<ResourceProviderActionResult>
+            try
             {
-                Success = result.IsSuccess,
-                ErrorMessage = result.ErrorMessage,
-                Result = result
-            };
+                var result = await _contextResourceProvider.ExecuteResourceActionAsync<
+                    KnowledgeUnit,
+                    ContextKnowledgeUnitSetGraphRequest,
+                    ResourceProviderActionResult>(
+                    instanceId,
+                    knowledgeUnitId,
+                    ResourceProviderActions.SetGraph,
+                    setGraphRequest,
+                    userIdentity);
+
+                // If the knowledge source is cached, remove it from the cache.
+                RemoveKnowledgeUnitFromCache(
+                    instanceId,
+                    knowledgeUnitId);
+
+                return Result<ResourceProviderActionResult>.Success(result);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while setting the knowledge graph for knowledge unit {KnowledgeUnitId} in instance {InstanceId}.",
+                    knowledgeUnitId, instanceId);
+                return Result<ResourceProviderActionResult>.FailureFromException(ex);
+            }
         }
 
         /// <inheritdoc/>
-        public async Task<ContextKnowledgeSourceQueryResponse> QueryKnowledgeSource(
+        public async Task<Result<ContextKnowledgeSourceQueryResponse>> QueryKnowledgeSource(
             string instanceId,
             string knowledgeSourceId,
             ContextKnowledgeSourceQueryRequest queryRequest,
@@ -316,26 +356,21 @@ namespace FoundationaLLM.Context.Services
                     knowledgeUnitQueryEngines,
                     _loggerFactory.CreateLogger<KnowledgeSourceQueryEngine>());
 
-                var queryResponse = await queryEngine.QueryAsync(
+                var queryResult = await queryEngine.QueryAsync(
                     queryRequest);
 
-                return queryResponse;
+                return queryResult;
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "An error occurred while querying the knowledge source {KnowledgeSourceId} from instance {InstanceId}.",
                     knowledgeSourceId, instanceId);
-                return new ContextKnowledgeSourceQueryResponse
-                {
-                    Source = knowledgeSourceId,
-                    Success = false,
-                    ErrorMessage = $"An error occurred while querying the knowledge source {knowledgeSourceId} from instance {instanceId}."
-                };
+                return Result<ContextKnowledgeSourceQueryResponse>.FailureFromException(ex);
             }
         }
 
         /// <inheritdoc/>
-        public async Task<ContextKnowledgeUnitRenderGraphResponse> RenderKnowledgeUnitGraph(
+        public async Task<Result<ContextKnowledgeUnitRenderGraphResponse>> RenderKnowledgeUnitGraph(
             string instanceId,
             string knowledgeUnitId,
             ContextKnowledgeSourceQueryRequest? queryRequest,
@@ -352,21 +387,15 @@ namespace FoundationaLLM.Context.Services
                     .SingleOrDefault(f => f.KnowledgeUnitId == knowledgeUnitId);
 
                 if (!knowledgeUnit.HasKnowledgeGraph)
-                    return new ContextKnowledgeUnitRenderGraphResponse
-                    {
-                        Success = false,
-                        ErrorMessage = $"The knowledge unit {knowledgeUnitId} from instance {instanceId} does not contain a knowledge graph."
-                    };
+                    return Result< ContextKnowledgeUnitRenderGraphResponse>.FailureFromErrorMessage(
+                        $"The knowledge unit {knowledgeUnitId} from instance {instanceId} does not contain a knowledge graph.");
 
                 var vectorStoreId = string.IsNullOrWhiteSpace(knowledgeUnit.VectorStoreId)
                     ? vectorStoreFilter?.VectorStoreId
                     : knowledgeUnit.VectorStoreId;
                 if (string.IsNullOrWhiteSpace(vectorStoreId))
-                    return new ContextKnowledgeUnitRenderGraphResponse
-                    {
-                        Success = false,
-                        ErrorMessage = $"The knowledge unit {knowledgeUnitId} from instance {instanceId} does not have a vector store identifier specified and none was provided in the rendering request."
-                    };
+                    return Result<ContextKnowledgeUnitRenderGraphResponse>.FailureFromErrorMessage(
+                        $"The knowledge unit {knowledgeUnitId} from instance {instanceId} does not have a vector store identifier specified and none was provided in the rendering request.");
 
                 var vectorDatabase = await _vectorResourceProvider.GetResourceAsync<VectorDatabase>(
                     knowledgeUnit.VectorDatabaseObjectId,
@@ -384,10 +413,7 @@ namespace FoundationaLLM.Context.Services
                     knowledgeGraphVectorDatabase,
                     userIdentity);
 
-                var renderResponse = new ContextKnowledgeUnitRenderGraphResponse
-                {
-                    Success = true
-                };
+                var renderResponse = new ContextKnowledgeUnitRenderGraphResponse();
 
                 if (queryRequest is null)
                 {
@@ -407,17 +433,13 @@ namespace FoundationaLLM.Context.Services
                     // TODO: Execute the query against the knowledge graph and render the result.
                 }
 
-                return renderResponse;
+                return Result<ContextKnowledgeUnitRenderGraphResponse>.Success(renderResponse);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "An error occurred while rendering the knowledge graph for knowledge unit {KnowledgeUnitId} from instance {InstanceId}.",
                     knowledgeUnitId, instanceId);
-                return new ContextKnowledgeUnitRenderGraphResponse
-                {
-                    Success = false,
-                    ErrorMessage = $"An error occurred while rendering the knowledge graph for knowledge unit {knowledgeUnitId} from instance {instanceId}."
-                };
+                return Result<ContextKnowledgeUnitRenderGraphResponse>.FailureFromException(ex);
             }
         }
 

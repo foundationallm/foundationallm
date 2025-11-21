@@ -239,12 +239,8 @@ namespace FoundationaLLM
         /// Registers the <see cref="HttpClientFactoryService"/> with the dependency injection container.
         /// </summary>
         /// <param name="builder">The <see cref="IHostApplicationBuilder"/> application builder managing the dependency injection container.</param>
-        public static void AddHttpClientFactoryService(this IHostApplicationBuilder builder)
-        {
-            builder.Services.AddHttpClient();
-            builder.Services.AddSingleton<IHttpClientFactoryService, HttpClientFactoryService>();
-            builder.Services.ActivateSingleton<IHttpClientFactoryService>();
-        }
+        public static void AddHttpClientFactoryService(this IHostApplicationBuilder builder) =>
+            builder.Services.AddHttpClientFactoryService();
 
         /// <summary>
         /// Registers the <see cref="HttpClientFactoryService"/> with the dependency injection container.
@@ -255,6 +251,23 @@ namespace FoundationaLLM
             services.AddHttpClient();
             services.AddSingleton<IHttpClientFactoryService, HttpClientFactoryService>();
             services.ActivateSingleton<IHttpClientFactoryService>();
+        }
+
+        /// <summary>
+        /// Registers the <see cref="ClientFactoryService"/> with the dependency injection container.
+        /// </summary>
+        /// <param name="builder">The <see cref="IHostApplicationBuilder"/> application builder managing the dependency injection container.</param>
+        public static void AddClientFactoryService(this IHostApplicationBuilder builder) =>
+            builder.Services.AddClientFactoryService();
+
+        /// <summary>
+        /// Registers the <see cref="ClientFactoryService"/> with the dependency injection container.
+        /// </summary>
+        /// <param name="services">The <see cref="IServiceCollection"/> dependency injection container service collection.</param>
+        public static void AddClientFactoryService(this IServiceCollection services)
+        {
+            services.AddSingleton<IClientFactoryService, ClientFactoryService>();
+            services.ActivateSingleton<IClientFactoryService>();
         }
 
         /// <summary>

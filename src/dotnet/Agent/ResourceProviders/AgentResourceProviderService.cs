@@ -29,7 +29,6 @@ using FoundationaLLM.Common.Models.ResourceProviders.AzureAI;
 using FoundationaLLM.Common.Models.ResourceProviders.Configuration;
 using FoundationaLLM.Common.Models.ResourceProviders.DataPipeline;
 using FoundationaLLM.Common.Models.ResourceProviders.Prompt;
-using FoundationaLLM.Common.Models.Vectorization;
 using FoundationaLLM.Common.Services.ResourceProviders;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
@@ -973,21 +972,21 @@ namespace FoundationaLLM.Agent.ResourceProviders
                     formFile.ContentType!,
                     new MemoryStream(formFile.BinaryContent.ToArray()));
 
-                if (!contextServiceResult.Success)
+                if (!contextServiceResult.TryGetValue(out var fileRecord))
                     throw new ResourceProviderException(
                         $"Failed to add the file {formFile.FileName} to the FoundationaLLM file store.",
                         StatusCodes.Status500InternalServerError);
-                var objectId = ResourcePath.GetObjectId(_instanceSettings.Id, _name, AgentResourceTypeNames.Agents, resourcePath.MainResourceId!, AgentResourceTypeNames.AgentFiles, contextServiceResult.Result!.Id);
+                var objectId = ResourcePath.GetObjectId(_instanceSettings.Id, _name, AgentResourceTypeNames.Agents, resourcePath.MainResourceId!, AgentResourceTypeNames.AgentFiles, fileRecord.Id);
 
                 agentPrivateFile = new AgentFileReference
                 {
-                    Id = contextServiceResult.Result!.Id,
-                    Name = contextServiceResult.Result.Id,
+                    Id = fileRecord.Id,
+                    Name = fileRecord.Id,
                     ObjectId =  objectId,
                     OriginalFilename = formFile.FileName,
                     ContentType = formFile.ContentType!,
                     Type = AgentTypes.AgentFile,
-                    Filename = contextServiceResult.Result.FilePath,
+                    Filename = fileRecord.FilePath,
                     Size = formFile.BinaryContent.Length,
                     UPN = userIdentity.UPN ?? string.Empty,
                     InstanceId = resourcePath.InstanceId!,
