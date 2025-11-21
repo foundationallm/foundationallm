@@ -5,6 +5,8 @@ export const useAppConfigStore = defineStore('appConfig', {
 	state: () => ({
 		// Loading states
 		isConfigurationLoaded: false,
+		isFeaturedAgentNamesLoaded: false,
+		isAppConfigurationSetLoaded: false,
 		hasConfigurationAccessError: false,
 		configurationAccessErrorMessage: null as string | null,
 
@@ -43,7 +45,8 @@ export const useAppConfigStore = defineStore('appConfig', {
 		showMessageTokens: null as boolean | null,
 		showViewPrompt: null as boolean | null,
 		showFileUpload: null as boolean | null,
-		featuredAgentNames: null as string | null,
+		featuredAgentNames: [] as string[] | null,
+		pinnedFeaturedAgentNames: [] as string[] | null,
 		agentManagementPermissionRequestUrl: null as string | null,
 
 		// Auth: These settings configure the MSAL authentication.
@@ -55,6 +58,9 @@ export const useAppConfigStore = defineStore('appConfig', {
 			callbackPath: null as string | null,
 			timeoutInMinutes: 60,
 		},
+
+		// Feature flags
+		agentSelfServiceFeatureEnabled: false,
 	}),
 	getters: {},
 	actions: {
@@ -163,13 +169,20 @@ export const useAppConfigStore = defineStore('appConfig', {
 								: JSON.parse((configValues['FoundationaLLM:UserPortal:Configuration:ShowFileUpload'] as string).toLowerCase());
 						}
 						if (configValues['FoundationaLLM:UserPortal:Configuration:FeaturedAgentNames']) {
-							this.featuredAgentNames = configValues['FoundationaLLM:UserPortal:Configuration:FeaturedAgentNames'] as string;
+							const featuredAgentNamesString = configValues['FoundationaLLM:UserPortal:Configuration:FeaturedAgentNames'] as string;
+
+							this.featuredAgentNames = featuredAgentNamesString.split(',').map((name: string) => name.trim()).filter((name: string) => name.length > 0);
+							this.pinnedFeaturedAgentNames = this.featuredAgentNames.filter(name => name.endsWith('|*')).map(name => name.replace(/\|\*$/, ''));
+							this.featuredAgentNames = this.featuredAgentNames.map(name => name.replace(/\|\*$/, ''));
+
+							this.isFeaturedAgentNamesLoaded = true;
 						}
 						if (configValues['FoundationaLLM:UserPortal:Configuration:AgentManagementPermissionRequestUrl']) {
 							this.agentManagementPermissionRequestUrl = configValues['FoundationaLLM:UserPortal:Configuration:AgentManagementPermissionRequestUrl'] as string;
 						}
 					}
 				}
+				this.isAppConfigurationSetLoaded = true;
 			} catch (error: any) {
 				console.error('Failed to load app configuration set:', error);
 
@@ -231,6 +244,20 @@ export const useAppConfigStore = defineStore('appConfig', {
 			this.auth.timeoutInMinutes = authTimeoutInMinutes;
 		},
 
+		async loadFeatureFlags() {
+			const agentSelfServiceFlag = await this.getConfigValueSafe(
+				'.appconfig.featureflag/FoundationaLLM.Agent.SelfService',
+				'{"enabled": true}',
+			);
+			try {
+				const parsedFlag = JSON.parse(agentSelfServiceFlag);
+				this.agentSelfServiceFeatureEnabled = parsedFlag.enabled === true;
+			} catch (error) {
+				console.error('Failed to parse agent self-service feature flag:', error);
+				this.agentSelfServiceFeatureEnabled = false; // Default to enabled if parsing fails
+			}
+		},
+
 		/**
 		 * Helper method to safely get configuration values with default fallback.
 		 */
@@ -265,6 +292,7 @@ export const useAppConfigStore = defineStore('appConfig', {
 		async loadFullConfiguration() {
 			// Load the app configuration set (this is the only supported approach)
 			await this.loadAppConfigurationSet();
+			await this.loadFeatureFlags();
 		},
 
 		/**

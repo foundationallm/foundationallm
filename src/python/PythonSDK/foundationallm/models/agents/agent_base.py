@@ -1,14 +1,16 @@
 """
 Base Agent fulfilling the orchestration request.
 """
-from pydantic import Field
 from typing import List, Optional, Union, Annotated
+from pydantic import Field
 from foundationallm.models.agents import (
     AgentConversationHistorySettings,
     AgentGatekeeperSettings,
     AgentOrchestrationSettings,
+    GenericAgentWorkflow,
     AzureAIAgentServiceAgentWorkflow,
     AzureOpenAIAssistantsAgentWorkflow,
+    LangChainAgentWorkflow,
     LangChainExpressionLanguageAgentWorkflow,
     LangGraphReactAgentWorkflow,
     ExternalAgentWorkflow,
@@ -28,7 +30,15 @@ class AgentBase(ResourceBase):
     tools: Optional[List[AgentTool]] = Field(default=[], description="A list of assigned agent tools.")
     workflow: Optional[
         Annotated [
-            Union[AzureAIAgentServiceAgentWorkflow, AzureOpenAIAssistantsAgentWorkflow, LangChainExpressionLanguageAgentWorkflow, LangGraphReactAgentWorkflow, ExternalAgentWorkflow],
+            Union[
+                GenericAgentWorkflow,
+                AzureAIAgentServiceAgentWorkflow,
+                AzureOpenAIAssistantsAgentWorkflow,
+                LangChainAgentWorkflow,
+                LangChainExpressionLanguageAgentWorkflow,
+                LangGraphReactAgentWorkflow,
+                ExternalAgentWorkflow
+            ],
             Field(discriminator='type')
         ]
     ]= Field(default=None, description="The workflow configuration for the agent.")

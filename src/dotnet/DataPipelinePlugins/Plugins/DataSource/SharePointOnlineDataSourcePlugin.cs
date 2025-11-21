@@ -15,6 +15,7 @@ using FoundationaLLM.Common.Services.Plugins;
 using FoundationaLLM.Common.Utils;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using PnP.Core.Auth;
 using PnP.Core.Model;
 using PnP.Core.Model.SharePoint;
@@ -181,6 +182,22 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataSource
                 },
                 true,
                 false);
+        }
+
+        /// <inheritdoc/>
+        public async Task HandleUnsafeContentItem(string canonicalContentItemIdentifier)
+        {
+            // No action needed for SharePoint Online data source.
+            // Access is most certainly read-only, so we will not be able to affect the source content item.
+            // Also, deleting or modifying the source content item might have unintended consequences.
+            // We don't want to interfere with content that is not managed by FoundationaLLM.
+
+            _logger.LogWarning(
+                "The {PluginName} plugin received a notification to handle an unsafe content item with identifier {ContentItemIdentifier}. No action will be taken.",
+                Name,
+                canonicalContentItemIdentifier);
+
+            await Task.CompletedTask;
         }
 
         /// <summary>

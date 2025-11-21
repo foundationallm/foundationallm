@@ -20,6 +20,13 @@ namespace FoundationaLLM.Common.Constants.Configuration
         /// </summary>
         public const string FeatureFlag_FoundationaLLM_Agent_PrivateStore =
             ".appconfig.featureflag/FoundationaLLM.Agent.PrivateStore";
+        
+        /// <summary>
+        /// The app configuration key for the .appconfig.featureflag/FoundationaLLM.Agent.SelfService setting.
+        /// <para>Value description:<br/>Feature flag used to enable or disable the agent self service feature</para>
+        /// </summary>
+        public const string FeatureFlag_FoundationaLLM_Agent_SelfService =
+            ".appconfig.featureflag/FoundationaLLM.Agent.SelfService";
 
         #endregion
 

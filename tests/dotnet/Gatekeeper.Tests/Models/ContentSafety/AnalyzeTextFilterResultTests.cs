@@ -1,4 +1,4 @@
-﻿using FoundationaLLM.Gatekeeper.Core.Models.ContentSafety;
+﻿using FoundationaLLM.Common.Models.ContentSafety;
 
 namespace Gatekeeper.Tests.Models.ContentSafety
 {
@@ -8,15 +8,15 @@ namespace Gatekeeper.Tests.Models.ContentSafety
         public void AnalyzeTextFilterResult_Properties_SetCorrectly()
         {
             // Arrange
-            var analyzeTextFilterResult = new AnalyzeTextFilterResult
+            var analyzeTextFilterResult = new ContentSafetyAnalysisResult
             {
-                Safe = true,
-                Reason = "Reason_1"
+                SafeContent = true,
+                Details = "Reason_1"
             };
 
             // Assert
-            Assert.True(analyzeTextFilterResult.Safe);
-            Assert.Equal("Reason_1", analyzeTextFilterResult.Reason);
+            Assert.True(analyzeTextFilterResult.SafeContent);
+            Assert.Equal("Reason_1", analyzeTextFilterResult.Details);
         }
     }
 }

@@ -14,7 +14,6 @@
 		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.13.0" />
 		<PackageReference Include="OpenTelemetry.Instrumentation.AspNetCore" Version="1.11.1" />
 		<PackageReference Include="OpenTelemetry.Instrumentation.Http" Version="1.11.1" />
-		<PackageReference Include="Polly.Core" Version="8.5.2" />
 		<PackageReference Include="System.Text.Json" Version="8.0.5" />
 	</ItemGroup>
 

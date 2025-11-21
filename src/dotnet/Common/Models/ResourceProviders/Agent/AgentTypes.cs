@@ -13,7 +13,7 @@
         /// <summary>
         /// Knowledge Management agents are best for Q&amp;A, summarization, and reasoning over textual data.
         /// </summary>
-        public const string KnowledgeManagement = "knowledge-management";
+        public const string GenericAgent = "generic-agent";
 
         /// <summary>
         /// Agent file.

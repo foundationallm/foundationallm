@@ -9,7 +9,9 @@ function Initialize-ContainerApp {
         [string[]]$Secrets,
         [string]$ContainerImage,
         [int]$MinReplicas,
-        [int]$MaxReplicas
+        [int]$MaxReplicas,
+        [decimal]$CPUCores,
+        [int]$Memory
     )
 
     if ((az containerapp list --resource-group $ResourceGroupName --query "[?name=='$ContainerAppName']" -o tsv).Count -eq 0) {
@@ -28,7 +30,9 @@ function Initialize-ContainerApp {
             --env-vars @EnvironmentVariables `
             --min-replicas $MinReplicas `
             --max-replicas $MaxReplicas `
-            --workload-profile-name "Warm"
+            --workload-profile-name "Warm" `
+            --cpu $CPUCores `
+            --memory "${Memory}Gi" `
             | Out-Null
 
         Write-Host "Container app $ContainerAppName created successfully."

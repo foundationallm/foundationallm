@@ -51,6 +51,8 @@ namespace FoundationaLLM.Context.Interfaces
         /// <param name="fileId">The idenfier of the file.</param>
         /// <param name="userPrincipalName">The user principal name of the user associated with the file record.</param>
         /// <returns></returns>
+        /// <remarks>Bypassing owner check cannot be performed here as we need the partition key (which is the UPN)
+        /// to perform the delete operation.</remarks>
         Task DeleteFileRecord(
             string instanceId,
             string fileId,

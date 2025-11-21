@@ -3,6 +3,7 @@ using FoundationaLLM.Common.Models.Context.Knowledge;
 using FoundationaLLM.Common.Models.Knowledge;
 using FoundationaLLM.Common.Models.ResourceProviders.Context;
 using FoundationaLLM.Common.Models.ResourceProviders.Vector;
+using FoundationaLLM.Common.Models.Services;
 using FoundationaLLM.Common.Models.Vectorization;
 using FoundationaLLM.Context.Models;
 using MathNet.Numerics;
@@ -54,7 +55,7 @@ namespace FoundationaLLM.Context.Services
             _logger = logger;
         }
 
-        public async Task<ContextKnowledgeSourceQueryResponse> QueryAsync(
+        public async Task<Result<ContextKnowledgeSourceQueryResponse>> QueryAsync(
             ContextKnowledgeSourceQueryRequest queryRequest)
         {
             try
@@ -68,12 +69,9 @@ namespace FoundationaLLM.Context.Services
                     ? vectorStoreFilter?.VectorStoreId
                     : _knowledgeUnit.VectorStoreId;
                 if (string.IsNullOrWhiteSpace(vectorStoreId))
-                    return new ContextKnowledgeSourceQueryResponse
-                    {
-                        Source = _knowledgeUnit.Name,
-                        Success = false,
-                        ErrorMessage = $"The knowledge unit {_knowledgeUnit.Name} does not have a vector store identifier specified and none was provided in the query request."
-                    };
+                    return Result<ContextKnowledgeSourceQueryResponse>.FailureFromErrorMessage(
+                        $"The knowledge unit {_knowledgeUnit.Name} does not have a vector store identifier specified and none was provided in the query request.",
+                        instance: _knowledgeUnit.Name);
 
                 var userPromptEmbedding = await _cachedKnowledgeUnit.EmbeddingClient.GenerateEmbeddingAsync(
                     queryRequest.UserPrompt,
@@ -84,8 +82,7 @@ namespace FoundationaLLM.Context.Services
 
                 var queryResponse = new ContextKnowledgeSourceQueryResponse
                 {
-                    Source = _knowledgeUnit.Name,
-                    Success = true
+                    Source = _knowledgeUnit.Name
                 };
 
                 if (queryRequest.VectorStoreQuery is not null)
@@ -147,12 +144,9 @@ namespace FoundationaLLM.Context.Services
                 if (queryRequest.KnowledgeGraphQuery is not null)
                 {
                     if (_knowledgeGraphVectorDatabase is null)
-                        return new ContextKnowledgeSourceQueryResponse
-                        {
-                            Source = _knowledgeUnit.Name,
-                            Success = false,
-                            ErrorMessage = $"The knowledge unit {_knowledgeUnit.Name} does not have a knowledge graph vector database."
-                        };
+                        return Result<ContextKnowledgeSourceQueryResponse>.FailureFromErrorMessage(
+                            $"The knowledge unit {_knowledgeUnit.Name} does not have a knowledge graph vector database.",
+                            instance: _knowledgeUnit.Name);
 
                     var knowledgeGraphUserPromptEmbedding = await _cachedKnowledgeUnit.KnowledgeGraphEmbeddingClient!.GenerateEmbeddingAsync(
                         queryRequest.UserPrompt,
@@ -252,29 +246,19 @@ namespace FoundationaLLM.Context.Services
                     }
                 }
 
-                return queryResponse;
+                return Result<ContextKnowledgeSourceQueryResponse>.Success(queryResponse);
             }
             catch (ValidationException ex)
             {
                 _logger.LogError(ex, "Invalid query request for the knowledge source {KnowledgeSourceId}.",
                     _knowledgeUnit.Name);
-                return new ContextKnowledgeSourceQueryResponse
-                {
-                    Source = _knowledgeUnit.Name,
-                    Success = false,
-                    ErrorMessage = $"Invalid query request: {ex.Message}"
-                };
+                return Result<ContextKnowledgeSourceQueryResponse>.FailureFromException(ex, instance: _knowledgeUnit.Name);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "An error occurred while querying the knowledge source {KnowledgeSourceId}.",
                     _knowledgeUnit.Name);
-                return new ContextKnowledgeSourceQueryResponse
-                {
-                    Source = _knowledgeUnit.Name,
-                    Success = false,
-                    ErrorMessage = $"An error occurred while querying the knowledge source {_knowledgeUnit.Name}."
-                };
+                return Result<ContextKnowledgeSourceQueryResponse>.FailureFromException(ex, instance: _knowledgeUnit.Name);
             }
         }
 

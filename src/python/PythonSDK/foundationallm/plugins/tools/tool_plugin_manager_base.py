@@ -1,5 +1,4 @@
 from abc import ABC, abstractmethod
-from typing import Optional
 
 from foundationallm.config import Configuration, UserIdentity
 from foundationallm.langchain.common import FoundationaLLMToolBase
@@ -16,9 +15,11 @@ class ToolPluginManagerBase(ABC):
         tool_config: AgentTool,
         objects: dict,
         user_identity: UserIdentity,
-        config: Configuration) -> FoundationaLLMToolBase:
+        config: Configuration,
+        intercept_http_calls: bool = False
+    ) -> FoundationaLLMToolBase:
         pass
 
     @abstractmethod
-    def refresh_tools():
+    def refresh_tools(self):
         pass

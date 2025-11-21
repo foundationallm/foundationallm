@@ -29,7 +29,6 @@ using FoundationaLLM.Common.Models.ResourceProviders.AzureAI;
 using FoundationaLLM.Common.Models.ResourceProviders.Configuration;
 using FoundationaLLM.Common.Models.ResourceProviders.DataPipeline;
 using FoundationaLLM.Common.Models.ResourceProviders.Prompt;
-using FoundationaLLM.Common.Models.Vectorization;
 using FoundationaLLM.Common.Services.ResourceProviders;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
@@ -38,6 +37,7 @@ using Microsoft.Extensions.Options;
 using System.Data;
 using System.Text;
 using System.Text.Json;
+using System.Text.Json.Nodes;
 
 namespace FoundationaLLM.Agent.ResourceProviders
 {
@@ -280,7 +280,7 @@ namespace FoundationaLLM.Agent.ResourceProviders
             ResourceProviderUpsertOptions? options = null) =>
             resource.GetType() switch
             {
-                Type t when t == typeof(KnowledgeManagementAgent) =>
+                Type t when t == typeof(GenericAgent) =>
                     ((await UpdateAgent(
                         resourcePath,
                         (resource as AgentBase)!,
@@ -959,7 +959,7 @@ namespace FoundationaLLM.Agent.ResourceProviders
 
             AgentFileReference agentPrivateFile = null!;
             var agent = await LoadResource<AgentBase>(resourcePath.MainResourceId!);
-            if (agent!.HasExternalWorkflow()
+            if (agent!.HasGenericWorkflow()
                 && agent.Workflow!.ClassName == AgentWorkflowNames.FoundationaLLMFunctionCallingWorkflow)
             {
                 // Use the Context API to store the file.
@@ -972,21 +972,21 @@ namespace FoundationaLLM.Agent.ResourceProviders
                     formFile.ContentType!,
                     new MemoryStream(formFile.BinaryContent.ToArray()));
 
-                if (!contextServiceResult.Success)
+                if (!contextServiceResult.TryGetValue(out var fileRecord))
                     throw new ResourceProviderException(
                         $"Failed to add the file {formFile.FileName} to the FoundationaLLM file store.",
                         StatusCodes.Status500InternalServerError);
-                var objectId = ResourcePath.GetObjectId(_instanceSettings.Id, _name, AgentResourceTypeNames.Agents, resourcePath.MainResourceId!, AgentResourceTypeNames.AgentFiles, contextServiceResult.Result!.Id);
+                var objectId = ResourcePath.GetObjectId(_instanceSettings.Id, _name, AgentResourceTypeNames.Agents, resourcePath.MainResourceId!, AgentResourceTypeNames.AgentFiles, fileRecord.Id);
 
                 agentPrivateFile = new AgentFileReference
                 {
-                    Id = contextServiceResult.Result!.Id,
-                    Name = contextServiceResult.Result.Id,
+                    Id = fileRecord.Id,
+                    Name = fileRecord.Id,
                     ObjectId =  objectId,
                     OriginalFilename = formFile.FileName,
                     ContentType = formFile.ContentType!,
                     Type = AgentTypes.AgentFile,
-                    Filename = contextServiceResult.Result.FilePath,
+                    Filename = fileRecord.FilePath,
                     Size = formFile.BinaryContent.Length,
                     UPN = userIdentity.UPN ?? string.Empty,
                     InstanceId = resourcePath.InstanceId!,
@@ -1920,6 +1920,53 @@ namespace FoundationaLLM.Agent.ResourceProviders
                 new OrchestrationContext { CurrentUserIdentity = userIdentity },
                 _serviceProvider.GetRequiredService<IHttpClientFactoryService>(),
                 _serviceProvider.GetRequiredService<ILogger<ContextServiceClient>>());
+
+        #endregion
+
+        #region Schema upgrades
+
+        /// <inheritdoc/>
+        protected override List<ResourceReferenceListSchemaUpgrade<AgentReference>> GetResourceReferenceSchemaUpgrades() =>
+            [
+                new ResourceReferenceListSchemaUpgrade<AgentReference>
+                {
+                    SchemaVersion = 2,
+                    ResourceReferenceUpgradeAction = UpgradeAgentResourceSchema_V1_to_V2
+                }
+            ];
+
+        private async Task UpgradeAgentResourceSchema_V1_to_V2(
+            AgentReference agentReference,
+            IStorageService storage,
+            ILogger logger)
+        {
+            if (agentReference.Type == "knowledge-management"
+                && !agentReference.Deleted)
+            {
+                logger.LogInformation("Upgrading Agent resource {AgentName} from schema version 1 to 2...",
+                    agentReference.Name);
+
+                agentReference.Type = AgentTypes.GenericAgent;
+
+                var agentFile = await storage.ReadFileAsync(
+                    _storageContainerName,
+                    agentReference.Filename,
+                    CancellationToken.None);
+
+                var jsonNode = JsonNode.Parse(agentFile.ToString());
+                jsonNode!["type"] = AgentTypes.GenericAgent;
+
+                await storage.WriteFileAsync(
+                    _storageContainerName,
+                    agentReference.Filename,
+                    jsonNode!.ToJsonString(),
+                    "application/json",
+                    CancellationToken.None);
+
+                logger.LogInformation("Successfully upgraded Agent resource {AgentName} from schema version 1 to 2...",
+                    agentReference.Name);
+            }
+        }
 
         #endregion
     }

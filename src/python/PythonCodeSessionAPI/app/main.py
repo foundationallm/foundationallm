@@ -10,6 +10,7 @@ import mimetypes
 import os
 import shutil
 import sys
+from utils import ExtendedJSONEncoder
 
 from fastapi import (
     FastAPI,
@@ -103,10 +104,13 @@ async def execute_code(request_body: dict):
                         try:
                             value.to_csv(file_path, index=False)
                             # Replace DataFrame with a serializable summary
+                            preview_df = value.head(10).reset_index()
+                            preview_df.rename(columns={"index": ""}, inplace=True)  # optional, nicer heading
+                            preview = preview_df.to_dict(orient="records")
                             results[key] = {
                                 "type": "dataframe",
                                 "details": "The dataframe has been saved to a CSV file. A preview of the first ten rows of data has been generated. To view all the data, examine the CSV file that was returned.",
-                                "preview": value.head(10).to_dict(orient="records")
+                                "preview": preview
                             }
                         except Exception:
                             # If writing fails, fall back to dropping the value (non-serializable)
@@ -121,10 +125,10 @@ async def execute_code(request_body: dict):
             except Exception:
                 # If pandas is not available or any import/runtime error occurs, leave results as-is
                 pass
-
+        serialized_results = get_json_serializable_dict(results)
         return {
             'detail':{
-                'results': get_json_serializable_dict(results),
+                'results': serialized_results,
                 'output': standard_output,
                 'error': standard_error
             }
@@ -272,8 +276,8 @@ def get_json_serializable_dict(d: dict) -> dict:
     result = {}
     for key, value in d.items():
         try:
-            json.dumps(value)
-            result[key] = value
+            str_value = json.dumps(value, cls=ExtendedJSONEncoder)
+            result[key] = str_value
         except (TypeError, OverflowError):
             pass
     return result

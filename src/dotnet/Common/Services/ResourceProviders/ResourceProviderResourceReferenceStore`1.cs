@@ -45,6 +45,130 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
         public string? DefaultResourceName => _defaultResourceName;
 
         /// <summary>
+        /// Executes schema upgrades for a list of resource references.
+        /// </summary>
+        /// <remarks>This method reads the current resource references from storage, applies the specified
+        /// schema upgrades, and logs any errors encountered during the process. If an error occurs, the method returns
+        /// <see langword="false"/>.</remarks>
+        /// <param name="schemaUpgrades">A list of schema upgrade definitions to be applied to the resource references. Each upgrade specifies the
+        /// schema changes to be performed.</param>
+        /// <returns><see langword="true"/> if the schema upgrades were successfully processed; otherwise, <see
+        /// langword="false"/>.</returns>
+        public async Task<bool> RunSchemaUpgrades(
+            List<ResourceReferenceListSchemaUpgrade<T>> schemaUpgrades)
+        {
+            if (schemaUpgrades == null || schemaUpgrades.Count == 0)
+            {
+                _logger.LogInformation(
+                    "No schema upgrades were provided for the resource references store of the {ResourceProviderName} resource provider.",
+                    _resourceProvider.Name);
+                return true;
+            }
+
+            // Validate the schema upgrades
+
+            var schemaVersions = schemaUpgrades.Select(su => su.SchemaVersion).ToList();
+
+            if (schemaVersions.Distinct().Count() != schemaVersions.Count)
+            {
+                _logger.LogError(
+                    "Duplicate schema versions were found in the provided schema upgrades for the resource references store of the {ResourceProviderName} resource provider.",
+                    _resourceProvider.Name);
+                return false;
+            }
+
+            if (schemaVersions.Max() - schemaVersions.Min() != schemaVersions.Count - 1)
+            {
+                _logger.LogError(
+                    "Non-consecutive schema versions were found in the provided schema upgrades for the resource references store of the {ResourceProviderName} resource provider.",
+                    _resourceProvider.Name);
+                return false;
+            }
+
+            try
+            {
+                var fileContent = await _storage.ReadFileAsync(
+                        _resourceProvider.StorageContainerName,
+                        ResourceReferencesFilePath,
+                        _cancellationToken);
+                var persistedReferencesList = JsonSerializer.Deserialize<ResourceReferenceList<T>>(
+                    Encoding.UTF8.GetString(fileContent.ToArray()))!;
+
+                if (schemaVersions.Min() > persistedReferencesList.SchemaVersion + 1)
+                {
+                    _logger.LogError(
+                        "The provided schema upgrades for the resource references store of the {ResourceProviderName} resource provider do not cover the current schema version {CurrentSchemaVersion}.",
+                        _resourceProvider.Name,
+                        persistedReferencesList.SchemaVersion);
+                    return false;
+                }
+
+                var requiredUpgrades = schemaUpgrades
+                    .Where(su => su.SchemaVersion > persistedReferencesList.SchemaVersion)
+                    .OrderBy(su => su.SchemaVersion)
+                    .ToList();
+
+                if (requiredUpgrades.Count == 0)
+                {
+                    _logger.LogInformation(
+                        "No schema upgrades are required for the resource references store of the {ResourceProviderName} resource provider. The current schema version is {CurrentSchemaVersion}.",
+                        _resourceProvider.Name,
+                        persistedReferencesList.SchemaVersion);
+                    return true;
+                }
+
+                _logger.LogInformation(
+                    "Starting to run schema upgrades from version {StartVersion} to version {EndVersion} for the resource references store of the {ResourceProviderName} resource provider...",
+                    persistedReferencesList.SchemaVersion,
+                    requiredUpgrades.Last().SchemaVersion,
+                    _resourceProvider.Name);
+
+                foreach (var upgrade in requiredUpgrades)
+                {
+                    _logger.LogInformation(
+                        "Running schema upgrade to version {SchemaVersion} for the resource references store of the {ResourceProviderName} resource provider...",
+                        upgrade.SchemaVersion,
+                        _resourceProvider.Name);
+
+                    foreach (var resourceReference in persistedReferencesList.ResourceReferences)
+                    {
+                        await upgrade.ResourceReferenceUpgradeAction(
+                            resourceReference,
+                            _storage,
+                            _logger);
+                    }
+
+                    persistedReferencesList.SchemaVersion = upgrade.SchemaVersion;
+
+                    await _storage.WriteFileAsync(
+                        _resourceProvider.StorageContainerName,
+                        ResourceReferencesFilePath,
+                        JsonSerializer.Serialize(persistedReferencesList),
+                        default,
+                        _cancellationToken);
+
+                    _logger.LogInformation(
+                        "Schema upgrade to version {SchemaVersion} for the resource references store of the {ResourceProviderName} resource provider completed successfully.",
+                        upgrade.SchemaVersion,
+                        _resourceProvider.Name);
+                }
+
+                _logger.LogInformation(
+                    "All schema upgrades for the resource references store of the {ResourceProviderName} resource provider completed successfully.",
+                    _resourceProvider.Name);
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex,
+                    "There was an error while running schema upgrades for the resource references store of the {ResourceProviderName} resource provider.",
+                    _resourceProvider.Name);
+                return false;
+            }
+        }
+
+        /// <summary>
         /// Loads the resource references from the storage service.
         /// </summary>
         /// <returns></returns>

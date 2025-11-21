@@ -1,0 +1,24 @@
+[project]
+name = "foundationallm-agent-plugins-experimental"
+version = "0.9.7rc460"
+authors = [
+  { name="FoundationaLLM", email="dev@foundationallm.ai" },
+]
+description = "FoundationaLLM Agent plugins (experimental)."
+readme = "README.md"
+requires-python = ">=3.11"
+license = "MIT"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+Homepage = "https://foundationallm.ai"
+Issues = "https://github.com/foundationallm/foundationallm/issues"
+
+[tool.setuptools.packages.find]
+include = ['*']
+
+[tool.setuptools.package-data]
+foundationallm_agent_plugins_experimental = ["_metadata/foundationallm_manifest.json"]

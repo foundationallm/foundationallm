@@ -36,3 +36,14 @@ function Merge-ToolType {
         -RelativeUri "providers/FoundationaLLM.Agent/tools/$($ToolType.name)" `
         -Body $ToolType
 }
+
+function Merge-WorkflowType {
+    param (
+        [hashtable]$WorkflowType
+    )
+
+    return Invoke-ManagementAPI `
+        -Method POST `
+        -RelativeUri "providers/FoundationaLLM.Agent/workflows/$($WorkflowType.name)" `
+        -Body $WorkflowType
+}

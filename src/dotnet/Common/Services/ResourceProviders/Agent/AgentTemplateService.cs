@@ -255,7 +255,7 @@ namespace FoundationaLLM.Common.Services.ResourceProviders.Agent
                 agentObject["workflow"] = workflowNode;
                 agentObject["tools"] = toolsArray;
 
-                var agent = JsonSerializer.Deserialize<KnowledgeManagementAgent>(
+                var agent = JsonSerializer.Deserialize<GenericAgent>(
                     agentObject.ToJsonString());
 
                 agent!.OwnerUserId = userIdentity.UserId;

@@ -13,10 +13,10 @@ namespace FoundationaLLM.Common.Tests.Models.Orchestration
                 { 
                     OperationId = Guid.NewGuid().ToString(),
                     UserPrompt="", 
-                    Agent = new KnowledgeManagementAgent() { Name = "Test_agent", ObjectId = "Test_objectid", Type = AgentTypes.KnowledgeManagement }
+                    Agent = new GenericAgent() { Name = "Test_agent", ObjectId = "Test_objectid", Type = AgentTypes.GenericAgent }
                 };
 
-            var agent = new KnowledgeManagementAgent() { Name = "Test_agent", ObjectId = "Test_objectid", Type = AgentTypes.KnowledgeManagement };
+            var agent = new GenericAgent() { Name = "Test_agent", ObjectId = "Test_objectid", Type = AgentTypes.GenericAgent };
 
             // Act
             request.Agent = agent;

@@ -52,7 +52,9 @@ function Initialize-ManagementPortal {
         -EnvironmentVariables $environmentVariables `
         -ContainerImage $ContainerImage `
         -MinReplicas 1 `
-        -MaxReplicas 3
+        -MaxReplicas 1 `
+        -CPUCores 1 `
+        -Memory 2
 
     Set-AppRegistrationRedirectURI `
         -AppRegistrationName $appRegistrationNames.ManagementPortal `

@@ -150,7 +150,10 @@ export default {
 				throw error;
 			}
 			// For other errors, format them
-			throw new Error(formatError(error));
+			const formattedError = new Error(formatError(error));
+			(formattedError as any).status = error.status;
+			(formattedError as any).statusText = error.statusText;
+			throw formattedError;
 		}
 	},
 
@@ -706,7 +709,7 @@ export default {
 	 */
 	async checkAgentNameAvailability(name: string): Promise<ResourceNameCheckResult> {
 		const payload: ResourceName = {
-			type: 'knowledge-management',
+			type: 'generic-agent',
 			name,
 		};
 		return await this.fetch<ResourceNameCheckResult>(

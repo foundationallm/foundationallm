@@ -7,8 +7,10 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows
     /// Provides a workflow configuration for an agent.
     /// </summary>
     [JsonPolymorphic(TypeDiscriminatorPropertyName = "type")]
+    [JsonDerivedType(typeof(GenericAgentWorkflow), AgentWorkflowTypes.GenericAgentWorkflow)]
     [JsonDerivedType(typeof(AzureAIAgentServiceAgentWorkflow), AgentWorkflowTypes.AzureAIAgentService)]
     [JsonDerivedType(typeof(AzureOpenAIAssistantsAgentWorkflow), AgentWorkflowTypes.AzureOpenAIAssistants)]
+    [JsonDerivedType(typeof(LangChainAgentWorkflow), AgentWorkflowTypes.LangChainAgentWorkflow)]
     [JsonDerivedType(typeof(LangChainExpressionLanguageAgentWorkflow), AgentWorkflowTypes.LangChainExpressionLanguage)]
     [JsonDerivedType(typeof(LangGraphReactAgentWorkflow), AgentWorkflowTypes.LangGraphReactAgent)]
     [JsonDerivedType(typeof(ExternalAgentWorkflow), AgentWorkflowTypes.ExternalAgentWorkflow)]
