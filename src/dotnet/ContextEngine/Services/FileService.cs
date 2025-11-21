@@ -178,7 +178,7 @@ namespace FoundationaLLM.Context.Services
                                 DataPipelineTriggerNames.DefaultManualTrigger,
                                 new()
                                 {
-                                { DataPipelineTriggerParameterNames.DataSourceContextFileContextFileObjectId, fileRecord.Id},
+                                { DataPipelineTriggerParameterNames.DataSourceContextFileContextFileObjectId, fileRecord.FileObjectId},
                                 { DataPipelineTriggerParameterNames.DataSourceContextFileContentAction, ContentItemActions.AddOrUpdate },
                                 { DataPipelineTriggerParameterNames.StageExtractMaxContentSizeCharacters, 10_000_000 }
                                 },

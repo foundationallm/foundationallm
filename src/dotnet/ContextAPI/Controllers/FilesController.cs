@@ -35,7 +35,7 @@ namespace FoundationaLLM.Context.API.Controllers
         public async Task<IActionResult> UploadFileForConversation(
             string instanceId,
             string conversationId,
-            [FromQuery] string agentName)
+            [FromQuery] string? agentName)
         {
             var formFiles = HttpContext.Request.HasFormContentType ? HttpContext.Request.Form?.Files : null;
             IFormFile? formFile = (formFiles != null && formFiles.Count > 0) ? formFiles[0] : null;
