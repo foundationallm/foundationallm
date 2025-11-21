@@ -770,29 +770,29 @@ public partial class CoreService(
             attachmentFile.ContentType!,
             new MemoryStream(attachmentFile.Content!));
 
-            if (serviceResult.IsSuccess)
+            if (serviceResult.TryGetValue(out var fileRecord))
             {
                 return new ResourceProviderUpsertResult<AttachmentFile>
                 {
-                    ObjectId = serviceResult.Result!.FileObjectId,
+                    ObjectId = fileRecord.FileObjectId,
                     ResourceExists = false,
                     Resource = new AttachmentFile
                     {
-                        Name = serviceResult.Result.Id,
-                        ObjectId = serviceResult.Result.FileObjectId,
-                        DisplayName = serviceResult.Result.FileName,
-                        CreatedBy = serviceResult.Result.UPN,
-                        CreatedOn = serviceResult.Result.CreatedAt,
+                        Name = fileRecord.Id,
+                        ObjectId = fileRecord.FileObjectId,
+                        DisplayName = fileRecord.FileName,
+                        CreatedBy = fileRecord.UPN,
+                        CreatedOn = fileRecord.CreatedAt,
 
-                        ContentType = serviceResult.Result.ContentType,
-                        Path = serviceResult.Result.FilePath,
-                        OriginalFileName = serviceResult.Result.FileName,
+                        ContentType = fileRecord.ContentType,
+                        Path = fileRecord.FilePath,
+                        OriginalFileName = fileRecord.FileName,
                     }
                 };
             }
             else
                 throw new CoreServiceException(
-                    serviceResult.ErrorMessage);
+                    serviceResult.Error?.Detail);
         
     }
 
@@ -837,18 +837,18 @@ public partial class CoreService(
                     };
                 case ResourceProviderNames.FoundationaLLM_Context:
 
-                    var responseMessage = await _contextServiceClient.GetFileContent(instanceId, fileId);
+                    var serviceResult = await _contextServiceClient.GetFileContent(instanceId, fileId);
 
-                    if (responseMessage.IsSuccess)
+                    if (serviceResult.TryGetValue(out var fileContent))
                     {
                         var content = new MemoryStream();
-                        await responseMessage.Result!.FileContent!.CopyToAsync(content);
+                        await fileContent.FileContent!.CopyToAsync(content);
 
                         return new AttachmentFile
                         {
-                            Name = responseMessage.Result!.FileName,
-                            OriginalFileName = responseMessage.Result!.FileName,
-                            ContentType = responseMessage.Result!.ContentType,
+                            Name = fileContent.FileName,
+                            OriginalFileName = fileContent.FileName,
+                            ContentType = fileContent.ContentType,
                             Content = content.ToArray()
                         };
                     }
@@ -984,13 +984,17 @@ public partial class CoreService(
             }
             else
             {
-                var contextAttachmentResult =
+                var contextAttachmentResults =
                     contextAttachmentIds
                     .ToAsyncEnumerable()
                     .SelectAwait(async x => await _contextServiceClient.GetFileRecord(instanceId, x));
-                await foreach (var attachment in contextAttachmentResult)
+                await foreach (var attachmentResult in contextAttachmentResults)
                 {
-                    attachmentReferences.Add(AttachmentDetail.FromContextFileRecord(attachment.Result!));
+                    if (attachmentResult.TryGetValue(out var fileRecord))
+                        attachmentReferences.Add(AttachmentDetail.FromContextFileRecord(fileRecord));
+                    else
+                        _logger.LogWarning("Could not retrieve context file record for attachment with id {AttachmentId} in conversation {SessionId}. The error was: {ErrorDetail}",
+                            attachmentResult.Error?.Instance ?? "N/A", sessionId, attachmentResult.Error?.Detail ?? "N/A");
                 }
             }
 
@@ -1323,10 +1327,10 @@ public partial class CoreService(
                                 var fileResponse = await _contextServiceClient.GetFileRecord(
                                     instanceId,
                                     resourcePath.MainResourceId!);
-                                if (fileResponse.IsSuccess)
+                                if (fileResponse.TryGetValue(out var fileRecord))
                                 {
                                     fileHistory.Add(FileHistoryItem.FromContextFileRecord(
-                                        fileResponse.Result!,
+                                        fileRecord,
                                         ++attachmentOrder,
                                         false,
                                         false));
@@ -1370,10 +1374,10 @@ public partial class CoreService(
                         var fileResponse = await _contextServiceClient.GetFileRecord(
                             instanceId,
                             resourcePath.MainResourceId!);
-                        if (fileResponse.IsSuccess)
+                        if (fileResponse.TryGetValue(out var fileRecord))
                         {
                             fileHistory.Add(FileHistoryItem.FromContextFileRecord(
-                                fileResponse.Result!,
+                                fileRecord,
                                 ++attachmentOrder,
                                 true,
                                 true));

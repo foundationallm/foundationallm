@@ -4,6 +4,7 @@ using FoundationaLLM.Common.Models.Context.Knowledge;
 using FoundationaLLM.Common.Models.ResourceProviders.Context;
 using FoundationaLLM.Context.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Azure.Cosmos.Linq;
 
 namespace FoundationaLLM.Context.API.Controllers
 {
@@ -38,12 +39,14 @@ namespace FoundationaLLM.Context.API.Controllers
             string knowledgeUnitId,
             string? agentName)
         {
-            var knowledgeUnit = await _knowledgeService.GetKnowledgeUnit(
+            var result = await _knowledgeService.GetKnowledgeUnit(
                 instanceId,
                 knowledgeUnitId,
                 agentName,
                 _callContext.CurrentUserIdentity!);
-            return Ok(knowledgeUnit);
+
+            return
+                result.ToActionResult();
         }
 
         /// <summary>
@@ -59,12 +62,14 @@ namespace FoundationaLLM.Context.API.Controllers
             string knowledgeSourceId,
             string? agentName)
         {
-            var knowledgeSource = await _knowledgeService.GetKnowledgeSource(
+            var result = await _knowledgeService.GetKnowledgeSource(
                 instanceId,
                 knowledgeSourceId,
                 agentName,
                 _callContext.CurrentUserIdentity!);
-            return Ok(knowledgeSource);
+
+            return
+                result.ToActionResult();
         }
 
         /// <summary>
@@ -78,11 +83,13 @@ namespace FoundationaLLM.Context.API.Controllers
             string instanceId,
             [FromBody] ContextKnowledgeResourceListRequest listRequest)
         {
-            var knowledgeSources = await _knowledgeService.GetKnowledgeUnits(
+            var result = await _knowledgeService.GetKnowledgeUnits(
                 instanceId,
                 listRequest,
                 _callContext.CurrentUserIdentity!);
-            return Ok(knowledgeSources);
+
+            return
+                result.ToActionResult();
         }
 
         /// <summary>
@@ -96,11 +103,13 @@ namespace FoundationaLLM.Context.API.Controllers
             string instanceId,
             [FromBody] ContextKnowledgeResourceListRequest listRequest)
         {
-            var knowledgeSources = await _knowledgeService.GetKnowledgeSources(
+            var result = await _knowledgeService.GetKnowledgeSources(
                 instanceId,
                 listRequest,
                 _callContext.CurrentUserIdentity!);
-            return Ok(knowledgeSources);
+
+            return
+                result.ToActionResult();
         }
 
         /// <summary>
@@ -114,11 +123,13 @@ namespace FoundationaLLM.Context.API.Controllers
             string instanceId,
             [FromBody] KnowledgeUnit knowledgeUnit)
         {
-            var response = await _knowledgeService.UpsertKnowledgeUnit(
+            var result = await _knowledgeService.UpsertKnowledgeUnit(
                 instanceId,
                 knowledgeUnit,
                 _callContext.CurrentUserIdentity!);
-            return Ok(response);
+
+            return
+                result.ToActionResult();
         }
 
         /// <summary>
@@ -132,11 +143,13 @@ namespace FoundationaLLM.Context.API.Controllers
             string instanceId,
             [FromBody] KnowledgeSource knowledgeSource)
         {
-            var response = await _knowledgeService.UpsertKnowledgeSource(
+            var result = await _knowledgeService.UpsertKnowledgeSource(
                 instanceId,
                 knowledgeSource,
                 _callContext.CurrentUserIdentity!);
-            return Ok(response);
+
+            return
+                result.ToActionResult();
         }
 
         /// <summary>
@@ -152,13 +165,14 @@ namespace FoundationaLLM.Context.API.Controllers
             string knowledgeUnitId,
             [FromBody] ContextKnowledgeUnitSetGraphRequest setGraphRequest)
         {
-            var response = await _knowledgeService.SetKnowledgeUnitGraph(
+            var result = await _knowledgeService.SetKnowledgeUnitGraph(
                 instanceId,
                 knowledgeUnitId,
                 setGraphRequest,
                 _callContext.CurrentUserIdentity!);
 
-            return Ok(response);
+            return
+                result.ToActionResult();
         }
 
         /// <summary>
@@ -174,12 +188,14 @@ namespace FoundationaLLM.Context.API.Controllers
             string knowledgeUnitId,
             [FromBody] ContextKnowledgeSourceQueryRequest? queryRequest)
         {
-            var response = await _knowledgeService.RenderKnowledgeUnitGraph(
+            var result = await _knowledgeService.RenderKnowledgeUnitGraph(
                 instanceId,
                 knowledgeUnitId,
                 queryRequest,
                 _callContext.CurrentUserIdentity!);
-            return Ok(response);
+
+            return
+                result.ToActionResult();
         }
 
         /// <summary>
@@ -195,12 +211,14 @@ namespace FoundationaLLM.Context.API.Controllers
             string knowledgeSourceId,
             [FromBody] ContextKnowledgeSourceQueryRequest queryRequest)
         {
-            var response = await _knowledgeService.QueryKnowledgeSource(
+            var result = await _knowledgeService.QueryKnowledgeSource(
                 instanceId,
                 knowledgeSourceId,
                 queryRequest,
                 _callContext.CurrentUserIdentity!);
-            return Ok(response);
+
+            return
+                result.ToActionResult();
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using FoundationaLLM.Common.Models.Context;
 using FoundationaLLM.Common.Models.Context.Knowledge;
+using FoundationaLLM.Common.Models.Services;
 using Microsoft.Extensions.Logging;
 
 namespace FoundationaLLM.Context.Services
@@ -29,81 +30,77 @@ namespace FoundationaLLM.Context.Services
         /// langword="null"/>.</param>
         /// <returns>A task that represents the asynchronous operation. The task result contains  a <see
         /// cref="ContextKnowledgeSourceQueryResponse"/> object with the results of the query.</returns>
-        public async Task<ContextKnowledgeSourceQueryResponse> QueryAsync(
+        public async Task<Result<ContextKnowledgeSourceQueryResponse>> QueryAsync(
             ContextKnowledgeSourceQueryRequest queryRequest)
         {
             var queryResultTasks = _knowledgeUnitQueryEngines
                 .Select(engine => engine.QueryAsync(queryRequest))
                 .ToList();
-            var queryResponses = await Task.WhenAll(queryResultTasks);
+            var queryResults = await Task.WhenAll(queryResultTasks);
 
-            var queryResponse = ConsolidateResponses(queryResponses);
+            var queryResult = ConsolidateResponses(queryResults);
 
-            if (!queryResponse.IsSuccess)
-                return queryResponse;
-
-            return (queryRequest.FormatResponse ?? false)
-                ? FormatQueryResponse(queryResponse)
-                : queryResponse;
+            return
+                queryResult.TryGetValue(out var queryResponse)
+                && (queryRequest.FormatResponse ?? false)
+                    ? Result<ContextKnowledgeSourceQueryResponse>.Success(
+                        FormatQueryResponse(queryResponse))
+                    : queryResult;
         }
 
-        private ContextKnowledgeSourceQueryResponse ConsolidateResponses(
-            IEnumerable<ContextKnowledgeSourceQueryResponse> queryResponses)
+        private Result<ContextKnowledgeSourceQueryResponse> ConsolidateResponses(
+            IEnumerable<Result<ContextKnowledgeSourceQueryResponse>> queryResults)
         {
-            if (queryResponses.Count() == 1)
+            if (queryResults.Count() == 1)
                 // If there's only one response, return it directly
-                return queryResponses.First();
+                return queryResults.First();
 
-            foreach (var response in queryResponses.Where(qr => !qr.IsSuccess))
+            foreach (var result in queryResults.Where(qr => !qr.IsSuccess))
                 _logger.LogWarning(
                     "Knowledge unit {KnowledgeUnitId} failed to process the query with error: {ErrorMessage}",
-                    response.Source,
-                    response.ErrorMessage);
+                    result.Error?.Instance ?? "N/A",
+                    result.Error?.Detail ?? "N/A");
 
-            if (!queryResponses.Any(qr => qr.IsSuccess))
+            if (!queryResults.Any(qr => qr.IsSuccess))
             {
                 _logger.LogError(
                     "All knowledge unit queries failed for knowledge source {KnowledgeSourceId}.",
                     _knowledgeSourceId);
 
                 // Not getting any responses is an error condition.
-                return new ContextKnowledgeSourceQueryResponse
-                {
-                    Source = _knowledgeSourceId,
-                    IsSuccess = false,
-                    ErrorMessage = "None of the knowledge unit queries returned a successful response."
-                };
+                return Result<ContextKnowledgeSourceQueryResponse>.FailureFromErrorMessage(
+                    "None of the knowledge unit queries returned a successful response.",
+                    instance: _knowledgeSourceId);
             }
 
             var consolidatedResponse = new ContextKnowledgeSourceQueryResponse
             {
                 Source = _knowledgeSourceId,
-                IsSuccess = true,
                 VectorStoreResponse = new ContextVectorStoreResponse(),
                 KnowledgeGraphResponse = new ContextKnowledgeGraphResponse()
             };
-            foreach (var response in queryResponses.Where(qr => qr.IsSuccess))
+            foreach (var result in queryResults.Where(qr => qr.IsSuccess))
             {
-                if (response.VectorStoreResponse is not null)
+                if (result.Value!.VectorStoreResponse is not null)
                 {
                     consolidatedResponse.VectorStoreResponse.TextChunks
-                        .AddRange(response.VectorStoreResponse.TextChunks);
+                        .AddRange(result.Value!.VectorStoreResponse.TextChunks);
                 }
 
-                if (response.KnowledgeGraphResponse is not null)
+                if (result.Value!.KnowledgeGraphResponse is not null)
                 {
                     consolidatedResponse.KnowledgeGraphResponse.Entities
-                        .AddRange(response.KnowledgeGraphResponse.Entities);
+                        .AddRange(result.Value!.KnowledgeGraphResponse.Entities);
                     consolidatedResponse.KnowledgeGraphResponse.RelatedEntities
-                        .AddRange(response.KnowledgeGraphResponse.RelatedEntities);
+                        .AddRange(result.Value!.KnowledgeGraphResponse.RelatedEntities);
                     consolidatedResponse.KnowledgeGraphResponse.Relationships
-                        .AddRange(response.KnowledgeGraphResponse.Relationships);
+                        .AddRange(result.Value!.KnowledgeGraphResponse.Relationships);
                     consolidatedResponse.KnowledgeGraphResponse.TextChunks
-                        .AddRange(response.KnowledgeGraphResponse.TextChunks);
+                        .AddRange(result.Value!.KnowledgeGraphResponse.TextChunks);
                 }
                 
             }
-            return consolidatedResponse;
+            return Result<ContextKnowledgeSourceQueryResponse>.Success(consolidatedResponse);
         }
 
         private ContextKnowledgeSourceQueryResponse FormatQueryResponse(

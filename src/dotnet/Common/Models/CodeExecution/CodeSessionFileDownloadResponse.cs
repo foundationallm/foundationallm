@@ -15,7 +15,8 @@ namespace FoundationaLLM.Common.Models.CodeExecution
         public Dictionary<string, ContextFileRecord> FileRecords { get; set; } = [];
 
         /// <summary>
-        /// Gets or sets the list of file paths that could not be downloaded from the code session.
+        /// Gets or sets the list of file paths that could not be downloaded from the code session or could not be added to the
+        /// FoundationaLLM file store once they were downloaded.
         /// </summary>
         [JsonPropertyName("errors")]
         public List<string> Errors { get; set; } = [];

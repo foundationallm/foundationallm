@@ -5,7 +5,7 @@ namespace FoundationaLLM.Common.Models.Context.Knowledge
     /// <summary>
     /// Represents the response to the request to render a knowledge unit's knowledge graph.
     /// </summary>
-    public class ContextKnowledgeUnitRenderGraphResponse : ContextServiceResponse
+    public class ContextKnowledgeUnitRenderGraphResponse
     {
         /// <summary>
         /// Gets or sets the list of nodes in the knowledge graph.

@@ -413,17 +413,17 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                         codeSessionProvider,
                         codeSessionLanguage);
 
-                    if (contextServiceResponse.IsSuccess)
+                    if (contextServiceResponse.TryGetValue(out var codeSession))
                     {
                         toolParameters.Add(
                             AgentToolPropertyNames.CodeSessionEndpoint,
-                            contextServiceResponse.Result!.Endpoint);
+                            codeSession.Endpoint);
                         toolParameters.Add(
                             AgentToolPropertyNames.CodeSessionId,
-                            contextServiceResponse.Result!.SessionId);
+                            codeSession.SessionId);
                     }
                     else
-                        throw new OrchestrationException($"The Context API was not able to create code session: {contextServiceResponse.ErrorMessage}");
+                        throw new OrchestrationException($"The Context API was not able to create code session: {contextServiceResponse.Error?.Detail ?? "N/A"}");
                 }
 
                 // Map the metadata filter values to possible values from the completion request.

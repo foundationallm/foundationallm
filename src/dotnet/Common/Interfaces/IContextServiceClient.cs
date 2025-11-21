@@ -177,7 +177,7 @@ namespace FoundationaLLM.Common.Interfaces
         /// <param name="knowledgeSourceId">The knowledge source identifier.</param>
         /// <param name="queryRequest">The request object containing query parameters and options.</param>
         /// <returns>A response containing the result of the query execution.</returns>
-        Task<ContextKnowledgeSourceQueryResponse> QueryKnowledgeSource(
+        Task<Result<ContextKnowledgeSourceQueryResponse>> QueryKnowledgeSource(
             string instanceId,
             string knowledgeSourceId,
             ContextKnowledgeSourceQueryRequest queryRequest);
@@ -189,7 +189,7 @@ namespace FoundationaLLM.Common.Interfaces
         /// <param name="knowledgeUnitId">The knowledge unit identifier.</param>
         /// <param name="queryRequest">The request containing the details of the query.</param>
         /// <returns></returns>
-        Task<ContextKnowledgeUnitRenderGraphResponse> RenderKnowledgeUnitGraph(
+        Task<Result<ContextKnowledgeUnitRenderGraphResponse>> RenderKnowledgeUnitGraph(
             string instanceId,
             string knowledgeUnitId,
             ContextKnowledgeSourceQueryRequest? queryRequest);

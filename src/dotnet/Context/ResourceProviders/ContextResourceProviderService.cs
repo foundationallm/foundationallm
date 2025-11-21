@@ -14,6 +14,7 @@ using FoundationaLLM.Common.Models.Orchestration;
 using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders.Agent;
 using FoundationaLLM.Common.Models.ResourceProviders.Context;
+using FoundationaLLM.Common.Models.Services;
 using FoundationaLLM.Common.Services.ResourceProviders;
 using FoundationaLLM.Context.Models;
 using Microsoft.AspNetCore.Http;
@@ -287,11 +288,11 @@ namespace FoundationaLLM.Context.ResourceProviders
                     ? parentResourceInstance.Name
                     : null);
 
-            if (contextResponse.IsSuccess)
-                return contextResponse.Result!.Resource;
+            if (contextResponse.TryGetValue(out var resourceProviderResult))
+                return resourceProviderResult.Resource;
             else
                 throw new ResourceProviderException(
-                    $"The following error occured when retrieving the knowledge source {resourcePath.MainResourceId!} from the {_name} resource provider: {contextResponse.ErrorMessage ?? "N/A"}.",
+                    $"The following error occured when retrieving the knowledge source {resourcePath.MainResourceId!} from the {_name} resource provider: {contextResponse.Error?.Detail ?? "N/A"}.",
                     StatusCodes.Status500InternalServerError);
         }
         private async Task<KnowledgeUnit> GetKnowledgeUnit(
@@ -313,11 +314,11 @@ namespace FoundationaLLM.Context.ResourceProviders
                     ? parentResourceInstance.Name
                     : null);
 
-            if (contextResponse.IsSuccess)
-                return contextResponse.Result!.Resource;
+            if (contextResponse.TryGetValue(out var resourceProviderResult))
+                return resourceProviderResult.Resource;
             else
                 throw new ResourceProviderException(
-                    $"The following error occured when retrieving the knowledge unit {resourcePath.MainResourceId!} from the {_name} resource provider: {contextResponse.ErrorMessage ?? "N/A"}.",
+                    $"The following error occured when retrieving the knowledge unit {resourcePath.MainResourceId!} from the {_name} resource provider: {contextResponse.Error?.Detail ?? "N/A"}.",
                     StatusCodes.Status500InternalServerError);
         }
 
@@ -335,7 +336,7 @@ namespace FoundationaLLM.Context.ResourceProviders
                     options);
 
             var contextServiceClient = GetContextServiceClient(userIdentity);
-            ContextServiceResponse<IEnumerable<ResourceProviderGetResult<KnowledgeSource>>> contextResponse = null!;
+            Result<IEnumerable<ResourceProviderGetResult<KnowledgeSource>>> contextResponse = null!;
             if (!resourcePath.IsResourceTypePath)
             {
                 contextResponse = await contextServiceClient!.GetKnowledgeSources(
@@ -354,13 +355,13 @@ namespace FoundationaLLM.Context.ResourceProviders
                                    .Select(sarp => sarp.ResourceName!)
                                    .ToList());
             }
-            if (contextResponse.IsSuccess)
+            if (contextResponse.TryGetValue(out var resourceProviderResults))
                 return [..
-                        contextResponse.Result!
+                        resourceProviderResults
                 ];
             else
                 throw new ResourceProviderException(
-                    $"The following error occured when retrieving knowledge sources from the {_name} resource provider: {contextResponse.ErrorMessage ?? "N/A"}.",
+                    $"The following error occured when retrieving knowledge sources from the {_name} resource provider: {contextResponse.Error?.Detail ?? "N/A"}.",
                     StatusCodes.Status500InternalServerError);
         }
 
@@ -377,7 +378,7 @@ namespace FoundationaLLM.Context.ResourceProviders
                     options);
 
             var contextServiceClient = GetContextServiceClient(userIdentity);
-            ContextServiceResponse<IEnumerable<ResourceProviderGetResult<KnowledgeUnit>>> contextResponse = null!;
+            Result<IEnumerable<ResourceProviderGetResult<KnowledgeUnit>>> contextResponse = null!;
             if (!resourcePath.IsResourceTypePath)
             {
                 contextResponse = await contextServiceClient!.GetKnowledgeUnits(
@@ -397,13 +398,13 @@ namespace FoundationaLLM.Context.ResourceProviders
                                    .ToList());
             }
 
-            if (contextResponse.IsSuccess)
+            if (contextResponse.TryGetValue(out var resourceProviderResults))
                 return [..
-                        contextResponse.Result!
+                        resourceProviderResults
                 ];
             else
                 throw new ResourceProviderException(
-                    $"The following error occured when retrieving knowledge unit from the {_name} resource provider: {contextResponse.ErrorMessage ?? "N/A"}.",
+                    $"The following error occured when retrieving knowledge unit from the {_name} resource provider: {contextResponse.Error?.Detail ?? "N/A"}.",
                     StatusCodes.Status500InternalServerError);
         }
 
@@ -449,20 +450,20 @@ namespace FoundationaLLM.Context.ResourceProviders
                     var knowledgeUnitResult = await contextServiceClient!.UpsertKnowledgeUnit(
                         resourcePath.InstanceId!,
                         knowledgeUnit);
-                    if (knowledgeUnitResult.IsSuccess)
-                        return (knowledgeUnitResult.Result! as ResourceProviderUpsertResult<T>)!;
+                    if (knowledgeUnitResult.TryGetValue(out var resourceProviderResultKnowledgeUnit))
+                        return (resourceProviderResultKnowledgeUnit as ResourceProviderUpsertResult<T>)!;
                     throw new ResourceProviderException(
-                        $"The following error occured when upserting knowledge unit {knowledgeUnit.Name} in the {_name} resource provider: {knowledgeUnitResult.ErrorMessage ?? "N/A"}.",
+                        $"The following error occured when upserting knowledge unit {knowledgeUnit.Name} in the {_name} resource provider: {knowledgeUnitResult.Error?.Detail ?? "N/A"}.",
                         StatusCodes.Status500InternalServerError);
 
                 case KnowledgeSource knowledgeSource:
                     var knowledgeSourceResult = await contextServiceClient!.UpsertKnowledgeSource(
                         resourcePath.InstanceId!,
                         knowledgeSource);
-                    if (knowledgeSourceResult.IsSuccess)
-                        return (knowledgeSourceResult.Result! as ResourceProviderUpsertResult<T>)!;
+                    if (knowledgeSourceResult.TryGetValue(out var resourceProviderResultKnowledgeSource))
+                        return (resourceProviderResultKnowledgeSource as ResourceProviderUpsertResult<T>)!;
                     throw new ResourceProviderException(
-                        $"The following error occured when upserting knowledge source {knowledgeSource.Name} in the {_name} resource provider: {knowledgeSourceResult.ErrorMessage ?? "N/A"}.",
+                        $"The following error occured when upserting knowledge source {knowledgeSource.Name} in the {_name} resource provider: {knowledgeSourceResult.Error?.Detail ?? "N/A"}.",
                         StatusCodes.Status500InternalServerError);
 
                 default:
@@ -513,18 +514,18 @@ namespace FoundationaLLM.Context.ResourceProviders
                 resourcePath.InstanceId!,
                 resourcePath.MainResourceId!,
                 actionPayload);
-            if (actionResult.IsSuccess)
-                return actionResult.Result!;
+            if (actionResult.TryGetValue(out var resourceProviderResult))
+                return resourceProviderResult;
 
             _logger.LogError(
                 "The following error occured when setting the knowledge graph for knowledge unit {KnowledgeUnitName} in the {ResourceProviderName} resource provider: {ErrorMessage}",
                 resourcePath.MainResourceId,
                 _name,
-                actionResult.ErrorMessage ?? "N/A");
+                actionResult.Error?.Detail ?? "N/A");
             return new ResourceProviderActionResult(
                 resourcePath.ObjectId!,
                 false,
-                actionResult.ErrorMessage);
+                actionResult.Error?.Detail);
         }
 
         private async Task<ResourceProviderActionResult<KnowledgeGraph>> LoadKnowledgeUnitGraph(
@@ -595,7 +596,12 @@ namespace FoundationaLLM.Context.ResourceProviders
                 resourcePath.MainResourceId!,
                 queryRequest);
 
-            return response;
+            if (response.TryGetValue(out var queryResponse))
+                return queryResponse;
+            else
+                throw new ResourceProviderException(
+                    $"The following error occured when querying the knowledge source {resourcePath.MainResourceId!} from the {_name} resource provider: {response.Error?.Detail ?? "N/A"}.",
+                    StatusCodes.Status500InternalServerError);
         }
 
         private async Task<ContextKnowledgeUnitRenderGraphResponse> RenderKnowledgeUnitGraph(
@@ -614,7 +620,12 @@ namespace FoundationaLLM.Context.ResourceProviders
                 resourcePath.MainResourceId!,
                 null);
 
-            return response;
+            if (response.TryGetValue(out var renderResponse))
+                return renderResponse;
+            else
+                throw new ResourceProviderException(
+                    $"The following error occured when rendering the knowledge graph for knowledge unit {resourcePath.MainResourceId!} from the {_name} resource provider: {response.Error?.Detail ?? "N/A"}.",
+                    StatusCodes.Status500InternalServerError);
         }
 
         #endregion

@@ -84,17 +84,17 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataSource
                 resourcePath.InstanceId!,
                 contentItemCanonicalId);
 
-            return response.IsSuccess
+            return response.TryGetValue(out var fileContent)
                 ? new PluginResult<ContentItemRawContent>(
                     new ContentItemRawContent
                     {
-                        Name = response.Result!.FileName,
-                        ContentType = response.Result.ContentType,
-                        RawContent = BinaryData.FromStream(response.Result.FileContent!),
+                        Name = fileContent.FileName,
+                        ContentType = fileContent.ContentType,
+                        RawContent = BinaryData.FromStream(fileContent.FileContent!),
                         Metadata = new Dictionary<string, object>
                         {
                             { "FileId", contentItemCanonicalId },
-                            { "FileName", response.Result!.FileName }
+                            { "FileName", fileContent.FileName }
                         }
                     },
                     true,
