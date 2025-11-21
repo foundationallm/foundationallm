@@ -67,7 +67,10 @@ namespace FoundationaLLM.Common.Models.Services
         public ActionResult ToActionResult() =>
             IsSuccess
                 ? new OkObjectResult(Value)
-                : new ObjectResult(Error);
+                : new ObjectResult(Error)
+                {
+                    StatusCode = Error?.Status ?? 500
+                };
 
         /// <summary>
         /// Creates a successful result containing the specified value.
