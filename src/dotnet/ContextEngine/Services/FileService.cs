@@ -154,7 +154,8 @@ namespace FoundationaLLM.Context.Services
                             }
                         }
 
-                        if (agentDataPipelineObjectId is not null)
+                        if (agentDataPipelineObjectId is not null
+                            && fileProcessingType == FileProcessingTypes.ConversationDataPipeline)
                         {
                             _logger.LogInformation("{InstanceId}: File {FileName} ({FileId}) for conversation {ConversationId} will be processed using the {DataPipelineObjectId} data pipeline based on the {AgentName} agent settings.",
                                 instanceId, fileName, fileRecord.Id, conversationId, agentDataPipelineObjectId, agentName);
