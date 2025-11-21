@@ -619,12 +619,21 @@ export default {
 					currentFiles.uploadedFiles.push(file);
 				} catch (error) {
 					filesFailed += 1;
-					this.$appStore.addToast({
-						severity: 'error',
-						summary: 'Error',
-						detail: `File upload failed for "${file.name}". ${error.message || error.title || ''}`,
-						life: 5000,
-					});
+					if (error.status === 422) {
+						this.$appStore.addToast({
+							severity: 'error',
+							summary: 'File rejected',
+							detail: `The file "${file.name}" was rejected because it does not meet the content safety standards of the platform.`,
+							life: 5000,
+						});
+					} else {
+						this.$appStore.addToast({
+							severity: 'error',
+							summary: 'Error',
+							detail: `File upload failed for "${file.name}". ${error.message || error.title || ''}`,
+							life: 5000,
+						});
+					}
 				} finally {
 					if (totalFiles === filesUploaded + filesFailed) {
 						this.isUploading = false;

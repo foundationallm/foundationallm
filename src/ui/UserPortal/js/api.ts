@@ -454,13 +454,25 @@ export default {
 				if (xhr.status >= 200 && xhr.status < 300) {
 					resolve(JSON.parse(xhr.response));
 				} else {
-					reject(xhr.statusText);
+					// Create an error object with status code and response details
+					const error = new Error(xhr.statusText || 'Upload failed');
+					(error as any).status = xhr.status;
+					(error as any).statusText = xhr.statusText;
+					(error as any).response = xhr.response;
+					try {
+						(error as any).responseData = JSON.parse(xhr.response);
+					} catch (e) {
+						// Response is not JSON
+					}
+					reject(error);
 				}
 			};
 
 			xhr.onerror = () => {
-				// eslint-disable-next-line prefer-promise-reject-errors
-				reject('Error during file upload.');
+				const error = new Error('Error during file upload.');
+				(error as any).status = xhr.status || 0;
+				(error as any).statusText = xhr.statusText || 'Network Error';
+				reject(error);
 			};
 
 			xhr.open(
