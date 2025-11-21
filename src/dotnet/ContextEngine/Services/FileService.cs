@@ -312,7 +312,13 @@ namespace FoundationaLLM.Context.Services
                     bypassOwnerCheck);
 
                 if (fileRecords.Count == 0)
-                    return null;
+                {
+                    _logger.LogWarning("{InstanceId}: File {FileName} not found for conversation {ConversationId}.",
+                        instanceId, fileName, conversationId);
+                    return Result<ContextFileContent>.FailureFromErrorMessage(
+                        $"File {fileName} not found for conversation {conversationId}.",
+                        StatusCodes.Status404NotFound);
+                }
 
                 var fileRecord = fileRecords.First();
 
