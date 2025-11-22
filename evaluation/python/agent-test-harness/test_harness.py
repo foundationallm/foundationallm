@@ -178,7 +178,7 @@ def send_completion_request(session_id, agent_name, user_prompt, attachments=[])
     if not fllm_endpoint:
         print("Error: FLLM_ENDPOINT environment variable is not set")
         print("Make sure you have a .env file with FLLM_ENDPOINT defined")
-        return None
+        return None, "FLLM_ENDPOINT environment variable is not set"
     url = f"{fllm_endpoint}completions"
     
     # Get access token from environment variable
@@ -186,7 +186,7 @@ def send_completion_request(session_id, agent_name, user_prompt, attachments=[])
     if not access_token:
         print("Error: FLLM_ACCESS_TOKEN environment variable is not set")
         print("Make sure you have a .env file with FLLM_ACCESS_TOKEN defined")
-        return None
+        return None, "FLLM_ACCESS_TOKEN environment variable is not set"
     
     # Headers
     headers = {
@@ -220,22 +220,33 @@ def send_completion_request(session_id, agent_name, user_prompt, attachments=[])
         print("Completion Request Response:")
         print(json.dumps(response_json, indent=2))
         
-        return response_json
+        return response_json, None
         
     except requests.exceptions.Timeout as e:
         print(f"Request timeout: The completion request took longer than 5 minutes")
         print(f"Error details: {str(e)}")
-        return None
+        return None, f"Completion request timed out after 300s\nError: {str(e)}"
     except requests.exceptions.ChunkedEncodingError as e:
         print(f"Response ended prematurely: The server closed the connection before completing the response")
         print(f"Error details: {str(e)}")
-        return None
+        return None, f"Response ended prematurely\nError: {str(e)}"
     except requests.exceptions.RequestException as e:
         print(f"An error occurred: {str(e)}")
+        detail_lines = [f"Error: {str(e)}"]
+        status = "unknown"
+        text = ""
         if hasattr(e, 'response') and e.response is not None:
-            print(f"Response Status Code: {e.response.status_code}")
-            print(f"Response Text: {e.response.text}")
-        return None
+            status = e.response.status_code
+            text = e.response.text or ""
+            print(f"Response Status Code: {status}")
+            print(f"Response Text: {text}")
+            detail_lines.insert(0, f"HTTP {status} error calling completions endpoint")
+            if text:
+                detail_lines.append(f"Response Text: {text}")
+        else:
+            detail_lines.insert(0, "HTTP error calling completions endpoint (status unknown)")
+        detail = "\n".join(line for line in detail_lines if line)
+        return None, detail
 
 def upload_file_with_progress(file_path, fllm_endpoint, session_id, agent_name):
 
@@ -349,7 +360,8 @@ def process_question(question, answer, filename, agent_name="MAA-02", validation
             'SessionRequestDuration': session_duration,
             'CompletionRequestDuration': 0,
             'ErrorOccured': 1,
-            'ErrorDetails': 'Failed to create session'
+            'ErrorDetails': 'Failed to create session',
+            'ErrorDetailsFull': 'Failed to create session'
         }
     
     # Normalize filename for output
@@ -357,20 +369,21 @@ def process_question(question, answer, filename, agent_name="MAA-02", validation
 
     # Time the completion request
     completion_start_time = time.time()
+    completion_error = None
     if (not pd.isna(filename)):
         # Upload the file
         file_path = os.path.join(os.getcwd(), 'uploads', input_filename)
         fllm_endpoint = os.getenv("FLLM_ENDPOINT")
         upload_response = upload_file_with_progress(file_path, fllm_endpoint, session_id, agent_name)
 
-        response = send_completion_request(
+        response, completion_error = send_completion_request(
             session_id=session_id,
             agent_name=agent_name,
             user_prompt=question,
             attachments=[upload_response.get('object_id') or upload_response.get('objectId')]
         )
     else:   
-        response = send_completion_request(
+        response, completion_error = send_completion_request(
             session_id=session_id,
             agent_name=agent_name,
             user_prompt=question
@@ -529,6 +542,7 @@ def process_question(question, answer, filename, agent_name="MAA-02", validation
             'CompletionRequestDuration': completion_duration,
             'ErrorOccured': error_occurred,
             'ErrorDetails': error_details_single_line,
+            'ErrorDetailsFull': error_details,
             'ContentArtifacts': artifacts_json,
             'ArtifactsSummary': artifacts_summary_json,
             'CodeArtifactCount': code_count,
@@ -553,6 +567,8 @@ def process_question(question, answer, filename, agent_name="MAA-02", validation
         }
     else:
         print(f"Failed to get completion for question: {question}")
+        completion_error_details = completion_error or 'Failed to get completion response'
+        completion_error_single_line = _single_line(completion_error_details)
         return {
             'Question': question,
             'Filename': input_filename,
@@ -564,7 +580,8 @@ def process_question(question, answer, filename, agent_name="MAA-02", validation
             'SessionRequestDuration': session_duration,
             'CompletionRequestDuration': completion_duration,
             'ErrorOccured': 1,
-            'ErrorDetails': 'Failed to get completion response',
+            'ErrorDetails': completion_error_single_line or 'Failed to get completion response',
+            'ErrorDetailsFull': completion_error_details,
             'ContentArtifacts': '[]',
             'ArtifactsSummary': '[]',
             'CodeArtifactCount': 0,
@@ -629,6 +646,7 @@ def execute_tests(test_file, agent_name, max_workers=5, output_dir=None):
                         'CompletionRequestDuration': 0,
                         'ErrorOccured': 1,
                         'ErrorDetails': 'Result was None',
+                        'ErrorDetailsFull': 'Result was None',
                         'ConversationMode': False,
                         'ConversationTurn': None,
                         'ConversationSessionId': ''
@@ -649,6 +667,7 @@ def execute_tests(test_file, agent_name, max_workers=5, output_dir=None):
                     'CompletionRequestDuration': 0,
                     'ErrorOccured': 1,
                     'ErrorDetails': str(e),
+                    'ErrorDetailsFull': str(e),
                     'ConversationMode': False,
                     'ConversationTurn': None,
                     'ConversationSessionId': ''
@@ -660,7 +679,7 @@ def execute_tests(test_file, agent_name, max_workers=5, output_dir=None):
 
     # Save compact CSV (summary columns kept on one line)
     summary_columns = [
-        'Question','Filename','AgentAnswerPreview','ErrorOccured','ErrorDetails','Tokens',
+        'Question','Filename','AgentAnswerPreview','ErrorOccured','ErrorDetails','ErrorDetailsFull','Tokens',
         'SessionRequestDuration','CompletionRequestDuration','CodeArtifactCount',
         'CodeToolFailed','CodeToolError','CodeToolResult',
         'ProducedFilesCount','ProducedFilesSummary','ArtifactsSummary',
@@ -728,6 +747,7 @@ def execute_tests_from_dataframe(df, agent_name, max_workers=5):
                         'AgentAnswer': 'Failed to process',
                         'ErrorOccured': 1,
                         'ErrorDetails': 'Test execution failed',
+                        'ErrorDetailsFull': 'Test execution failed',
                         'Ordinal': ordinal_index + 1,
                         'ConversationMode': False,
                         'ConversationTurn': None,
@@ -755,6 +775,7 @@ def execute_tests_from_dataframe(df, agent_name, max_workers=5):
                     'AgentAnswer': 'Failed to process',
                     'ErrorOccured': 1,
                     'ErrorDetails': str(e),
+                    'ErrorDetailsFull': str(e),
                     'Ordinal': ordinal_index + 1,
                     'ConversationMode': False,
                     'ConversationTurn': None,
@@ -815,6 +836,7 @@ def execute_tests_single_conversation(df, agent_name):
                 'AgentAnswer': '',
                 'ErrorOccured': 1,
                 'ErrorDetails': 'Failed to process question',
+                'ErrorDetailsFull': 'Failed to process question',
                 'Ordinal': ordinal,
                 'ConversationMode': True,
                 'ConversationTurn': ordinal,

@@ -9,6 +9,7 @@ import os
 from datetime import datetime
 from typing import Dict, List, Any
 import pandas as pd
+import html
 
 
 class HTMLReporter:
@@ -147,6 +148,7 @@ class HTMLReporter:
             error_occurred = test.get('ErrorOccured', 1)
             validation_passed = test.get('ValidationPassed', -1)
             ordinal = test.get('Ordinal', original_index + 1)
+            error_details_full = test.get('ErrorDetailsFull') or test.get('ErrorDetails') or ''
             
             if error_occurred == 1:
                 error_tests += 1
@@ -191,7 +193,8 @@ class HTMLReporter:
                 'artifacts_expected': artifacts_expected,
                 'code_failed': test.get('CodeToolFailed', False),
                 'conversation_turn': test.get('ConversationTurn'),
-                'conversation_session_id': test.get('ConversationSessionId')
+                'conversation_session_id': test.get('ConversationSessionId'),
+                'error_details': error_details_full
             })
         
         return {
@@ -546,6 +549,30 @@ class HTMLReporter:
             grid-template-columns: 1fr 1fr;
             gap: 20px;
             margin-bottom: 20px;
+        }
+        
+        .error-details {
+            margin: 20px 0;
+            padding: 15px;
+            background: #fff5f5;
+            border-radius: 8px;
+            border-left: 4px solid #dc3545;
+        }
+        
+        .error-details h4 {
+            color: #dc3545;
+            margin-bottom: 10px;
+        }
+        
+        .error-details-content {
+            background: white;
+            padding: 12px;
+            border-radius: 6px;
+            border: 1px solid #f5c2c7;
+            font-family: 'Courier New', monospace;
+            font-size: 0.95em;
+            color: #721c24;
+            line-height: 1.4;
         }
         
         .answer-column {
@@ -1081,6 +1108,11 @@ class HTMLReporter:
             turn_badge = ''
             if conversation_mode and test.get('conversation_turn'):
                 turn_badge = f"<span class='turn-badge'>Turn {test['conversation_turn']}</span>"
+            error_details_block = ''
+            error_details = test.get('error_details', '')
+            if error_details:
+                escaped_error = html.escape(str(error_details)).replace('\n', '<br>')
+                error_details_block = f"<div class=\"error-details\"><h4>⚠️ Error Details</h4><div class=\"error-details-content\">{escaped_error}</div></div>"
             
             # Use a string with no indentation to avoid nesting issues
             tests_html += f"""<div class="test-item">
@@ -1105,6 +1137,7 @@ class HTMLReporter:
 </div>
 </div>
 {self._generate_artifacts_section(test)}
+{error_details_block}
 {f'<div class="test-answer"><h4>Validation Details:</h4><div class="test-answer-content">{test["validation_details"]}</div></div>' if test['validation_details'] else ''}
 <div class="test-metrics">
 <div class="metric">
