@@ -53,7 +53,9 @@ function Initialize-StateAPI {
         -EnvironmentVariables $environmentVariables `
         -ContainerImage $ContainerImage `
         -MinReplicas 1 `
-        -MaxReplicas 1
+        -MaxReplicas 1 `
+        -CPUCores 0.5 `
+        -Memory 1
 }
 
 function Restart-StateAPI {

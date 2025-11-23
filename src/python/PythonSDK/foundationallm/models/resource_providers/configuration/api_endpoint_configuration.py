@@ -1,5 +1,5 @@
+from typing import Any, List, Self, Optional, Dict
 from pydantic import Field
-from typing import Any, List, Self, Optional
 from foundationallm.models.resource_providers import ResourceBase
 from foundationallm.models.resource_providers.configuration import (
     ConfigurationTypes,
@@ -17,7 +17,7 @@ class APIEndpointConfiguration(ResourceBase):
     authentication_type: str = Field(description="The type of authentication required for accessing the API endpoint.")
     url: str = Field(description="The base URL of the API endpoint.")
     url_exceptions: List[UrlException] = Field(default={}, description="List of URL exceptions for the API endpoint.")
-    authentication_parameters: dict = Field(default={}, description="Dictionary with values used for authentication.")
+    authentication_parameters: Dict = Field(default={}, description="Dictionary with values used for authentication.")
     timeout_seconds: int = Field(default=60, description="The timeout duration in seconds for API calls.")
     retry_strategy_name: str = Field(description="The name of the retry strategy to use for API calls.")
     provider: Optional[str] = Field(default=None, description="The provider of the API endpoint.")

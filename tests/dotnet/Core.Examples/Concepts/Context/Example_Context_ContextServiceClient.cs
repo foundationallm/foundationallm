@@ -34,7 +34,7 @@ namespace FoundationaLLM.Core.Examples.Concepts.Context
                 instanceId,
                 fileId);
 
-            Assert.True(response.Success);
+            Assert.True(response.IsSuccess);
         }
 
         private void InitializeContextServiceClient()

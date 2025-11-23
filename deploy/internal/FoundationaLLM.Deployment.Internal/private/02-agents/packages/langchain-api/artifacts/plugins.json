@@ -1,0 +1,10 @@
+{
+    "python": [
+        [
+            "Python-FoundationaLLMAgentPlugins",
+            "foundationallm-agent-plugins",
+            "{{PYTHON_PLUGINS_VERSION}}",
+            null
+        ]
+    ]
+}

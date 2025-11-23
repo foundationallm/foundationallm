@@ -11,6 +11,14 @@
 				"value": "true",
 				"content_type": "application/vnd.microsoft.appconfig.ff+json;charset=utf-8",
 				"first_version": "0.9.7"
+			},
+			{
+				"name": ".appconfig.featureflag/FoundationaLLM.Agent.SelfService",
+				"description": "Feature flag used to enable or disable the agent self service feature",
+				"secret": "",
+				"value": "false",
+				"content_type": "application/vnd.microsoft.appconfig.ff+json;charset=utf-8",
+				"first_version": "0.9.7"
 			}
 		]
 	},
@@ -116,7 +124,7 @@
 				"name": "CodeInterpreter",
 				"description": "The settings for the Azure Container Apps Dynamic Sessions code interpreter code execution service.",
 				"secret": "",
-				"value": "{\\\"Endpoints\\\": {\\\"Python\\\":[], \\\"CSharp\\\":[]}",
+				"value": "{\\\"Endpoints\\\": {\\\"Python\\\":[], \\\"CSharp\\\":[]}}",
 				"content_type": "application/json",
 				"first_version": "0.9.7"
 			},
@@ -1850,7 +1858,9 @@
 	{
 		"namespace": "APIEndpoints:AzureContentSafety:Essentials",
 		"dependency_injection_key": null,
-		"configuration_section": null,
+		"configuration_section": {
+			"description": "Configuration section used to identify the essential settings for the Azure Content Safety service."
+		},
 		"configuration_keys": [
 			{
 				"name": "APIKey",

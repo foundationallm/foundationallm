@@ -226,6 +226,21 @@ namespace FoundationaLLM.Prompt.ResourceProviders
 
             // TODO: Add validation for the prompt object.
 
+            if (prompt is MultipartPrompt multipartPrompt)
+            {
+                // Normalize line endings to LF
+
+                multipartPrompt.Prefix = multipartPrompt.Prefix!
+                    .Replace("\r\n", "\n")
+                    .Replace("\r", "\n");
+                if (multipartPrompt.Suffix is not null)
+                {
+                    multipartPrompt.Suffix = multipartPrompt.Suffix
+                        .Replace("\r\n", "\n")
+                        .Replace("\r", "\n");
+                }
+            }
+
             prompt.ObjectId = resourcePath.GetObjectId(_instanceSettings.Id, _name);
 
             UpdateBaseProperties(prompt, userIdentity, isNew: existingPromptReference is null);

@@ -1,10 +1,12 @@
 ﻿using FoundationaLLM.Common.Constants;
+using FoundationaLLM.Common.Constants.Configuration;
 using FoundationaLLM.Common.Constants.ResourceProviders;
 using FoundationaLLM.Common.Exceptions;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Configuration.Users;
 using FoundationaLLM.Common.Models.ResourceProviders;
-using FoundationaLLM.Common.Models.ResourceProviders.Attachment;
+using FoundationaLLM.Common.Models.ResourceProviders.Agent;
+using FoundationaLLM.Common.Models.ResourceProviders.Configuration;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 
@@ -16,6 +18,8 @@ namespace FoundationaLLM.Common.Services.Users
         private readonly IAzureCosmosDBService _cosmosDBService;
         private readonly ILogger<UserProfileService> _logger;
         private readonly IOrchestrationContext _callContext;
+        private readonly IResourceProviderService _configurationResourceProvider;
+        private readonly IResourceProviderService _agentResourceProvider;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="UserProfileService"/> class.
@@ -25,23 +29,34 @@ namespace FoundationaLLM.Common.Services.Users
         /// <param name="logger">The logging interface used to log under the
         /// <see cref="UserProfileService"/> type name.</param>
         /// <param name="callContext">Contains contextual data for the calling service.</param>
+        /// <param name="resourceProviderServices">The collection of <see cref="IResourceProviderService"/> services.</param>
         public UserProfileService(IAzureCosmosDBService cosmosDBService,
             ILogger<UserProfileService> logger,
-            IOrchestrationContext callContext)
+            IOrchestrationContext callContext,
+            IEnumerable<IResourceProviderService> resourceProviderServices)
         {
             _cosmosDBService = cosmosDBService;
             _logger = logger;
             _callContext = callContext;
+
+            _agentResourceProvider = resourceProviderServices
+                .SingleOrDefault(rp => rp.Name == ResourceProviderNames.FoundationaLLM_Agent)
+                ?? throw new ResourceProviderException($"The resource provider service for '{ResourceProviderNames.FoundationaLLM_Agent}' is not registered.");
+            _configurationResourceProvider = resourceProviderServices
+                .SingleOrDefault(rp => rp.Name == ResourceProviderNames.FoundationaLLM_Configuration)
+                ?? throw new ResourceProviderException($"The resource provider service for '{ResourceProviderNames.FoundationaLLM_Configuration}' is not registered.");
         }
 
         /// <inheritdoc/>
-        public async Task<UserProfile?> GetUserProfileAsync(string instanceId) => await _cosmosDBService.GetUserProfileAsync(_callContext.CurrentUserIdentity?.UPN ??
-            throw new InvalidOperationException("Failed to retrieve the identity of the signed in user when retrieving the user profile."));
+        public async Task<UserProfile?> GetUserProfileAsync(string instanceId) =>
+            await GetUserProfileInternalAsync(
+                _callContext.CurrentUserIdentity?.UPN ??
+                throw new InvalidOperationException("Failed to retrieve the identity of the signed in user when retrieving the user profile."));
 
         /// <inheritdoc/>
         public async Task<UserProfile?> GetUserProfileForUserAsync(string instanceId, string upn) =>
-            await _cosmosDBService.GetUserProfileAsync(upn);
-        
+            await GetUserProfileInternalAsync(upn);
+
         /// <inheritdoc/>
         public async Task UpsertUserProfileAsync(string instanceId, UserProfile userProfile)
         {
@@ -145,6 +160,53 @@ namespace FoundationaLLM.Common.Services.Users
                         },
                         default);
             return;
+        }
+
+        private async Task<UserProfile> GetUserProfileInternalAsync(string upn)
+        {
+            var userProfile = await _cosmosDBService.GetUserProfileAsync(upn);
+
+            if (userProfile.UpdatedOn == DateTimeOffset.MinValue)
+            {
+                // Reset selected agents to all existing agents.
+
+                //var userPortalAppConfigurationSet = await _configurationResourceProvider.GetResourceAsync<AppConfigurationSet>(
+                //    _callContext.InstanceId!,
+                //    WellKnownAppConfigurationSetNames.UserPortal,
+                //    _callContext.CurrentUserIdentity!);
+
+                //if (userPortalAppConfigurationSet.ConfigurationValues.TryGetValue(
+                //        AppConfigurationKeys.FoundationaLLM_UserPortal_Configuration_FeaturedAgentNames, out var featuredAgentsConfigValueObj)
+                //    && featuredAgentsConfigValueObj is string featuredAgents
+                //    && !string.IsNullOrWhiteSpace(featuredAgents))
+                //{
+                //    userProfile.Agents = [.. featuredAgents
+                //        .Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
+                //        .Select(agentName => ResourcePath.GetObjectId(
+                //            _callContext.InstanceId!,
+                //            ResourceProviderNames.FoundationaLLM_Agent,
+                //            AgentResourceTypeNames.Agents,
+                //            agentName))];
+                //    userProfile.UpdatedOn = DateTimeOffset.UtcNow;
+                //    await _cosmosDBService.UpsertUserProfileAsync(userProfile);
+                //}
+
+                var agents = await _agentResourceProvider.GetResourcesAsync<AgentBase>(
+                    _callContext.InstanceId!,
+                    _callContext.CurrentUserIdentity!,
+                    new ResourceProviderGetOptions
+                    {
+                        IncludeActions = false,
+                        IncludeRoles = false
+                    });
+
+                userProfile.Agents = [.. agents
+                    .Select(a => a.Resource.ObjectId!)];
+                userProfile.UpdatedOn = DateTimeOffset.UtcNow;
+                await _cosmosDBService.UpsertUserProfileAsync(userProfile);
+            }
+
+            return userProfile;
         }
     }
 }

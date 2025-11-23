@@ -1,0 +1,7 @@
+{
+    "display_name": "FoundationaLLM Agent Plugins - Experimental (Python)",
+    "description": "The FoundationaLLM Agent experimental plugins package for Python.",
+    "plugin_managers": [
+        "FoundationaLLMAgentToolExperimentalPluginManager"
+    ]
+}

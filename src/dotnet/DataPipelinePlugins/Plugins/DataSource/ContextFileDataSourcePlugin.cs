@@ -76,30 +76,25 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataSource
             var contentItemCanonicalId = contentItemIdentifier.CanonicalId;
             var contextFileObjectId = _pluginParameters[PluginParameterNames.CONTEXTFILE_DATASOURCE_CONTEXTFILEOBJECTID]?.ToString()
                 ?? throw new PluginException($"The {PluginParameterNames.CONTEXTFILE_DATASOURCE_CONTEXTFILEOBJECTID} parameter is required by the {Name} plugin.");
-            var instanceId = contextFileObjectId.Split('/', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries)[1];
+            var resourcePath = ResourcePath.GetResourcePath(contextFileObjectId);
 
-            using var scope = _serviceProvider.CreateScope();
-
-            var contextServiceClient = new ContextServiceClient(
-                new OrchestrationContext { CurrentUserIdentity = ServiceContext.ServiceIdentity },
-                scope.ServiceProvider.GetRequiredService<IHttpClientFactoryService>(),
-                scope.ServiceProvider.GetRequiredService<ILogger<ContextServiceClient>>());
+            var contextServiceClient = GetContextServiceClient();
 
             var response = await contextServiceClient.GetFileContent(
-                instanceId,
+                resourcePath.InstanceId!,
                 contentItemCanonicalId);
 
-            return response.Success
+            return response.TryGetValue(out var fileContent)
                 ? new PluginResult<ContentItemRawContent>(
                     new ContentItemRawContent
                     {
-                        Name = response.Result!.FileName,
-                        ContentType = response.Result.ContentType,
-                        RawContent = BinaryData.FromStream(response.Result.FileContent!),
+                        Name = fileContent.FileName,
+                        ContentType = fileContent.ContentType,
+                        RawContent = BinaryData.FromStream(fileContent.FileContent!),
                         Metadata = new Dictionary<string, object>
                         {
                             { "FileId", contentItemCanonicalId },
-                            { "FileName", response.Result!.FileName }
+                            { "FileName", fileContent.FileName }
                         }
                     },
                     true,
@@ -109,5 +104,27 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataSource
                     false,
                     false);
         }
+
+        /// <inheritdoc/>
+        public async Task HandleUnsafeContentItem(string canonicalContentItemIdentifier)
+        {
+            var contextFileObjectId = _pluginParameters[PluginParameterNames.CONTEXTFILE_DATASOURCE_CONTEXTFILEOBJECTID]?.ToString()
+                ?? throw new PluginException($"The {PluginParameterNames.CONTEXTFILE_DATASOURCE_CONTEXTFILEOBJECTID} parameter is required by the {Name} plugin.");
+            var resourcePath = ResourcePath.GetResourcePath(contextFileObjectId);
+
+            // We need to delete the offending file from the context file store to avoid future usage.
+
+            var contextServiceClient = GetContextServiceClient();
+
+            var response = await contextServiceClient.DeleteFileRecord(
+                resourcePath.InstanceId!,
+                canonicalContentItemIdentifier);
+        }
+
+        private ContextServiceClient GetContextServiceClient() =>
+            new(
+                new OrchestrationContext { CurrentUserIdentity = ServiceContext.ServiceIdentity },
+                _serviceProvider.GetRequiredService<IHttpClientFactoryService>(),
+                _serviceProvider.GetRequiredService<ILogger<ContextServiceClient>>());
     }
 }

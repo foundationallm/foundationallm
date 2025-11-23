@@ -8,7 +8,7 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
 
 	const authStore = useNuxtApp().$authStore;
 	const appConfigStore = useNuxtApp().$appConfigStore;
-	
+
 	// Handle MSAL redirect promise
 	let redirectResult = null;
 	try {
@@ -30,10 +30,10 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
 				// Set the active account directly from redirect result
 				authStore.msalInstance.setActiveAccount(redirectResult.account);
 				authStore.isExpired = false;
-				
+
 				// Small delay to ensure MSAL state is fully updated
 				await new Promise(resolve => setTimeout(resolve, 500));
-				
+
 				// Force trigger reactive updates
 				const activeAccount = authStore.msalInstance.getActiveAccount();
 				if (activeAccount) {
@@ -49,40 +49,40 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
 	// If we have a redirect result with an account, consider user authenticated even if accounts array is empty
 	const hasRedirectAccount = redirectResult && redirectResult.account;
 	const isAuthenticated = authStore.isAuthenticated || hasRedirectAccount;
-	
+
 	if (isAuthenticated) {
 		// Load full configuration after successful authentication
 		// Only load if we haven't loaded it yet (check if logoUrl and logoText are still null)
-		if (!appConfigStore.logoUrl && !appConfigStore.logoText) {
+		if (!appConfigStore.isAppConfigurationSetLoaded) {
 			try {
 				await appConfigStore.loadConfigurationAfterAuth();
-				
+
 				// Update API settings after loading configuration
 				const config = useRuntimeConfig();
 				const localApiUrl = config.public.LOCAL_API_URL;
 				const finalApiUrl = localApiUrl || appConfigStore.apiUrl;
-				
+
 				if (finalApiUrl) {
 					api.setApiUrl(finalApiUrl);
 				}
-				
+
 				if (appConfigStore.instanceId) {
 					api.setInstanceId(appConfigStore.instanceId);
 				}
 
 				// Force Vue reactivity update
 				await nextTick();
-				
+
 				// Emit a global event to notify components
 				if (process.client && window) {
-					const configDetail = { 
-						logoUrl: appConfigStore.logoUrl, 
-						logoText: appConfigStore.logoText 
+					const configDetail = {
+						logoUrl: appConfigStore.logoUrl,
+						logoText: appConfigStore.logoText
 					};
 					window.dispatchEvent(new CustomEvent('config-loaded', { detail: configDetail }));
-					
+
 					// Also emit auth-updated event
-					const authDetail = { 
+					const authDetail = {
 						isAuthenticated: isAuthenticated,
 						currentAccount: authStore.currentAccount,
 						hasCurrentAccount: !!authStore.currentAccount,

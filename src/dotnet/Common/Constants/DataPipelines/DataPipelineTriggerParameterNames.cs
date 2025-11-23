@@ -16,6 +16,11 @@
         public const string DataSourceContextFileContentAction = "DataSource.ContextFile.ContentAction";
 
         /// <summary>
+        /// The maximum content size in characters for the extract stage.
+        /// </summary>
+        public const string StageExtractMaxContentSizeCharacters = "Stage.Extract.MaxContentSizeCharacters";
+
+        /// <summary>
         /// The knowledge unit object identifier for the embed stage.
         /// </summary>
         public const string StageEmbedKnowledgeUnitObjectId = "Stage.Embed.KnowledgeUnitObjectId";

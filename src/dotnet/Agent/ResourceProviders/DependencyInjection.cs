@@ -35,7 +35,7 @@ namespace FoundationaLLM
 
             // Register validators.
             builder.Services.AddSingleton<IValidator<AgentBase>, AgentBaseValidator>();
-            builder.Services.AddSingleton<IValidator<KnowledgeManagementAgent>, KnowledgeManagementAgentValidator>();
+            builder.Services.AddSingleton<IValidator<GenericAgent>, GenericAgentValidator>();
             builder.Services.AddSingleton<IValidator<Workflow>, WorkflowValidator>();
             builder.Services.AddSingleton<IValidator<Tool>, ToolValidator>();
 

@@ -1,5 +1,5 @@
-from pydantic import Field
 from typing import Optional, List, Literal
+from pydantic import Field
 from .message_content_item_base import MessageContentItemBase
 from .openai_file_path_message_content_item import OpenAIFilePathMessageContentItem
 from .message_content_item_types import MessageContentItemTypes

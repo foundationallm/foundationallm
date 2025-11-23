@@ -117,8 +117,22 @@ export const useAppStore = defineStore('app', {
 				this.changeSession(requestedSession);
 			} else if (appConfigStore.showLastConversionOnStartup && this.sessions.length > 0) {
 				this.changeSession(this.sessions[0]);
+			} else if (this.sessions.length > 0) {
+				// Check if the most recent session is empty
+				const mostRecentSession = this.sessions[0];
+				const isEmpty = await this.isSessionEmpty(mostRecentSession.sessionId);
+				
+				if (isEmpty) {
+					// Use the existing empty session
+					this.resetSessionAgent(mostRecentSession);
+					this.changeSession(mostRecentSession);
+				} else {
+					// Create a new chat conversation
+					const newSession = await this.addSession(this.getDefaultChatSessionProperties());
+					this.changeSession(newSession);
+				}
 			} else {
-				// Create a new chat conversation instead of a temporary session
+				// No sessions exist, create a new chat conversation
 				const newSession = await this.addSession(this.getDefaultChatSessionProperties());
 				this.changeSession(newSession);
 			}
@@ -429,6 +443,12 @@ export const useAppStore = defineStore('app', {
 				localStorage.setItem(key, value);
 			}
 			return this.selectedAgents;
+		},
+
+		resetSessionAgent(session: Session) {
+			this.lastSelectedAgent = null;
+			this.selectedAgents.delete(session.sessionId)
+			localStorage.removeItem(`session-agent-${session.sessionId}`);
 		},
 
 		/**

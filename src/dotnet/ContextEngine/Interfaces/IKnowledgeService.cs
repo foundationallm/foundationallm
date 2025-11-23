@@ -3,6 +3,7 @@ using FoundationaLLM.Common.Models.Context;
 using FoundationaLLM.Common.Models.Context.Knowledge;
 using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders.Context;
+using FoundationaLLM.Common.Models.Services;
 
 namespace FoundationaLLM.Context.Interfaces
 {
@@ -18,8 +19,10 @@ namespace FoundationaLLM.Context.Interfaces
         /// <param name="knowledgeUnitId">The knowledge unit identifier.</param>
         /// <param name="agentName">The agent name if the request is being made on behalf of an agent.</param>
         /// <param name="userIdentity">The identity of the security principal submitting the request.</param>
-        /// <returns></returns>
-        Task<ContextServiceResponse<ResourceProviderGetResult<KnowledgeUnit>>> GetKnowledgeUnit(
+        /// <returns>
+        /// A <see cref="Task"/> producing a <see cref="Result{T}"/> whose value is a <see cref="ResourceProviderGetResult{T}"/> containing the <see cref="KnowledgeUnit"/> and its assigned roles/actions when successful; otherwise a failed result with a domain error.
+        /// </returns>
+        Task<Result<ResourceProviderGetResult<KnowledgeUnit>>> GetKnowledgeUnit(
             string instanceId,
             string knowledgeUnitId,
             string? agentName,
@@ -32,8 +35,10 @@ namespace FoundationaLLM.Context.Interfaces
         /// <param name="knowledgeSourceId">The knowledge source identifier.</param>
         /// <param name="agentName">The agent name if the request is being made on behalf of an agent.</param>
         /// <param name="userIdentity">The identity of the security principal submitting the request.</param>
-        /// <returns></returns>
-        Task<ContextServiceResponse<ResourceProviderGetResult<KnowledgeSource>>> GetKnowledgeSource(
+        /// <returns>
+        /// A <see cref="Task"/> producing a <see cref="Result{T}"/> whose value is a <see cref="ResourceProviderGetResult{T}"/> containing the <see cref="KnowledgeSource"/> and its assigned roles/actions when successful; otherwise a failed result with a domain error.
+        /// </returns>
+        Task<Result<ResourceProviderGetResult<KnowledgeSource>>> GetKnowledgeSource(
             string instanceId,
             string knowledgeSourceId,
             string? agentName,
@@ -45,8 +50,10 @@ namespace FoundationaLLM.Context.Interfaces
         /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
         /// <param name="listRequest">The request containing the information used to filter the knowledge resources.</param>
         /// <param name="userIdentity">The identity of the security principal submitting the request.</param>
-        /// <returns></returns>
-        Task<ContextServiceResponse<IEnumerable<ResourceProviderGetResult<KnowledgeUnit>>>> GetKnowledgeUnits(
+        /// <returns>
+        /// A <see cref="Task"/> producing a <see cref="Result{T}"/> whose value is an enumerable of <see cref="ResourceProviderGetResult{T}"/> items for the matching <see cref="KnowledgeUnit"/> resources; otherwise a failed result with a domain error.
+        /// </returns>
+        Task<Result<IEnumerable<ResourceProviderGetResult<KnowledgeUnit>>>> GetKnowledgeUnits(
             string instanceId,
             ContextKnowledgeResourceListRequest listRequest,
             UnifiedUserIdentity userIdentity);
@@ -57,8 +64,10 @@ namespace FoundationaLLM.Context.Interfaces
         /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
         /// <param name="listRequest">The request containing the information used to filter the knowledge resources.</param>
         /// <param name="userIdentity">The identity of the security principal submitting the request.</param>
-        /// <returns></returns>
-        Task<ContextServiceResponse<IEnumerable<ResourceProviderGetResult<KnowledgeSource>>>> GetKnowledgeSources(
+        /// <returns>
+        /// A <see cref="Task"/> producing a <see cref="Result{T}"/> whose value is an enumerable of <see cref="ResourceProviderGetResult{T}"/> items for the matching <see cref="KnowledgeSource"/> resources; otherwise a failed result with a domain error.
+        /// </returns>
+        Task<Result<IEnumerable<ResourceProviderGetResult<KnowledgeSource>>>> GetKnowledgeSources(
             string instanceId,
             ContextKnowledgeResourceListRequest listRequest,
             UnifiedUserIdentity userIdentity);
@@ -69,8 +78,10 @@ namespace FoundationaLLM.Context.Interfaces
         /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
         /// <param name="knowledgeUnit">The knowledge unit to be created or updated.</param>
         /// <param name="userIdentity">The identity of the security principal submitting the request.</param>
-        /// <returns></returns>
-        Task<ContextServiceResponse<ResourceProviderUpsertResult<KnowledgeUnit>>> UpsertKnowledgeUnit(
+        /// <returns>
+        /// A <see cref="Task"/> producing a <see cref="Result{T}"/> whose value is a <see cref="ResourceProviderUpsertResult{T}"/> describing the upsert outcome for the <see cref="KnowledgeUnit"/>; otherwise a failed result with a domain error.
+        /// </returns>
+        Task<Result<ResourceProviderUpsertResult<KnowledgeUnit>>> UpsertKnowledgeUnit(
             string instanceId,
             KnowledgeUnit knowledgeUnit,
             UnifiedUserIdentity userIdentity);
@@ -81,8 +92,10 @@ namespace FoundationaLLM.Context.Interfaces
         /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
         /// <param name="knowledgeSource">The knowledge source to be created or updated.</param>
         /// <param name="userIdentity">The identity of the security principal submitting the request.</param>
-        /// <returns></returns>
-        Task<ContextServiceResponse<ResourceProviderUpsertResult<KnowledgeSource>>> UpsertKnowledgeSource(
+        /// <returns>
+        /// A <see cref="Task"/> producing a <see cref="Result{T}"/> whose value is a <see cref="ResourceProviderUpsertResult{T}"/> describing the upsert outcome for the <see cref="KnowledgeSource"/>; otherwise a failed result with a domain error.
+        /// </returns>
+        Task<Result<ResourceProviderUpsertResult<KnowledgeSource>>> UpsertKnowledgeSource(
             string instanceId,
             KnowledgeSource knowledgeSource,
             UnifiedUserIdentity userIdentity);
@@ -94,8 +107,10 @@ namespace FoundationaLLM.Context.Interfaces
         /// <param name="knowledgeUnitId">The knowledge unit identifier.</param>
         /// <param name="setGraphRequest">The request containing the knowledge graph details.</param>
         /// <param name="userIdentity">The identity of the security principal submitting the request.</param>
-        /// <returns></returns>
-        Task<ContextServiceResponse<ResourceProviderActionResult>> SetKnowledgeUnitGraph(
+        /// <returns>
+        /// A <see cref="Task"/> producing a <see cref="Result{T}"/> whose value is a <see cref="ResourceProviderActionResult"/> indicating the graph set operation outcome; otherwise a failed result with a domain error.
+        /// </returns>
+        Task<Result<ResourceProviderActionResult>> SetKnowledgeUnitGraph(
             string instanceId,
             string knowledgeUnitId,
             ContextKnowledgeUnitSetGraphRequest setGraphRequest,
@@ -108,8 +123,10 @@ namespace FoundationaLLM.Context.Interfaces
         /// <param name="knowledgeUnitId">The knowledge unit identifier.</param>
         /// <param name="queryRequest">The request containing the details of the query.</param>
         /// <param name="userIdentity">The identity of the security principal submitting the request.</param>
-        /// <returns></returns>
-        Task<ContextKnowledgeUnitRenderGraphResponse> RenderKnowledgeUnitGraph(
+        /// <returns>
+        /// A <see cref="Task"/> producing a <see cref="Result{T}"/> whose value is a <see cref="ContextKnowledgeUnitRenderGraphResponse"/> containing nodes and edges when successful; otherwise a failed result with a domain error.
+        /// </returns>
+        Task<Result<ContextKnowledgeUnitRenderGraphResponse>> RenderKnowledgeUnitGraph(
             string instanceId,
             string knowledgeUnitId,
             ContextKnowledgeSourceQueryRequest? queryRequest,
@@ -122,8 +139,10 @@ namespace FoundationaLLM.Context.Interfaces
         /// <param name="knowledgeSourceId">The knowledge source identifier.</param>
         /// <param name="queryRequest">The request containing the details of the query.</param>
         /// <param name="userIdentity">The identity of the security principal submitting the request.</param>
-        /// <returns></returns>
-        Task<ContextKnowledgeSourceQueryResponse> QueryKnowledgeSource(
+        /// <returns>
+        /// A <see cref="Task"/> producing a <see cref="Result{T}"/> whose value is a <see cref="ContextKnowledgeSourceQueryResponse"/> containing vector store and/or knowledge graph results when successful; otherwise a failed result with a domain error.
+        /// </returns>
+        Task<Result<ContextKnowledgeSourceQueryResponse>> QueryKnowledgeSource(
             string instanceId,
             string knowledgeSourceId,
             ContextKnowledgeSourceQueryRequest queryRequest,

@@ -1,0 +1,8 @@
+[
+    {
+        "type": "external-agent-workflow",
+        "name": "ExternalAgentWorkflow",
+        "display_name": "ExternalAgentWorkflow",
+        "description": "External agent workflow"
+    }
+]

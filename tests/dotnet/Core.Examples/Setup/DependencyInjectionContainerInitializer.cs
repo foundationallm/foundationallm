@@ -197,6 +197,7 @@ namespace FoundationaLLM.Core.Examples.Setup
             services.AddInstanceProperties(configuration);
 
             services.AddIdentitiyManagement(configuration);
+            services.AddAzureContentSafetyService(configuration);
         }
     }
 }

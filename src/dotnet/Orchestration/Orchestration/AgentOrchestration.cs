@@ -34,7 +34,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
     /// </remarks>
     /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
     /// <param name="agentObjectId">The FoundationaLLM object identifier of the agent.</param>
-    /// <param name="agent">The <see cref="KnowledgeManagementAgent"/> agent.</param>
+    /// <param name="agent">The <see cref="GenericAgent"/> agent.</param>
     /// <param name="conversationId">The conversation identifier.</param>
     /// <param name="agentWorkflowMainAIModelAPIEndpoint">The URL of the API endpoint of the main AI model used by the agent workflow.</param>
     /// <param name="explodedObjects">A dictionary of objects retrieved from various object ids related to the agent. For more details see <see cref="LLMCompletionRequest.Objects"/> .</param>
@@ -52,7 +52,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
     public partial class AgentOrchestration(
         string instanceId,
         string agentObjectId,
-        KnowledgeManagementAgent? agent,
+        GenericAgent? agent,
         string conversationId,
         string agentWorkflowMainAIModelAPIEndpoint,
         Dictionary<string, object>? explodedObjects,
@@ -71,7 +71,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
     {
         private readonly string _instanceId = instanceId;
         private readonly string _agentObjectId = agentObjectId;
-        private KnowledgeManagementAgent? _agent = agent;
+        private GenericAgent? _agent = agent;
         private readonly string _conversationId = conversationId;
         private readonly string _agentWorkflowMainAIModelAPIEndpoint = agentWorkflowMainAIModelAPIEndpoint;
         private readonly Dictionary<string, object>? _explodedObjects = explodedObjects;
@@ -541,18 +541,18 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                 .SelectAwait(async x => await _contextServiceClient.GetFileRecord(_instanceId, x));
             await foreach(var contextFileResponse in contextAttachmentResponses)
             {
-                if (contextFileResponse.Success)
+                if (contextFileResponse.TryGetValue(out var fileRecord))
                 {
-                    candidateResult[contextFileResponse.Result!.FileObjectId] = new AttachmentProperties
+                    candidateResult[fileRecord.FileObjectId] = new AttachmentProperties
                     {
-                        OriginalFileName = contextFileResponse.Result!.FileName,
-                        ContentType = contextFileResponse.Result.ContentType!,
+                        OriginalFileName = fileRecord.FileName,
+                        ContentType = fileRecord.ContentType!,
                         Provider = ResourceProviderNames.FoundationaLLM_Context,
-                        ProviderFileName = contextFileResponse.Result.FilePath,
-                        EmbedContentInRequest = contextFileResponse.Result!.FileProcessingType == FileProcessingTypes.CompletionRequestContext
+                        ProviderFileName = fileRecord.FilePath,
+                        EmbedContentInRequest = fileRecord.FileProcessingType == FileProcessingTypes.CompletionRequestContext
                     };
 
-                    if (contextFileResponse.Result.FileProcessingType == FileProcessingTypes.ConversationDataPipeline)
+                    if (fileRecord.FileProcessingType == FileProcessingTypes.ConversationDataPipeline)
                     {
                         // The file must be processed by the conversation data pipeline.
 
@@ -567,8 +567,9 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                             DataPipelineTriggerNames.DefaultManualTrigger,
                             new()
                             {
-                                { DataPipelineTriggerParameterNames.DataSourceContextFileContextFileObjectId, contextFileResponse.Result.FileObjectId},
+                                { DataPipelineTriggerParameterNames.DataSourceContextFileContextFileObjectId, fileRecord.FileObjectId},
                                 { DataPipelineTriggerParameterNames.DataSourceContextFileContentAction, ContentItemActions.AddOrUpdate },
+                                { DataPipelineTriggerParameterNames.StageExtractMaxContentSizeCharacters, knowledgeSearchSettings.MaxContentSizeCharacters },
                                 { DataPipelineTriggerParameterNames.StageEmbedKnowledgeUnitObjectId, knowledgeSearchSettings.ConversationKnowledgeUnitObjectId },
                                 { DataPipelineTriggerParameterNames.StageIndexKnowledgeUnitObjectId, knowledgeSearchSettings.ConversationKnowledgeUnitObjectId },
                                 { DataPipelineTriggerParameterNames.StageIndexVectorStoreId, _vectorStoreId },
@@ -578,7 +579,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                             _callContext.CurrentUserIdentity!.UPN!,
                             DataPipelineRunProcessors.Frontend);
 
-                        fileProcessingTasks[contextFileResponse.Result.FileObjectId] =
+                        fileProcessingTasks[fileRecord.FileObjectId] =
                             PollingResourceRunner<DataPipelineRun>.Start(
                                 _instanceId,
                                 _dataPipelineResourceProvider,
@@ -590,7 +591,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                     }
                 }
                 else
-                    _logger.LogError(contextFileResponse.ErrorMessage);
+                    _logger.LogError(contextFileResponse.Error?.Detail);
             }
 
             await Task.WhenAll(fileProcessingTasks.Values);
@@ -837,7 +838,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
         {
             // need to get the agent configuration in order to retrieve the project connection string to associate with generated files.
             var agentResourcePath = ResourcePath.GetResourcePath(_agentObjectId);
-            _agent = _agent ?? (KnowledgeManagementAgent)_agentResourceProvider.GetResourceAsync<AgentBase>(
+            _agent = _agent ?? (GenericAgent)_agentResourceProvider.GetResourceAsync<AgentBase>(
                                _instanceId,
                                agentResourcePath.MainResourceId!,
                                _callContext.CurrentUserIdentity!).Result;

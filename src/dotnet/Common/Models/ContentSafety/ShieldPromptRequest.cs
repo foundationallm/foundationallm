@@ -12,7 +12,7 @@ namespace FoundationaLLM.Common.Models.ContentSafety
         /// This could be a question, command, or other form of text input.
         /// </summary>
         [JsonPropertyName("userPrompt")]
-        public required string UserPrompt { get; set; }
+        public string? UserPrompt { get; set; }
 
         /// <summary>
         /// Gets or sets a list or collection of textual documents, articles,

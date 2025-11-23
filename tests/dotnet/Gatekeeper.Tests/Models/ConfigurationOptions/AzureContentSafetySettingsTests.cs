@@ -1,4 +1,4 @@
-﻿using FoundationaLLM.Gatekeeper.Core.Models.ConfigurationOptions;
+﻿using FoundationaLLM.Common.Models.Configuration.ContentSafety;
 
 namespace Gatekeeper.Tests.Models.ConfigurationOptions
 {

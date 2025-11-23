@@ -29,7 +29,7 @@ namespace Management.Client.Tests.Clients.Resources
                     {
                         Name = "test-agent",
                         Description = "A test agent",
-                        Type = AgentTypes.KnowledgeManagement
+                        Type = AgentTypes.GenericAgent
                     },
                     Roles = [],
                     Actions = []
@@ -65,7 +65,7 @@ namespace Management.Client.Tests.Clients.Resources
                 {
                     Name = agentName,
                     Description = "A test agent",
-                    Type = AgentTypes.KnowledgeManagement
+                    Type = AgentTypes.GenericAgent
                 },
                 Roles = [],
                 Actions = []

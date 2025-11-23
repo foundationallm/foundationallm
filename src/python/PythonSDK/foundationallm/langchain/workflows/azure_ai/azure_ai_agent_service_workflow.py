@@ -4,49 +4,50 @@ Description: Workflow that integrates with the Azure AI Agent Service.
 """
 import json
 import uuid
+from typing import Any,Dict, Optional, List
+from logging import Logger
 from azure.identity.aio import DefaultAzureCredential
 from azure.ai.projects.aio import AIProjectClient
 from azure.ai.agents.models import (
-    AsyncAgentEventHandler,   
+    AsyncAgentEventHandler,
     CodeInterpreterToolDefinition,
     FileSearchToolDefinition,
     FunctionTool,
     ListSortOrder,
     MessageAttachment,
-    MessageRole, 
+    MessageRole,
     MessageDeltaChunk,
     MessageImageFileContent,
     MessageTextContent,
     MessageTextFilePathAnnotation,
-    MessageTextFileCitationAnnotation,    
+    MessageTextFileCitationAnnotation,
     RequiredFunctionToolCall,
     RunStep, 
-    RunStepCodeInterpreterToolCall,    
+    RunStepCodeInterpreterToolCall,
     RunStepFunctionToolCall,
     SubmitToolOutputsAction,
     ToolOutput,
-    ThreadMessage,    
+    ThreadMessage,
     ThreadRun
 )
-from typing import Any,Dict, Optional, List
-from logging import Logger
 from opentelemetry.trace import Tracer
-from opentelemetry.trace import SpanKind
 
 from foundationallm.config import Configuration, UserIdentity
 from foundationallm.langchain.common import (
     FoundationaLLMWorkflowBase,
     FoundationaLLMToolBase
 )
-from foundationallm.models.agents import ExternalAgentWorkflow
+from foundationallm.models.agents import (
+    GenericAgentWorkflow,
+    ExternalAgentWorkflow
+)
 from foundationallm.models.constants import (
     AgentCapabilityCategories,
     AzureAIResourceTypeNames,
     ContentArtifactTypeNames,
     ResourceObjectIdPropertyNames,
     ResourceObjectIdPropertyValues,
-    ResourceProviderNames,   
-    RunnableConfigKeys
+    ResourceProviderNames
 )
 from foundationallm.models.messages import MessageHistoryItem
 from foundationallm.models.orchestration import (
@@ -180,7 +181,7 @@ class AzureAIAgentServiceWorkflow(FoundationaLLMWorkflowBase):
     FoundationaLLM workflow implementing an integration with the Azure AI Agent Service.
     """
     def __init__(self,
-                 workflow_config: ExternalAgentWorkflow,
+                 workflow_config: GenericAgentWorkflow | ExternalAgentWorkflow,
                  objects: Dict,
                  tools: List[FoundationaLLMToolBase],
                  user_identity: UserIdentity,
@@ -191,7 +192,7 @@ class AzureAIAgentServiceWorkflow(FoundationaLLMWorkflowBase):
 
         Parameters
         ----------
-        workflow_config : ExternalAgentWorkflow
+        workflow_config : GenericAgentWorkflow | ExternalAgentWorkflow
             The workflow assigned to the agent.
         objects : dict
             The exploded objects assigned from the agent.
