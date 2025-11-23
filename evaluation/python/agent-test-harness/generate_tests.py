@@ -12,6 +12,7 @@ import os
 import sys
 import re
 from typing import Dict, List, Any, Optional
+from pathlib import Path
 import pandas as pd
 from openai import AzureOpenAI
 from dotenv import load_dotenv
@@ -23,7 +24,16 @@ load_dotenv()
 class TestGenerator:
     """Generates test variations using LLM-based expansion"""
     
-    def __init__(self):
+    def __init__(self, test_suites_dir: Optional[Path] = None):
+        self.base_dir = Path(__file__).parent
+        
+        # Determine test-suites directory
+        if test_suites_dir is not None:
+            self.test_suites_dir = Path(test_suites_dir).resolve()
+        else:
+            # Default: use test-suites/ relative to script
+            self.test_suites_dir = self.base_dir / "test-suites"
+        
         self.llm_client = self._init_llm_client()
     
     def _init_llm_client(self):
@@ -692,9 +702,13 @@ GenerationStrategy: combinations
             print(f"Error validating test file: {e}")
             return False
     
-    def create_interactive_suite(self, suite_name: str, output_dir: str = "test-data") -> bool:
+    def create_interactive_suite(self, suite_name: str, output_dir: Optional[str] = None) -> bool:
         """Create a new test suite interactively"""
         try:
+            # Use test_suites_dir if output_dir not provided
+            if output_dir is None:
+                output_dir = str(self.test_suites_dir)
+            
             # Create suite directory
             suite_dir = os.path.join(output_dir, suite_name)
             os.makedirs(suite_dir, exist_ok=True)
@@ -765,8 +779,8 @@ GenerationStrategy: combinations
         """Add tests to an existing test suite interactively"""
         try:
             # Load test suite configuration
-            config_file = "test_suites.json"
-            if not os.path.exists(config_file):
+            config_file = self.test_suites_dir / "test_suites.json"
+            if not config_file.exists():
                 print(f"❌ Error: {config_file} not found")
                 return False
             
@@ -779,11 +793,15 @@ GenerationStrategy: combinations
                 return False
             
             suite_config = config[suite_name]
-            csv_file = suite_config['csv_file']
+            csv_file_path = suite_config['csv_file']
+            # Resolve CSV path relative to test_suites_dir
+            csv_file = self.test_suites_dir / csv_file_path
             
-            if not os.path.exists(csv_file):
+            if not csv_file.exists():
                 print(f"❌ Error: CSV file not found: {csv_file}")
                 return False
+            
+            csv_file = str(csv_file)
             
             print(f"\n🎯 Adding tests to existing suite: {suite_name}")
             print(f"📁 CSV file: {csv_file}")
@@ -890,7 +908,8 @@ GenerationStrategy: combinations
         """Check if a test suite already exists"""
         try:
             # Load test suites configuration
-            with open('test_suites.json', 'r') as f:
+            config_file = self.test_suites_dir / "test_suites.json"
+            with open(config_file, 'r') as f:
                 suites = json.load(f)
             
             return suite_name in suites
@@ -1104,25 +1123,39 @@ GenerationStrategy: combinations
     def _update_test_suites_config(self, suite_name: str, csv_file: str):
         """Update test_suites.json with new suite"""
         try:
-            config_file = "test_suites.json"
+            config_file = self.test_suites_dir / "test_suites.json"
             
             # Load existing config
-            if os.path.exists(config_file):
+            if config_file.exists():
                 with open(config_file, 'r') as f:
                     config = json.load(f)
             else:
                 config = {}
             
+            # Convert absolute csv_file path to relative path from test_suites_dir
+            csv_path = Path(csv_file)
+            if csv_path.is_absolute():
+                try:
+                    csv_file_rel = str(csv_path.relative_to(self.test_suites_dir))
+                except ValueError:
+                    # If not relative to test_suites_dir, use as-is
+                    csv_file_rel = csv_file
+            else:
+                csv_file_rel = csv_file
+            
             # Add new suite
             config[suite_name] = {
-                "csv_file": csv_file,
+                "csv_file": csv_file_rel,
                 "description": f"Tests for {suite_name}",
                 "quick_mode_limit": 5
             }
             
-            # Save updated config
+            # Save updated config (sort keys alphabetically)
+            sorted_config = dict(sorted(config.items()))
+            # Ensure parent directory exists
+            config_file.parent.mkdir(parents=True, exist_ok=True)
             with open(config_file, 'w') as f:
-                json.dump(config, f, indent=2)
+                json.dump(sorted_config, f, indent=2)
             
             print(f"🔧 Updated {config_file} with new suite: {suite_name}")
             
@@ -1153,7 +1186,7 @@ Examples:
   python generate_tests.py --input seed-tests.csv --output edge-cases.csv --strategy edge-cases --count 3
   
   # Append to existing test suite
-  python generate_tests.py --input seed.csv --output test-data/code-interpreter/TestQuestions-code-interpreter.csv --append
+  python generate_tests.py --input seed.csv --output test-suites/code-interpreter/TestQuestions-code-interpreter.csv --append
   
   # Generate with deduplication
   python generate_tests.py --input seed.csv --output expanded.csv --deduplicate
@@ -1189,8 +1222,21 @@ Examples:
                        help='Validate generated tests')
     parser.add_argument('--dry-run', action='store_true',
                        help='Show what would be generated without creating files')
+    parser.add_argument('--test-suites-dir',
+                       help='Path to test-suites directory (default: test-suites/ relative to script)')
     
     args = parser.parse_args()
+    
+    # Resolve test-suites directory path
+    test_suites_dir = None
+    if args.test_suites_dir:
+        test_suites_dir = Path(args.test_suites_dir).resolve()
+        if not test_suites_dir.exists():
+            print(f"Error: Test-suites directory not found: {test_suites_dir}")
+            sys.exit(1)
+        if not test_suites_dir.is_dir():
+            print(f"Error: Path is not a directory: {test_suites_dir}")
+            sys.exit(1)
     
     # Handle interactive mode
     if args.interactive:
@@ -1203,7 +1249,7 @@ Examples:
             sys.exit(1)
         
         # Initialize generator
-        generator = TestGenerator()
+        generator = TestGenerator(test_suites_dir=test_suites_dir)
         
         if args.existing_suite:
             # Add tests to existing suite
@@ -1211,8 +1257,9 @@ Examples:
         else:
             # Check if suite already exists when creating new one
             if generator.suite_exists(args.suite_name):
+                csv_path = generator.test_suites_dir / args.suite_name / f"TestQuestions-{args.suite_name}.csv"
                 print(f"\n⚠️  Test suite '{args.suite_name}' already exists!")
-                print(f"📁 CSV file: test-data/{args.suite_name}/TestQuestions-{args.suite_name}.csv")
+                print(f"📁 CSV file: {csv_path}")
                 print(f"📊 This suite already has tests in it.")
                 print(f"\n❓ What would you like to do?")
                 print(f"  1. Append new tests to existing suite '{args.suite_name}'")
@@ -1276,7 +1323,7 @@ Examples:
         sys.exit(1)
     
     # Initialize generator
-    generator = TestGenerator()
+    generator = TestGenerator(test_suites_dir=test_suites_dir)
     
     # Resolve input path
     input_file = args.input

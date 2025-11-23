@@ -12,6 +12,7 @@ import sys
 import subprocess
 import json
 from datetime import datetime
+from pathlib import Path
 
 # Add the current directory to Python path for imports
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -49,7 +50,7 @@ Examples:
   # Comprehensive validation with LLM
   python run_tests.py --suite all --agent MAA-06 --report
   
-  # Cross-agent comparison
+  # Cross-agent comparison (report generated automatically)
   python run_tests.py --suite code-interpreter --agents MAA-02,MAA-04,MAA-06 --report
   
   # Repeat each test 3 times for reliability testing
@@ -69,7 +70,7 @@ Examples:
     parser.add_argument('--agent', 
                        help='Agent name to test (e.g., MAA-06)')
     parser.add_argument('--agents',
-                       help='Comma-separated list of agents for comparison (e.g., MAA-02,MAA-04,MAA-06)')
+                       help='Comma-separated list of agents to test (e.g., MAA-02,MAA-04,MAA-06)')
     
     # Test execution options
     parser.add_argument('--quick', action='store_true',
@@ -82,6 +83,8 @@ Examples:
                        help='Number of times to repeat each test (default: 1)')
     parser.add_argument('--dry-run', action='store_true',
                        help='Validate configuration without executing tests')
+    parser.add_argument('--single-conversation', action='store_true',
+                       help='Run entire suite within a single ordered conversation session')
     
     # Validation options
     parser.add_argument('--strict', action='store_true',
@@ -98,10 +101,14 @@ Examples:
                        help='Verbose output for debugging')
     
     # Utility options
+    parser.add_argument('--test-suites-dir',
+                       help='Path to test-suites directory (default: test-suites/ relative to script)')
     parser.add_argument('--validate-csv',
                        help='Validate CSV format for specified feature')
     parser.add_argument('--list-suites', action='store_true',
                        help='List available test suites')
+    parser.add_argument('--sync-test-index', action='store_true',
+                       help='Synchronize test suites in test-suites folder with test_suites.json')
     
     # Report generation from existing results
     parser.add_argument('--report-from-results',
@@ -111,9 +118,20 @@ Examples:
     
     args = parser.parse_args()
     
+    # Resolve test-suites directory path
+    test_suites_dir = None
+    if args.test_suites_dir:
+        test_suites_dir = Path(args.test_suites_dir).resolve()
+        if not test_suites_dir.exists():
+            print(f"Error: Test-suites directory not found: {test_suites_dir}")
+            sys.exit(1)
+        if not test_suites_dir.is_dir():
+            print(f"Error: Path is not a directory: {test_suites_dir}")
+            sys.exit(1)
+    
     # Handle utility commands first
     if args.list_suites:
-        suite_manager = TestSuiteManager()
+        suite_manager = TestSuiteManager(test_suites_dir=test_suites_dir)
         suites = suite_manager.list_suites()
         print("Available test suites:")
         for name, config in suites.items():
@@ -121,12 +139,24 @@ Examples:
         return
     
     if args.validate_csv:
-        suite_manager = TestSuiteManager()
+        suite_manager = TestSuiteManager(test_suites_dir=test_suites_dir)
         try:
             suite_manager.validate_csv(args.validate_csv)
             print(f"✓ CSV format for {args.validate_csv} is valid")
         except Exception as e:
             print(f"✗ CSV validation failed: {e}")
+            sys.exit(1)
+        return
+    
+    if args.sync_test_index:
+        suite_manager = TestSuiteManager(test_suites_dir=test_suites_dir)
+        try:
+            suite_manager.sync_test_index()
+        except Exception as e:
+            print(f"Error syncing test index: {e}")
+            if args.verbose:
+                import traceback
+                traceback.print_exc()
             sys.exit(1)
         return
     
@@ -240,7 +270,7 @@ Examples:
     os.makedirs(args.output_dir, exist_ok=True)
     
     # Initialize components
-    suite_manager = TestSuiteManager()
+    suite_manager = TestSuiteManager(test_suites_dir=test_suites_dir)
     validator = TestValidator()
     
     # Determine agents to test
@@ -278,7 +308,8 @@ Examples:
                 output_dir=args.output_dir,
                 timestamp=timestamp,
                 verbose=args.verbose,
-                repeat_test=args.repeat_test
+                repeat_test=args.repeat_test,
+                single_conversation=args.single_conversation
             )
             
             if results is None:

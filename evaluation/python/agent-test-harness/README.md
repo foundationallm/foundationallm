@@ -38,7 +38,7 @@ A comprehensive test framework for FoundationaLLM agents that provides automated
 ### Run Your First Test
 ```powershell
 # Quick test
-python run_tests.py --suite code-interpreter --agent MAA-02 --quick --report
+python run_tests.py --suite who-are-you --agent MAA-02 --quick --report
 ```
 
 ## 📋 Test Framework Features
@@ -70,16 +70,16 @@ python run_tests.py --suite code-interpreter --agent MAA-02 --quick --report
 ### Basic Test Execution
 ```powershell
 # Run a specific test suite
-python run_tests.py --suite code-interpreter --agent MAA-02
+python run_tests.py --suite who-are-you --agent MAA-02
 
 # Quick mode (first N tests)
-python run_tests.py --suite code-interpreter --agent MAA-02 --quick
+python run_tests.py --suite who-are-you --agent MAA-02 --quick
 
 # Specific test by index
-python run_tests.py --suite code-interpreter --agent MAA-02 --test-index 3
+python run_tests.py --suite who-are-you --agent MAA-02 --test-index 3
 
 # Repeat each test 3 times for reliability testing
-python run_tests.py --suite code-interpreter --agent MAA-02 --repeat-test 3
+python run_tests.py --suite who-are-you --agent MAA-02 --repeat-test 3
 ```
 
 ### Advanced Testing
@@ -87,13 +87,24 @@ python run_tests.py --suite code-interpreter --agent MAA-02 --repeat-test 3
 # Comprehensive validation with LLM
 python run_tests.py --suite all --agent MAA-02  --report
 
-# Cross-agent comparison
-python run_tests.py --suite code-interpreter --agents MAA-02,MAA-04,MAA-06 --report
+# Cross-agent comparison (report generated automatically)
+python run_tests.py --suite who-are-you --agents MAA-02,MAA-04,MAA-06 --report
 
 # Repeat tests for reliability analysis
-python run_tests.py --suite code-interpreter --agent MAA-02 --repeat-test 5
+python run_tests.py --suite who-are-you --agent MAA-02 --repeat-test 5
 
+# Run the entire suite as a single ordered conversation
+python run_tests.py --suite conversational --agent MAA-02 --single-conversation --report
 ```
+
+### Single Conversation Mode
+
+Use the `--single-conversation` switch when you need the harness to execute every test in the suite as part of one persistent conversation session. This mode is useful for multi-turn workflows where later prompts depend on earlier context.
+
+- Tests are executed strictly in the CSV order, regardless of the `--workers` setting (parallelism is disabled).
+- A single session is created and reused for every turn; the HTML report highlights the `Single Conversation` badge, shows the shared session ID, and lists tests in execution order with turn numbers.
+- Results JSON/CSV files include `ConversationMode`, `ConversationTurn`, and `ConversationSessionId` fields so downstream automation can replay or validate the interaction sequence.
+- `--repeat-test` is ignored when conversation mode is enabled (each prompt must stay unique).
 
 ### Test Generation
 ```powershell
@@ -107,8 +118,44 @@ python generate_tests.py --input-suite code-interpreter --output-suite code-inte
 python generate_tests.py --input seed-tests.csv --output edge-cases.csv --strategy edge-cases --count 3
 
 # Append to existing suite
-python generate_tests.py --input seed.csv --output test-data/code-interpreter/TestQuestions-code-interpreter.csv --append
+python generate_tests.py --input seed.csv --output test-suites/code-interpreter/TestQuestions-code-interpreter.csv --append
+
+# Create test suite in custom directory
+python generate_tests.py --test-suites-dir /path/to/custom-test-suites --interactive --suite-name my-custom-tests
+
+# Add tests to existing suite in custom directory
+python generate_tests.py --test-suites-dir /path/to/custom-test-suites --interactive --existing-suite code-interpreter
 ```
+
+### Custom Test-Suites Directory
+
+The `--test-suites-dir` switch allows you to maintain test suites in directories outside the repository (e.g., for local-only test suites that shouldn't be checked into source control). When not provided, the default `test-suites/` directory (relative to the script) is used.
+
+#### Using with run_tests.py
+```powershell
+# Run tests from a custom test-suites directory
+python run_tests.py --test-suites-dir /path/to/custom-test-suites --suite who-are-you --agent MAA-02
+
+# List suites from a custom directory
+python run_tests.py --test-suites-dir /path/to/custom-test-suites --list-suites
+
+# Sync test suites in a custom directory
+python run_tests.py --test-suites-dir /path/to/custom-test-suites --sync-test-index
+
+# Validate CSV in a custom directory
+python run_tests.py --test-suites-dir /path/to/custom-test-suites --validate-csv who-are-you
+```
+
+#### Using with generate_tests.py
+```powershell
+# Create a new test suite in a custom directory
+python generate_tests.py --test-suites-dir /path/to/custom-test-suites --interactive --suite-name my-local-tests
+
+# Add tests to an existing suite in a custom directory
+python generate_tests.py --test-suites-dir /path/to/custom-test-suites --interactive --existing-suite code-interpreter
+```
+
+**Note:** The custom directory must exist and contain a `test_suites.json` file (or one will be created when you add your first suite). All suite CSV files and the configuration file will be created relative to the specified directory.
 
 ### Interactive Test Suite Creation
 ```powershell
@@ -186,10 +233,13 @@ python run_tests.py --report-from-dir results/ --output-dir reports/
 python run_tests.py --list-suites
 
 # Validate CSV format
-python run_tests.py --validate-csv code-interpreter
+python run_tests.py --validate-csv who-are-you
 
 # Dry run (validate config)
 python run_tests.py --suite all --agent MAA-02 --dry-run
+
+# Use custom test-suites directory
+python run_tests.py --test-suites-dir /path/to/custom-test-suites --suite who-are-you --agent MAA-02
 
 # Generate HTML report from existing results
 python run_tests.py --report-from-results results/20251021_201101-MAA-02-code-interpreter-results.json
@@ -205,9 +255,10 @@ python run_tests.py --report-from-dir results/
 #### Basic Parameters
 | Parameter | Purpose | Values/Examples |
 |-----------|---------|-----------------|
-| `--suite` | Test suite to run | `code-interpreter`, `document-analysis`, `file-operations`, `routing`, `dataframe-tests`, `all` |
+| `--suite` | Test suite to run | `who-are-you`, `code-interpreter`, `document-analysis`, `file-operations`, `routing`, `dataframe-tests`, `all` |
 | `--agent` | Single agent to test | `MAA-02`, `MAA-04`, `MAA-06`, etc. |
 | `--agents` | Multiple agents (comma-separated) | `MAA-02,MAA-04,MAA-06` |
+| `--test-suites-dir` | Path to custom test-suites directory | `--test-suites-dir /path/to/custom-test-suites` (default: `test-suites/` relative to script) |
 
 #### Execution Control
 | Parameter | Purpose | Values/Examples |
@@ -234,20 +285,19 @@ python run_tests.py --report-from-dir results/
 #### Examples
 ```powershell
 # Basic test execution
-python run_tests.py --suite code-interpreter --agent MAA-02
+python run_tests.py --suite who-are-you --agent MAA-02
 
 # Multi-agent comparison with validation
-python run_tests.py --suite dataframe-tests --agents MAA-02,MAA-04,MAA-06 --report
+python run_tests.py --suite who-are-you --agents MAA-02,MAA-04,MAA-06 --report
 
 # Quick test with specific test
-python run_tests.py --suite document-analysis --agent MAA-02 --quick --test-index 2
+python run_tests.py --suite who-are-you --agent MAA-02 --quick --test-index 2
 
 # Repeat tests for reliability analysis
-python run_tests.py --suite code-interpreter --agent MAA-02 --repeat-test 3 --report
+python run_tests.py --suite who-are-you --agent MAA-02 --repeat-test 3 --report
 
 # Generate report from existing results
 python run_tests.py --report-from-results results/20251021_220653-MAA-02-dataframe-tests-results.json
-
 ```
 
 ### generate_tests.py - Test Generation
@@ -258,6 +308,7 @@ python run_tests.py --report-from-results results/20251021_220653-MAA-02-datafra
 | `--interactive` | Enable interactive mode | `--interactive` |
 | `--suite-name` | Name for new test suite | `--suite-name my-custom-tests` |
 | `--existing-suite` | Add to existing suite | `--existing-suite code-interpreter` |
+| `--test-suites-dir` | Path to test-suites directory (default: test-suites/) | `--test-suites-dir /path/to/custom-test-suites` |
 
 #### File-based Generation
 | Parameter | Purpose | Values/Examples |
@@ -269,6 +320,7 @@ python run_tests.py --report-from-results results/20251021_220653-MAA-02-datafra
 | `--strategy` | Generation strategy | `variations`, `edge-cases`, `negative-tests`, `combinations` |
 | `--count` | Number of tests to generate | `--count 5` |
 | `--append` | Append to existing file | `--append` |
+| `--test-suites-dir` | Path to test-suites directory (default: test-suites/) | `--test-suites-dir /path/to/custom-test-suites` |
 
 #### Generation Strategies
 | Strategy | Purpose | Example Output |
@@ -472,15 +524,16 @@ python generate_tests.py --input seed-tests.csv --output combinations.csv --stra
 | Parameter | Purpose | Values/Examples |
 |-----------|---------|-----------------|
 | `--list-suites` | List all available test suites | `--list-suites` |
-| `--validate-csv` | Validate CSV format for a test suite | `--validate-csv code-interpreter` |
+| `--validate-csv` | Validate CSV format for a test suite | `--validate-csv who-are-you` |
 | `--dry-run` | Validate configuration without executing tests | `--dry-run` |
+| `--test-suites-dir` | Path to custom test-suites directory | `--test-suites-dir /path/to/custom-test-suites` |
 
 #### Test Suite Operations
 | Operation | Purpose | Command Example |
 |-----------|---------|-----------------|
 | **List Suites** | Show all available test suites with descriptions | `python run_tests.py --list-suites` |
-| **Validate CSV** | Check CSV format and structure for a specific suite | `python run_tests.py --validate-csv code-interpreter` |
-| **Dry Run** | Validate configuration without running tests | `python run_tests.py --suite code-interpreter --agent MAA-02 --dry-run` |
+| **Validate CSV** | Check CSV format and structure for a specific suite | `python run_tests.py --validate-csv who-are-you` |
+| **Dry Run** | Validate configuration without running tests | `python run_tests.py --suite who-are-you --agent MAA-02 --dry-run` |
 
 #### Dry-Run Validation Details
 The `--dry-run` switch performs comprehensive configuration validation without executing tests:
@@ -491,7 +544,7 @@ The `--dry-run` switch performs comprehensive configuration validation without e
 - Output directory creation
 
 **Test Suite Validation:**
-- Suite existence in `test_suites.json`
+- Suite existence in `test-suites/test_suites.json`
 - CSV file path configuration
 - CSV file existence verification
 
@@ -513,16 +566,29 @@ The `--dry-run` switch performs comprehensive configuration validation without e
 - CI/CD environment validation
 
 #### Test Suite Configuration
-Test suites are configured in `test_suites.json` with the following structure:
+Test suites are configured in `test-suites/test_suites.json` with the following structure:
 ```json
 {
   "suite-name": {
-    "csv_file": "test-data/suite-name/TestQuestions-suite-name.csv",
+    "csv_file": "test-suites/suite-name/TestQuestions-suite-name.csv",
     "description": "Description of the test suite",
     "quick_mode_limit": 5
   }
 }
 ```
+
+**Custom Test-Suites Directory:**
+You can specify a custom location for test suites using the `--test-suites-dir` parameter. This is useful for:
+- Using different test suites for different environments
+- Sharing test suites across multiple projects
+- Organizing test suites in a custom directory structure
+
+When using `--test-suites-dir`, the system expects:
+- A directory containing a `test_suites.json` configuration file (or it will create a default one)
+- Subdirectories for each test suite (e.g., `who-are-you/`, `code-interpreter/`)
+- CSV files following the naming pattern: `TestQuestions-{suite-name}.csv`
+
+**Note:** CSV file paths in `test_suites.json` should be relative to the test-suites directory (e.g., `who-are-you/TestQuestions-who-are-you.csv`), not absolute paths.
 
 #### Examples
 ```powershell
@@ -530,13 +596,22 @@ Test suites are configured in `test_suites.json` with the following structure:
 python run_tests.py --list-suites
 
 # Validate CSV format for a specific suite
-python run_tests.py --validate-csv code-interpreter
+python run_tests.py --validate-csv who-are-you
 
 # Validate configuration without running tests
-python run_tests.py --suite document-analysis --agent MAA-02 --dry-run
+python run_tests.py --suite who-are-you --agent MAA-02 --dry-run
 
 # Check if a suite exists and is properly configured
-python run_tests.py --suite dataframe-tests --agent MAA-02 --dry-run --verbose
+python run_tests.py --suite who-are-you --agent MAA-02 --dry-run --verbose
+
+# Use a custom test-suites directory
+python run_tests.py --test-suites-dir /path/to/custom-test-suites --suite who-are-you --agent MAA-02
+
+# List suites from a custom directory
+python run_tests.py --test-suites-dir /path/to/custom-test-suites --list-suites
+
+# Sync test suites in a custom directory
+python run_tests.py --test-suites-dir /path/to/custom-test-suites --sync-test-index
 ```
 
 ## 📁 Test Data Structure
@@ -562,7 +637,7 @@ Question,Filename,ExpectedAnswer,ValidationRules,ValidationMode
 
 ### Test Suite Organization
 ```
-test-data/
+test-suites/
 ├── code-interpreter/
 │   └── TestQuestions-code-interpreter.csv
 ├── document-analysis/
@@ -596,11 +671,11 @@ AZURE_OPENAI_DEPLOYMENT=gpt-4
 ```
 
 ### Test Suite Configuration
-Edit `test_suites.json` to add new test suites:
+Edit `test-suites/test_suites.json` to add new test suites:
 ```json
 {
   "my-feature": {
-    "csv_file": "test-data/my-feature/TestQuestions-my-feature.csv",
+    "csv_file": "test-suites/my-feature/TestQuestions-my-feature.csv",
     "description": "Tests for my custom feature",
     "quick_mode_limit": 5
   }
@@ -648,16 +723,15 @@ python run_tests.py --suite all --agent MAA-02 --output-dir ./ci-results
 ### Development Testing
 ```powershell
 # Quick regression test
-python run_tests.py --suite code-interpreter --agent MAA-02 --quick 
+python run_tests.py --suite who-are-you --agent MAA-02 --quick 
 # Debug mode
-python run_tests.py --suite code-interpreter --agent MAA-02 --verbose
+python run_tests.py --suite who-are-you --agent MAA-02 --verbose
 ```
 
 ### Release Validation
 ```powershell
 # Comprehensive pre-release testing
 python run_tests.py --suite all --agent MAA-02  --report --workers 10
-
 ```
 
 ## 🔍 Troubleshooting
@@ -677,10 +751,10 @@ python run_tests.py --suite all --agent MAA-02  --report --workers 10
 python run_tests.py --list-suites
 
 # Validate CSV format
-python run_tests.py --validate-csv code-interpreter
+python run_tests.py --validate-csv who-are-you
 
 # Dry run to check configuration
-python run_tests.py --suite code-interpreter --agent MAA-02 --dry-run
+python run_tests.py --suite who-are-you --agent MAA-02 --dry-run
 ```
 
 ## 📚 Additional Resources

@@ -1,0 +1,67 @@
+{
+  "code-file-analysis": {
+    "csv_file": "test-suites/code-file-analysis/TestQuestions-code-file-analysis.csv",
+    "description": "Tests for code-file-analysis",
+    "quick_mode_limit": 5
+  },
+  "code-interpreter": {
+    "csv_file": "test-suites/code-interpreter/TestQuestions-code-interpreter.csv",
+    "description": "Tests for code execution and file generation",
+    "quick_mode_limit": 5
+  },
+  "code-interpreter-edge-cases": {
+    "csv_file": "test-suites/code-interpreter-edge-cases/TestQuestions-code-interpreter-edge-cases.csv",
+    "description": "Tests for code-interpreter-edge-cases",
+    "quick_mode_limit": 5
+  },
+  "compressed-file-analysis": {
+    "csv_file": "test-suites/compressed-file-analysis/TestQuestions-compressed-file-analysis.csv",
+    "description": "Tests for compressed-file-analysis",
+    "quick_mode_limit": 5
+  },
+  "conversational": {
+    "csv_file": "test-suites/conversational/TestQuestions-conversational.csv",
+    "description": "Tests for general conversation and Q&A",
+    "quick_mode_limit": 3
+  },
+  "dataframe-tests": {
+    "csv_file": "test-suites/dataframe-tests/TestQuestions-dataframe-tests.csv",
+    "description": "Tests for dataframe-tests",
+    "quick_mode_limit": 5
+  },
+  "document-analysis": {
+    "csv_file": "test-suites/document-analysis/TestQuestions-document-analysis.csv",
+    "description": "Tests for document analysis and processing",
+    "quick_mode_limit": 3
+  },
+  "file-operations": {
+    "csv_file": "test-suites/file-operations/TestQuestions-file-operations.csv",
+    "description": "Tests for file creation, conversion, and manipulation",
+    "quick_mode_limit": 4
+  },
+  "file-type-detection": {
+    "csv_file": "test-suites/file-type-detection/TestQuestions-file-type-detection.csv",
+    "description": "Tests for file-type-detection",
+    "quick_mode_limit": 5
+  },
+  "image-analysis": {
+    "csv_file": "test-suites/image-analysis/TestQuestions-image-analysis.csv",
+    "description": "Tests for image-analysis",
+    "quick_mode_limit": 5
+  },
+  "image-processing": {
+    "csv_file": "test-suites/image-processing/TestQuestions-image-processing.csv",
+    "description": "Tests for image-processing",
+    "quick_mode_limit": 5
+  },
+  "knowledge-retrieval": {
+    "csv_file": "test-suites/knowledge-retrieval/TestQuestions-knowledge-retrieval.csv",
+    "description": "Tests for knowledge base queries and retrieval",
+    "quick_mode_limit": 4
+  },
+  "who-are-you": {
+    "csv_file": "test-suites/who-are-you/TestQuestions-who-are-you.csv",
+    "description": "Tests for who-are-you",
+    "quick_mode_limit": 5
+  }
+}

@@ -178,7 +178,7 @@ def send_completion_request(session_id, agent_name, user_prompt, attachments=[])
     if not fllm_endpoint:
         print("Error: FLLM_ENDPOINT environment variable is not set")
         print("Make sure you have a .env file with FLLM_ENDPOINT defined")
-        return None
+        return None, "FLLM_ENDPOINT environment variable is not set"
     url = f"{fllm_endpoint}completions"
     
     # Get access token from environment variable
@@ -186,7 +186,7 @@ def send_completion_request(session_id, agent_name, user_prompt, attachments=[])
     if not access_token:
         print("Error: FLLM_ACCESS_TOKEN environment variable is not set")
         print("Make sure you have a .env file with FLLM_ACCESS_TOKEN defined")
-        return None
+        return None, "FLLM_ACCESS_TOKEN environment variable is not set"
     
     # Headers
     headers = {
@@ -205,8 +205,9 @@ def send_completion_request(session_id, agent_name, user_prompt, attachments=[])
     try:
         print(f"Sending completion request for user prompt: {user_prompt}")
 
-        # Make the POST request
-        response = requests.post(url, headers=headers, json=payload)
+        # Make the POST request with timeout to prevent hanging
+        # Set timeout to 300 seconds (5 minutes) for long-running completions
+        response = requests.post(url, headers=headers, json=payload, timeout=300)
         
         # Check if the request was successful
         response.raise_for_status()
@@ -219,14 +220,33 @@ def send_completion_request(session_id, agent_name, user_prompt, attachments=[])
         print("Completion Request Response:")
         print(json.dumps(response_json, indent=2))
         
-        return response_json
+        return response_json, None
         
+    except requests.exceptions.Timeout as e:
+        print(f"Request timeout: The completion request took longer than 5 minutes")
+        print(f"Error details: {str(e)}")
+        return None, f"Completion request timed out after 300s\nError: {str(e)}"
+    except requests.exceptions.ChunkedEncodingError as e:
+        print(f"Response ended prematurely: The server closed the connection before completing the response")
+        print(f"Error details: {str(e)}")
+        return None, f"Response ended prematurely\nError: {str(e)}"
     except requests.exceptions.RequestException as e:
         print(f"An error occurred: {str(e)}")
+        detail_lines = [f"Error: {str(e)}"]
+        status = "unknown"
+        text = ""
         if hasattr(e, 'response') and e.response is not None:
-            print(f"Response Status Code: {e.response.status_code}")
-            print(f"Response Text: {e.response.text}")
-        return None
+            status = e.response.status_code
+            text = e.response.text or ""
+            print(f"Response Status Code: {status}")
+            print(f"Response Text: {text}")
+            detail_lines.insert(0, f"HTTP {status} error calling completions endpoint")
+            if text:
+                detail_lines.append(f"Response Text: {text}")
+        else:
+            detail_lines.insert(0, "HTTP error calling completions endpoint (status unknown)")
+        detail = "\n".join(line for line in detail_lines if line)
+        return None, detail
 
 def upload_file_with_progress(file_path, fllm_endpoint, session_id, agent_name):
 
@@ -317,13 +337,17 @@ def upload_file_with_progress(file_path, fllm_endpoint, session_id, agent_name):
             raise e
 
 
-def process_question(question, answer, filename, agent_name="MAA-02", validation_rules="{}", validation_mode="hybrid"):
+def process_question(question, answer, filename, agent_name="MAA-02", validation_rules="{}", validation_mode="hybrid",
+                     session_id=None, conversation_turn=None, conversation_mode=False):
 
-    # Time the session creation
-    session_start_time = time.time()
-    session_id = create_session()
-    time.sleep(0.1)
-    session_duration = time.time() - session_start_time
+    # Time the session creation (only when not reusing)
+    session_duration = 0
+    reused_session = session_id is not None
+    if not reused_session:
+        session_start_time = time.time()
+        session_id = create_session()
+        time.sleep(0.1)
+        session_duration = time.time() - session_start_time
     
     if not session_id:
         print(f"Failed to create session for question: {question}")
@@ -336,7 +360,8 @@ def process_question(question, answer, filename, agent_name="MAA-02", validation
             'SessionRequestDuration': session_duration,
             'CompletionRequestDuration': 0,
             'ErrorOccured': 1,
-            'ErrorDetails': 'Failed to create session'
+            'ErrorDetails': 'Failed to create session',
+            'ErrorDetailsFull': 'Failed to create session'
         }
     
     # Normalize filename for output
@@ -344,20 +369,21 @@ def process_question(question, answer, filename, agent_name="MAA-02", validation
 
     # Time the completion request
     completion_start_time = time.time()
+    completion_error = None
     if (not pd.isna(filename)):
         # Upload the file
         file_path = os.path.join(os.getcwd(), 'uploads', input_filename)
         fllm_endpoint = os.getenv("FLLM_ENDPOINT")
         upload_response = upload_file_with_progress(file_path, fllm_endpoint, session_id, agent_name)
 
-        response = send_completion_request(
+        response, completion_error = send_completion_request(
             session_id=session_id,
             agent_name=agent_name,
             user_prompt=question,
             attachments=[upload_response.get('object_id') or upload_response.get('objectId')]
         )
     else:   
-        response = send_completion_request(
+        response, completion_error = send_completion_request(
             session_id=session_id,
             agent_name=agent_name,
             user_prompt=question
@@ -516,6 +542,7 @@ def process_question(question, answer, filename, agent_name="MAA-02", validation
             'CompletionRequestDuration': completion_duration,
             'ErrorOccured': error_occurred,
             'ErrorDetails': error_details_single_line,
+            'ErrorDetailsFull': error_details,
             'ContentArtifacts': artifacts_json,
             'ArtifactsSummary': artifacts_summary_json,
             'CodeArtifactCount': code_count,
@@ -533,10 +560,15 @@ def process_question(question, answer, filename, agent_name="MAA-02", validation
             'ValidationMode': validation_mode,
             'ValidationPassed': validation_passed,
             'ValidationScore': validation_score,
-            'ValidationDetails': validation_details
+            'ValidationDetails': validation_details,
+            'ConversationMode': conversation_mode,
+            'ConversationTurn': conversation_turn if conversation_mode else None,
+            'ConversationSessionId': session_id if conversation_mode else ''
         }
     else:
         print(f"Failed to get completion for question: {question}")
+        completion_error_details = completion_error or 'Failed to get completion response'
+        completion_error_single_line = _single_line(completion_error_details)
         return {
             'Question': question,
             'Filename': input_filename,
@@ -548,7 +580,8 @@ def process_question(question, answer, filename, agent_name="MAA-02", validation
             'SessionRequestDuration': session_duration,
             'CompletionRequestDuration': completion_duration,
             'ErrorOccured': 1,
-            'ErrorDetails': 'Failed to get completion response',
+            'ErrorDetails': completion_error_single_line or 'Failed to get completion response',
+            'ErrorDetailsFull': completion_error_details,
             'ContentArtifacts': '[]',
             'ArtifactsSummary': '[]',
             'CodeArtifactCount': 0,
@@ -564,10 +597,13 @@ def process_question(question, answer, filename, agent_name="MAA-02", validation
             'ProducedFilesSummary': '[]',
             'ValidationPassed': -1,
             'ValidationScore': 0,
-            'ValidationDetails': 'Test execution failed'
+            'ValidationDetails': 'Test execution failed',
+            'ConversationMode': conversation_mode,
+            'ConversationTurn': conversation_turn if conversation_mode else None,
+            'ConversationSessionId': session_id if conversation_mode else ''
         }
 
-def execute_tests(test_file, agent_name, max_workers=5):
+def execute_tests(test_file, agent_name, max_workers=5, output_dir=None):
     # Read the CSV file with proper handling of quoted fields
     try:
         df = pd.read_csv(test_file, quotechar='"', escapechar='\\')
@@ -609,7 +645,11 @@ def execute_tests(test_file, agent_name, max_workers=5):
                         'SessionRequestDuration': 0,
                         'CompletionRequestDuration': 0,
                         'ErrorOccured': 1,
-                        'ErrorDetails': 'Result was None'
+                        'ErrorDetails': 'Result was None',
+                        'ErrorDetailsFull': 'Result was None',
+                        'ConversationMode': False,
+                        'ConversationTurn': None,
+                        'ConversationSessionId': ''
                     })
             except Exception as e:
                 # Get the original question from the DataFrame
@@ -626,7 +666,11 @@ def execute_tests(test_file, agent_name, max_workers=5):
                     'SessionRequestDuration': 0,
                     'CompletionRequestDuration': 0,
                     'ErrorOccured': 1,
-                    'ErrorDetails': str(e)
+                    'ErrorDetails': str(e),
+                    'ErrorDetailsFull': str(e),
+                    'ConversationMode': False,
+                    'ConversationTurn': None,
+                    'ConversationSessionId': ''
                 })
                 print(f"Error processing question at index {index}: {str(e)}")
     
@@ -635,21 +679,29 @@ def execute_tests(test_file, agent_name, max_workers=5):
 
     # Save compact CSV (summary columns kept on one line)
     summary_columns = [
-        'Question','Filename','AgentAnswerPreview','ErrorOccured','ErrorDetails','Tokens',
+        'Question','Filename','AgentAnswerPreview','ErrorOccured','ErrorDetails','ErrorDetailsFull','Tokens',
         'SessionRequestDuration','CompletionRequestDuration','CodeArtifactCount',
         'CodeToolFailed','CodeToolError','CodeToolResult',
-        'ProducedFilesCount','ProducedFilesSummary','ArtifactsSummary'
+        'ProducedFilesCount','ProducedFilesSummary','ArtifactsSummary',
+        'ConversationMode','ConversationTurn','ConversationSessionId'
     ]
     # Only use columns that exist (older runs may not have all fields)
     summary_columns = [c for c in summary_columns if c in results_df.columns]
-    results_df.to_csv('test_results.csv', index=False, columns=summary_columns)
     
-    # Save full-fidelity JSON
-    try:
-        with open('test_results.json', 'w', encoding='utf-8') as f:
-            json.dump(results, f, ensure_ascii=False, indent=2)
-    except Exception as e:
-        print(f"Warning: could not write test_results.json: {e}\n")
+    # Save files to output_dir if provided, otherwise skip (test_suite_manager handles saving)
+    if output_dir:
+        import os
+        os.makedirs(output_dir, exist_ok=True)
+        csv_path = os.path.join(output_dir, 'test_results.csv')
+        json_path = os.path.join(output_dir, 'test_results.json')
+        results_df.to_csv(csv_path, index=False, columns=summary_columns)
+        
+        # Save full-fidelity JSON
+        try:
+            with open(json_path, 'w', encoding='utf-8') as f:
+                json.dump(results, f, ensure_ascii=False, indent=2)
+        except Exception as e:
+            print(f"Warning: could not write test_results.json: {e}\n")
     
     return results_df
 
@@ -672,170 +724,67 @@ def execute_tests_from_dataframe(df, agent_name, max_workers=5):
             index = future_to_question[future]
             try:
                 result = future.result()
+                # Get the row to access metadata
+                row_data = df.iloc[index]
+                # Use original test index if available, otherwise use current index
+                ordinal_index = row_data.get('_original_test_index', index)
                 if result:
                     # Add repeat information if available
-                    # Use .loc for index-based access (iterrows() returns index label, not position)
-                    row_data = df.loc[index] if index in df.index else df.iloc[0]
-                    # Check if column exists in the Series index (column names)
-                    if '_repeat_index' in row_data.index if hasattr(row_data, 'index') else '_repeat_index' in row_data:
-                        # Extract scalar values from Series if needed
-                        repeat_idx = row_data['_repeat_index']
-                        orig_idx = row_data['_original_index']
-                        # Extract scalar values from Series - use .item() to ensure scalar
-                        try:
-                            if isinstance(repeat_idx, pd.Series):
-                                repeat_idx = repeat_idx.item() if len(repeat_idx) > 0 else None
-                            elif hasattr(repeat_idx, 'item'):
-                                repeat_idx = repeat_idx.item()
-                            # Convert to int if not None and not NaN
-                            if repeat_idx is not None:
-                                try:
-                                    result['RepeatIndex'] = int(float(repeat_idx))
-                                except (ValueError, TypeError):
-                                    result['RepeatIndex'] = None
-                            else:
-                                result['RepeatIndex'] = None
-                        except (ValueError, TypeError, AttributeError):
-                            result['RepeatIndex'] = None
-                        
-                        try:
-                            if isinstance(orig_idx, pd.Series):
-                                orig_idx = orig_idx.item() if len(orig_idx) > 0 else None
-                            elif hasattr(orig_idx, 'item'):
-                                orig_idx = orig_idx.item()
-                            # Convert to int if not None and not NaN
-                            if orig_idx is not None:
-                                try:
-                                    result['OriginalIndex'] = int(float(orig_idx))
-                                except (ValueError, TypeError):
-                                    result['OriginalIndex'] = None
-                            else:
-                                result['OriginalIndex'] = None
-                        except (ValueError, TypeError, AttributeError):
-                            result['OriginalIndex'] = None
-                    result['Ordinal'] = int(index) + 1
+                    if '_repeat_index' in row_data:
+                        result['RepeatIndex'] = row_data['_repeat_index']
+                        result['OriginalIndex'] = row_data['_original_index']
+                    result['Ordinal'] = ordinal_index + 1
                     results.append(result)
                 else:
                     # Get the original question from the DataFrame
-                    # Use .loc for index-based access (iterrows() returns index label, not position)
-                    row_data = df.loc[index] if index in df.index else df.iloc[0]
-                    # Extract scalar values from Series if needed - use .item() to ensure scalar
-                    try:
-                        original_question = row_data['Question']
-                        if isinstance(original_question, pd.Series):
-                            original_question = original_question.item() if len(original_question) > 0 else ''
-                        original_question = str(original_question) if original_question is not None else ''
-                    except (KeyError, AttributeError):
-                        original_question = ''
-                    
-                    try:
-                        filename_val = row_data.get('Filename', '') if hasattr(row_data, 'get') else row_data['Filename'] if 'Filename' in row_data.index else ''
-                        if isinstance(filename_val, pd.Series):
-                            filename_val = filename_val.item() if len(filename_val) > 0 else ''
-                        filename_val = str(filename_val) if filename_val is not None else ''
-                    except (KeyError, AttributeError):
-                        filename_val = ''
-                    
-                    try:
-                        answer_val = row_data.get('Answer', '') if hasattr(row_data, 'get') else row_data['Answer'] if 'Answer' in row_data.index else ''
-                        if isinstance(answer_val, pd.Series):
-                            answer_val = answer_val.item() if len(answer_val) > 0 else ''
-                        answer_val = str(answer_val) if answer_val is not None else ''
-                    except (KeyError, AttributeError):
-                        answer_val = ''
-                    
+                    original_question = row_data['Question']
                     print(f"Failed to process question: {original_question}")
                     # Create a failed result entry
                     failed_result = {
                         'Question': original_question,
-                        'Filename': filename_val,
-                        'Answer': answer_val,
+                        'Filename': row_data['Filename'],
+                        'Answer': row_data['Answer'],
                         'AgentAnswer': 'Failed to process',
                         'ErrorOccured': 1,
                         'ErrorDetails': 'Test execution failed',
-                        'Ordinal': int(index) + 1
+                        'ErrorDetailsFull': 'Test execution failed',
+                        'Ordinal': ordinal_index + 1,
+                        'ConversationMode': False,
+                        'ConversationTurn': None,
+                        'ConversationSessionId': ''
                     }
                     # Add repeat information if available
-                    # Check if column exists in the Series index (column names)
-                    if '_repeat_index' in row_data.index if hasattr(row_data, 'index') else '_repeat_index' in row_data:
-                        # Extract scalar values from Series if needed
-                        repeat_idx = row_data['_repeat_index']
-                        orig_idx = row_data['_original_index']
-                        # Ensure we have scalar values, not Series
-                        if isinstance(repeat_idx, pd.Series):
-                            repeat_idx = repeat_idx.iloc[0] if len(repeat_idx) > 0 else None
-                        if isinstance(orig_idx, pd.Series):
-                            orig_idx = orig_idx.iloc[0] if len(orig_idx) > 0 else None
-                        # Use safe NaN check
-                        failed_result['RepeatIndex'] = int(repeat_idx) if repeat_idx is not None and not pd.isna(repeat_idx) else None
-                        failed_result['OriginalIndex'] = int(orig_idx) if orig_idx is not None and not pd.isna(orig_idx) else None
+                    if '_repeat_index' in row_data:
+                        failed_result['RepeatIndex'] = row_data['_repeat_index']
+                        failed_result['OriginalIndex'] = row_data['_original_index']
                     results.append(failed_result)
             except Exception as e:
-                print(f"Error processing question at index {index}: {e}")
+                # Get the row to access metadata
+                row_data = df.iloc[index]
+                ordinal_index = row_data.get('_original_test_index', index)
+                # Show both current and original index for clarity
+                if ordinal_index != index:
+                    print(f"Error processing question at index {index} (original index {ordinal_index}): {e}")
+                else:
+                    print(f"Error processing question at index {index}: {e}")
                 # Create a failed result entry
-                # Use .loc for index-based access (iterrows() returns index label, not position)
-                try:
-                    row_data = df.loc[index] if index in df.index else df.iloc[0]
-                except (KeyError, IndexError):
-                    # Fallback: use first row if index access fails
-                    row_data = df.iloc[0]
-                # Extract scalar values from Series if needed
-                original_question = row_data.get('Question', 'Unknown')
-                if isinstance(original_question, pd.Series):
-                    original_question = str(original_question.iloc[0]) if len(original_question) > 0 else 'Unknown'
-                filename_val = row_data.get('Filename', '')
-                if isinstance(filename_val, pd.Series):
-                    filename_val = str(filename_val.iloc[0]) if len(filename_val) > 0 else ''
-                answer_val = row_data.get('Answer', '')
-                if isinstance(answer_val, pd.Series):
-                    answer_val = str(answer_val.iloc[0]) if len(answer_val) > 0 else ''
                 failed_result = {
-                    'Question': original_question,
-                    'Filename': filename_val,
-                    'Answer': answer_val,
+                    'Question': row_data['Question'],
+                    'Filename': row_data['Filename'],
+                    'Answer': row_data['Answer'],
                     'AgentAnswer': 'Failed to process',
                     'ErrorOccured': 1,
                     'ErrorDetails': str(e),
-                    'Ordinal': int(index) + 1
+                    'ErrorDetailsFull': str(e),
+                    'Ordinal': ordinal_index + 1,
+                    'ConversationMode': False,
+                    'ConversationTurn': None,
+                    'ConversationSessionId': ''
                 }
                 # Add repeat information if available
-                # Check if column exists in the Series index (column names)
-                if '_repeat_index' in row_data.index if hasattr(row_data, 'index') else '_repeat_index' in row_data:
-                    # Extract scalar values from Series if needed
-                    repeat_idx = row_data['_repeat_index']
-                    orig_idx = row_data['_original_index']
-                    # Extract scalar values from Series - use .item() to ensure scalar
-                    try:
-                        if isinstance(repeat_idx, pd.Series):
-                            repeat_idx = repeat_idx.item() if len(repeat_idx) > 0 else None
-                        elif hasattr(repeat_idx, 'item'):
-                            repeat_idx = repeat_idx.item()
-                        # Convert to int if not None and not NaN
-                        if repeat_idx is not None:
-                            try:
-                                failed_result['RepeatIndex'] = int(float(repeat_idx))
-                            except (ValueError, TypeError):
-                                failed_result['RepeatIndex'] = None
-                        else:
-                            failed_result['RepeatIndex'] = None
-                    except (ValueError, TypeError, AttributeError):
-                        failed_result['RepeatIndex'] = None
-                    
-                    try:
-                        if isinstance(orig_idx, pd.Series):
-                            orig_idx = orig_idx.item() if len(orig_idx) > 0 else None
-                        elif hasattr(orig_idx, 'item'):
-                            orig_idx = orig_idx.item()
-                        # Convert to int if not None and not NaN
-                        if orig_idx is not None:
-                            try:
-                                failed_result['OriginalIndex'] = int(float(orig_idx))
-                            except (ValueError, TypeError):
-                                failed_result['OriginalIndex'] = None
-                        else:
-                            failed_result['OriginalIndex'] = None
-                    except (ValueError, TypeError, AttributeError):
-                        failed_result['OriginalIndex'] = None
+                if '_repeat_index' in row_data:
+                    failed_result['RepeatIndex'] = row_data['_repeat_index']
+                    failed_result['OriginalIndex'] = row_data['_original_index']
                 results.append(failed_result)
     
     # Convert results to DataFrame
@@ -845,6 +794,59 @@ def execute_tests_from_dataframe(df, agent_name, max_workers=5):
     else:
         print("No results to return")
         return None
+
+
+def execute_tests_single_conversation(df, agent_name):
+    """Execute tests sequentially using a single shared conversation session"""
+    if df is None or df.empty:
+        print("No tests to execute")
+        return None
+
+    df = df.reset_index(drop=True)
+    session_id = create_session()
+    if not session_id:
+        print("Failed to create session for single conversation run")
+        return None
+    time.sleep(0.1)
+
+    results = []
+    for ordinal, (_, row) in enumerate(df.iterrows(), start=1):
+        result = process_question(
+            row['Question'],
+            row['Answer'],
+            row['Filename'],
+            agent_name,
+            row.get('ValidationRules', '{}'),
+            row.get('ValidationMode', 'hybrid'),
+            session_id=session_id,
+            conversation_turn=ordinal,
+            conversation_mode=True
+        )
+
+        if result:
+            result['Ordinal'] = ordinal
+            result['ConversationTurn'] = ordinal
+            result['ConversationSessionId'] = session_id
+            results.append(result)
+        else:
+            results.append({
+                'Question': row['Question'],
+                'Filename': row['Filename'],
+                'Answer': row['Answer'],
+                'AgentAnswer': '',
+                'ErrorOccured': 1,
+                'ErrorDetails': 'Failed to process question',
+                'ErrorDetailsFull': 'Failed to process question',
+                'Ordinal': ordinal,
+                'ConversationMode': True,
+                'ConversationTurn': ordinal,
+                'ConversationSessionId': session_id
+            })
+
+    if results:
+        return pd.DataFrame(results)
+
+    return None
 
 
 if __name__ == "__main__":
