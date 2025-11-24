@@ -151,6 +151,11 @@ namespace FoundationaLLM.Plugins.DataPipeline
                             Name = PluginParameterNames.GATEWAYTEXTEMBEDDING_DATAPIPELINESTAGE_KNOWLEDGEUNITOBJECTID,
                             Type = PluginParameterTypes.ResourceObjectId,
                             Description = "The FoundationaLLM resource identifier of the Knowledge Unit that provides the embedding configuration."
+                        },
+                        new() {
+                            Name = PluginParameterNames.GATEWAYTEXTEMBEDDING_DATAPIPELINESTAGE_EMBEDDINGREQUESTSIZETOKENS,
+                            Type = PluginParameterTypes.Int,
+                            Description = "The maximum size in tokens of each embedding request sent to the Gateway API."
                         }
                     ],
                     ParameterSelectionHints = new() {
