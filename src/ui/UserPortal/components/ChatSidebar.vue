@@ -104,7 +104,7 @@
 										class="chat-sidebar__button"
 										style="color: var(--primary-text) !important"
 										aria-label="Delete conversation"
-										@click.stop="conversationToDelete = session"
+										@click.stop="confirmDeleteSession(session)"
 										@keydown.esc="hideAllPoppers"
 									/>
 									<template #popper><div role="tooltip">Delete conversation</div></template>
@@ -191,49 +191,6 @@
 			<template #footer>
 				<Button class="sidebar-dialog__button" label="Cancel" text autofocus @click="closeUpdateModal" />
 				<Button class="sidebar-dialog__button" label="Update" @click="handleUpdateConversation" />
-			</template>
-		</Dialog>
-
-		<!-- Delete session dialog -->
-		<Dialog
-			v-if="conversationToDelete !== null"
-			v-focustrap
-			:visible="conversationToDelete !== null"
-			:closable="false"
-			class="sidebar-dialog"
-			modal
-			header="Delete conversation"
-			@keydown="deleteSessionKeydown"
-		>
-			<div v-if="deleteProcessing" class="delete-dialog-content">
-				<div role="status">
-					<i
-						class="pi pi-spin pi-spinner"
-						style="font-size: 2rem"
-						role="img"
-						aria-label="Loading"
-					></i>
-				</div>
-			</div>
-			<div v-else>
-				<p>Do you want to delete the chat "{{ conversationToDelete.display_name }}" ?</p>
-			</div>
-			<template #footer>
-				<Button
-					class="sidebar-dialog__button"
-					label="Cancel"
-					text
-					autofocus
-					:disabled="deleteProcessing"
-					@click="conversationToDelete = null"
-				/>
-				<Button
-					class="sidebar-dialog__button"
-					label="Delete"
-					severity="danger"
-					:disabled="deleteProcessing"
-					@click="handleDeleteSession"
-				/>
 			</template>
 		</Dialog>
 
@@ -423,6 +380,7 @@ import { useAuthStore } from '@/stores/authStore';
 	declare const process: any;
 
 	import api from '@/js/api';
+	import { useConfirmationStore } from '@/stores/confirmationStore';
 
 	export default {
 		name: 'ChatSidebar',
@@ -443,8 +401,6 @@ import { useAuthStore } from '@/stores/authStore';
 				conversationToUpdate: null as Session | null,
 				newConversationName: '' as string,
 				newConversationMetadata: null as any | null,
-				conversationToDelete: null as Session | null,
-				deleteProcessing: false,
 				isMobile: window.screen.width < 950,
 				createProcessing: false,
 				debounceTimeout: null as ReturnType<typeof setTimeout> | null,
@@ -717,6 +673,32 @@ import { useAuthStore } from '@/stores/authStore';
 				}
 			},
 
+			async confirmDeleteSession(session: Session) {
+				const confirmationStore = useConfirmationStore();
+				const confirmed = await confirmationStore.confirmAsync({
+					title: 'Delete conversation',
+					message: `Do you want to delete the chat "${session.display_name}" ?`,
+					confirmText: 'Yes',
+					cancelText: 'Cancel',
+					confirmButtonSeverity: 'danger',
+				});
+
+				if (!confirmed) {
+					return;
+				}
+
+				try {
+					await (this.$appStore as any).deleteSession(session);
+				} catch (error) {
+					(this.$appStore as any).addToast({
+						severity: 'error',
+						summary: 'Error',
+						detail: 'Could not delete the session. Please try again.',
+						life: 5000,
+					});
+				}
+			},
+
 			handleUpdateConversation() {
 				let metadataJson = this.newConversationMetadata;
 				if (metadataJson !== null && typeof metadataJson === 'string' && metadataJson.trim() !== '') {
@@ -737,23 +719,6 @@ import { useAuthStore } from '@/stores/authStore';
 				this.newConversationMetadata = '';
 			},
 
-			async handleDeleteSession() {
-				this.deleteProcessing = true;
-				try {
-					await (this.$appStore as any).deleteSession(this.conversationToDelete!);
-					this.conversationToDelete = null;
-				} catch (error) {
-					(this.$appStore as any).addToast({
-						severity: 'error',
-						summary: 'Error',
-						detail: 'Could not delete the session. Please try again.',
-						life: 5000,
-					});
-				} finally {
-					this.deleteProcessing = false;
-				}
-			},
-
 			updateConversationInputKeydown(event: KeyboardEvent) {
 				if (event.key === 'Enter') {
 					this.handleUpdateConversation();
@@ -763,17 +728,11 @@ import { useAuthStore } from '@/stores/authStore';
 				}
 			},
 
-			deleteSessionKeydown(event: KeyboardEvent) {
-				if (event.key === 'Escape') {
-					this.conversationToDelete = null;
-				}
-			},
-
-			handleChatKeydown(event: KeyboardEvent, session: Session) {
+			async handleChatKeydown(event: KeyboardEvent, session: Session) {
 				// MacOS'ta "Delete" tuşu aslında "Backspace" olarak algılanır.
 				if (event.key === 'Delete' || event.key === 'Backspace') {
-					this.conversationToDelete = session;
 					event.preventDefault();
+					await this.confirmDeleteSession(session);
 				}
 			},
 
