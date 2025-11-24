@@ -77,7 +77,7 @@ jobs:
 
   helm_build:
     name: Package Helm Charts
-    if: startsWith(github.ref, 'refs/heads/release/') || startsWith(github.ref, 'refs/heads/poc/') || (github.ref_type == 'tag' && contains(github.ref_name, '-rc'))
+    if: startsWith(github.ref, 'refs/heads/release/') || startsWith(github.ref, 'refs/heads/poc/') || (github.ref_type == 'tag')
     needs: generate_matrix
     strategy:
       fail-fast: false
@@ -95,7 +95,7 @@ jobs:
 
   docker_build:
     name: Build Docker Images
-    if: startsWith(github.ref, 'refs/heads/release/') || startsWith(github.ref, 'refs/heads/poc/') || (github.ref_type == 'tag' && contains(github.ref_name, '-rc'))
+    if: startsWith(github.ref, 'refs/heads/release/') || startsWith(github.ref, 'refs/heads/poc/') || (github.ref_type == 'tag')
     needs: 
       - generate_matrix
     strategy:
