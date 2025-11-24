@@ -24,6 +24,7 @@
 				<Button label="Log in" primary @click="handleRefreshLogin" />
 			</template>
 		</Dialog>
+		<ConfirmationDialog />
 	</main>
 </template>
 

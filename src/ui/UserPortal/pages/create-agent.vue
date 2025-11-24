@@ -697,36 +697,6 @@
         </Dialog>
 
         <!-- Delete file confirmation dialog -->
-        <Dialog
-            v-if="fileToDelete !== null"
-            v-focustrap
-            :visible="fileToDelete !== null"
-            :closable="false"
-            class="sidebar-dialog"
-            modal
-            header="Delete file"
-            @keydown.esc="fileToDelete = null"
-        >
-          <p>Do you want to delete the file "{{ fileToDelete }}" ?</p>
-    <template #footer>
-        <Button
-            class="sidebar-dialog__button"
-            label="Cancel"
-            text
-            autofocus
-            :disabled="deletingFile"
-            @click="fileToDelete = null"
-        />
-        <Button
-            class="sidebar-dialog__button"
-            label="Delete"
-            severity="danger"
-            :disabled="deletingFile"
-            :loading="deletingFile"
-            @click="confirmDelete"
-        />
-    </template>
-        </Dialog>
     </main>
     </div>
 </template>
@@ -735,6 +705,7 @@
 <script lang="ts">
 import api from '@/js/api';
 import { debounce, isAgentReadonly } from '@/js/helpers';
+import { useConfirmationStore } from '@/stores/confirmationStore';
 import type { AgentBase } from '@/js/types';
 import type { AgentCreationFromTemplateRequest, ResourceBase } from '@/js/types/index';
 import '@/styles/access-denied.scss';
@@ -1597,18 +1568,27 @@ export default defineComponent({
             }
         },
 
-        deleteFile(fileName: string) {
-            this.fileToDelete = fileName;
-        },
+        async deleteFile(fileName: string) {
+            if (!this.selectedAgentName) {
+                return;
+            }
 
-        async confirmDelete() {
-            if (!this.selectedAgentName || !this.fileToDelete) {
+            const confirmationStore = useConfirmationStore();
+            const confirmed = await confirmationStore.confirmAsync({
+                title: 'Delete file',
+                message: `Do you want to delete the file "${fileName}" ?`,
+                confirmText: 'Yes',
+                cancelText: 'Cancel',
+                confirmButtonSeverity: 'danger',
+            });
+
+            if (!confirmed) {
                 return;
             }
 
             this.deletingFile = true;
             try {
-                const deleteResult = await api.deleteAgentFile(this.selectedAgentName, this.fileToDelete);
+                const deleteResult = await api.deleteAgentFile(this.selectedAgentName, fileName);
 
                 // Check if delete was successful based on API response
                 if (deleteResult && deleteResult.success === false) {
@@ -1617,22 +1597,21 @@ export default defineComponent({
                     this.$toast.add({
                         severity: 'error',
                         summary: 'Delete Failed',
-                        detail: `Failed to delete file "${this.fileToDelete}": ${errorMessage}`,
+                        detail: `Failed to delete file "${fileName}": ${errorMessage}`,
                         life: 5000
                     });
                     return;
                 }
 
                 // Remove from both uploaded files and existing files lists
-                this.uploadedFiles = this.uploadedFiles.filter(f => f.name !== this.fileToDelete);
-                this.agentFiles = this.agentFiles.filter(f => f.resource?.name !== this.fileToDelete);
-                this.$toast.add({ severity: 'success', summary: 'Success', detail: `File "${this.fileToDelete}" deleted.`, life: 3000 });
+                this.uploadedFiles = this.uploadedFiles.filter(f => f.name !== fileName);
+                this.agentFiles = this.agentFiles.filter(f => f.resource?.name !== fileName);
+                this.$toast.add({ severity: 'success', summary: 'Success', detail: `File "${fileName}" deleted.`, life: 3000 });
             } catch (error: any) {
-                this.$toast.add({ severity: 'error', summary: 'Error', detail: `Failed to delete file "${this.fileToDelete}": ${error.message}`, life: 5000 });
+                this.$toast.add({ severity: 'error', summary: 'Error', detail: `Failed to delete file "${fileName}": ${error.message}`, life: 5000 });
                 console.error('Delete error:', error);
             } finally {
                 this.deletingFile = false;
-                this.fileToDelete = null;
             }
         },
 
