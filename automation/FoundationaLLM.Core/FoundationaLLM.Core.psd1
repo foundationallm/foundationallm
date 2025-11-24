@@ -12,7 +12,7 @@
 RootModule = 'FoundationaLLM.Core.psm1'
 
 # Version number of this module.
-ModuleVersion = '0.0.28'
+ModuleVersion = '0.0.29'
 
 # Supported PSEditions
 CompatiblePSEditions = @(
@@ -84,7 +84,11 @@ FunctionsToExport = @(
     'Send-ConversationFile',
     'New-Completion',
     'Get-Prompt',
-    'Get-AIModel'
+    'Get-AIModel',
+    'Get-RoleDefinitionName',
+    'Find-RoleAssignments',
+    'Find-RoleAssignmentId',
+    'Remove-RoleAssignment'
 )
 
 # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.

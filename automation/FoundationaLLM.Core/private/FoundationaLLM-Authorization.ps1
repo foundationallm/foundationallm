@@ -15,6 +15,18 @@ function Get-RoleDefinitions {
         -RelativeUri "providers/FoundationaLLM.Authorization/roleDefinitions"
 }
 
+function Get-RoleDefinitionName {
+    param (
+        [string]$Id
+    )
+
+    Test-RoleDefinitionIds
+
+    return $global:RoleDefinitionIds.GetEnumerator() `
+        | Where-Object { $_.Value -eq $Id } `
+        | Select-Object -ExpandProperty Key
+}
+
 function Get-EntraUserId {
     param (
         [string]$UPN
@@ -41,6 +53,38 @@ function Get-EntraSecurityGroupId {
     return $id
 }
 
+function Find-RoleAssignments {
+    param (
+        [string]$Scope,
+        [string[]]$securityPrincipalIds
+    )
+
+    $roleAsignmentsFilter = @{
+        scope = $Scope
+        security_principal_ids = $securityPrincipalIds
+    }
+
+    return (Invoke-ManagementAPI `
+            -Method POST `
+            -RelativeUri "providers/FoundationaLLM.Authorization/roleAssignments/filter" `
+            -Body $roleAsignmentsFilter).resource `
+        | Select-Object @{Name="RoleAssignmentId";Expression={$_.name}}, @{Name="RoleDefinitionName";Expression={Get-RoleDefinitionName -Id $_.role_definition_id}}
+}
+
+function Find-RoleAssignmentId {
+    param (
+        [string]$Scope,
+        [string]$SecurityPrincipalId,
+        [string]$RoleName
+    )
+
+    return Find-RoleAssignments `
+        -Scope $Scope `
+        -securityPrincipalIds @($SecurityPrincipalId) `
+        | Where-Object { $_.RoleDefinitionName -eq $RoleName }
+        | Select-Object -ExpandProperty RoleAssignmentId
+}
+
 function Merge-RoleAssignment {
     param (
         [hashtable]$RoleAssignment
@@ -50,6 +94,16 @@ function Merge-RoleAssignment {
         -Method POST `
         -RelativeUri "providers/FoundationaLLM.Authorization/roleAssignments/$($RoleAssignment.name)" `
         -Body $RoleAssignment
+}
+
+function Remove-RoleAssignment {
+    param (
+        [string]$Id
+    )
+
+    return Invoke-ManagementAPI `
+        -Method DELETE `
+        -RelativeUri "providers/FoundationaLLM.Authorization/roleAssignments/$Id"
 }
 
 function Merge-RoleAssignments {
