@@ -29,6 +29,10 @@ A comprehensive test framework for FoundationaLLM agents that provides automated
    copy sample.env .env
    # Edit .env with your values
    ```
+   >[!NOTE]
+   >Remove the lines with `FLLM_ACCESS_TOKEN` and `FLLM_MGMT_BEARER_TOKEN` if you want to use dynamically retrieved bearer tokens.
+   >When using dynamicaly retrieved bearer tokens, ensure you've run the `az login` command and the account you use for login
+   >has sufficient permissions to access the FoundationaLLM agents and/or the management endpoint.
 
 5. **Validate setup:**
    ```powershell
@@ -131,6 +135,9 @@ python generate_tests.py --test-suites-dir /path/to/custom-test-suites --interac
 
 The `--test-suites-dir` switch allows you to maintain test suites in directories outside the repository (e.g., for local-only test suites that shouldn't be checked into source control). When not provided, the default `test-suites/` directory (relative to the script) is used.
 
+>[!IMPORTANT]
+>By convention, the files used by the test suites must be available in a folder named `uploads` located in the same parent directory as the test suites directory. For example, if you specify `--test-suites-dir /path/to/custom-test-suites`, the corresponding files should be placed in `/path/to/uploads`.
+
 #### Using with run_tests.py
 ```powershell
 # Run tests from a custom test-suites directory
@@ -155,7 +162,8 @@ python generate_tests.py --test-suites-dir /path/to/custom-test-suites --interac
 python generate_tests.py --test-suites-dir /path/to/custom-test-suites --interactive --existing-suite code-interpreter
 ```
 
-**Note:** The custom directory must exist and contain a `test_suites.json` file (or one will be created when you add your first suite). All suite CSV files and the configuration file will be created relative to the specified directory.
+>[!NOTE]
+>The custom directory must exist and contain a `test_suites.json` file (or one will be created when you add your first suite). All suite CSV files and the configuration file will be created relative to the specified directory.
 
 ### Interactive Test Suite Creation
 ```powershell
