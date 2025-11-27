@@ -7,10 +7,12 @@ orchestration for running tests against different agents.
 
 import os
 import json
-import pandas as pd
+
+from datetime import datetime
 from pathlib import Path
-from typing import Dict, List, Optional, Any
-import sys
+from typing import Dict, Optional, Any
+
+import pandas as pd
 
 # Import the existing test harness
 from test_harness import execute_tests, execute_tests_from_dataframe, execute_tests_single_conversation
@@ -160,11 +162,19 @@ class TestSuiteManager:
         except Exception as e:
             raise ValueError(f"CSV validation failed: {e}")
     
-    def run_suite(self, suite_name: str, agent_name: str, 
-                   quick_mode: bool = False, test_index: Optional[int] = None,
-                   max_workers: int = 5, output_dir: str = 'results', 
-                   timestamp: str = '', verbose: bool = False, 
-                   repeat_test: int = 1, single_conversation: bool = False) -> Optional[Dict[str, Any]]:
+    def run_suite(
+        self,
+        suite_name: str,
+        agent_name: str,
+        quick_mode: bool = False,
+        test_index: Optional[int] = None,
+        max_workers: int = 5,
+        output_dir: str = 'results',
+        timestamp: datetime = None,
+        verbose: bool = False,
+        repeat_test: int = 1,
+        single_conversation: bool = False
+    ) -> Optional[Dict[str, Any]]:
         """Run a test suite for a specific agent"""
         
         if suite_name == "all":
@@ -229,7 +239,12 @@ class TestSuiteManager:
             
             if single_conversation:
                 print(f"Executing {len(df)} tests in single conversation mode...")
-                results_df = execute_tests_single_conversation(df, agent_name)
+                results_df = execute_tests_single_conversation(
+                    df,
+                    agent_name,
+                    suite_name,
+                    self.test_suites_dir,
+                    timestamp)
             elif repeat_test > 1:
                 print(f"Executing {len(df)} tests, repeating each test {repeat_test} times...")
                 # Create expanded dataframe with repeated tests
@@ -244,15 +259,34 @@ class TestSuiteManager:
                 
                 # Create new dataframe with repeated tests
                 expanded_df = pd.DataFrame(repeated_rows)
-                results_df = execute_tests_from_dataframe(expanded_df, agent_name, max_workers)
+                results_df = execute_tests_from_dataframe(
+                    expanded_df,
+                    agent_name,
+                    suite_name,
+                    self.test_suites_dir,
+                    timestamp,
+                    max_workers=max_workers)
             elif test_index is not None or quick_mode:
                 # Use dataframe when filtering is applied (test_index or quick_mode)
                 print(f"Executing {len(df)} tests...")
-                results_df = execute_tests_from_dataframe(df, agent_name, max_workers)
+                results_df = execute_tests_from_dataframe(
+                    df,
+                    agent_name,
+                    suite_name,
+                    self.test_suites_dir,
+                    timestamp,
+                    max_workers=max_workers)
             else:
                 # Use CSV file when no filtering is applied
                 print(f"Executing {len(df)} tests...")
-                results_df = execute_tests(csv_path, agent_name, max_workers, output_dir=output_dir)
+                results_df = execute_tests(
+                    csv_path,
+                    agent_name,
+                    suite_name,
+                    self.test_suites_dir,
+                    timestamp,
+                    max_workers=max_workers,
+                    output_dir=output_dir)
             
             if results_df is None:
                 print("Test execution failed")
@@ -276,7 +310,7 @@ class TestSuiteManager:
             }
             
             # Save results
-            self._save_results(results, output_dir, timestamp, suite_name, agent_name)
+            self._save_results(results, output_dir)
             
             return results
                     
@@ -287,11 +321,18 @@ class TestSuiteManager:
                 traceback.print_exc()
             return None
     
-    def _save_results(self, results: Dict[str, Any], output_dir: str, 
-                     timestamp: str, suite_name: str, agent_name: str):
+    def _save_results(
+        self,
+        results: Dict[str, Any],
+        output_dir: str
+    ):
         """Save test results to files"""
-        import pandas as pd
-        import json
+
+        timestamp = results.get('timestamp').strftime("%Y%m%d-%H%M%S")
+        # Write back the string value to avoid serialization issues
+        results['timestamp'] = timestamp
+        suite_name = results.get('suite_name')
+        agent_name = results.get('agent_name')
         
         # Create output directory
         os.makedirs(output_dir, exist_ok=True)

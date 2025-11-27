@@ -135,6 +135,7 @@ public partial class CoreService(
             SessionId = newConversationId,
             Name = newConversationId,
             DisplayName = chatSessionProperties.Name,
+            Metadata = chatSessionProperties.Metadata,
             Type = _sessionType,
             UPN = _userIdentity.UPN!
         };

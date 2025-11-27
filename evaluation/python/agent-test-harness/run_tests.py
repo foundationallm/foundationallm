@@ -11,7 +11,7 @@ import os
 import sys
 import subprocess
 import json
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 
 # Add the current directory to Python path for imports
@@ -23,7 +23,7 @@ from validator import TestValidator
 
 def validate_environment():
     """Validate that required environment variables are set"""
-    required_vars = ['FLLM_ACCESS_TOKEN', 'FLLM_ENDPOINT']
+    required_vars = ['FLLM_ENDPOINT']
     missing_vars = []
     
     for var in required_vars:
@@ -184,10 +184,10 @@ Examples:
                     # Already in multi-agent format
                     all_results = results
                 
-                timestamp = results.get('timestamp', datetime.now().strftime("%Y%m%d_%H%M%S"))
+                report_timestamp = results.get('timestamp', datetime.now(timezone.utc).strftime("%Y%m%d-%H%M%S"))
                 suite_name = results.get('suite_name', 'unknown')
-                report_path = os.path.join(args.output_dir, f"summary-{timestamp}-{suite_name}.html")
-                reporter.generate_report(all_results, report_path, timestamp)
+                report_path = os.path.join(args.output_dir, f"summary-{report_timestamp}-{suite_name}.html")
+                reporter.generate_report(all_results, report_path, report_timestamp)
                 print(f"📊 HTML report generated: {report_path}")
                 
             except Exception as e:
@@ -231,15 +231,15 @@ Examples:
                     print("Error: No valid results loaded")
                     sys.exit(1)
                 
-                timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+                report_timestamp = datetime.now(timezone.utc).strftime("%Y%m%d-%H%M%S")
                 # Get suite name from first agent's results
                 suite_name = 'unknown'
                 if all_results:
                     first_agent = list(all_results.values())[0]
                     if isinstance(first_agent, dict) and 'results' in first_agent:
                         suite_name = first_agent.get('suite_name', 'unknown')
-                report_path = os.path.join(args.output_dir, f"summary-{timestamp}-{suite_name}.html")
-                reporter.generate_report(all_results, report_path, timestamp)
+                report_path = os.path.join(args.output_dir, f"summary-{report_timestamp}-{suite_name}.html")
+                reporter.generate_report(all_results, report_path, report_timestamp)
                 print(f"📊 HTML report generated: {report_path}")
                 
             except Exception as e:
@@ -280,7 +280,7 @@ Examples:
         agents = [args.agent]
     
     # Generate timestamp for results
-    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    timestamp = datetime.now(timezone.utc)
     
     try:
         if args.dry_run:
@@ -342,8 +342,9 @@ Examples:
                 if isinstance(first_agent, dict) and 'results' in first_agent:
                     suite_name = first_agent.get('suite_name', 'unknown')
             
-            report_path = os.path.join(args.output_dir, f"summary-{timestamp}-{suite_name}.html")
-            reporter.generate_report(all_results, report_path, timestamp)
+            report_timestamp = timestamp.strftime("%Y%m%d-%H%M%S")
+            report_path = os.path.join(args.output_dir, f"summary-{report_timestamp}-{suite_name}.html")
+            reporter.generate_report(all_results, report_path, report_timestamp)
             print(f"\n📊 HTML report generated: {report_path}")
         
         print(f"\n✅ Test execution completed successfully")

@@ -1,18 +1,25 @@
-import requests
-import json
-import os
-import uuid
-import pandas as pd
-import time
+"""FoundationaLLM Agent Test Harness"""
+
+import base64
 import concurrent.futures
-from tqdm import tqdm 
+import json
 import mimetypes
-from dotenv import load_dotenv
+import os
+import time
+import uuid
 
-# Global variables removed - now passed as parameters to functions
+from datetime import datetime, timezone
 
-# Load environment variables from .env file
-load_dotenv()
+import pandas as pd
+import requests
+
+from tqdm import tqdm
+
+from test_authentication_manager import TestAuthenticationManager
+
+# Global test authentication manager instance
+test_authentication_manager = TestAuthenticationManager()
+test_authentication_manager.initialize()
 
 # -----------------------------
 # Results helpers
@@ -43,14 +50,20 @@ def _ellipsis(val: str, limit: int = 200) -> str:
 # -----------------------------
 # Management API (Prompts) helpers
 # -----------------------------
-def _get_management_headers():
-    mgmt_token = os.getenv("FLLM_MGMT_BEARER_TOKEN")
-    if not mgmt_token:
-        raise RuntimeError("FLLM_MGMT_BEARER_TOKEN environment variable is not set. Acquire a bearer token with scope api://FoundationaLLM-Management/Data.Manage and set it in .env.")
-    return {
-        "Authorization": f"Bearer {mgmt_token}",
-        "Content-Type": "application/json"
-    }
+def _get_management_api_headers():
+
+    headers = test_authentication_manager.get_management_api_auth_header()
+    headers["Content-Type"] = "application/json"
+    return headers
+
+def _get_core_api_headers(
+    require_json_content: bool = True
+):
+
+    headers = test_authentication_manager.get_core_api_auth_header()
+    if require_json_content:
+        headers["Content-Type"] = "application/json"
+    return headers
 
 def list_prompts():
     """List all Prompt resources accessible to the caller via the Management API."""
@@ -59,7 +72,7 @@ def list_prompts():
         raise RuntimeError("FLLM_MGMT_ENDPOINT environment variable is not set. Set it to the Management API base URL including /instances/{instanceId}/ and a trailing slash.")
 
     url = f"{mgmt_endpoint}providers/FoundationaLLM.Prompt/prompts"
-    headers = _get_management_headers()
+    headers = _get_management_api_headers()
     try:
         response = requests.get(url, headers=headers)
         response.raise_for_status()
@@ -78,7 +91,7 @@ def get_prompt(prompt_name: str):
         raise RuntimeError("FLLM_MGMT_ENDPOINT environment variable is not set. Set it to the Management API base URL including /instances/{instanceId}/ and a trailing slash.")
 
     url = f"{mgmt_endpoint}providers/FoundationaLLM.Prompt/prompts/{prompt_name}"
-    headers = _get_management_headers()
+    headers = _get_management_api_headers()
     try:
         response = requests.get(url, headers=headers)
         response.raise_for_status()
@@ -107,7 +120,7 @@ def upsert_prompt(prompt_object: dict):
         raise ValueError("prompt_object must be a dict containing at least a 'name' key")
 
     url = f"{mgmt_endpoint}providers/FoundationaLLM.Prompt/prompts/{prompt_object['name']}"
-    headers = _get_management_headers()
+    headers = _get_management_api_headers()
     try:
         response = requests.post(url, headers=headers, json=prompt_object)
         response.raise_for_status()
@@ -119,7 +132,11 @@ def upsert_prompt(prompt_object: dict):
             print(f"Response Text: {e.response.text}")
         return None
 
-def create_session():
+def create_conversation(
+    suite_name: str,
+    suite_timestamp: datetime
+):
+    """Create a new conversation via the Core API and return the conversation identifier."""
     fllm_endpoint = os.getenv("FLLM_ENDPOINT")
     if not fllm_endpoint:
         print("Error: FLLM_ENDPOINT environment variable is not set")
@@ -127,45 +144,44 @@ def create_session():
         return None
 
     url = f"{fllm_endpoint}sessions"
-    
-    # Get access token from environment variable
-    access_token = os.getenv("FLLM_ACCESS_TOKEN")
-    if not access_token:
-        print("Error: FLLM_ACCESS_TOKEN environment variable is not set")
-        print("Make sure you have a .env file with FLLM_ACCESS_TOKEN defined")
-        return None
-    
-    # Headers
-    headers = {
-        "X-AGENT-ACCESS-TOKEN": access_token,
-        "Content-Type": "application/json"
-    }
-    
+
+    headers = _get_core_api_headers()
+
     # Generate a new GUID for the session name
-    session_guid = str(uuid.uuid4())
-    
+    conversation_guid = base64.b64encode(uuid.uuid4().bytes) \
+        .decode('utf-8') \
+        .replace("=", "") \
+        .replace("/", "-") \
+        .replace("+", "-")
+    conversation_name = f"{suite_timestamp:%Y%m%d-%H%M%S}-{suite_name}-{conversation_guid}"
+
     # Request body
     payload = {
-        "name": session_guid
+        "name": conversation_name,
+        "metadata": json.dumps({
+            "test_suite_name": suite_name,
+            "test_suite_timestamp": suite_timestamp.timestamp(),
+            "creation_timestamp": datetime.now(timezone.utc).timestamp()
+        })
     }
-    
+
     try:
 
         # Make the POST request
         response = requests.post(url, headers=headers, json=payload)
-        
+
         # Check if the request was successful
         response.raise_for_status()
-        
+
         # Get the response JSON
         response_json = response.json()
-        
+
         # Print the response
         print(f"Session Creation Status Code: {response.status_code}")
-        
+
         # Return the sessionId
         return response_json.get('sessionId')
-        
+
     except requests.exceptions.RequestException as e:
         print(f"An error occurred: {str(e)}")
         if hasattr(e, 'response') and e.response is not None:
@@ -180,20 +196,9 @@ def send_completion_request(session_id, agent_name, user_prompt, attachments=[])
         print("Make sure you have a .env file with FLLM_ENDPOINT defined")
         return None, "FLLM_ENDPOINT environment variable is not set"
     url = f"{fllm_endpoint}completions"
-    
-    # Get access token from environment variable
-    access_token = os.getenv("FLLM_ACCESS_TOKEN")
-    if not access_token:
-        print("Error: FLLM_ACCESS_TOKEN environment variable is not set")
-        print("Make sure you have a .env file with FLLM_ACCESS_TOKEN defined")
-        return None, "FLLM_ACCESS_TOKEN environment variable is not set"
-    
-    # Headers
-    headers = {
-        "X-AGENT-ACCESS-TOKEN": access_token,
-        "Content-Type": "application/json"
-    }
-    
+
+    headers = _get_core_api_headers()
+
     # Request body
     payload = {
         "user_prompt": user_prompt,
@@ -201,7 +206,7 @@ def send_completion_request(session_id, agent_name, user_prompt, attachments=[])
         "session_id": session_id,
         "attachments": attachments
     }
-    
+
     try:
         print(f"Sending completion request for user prompt: {user_prompt}")
 
@@ -301,18 +306,7 @@ def upload_file_with_progress(file_path, fllm_endpoint, session_id, agent_name):
             'agentName': agent_name
         }
         
-        # Set up headers with authentication
-        # Get access token from environment variable
-        access_token = os.getenv("FLLM_ACCESS_TOKEN")
-        if not access_token:
-            print("Error: FLLM_ACCESS_TOKEN environment variable is not set")
-            print("Make sure you have a .env file with FLLM_ACCESS_TOKEN defined")
-            return None
-        
-        # Headers
-        headers = {
-            "X-AGENT-ACCESS-TOKEN": access_token
-        }
+        headers = _get_core_api_headers(require_json_content=False)
 
         try:
             # Make the POST request with streaming upload
@@ -337,15 +331,27 @@ def upload_file_with_progress(file_path, fllm_endpoint, session_id, agent_name):
             raise e
 
 
-def process_question(question, answer, filename, agent_name="MAA-02", validation_rules="{}", validation_mode="hybrid",
-                     session_id=None, conversation_turn=None, conversation_mode=False):
+def process_question(
+    question,
+    answer,
+    filename,
+    agent_name,
+    suite_name: str,
+    suites_root_folder: str,
+    suite_timestamp: datetime,
+    validation_rules="{}",
+    validation_mode="hybrid",
+    session_id=None,
+    conversation_turn=None,
+    conversation_mode=False
+):
 
     # Time the session creation (only when not reusing)
     session_duration = 0
     reused_session = session_id is not None
     if not reused_session:
         session_start_time = time.time()
-        session_id = create_session()
+        session_id = create_conversation(suite_name, suite_timestamp)
         time.sleep(0.1)
         session_duration = time.time() - session_start_time
     
@@ -372,7 +378,7 @@ def process_question(question, answer, filename, agent_name="MAA-02", validation
     completion_error = None
     if (not pd.isna(filename)):
         # Upload the file
-        file_path = os.path.join(os.getcwd(), 'uploads', input_filename)
+        file_path = os.path.join(suites_root_folder, '../uploads', input_filename)
         fllm_endpoint = os.getenv("FLLM_ENDPOINT")
         upload_response = upload_file_with_progress(file_path, fllm_endpoint, session_id, agent_name)
 
@@ -603,7 +609,15 @@ def process_question(question, answer, filename, agent_name="MAA-02", validation
             'ConversationSessionId': session_id if conversation_mode else ''
         }
 
-def execute_tests(test_file, agent_name, max_workers=5, output_dir=None):
+def execute_tests(
+    test_file,
+    agent_name,
+    suite_name: str,
+    suites_root_folder: str,
+    suite_timestamp: datetime,
+    max_workers=5,
+    output_dir=None
+):
     # Read the CSV file with proper handling of quoted fields
     try:
         df = pd.read_csv(test_file, quotechar='"', escapechar='\\')
@@ -618,7 +632,17 @@ def execute_tests(test_file, agent_name, max_workers=5, output_dir=None):
     with concurrent.futures.ThreadPoolExecutor(max_workers=max_workers) as executor:
         # Create future objects for each question
         future_to_question = {
-            executor.submit(process_question, row['Question'], row['Answer'], row['Filename'], agent_name, row.get('ValidationRules', '{}'), row.get('ValidationMode', 'hybrid')): index 
+            executor.submit(
+                process_question,
+                row['Question'],
+                row['Answer'],
+                row['Filename'],
+                agent_name,
+                suite_name,
+                suites_root_folder,
+                suite_timestamp,
+                row.get('ValidationRules', '{}'),
+                row.get('ValidationMode', 'hybrid')): index 
             for index, row in df.iterrows()
         }
         
@@ -690,7 +714,6 @@ def execute_tests(test_file, agent_name, max_workers=5, output_dir=None):
     
     # Save files to output_dir if provided, otherwise skip (test_suite_manager handles saving)
     if output_dir:
-        import os
         os.makedirs(output_dir, exist_ok=True)
         csv_path = os.path.join(output_dir, 'test_results.csv')
         json_path = os.path.join(output_dir, 'test_results.json')
@@ -705,8 +728,14 @@ def execute_tests(test_file, agent_name, max_workers=5, output_dir=None):
     
     return results_df
 
-
-def execute_tests_from_dataframe(df, agent_name, max_workers=5):
+def execute_tests_from_dataframe(
+    df,
+    agent_name,
+    suite_name: str,
+    suites_root_folder: str,
+    suite_timestamp: datetime,
+    max_workers=5
+):
     """Execute tests from a pandas DataFrame instead of reading from CSV file"""
     # Initialize list to store results
     results = []
@@ -715,7 +744,17 @@ def execute_tests_from_dataframe(df, agent_name, max_workers=5):
     with concurrent.futures.ThreadPoolExecutor(max_workers=max_workers) as executor:
         # Create future objects for each question
         future_to_question = {
-            executor.submit(process_question, row['Question'], row['Answer'], row['Filename'], agent_name, row.get('ValidationRules', '{}'), row.get('ValidationMode', 'hybrid')): index 
+            executor.submit(
+                process_question,
+                row['Question'],
+                row['Answer'],
+                row['Filename'],
+                agent_name,
+                suite_name,
+                suites_root_folder,
+                suite_timestamp,
+                row.get('ValidationRules', '{}'),
+                row.get('ValidationMode', 'hybrid')): index 
             for index, row in df.iterrows()
         }
         
@@ -795,15 +834,20 @@ def execute_tests_from_dataframe(df, agent_name, max_workers=5):
         print("No results to return")
         return None
 
-
-def execute_tests_single_conversation(df, agent_name):
+def execute_tests_single_conversation(
+    df,
+    agent_name,
+    suite_name: str,
+    suites_root_folder: str,
+    suite_timestamp: datetime
+):
     """Execute tests sequentially using a single shared conversation session"""
     if df is None or df.empty:
         print("No tests to execute")
         return None
 
     df = df.reset_index(drop=True)
-    session_id = create_session()
+    session_id = create_conversation(suite_name, suite_timestamp)
     if not session_id:
         print("Failed to create session for single conversation run")
         return None
@@ -816,6 +860,9 @@ def execute_tests_single_conversation(df, agent_name):
             row['Answer'],
             row['Filename'],
             agent_name,
+            suite_name,
+            suites_root_folder,
+            suite_timestamp,
             row.get('ValidationRules', '{}'),
             row.get('ValidationMode', 'hybrid'),
             session_id=session_id,
@@ -847,7 +894,6 @@ def execute_tests_single_conversation(df, agent_name):
         return pd.DataFrame(results)
 
     return None
-
 
 if __name__ == "__main__":
     # Legacy execution - now handled by run_tests.py
