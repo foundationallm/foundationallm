@@ -10,7 +10,7 @@ echo "The raw tag is: '$RAW_TAG'"
 VERSION_REGEX='^(nuget-|pypi-|context_api-|user_portal-|core_api-)?'
 VERSION_REGEX+='([0-9]+\.[0-9]+\.[0-9]+'
 # allow optional pre-release like -rc485 or -rc485.1 (numeric, optional ".<num>")
-VERSION_REGEX+='(-(alpha|beta|rc|poc|base)[1-9]+(\.[0-9]+)?)?'
+VERSION_REGEX+='(-(alpha|beta|rc|poc|base)[1-9]+[0-9]+[0-9]+(\.[0-9]+)?)?'
 VERSION_REGEX+=')$'
 
 if [[ "$RAW_TAG" =~ $VERSION_REGEX ]]; then
