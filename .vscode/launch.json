@@ -173,7 +173,7 @@
             "justMyCode": true
         },
         {
-            "name": "Python: Agent Test Harness for Yale (CJ)",
+            "name": "Python: Agent Test Harness (CJ)",
             "type": "debugpy",
             "request": "launch",
             "program": "run_tests.py",
