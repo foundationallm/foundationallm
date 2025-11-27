@@ -180,7 +180,7 @@
             "console": "integratedTerminal",
             "cwd" : "${workspaceFolder}/evaluation/python/agent-test-harness",
             "args": [
-                "--test-suites-dir", "D:/Repos/FoundationaLLM-Customer-Yale/evaluation/test-suites-smoke-test",
+                "--test-suites-dir", "D:/Repos/FoundationaLLM-Customer/evaluation/test-suites-smoke-test",
                 "--suite", "document-analysis",
                 "--agents", "MAA-02",
                 "--quick",
