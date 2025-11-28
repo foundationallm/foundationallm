@@ -1,5 +1,7 @@
 # PowerShell script to create a local virtual environment for the test harness
 
+Push-Location $PSScriptRoot
+
 $ErrorActionPreference = "Stop"
 
 # Colors for output
@@ -41,7 +43,7 @@ catch {
 }
 
 # Create virtual environment
-$venvPath = ".venv"
+$venvPath = "pkg/.venv"
 if (Test-Path $venvPath) {
     Write-ColorOutput "⚠️  Virtual environment already exists at: $venvPath" $Yellow
     $response = Read-Host "Do you want to recreate it? (y/n)"
@@ -66,9 +68,16 @@ Write-ColorOutput "✅ Virtual environment created successfully!" $Green
 Write-ColorOutput "`nNext steps:" $Blue
 Write-ColorOutput "1. Activate the virtual environment:" $Blue
 Write-ColorOutput "   .\.venv\Scripts\Activate.ps1" $Blue
-Write-ColorOutput "2. Install dependencies:" $Blue
-Write-ColorOutput "   pip install -r requirements.txt" $Blue
-Write-ColorOutput "3. Configure environment:" $Blue
+Write-ColorOutput "`n2. Copy and configure environment file:" $Blue
 Write-ColorOutput "   copy sample.env .env" $Blue
-Write-ColorOutput "4. Run tests:" $Blue
-Write-ColorOutput "   python run_tests.py --suite code-interpreter --agent MAA-02 --quick" $Blue
+Write-ColorOutput "   # Edit .env with your values" $Blue
+Write-ColorOutput "`n3.1 Install agent evaluation package:" $Blue
+Write-ColorOutput "   pip install <path-to-package>" $Blue
+Write-ColorOutput
+Write-ColorOutput "   (or, if developing/contributing)" $Blue
+Write-ColorOutput "`n3.2 Install agent evaluation package as editable (from pkg folder):" $Blue
+Write-ColorOutput "   pip install -e ." $Blue
+Write-ColorOutput "`n4. Run tests:" $Blue
+Write-ColorOutput "   fllm-agent-eval --suite code-interpreter --agent MAA-02 --quick" $Blue
+
+Pop-Location
