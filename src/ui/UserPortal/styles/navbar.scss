@@ -16,7 +16,7 @@
 }
 
 .navbar__header {
-    width: 300px;
+    width: var(--sidebar-width, 300px);
     padding-right: 24px;
     padding-left: 24px;
     padding-top: 12px;
