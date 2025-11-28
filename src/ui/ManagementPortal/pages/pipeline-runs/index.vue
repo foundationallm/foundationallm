@@ -21,14 +21,6 @@
 				:globalFilterFields="['created_on']"
 				v-model:filters="filters"
 				filterDisplay="menu"
-				paginator
-				lazy
-				:rows="rowsPerPage"
-				:rowsPerPageOptions="rowsPerPageOptions"
-				:first="(currentPage - 1) * rowsPerPage"
-				:totalRecords="totalRecords"
-				:paginatorTemplate="'FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink RowsPerPageDropdown'"
-				@page="handlePageChange"
 				:value="pipelineRuns"
 				striped-rows
 				scrollable
@@ -46,7 +38,7 @@
                             option-label="value"
                             option-value="value"
                             placeholder="--Select Data Pipeline--"
-                            @change="getPipelineRuns"
+                            @change="getPipelineRuns(false)"
 					    />
                         <div class="flex align-items-center justify-content-center gap-2" style="padding-top: 0.75rem;">
                             <Checkbox
@@ -54,7 +46,7 @@
                                 v-model="showAll"
                                 binary
                                 size="large"
-                                @change="getPipelineRuns"
+                                @change="getPipelineRuns(false)"
                             />
                             <label for="allCB">All</label>
                             <Checkbox
@@ -63,7 +55,7 @@
                                 binary
                                 size="large"
                                 :disabled="showAll"
-                                @change="getPipelineRuns"
+                                @change="getPipelineRuns(false)"
                             />
                             <label for="completedCB">Completed</label>
                             <Checkbox
@@ -72,14 +64,14 @@
                                 binary
                                 size="large"
                                 :disabled="showAll"
-                                @change="getPipelineRuns"
+                                @change="getPipelineRuns(false)"
                             />
                             <label for="successfulCB">Successful</label>
                         </div>
 						<Button
 							type="button"
 							icon="pi pi-refresh"
-							@click="getPipelineRuns"
+							@click="getPipelineRuns(false)"
 						/>
 					</div>
 				</template>
@@ -218,6 +210,9 @@
 				</Column>
 
 			</DataTable>
+            <div class="flex justify-content-center mt-3" v-if="continuationToken">
+                <Button label="Load More" icon="pi pi-refresh" @click="getPipelineRuns(true)" :loading="loading" />
+            </div>
 		</div>
 
         <!-- Trigger Pipeline Modal -->
@@ -304,22 +299,18 @@ export default {
 
 	data() {
 		return {
-			pipelineRuns: [],
+			pipelineRuns: [] as any[],
             pipelineNames: [],
             selectedRun: null,
             stage_metrics_formatted_data: [],
             selectedPipelineName: null as string | null,
-            rowsPerPageOptions: [10, 25, 50, 100] as number[],
-            rowsPerPage: 10 as number,
-            currentPage: 1 as number,
-            totalPages: 0 as number,
-            totalRecords: 0 as number,
             showParametersDialog: false as boolean,
             showAll: true as boolean,
             completed: true as boolean,
             successful: true as boolean,
 			loading: false as boolean,
 			loadingStatusText: 'Retrieving data...' as string,
+            continuationToken: null as string | null,
 			filters: {
 				global: { value: null, matchMode: 'contains' }
 			}
@@ -353,36 +344,30 @@ export default {
 			this.loading = false;
 		},
 
-		async getPipelineRuns() {
-            this.currentPage = 1;
-            await this.fetchPipelineRuns();
-		},
-
-        async fetchPipelineRuns() {
+		async getPipelineRuns(append = false) {
 			this.loading = true;
 			try {
+                if (!append) {
+                    this.continuationToken = null;
+                }
 
                 const payload = {
                     data_pipeline_name_filter: this.selectedPipelineName,
                     completed: this.showAll ? null : this.completed,
                     successful: this.showAll ? null : this.successful,
-                    page_number: this.currentPage,
-                    page_size: this.rowsPerPage,
+                    continuation_token: this.continuationToken,
                     //start_time: "2025-06-26",
 			    };
 
                 var response = await api.getPipelineRuns(this.selectedPipelineName || '', payload);
-                const collection = response?.resource ?? {};
-				this.pipelineRuns = collection.resources || [];
-                this.totalPages = collection.total_pages_count || 0;
-
-                if (this.totalPages === 0) {
-                    this.totalRecords = 0;
-                } else if (this.currentPage >= this.totalPages) {
-                    this.totalRecords = (this.totalPages - 1) * this.rowsPerPage + this.pipelineRuns.length;
+                
+                if (append) {
+                    this.pipelineRuns = [...this.pipelineRuns, ...response.resource.resources];
                 } else {
-                    this.totalRecords = this.totalPages * this.rowsPerPage;
+                    this.pipelineRuns = response.resource.resources;
                 }
+                
+                this.continuationToken = response.resource.continuation_token;
 
 			} catch (error) {
 				this.$toast.add({
@@ -393,12 +378,6 @@ export default {
 			}
 			this.loading = false;
 		},
-
-        async handlePageChange(event: any) {
-            this.rowsPerPage = event.rows;
-            this.currentPage = event.page + 1;
-            await this.fetchPipelineRuns();
-        },
 
         getFormattedDate(date) {
             return date.toString().replace('T', ' ').replace('Z', '').slice(0, 19);
