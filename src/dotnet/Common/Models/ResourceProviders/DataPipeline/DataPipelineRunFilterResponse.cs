@@ -10,7 +10,7 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.DataPipeline
         /// <summary>
         /// Gets or sets the list of data pipeline runs.
         /// </summary>
-        [JsonPropertyName("items")]
+        [JsonPropertyName("resources")]
         public List<DataPipelineRun> Items { get; set; } = [];
 
         /// <summary>
