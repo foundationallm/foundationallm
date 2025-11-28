@@ -40,7 +40,7 @@ function Test-Environment {
     }
     
     # Check if local .venv exists
-    $venvPath = ".\.venv"
+    $venvPath = ".\pkg\.venv"
     if (-not (Test-Path $venvPath)) {
         Write-ColorOutput "⚠️  Warning: Local .venv not found at: $venvPath" $Yellow
         Write-ColorOutput "   Consider running: .\create_venv.ps1" $Yellow
@@ -49,7 +49,7 @@ function Test-Environment {
     # Check if we're in a virtual environment
     $currentVenv = $env:VIRTUAL_ENV
     if ($currentVenv) {
-        $expectedVenvPattern = "*\evaluation\python\agent-test-harness\.venv"
+        $expectedVenvPattern = "*\evaluation\python\agent-test-harness\pkg\.venv"
         if ($currentVenv -notlike $expectedVenvPattern) {
             Write-ColorOutput "⚠️  Warning: Different virtual environment active" $Yellow
             Write-ColorOutput "   Current: $currentVenv" $Yellow
@@ -64,8 +64,6 @@ function Test-Environment {
     
     # Check required files
     $requiredFiles = @(
-        "test_harness.py",
-        "requirements.txt",
         "sample.env"
     )
     
@@ -124,14 +122,7 @@ function Test-RequiredPackages {
     Write-ColorOutput "📦 Checking required packages..." $Blue
     
     $requiredPackages = @(
-        @{name="requests"; import="requests"},
-        @{name="pandas"; import="pandas"},
-        @{name="python-dotenv"; import="dotenv"},
-        @{name="tqdm"; import="tqdm"},
-        @{name="openai"; import="openai"},
-        @{name="jinja2"; import="jinja2"},
-        @{name="PyJWT"; import="jwt"},
-        @{name="azure-identity"; import="azure.identity"}
+        @{name="foundationallm_agent_evaluation"; import="foundationallm_agent_evaluation"}
     )
     
     $missingPackages = @()
@@ -244,8 +235,8 @@ function Install-MissingPackages {
     Write-ColorOutput "📦 Installing missing packages..." $Blue
     
     try {
-        Write-ColorOutput "   Running: pip install -r requirements.txt" $Blue
-        pip install -r requirements.txt
+        Write-ColorOutput "   Running: pip install -e ." $Blue
+        pip install -e .
         if ($LASTEXITCODE -eq 0) {
             Write-ColorOutput "   ✓ Package installation completed" $Green
             return $true
@@ -269,14 +260,18 @@ function Show-SetupInstructions {
     Write-ColorOutput "`n3. Copy and configure environment file:" $Blue
     Write-ColorOutput "   copy sample.env .env" $Blue
     Write-ColorOutput "   # Edit .env with your values" $Blue
-    Write-ColorOutput "`n4. Install required packages:" $Blue
-    Write-ColorOutput "   pip install -r requirements.txt" $Blue
+    Write-ColorOutput "`n4.1 Install agent evaluation package:" $Blue
+    Write-ColorOutput "   pip install <path-to-package>" $Blue
+    Write-ColorOutput
+    Write-ColorOutput "   (or, if developing/contributing)" $Blue
+    Write-ColorOutput "`n4.2 Install agent evaluation package as editable (from pkg folder):" $Blue
+    Write-ColorOutput "   pip install -e ." $Blue
     Write-ColorOutput "`n5. Run tests:" $Blue
-    Write-ColorOutput "   python run_tests.py --suite code-interpreter --agent MAA-02 --quick" $Blue
+    Write-ColorOutput "   fllm-agent-eval --suite code-interpreter --agent MAA-02 --quick" $Blue
 }
 
 # Main execution
-Write-ColorOutput "🚀 FoundationaLLM Test Harness Environment Setup" $Blue
+Write-ColorOutput "🚀 FoundationaLLM Agent Evaluation Environment Setup" $Blue
 Write-ColorOutput ("=" * 50) $Blue
 
 $allChecksPassed = $true
@@ -314,7 +309,7 @@ Write-ColorOutput ("`n" + ("=" * 50)) $Blue
 if ($allChecksPassed) {
     Write-ColorOutput "✅ Environment setup is complete!" $Green
     Write-ColorOutput "You can now run tests with:" $Green
-    Write-ColorOutput "   python run_tests.py --suite code-interpreter --agent MAA-02 --quick" $Green
+    Write-ColorOutput "   fllm-agent-eval --suite code-interpreter --agent MAA-02 --quick" $Green
 } else {
     Write-ColorOutput "❌ Environment setup has issues" $Red
     Show-SetupInstructions

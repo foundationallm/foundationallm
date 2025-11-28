@@ -8,6 +8,9 @@ import os
 import time
 import uuid
 
+import urllib3
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+
 from datetime import datetime, timezone
 
 import pandas as pd
@@ -19,7 +22,6 @@ from test_authentication_manager import TestAuthenticationManager
 
 # Global test authentication manager instance
 test_authentication_manager = TestAuthenticationManager()
-test_authentication_manager.initialize()
 
 # -----------------------------
 # Results helpers
@@ -122,7 +124,12 @@ def upsert_prompt(prompt_object: dict):
     url = f"{mgmt_endpoint}providers/FoundationaLLM.Prompt/prompts/{prompt_object['name']}"
     headers = _get_management_api_headers()
     try:
-        response = requests.post(url, headers=headers, json=prompt_object)
+        response = requests.post(
+            url,
+            headers=headers,
+            json=prompt_object,
+            verify=False,
+            timeout=300)
         response.raise_for_status()
         return response.json()
     except requests.exceptions.RequestException as e:
@@ -168,7 +175,12 @@ def create_conversation(
     try:
 
         # Make the POST request
-        response = requests.post(url, headers=headers, json=payload)
+        response = requests.post(
+            url,
+            headers=headers,
+            json=payload,
+            verify=False,
+            timeout=300)
 
         # Check if the request was successful
         response.raise_for_status()
@@ -212,7 +224,12 @@ def send_completion_request(session_id, agent_name, user_prompt, attachments=[])
 
         # Make the POST request with timeout to prevent hanging
         # Set timeout to 300 seconds (5 minutes) for long-running completions
-        response = requests.post(url, headers=headers, json=payload, timeout=300)
+        response = requests.post(
+            url,
+            headers=headers,
+            json=payload,
+            verify=False,
+            timeout=300)
         
         # Check if the request was successful
         response.raise_for_status()
@@ -314,7 +331,9 @@ def upload_file_with_progress(file_path, fllm_endpoint, session_id, agent_name):
                 upload_url,
                 params=params,
                 headers=headers,
-                files=files
+                files=files,
+                verify=False,
+                timeout=300
             )
             
             # Close the progress bar

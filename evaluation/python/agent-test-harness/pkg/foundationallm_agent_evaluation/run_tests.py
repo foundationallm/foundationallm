@@ -45,22 +45,22 @@ def main():
         epilog="""
 Examples:
   # Quick regression test
-  python run_tests.py --suite code-interpreter --agent MAA-06 --quick
+  fllm-agent-eval --suite code-interpreter --agent MAA-06 --quick
   
   # Comprehensive validation with LLM
-  python run_tests.py --suite all --agent MAA-06 --report
+  fllm-agent-eval --suite all --agent MAA-06 --report
   
   # Cross-agent comparison (report generated automatically)
-  python run_tests.py --suite code-interpreter --agents MAA-02,MAA-04,MAA-06 --report
+  fllm-agent-eval --suite code-interpreter --agents MAA-02,MAA-04,MAA-06 --report
   
   # Repeat each test 3 times for reliability testing
-  python run_tests.py --suite code-interpreter --agent MAA-02 --repeat-test 3
+  fllm-agent-eval --suite code-interpreter --agent MAA-02 --repeat-test 3
   
   # Generate HTML report from existing results
-  python run_tests.py --report-from-results results/20251021_201101-MAA-02-code-interpreter-results.json
+  fllm-agent-eval --report-from-results results/20251021_201101-MAA-02-code-interpreter-results.json
   
   # Generate HTML report from all JSON files in directory
-  python run_tests.py --report-from-dir results/
+  fllm-agent-eval --report-from-dir results/
         """
     )
     

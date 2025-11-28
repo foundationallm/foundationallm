@@ -371,6 +371,7 @@ deploy/__values/
 
 **/env
 ***/.venv
+**/.venv-pkg
 
 obj
 bin

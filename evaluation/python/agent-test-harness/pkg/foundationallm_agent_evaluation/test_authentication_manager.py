@@ -13,6 +13,8 @@ import jwt
 from azure.identity import AzureCliCredential
 from dotenv import load_dotenv
 
+load_dotenv()
+
 class TestAPIAccessToken:
     """
     Manages access tokens for FoundationaLLM frontier APIs (e.g., Core API, Management API).
@@ -115,11 +117,13 @@ class TestAuthenticationManager:
     __core_api_access_token: TestAPIAccessToken = None
     __management_api_access_token: TestAPIAccessToken = None
     __initialized: bool = False
+    __lock = threading.Lock()
 
     def initialize(self):
         """Initialize the authentication manager."""
+        if self.__initialized:
+            return
         print("Initializing Test Authentication Manager...")
-        load_dotenv()
 
         core_api_static_access_token = os.getenv("FLLM_ACCESS_TOKEN")
         self.__core_api_access_token = TestAPIAccessToken(
@@ -157,8 +161,8 @@ class TestAuthenticationManager:
     def __ensure_initialized(self):
         """Ensure the authentication manager is initialized."""
         if not self.__initialized:
-            raise TestAuthenticationManagerException(
-                "TestAuthenticationManager is not initialized. Call 'initialize()' before using.")
+            with self.__lock:
+                self.initialize()
 
 if __name__ == "__main__":
     authentication_manager = TestAuthenticationManager()
