@@ -40,6 +40,11 @@ namespace FoundationaLLM.Gatekeeper.Core.Services
         private readonly IGatekeeperIntegrationAPIService _gatekeeperIntegrationAPIService = gatekeeperIntegrationAPIService;
         private readonly GatekeeperServiceSettings _gatekeeperServiceSettings = gatekeeperServiceSettings.Value;
 
+        private readonly string _azureContentSafetyErrorMessage =
+            "The content safety service was unable to validate the prompt text due to an internal error.";
+        private readonly string _azureContentSafetyPromptShieldMessage =
+            "The content safety service has detected potential prompt injection or jailbreak attempts in the user prompt.";
+
         /// <summary>
         /// Gets a completion from the Gatekeeper service.
         /// </summary>
@@ -77,16 +82,38 @@ namespace FoundationaLLM.Gatekeeper.Core.Services
             {
                 var promptInjectionResult = await _contentSafetyService.DetectPromptInjection(completionRequest.UserPrompt!);
 
-                if (!string.IsNullOrWhiteSpace(promptInjectionResult))
-                    return new CompletionResponse() { OperationId = completionRequest.OperationId, Completion = promptInjectionResult };
+                if (!promptInjectionResult.Success)
+                    return new CompletionResponse()
+                    {
+                        OperationId = completionRequest.OperationId!,
+                        Completion = _azureContentSafetyErrorMessage
+                    };
+
+                if (!promptInjectionResult.SafeContent)
+                    return new CompletionResponse()
+                    {
+                        OperationId = completionRequest.OperationId!,
+                        Completion = _azureContentSafetyPromptShieldMessage
+                    };
             }
 
             if (_gatekeeperServiceSettings.EnableAzureContentSafety)
             {
                 var contentSafetyResult = await _contentSafetyService.AnalyzeText(completionRequest.UserPrompt!);
 
-                if (!contentSafetyResult.Safe)
-                    return new CompletionResponse() { OperationId = completionRequest.OperationId, Completion = contentSafetyResult.Reason };
+                if (!contentSafetyResult.Success)
+                    return new CompletionResponse()
+                    {
+                        OperationId = completionRequest.OperationId!,
+                        Completion = _azureContentSafetyErrorMessage
+                    };
+
+                if (!contentSafetyResult.SafeContent)
+                    return new CompletionResponse()
+                    {
+                        OperationId = completionRequest.OperationId!,
+                        Completion = contentSafetyResult.Details
+                    };
             }
 
             var completionResponse = await _orchestrationAPIService.GetCompletion(instanceId, completionRequest);
@@ -136,16 +163,42 @@ namespace FoundationaLLM.Gatekeeper.Core.Services
             {
                 var promptInjectionResult = await _contentSafetyService.DetectPromptInjection(completionRequest.UserPrompt!);
 
-                if (!string.IsNullOrWhiteSpace(promptInjectionResult))
-                    return new LongRunningOperation() { OperationId = completionRequest.OperationId, StatusMessage = promptInjectionResult, Status = OperationStatus.Failed };
+                if (!promptInjectionResult.Success)
+                    return new LongRunningOperation()
+                    {
+                        OperationId = completionRequest.OperationId!,
+                        StatusMessage = _azureContentSafetyErrorMessage,
+                        Status = OperationStatus.Failed
+                    };
+
+                if (!promptInjectionResult.SafeContent)
+                    return new LongRunningOperation()
+                    {
+                        OperationId = completionRequest.OperationId!,
+                        StatusMessage = _azureContentSafetyPromptShieldMessage,
+                        Status = OperationStatus.Failed
+                    };
             }
 
             if (_gatekeeperServiceSettings.EnableAzureContentSafety)
             {
                 var contentSafetyResult = await _contentSafetyService.AnalyzeText(completionRequest.UserPrompt!);
 
-                if (!contentSafetyResult.Safe)
-                    return new LongRunningOperation() { OperationId = completionRequest.OperationId, StatusMessage = contentSafetyResult.Reason, Status = OperationStatus.Failed };
+                if (!contentSafetyResult.Success)
+                    return new LongRunningOperation()
+                    {
+                        OperationId = completionRequest.OperationId!,
+                        StatusMessage = _azureContentSafetyErrorMessage,
+                        Status = OperationStatus.Failed
+                    };
+
+                if (!contentSafetyResult.SafeContent)
+                    return new LongRunningOperation()
+                    {
+                        OperationId = completionRequest.OperationId!,
+                        StatusMessage = contentSafetyResult.Details,
+                        Status = OperationStatus.Failed
+                    };
             }
 
             var response = await _orchestrationAPIService.StartCompletionOperation(instanceId, completionRequest);

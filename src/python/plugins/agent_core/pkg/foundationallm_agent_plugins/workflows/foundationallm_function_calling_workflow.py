@@ -63,14 +63,16 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
     using Azure OpenAI completion models.
     """
 
-    def __init__(self,
-                 workflow_config: GenericAgentWorkflow | ExternalAgentWorkflow,
-                 objects: Dict,
-                 tools: List[FoundationaLLMToolBase],
-                 operations_manager: OperationsManager,
-                 user_identity: UserIdentity,
-                 config: Configuration,
-                 intercept_http_calls: bool = False):
+    def __init__(
+        self,
+        workflow_config: GenericAgentWorkflow | ExternalAgentWorkflow,
+        objects: Dict,
+        tools: List[FoundationaLLMToolBase],
+        operations_manager: OperationsManager,
+        user_identity: UserIdentity,
+        config: Configuration,
+        intercept_http_calls: bool = False
+    ):
         """
         Initializes the FoundationaLLMWorkflowBase class with the workflow configuration.
 
@@ -86,17 +88,17 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
             The user identity of the user initiating the request.
         config : Configuration
             The application configuration for FoundationaLLM.
+        intercept_http_calls : bool, optional
+            Whether to intercept HTTP calls made by the workflow, by default False.
         """
         super().__init__(workflow_config, objects, tools, operations_manager, user_identity, config)
         self.name = workflow_config.name
-        self.logger : Logger = Telemetry.get_logger(self.name)
-        self.tracer : Tracer = Telemetry.get_tracer(self.name)
         self.default_error_message = workflow_config.properties.get(
             'default_error_message',
             'An error occurred while processing the request.') \
             if workflow_config.properties else 'An error occurred while processing the request.'
 
-        self.__create_workflow_llm(intercept_http_calls=intercept_http_calls)
+        self.create_workflow_llm(intercept_http_calls=intercept_http_calls)
         self.__create_context_client()
 
         self.instance_id = objects.get(CompletionRequestObjectKeys.INSTANCE_ID, None)
@@ -138,10 +140,10 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
         if objects is None:
             objects = {}
 
-        workflow_main_prompt = self.__create_workflow_main_prompt()
-        workflow_router_prompt = self.__create_workflow_router_prompt()
-        workflow_files_prompt = self.__create_workflow_files_prompt()
-        workflow_final_prompt = self.__create_workflow_final_prompt()
+        workflow_main_prompt = self.create_workflow_main_prompt()
+        workflow_router_prompt = self.create_workflow_router_prompt()
+        workflow_files_prompt = self.create_workflow_files_prompt()
+        workflow_final_prompt = self.create_workflow_final_prompt()
 
         llm_prompt = user_prompt_rewrite or user_prompt
 
@@ -276,7 +278,7 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
                         # ensure final_llm_response.content is a string, collapsing any lists into a single string.
                         if isinstance(final_llm_response.content, list):
                             final_llm_response.content = '\n'.join(final_llm_response.content)
-                            
+
                         usage = self.__get_canonical_usage(final_llm_response)
                         input_tokens += usage['input_tokens']
                         output_tokens += usage['output_tokens']
@@ -286,7 +288,7 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
                 if 'ROUTER' in commands:
                     final_response = '__NO_TOOL__'
 
-            workflow_content_artifact = self.__create_workflow_execution_content_artifact(
+            workflow_content_artifact = self.create_workflow_execution_content_artifact(
                 llm_prompt,
                 input_tokens,
                 output_tokens,
@@ -332,100 +334,6 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
             )
             return retvalue
 
-    def __create_workflow_llm(
-            self,
-            intercept_http_calls: bool = False):
-        """ Creates the workflow LLM instance and saves it to self.workflow_llm. """
-        language_model_factory = LanguageModelFactory(self.objects, self.config)
-        model_object_id = self.workflow_config.get_resource_object_id_properties(
-            ResourceProviderNames.FOUNDATIONALLM_AIMODEL,
-            AIModelResourceTypeNames.AI_MODELS,
-            ResourceObjectIdPropertyNames.OBJECT_ROLE,
-            ResourceObjectIdPropertyValues.MAIN_MODEL
-        )
-        if model_object_id:
-            self.workflow_llm = \
-                language_model_factory.get_language_model(
-                    model_object_id.object_id,
-                    http_async_client=LoggingAsyncHttpClient(timeout=30.0)
-                ) if intercept_http_calls else \
-                language_model_factory.get_language_model(
-                    model_object_id.object_id
-                )
-        else:
-            error_msg = 'No main model found in workflow configuration'
-            self.logger.error(error_msg)
-            raise ValueError(error_msg)
-
-    def __create_workflow_main_prompt(self) -> str:
-        """ Creates the workflow main prompt. """
-        prompt_object_id = self.workflow_config.get_resource_object_id_properties(
-            ResourceProviderNames.FOUNDATIONALLM_PROMPT,
-            PromptResourceTypeNames.PROMPTS,
-            ResourceObjectIdPropertyNames.OBJECT_ROLE,
-            ResourceObjectIdPropertyValues.MAIN_PROMPT
-        )
-        if prompt_object_id:
-            main_prompt_object_id = prompt_object_id.object_id
-            main_prompt_properties = self.objects[main_prompt_object_id]
-            return main_prompt_properties['prefix']
-        else:
-            error_message = 'No main prompt found in workflow configuration'
-            self.logger.error(error_message)
-            raise ValueError(error_message)
-        
-    def __create_workflow_router_prompt(self) -> str:
-        """ Creates the workflow router prompt. """
-        prompt_object_id = self.workflow_config.get_resource_object_id_properties(
-            ResourceProviderNames.FOUNDATIONALLM_PROMPT,
-            PromptResourceTypeNames.PROMPTS,
-            ResourceObjectIdPropertyNames.OBJECT_ROLE,
-            'router_prompt'
-            # ResourceObjectIdPropertyValues.ROUTER_PROMPT
-        )
-        if prompt_object_id:
-            router_prompt_object_id = prompt_object_id.object_id
-            router_prompt_properties = self.objects[router_prompt_object_id]
-            return router_prompt_properties['prefix']
-        else:
-            error_message = 'No router prompt found in workflow configuration'
-            self.logger.error(error_message)
-            raise ValueError(error_message)
-
-    def __create_workflow_files_prompt(self) -> str:
-        """ Creates the workflow files prompt. """
-        files_prompt_properties = self.workflow_config.get_resource_object_id_properties(
-            ResourceProviderNames.FOUNDATIONALLM_PROMPT,
-            PromptResourceTypeNames.PROMPTS,
-            ResourceObjectIdPropertyNames.OBJECT_ROLE,
-            ResourceObjectIdPropertyValues.FILES_PROMPT
-        )
-        if files_prompt_properties:
-            files_prompt_object_id = files_prompt_properties.object_id
-            return \
-                self.objects[files_prompt_object_id]['prefix'] if files_prompt_object_id in self.objects else None
-        else:
-            warning_message = 'No files prompt found in workflow configuration'
-            self.logger.warning(warning_message)
-            return None
-
-    def __create_workflow_final_prompt(self) -> str:
-        """ Creates the workflow final prompt. """
-        final_prompt_properties = self.workflow_config.get_resource_object_id_properties(
-            ResourceProviderNames.FOUNDATIONALLM_PROMPT,
-            PromptResourceTypeNames.PROMPTS,
-            ResourceObjectIdPropertyNames.OBJECT_ROLE,
-            ResourceObjectIdPropertyValues.FINAL_PROMPT
-        )
-        if final_prompt_properties:
-            final_prompt_object_id = final_prompt_properties.object_id
-            return \
-                self.objects[final_prompt_object_id]['prefix'] if final_prompt_object_id in self.objects else None
-        else:
-            warning_message = 'No final prompt found in workflow configuration'
-            self.logger.warning(warning_message)
-            return None
-
     def __create_context_client(self):
         """
         Creates the context client for the workflow.
@@ -441,26 +349,6 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
             )
         else:
             raise Exception("The Context API endpoint configuration is required to use the workflow.")
-
-    def __create_workflow_execution_content_artifact(
-            self,
-            original_prompt: str,
-            input_tokens: int = 0,
-            output_tokens: int = 0,
-            completion_time_seconds: float = 0) -> ContentArtifact:
-
-        content_artifact = ContentArtifact(id=self.workflow_config.name)
-        content_artifact.source = self.workflow_config.name
-        content_artifact.type = ContentArtifactTypeNames.WORKFLOW_EXECUTION
-        content_artifact.content = original_prompt
-        content_artifact.title = self.workflow_config.name
-        content_artifact.filepath = None
-        content_artifact.metadata = {
-            'prompt_tokens': str(input_tokens),
-            'completion_tokens': str(output_tokens),
-            'completion_time_seconds': str(completion_time_seconds)
-        }
-        return content_artifact
 
     def __get_tools_runnable_config(
             self,
@@ -557,7 +445,7 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
             context_file_content = await self.context_api_client.get_async(
                 endpoint = f"/instances/{self.instance_id}/files/{context_file_id}",
                 content_type = content_type)
-            
+
             context_file_message = \
                 {
                     'type': 'image_url',
@@ -568,13 +456,13 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
                 else {
                     'type': 'media',
                     'data': base64.b64encode(context_file_content).decode("utf-8"),
-                    'mime_type': context_file.content_type  
+                    'mime_type': context_file.content_type
                 } if context_file.content_type.startswith("audio/") \
                 else {
                     'type': 'text',
                     'text': f'\nFILE_CONTENT for /{context_file.original_file_name}/:\n{context_file_content}\nEND_FILE_CONTENT\n'
                 }
-            
+
             context_file_messages.append(
                 context_file_message)
             context_files.append(f'/{context_file.original_file_name}/')
@@ -664,7 +552,7 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
         """
         if llm_response.usage_metadata:
             return llm_response.usage_metadata
-        
+
         if llm_response.response_metadata \
             and 'usage' in llm_response.response_metadata \
             and 'prompt_tokens' in llm_response.response_metadata['usage'] \
@@ -674,7 +562,7 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
                 'output_tokens': llm_response.response_metadata['usage']['completion_tokens'],
                 'total_tokens': llm_response.response_metadata['usage']['total_tokens']
             }
-        
+
         return {
             'input_tokens': 0,
             'output_tokens': 0,

@@ -44,11 +44,19 @@ namespace FoundationaLLM.Common.Models.Conversation
         /// </summary>
         /// <param name="contextFileRecord">The <see cref="ContextFileRecord"/> used to initialize the instance.</param>
         /// <returns>The newly created <see cref="AttachmentDetail"/> instance.</returns>
-        public static AttachmentDetail FromContextFileRecord(ContextFileRecord contextFileRecord) => new()
-        {
-            ObjectId = contextFileRecord.FileObjectId,
-            DisplayName = contextFileRecord.FileName,
-            ContentType = contextFileRecord.ContentType
-        };
+        public static AttachmentDetail FromContextFileRecord(ContextFileRecord contextFileRecord) =>
+            contextFileRecord is null
+            ? new()
+            {
+                ObjectId = "__unavailable__",
+                DisplayName = "(unavailable)",
+                ContentType = string.Empty
+            }
+            : new()
+            {
+                ObjectId = contextFileRecord.FileObjectId,
+                DisplayName = contextFileRecord.FileName,
+                ContentType = contextFileRecord.ContentType
+            };
     }
 }

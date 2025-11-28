@@ -80,6 +80,10 @@ namespace FoundationaLLM
 
             services.AddScoped<IFileService, FileService>(sp =>
                 new FileService(
+                    agentResourceProvider: sp.GetRequiredService<IEnumerable<IResourceProviderService>>()
+                        .SingleOrDefault(rp => rp.Name == ResourceProviderNames.FoundationaLLM_Agent)!,
+                    dataPipelineResourceProvider: sp.GetRequiredService<IEnumerable<IResourceProviderService>>()
+                        .SingleOrDefault(rp => rp.Name == ResourceProviderNames.FoundationaLLM_DataPipeline)!,
                     authorizationServiceClient: sp.GetRequiredService<IAuthorizationServiceClient>(),
                     cosmosDBService: sp.GetRequiredService<IAzureCosmosDBFileService>(),
                     storageService: new BlobStorageService(

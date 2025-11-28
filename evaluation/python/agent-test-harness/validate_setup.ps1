@@ -129,7 +129,9 @@ function Test-RequiredPackages {
         @{name="python-dotenv"; import="dotenv"},
         @{name="tqdm"; import="tqdm"},
         @{name="openai"; import="openai"},
-        @{name="jinja2"; import="jinja2"}
+        @{name="jinja2"; import="jinja2"},
+        @{name="PyJWT"; import="jwt"},
+        @{name="azure-identity"; import="azure.identity"}
     )
     
     $missingPackages = @()
@@ -181,11 +183,11 @@ function Test-EnvironmentVariables {
     }
     
     $requiredVars = @(
-        "FLLM_ACCESS_TOKEN",
         "FLLM_ENDPOINT"
     )
     
     $optionalVars = @(
+        "FLLM_ACCESS_TOKEN",
         "FLLM_MGMT_ENDPOINT",
         "FLLM_MGMT_BEARER_TOKEN",
         "AZURE_OPENAI_ENDPOINT",
@@ -231,6 +233,8 @@ function Test-EnvironmentVariables {
             Write-ColorOutput "   - $var" $Yellow
         }
         Write-ColorOutput "   Some features may not work without these" $Yellow
+        Write-ColorOutput "   When FLLM_ACCESS_TOKEN is not set, ensure you've run 'az login' and have appropriate permissions" $Yellow
+        Write-ColorOutput "   When FLLM_MGMT_BEARER_TOKEN is not set, ensure you've run 'az login' and have appropriate permissions" $Yellow
     }
     
     return $true

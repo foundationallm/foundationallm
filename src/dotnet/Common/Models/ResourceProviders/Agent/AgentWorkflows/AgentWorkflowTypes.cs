@@ -21,6 +21,11 @@
         public const string AzureOpenAIAssistants = "azure-openai-assistants-workflow";
 
         /// <summary>
+        /// The LangChain built-in ReAct Agent workflow.
+        /// </summary>
+        public const string LangChainAgentWorkflow = "langchain-agent-workflow";
+
+        /// <summary>
         /// The LangChain Expression Language agent workflow.
         /// </summary>
         public const string LangChainExpressionLanguage = "langchain-expression-language-workflow";
@@ -28,6 +33,7 @@
         /// <summary>
         /// The LangGraph ReAct agent workflow.
         /// </summary>
+        [Obsolete("This workflow type is deprecated and will be removed in future versions. Please use LangChainAgentWorkflow instead.")]
         public const string LangGraphReactAgent = "langgraph-react-agent-workflow";
 
         /// <summary>

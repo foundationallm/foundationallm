@@ -5,7 +5,7 @@ namespace FoundationaLLM.Common.Models.Context.Knowledge
     /// <summary>
     /// Represents the result of a knowledge source query.
     /// </summary>
-    public class ContextKnowledgeSourceQueryResponse : ContextServiceResponse
+    public class ContextKnowledgeSourceQueryResponse
     {
         /// <summary>
         /// Gets or sets the source of the response..

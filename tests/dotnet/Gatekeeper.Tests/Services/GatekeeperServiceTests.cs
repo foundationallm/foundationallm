@@ -1,9 +1,9 @@
 ﻿using FoundationaLLM.Common.Interfaces;
+using FoundationaLLM.Common.Models.ContentSafety;
 using FoundationaLLM.Common.Models.Orchestration.Request;
 using FoundationaLLM.Common.Models.Orchestration.Response;
 using FoundationaLLM.Gatekeeper.Core.Interfaces;
 using FoundationaLLM.Gatekeeper.Core.Models.ConfigurationOptions;
-using FoundationaLLM.Gatekeeper.Core.Models.ContentSafety;
 using FoundationaLLM.Gatekeeper.Core.Services;
 using Microsoft.Extensions.Options;
 using NSubstitute;
@@ -56,7 +56,7 @@ namespace Gatekeeper.Tests.Services
 
             var expectedResult = new CompletionResponse { OperationId=completionRequest.OperationId, Completion = "Completion from Orchestration API Service." };
 
-            var safeContentResult = new AnalyzeTextFilterResult { Safe = true, Reason = string.Empty };
+            var safeContentResult = new ContentSafetyAnalysisResult { SafeContent = true, Details = string.Empty };
             _contentSafetyService.AnalyzeText(completionRequest.UserPrompt).Returns(safeContentResult);
             _orchestrationAPIService.GetCompletion(_instanceId, completionRequest).Returns(expectedResult);
 

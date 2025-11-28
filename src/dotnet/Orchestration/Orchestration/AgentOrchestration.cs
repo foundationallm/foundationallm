@@ -541,18 +541,18 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                 .SelectAwait(async x => await _contextServiceClient.GetFileRecord(_instanceId, x));
             await foreach(var contextFileResponse in contextAttachmentResponses)
             {
-                if (contextFileResponse.Success)
+                if (contextFileResponse.TryGetValue(out var fileRecord))
                 {
-                    candidateResult[contextFileResponse.Result!.FileObjectId] = new AttachmentProperties
+                    candidateResult[fileRecord.FileObjectId] = new AttachmentProperties
                     {
-                        OriginalFileName = contextFileResponse.Result!.FileName,
-                        ContentType = contextFileResponse.Result.ContentType!,
+                        OriginalFileName = fileRecord.FileName,
+                        ContentType = fileRecord.ContentType!,
                         Provider = ResourceProviderNames.FoundationaLLM_Context,
-                        ProviderFileName = contextFileResponse.Result.FilePath,
-                        EmbedContentInRequest = contextFileResponse.Result!.FileProcessingType == FileProcessingTypes.CompletionRequestContext
+                        ProviderFileName = fileRecord.FilePath,
+                        EmbedContentInRequest = fileRecord.FileProcessingType == FileProcessingTypes.CompletionRequestContext
                     };
 
-                    if (contextFileResponse.Result.FileProcessingType == FileProcessingTypes.ConversationDataPipeline)
+                    if (fileRecord.FileProcessingType == FileProcessingTypes.ConversationDataPipeline)
                     {
                         // The file must be processed by the conversation data pipeline.
 
@@ -567,7 +567,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                             DataPipelineTriggerNames.DefaultManualTrigger,
                             new()
                             {
-                                { DataPipelineTriggerParameterNames.DataSourceContextFileContextFileObjectId, contextFileResponse.Result.FileObjectId},
+                                { DataPipelineTriggerParameterNames.DataSourceContextFileContextFileObjectId, fileRecord.FileObjectId},
                                 { DataPipelineTriggerParameterNames.DataSourceContextFileContentAction, ContentItemActions.AddOrUpdate },
                                 { DataPipelineTriggerParameterNames.StageExtractMaxContentSizeCharacters, knowledgeSearchSettings.MaxContentSizeCharacters },
                                 { DataPipelineTriggerParameterNames.StageEmbedKnowledgeUnitObjectId, knowledgeSearchSettings.ConversationKnowledgeUnitObjectId },
@@ -579,7 +579,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                             _callContext.CurrentUserIdentity!.UPN!,
                             DataPipelineRunProcessors.Frontend);
 
-                        fileProcessingTasks[contextFileResponse.Result.FileObjectId] =
+                        fileProcessingTasks[fileRecord.FileObjectId] =
                             PollingResourceRunner<DataPipelineRun>.Start(
                                 _instanceId,
                                 _dataPipelineResourceProvider,
@@ -591,7 +591,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                     }
                 }
                 else
-                    _logger.LogError(contextFileResponse.ErrorMessage);
+                    _logger.LogError(contextFileResponse.Error?.Detail);
             }
 
             await Task.WhenAll(fileProcessingTasks.Values);

@@ -1,0 +1,101 @@
+ID,SYMBOL,NAME,PRICE
+bitcoin,BTC,Bitcoin,"$46,847.42 "
+ethereum,ETH,Ethereum,"$2,261.91 "
+tether,USDT,Tether,$1.00 
+binance-coin,BNB,BNB,$301.75 
+solana,SOL,Solana,$100.96 
+xrp,XRP,XRP,$0.56 
+usd-coin,USDC,USDC,$1.00 
+cardano,ADA,Cardano,$0.51 
+avalanche,AVAX,Avalanche,$35.41 
+dogecoin,DOGE,Dogecoin,$0.08 
+polkadot,DOT,Polkadot,$7.09 
+tron,TRX,TRON,$0.10 
+chainlink,LINK,Chainlink,$13.53 
+polygon,MATIC,Polygon,$0.79 
+wrapped-bitcoin,WBTC,Wrapped Bitcoin,"$46,883.14 "
+internet-computer,ICP,Internet Computer,$12.67 
+shiba-inu,SHIB,Shiba Inu,$0.00 
+multi-collateral-dai,DAI,Multi Collateral DAI,$1.01 
+bitcoin-cash,BCH,Bitcoin Cash,$247.97 
+litecoin,LTC,Litecoin,$65.31 
+unus-sed-leo,LEO,UNUS SED LEO,$4.07 
+uniswap,UNI,Uniswap,$5.80 
+stellar,XLM,Stellar,$0.11 
+okb,OKB,OKB,$53.42 
+near-protocol,NEAR,NEAR Protocol,$3.12 
+injective-protocol,INJ,Injective,$41.89 
+ethereum-classic,ETC,Ethereum Classic,$20.07 
+lido-dao,LDO,Lido DAO,$3.23 
+stacks,STX,Stacks,$1.91 
+monero,XMR,Monero,$145.55 
+filecoin,FIL,Filecoin,$5.36 
+cosmos,ATOM,Cosmos,$9.68 
+bitcoin-bep2,BTCB,Bitcoin BEP2,"$42,795.21 "
+crypto-com-coin,CRO,Crypto.com Coin,$0.09 
+trueusd,TUSD,TrueUSD,$1.00 
+vechain,VET,VeChain,$0.03 
+bitcoin-sv,BSV,Bitcoin SV,$91.07 
+maker,MKR,Maker,"$1,775.24 "
+thorchain,RUNE,THORChain,$4.81 
+algorand,ALGO,Algorand,$0.18 
+the-graph,GRT,The Graph,$0.16 
+render-token,RNDR,Render Token,$3.87 
+aave,AAVE,Aave,$93.40 
+quant,QNT,Quant,$113.42 
+elrond-egld,EGLD,MultiversX,$52.61 
+mina,MINA,Mina,$1.13 
+hedera-hashgraph,HBAR,Hedera Hashgraph,$0.08 
+flow,FLOW,Flow,$0.76 
+helium,HNT,Helium,$6.78 
+fantom,FTM,Fantom,$0.37 
+theta,THETA,THETA,$1.01 
+wemix,WEMIX,WEMIX,$2.85 
+the-sandbox,SAND,The Sandbox,$0.47 
+axie-infinity,AXS,Axie Infinity,$7.41 
+kucoin-token,KCS,KuCoin Token,$9.85 
+tezos,XTZ,Tezos,$0.88 
+neo,NEO,Neo,$11.49 
+kava,KAVA,Kava,$0.75 
+decentraland,MANA,Decentraland,$0.42 
+ftx-token,FTT,FTX Token,$2.43 
+eos,EOS,EOS,$0.70 
+oasis-network,ROSE,Oasis Network,$0.12 
+binance-usd,BUSD,BUSD,$1.00 
+synthetix-network-token,SNX,Synthetix,$3.20 
+wootrade,WOO,WOO,$0.41 
+iota,IOTA,IOTA,$0.23 
+akash-network,AKT,Akash Network,$3.11 
+pancakeswap,CAKE,PancakeSwap,$2.81 
+ecash,XEC,eCash,$0.00 
+gala,GALA,Gala,$0.02 
+chiliz,CHZ,Chiliz,$0.07 
+xinfin-network,XDC,XinFin Network,$0.05 
+conflux-network,CFX,Conflux,$0.17 
+klaytn,KLAY,Klaytn,$0.18 
+frax-share,FXS,Frax Share,$7.80 
+rocket-pool,RPL,Rocket Pool,$27.55 
+curve-dao-token,CRV,Curve DAO Token,$0.51 
+casper,CSPR,Casper,$0.05 
+fetch,FET,Fetch.ai,$0.64 
+arweave,AR,Arweave,$8.03 
+nexo,NEXO,Nexo,$0.92 
+gatetoken,GT,GateToken,$5.02 
+siacoin,SC,Siacoin,$0.01 
+gnosis-gno,GNO,Gnosis,$184.95 
+1inch,1INCH,1inch Network,$0.41 
+trust-wallet-token,TWT,Trust Wallet Token,$1.06 
+dydx,DYDX,dYdX,$2.40 
+enjin-coin,ENJ,Enjin Coin,$0.30 
+aelf,ELF,aelf,$0.56 
+huobi-token,HT,Huobi Token,$2.43 
+compound,COMP,Compound,$48.25 
+fei-protocol,FEI,Fei Protocol,$0.91 
+dash,DASH,Dash,$33.08 
+skale-network,SKL,SKALE,$0.07 
+iotex,IOTX,IoTeX,$0.04 
+zilliqa,ZIL,Zilliqa,$0.02 
+bitcoin-gold,BTG,Bitcoin Gold,$20.42 
+celo,CELO,Celo,$0.68 
+gas,GAS,Gas,$5.20 
+basic-attention-token,BAT,Basic Attention Token,$0.23 

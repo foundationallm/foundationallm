@@ -29,11 +29,13 @@ namespace FoundationaLLM.Context.API.Controllers
         /// </summary>
         /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
         /// <param name="conversationId">The conversation identifier.</param>
+        /// <param name="agentName">The name of the agent.</param>
         /// <returns></returns>
         [HttpPost("conversations/{conversationId}/files")]
         public async Task<IActionResult> UploadFileForConversation(
             string instanceId,
-            string conversationId)
+            string conversationId,
+            [FromQuery] string? agentName)
         {
             var formFiles = HttpContext.Request.HasFormContentType ? HttpContext.Request.Form?.Files : null;
             IFormFile? formFile = (formFiles != null && formFiles.Count > 0) ? formFiles[0] : null;
@@ -48,16 +50,18 @@ namespace FoundationaLLM.Context.API.Controllers
             using var memoryStream = new MemoryStream();
             await stream.CopyToAsync(memoryStream);
 
-            var fileRecord = await _fileService.CreateFileForConversation(
+            var result = await _fileService.CreateFileForConversation(
                 instanceId,
                 ContextRecordOrigins.UserUpload,
+                agentName,
                 conversationId,
                 fileName,
                 contentType,
                 memoryStream,
                 _callContext.CurrentUserIdentity!);
 
-            return new OkObjectResult(fileRecord);
+            return
+                result.ToActionResult();
         }
 
         /// <summary>
@@ -84,7 +88,7 @@ namespace FoundationaLLM.Context.API.Controllers
             using var memoryStream = new MemoryStream();
             await stream.CopyToAsync(memoryStream);
 
-            var fileRecord = await _fileService.CreateFileForAgent(
+            var result = await _fileService.CreateFileForAgent(
                 instanceId,
                 ContextRecordOrigins.UserUpload,
                 agentName,
@@ -93,7 +97,8 @@ namespace FoundationaLLM.Context.API.Controllers
                 memoryStream,
                 _callContext.CurrentUserIdentity!);
 
-            return new OkObjectResult(fileRecord);
+            return
+                result.ToActionResult();
         }
 
 
@@ -108,15 +113,17 @@ namespace FoundationaLLM.Context.API.Controllers
             string instanceId,
             string fileId)
         {
-            var fileContent = await _fileService.GetFileContent(
+            var result = await _fileService.GetFileContent(
                 instanceId,
                 fileId,
                 _callContext.CurrentUserIdentity!);
 
-            return File(
-                fileContent!.FileContent!,
-                fileContent!.ContentType!,
-                fileContent!.FileName!);
+            return result.TryGetValue(out var fileContent)
+                ? File(
+                    fileContent!.FileContent!,
+                    fileContent!.ContentType!,
+                    fileContent!.FileName!)
+                : result.ToActionResult();
         }
 
         /// <summary>
@@ -130,12 +137,13 @@ namespace FoundationaLLM.Context.API.Controllers
             string instanceId,
             string fileId)
         {
-            var fileRecord = await _fileService.GetFileRecord(
+            var result = await _fileService.GetFileRecord(
                 instanceId,
                 fileId,
                 _callContext.CurrentUserIdentity!);
 
-            return new OkObjectResult(fileRecord);
+            return
+                result.ToActionResult();
         }
 
         /// <summary>
@@ -149,12 +157,13 @@ namespace FoundationaLLM.Context.API.Controllers
             string instanceId,
             string fileId)
         {
-            await _fileService.DeleteFileRecord(
+            var result = await _fileService.DeleteFileRecord(
                 instanceId,
                 fileId,
                 _callContext.CurrentUserIdentity!);
 
-            return Ok();
+            return
+                result.ToActionResult();
         }
     }
 }

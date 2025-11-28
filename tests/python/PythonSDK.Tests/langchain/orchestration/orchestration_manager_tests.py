@@ -23,7 +23,7 @@ def test_azure_ai_search_service_completion_request():
          """,
          agent=KnowledgeManagementAgentMetadata(
             name="sotu",
-            type="knowledge-management",
+            type="generic-agent",
             description="Knowledge Management Agent that queries the State of the Union speech transcript.",
             language_model=LanguageModel(
                 type=LanguageModelType.OPENAI,

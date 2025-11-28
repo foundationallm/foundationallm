@@ -78,7 +78,9 @@
 
 			"APIEndpoints:AzureEventGrid:Essentials:*",
 			"APIEndpoints:AzureEventGrid:Configuration:*",
-			"Events:Profiles:CoreAPI"
+			"Events:Profiles:CoreAPI",
+
+			".appconfig.featureflag/FoundationaLLM.Agent.SelfService"
 		]
 	},
 	{
@@ -95,7 +97,9 @@
 			"Branding:*",
 
 			"APIEndpoints:CoreAPI:Essentials:APIUrl",
-			"UserPortal:Authentication:Entra:*"
+			"UserPortal:Authentication:Entra:*",
+
+			".appconfig.featureflag/FoundationaLLM.Agent.SelfService"
 		]
 	},
 	{
@@ -168,6 +172,7 @@
 			"ResourceProviders:Agent:Storage:*",
 			"ResourceProviders:Configuration:Storage:*",
 			"ResourceProviders:Context:Storage:*",
+			"ResourceProviders:DataPipeline:Storage:*",
 			"ResourceProviders:Prompt:Storage:*",
 			"ResourceProviders:Vector:Storage:*",
 

@@ -155,16 +155,12 @@ class FoundationaLLMKnowledgeTool(FoundationaLLMToolBase):
             data = json.dumps(query_request)
         )
 
-        if query_response.get('success', False):
+        context = query_response.get('text_response','')
+        completion_prompt = main_prompt.replace('{{context}}', context).replace('{{prompt}}', prompt)
 
-            context = query_response.get('text_response','')
-            completion_prompt = main_prompt.replace('{{context}}', context).replace('{{prompt}}', prompt)
-
-            completion = await self.main_llm.ainvoke(completion_prompt)
-            input_tokens += completion.usage_metadata['input_tokens']
-            output_tokens += completion.usage_metadata['output_tokens']
-        else:
-            raise ToolException(f"Failed to query knowledge source: {query_response.get('error_message', 'Unknown error')}")
+        completion = await self.main_llm.ainvoke(completion_prompt)
+        input_tokens += completion.usage_metadata['input_tokens']
+        output_tokens += completion.usage_metadata['output_tokens']
 
         content_artifacts = [] # self.retriever.get_document_content_artifacts() or []
         # Token usage content artifact

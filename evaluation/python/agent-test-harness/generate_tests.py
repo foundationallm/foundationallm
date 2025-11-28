@@ -12,14 +12,28 @@ import os
 import sys
 import re
 from typing import Dict, List, Any, Optional
+from pathlib import Path
 import pandas as pd
 from openai import AzureOpenAI
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 
 class TestGenerator:
     """Generates test variations using LLM-based expansion"""
     
-    def __init__(self):
+    def __init__(self, test_suites_dir: Optional[Path] = None):
+        self.base_dir = Path(__file__).parent
+        
+        # Determine test-suites directory
+        if test_suites_dir is not None:
+            self.test_suites_dir = Path(test_suites_dir).resolve()
+        else:
+            # Default: use test-suites/ relative to script
+            self.test_suites_dir = self.base_dir / "test-suites"
+        
         self.llm_client = self._init_llm_client()
     
     def _init_llm_client(self):
@@ -50,40 +64,90 @@ class TestGenerator:
         try:
             # Read input CSV
             df = pd.read_csv(input_file)
+            # Replace NaN values with empty strings to avoid "nan" in output
+            df = df.fillna('')
             print(f"Loaded {len(df)} seed tests from {input_file}")
+            
+            # Detect which column name is used for the answer (Answer or ExpectedAnswer)
+            answer_column = 'Answer' if 'Answer' in df.columns else 'ExpectedAnswer'
             
             # Generate expanded tests
             expanded_tests = []
             
             for _, row in df.iterrows():
                 seed_question = row['Question']
-                seed_filename = row.get('Filename', '')
-                seed_expected = row.get('ExpectedAnswer', '')
+                seed_filename = row.get('Filename', '') or ''  # Ensure empty string, not NaN
+                # Support both 'Answer' and 'ExpectedAnswer' column names
+                seed_expected = row.get('ExpectedAnswer', row.get('Answer', '')) or ''
                 expansion_strategy = row.get('ExpansionStrategy', strategy)
                 expansion_count = row.get('ExpansionCount', count)
                 
                 print(f"Generating {expansion_count} {expansion_strategy} for: {seed_question[:50]}...")
                 
+                # Get validation settings from original row
+                validation_rules = row.get('ValidationRules', '{}')
+                validation_mode = row.get('ValidationMode', 'hybrid')
+                
+                # Convert row to dict, preserving all original columns
+                original_row_dict = row.to_dict()
+                # Ensure empty strings instead of NaN
+                for key, value in original_row_dict.items():
+                    if value is None or (isinstance(value, float) and pd.isna(value)):
+                        original_row_dict[key] = ''
+                    elif isinstance(value, str) and value.strip() == '':
+                        original_row_dict[key] = ''
+                
                 # Generate variations
-                variations = self._generate_variations(
-                    seed_question, seed_filename, seed_expected,
-                    expansion_strategy, expansion_count
-                )
-                
-                # Add original test
-                original_test = {
-                    'Question': seed_question,
-                    'Filename': seed_filename,
-                    'ExpectedAnswer': seed_expected,
-                    'ValidationRules': row.get('ValidationRules', '{}'),
-                    'ValidationMode': row.get('ValidationMode', 'hybrid'),
-                    'GeneratedFrom': 'Original',
-                    'GenerationStrategy': 'seed'
-                }
-                expanded_tests.append(original_test)
-                
-                # Add generated variations
-                expanded_tests.extend(variations)
+                # For variations strategy, use question-only generation
+                # For edge-cases and negative-tests, use full variation generation (can modify multiple fields)
+                if expansion_strategy == 'variations':
+                    variation_questions = self._generate_variation_questions(
+                        seed_question, expansion_strategy, expansion_count, validation_rules, validation_mode
+                    )
+                    
+                    print(f"Generated {len(variation_questions)} variations")
+                    
+                    # Add original test (preserve all columns, no extra fields)
+                    original_test = original_row_dict.copy()
+                    expanded_tests.append(original_test)
+                    
+                    # Add generated variations (preserve all columns, only change Question)
+                    for variation_question in variation_questions:
+                        variation_test = original_row_dict.copy()
+                        variation_test['Question'] = variation_question
+                        expanded_tests.append(variation_test)
+                else:
+                    # For edge-cases and negative-tests, use full variation generation
+                    # This allows modification of Question, Filename, ExpectedAnswer, ValidationRules, etc.
+                    answer_column = 'Answer' if 'Answer' in df.columns else 'ExpectedAnswer'
+                    full_variations = self._generate_variations(
+                        seed_question, seed_filename, seed_expected,
+                        expansion_strategy, expansion_count,
+                        validation_rules, validation_mode, answer_column
+                    )
+                    
+                    print(f"Generated {len(full_variations)} variations")
+                    
+                    # Add original test (preserve all columns, no extra fields)
+                    original_test = original_row_dict.copy()
+                    expanded_tests.append(original_test)
+                    
+                    # Add generated variations (may modify multiple fields)
+                    for variation in full_variations:
+                        variation_test = original_row_dict.copy()
+                        # Update fields that were modified in the variation
+                        if 'Question' in variation:
+                            variation_test['Question'] = variation['Question']
+                        # For edge-cases, never modify the Filename - always preserve original
+                        if expansion_strategy != 'edge-cases' and 'Filename' in variation:
+                            variation_test['Filename'] = variation['Filename']
+                        if answer_column in variation:
+                            variation_test[answer_column] = variation[answer_column]
+                        if 'ValidationRules' in variation:
+                            variation_test['ValidationRules'] = variation['ValidationRules']
+                        if 'ValidationMode' in variation:
+                            variation_test['ValidationMode'] = variation['ValidationMode']
+                        expanded_tests.append(variation_test)
             
             # Deduplicate if requested
             if deduplicate:
@@ -94,14 +158,19 @@ class TestGenerator:
             if append and os.path.exists(output_file):
                 # Append to existing file
                 existing_df = pd.read_csv(output_file)
+                existing_df = existing_df.fillna('')  # Replace NaN with empty strings
                 new_df = pd.DataFrame(expanded_tests)
                 combined_df = pd.concat([existing_df, new_df], ignore_index=True)
-                combined_df.to_csv(output_file, index=False)
+                # Replace NaN with empty strings before writing
+                combined_df = combined_df.fillna('')
+                combined_df.to_csv(output_file, index=False, na_rep='')
                 print(f"Appended {len(expanded_tests)} tests to {output_file}")
             else:
                 # Create new file
                 output_df = pd.DataFrame(expanded_tests)
-                output_df.to_csv(output_file, index=False)
+                # Replace NaN with empty strings before writing
+                output_df = output_df.fillna('')
+                output_df.to_csv(output_file, index=False, na_rep='')
                 print(f"Generated {len(expanded_tests)} tests in {output_file}")
             
             return True
@@ -110,13 +179,52 @@ class TestGenerator:
             print(f"Error generating tests: {e}")
             return False
     
-    def _generate_variations(self, seed_question: str, seed_filename: str, 
-                           seed_expected: str, strategy: str, count: int) -> List[Dict[str, Any]]:
-        """Generate test variations using LLM"""
+    def _generate_variation_questions(self, seed_question: str, strategy: str, count: int,
+                                    validation_rules: str = '{}', validation_mode: str = 'hybrid') -> List[str]:
+        """Generate question variations only (returns list of question strings)"""
         
         if not self.llm_client:
             # Fallback to simple rule-based generation
-            return self._generate_rule_based_variations(seed_question, seed_filename, seed_expected, strategy, count)
+            print(f"  Using rule-based generation (LLM client not available)")
+            return self._generate_rule_based_question_variations(seed_question, strategy, count)
+        
+        try:
+            # For LLM generation, we'll use a simpler approach - just get question variations
+            # Create generation prompt based on strategy
+            prompt = self._create_question_generation_prompt(seed_question, strategy, count)
+            
+            response = self.llm_client.chat.completions.create(
+                model=os.getenv('AZURE_OPENAI_DEPLOYMENT', 'gpt-4'),
+                messages=[
+                    {"role": "system", "content": "You are an expert test case generator for AI agents. Generate high-quality question variations that maintain the original intent while testing different phrasings."},
+                    {"role": "user", "content": prompt}
+                ],
+                temperature=0.7,
+                max_tokens=2000
+            )
+            
+            # Parse LLM response to extract just questions
+            llm_response = response.choices[0].message.content.strip()
+            questions = self._parse_question_variations(llm_response)
+            
+            return questions[:count]  # Limit to requested count
+            
+        except Exception as e:
+            print(f"  Error in LLM generation: {e}")
+            print(f"  Falling back to rule-based generation")
+            # Fallback to rule-based generation
+            return self._generate_rule_based_question_variations(seed_question, strategy, count)
+    
+    def _generate_variations(self, seed_question: str, seed_filename: str, 
+                           seed_expected: str, strategy: str, count: int,
+                           validation_rules: str = '{}', validation_mode: str = 'hybrid',
+                           answer_column: str = 'ExpectedAnswer') -> List[Dict[str, Any]]:
+        """Generate test variations using LLM (legacy method - kept for compatibility)"""
+        
+        if not self.llm_client:
+            # Fallback to simple rule-based generation
+            print(f"  Using rule-based generation (LLM client not available)")
+            return self._generate_rule_based_variations(seed_question, seed_filename, seed_expected, strategy, count, validation_rules, validation_mode, answer_column)
         
         try:
             # Create generation prompt based on strategy
@@ -134,14 +242,151 @@ class TestGenerator:
             
             # Parse LLM response
             llm_response = response.choices[0].message.content.strip()
-            variations = self._parse_llm_response(llm_response, seed_question, seed_filename, seed_expected, strategy)
+            variations = self._parse_llm_response(llm_response, seed_question, seed_filename, seed_expected, strategy, validation_rules, validation_mode, answer_column)
             
             return variations[:count]  # Limit to requested count
             
         except Exception as e:
-            print(f"Error in LLM generation: {e}")
+            print(f"  Error in LLM generation: {e}")
+            print(f"  Falling back to rule-based generation")
             # Fallback to rule-based generation
-            return self._generate_rule_based_variations(seed_question, seed_filename, seed_expected, strategy, count)
+            return self._generate_rule_based_variations(seed_question, seed_filename, seed_expected, strategy, count, validation_rules, validation_mode, answer_column)
+    
+    def _create_question_generation_prompt(self, seed_question: str, strategy: str, count: int) -> str:
+        """Create prompt for LLM-based question variation generation"""
+        
+        if strategy == 'variations':
+            return f"""
+Generate {count} different ways to ask the same question. Each variation should:
+- Maintain the same core intent as the original
+- Use different wording and phrasing
+- Be natural and conversational
+- Test the agent's robustness to different phrasings
+
+Original Question: {seed_question}
+
+Generate {count} variations, one per line, each starting with "Question: "
+Example format:
+Question: [variation 1]
+Question: [variation 2]
+...
+"""
+        else:
+            # For other strategies, use similar approach
+            return f"""
+Generate {count} question variations for: {seed_question}
+
+Generate {count} variations, one per line, each starting with "Question: "
+"""
+    
+    def _parse_question_variations(self, response: str) -> List[str]:
+        """Parse LLM response to extract just question strings"""
+        questions = []
+        lines = response.strip().split('\n')
+        
+        for line in lines:
+            line = line.strip()
+            if line.startswith('Question:'):
+                question = line.replace('Question:', '').strip()
+                if question:
+                    questions.append(question)
+            elif line and not line.startswith('#') and '?' in line:
+                # Also catch questions that might not have the prefix
+                questions.append(line.strip())
+        
+        return questions
+    
+    def _generate_rule_based_question_variations(self, seed_question: str, strategy: str, count: int) -> List[str]:
+        """Generate question variations using simple rule-based patterns (returns list of strings)"""
+        
+        if strategy == 'variations':
+            # Generate variations using multiple strategies
+            patterns = []
+            
+            # Strategy 1: Word replacements (if applicable)
+            word_replacements = [
+                ('Create', 'Generate'), ('Write', 'Develop'), ('Make', 'Build'),
+                ('Show', 'Display'), ('Tell', 'Explain'), ('What', 'Can you tell me what'),
+                ('Who', 'Can you identify who'), ('How', 'Can you explain how'),
+                ('Where', 'Can you tell me where'), ('When', 'Can you tell me when'),
+                ('Why', 'Can you explain why'), ('are you', 'do you identify as'),
+                ('you', 'your system'), ('I', 'we')
+            ]
+            
+            for old_word, new_word in word_replacements:
+                if old_word.lower() in seed_question.lower():
+                    # Case-insensitive replacement
+                    pattern = re.sub(re.escape(old_word), new_word, seed_question, flags=re.IGNORECASE)
+                    if pattern != seed_question:
+                        patterns.append(pattern)
+            
+            # Strategy 2: Add question prefixes/suffixes
+            prefixes = [
+                'Can you tell me',
+                'I would like to know',
+                'Please explain',
+                'Could you clarify',
+                'I need to understand',
+                'Help me understand',
+                'What can you tell me about',
+                'I\'m curious about'
+            ]
+            
+            # Remove existing question words and add prefix
+            question_lower = seed_question.lower().strip()
+            if question_lower.endswith('?'):
+                question_lower = question_lower[:-1].strip()
+            
+            for prefix in prefixes:
+                if not question_lower.startswith(prefix.lower()):
+                    patterns.append(f"{prefix} {question_lower}?")
+            
+            # Strategy 3: Rephrase with different structures
+            if '?' in seed_question:
+                base = seed_question.replace('?', '').strip()
+                rephrases = [
+                    f"I'm asking: {base}?",
+                    f"Question: {base}?",
+                    f"Please answer: {base}?",
+                    f"I want to know: {base}?",
+                    f"Can you help with: {base}?"
+                ]
+                patterns.extend(rephrases)
+            
+            # Strategy 4: Add context or emphasis
+            if len(patterns) < count:
+                emphasis_variations = [
+                    f"{seed_question} (please be specific)",
+                    f"{seed_question} (I need details)",
+                    f"Regarding this: {seed_question}",
+                    f"About this question: {seed_question}",
+                    f"To clarify: {seed_question}"
+                ]
+                patterns.extend(emphasis_variations)
+            
+            # Remove duplicates and limit to count
+            seen = set()
+            unique_patterns = []
+            for pattern in patterns:
+                if pattern not in seen and pattern != seed_question:
+                    seen.add(pattern)
+                    unique_patterns.append(pattern)
+                    if len(unique_patterns) >= count:
+                        break
+            
+            # If we still don't have enough, generate numbered variations
+            while len(unique_patterns) < count:
+                variation_num = len(unique_patterns) + 1
+                numbered_variation = f"{seed_question} [variation {variation_num}]"
+                if numbered_variation not in seen:
+                    unique_patterns.append(numbered_variation)
+                    seen.add(numbered_variation)
+            
+            return unique_patterns[:count]
+        
+        else:
+            # For other strategies, return empty or simple variations
+            return []
     
     def _create_generation_prompt(self, seed_question: str, seed_filename: str, 
                                 seed_expected: str, strategy: str, count: int) -> str:
@@ -178,13 +423,15 @@ Generate {count} edge case scenarios for this test. Consider:
 - Special characters or encoding issues
 - Unusual file formats or corrupted data
 
+IMPORTANT: Do NOT modify the Filename field. Keep it exactly as: {seed_filename if seed_filename else '(empty)'}
+
 Original Question: {seed_question}
 Original File: {seed_filename}
 Expected Answer: {seed_expected}
 
 Generate {count} edge cases in this format:
 Question: [edge case question]
-Filename: [modified filename or empty]
+Filename: {seed_filename}
 ExpectedAnswer: [expected response for edge case]
 ValidationRules: [rules for edge case]
 ValidationMode: rule
@@ -237,7 +484,8 @@ GenerationStrategy: combinations
 """
     
     def _parse_llm_response(self, response: str, seed_question: str, seed_filename: str, 
-                           seed_expected: str, strategy: str) -> List[Dict[str, Any]]:
+                           seed_expected: str, strategy: str, validation_rules: str = '{}', validation_mode: str = 'hybrid',
+                           answer_column: str = 'ExpectedAnswer') -> List[Dict[str, Any]]:
         """Parse LLM response into test variations"""
         
         variations = []
@@ -252,16 +500,20 @@ GenerationStrategy: combinations
                 current_variation = {
                     'Question': line.replace('Question:', '').strip(),
                     'Filename': seed_filename,
-                    'ExpectedAnswer': seed_expected,
-                    'ValidationRules': '{}',
-                    'ValidationMode': 'hybrid',
+                    answer_column: seed_expected,  # Use detected column name
+                    'ValidationRules': validation_rules,  # Use passed validation rules
+                    'ValidationMode': validation_mode,  # Use passed validation mode
                     'GeneratedFrom': seed_question,
                     'GenerationStrategy': strategy
                 }
             elif line.startswith('Filename:'):
-                current_variation['Filename'] = line.replace('Filename:', '').strip()
-            elif line.startswith('ExpectedAnswer:'):
-                current_variation['ExpectedAnswer'] = line.replace('ExpectedAnswer:', '').strip()
+                # For edge-cases strategy, never modify the Filename - preserve original
+                if strategy != 'edge-cases':
+                    current_variation['Filename'] = line.replace('Filename:', '').strip()
+                # For edge-cases, ignore any Filename changes from LLM
+            elif line.startswith('ExpectedAnswer:') or line.startswith('Answer:'):
+                # Support both column names in LLM response
+                current_variation[answer_column] = line.replace('ExpectedAnswer:', '').replace('Answer:', '').strip()
             elif line.startswith('ValidationRules:'):
                 current_variation['ValidationRules'] = line.replace('ValidationRules:', '').strip()
             elif line.startswith('ValidationMode:'):
@@ -274,32 +526,107 @@ GenerationStrategy: combinations
         return variations
     
     def _generate_rule_based_variations(self, seed_question: str, seed_filename: str, 
-                                      seed_expected: str, strategy: str, count: int) -> List[Dict[str, Any]]:
+                                      seed_expected: str, strategy: str, count: int,
+                                      validation_rules: str = '{}', validation_mode: str = 'hybrid',
+                                      answer_column: str = 'ExpectedAnswer') -> List[Dict[str, Any]]:
         """Generate variations using simple rule-based patterns"""
         
         variations = []
         
         if strategy == 'variations':
-            # Simple paraphrasing patterns
-            patterns = [
-                seed_question.replace('Create', 'Generate'),
-                seed_question.replace('Write', 'Develop'),
-                seed_question.replace('Make', 'Build'),
-                seed_question.replace('Show', 'Display'),
-                seed_question.replace('Tell', 'Explain')
+            # Generate variations using multiple strategies
+            patterns = []
+            
+            # Strategy 1: Word replacements (if applicable)
+            word_replacements = [
+                ('Create', 'Generate'), ('Write', 'Develop'), ('Make', 'Build'),
+                ('Show', 'Display'), ('Tell', 'Explain'), ('What', 'Can you tell me what'),
+                ('Who', 'Can you identify who'), ('How', 'Can you explain how'),
+                ('Where', 'Can you tell me where'), ('When', 'Can you tell me when'),
+                ('Why', 'Can you explain why'), ('are you', 'do you identify as'),
+                ('you', 'your system'), ('I', 'we')
             ]
             
-            for i, pattern in enumerate(patterns[:count]):
-                if pattern != seed_question:  # Only add if different
-                    variations.append({
-                        'Question': pattern,
-                        'Filename': seed_filename,
-                        'ExpectedAnswer': seed_expected,
-                        'ValidationRules': '{}',
-                        'ValidationMode': 'hybrid',
-                        'GeneratedFrom': seed_question,
-                        'GenerationStrategy': 'variations'
-                    })
+            for old_word, new_word in word_replacements:
+                if old_word.lower() in seed_question.lower():
+                    # Case-insensitive replacement
+                    pattern = re.sub(re.escape(old_word), new_word, seed_question, flags=re.IGNORECASE)
+                    if pattern != seed_question:
+                        patterns.append(pattern)
+            
+            # Strategy 2: Add question prefixes/suffixes
+            prefixes = [
+                'Can you tell me',
+                'I would like to know',
+                'Please explain',
+                'Could you clarify',
+                'I need to understand',
+                'Help me understand',
+                'What can you tell me about',
+                'I\'m curious about'
+            ]
+            
+            # Remove existing question words and add prefix
+            question_lower = seed_question.lower().strip()
+            if question_lower.endswith('?'):
+                question_lower = question_lower[:-1].strip()
+            
+            for prefix in prefixes:
+                if not question_lower.startswith(prefix.lower()):
+                    patterns.append(f"{prefix} {question_lower}?")
+            
+            # Strategy 3: Rephrase with different structures
+            if '?' in seed_question:
+                base = seed_question.replace('?', '').strip()
+                rephrases = [
+                    f"I'm asking: {base}?",
+                    f"Question: {base}?",
+                    f"Please answer: {base}?",
+                    f"I want to know: {base}?",
+                    f"Can you help with: {base}?"
+                ]
+                patterns.extend(rephrases)
+            
+            # Strategy 4: Add context or emphasis
+            if len(patterns) < count:
+                emphasis_variations = [
+                    f"{seed_question} (please be specific)",
+                    f"{seed_question} (I need details)",
+                    f"Regarding this: {seed_question}",
+                    f"About this question: {seed_question}",
+                    f"To clarify: {seed_question}"
+                ]
+                patterns.extend(emphasis_variations)
+            
+            # Remove duplicates and limit to count
+            seen = set()
+            unique_patterns = []
+            for pattern in patterns:
+                if pattern not in seen and pattern != seed_question:
+                    seen.add(pattern)
+                    unique_patterns.append(pattern)
+                    if len(unique_patterns) >= count:
+                        break
+            
+            # If we still don't have enough, generate numbered variations
+            while len(unique_patterns) < count:
+                variation_num = len(unique_patterns) + 1
+                numbered_variation = f"{seed_question} [variation {variation_num}]"
+                if numbered_variation not in seen:
+                    unique_patterns.append(numbered_variation)
+                    seen.add(numbered_variation)
+            
+            # Create variation dictionaries
+            for pattern in unique_patterns[:count]:
+                variations.append({
+                    'Question': pattern,
+                    'Filename': seed_filename,
+                    answer_column: seed_expected,  # Use detected column name
+                    'ValidationRules': validation_rules,  # Use passed validation rules
+                    'ValidationMode': validation_mode,  # Use passed validation mode
+                    'GeneratedFrom': seed_question,
+                    'GenerationStrategy': 'variations'
+                })
         
         elif strategy == 'edge-cases':
             # Generate edge cases
@@ -314,10 +641,10 @@ GenerationStrategy: combinations
             for i, edge_case in enumerate(edge_cases[:count]):
                 variations.append({
                     'Question': edge_case,
-                    'Filename': '',
-                    'ExpectedAnswer': 'Error or edge case handling',
-                    'ValidationRules': '{"contains": ["error", "edge"]}',
-                    'ValidationMode': 'rule',
+                    'Filename': seed_filename,  # Always preserve original filename for edge-cases
+                    answer_column: 'Error or edge case handling',  # Use detected column name
+                    'ValidationRules': validation_rules,  # Use passed validation rules
+                    'ValidationMode': validation_mode,  # Use passed validation mode
                     'GeneratedFrom': seed_question,
                     'GenerationStrategy': 'edge-cases'
                 })
@@ -375,9 +702,13 @@ GenerationStrategy: combinations
             print(f"Error validating test file: {e}")
             return False
     
-    def create_interactive_suite(self, suite_name: str, output_dir: str = "test-data") -> bool:
+    def create_interactive_suite(self, suite_name: str, output_dir: Optional[str] = None) -> bool:
         """Create a new test suite interactively"""
         try:
+            # Use test_suites_dir if output_dir not provided
+            if output_dir is None:
+                output_dir = str(self.test_suites_dir)
+            
             # Create suite directory
             suite_dir = os.path.join(output_dir, suite_name)
             os.makedirs(suite_dir, exist_ok=True)
@@ -448,8 +779,8 @@ GenerationStrategy: combinations
         """Add tests to an existing test suite interactively"""
         try:
             # Load test suite configuration
-            config_file = "test_suites.json"
-            if not os.path.exists(config_file):
+            config_file = self.test_suites_dir / "test_suites.json"
+            if not config_file.exists():
                 print(f"❌ Error: {config_file} not found")
                 return False
             
@@ -462,11 +793,15 @@ GenerationStrategy: combinations
                 return False
             
             suite_config = config[suite_name]
-            csv_file = suite_config['csv_file']
+            csv_file_path = suite_config['csv_file']
+            # Resolve CSV path relative to test_suites_dir
+            csv_file = self.test_suites_dir / csv_file_path
             
-            if not os.path.exists(csv_file):
+            if not csv_file.exists():
                 print(f"❌ Error: CSV file not found: {csv_file}")
                 return False
+            
+            csv_file = str(csv_file)
             
             print(f"\n🎯 Adding tests to existing suite: {suite_name}")
             print(f"📁 CSV file: {csv_file}")
@@ -573,12 +908,71 @@ GenerationStrategy: combinations
         """Check if a test suite already exists"""
         try:
             # Load test suites configuration
-            with open('test_suites.json', 'r') as f:
+            config_file = self.test_suites_dir / "test_suites.json"
+            with open(config_file, 'r') as f:
                 suites = json.load(f)
             
             return suite_name in suites
         except (FileNotFoundError, json.JSONDecodeError):
             return False
+    
+    def get_suite_csv_path(self, suite_name: str) -> Optional[str]:
+        """Get CSV file path for a test suite"""
+        try:
+            # Load test suites configuration
+            config_file = "test_suites.json"
+            if not os.path.exists(config_file):
+                return None
+            
+            with open(config_file, 'r') as f:
+                suites = json.load(f)
+            
+            if suite_name not in suites:
+                return None
+            
+            suite_config = suites[suite_name]
+            csv_file = suite_config.get('csv_file')
+            
+            # Return absolute path
+            if csv_file:
+                if os.path.isabs(csv_file):
+                    return csv_file
+                else:
+                    # Relative to script directory
+                    base_dir = os.path.dirname(os.path.abspath(__file__))
+                    return os.path.join(base_dir, csv_file)
+            
+            return None
+        except (FileNotFoundError, json.JSONDecodeError) as e:
+            print(f"Error loading test suite configuration: {e}")
+            return None
+    
+    def create_or_get_output_suite_path(self, suite_name: str) -> Optional[str]:
+        """Create or get CSV path for output suite, creating suite config if needed"""
+        try:
+            # Check if suite exists
+            csv_path = self.get_suite_csv_path(suite_name)
+            
+            if csv_path:
+                # Suite exists, return its CSV path
+                return csv_path
+            
+            # Suite doesn't exist, create it
+            # Standard path: test-data/{suite-name}/TestQuestions-{suite-name}.csv
+            base_dir = os.path.dirname(os.path.abspath(__file__))
+            suite_dir = os.path.join(base_dir, 'test-data', suite_name)
+            os.makedirs(suite_dir, exist_ok=True)
+            
+            csv_file = os.path.join(suite_dir, f'TestQuestions-{suite_name}.csv')
+            relative_csv = os.path.join('test-data', suite_name, f'TestQuestions-{suite_name}.csv')
+            
+            # Update test_suites.json
+            self._update_test_suites_config(suite_name, relative_csv)
+            
+            return csv_file
+        except Exception as e:
+            print(f"Error creating output suite: {e}")
+            return None
     
     def _get_user_input(self, prompt: str, required: bool = True, multiline: bool = False) -> str:
         """Get user input with validation"""
@@ -729,25 +1123,39 @@ GenerationStrategy: combinations
     def _update_test_suites_config(self, suite_name: str, csv_file: str):
         """Update test_suites.json with new suite"""
         try:
-            config_file = "test_suites.json"
+            config_file = self.test_suites_dir / "test_suites.json"
             
             # Load existing config
-            if os.path.exists(config_file):
+            if config_file.exists():
                 with open(config_file, 'r') as f:
                     config = json.load(f)
             else:
                 config = {}
             
+            # Convert absolute csv_file path to relative path from test_suites_dir
+            csv_path = Path(csv_file)
+            if csv_path.is_absolute():
+                try:
+                    csv_file_rel = str(csv_path.relative_to(self.test_suites_dir))
+                except ValueError:
+                    # If not relative to test_suites_dir, use as-is
+                    csv_file_rel = csv_file
+            else:
+                csv_file_rel = csv_file
+            
             # Add new suite
             config[suite_name] = {
-                "csv_file": csv_file,
+                "csv_file": csv_file_rel,
                 "description": f"Tests for {suite_name}",
                 "quick_mode_limit": 5
             }
             
-            # Save updated config
+            # Save updated config (sort keys alphabetically)
+            sorted_config = dict(sorted(config.items()))
+            # Ensure parent directory exists
+            config_file.parent.mkdir(parents=True, exist_ok=True)
             with open(config_file, 'w') as f:
-                json.dump(config, f, indent=2)
+                json.dump(sorted_config, f, indent=2)
             
             print(f"🔧 Updated {config_file} with new suite: {suite_name}")
             
@@ -771,11 +1179,14 @@ Examples:
   # Generate variations from seed tests
   python generate_tests.py --input seed-tests.csv --output expanded-tests.csv --strategy variations --count 5
   
+  # Generate variations using test suite names
+  python generate_tests.py --input-suite code-interpreter --output-suite code-interpreter-variations --strategy variations --count 9
+  
   # Generate edge cases
   python generate_tests.py --input seed-tests.csv --output edge-cases.csv --strategy edge-cases --count 3
   
   # Append to existing test suite
-  python generate_tests.py --input seed.csv --output test-data/code-interpreter/TestQuestions-code-interpreter.csv --append
+  python generate_tests.py --input seed.csv --output test-suites/code-interpreter/TestQuestions-code-interpreter.csv --append
   
   # Generate with deduplication
   python generate_tests.py --input seed.csv --output expanded.csv --deduplicate
@@ -786,6 +1197,10 @@ Examples:
                        help='Input CSV file with seed tests')
     parser.add_argument('--output',
                        help='Output CSV file for generated tests')
+    parser.add_argument('--input-suite',
+                       help='Input test suite name (alternative to --input)')
+    parser.add_argument('--output-suite',
+                       help='Output test suite name (alternative to --output, creates suite if needed)')
     
     # Interactive mode
     parser.add_argument('--interactive', action='store_true',
@@ -807,8 +1222,21 @@ Examples:
                        help='Validate generated tests')
     parser.add_argument('--dry-run', action='store_true',
                        help='Show what would be generated without creating files')
+    parser.add_argument('--test-suites-dir',
+                       help='Path to test-suites directory (default: test-suites/ relative to script)')
     
     args = parser.parse_args()
+    
+    # Resolve test-suites directory path
+    test_suites_dir = None
+    if args.test_suites_dir:
+        test_suites_dir = Path(args.test_suites_dir).resolve()
+        if not test_suites_dir.exists():
+            print(f"Error: Test-suites directory not found: {test_suites_dir}")
+            sys.exit(1)
+        if not test_suites_dir.is_dir():
+            print(f"Error: Path is not a directory: {test_suites_dir}")
+            sys.exit(1)
     
     # Handle interactive mode
     if args.interactive:
@@ -821,7 +1249,7 @@ Examples:
             sys.exit(1)
         
         # Initialize generator
-        generator = TestGenerator()
+        generator = TestGenerator(test_suites_dir=test_suites_dir)
         
         if args.existing_suite:
             # Add tests to existing suite
@@ -829,8 +1257,9 @@ Examples:
         else:
             # Check if suite already exists when creating new one
             if generator.suite_exists(args.suite_name):
+                csv_path = generator.test_suites_dir / args.suite_name / f"TestQuestions-{args.suite_name}.csv"
                 print(f"\n⚠️  Test suite '{args.suite_name}' already exists!")
-                print(f"📁 CSV file: test-data/{args.suite_name}/TestQuestions-{args.suite_name}.csv")
+                print(f"📁 CSV file: {csv_path}")
                 print(f"📊 This suite already has tests in it.")
                 print(f"\n❓ What would you like to do?")
                 print(f"  1. Append new tests to existing suite '{args.suite_name}'")
@@ -873,28 +1302,57 @@ Examples:
         
         
         return
-    
+        
     # Validate arguments for non-interactive mode
-    if not args.input:
-        print("Error: --input is required for non-interactive mode")
+    # Check input: must have either --input or --input-suite, but not both
+    if args.input and args.input_suite:
+        print("Error: Cannot specify both --input and --input-suite")
         sys.exit(1)
     
-    if not args.output:
-        print("Error: --output is required for non-interactive mode")
+    if not args.input and not args.input_suite:
+        print("Error: Must specify either --input or --input-suite for non-interactive mode")
         sys.exit(1)
     
-    # Validate input file
-    if not os.path.exists(args.input):
-        print(f"Error: Input file not found: {args.input}")
+    # Check output: must have either --output or --output-suite, but not both
+    if args.output and args.output_suite:
+        print("Error: Cannot specify both --output and --output-suite")
+        sys.exit(1)
+    
+    if not args.output and not args.output_suite:
+        print("Error: Must specify either --output or --output-suite for non-interactive mode")
         sys.exit(1)
     
     # Initialize generator
-    generator = TestGenerator()
+    generator = TestGenerator(test_suites_dir=test_suites_dir)
+    
+    # Resolve input path
+    input_file = args.input
+    if args.input_suite:
+        input_file = generator.get_suite_csv_path(args.input_suite)
+        if not input_file:
+            print(f"Error: Test suite '{args.input_suite}' not found in test_suites.json")
+            sys.exit(1)
+        if not os.path.exists(input_file):
+            print(f"Error: CSV file for suite '{args.input_suite}' not found: {input_file}")
+            sys.exit(1)
+    
+    # Resolve output path
+    output_file = args.output
+    if args.output_suite:
+        output_file = generator.create_or_get_output_suite_path(args.output_suite)
+        if not output_file:
+            print(f"Error: Failed to create or get output suite '{args.output_suite}'")
+            sys.exit(1)
+    
+    # Validate input file
+    if not os.path.exists(input_file):
+        print(f"Error: Input file not found: {input_file}")
+        sys.exit(1)
     
     if args.dry_run:
         print("Dry run mode - would generate tests with:")
-        print(f"  Input: {args.input}")
-        print(f"  Output: {args.output}")
+        print(f"  Input: {input_file}")
+        print(f"  Output: {output_file}")
         print(f"  Strategy: {args.strategy}")
         print(f"  Count: {args.count}")
         print(f"  Deduplicate: {args.deduplicate}")
@@ -903,8 +1361,8 @@ Examples:
     
     # Generate tests
     success = generator.generate_tests(
-        input_file=args.input,
-        output_file=args.output,
+        input_file=input_file,
+        output_file=output_file,
         strategy=args.strategy,
         count=args.count,
         deduplicate=args.deduplicate,
@@ -917,7 +1375,7 @@ Examples:
     
     # Validate if requested
     if args.validate:
-        if generator.validate_generated_tests(args.output):
+        if generator.validate_generated_tests(output_file):
             print("✓ Generated tests are valid")
         else:
             print("✗ Generated tests have validation errors")

@@ -4,9 +4,9 @@
 		<div v-if="$appConfigStore.hasConfigurationAccessError" class="access-denied-overlay">
 			<div class="access-denied-container">
 				<div class="access-denied-icon">
-					<i class="pi pi-ban" style="font-size: 4rem; color: #e74c3c;"></i>
+					<i class="pi pi-ban" style="font-size: 3rem; color: #e74c3c;"></i>
 				</div>
-				<h2 class="access-denied-title">Access Denied</h2>
+				<p class="access-denied-title">Access Denied</p>
 				<p class="access-denied-message">
 					{{ $appConfigStore.configurationAccessErrorMessage }}
 				</p>

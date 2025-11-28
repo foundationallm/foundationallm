@@ -80,9 +80,7 @@
 											text
 											severity="danger"
 											aria-label="Delete attachment"
-											@click="
-												fileToDelete = { name: file.fileName, type: 'attachment', file: file }
-											"
+											@click="confirmRemoveFile('attachment', file.fileName, file)"
 										/>
 									</div>
 								</div>
@@ -109,7 +107,7 @@
 											text
 											severity="danger"
 											aria-label="Remove file"
-											@click="fileToDelete = { name: file.name, type: 'local', file: file }"
+											@click="confirmRemoveFile('local', file.name, file)"
 										/>
 									</div>
 								</div>
@@ -136,7 +134,7 @@
 												text
 												severity="danger"
 												aria-label="Remove file"
-												@click="fileToDelete = { name: file.name, type: 'oneDrive', file: file }"
+												@click="confirmRemoveFile('oneDrive', file.name, file)"
 											/>
 										</div>
 									</div>
@@ -206,45 +204,6 @@
 			</VTooltip>
 
 			<Dialog
-				v-if="fileToDelete !== null"
-				v-focustrap
-				:visible="fileToDelete !== null"
-				:closable="false"
-				modal
-				header="Remove file"
-				@keydown="deleteFileKeydown"
-			>
-				<div v-if="deleteFileProcessing" class="delete-dialog-content">
-					<div role="status">
-						<i
-							class="pi pi-spin pi-spinner"
-							style="font-size: 2rem"
-							role="img"
-							aria-label="Loading"
-						></i>
-					</div>
-				</div>
-				<div v-else>
-					<p>Do you want to remove the file "{{ fileToDelete.name }}"?</p>
-				</div>
-				<template #footer>
-					<Button
-						label="Cancel"
-						text
-						:disabled="deleteFileProcessing"
-						@click="fileToDelete = null"
-					/>
-					<Button
-						label="Remove"
-						severity="danger"
-						autofocus
-						:disabled="deleteFileProcessing"
-						@click="removeDialogFile"
-					/>
-				</template>
-			</Dialog>
-
-			<Dialog
 				v-model:visible="showOneDriveIframeDialog"
 				modal
 				:closable="false"
@@ -302,6 +261,7 @@ import mime from 'mime';
 import 'floating-vue/dist/style.css';
 import { hideAllPoppers } from 'floating-vue';
 import { isAgentExpired, isAgentFileUploadEnabled } from '@/js/helpers';
+import { useConfirmationStore } from '@/stores/confirmationStore';
 
 const DEFAULT_INPUT_TEXT = '';
 
@@ -370,8 +330,6 @@ export default {
 			},
 			oneDriveBaseURL: null as string | null,
 			disconnectingOneDrive: false,
-			fileToDelete: null as any,
-			deleteFileProcessing: false,
 			connectingOneDrive: true,
 			maxFiles: 10,
 		};
@@ -619,12 +577,21 @@ export default {
 					currentFiles.uploadedFiles.push(file);
 				} catch (error) {
 					filesFailed += 1;
-					this.$appStore.addToast({
-						severity: 'error',
-						summary: 'Error',
-						detail: `File upload failed for "${file.name}". ${error.message || error.title || ''}`,
-						life: 5000,
-					});
+					if (error.status === 422) {
+						this.$appStore.addToast({
+							severity: 'error',
+							summary: 'File rejected',
+							detail: `The file "${file.name}" was rejected because it does not meet the content safety standards of the platform.`,
+							life: 5000,
+						});
+					} else {
+						this.$appStore.addToast({
+							severity: 'error',
+							summary: 'Error',
+							detail: `File upload failed for "${file.name}". ${error.message || error.title || ''}`,
+							life: 5000,
+						});
+					}
 				} finally {
 					if (totalFiles === filesUploaded + filesFailed) {
 						this.isUploading = false;
@@ -646,31 +613,8 @@ export default {
 			});
 		},
 
-		deleteFileKeydown(event: KeyboardEvent) {
-			if (event.key === 'Escape') {
-				this.fileToDelete = null;
-			}
-		},
-
-		removeDialogFile() {
-			this.deleteFileProcessing = true;
-			const sessionId = this.$appStore.currentSession.sessionId;
-			const currentFiles = this.getFilesForSession(sessionId);
-
-			if (this.fileToDelete.type === 'local') {
-				this.removeLocalFile(currentFiles, this.fileToDelete.file);
-			} else if (this.fileToDelete.type === 'oneDrive') {
-				this.removeOneDriveFile(currentFiles, this.fileToDelete.file);
-			} else if (this.fileToDelete.type === 'attachment') {
-				this.removeAttachment(currentFiles, this.fileToDelete.file);
-			}
-			this.removeFileFromSession(sessionId, this.fileToDelete.file, 'uploaded');
-		},
-
 		async removeAttachment(currentFiles, file) {
 			await this.$appStore.deleteAttachment(file);
-			this.fileToDelete = null;
-			this.deleteFileProcessing = false;
 			currentFiles.uploadedFiles = currentFiles.uploadedFiles.filter(
 				(uploadedFile) => uploadedFile.name !== file.name,
 			);
@@ -682,9 +626,6 @@ export default {
 			currentFiles.localFiles = currentFiles.localFiles.filter(
 				(localFile) => localFile.name !== file.name,
 			);
-			this.fileToDelete = null;
-			this.deleteFileProcessing = false;
-
 			this.alignOverlay();
 		},
 
@@ -692,10 +633,39 @@ export default {
 			currentFiles.oneDriveFiles = currentFiles.oneDriveFiles.filter(
 				(oneDriveFile) => oneDriveFile.name !== file.name,
 			);
-			this.fileToDelete = null;
-			this.deleteFileProcessing = false;
-
 			this.alignOverlay();
+		},
+
+		async confirmRemoveFile(
+			type: 'local' | 'oneDrive' | 'attachment',
+			name: string,
+			file: any,
+		) {
+			const confirmationStore = useConfirmationStore();
+			const confirmed = await confirmationStore.confirmAsync({
+				title: type === 'attachment' ? 'Delete attachment' : 'Remove file',
+				message: `Do you want to remove the file "${name}"?`,
+				confirmText: 'Yes',
+				cancelText: 'Cancel',
+				confirmButtonSeverity: 'danger',
+			});
+
+			if (!confirmed) {
+				return;
+			}
+
+			const sessionId = this.$appStore.currentSession.sessionId;
+			const currentFiles = this.getFilesForSession(sessionId);
+
+			if (type === 'local') {
+				this.removeLocalFile(currentFiles, file);
+			} else if (type === 'oneDrive') {
+				this.removeOneDriveFile(currentFiles, file);
+			} else if (type === 'attachment') {
+				await this.removeAttachment(currentFiles, file);
+			}
+
+			this.removeFileFromSession(sessionId, file, 'uploaded');
 		},
 
 		browseFiles() {

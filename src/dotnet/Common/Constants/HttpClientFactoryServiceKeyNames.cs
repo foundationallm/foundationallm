@@ -56,5 +56,10 @@ namespace FoundationaLLM.Common.Constants
         /// The dictionary key identifying whether diagnostics are enabled for an HTTP client.
         /// </summary>
         public const string EnableDiagnostics = "EnableDiagnostics";
+
+        /// <summary>
+        /// The dictionary key identifying whether retry logic is enabled for an HTTP client.
+        /// </summary>
+        public const string EnableRetry = "EnableRetry";
     }
 }

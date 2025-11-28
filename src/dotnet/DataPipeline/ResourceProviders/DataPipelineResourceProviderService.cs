@@ -127,7 +127,7 @@ namespace FoundationaLLM.DataPipeline.ResourceProviders
                 DataPipelineResourceTypeNames.DataPipelineRuns => await CreateDataPipelineRun(
                     resourcePath,
                     JsonSerializer.Deserialize<DataPipelineRun>(serializedResource!)
-                        ?? throw new ResourceProviderException("The object definition is invalid.",
+                        ?? throw new ResourceProviderException("CreateDataPipelineRun returned an unexpected null result.",
                             StatusCodes.Status400BadRequest),
                     userIdentity),
                 _ => throw new ResourceProviderException(
@@ -266,7 +266,7 @@ namespace FoundationaLLM.DataPipeline.ResourceProviders
             UnifiedUserIdentity userIdentity)
         {
             var dataPipeline = JsonSerializer.Deserialize<DataPipelineDefinition>(serializedDataPipeline)
-                ?? throw new ResourceProviderException("The object definition is invalid.",
+                ?? throw new ResourceProviderException("The serialized data pipeline object could not be deserialized.",
                 StatusCodes.Status400BadRequest);
 
             var existingDataPipelineReference = await _resourceReferenceStore!.GetResourceReference(dataPipeline.Name);
@@ -371,14 +371,14 @@ namespace FoundationaLLM.DataPipeline.ResourceProviders
             {
                 Type t when t == typeof(DataPipelineDefinition) =>
                     await LoadResource<DataPipelineDefinition>(resourcePath.MainResourceId!) as T
-                        ?? throw new ResourceProviderException("The object definition is invalid.",
+                        ?? throw new ResourceProviderException($"LoadResource returned an unexpected null object for {resourcePath.MainResourceId!}.",
                             StatusCodes.Status400BadRequest),
                 Type t when t == typeof(DataPipelineDefinitionSnapshot) =>
                     await LoadDataPipelineSnapshot(
                         resourcePath,
                         authorizationResult,
                         userIdentity) as T
-                        ?? throw new ResourceProviderException("The object definition is invalid.",
+                        ?? throw new ResourceProviderException($"LoadDataPipelineSnapshot returned an unexpected null object for {resourcePath.MainResourceId!}.",
                             StatusCodes.Status400BadRequest),
                 Type t when t == typeof(DataPipelineRun) =>
                     await _dataPipelineServiceClient.GetDataPipelineRunAsync(
@@ -432,7 +432,7 @@ namespace FoundationaLLM.DataPipeline.ResourceProviders
                 dataPipelineRun,
                 dataPipelineSnapshot,
                 userIdentity)
-                ?? throw new ResourceProviderException("The object definition is invalid.",
+                ?? throw new ResourceProviderException("The Data Pipeline client was not able to create the data pipeline run.",
                     StatusCodes.Status400BadRequest);
 
             return new ResourceProviderUpsertResult<DataPipelineRun>
