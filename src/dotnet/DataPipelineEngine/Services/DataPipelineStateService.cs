@@ -748,7 +748,7 @@ namespace FoundationaLLM.DataPipelineEngine.Services
             await _cosmosDBService.StopChangeFeedProcessorAsync();
 
         /// <inheritdoc/>
-        public async Task<List<DataPipelineRun>> GetDataPipelineRuns(DataPipelineRunFilter dataPipelineRunFilter) =>
+        public async Task<DataPipelineRunFilterResponse> GetDataPipelineRuns(DataPipelineRunFilter dataPipelineRunFilter) =>
             await _cosmosDBService.GetDataPipelineRuns(dataPipelineRunFilter);
 
         #region Changelog utils

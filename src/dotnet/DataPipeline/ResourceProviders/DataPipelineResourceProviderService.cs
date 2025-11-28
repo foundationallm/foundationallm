@@ -223,7 +223,7 @@ namespace FoundationaLLM.DataPipeline.ResourceProviders
             ];
         }
 
-        private async Task<ResourceProviderActionResult<ResourceCollection<DataPipelineRun>>> GetDataPipelineRuns(
+        private async Task<ResourceProviderActionResult<DataPipelineRunFilterResponse>> GetDataPipelineRuns(
             ResourcePath resourcePath,
             ResourcePathAuthorizationResult authorizationResult,
             Func<DataPipelineRunFilter> getDataPipelineRunFilter,
@@ -250,13 +250,11 @@ namespace FoundationaLLM.DataPipeline.ResourceProviders
                 dataPipelineRunFilter,
                 userIdentity);
 
-            return new ResourceProviderActionResult<ResourceCollection<DataPipelineRun>>(string.Empty, true)
+            return new ResourceProviderActionResult<DataPipelineRunFilterResponse>(
+                string.Empty,
+                true)
             {
-                Resource = new ResourceCollection<DataPipelineRun>
-                {
-                    Name = string.Empty,
-                    Resources = result,
-                }
+                Resource = result
             };
         }
 

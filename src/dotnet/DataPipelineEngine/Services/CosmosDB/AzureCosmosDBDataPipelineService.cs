@@ -218,7 +218,7 @@ namespace FoundationaLLM.DataPipelineEngine.Services.CosmosDB
         }
 
         /// <inheritdoc/>
-        public async Task<List<DataPipelineRun>> GetDataPipelineRuns(
+        public async Task<DataPipelineRunFilterResponse> GetDataPipelineRuns(
             DataPipelineRunFilter dataPipelineRunFilter)
         {
             var queryString = "SELECT * FROM c WHERE c.type = @type AND c.instance_id = @instanceId";
@@ -257,6 +257,8 @@ namespace FoundationaLLM.DataPipelineEngine.Services.CosmosDB
                 query.WithParameter("@endTime", dataPipelineRunFilter.EndTime.Value.ToUnixTimeSeconds());
             }
 
+            queryString += " ORDER BY c._ts DESC";
+
             // Re-create QueryDefinition with the final query string and parameters
             var finalQuery = new QueryDefinition(queryString);
             foreach (var param in query.GetQueryParameters())
@@ -264,7 +266,32 @@ namespace FoundationaLLM.DataPipelineEngine.Services.CosmosDB
                 finalQuery.WithParameter(param.Name, param.Value);
             }
 
-            return await RetrieveItemsAsync<DataPipelineRun>(finalQuery);
+            var queryRequestOptions = new QueryRequestOptions
+            {
+                MaxItemCount = dataPipelineRunFilter.PageSize ?? 10
+            };
+
+            var iterator = _dataPipelineContainer.GetItemQueryIterator<DataPipelineRun>(
+                finalQuery,
+                continuationToken: dataPipelineRunFilter.ContinuationToken,
+                requestOptions: queryRequestOptions);
+
+            var items = new List<DataPipelineRun>();
+            string? continuationToken = null;
+
+            if (iterator.HasMoreResults)
+            {
+                var response = await iterator.ReadNextAsync();
+                items.AddRange(response);
+                continuationToken = response.ContinuationToken;
+            }
+
+            return new DataPipelineRunFilterResponse
+            {
+                Name = string.Empty,
+                Items = items,
+                ContinuationToken = continuationToken
+            };
         }
 
         /// <inheritdoc/>
