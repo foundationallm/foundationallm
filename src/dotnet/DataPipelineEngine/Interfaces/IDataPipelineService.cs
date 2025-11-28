@@ -15,7 +15,7 @@ namespace FoundationaLLM.DataPipelineEngine.Interfaces
         /// <param name="dataPipelineRunFilter">The definition of the filter criteria.</param>
         /// <param name="userIdentity">The identity of the user running the operation.</param>
         /// <returns>The requested list of data pipeline run objects.</returns>
-        Task<List<DataPipelineRun>> GetDataPipelineRuns(
+        Task<DataPipelineRunFilterResponse> GetDataPipelineRuns(
             string instanceId,
             DataPipelineRunFilter dataPipelineRunFilter,
             UnifiedUserIdentity userIdentity);

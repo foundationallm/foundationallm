@@ -48,5 +48,17 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.DataPipeline
         /// </summary>
         [JsonPropertyName("end_time")]
         public DateTimeOffset? EndTime { get; set; }
+
+        /// <summary>
+        /// Gets or sets the continuation token for pagination.
+        /// </summary>
+        [JsonPropertyName("continuation_token")]
+        public string? ContinuationToken { get; set; }
+
+        /// <summary>
+        /// Gets or sets the page size for pagination.
+        /// </summary>
+        [JsonPropertyName("page_size")]
+        public int? PageSize { get; set; }
     }
 }

@@ -59,7 +59,7 @@ namespace FoundationaLLM.DataPipelineEngine.Clients
             await _dataPipelineStateService.GetDataPipelineRun(runId);
 
         /// <inheritdoc/>
-        public async Task<List<DataPipelineRun>> GetDataPipelineRunsAsync(
+        public async Task<DataPipelineRunFilterResponse> GetDataPipelineRunsAsync(
             string instanceId,
             DataPipelineRunFilter dataPipelineRunFilter,
             UnifiedUserIdentity userIdentity) =>

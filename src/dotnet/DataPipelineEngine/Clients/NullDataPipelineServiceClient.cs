@@ -31,11 +31,11 @@ namespace FoundationaLLM.DataPipelineEngine.Clients
             await Task.FromResult<DataPipelineRun?>(null);
 
         /// <inheritdoc/>
-        public async Task<List<DataPipelineRun>> GetDataPipelineRunsAsync(
+        public async Task<DataPipelineRunFilterResponse> GetDataPipelineRunsAsync(
             string instanceId,
             DataPipelineRunFilter dataPipelineRunFilter,
             UnifiedUserIdentity userIdentity) =>
-            await Task.FromResult<List<DataPipelineRun>>([]);
+            await Task.FromResult(new DataPipelineRunFilterResponse { Name = string.Empty });
 
         /// <inheritdoc/>
         public async Task<BinaryData> GetServiceStateAsync() =>
