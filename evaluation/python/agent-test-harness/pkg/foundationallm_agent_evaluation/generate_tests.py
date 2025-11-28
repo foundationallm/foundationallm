@@ -1171,25 +1171,25 @@ def main():
         epilog="""
 Examples:
   # Interactive mode - create new test suite
-  python generate_tests.py --interactive --suite-name my-custom-tests
+  fllm-agent-test --interactive --suite-name my-custom-tests
   
   # Interactive mode - add tests to existing suite
-  python generate_tests.py --interactive --existing-suite code-interpreter
+  fllm-agent-test --interactive --existing-suite code-interpreter
   
   # Generate variations from seed tests
-  python generate_tests.py --input seed-tests.csv --output expanded-tests.csv --strategy variations --count 5
+  fllm-agent-test --input seed-tests.csv --output expanded-tests.csv --strategy variations --count 5
   
   # Generate variations using test suite names
-  python generate_tests.py --input-suite code-interpreter --output-suite code-interpreter-variations --strategy variations --count 9
+  fllm-agent-test --input-suite code-interpreter --output-suite code-interpreter-variations --strategy variations --count 9
   
   # Generate edge cases
-  python generate_tests.py --input seed-tests.csv --output edge-cases.csv --strategy edge-cases --count 3
+  fllm-agent-test --input seed-tests.csv --output edge-cases.csv --strategy edge-cases --count 3
   
   # Append to existing test suite
-  python generate_tests.py --input seed.csv --output test-suites/code-interpreter/TestQuestions-code-interpreter.csv --append
+  fllm-agent-test --input seed.csv --output test-suites/code-interpreter/TestQuestions-code-interpreter.csv --append
   
   # Generate with deduplication
-  python generate_tests.py --input seed.csv --output expanded.csv --deduplicate
+  fllm-agent-test --input seed.csv --output expanded.csv --deduplicate
         """
     )
     

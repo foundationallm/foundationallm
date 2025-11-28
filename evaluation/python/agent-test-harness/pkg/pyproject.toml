@@ -1,0 +1,36 @@
+[project]
+name = "foundationallm-agent-evaluation"
+version = "1.0.0b100"
+dependencies = [
+  "requests==2.32.5",
+  "python-dotenv==1.1.1",
+  "pandas==2.3.3",
+  "tqdm==4.67.1",
+  "openai==2.6.0",
+  "jinja2==3.1.6",
+  "pytest==8.4.2",
+  "PyJWT==2.10.1",
+  "azure-identity==1.17.1"
+]
+authors = [
+  { name="FoundationaLLM", email="dev@foundationallm.ai" },
+]
+description = "FoundationaLLM Agent plugins."
+readme = "README.md"
+requires-python = ">=3.11"
+license = "MIT"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+Homepage = "https://foundationallm.ai"
+Issues = "https://github.com/foundationallm/foundationallm/issues"
+
+[tool.setuptools.packages.find]
+include = ['*']
+
+[project.scripts]
+fllm-agent-eval = "foundationallm_agent_evaluation.run_tests:main"
+fllm-agent-test = "foundationallm_agent_evaluation.generate_tests:main"

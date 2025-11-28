@@ -1,0 +1,32 @@
+{
+  "code-interpreter": {
+    "csv_file": "code-interpreter/TestQuestions-code-interpreter.csv",
+    "description": "Tests for code-interpreter",
+    "quick_mode_limit": 5
+  },
+  "conversational": {
+    "csv_file": "conversational/TestQuestions-conversational.csv",
+    "description": "Tests for conversational",
+    "quick_mode_limit": 3
+  },
+  "document-analysis": {
+    "csv_file": "document-analysis/TestQuestions-document-analysis.csv",
+    "description": "Tests for document-analysis",
+    "quick_mode_limit": 3
+  },
+  "file-operations": {
+    "csv_file": "file-operations/TestQuestions-file-operations.csv",
+    "description": "Tests for file-operations",
+    "quick_mode_limit": 4
+  },
+  "knowledge-retrieval": {
+    "csv_file": "knowledge-retrieval/TestQuestions-knowledge-retrieval.csv",
+    "description": "Tests for knowledge-retrieval",
+    "quick_mode_limit": 4
+  },
+  "routing": {
+    "csv_file": "routing/TestQuestions-routing.csv",
+    "description": "Tests for routing",
+    "quick_mode_limit": 5
+  }
+}

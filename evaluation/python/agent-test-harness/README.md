@@ -6,7 +6,6 @@ A comprehensive test framework for FoundationaLLM agents that provides automated
 
 ### Prerequisites
 - Python 3.10 or later
-- FoundationaLLM agent with access token
 
 ### Setup (One-time)
 1. **Create a local virtual environment:**
@@ -548,7 +547,7 @@ The `--dry-run` switch performs comprehensive configuration validation without e
 
 **Environment Validation:**
 - Virtual environment activation (local `.venv` directory)
-- Required environment variables (`FLLM_ACCESS_TOKEN`, `FLLM_ENDPOINT`)
+- Required environment variables (`FLLM_ENDPOINT`)
 - Output directory creation
 
 **Test Suite Validation:**
@@ -665,12 +664,12 @@ test-suites/
 ### Environment Variables
 Required in `.env` file:
 ```env
-FLLM_ACCESS_TOKEN=keya.your-token.ayek
 FLLM_ENDPOINT=https://your-endpoint.azurecontainerapps.io/instances/your-instance/
 ```
 
 Optional for enhanced features:
 ```env
+FLLM_ACCESS_TOKEN=keya.your-token.ayek
 FLLM_MGMT_ENDPOINT=https://your-mgmt-endpoint/instances/your-instance/
 FLLM_MGMT_BEARER_TOKEN=your-bearer-token
 AZURE_OPENAI_ENDPOINT=https://your-openai-endpoint.openai.azure.com/

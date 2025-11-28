@@ -16,7 +16,7 @@ function Write-ColorOutput {
     Write-Host $Message -ForegroundColor $Color
 }
 
-Write-ColorOutput "🚀 Creating local virtual environment for FoundationaLLM Test Harness" $Blue
+Write-ColorOutput "🚀 Creating local virtual environment for FoundationaLLM Agents Evaluation" $Blue
 Write-ColorOutput ("=" * 50) $Blue
 
 # Check Python version

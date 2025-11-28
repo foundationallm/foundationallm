@@ -176,17 +176,17 @@
             "name": "Python: Agent Test Harness (CJ)",
             "type": "debugpy",
             "request": "launch",
-            "program": "run_tests.py",
+            "module": "foundationallm_agent_evaluation.run_tests",
             "console": "integratedTerminal",
             "cwd" : "${workspaceFolder}/evaluation/python/agent-test-harness",
             "args": [
                 "--test-suites-dir", "${env:FOUNDATIONALLM_TEST_SUITES_PATH}",
-                "--suite", "document-analysis",
+                "--suite", "who-are-you",
                 "--agents", "MAA-02",
                 "--quick",
                 "--report"
             ],
-            "python": "${workspaceFolder}/evaluation/python/agent-test-harness/.venv/Scripts/python.exe",
+            "python": "${workspaceFolder}/evaluation/python/agent-test-harness/pkg/.venv/Scripts/python.exe",
             "justMyCode": true
         },
         {
