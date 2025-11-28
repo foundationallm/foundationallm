@@ -21,10 +21,6 @@
 				:globalFilterFields="['created_on']"
 				v-model:filters="filters"
 				filterDisplay="menu"
-				paginator
-				:rows="10"
-				:rowsPerPageOptions="[10, 25, 50, 100]"
-				:paginatorTemplate="'FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink RowsPerPageDropdown'"
 				:value="pipelineRuns"
 				striped-rows
 				scrollable
@@ -42,7 +38,7 @@
                             option-label="value"
                             option-value="value"
                             placeholder="--Select Data Pipeline--"
-                            @change="getPipelineRuns"
+                            @change="getPipelineRuns(false)"
 					    />
                         <div class="flex align-items-center justify-content-center gap-2" style="padding-top: 0.75rem;">
                             <Checkbox
@@ -50,7 +46,7 @@
                                 v-model="showAll"
                                 binary
                                 size="large"
-                                @change="getPipelineRuns"
+                                @change="getPipelineRuns(false)"
                             />
                             <label for="allCB">All</label>
                             <Checkbox
@@ -59,7 +55,7 @@
                                 binary
                                 size="large"
                                 :disabled="showAll"
-                                @change="getPipelineRuns"
+                                @change="getPipelineRuns(false)"
                             />
                             <label for="completedCB">Completed</label>
                             <Checkbox
@@ -68,14 +64,14 @@
                                 binary
                                 size="large"
                                 :disabled="showAll"
-                                @change="getPipelineRuns"
+                                @change="getPipelineRuns(false)"
                             />
                             <label for="successfulCB">Successful</label>
                         </div>
 						<Button
 							type="button"
 							icon="pi pi-refresh"
-							@click="getPipelineRuns"
+							@click="getPipelineRuns(false)"
 						/>
 					</div>
 				</template>
@@ -214,6 +210,9 @@
 				</Column>
 
 			</DataTable>
+            <div class="flex justify-content-center mt-3" v-if="continuationToken">
+                <Button label="Load More" icon="pi pi-refresh" @click="getPipelineRuns(true)" :loading="loading" />
+            </div>
 		</div>
 
         <!-- Trigger Pipeline Modal -->
@@ -300,7 +299,7 @@ export default {
 
 	data() {
 		return {
-			pipelineRuns: [],
+			pipelineRuns: [] as any[],
             pipelineNames: [],
             selectedRun: null,
             stage_metrics_formatted_data: [],
@@ -311,6 +310,7 @@ export default {
             successful: true as boolean,
 			loading: false as boolean,
 			loadingStatusText: 'Retrieving data...' as string,
+            continuationToken: null as string | null,
 			filters: {
 				global: { value: null, matchMode: 'contains' }
 			}
@@ -344,19 +344,30 @@ export default {
 			this.loading = false;
 		},
 
-		async getPipelineRuns() {
+		async getPipelineRuns(append = false) {
 			this.loading = true;
 			try {
+                if (!append) {
+                    this.continuationToken = null;
+                }
 
                 const payload = {
                     data_pipeline_name_filter: this.selectedPipelineName,
                     completed: this.showAll ? null : this.completed,
                     successful: this.showAll ? null : this.successful,
+                    continuation_token: this.continuationToken,
                     //start_time: "2025-06-26",
 			    };
 
                 var response = await api.getPipelineRuns(this.selectedPipelineName || '', payload);
-				this.pipelineRuns = response.resource.resources;
+                
+                if (append) {
+                    this.pipelineRuns = [...this.pipelineRuns, ...response.resource.resources];
+                } else {
+                    this.pipelineRuns = response.resource.resources;
+                }
+                
+                this.continuationToken = response.resource.continuation_token;
 
 			} catch (error) {
 				this.$toast.add({
