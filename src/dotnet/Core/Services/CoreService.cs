@@ -1275,11 +1275,19 @@ public partial class CoreService(
     {
         request.LongRunningOperation = longRunningOperation;
 
-        if (request.Attachments is { Count: > 0 }
-            && request.Attachments.Count > _settings.MaxUploadsPerMessage.GetValueForUser(_userIdentity.UPN!))
-            throw new CoreServiceException(
-                $"The maximum number of attachments per message is {_settings.MaxUploadsPerMessage.Value}.",
-                StatusCodes.Status400BadRequest);
+        if (request.Attachments is { Count: > 0 })
+        {
+            if (agent.ShowFileUpload is null
+                || !agent.ShowFileUpload.Value)
+                throw new CoreServiceException(
+                    $"File uploads are not enabled for the {request.AgentName} agent.",
+                    StatusCodes.Status400BadRequest);
+
+            if (request.Attachments.Count > _settings.MaxUploadsPerMessage.GetValueForUser(_userIdentity.UPN!))
+                throw new CoreServiceException(
+                    $"The maximum number of attachments per message is {_settings.MaxUploadsPerMessage.Value}.",
+                    StatusCodes.Status400BadRequest);
+        }
 
         List<MessageHistoryItem> messageHistoryList = [];
         List<string> contentArtifactTypes = (agent.ConversationHistorySettings?.Enabled ?? false)
