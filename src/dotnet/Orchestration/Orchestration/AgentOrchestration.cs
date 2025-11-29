@@ -552,7 +552,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                         EmbedContentInRequest = fileRecord.FileProcessingType == FileProcessingTypes.CompletionRequestContext
                     };
 
-                    if (fileRecord.FileProcessingType == FileProcessingTypes.ConversationDataPipeline)
+                    if (fileRecord.FileProcessingType == FileProcessingTypes.DataPipeline)
                     {
                         // The file must be processed by the conversation data pipeline.
 

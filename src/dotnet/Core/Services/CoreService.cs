@@ -93,16 +93,14 @@ public partial class CoreService(
         resourceProviderServices.Single(rps => rps.Name == ResourceProviderNames.FoundationaLLM_Conversation);
 
     private readonly HashSet<string> _azureOpenAIFileSearchFileExtensions =
-        settings.Value.AzureOpenAIAssistantsFileSearchFileExtensions
+        [.. settings.Value.AzureOpenAIAssistantsFileSearchFileExtensions
             .Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries)
-            .Select(s => s.ToLowerInvariant())
-            .ToHashSet();
+            .Select(s => s.ToLowerInvariant())];
 
     private readonly HashSet<string> _azureAIAgentServiceFileSearchFileExtensions =
-        settings.Value.AzureAIAgentsFileSearchFileExtensions
+        [.. settings.Value.AzureAIAgentsFileSearchFileExtensions
             .Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries)
-            .Select(s => s.ToLowerInvariant())
-            .ToHashSet();
+            .Select(s => s.ToLowerInvariant())];
 
     #region Conversation management - FoundationaLLM.Conversation resource provider
 
@@ -1073,15 +1071,12 @@ public partial class CoreService(
     {
         var configuration = new CoreConfiguration
         {
-            FileStoreConnectors = await GetFileStoreConnectors(instanceId, _userIdentity),
-            MaxUploadsPerMessage = await GetCoreConfigurationValue<int>(
-                instanceId,
-                AppConfigurationKeys.FoundationaLLM_APIEndpoints_CoreAPI_Configuration_MaxUploadsPerMessage,
-                _userIdentity),
-            CompletionResponsePollingIntervalMilliseconds = await GetCoreConfigurationValue<int>(
-                instanceId,
-                AppConfigurationKeys.FoundationaLLM_APIEndpoints_CoreAPI_Configuration_CompletionResponsePollingIntervalMilliseconds,
-                _userIdentity),
+            FileStoreConnectors =
+                await GetFileStoreConnectors(instanceId, _userIdentity),
+            MaxUploadsPerMessage =
+                _settings.MaxUploadsPerMessage.GetValueForUser(_userIdentity.UPN!),
+            CompletionResponsePollingIntervalMilliseconds =
+                _settings.CompletionResponsePollingIntervalMilliseconds.GetValueForUser(_userIdentity.UPN!)
         };
 
         return configuration;
@@ -1274,9 +1269,26 @@ public partial class CoreService(
     /// <param name="longRunningOperation">Indicates whether this is a long-running operation.</param>
     /// <returns>The updated completion request with pre-processing applied.</returns>
     private async Task<CompletionRequest> PrepareCompletionRequest(
-        string instanceId, CompletionRequest request, AgentBase agent, bool longRunningOperation = false)
+        string instanceId,
+        CompletionRequest request,
+        AgentBase agent,
+        bool longRunningOperation = false)
     {
         request.LongRunningOperation = longRunningOperation;
+
+        if (request.Attachments is { Count: > 0 })
+        {
+            if (agent.ShowFileUpload is null
+                || !agent.ShowFileUpload.Value)
+                throw new CoreServiceException(
+                    $"File uploads are not enabled for the {request.AgentName} agent.",
+                    StatusCodes.Status400BadRequest);
+
+            if (request.Attachments.Count > _settings.MaxUploadsPerMessage.GetValueForUser(_userIdentity.UPN!))
+                throw new CoreServiceException(
+                    $"The maximum number of attachments per message is {_settings.MaxUploadsPerMessage.Value}.",
+                    StatusCodes.Status400BadRequest);
+        }
 
         List<MessageHistoryItem> messageHistoryList = [];
         List<string> contentArtifactTypes = (agent.ConversationHistorySettings?.Enabled ?? false)
@@ -1331,6 +1343,15 @@ public partial class CoreService(
                                     resourcePath.MainResourceId!);
                                 if (fileResponse.TryGetValue(out var fileRecord))
                                 {
+                                    if (fileRecord.AgentName != request.AgentName!)
+                                    {
+                                        _logger.LogError("Attachment agent name {AttachmentAgentName} does not match the current agent {CurrentAgentName} for attachment {AttachmentObjectId}.",
+                                            fileRecord.AgentName, request.AgentName, attachmentObjectId);
+                                        throw new CoreServiceException(
+                                            $"Attachment agent name does not match the current agent for attachment {attachmentObjectId}.",
+                                            StatusCodes.Status400BadRequest);
+                                    }
+
                                     fileHistory.Add(FileHistoryItem.FromContextFileRecord(
                                         fileRecord,
                                         ++attachmentOrder,
@@ -1434,16 +1455,6 @@ public partial class CoreService(
         }
         message = string.Empty;
         return false;
-    }
-
-    private async Task<T> GetCoreConfigurationValue<T>(string instanceId, string configurationName, UnifiedUserIdentity userIdentity)
-    {
-        var appConfigurationValue = await _configurationResourceProvider.GetResourceAsync<AppConfigurationKeyBase>(
-            instanceId,
-            configurationName,
-            userIdentity);
-
-        return ConfigurationValue<T>.Deserialize(appConfigurationValue.Value!).GetValueForUser(userIdentity.UPN!);
     }
 
     private static async Task<string> GetBaseUrl(

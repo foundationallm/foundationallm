@@ -3,6 +3,21 @@
 > [!NOTE]
 > This section is for changes that are not yet released but will affect future releases.
 
+## Starting from 0.9.7
+
+### Configuration changes
+
+The`FoundationaLLM:APIEndpoints:CoreAPI:Configuration:AllowedUploadFileExtensions` configuration entry has been removed and was replaced by the `FoundationaLLM:APIEndpoints:ContextAPI:Configuration:FileService:AllowedFileExtensions` configuration entry.
+
+The following configuration entries have changed their default values:
+
+| Name | New value |
+| --- | --- |
+| `FoundationaLLM:APIEndpoints:ContextAPI:Configuration:FileService:AllowedFileExtensions` | `c, cpp, cs, css, html, java, js, json, jsonl, md, php, py, rb, sh, tex, ts, txt, xml, yaml, yml, gif, jpeg, jpg, png, wav, pdf, docx, pptx, xlsx, csv, zip, tar` |
+| `FoundationaLLM:APIEndpoints:ContextAPI:Configuration:FileService:KnowledgeSearchContextFileExtensions` | `c, cpp, cs, css, html, java, js, json, jsonl, md, php, py, rb, sh, tex, ts, txt, xml, yaml, yml, gif, jpeg, jpg, png, wav` |
+| `FoundationaLLM:APIEndpoints:ContextAPI:Configuration:FileService:KnowledgeSearchContextFileMaxSizeBytes` | `{"c, cpp, cs, css, html, java, js, json, jsonl, md, php, py, rb, sh, tex, ts, txt, xml, yaml, yml": 1048576, "gif, jpeg, jpg, png, wav":20971520}` |
+| `FoundationaLLM:APIEndpoints:ContextAPI:Configuration:FileService:KnowledgeSearchFileExtensions` | `c, cpp, cs, css, html, java, js, json, jsonl, md, php, py, rb, sh, tex, ts, txt, xml, yaml, yml, gif, jpeg, jpg, png, wav, pdf, docx, pptx` |
+
 ## Starting from 0.9.7-rc487
 
 ### Artifact changes

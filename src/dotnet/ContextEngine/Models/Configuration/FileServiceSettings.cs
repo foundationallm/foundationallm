@@ -19,6 +19,11 @@ namespace FoundationaLLM.Context.Models.Configuration
         public required AzureCosmosDBSettings CosmosDB { get; set; }
 
         /// <summary>
+        /// Gets or sets the comma-separated list of file extensions supported by the file service.
+        /// </summary>
+        public required string AllowedFileExtensions { get; set; }
+
+        /// <summary>
         /// Gets or sets the comma-separated list of file extensions that are subject to knowledge search.
         /// </summary>
         public required string KnowledgeSearchFileExtensions { get; set; }

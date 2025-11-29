@@ -14,7 +14,7 @@
                 [
                     AppConfigurationKeys.FoundationaLLM_Instance_Id,
                     AppConfigurationKeys.FoundationaLLM_APIEndpoints_CoreAPI_Essentials_APIUrl,
-                    AppConfigurationKeys.FoundationaLLM_APIEndpoints_CoreAPI_Configuration_AllowedUploadFileExtensions,
+                    AppConfigurationKeys.FoundationaLLM_APIEndpoints_ContextAPI_Configuration_FileService_AllowedFileExtensions,
                     // Branding
                     AppConfigurationKeys.FoundationaLLM_Branding_PageTitle,
                     AppConfigurationKeys.FoundationaLLM_Branding_FavIconUrl,
