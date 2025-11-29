@@ -89,7 +89,7 @@
 
 
   <h1 id="FoundationaLLM_AuthorizationEngine_Models_RoleAssignmentStore" data-uid="FoundationaLLM.AuthorizationEngine.Models.RoleAssignmentStore" class="text-break">
-Class RoleAssignmentStore  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/AuthorizationEngine/Models/RoleAssignmentStore.cs/#L9"><i class="bi bi-code-slash"></i></a>
+Class RoleAssignmentStore  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/AuthorizationEngine/Models/RoleAssignmentStore.cs/#L10"><i class="bi bi-code-slash"></i></a>
   </h1>
 
   <div class="facts text-secondary">
@@ -164,7 +164,7 @@ Class RoleAssignmentStore  <a class="header-action link-secondary" title="View s
 
   <h3 id="FoundationaLLM_AuthorizationEngine_Models_RoleAssignmentStore_InstanceId" data-uid="FoundationaLLM.AuthorizationEngine.Models.RoleAssignmentStore.InstanceId">
   InstanceId
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/AuthorizationEngine/Models/RoleAssignmentStore.cs/#L14"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/AuthorizationEngine/Models/RoleAssignmentStore.cs/#L15"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>The unique identifier of the FoundationaLLM instance.</p>
@@ -193,11 +193,43 @@ public required string InstanceId { get; set; }</code></pre>
 
 
 
+  <a id="FoundationaLLM_AuthorizationEngine_Models_RoleAssignmentStore_InvalidRoleAssignments_" data-uid="FoundationaLLM.AuthorizationEngine.Models.RoleAssignmentStore.InvalidRoleAssignments*"></a>
+
+  <h3 id="FoundationaLLM_AuthorizationEngine_Models_RoleAssignmentStore_InvalidRoleAssignments" data-uid="FoundationaLLM.AuthorizationEngine.Models.RoleAssignmentStore.InvalidRoleAssignments">
+  InvalidRoleAssignments
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/AuthorizationEngine/Models/RoleAssignmentStore.cs/#L24"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[JsonIgnore]
+public List&lt;RoleAssignment&gt; InvalidRoleAssignments { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.Authorization.RoleAssignment.html">RoleAssignment</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
   <a id="FoundationaLLM_AuthorizationEngine_Models_RoleAssignmentStore_RoleAssignments_" data-uid="FoundationaLLM.AuthorizationEngine.Models.RoleAssignmentStore.RoleAssignments*"></a>
 
   <h3 id="FoundationaLLM_AuthorizationEngine_Models_RoleAssignmentStore_RoleAssignments" data-uid="FoundationaLLM.AuthorizationEngine.Models.RoleAssignmentStore.RoleAssignments">
   RoleAssignments
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/AuthorizationEngine/Models/RoleAssignmentStore.cs/#L20"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/AuthorizationEngine/Models/RoleAssignmentStore.cs/#L21"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>The list of all role assignments in the FoundationaLLM instance.</p>
@@ -226,6 +258,38 @@ public required List&lt;RoleAssignment&gt; RoleAssignments { get; set; }</code><
 
 
 
+  <a id="FoundationaLLM_AuthorizationEngine_Models_RoleAssignmentStore_ValidationErrors_" data-uid="FoundationaLLM.AuthorizationEngine.Models.RoleAssignmentStore.ValidationErrors*"></a>
+
+  <h3 id="FoundationaLLM_AuthorizationEngine_Models_RoleAssignmentStore_ValidationErrors" data-uid="FoundationaLLM.AuthorizationEngine.Models.RoleAssignmentStore.ValidationErrors">
+  ValidationErrors
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/AuthorizationEngine/Models/RoleAssignmentStore.cs/#L27"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[JsonIgnore]
+public Dictionary&lt;string, string&gt; ValidationErrors { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2">Dictionary</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
   <h2 class="section" id="methods">Methods
 </h2>
 
@@ -234,7 +298,7 @@ public required List&lt;RoleAssignment&gt; RoleAssignments { get; set; }</code><
 
   <h3 id="FoundationaLLM_AuthorizationEngine_Models_RoleAssignmentStore_EnrichRoleAssignments" data-uid="FoundationaLLM.AuthorizationEngine.Models.RoleAssignmentStore.EnrichRoleAssignments">
   EnrichRoleAssignments()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/AuthorizationEngine/Models/RoleAssignmentStore.cs/#L26"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/AuthorizationEngine/Models/RoleAssignmentStore.cs/#L33"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Loads calculated properties for all role assignments.</p>
@@ -261,7 +325,7 @@ public required List&lt;RoleAssignment&gt; RoleAssignments { get; set; }</code><
 </article>
 
         <div class="contribution d-print-none">
-          <a href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/AuthorizationEngine/Models/RoleAssignmentStore.cs/#L9" class="edit-link">Edit this page</a>
+          <a href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/AuthorizationEngine/Models/RoleAssignmentStore.cs/#L10" class="edit-link">Edit this page</a>
         </div>
 
 

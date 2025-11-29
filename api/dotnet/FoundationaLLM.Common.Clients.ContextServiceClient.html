@@ -89,7 +89,7 @@
 
 
   <h1 id="FoundationaLLM_Common_Clients_ContextServiceClient" data-uid="FoundationaLLM.Common.Clients.ContextServiceClient" class="text-break">
-Class ContextServiceClient  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Clients/ContextServiceClient.cs/#L19"><i class="bi bi-code-slash"></i></a>
+Class ContextServiceClient  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Clients/ContextServiceClient.cs/#L20"><i class="bi bi-code-slash"></i></a>
   </h1>
 
   <div class="facts text-secondary">
@@ -170,7 +170,7 @@ Class ContextServiceClient  <a class="header-action link-secondary" title="View 
 
   <h3 id="FoundationaLLM_Common_Clients_ContextServiceClient__ctor_FoundationaLLM_Common_Interfaces_IOrchestrationContext_FoundationaLLM_Common_Interfaces_IHttpClientFactoryService_Microsoft_Extensions_Logging_ILogger_FoundationaLLM_Common_Clients_ContextServiceClient__" data-uid="FoundationaLLM.Common.Clients.ContextServiceClient.#ctor(FoundationaLLM.Common.Interfaces.IOrchestrationContext,FoundationaLLM.Common.Interfaces.IHttpClientFactoryService,Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Common.Clients.ContextServiceClient})">
   ContextServiceClient(IOrchestrationContext, IHttpClientFactoryService, ILogger&lt;ContextServiceClient&gt;)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Clients/ContextServiceClient.cs/#L19"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Clients/ContextServiceClient.cs/#L20"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Provides methods to call the FoundationaLLM Context API service.</p>
@@ -210,7 +210,7 @@ Class ContextServiceClient  <a class="header-action link-secondary" title="View 
 
   <h3 id="FoundationaLLM_Common_Clients_ContextServiceClient_CreateCodeSession_System_String_System_String_System_String_System_String_System_String_System_String_" data-uid="FoundationaLLM.Common.Clients.ContextServiceClient.CreateCodeSession(System.String,System.String,System.String,System.String,System.String,System.String)">
   CreateCodeSession(string, string, string, string, string, string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Clients/ContextServiceClient.cs/#L269"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Clients/ContextServiceClient.cs/#L226"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Calls the Context API service to create a code session.</p>
@@ -218,7 +218,7 @@ Class ContextServiceClient  <a class="header-action link-secondary" title="View 
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Task&lt;ContextServiceResponse&lt;CreateCodeSessionResponse&gt;&gt; CreateCodeSession(string instanceId, string agentName, string conversationId, string context, string endpointProvider, string language)</code></pre>
+    <pre><code class="lang-csharp hljs">public Task&lt;Result&lt;CreateCodeSessionResponse&gt;&gt; CreateCodeSession(string instanceId, string agentName, string conversationId, string context, string endpointProvider, string language)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -245,8 +245,8 @@ Class ContextServiceClient  <a class="header-action link-secondary" title="View 
 
   <h4 class="section">Returns</h4>
   <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Context.ContextServiceResponse-1.html">ContextServiceResponse</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.CodeExecution.CreateCodeSessionResponse.html">CreateCodeSessionResponse</a>&gt;&gt;</dt>
-    <dd><p>A <a class="xref" href="FoundationaLLM.Common.Models.Context.ContextServiceResponse-1.html">ContextServiceResponse&lt;T&gt;</a> instance where <code>T</code> is of type <a class="xref" href="FoundationaLLM.Common.Models.CodeExecution.CreateCodeSessionResponse.html">CreateCodeSessionResponse</a>.</p>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Services.Result-1.html">Result</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.CodeExecution.CreateCodeSessionResponse.html">CreateCodeSessionResponse</a>&gt;&gt;</dt>
+    <dd><p>A <a class="xref" href="FoundationaLLM.Common.Models.Services.Result-1.html">Result&lt;T&gt;</a> instance where <code>T</code> is of type <a class="xref" href="FoundationaLLM.Common.Models.CodeExecution.CreateCodeSessionResponse.html">CreateCodeSessionResponse</a>.</p>
 </dd>
   </dl>
 
@@ -262,16 +262,16 @@ Class ContextServiceClient  <a class="header-action link-secondary" title="View 
 
   <a id="FoundationaLLM_Common_Clients_ContextServiceClient_CreateFile_" data-uid="FoundationaLLM.Common.Clients.ContextServiceClient.CreateFile*"></a>
 
-  <h3 id="FoundationaLLM_Common_Clients_ContextServiceClient_CreateFile_System_String_System_String_System_String_System_String_System_IO_Stream_" data-uid="FoundationaLLM.Common.Clients.ContextServiceClient.CreateFile(System.String,System.String,System.String,System.String,System.IO.Stream)">
-  CreateFile(string, string, string, string, Stream)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Clients/ContextServiceClient.cs/#L201"><i class="bi bi-code-slash"></i></a>
+  <h3 id="FoundationaLLM_Common_Clients_ContextServiceClient_CreateFile_System_String_System_String_System_String_System_String_System_String_System_IO_Stream_" data-uid="FoundationaLLM.Common.Clients.ContextServiceClient.CreateFile(System.String,System.String,System.String,System.String,System.String,System.IO.Stream)">
+  CreateFile(string, string, string?, string, string, Stream)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Clients/ContextServiceClient.cs/#L168"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Task&lt;ContextServiceResponse&lt;ContextFileRecord&gt;&gt; CreateFile(string instanceId, string resourceRoute, string fileName, string fileContentType, Stream fileContent)</code></pre>
+    <pre><code class="lang-csharp hljs">public Task&lt;Result&lt;ContextFileRecord&gt;&gt; CreateFile(string instanceId, string resourceRoute, string? queryParameters, string fileName, string fileContentType, Stream fileContent)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -279,6 +279,8 @@ Class ContextServiceClient  <a class="header-action link-secondary" title="View 
     <dt><code>instanceId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
     <dd></dd>
     <dt><code>resourceRoute</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>queryParameters</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
     <dd></dd>
     <dt><code>fileName</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
     <dd></dd>
@@ -290,7 +292,7 @@ Class ContextServiceClient  <a class="header-action link-secondary" title="View 
 
   <h4 class="section">Returns</h4>
   <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Context.ContextServiceResponse-1.html">ContextServiceResponse</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Context.ContextFileRecord.html">ContextFileRecord</a>&gt;&gt;</dt>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Services.Result-1.html">Result</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Context.ContextFileRecord.html">ContextFileRecord</a>&gt;&gt;</dt>
     <dd></dd>
   </dl>
 
@@ -308,7 +310,7 @@ Class ContextServiceClient  <a class="header-action link-secondary" title="View 
 
   <h3 id="FoundationaLLM_Common_Clients_ContextServiceClient_CreateFileForAgent_System_String_System_String_System_String_System_String_System_IO_Stream_" data-uid="FoundationaLLM.Common.Clients.ContextServiceClient.CreateFileForAgent(System.String,System.String,System.String,System.String,System.IO.Stream)">
   CreateFileForAgent(string, string, string, string, Stream)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Clients/ContextServiceClient.cs/#L187"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Clients/ContextServiceClient.cs/#L153"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Calls the Context API service to create a file.</p>
@@ -316,7 +318,7 @@ Class ContextServiceClient  <a class="header-action link-secondary" title="View 
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Task&lt;ContextServiceResponse&lt;ContextFileRecord&gt;&gt; CreateFileForAgent(string instanceId, string agentName, string fileName, string fileContentType, Stream fileContent)</code></pre>
+    <pre><code class="lang-csharp hljs">public Task&lt;Result&lt;ContextFileRecord&gt;&gt; CreateFileForAgent(string instanceId, string agentName, string fileName, string fileContentType, Stream fileContent)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -340,8 +342,8 @@ Class ContextServiceClient  <a class="header-action link-secondary" title="View 
 
   <h4 class="section">Returns</h4>
   <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Context.ContextServiceResponse-1.html">ContextServiceResponse</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Context.ContextFileRecord.html">ContextFileRecord</a>&gt;&gt;</dt>
-    <dd><p>A <a class="xref" href="FoundationaLLM.Common.Models.Context.ContextServiceResponse-1.html">ContextServiceResponse&lt;T&gt;</a> instance where <code>T</code> is of type <a class="xref" href="FoundationaLLM.Common.Models.Context.ContextFileRecord.html">ContextFileRecord</a>.</p>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Services.Result-1.html">Result</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Context.ContextFileRecord.html">ContextFileRecord</a>&gt;&gt;</dt>
+    <dd><p>A <a class="xref" href="FoundationaLLM.Common.Models.Services.Result-1.html">Result&lt;T&gt;</a> instance where <code>T</code> is of type <a class="xref" href="FoundationaLLM.Common.Models.Context.ContextFileRecord.html">ContextFileRecord</a>.</p>
 </dd>
   </dl>
 
@@ -357,9 +359,9 @@ Class ContextServiceClient  <a class="header-action link-secondary" title="View 
 
   <a id="FoundationaLLM_Common_Clients_ContextServiceClient_CreateFileForConversation_" data-uid="FoundationaLLM.Common.Clients.ContextServiceClient.CreateFileForConversation*"></a>
 
-  <h3 id="FoundationaLLM_Common_Clients_ContextServiceClient_CreateFileForConversation_System_String_System_String_System_String_System_String_System_IO_Stream_" data-uid="FoundationaLLM.Common.Clients.ContextServiceClient.CreateFileForConversation(System.String,System.String,System.String,System.String,System.IO.Stream)">
-  CreateFileForConversation(string, string, string, string, Stream)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Clients/ContextServiceClient.cs/#L173"><i class="bi bi-code-slash"></i></a>
+  <h3 id="FoundationaLLM_Common_Clients_ContextServiceClient_CreateFileForConversation_System_String_System_String_System_String_System_String_System_String_System_IO_Stream_" data-uid="FoundationaLLM.Common.Clients.ContextServiceClient.CreateFileForConversation(System.String,System.String,System.String,System.String,System.String,System.IO.Stream)">
+  CreateFileForConversation(string, string, string, string, string, Stream)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Clients/ContextServiceClient.cs/#L137"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Calls the Context API service to create a file.</p>
@@ -367,13 +369,16 @@ Class ContextServiceClient  <a class="header-action link-secondary" title="View 
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Task&lt;ContextServiceResponse&lt;ContextFileRecord&gt;&gt; CreateFileForConversation(string instanceId, string conversationId, string fileName, string fileContentType, Stream fileContent)</code></pre>
+    <pre><code class="lang-csharp hljs">public Task&lt;Result&lt;ContextFileRecord&gt;&gt; CreateFileForConversation(string instanceId, string agentName, string conversationId, string fileName, string fileContentType, Stream fileContent)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
   <dl class="parameters">
     <dt><code>instanceId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
     <dd><p>The FoundationaLLM instance identifier.</p>
+</dd>
+    <dt><code>agentName</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The name of the agent.</p>
 </dd>
     <dt><code>conversationId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
     <dd><p>The conversation identifier.</p>
@@ -391,8 +396,8 @@ Class ContextServiceClient  <a class="header-action link-secondary" title="View 
 
   <h4 class="section">Returns</h4>
   <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Context.ContextServiceResponse-1.html">ContextServiceResponse</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Context.ContextFileRecord.html">ContextFileRecord</a>&gt;&gt;</dt>
-    <dd><p>A <a class="xref" href="FoundationaLLM.Common.Models.Context.ContextServiceResponse-1.html">ContextServiceResponse&lt;T&gt;</a> instance where <code>T</code> is of type <a class="xref" href="FoundationaLLM.Common.Models.Context.ContextFileRecord.html">ContextFileRecord</a>.</p>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Services.Result-1.html">Result</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Context.ContextFileRecord.html">ContextFileRecord</a>&gt;&gt;</dt>
+    <dd><p>A <a class="xref" href="FoundationaLLM.Common.Models.Services.Result-1.html">Result&lt;T&gt;</a> instance where <code>T</code> is of type <a class="xref" href="FoundationaLLM.Common.Models.Context.ContextFileRecord.html">ContextFileRecord</a>.</p>
 </dd>
   </dl>
 
@@ -410,7 +415,7 @@ Class ContextServiceClient  <a class="header-action link-secondary" title="View 
 
   <h3 id="FoundationaLLM_Common_Clients_ContextServiceClient_DeleteFileRecord_System_String_System_String_" data-uid="FoundationaLLM.Common.Clients.ContextServiceClient.DeleteFileRecord(System.String,System.String)">
   DeleteFileRecord(string, string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Clients/ContextServiceClient.cs/#L131"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Clients/ContextServiceClient.cs/#L106"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Calls the Context API service to delete a file record.</p>
@@ -418,7 +423,7 @@ Class ContextServiceClient  <a class="header-action link-secondary" title="View 
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Task&lt;ContextServiceResponse&gt; DeleteFileRecord(string instanceId, string fileId)</code></pre>
+    <pre><code class="lang-csharp hljs">public Task&lt;Result&gt; DeleteFileRecord(string instanceId, string fileId)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -433,8 +438,8 @@ Class ContextServiceClient  <a class="header-action link-secondary" title="View 
 
   <h4 class="section">Returns</h4>
   <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Context.ContextServiceResponse.html">ContextServiceResponse</a>&gt;</dt>
-    <dd><p>A <a class="xref" href="FoundationaLLM.Common.Models.Context.ContextServiceResponse.html">ContextServiceResponse</a> instance .</p>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Services.Result.html">Result</a>&gt;</dt>
+    <dd><p>A <a class="xref" href="FoundationaLLM.Common.Models.Services.Result.html">Result</a> instance .</p>
 </dd>
   </dl>
 
@@ -452,7 +457,7 @@ Class ContextServiceClient  <a class="header-action link-secondary" title="View 
 
   <h3 id="FoundationaLLM_Common_Clients_ContextServiceClient_GetFileContent_System_String_System_String_" data-uid="FoundationaLLM.Common.Clients.ContextServiceClient.GetFileContent(System.String,System.String)">
   GetFileContent(string, string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Clients/ContextServiceClient.cs/#L29"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Clients/ContextServiceClient.cs/#L30"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Calls the Context API service to get the content of a file.</p>
@@ -460,7 +465,7 @@ Class ContextServiceClient  <a class="header-action link-secondary" title="View 
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Task&lt;ContextServiceResponse&lt;ContextFileContent&gt;&gt; GetFileContent(string instanceId, string fileId)</code></pre>
+    <pre><code class="lang-csharp hljs">public Task&lt;Result&lt;ContextFileContent&gt;&gt; GetFileContent(string instanceId, string fileId)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -475,8 +480,8 @@ Class ContextServiceClient  <a class="header-action link-secondary" title="View 
 
   <h4 class="section">Returns</h4>
   <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Context.ContextServiceResponse-1.html">ContextServiceResponse</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Context.ContextFileContent.html">ContextFileContent</a>&gt;&gt;</dt>
-    <dd><p>A <a class="xref" href="FoundationaLLM.Common.Models.Context.ContextServiceResponse-1.html">ContextServiceResponse&lt;T&gt;</a> instance where <code>T</code> is of type <a class="xref" href="FoundationaLLM.Common.Models.Context.ContextFileContent.html">ContextFileContent</a>.</p>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Services.Result-1.html">Result</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Context.ContextFileContent.html">ContextFileContent</a>&gt;&gt;</dt>
+    <dd><p>A <a class="xref" href="FoundationaLLM.Common.Models.Services.Result-1.html">Result&lt;T&gt;</a> instance where <code>T</code> is of type <a class="xref" href="FoundationaLLM.Common.Models.Context.ContextFileContent.html">ContextFileContent</a>.</p>
 </dd>
   </dl>
 
@@ -494,7 +499,7 @@ Class ContextServiceClient  <a class="header-action link-secondary" title="View 
 
   <h3 id="FoundationaLLM_Common_Clients_ContextServiceClient_GetFileRecord_System_String_System_String_" data-uid="FoundationaLLM.Common.Clients.ContextServiceClient.GetFileRecord(System.String,System.String)">
   GetFileRecord(string, string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Clients/ContextServiceClient.cs/#L78"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Clients/ContextServiceClient.cs/#L68"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Calls the Context API service to get a file record.</p>
@@ -502,7 +507,7 @@ Class ContextServiceClient  <a class="header-action link-secondary" title="View 
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Task&lt;ContextServiceResponse&lt;ContextFileRecord&gt;&gt; GetFileRecord(string instanceId, string fileId)</code></pre>
+    <pre><code class="lang-csharp hljs">public Task&lt;Result&lt;ContextFileRecord&gt;&gt; GetFileRecord(string instanceId, string fileId)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -517,8 +522,8 @@ Class ContextServiceClient  <a class="header-action link-secondary" title="View 
 
   <h4 class="section">Returns</h4>
   <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Context.ContextServiceResponse-1.html">ContextServiceResponse</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Context.ContextFileRecord.html">ContextFileRecord</a>&gt;&gt;</dt>
-    <dd><p>A <a class="xref" href="FoundationaLLM.Common.Models.Context.ContextServiceResponse-1.html">ContextServiceResponse&lt;T&gt;</a> instance where <code>T</code> is of type <a class="xref" href="FoundationaLLM.Common.Models.Context.ContextFileRecord.html">ContextFileRecord</a>.</p>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Services.Result-1.html">Result</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Context.ContextFileRecord.html">ContextFileRecord</a>&gt;&gt;</dt>
+    <dd><p>A <a class="xref" href="FoundationaLLM.Common.Models.Services.Result-1.html">Result&lt;T&gt;</a> instance where <code>T</code> is of type <a class="xref" href="FoundationaLLM.Common.Models.Context.ContextFileRecord.html">ContextFileRecord</a>.</p>
 </dd>
   </dl>
 
@@ -536,7 +541,7 @@ Class ContextServiceClient  <a class="header-action link-secondary" title="View 
 
   <h3 id="FoundationaLLM_Common_Clients_ContextServiceClient_GetKnowledgeSource_System_String_System_String_System_String_" data-uid="FoundationaLLM.Common.Clients.ContextServiceClient.GetKnowledgeSource(System.String,System.String,System.String)">
   GetKnowledgeSource(string, string, string?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Clients/ContextServiceClient.cs/#L347"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Clients/ContextServiceClient.cs/#L289"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Call the Context API to retrieve a knowledge source.</p>
@@ -544,7 +549,7 @@ Class ContextServiceClient  <a class="header-action link-secondary" title="View 
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Task&lt;ContextServiceResponse&lt;ResourceProviderGetResult&lt;KnowledgeSource&gt;&gt;&gt; GetKnowledgeSource(string instanceId, string knowledgeSourceId, string? agentName = null)</code></pre>
+    <pre><code class="lang-csharp hljs">public Task&lt;Result&lt;ResourceProviderGetResult&lt;KnowledgeSource&gt;&gt;&gt; GetKnowledgeSource(string instanceId, string knowledgeSourceId, string? agentName = null)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -562,7 +567,7 @@ Class ContextServiceClient  <a class="header-action link-secondary" title="View 
 
   <h4 class="section">Returns</h4>
   <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Context.ContextServiceResponse-1.html">ContextServiceResponse</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderGetResult-1.html">ResourceProviderGetResult</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.Context.KnowledgeSource.html">KnowledgeSource</a>&gt;&gt;&gt;</dt>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Services.Result-1.html">Result</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderGetResult-1.html">ResourceProviderGetResult</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.Context.KnowledgeSource.html">KnowledgeSource</a>&gt;&gt;&gt;</dt>
     <dd><p>The requested knowledge source.</p>
 </dd>
   </dl>
@@ -581,7 +586,7 @@ Class ContextServiceClient  <a class="header-action link-secondary" title="View 
 
   <h3 id="FoundationaLLM_Common_Clients_ContextServiceClient_GetKnowledgeSources_System_String_System_Collections_Generic_IEnumerable_System_String__" data-uid="FoundationaLLM.Common.Clients.ContextServiceClient.GetKnowledgeSources(System.String,System.Collections.Generic.IEnumerable{System.String})">
   GetKnowledgeSources(string, IEnumerable&lt;string&gt;?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Clients/ContextServiceClient.cs/#L405"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Clients/ContextServiceClient.cs/#L343"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Call the Context API to retrieve the list of knowledge sources.</p>
@@ -589,7 +594,7 @@ Class ContextServiceClient  <a class="header-action link-secondary" title="View 
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Task&lt;ContextServiceResponse&lt;IEnumerable&lt;ResourceProviderGetResult&lt;KnowledgeSource&gt;&gt;&gt;&gt; GetKnowledgeSources(string instanceId, IEnumerable&lt;string&gt;? knowledgeSourceNames = null)</code></pre>
+    <pre><code class="lang-csharp hljs">public Task&lt;Result&lt;IEnumerable&lt;ResourceProviderGetResult&lt;KnowledgeSource&gt;&gt;&gt;&gt; GetKnowledgeSources(string instanceId, IEnumerable&lt;string&gt;? knowledgeSourceNames = null)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -604,7 +609,7 @@ Class ContextServiceClient  <a class="header-action link-secondary" title="View 
 
   <h4 class="section">Returns</h4>
   <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Context.ContextServiceResponse-1.html">ContextServiceResponse</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderGetResult-1.html">ResourceProviderGetResult</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.Context.KnowledgeSource.html">KnowledgeSource</a>&gt;&gt;&gt;&gt;</dt>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Services.Result-1.html">Result</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderGetResult-1.html">ResourceProviderGetResult</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.Context.KnowledgeSource.html">KnowledgeSource</a>&gt;&gt;&gt;&gt;</dt>
     <dd><p>The list of knowledge sources.</p>
 </dd>
   </dl>
@@ -623,7 +628,7 @@ Class ContextServiceClient  <a class="header-action link-secondary" title="View 
 
   <h3 id="FoundationaLLM_Common_Clients_ContextServiceClient_GetKnowledgeUnit_System_String_System_String_System_String_" data-uid="FoundationaLLM.Common.Clients.ContextServiceClient.GetKnowledgeUnit(System.String,System.String,System.String)">
   GetKnowledgeUnit(string, string, string?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Clients/ContextServiceClient.cs/#L336"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Clients/ContextServiceClient.cs/#L278"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Call the Context API to retrieve the a knowledge unit.</p>
@@ -631,7 +636,7 @@ Class ContextServiceClient  <a class="header-action link-secondary" title="View 
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Task&lt;ContextServiceResponse&lt;ResourceProviderGetResult&lt;KnowledgeUnit&gt;&gt;&gt; GetKnowledgeUnit(string instanceId, string knowledgeUnitId, string? agentName = null)</code></pre>
+    <pre><code class="lang-csharp hljs">public Task&lt;Result&lt;ResourceProviderGetResult&lt;KnowledgeUnit&gt;&gt;&gt; GetKnowledgeUnit(string instanceId, string knowledgeUnitId, string? agentName = null)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -649,7 +654,7 @@ Class ContextServiceClient  <a class="header-action link-secondary" title="View 
 
   <h4 class="section">Returns</h4>
   <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Context.ContextServiceResponse-1.html">ContextServiceResponse</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderGetResult-1.html">ResourceProviderGetResult</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.Context.KnowledgeUnit.html">KnowledgeUnit</a>&gt;&gt;&gt;</dt>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Services.Result-1.html">Result</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderGetResult-1.html">ResourceProviderGetResult</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.Context.KnowledgeUnit.html">KnowledgeUnit</a>&gt;&gt;&gt;</dt>
     <dd><p>The requested knowledge unit.</p>
 </dd>
   </dl>
@@ -668,7 +673,7 @@ Class ContextServiceClient  <a class="header-action link-secondary" title="View 
 
   <h3 id="FoundationaLLM_Common_Clients_ContextServiceClient_GetKnowledgeUnits_System_String_System_Collections_Generic_IEnumerable_System_String__" data-uid="FoundationaLLM.Common.Clients.ContextServiceClient.GetKnowledgeUnits(System.String,System.Collections.Generic.IEnumerable{System.String})">
   GetKnowledgeUnits(string, IEnumerable&lt;string&gt;?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Clients/ContextServiceClient.cs/#L414"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Clients/ContextServiceClient.cs/#L352"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Call the Context API to retrieve the list of knowledge units.</p>
@@ -676,7 +681,7 @@ Class ContextServiceClient  <a class="header-action link-secondary" title="View 
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Task&lt;ContextServiceResponse&lt;IEnumerable&lt;ResourceProviderGetResult&lt;KnowledgeUnit&gt;&gt;&gt;&gt; GetKnowledgeUnits(string instanceId, IEnumerable&lt;string&gt;? knowledgeUnitNames = null)</code></pre>
+    <pre><code class="lang-csharp hljs">public Task&lt;Result&lt;IEnumerable&lt;ResourceProviderGetResult&lt;KnowledgeUnit&gt;&gt;&gt;&gt; GetKnowledgeUnits(string instanceId, IEnumerable&lt;string&gt;? knowledgeUnitNames = null)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -691,7 +696,7 @@ Class ContextServiceClient  <a class="header-action link-secondary" title="View 
 
   <h4 class="section">Returns</h4>
   <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Context.ContextServiceResponse-1.html">ContextServiceResponse</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderGetResult-1.html">ResourceProviderGetResult</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.Context.KnowledgeUnit.html">KnowledgeUnit</a>&gt;&gt;&gt;&gt;</dt>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Services.Result-1.html">Result</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderGetResult-1.html">ResourceProviderGetResult</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.Context.KnowledgeUnit.html">KnowledgeUnit</a>&gt;&gt;&gt;&gt;</dt>
     <dd><p>The list of knowledge units.</p>
 </dd>
   </dl>
@@ -710,7 +715,7 @@ Class ContextServiceClient  <a class="header-action link-secondary" title="View 
 
   <h3 id="FoundationaLLM_Common_Clients_ContextServiceClient_QueryKnowledgeSource_System_String_System_String_FoundationaLLM_Common_Models_Context_Knowledge_ContextKnowledgeSourceQueryRequest_" data-uid="FoundationaLLM.Common.Clients.ContextServiceClient.QueryKnowledgeSource(System.String,System.String,FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeSourceQueryRequest)">
   QueryKnowledgeSource(string, string, ContextKnowledgeSourceQueryRequest)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Clients/ContextServiceClient.cs/#L576"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Clients/ContextServiceClient.cs/#L502"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Calls the Context API to query a knowledge source.</p>
@@ -718,7 +723,7 @@ Class ContextServiceClient  <a class="header-action link-secondary" title="View 
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Task&lt;ContextKnowledgeSourceQueryResponse&gt; QueryKnowledgeSource(string instanceId, string knowledgeSourceId, ContextKnowledgeSourceQueryRequest queryRequest)</code></pre>
+    <pre><code class="lang-csharp hljs">public Task&lt;Result&lt;ContextKnowledgeSourceQueryResponse&gt;&gt; QueryKnowledgeSource(string instanceId, string knowledgeSourceId, ContextKnowledgeSourceQueryRequest queryRequest)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -736,7 +741,7 @@ Class ContextServiceClient  <a class="header-action link-secondary" title="View 
 
   <h4 class="section">Returns</h4>
   <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeSourceQueryResponse.html">ContextKnowledgeSourceQueryResponse</a>&gt;</dt>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Services.Result-1.html">Result</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeSourceQueryResponse.html">ContextKnowledgeSourceQueryResponse</a>&gt;&gt;</dt>
     <dd><p>A response containing the result of the query execution.</p>
 </dd>
   </dl>
@@ -755,7 +760,7 @@ Class ContextServiceClient  <a class="header-action link-secondary" title="View 
 
   <h3 id="FoundationaLLM_Common_Clients_ContextServiceClient_RenderKnowledgeUnitGraph_System_String_System_String_FoundationaLLM_Common_Models_Context_Knowledge_ContextKnowledgeSourceQueryRequest_" data-uid="FoundationaLLM.Common.Clients.ContextServiceClient.RenderKnowledgeUnitGraph(System.String,System.String,FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeSourceQueryRequest)">
   RenderKnowledgeUnitGraph(string, string, ContextKnowledgeSourceQueryRequest?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Clients/ContextServiceClient.cs/#L624"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Clients/ContextServiceClient.cs/#L544"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Retrieves the knowledge unit's knowledge graph in a format suitable for visualization or further processing.</p>
@@ -763,7 +768,7 @@ Class ContextServiceClient  <a class="header-action link-secondary" title="View 
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Task&lt;ContextKnowledgeUnitRenderGraphResponse&gt; RenderKnowledgeUnitGraph(string instanceId, string knowledgeSourceId, ContextKnowledgeSourceQueryRequest? queryRequest)</code></pre>
+    <pre><code class="lang-csharp hljs">public Task&lt;Result&lt;ContextKnowledgeUnitRenderGraphResponse&gt;&gt; RenderKnowledgeUnitGraph(string instanceId, string knowledgeSourceId, ContextKnowledgeSourceQueryRequest? queryRequest)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -780,7 +785,7 @@ Class ContextServiceClient  <a class="header-action link-secondary" title="View 
 
   <h4 class="section">Returns</h4>
   <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeUnitRenderGraphResponse.html">ContextKnowledgeUnitRenderGraphResponse</a>&gt;</dt>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Services.Result-1.html">Result</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeUnitRenderGraphResponse.html">ContextKnowledgeUnitRenderGraphResponse</a>&gt;&gt;</dt>
     <dd></dd>
   </dl>
 
@@ -798,7 +803,7 @@ Class ContextServiceClient  <a class="header-action link-secondary" title="View 
 
   <h3 id="FoundationaLLM_Common_Clients_ContextServiceClient_SetKnowledgeUnitGraph_System_String_System_String_FoundationaLLM_Common_Models_Context_Knowledge_ContextKnowledgeUnitSetGraphRequest_" data-uid="FoundationaLLM.Common.Clients.ContextServiceClient.SetKnowledgeUnitGraph(System.String,System.String,FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeUnitSetGraphRequest)">
   SetKnowledgeUnitGraph(string, string, ContextKnowledgeUnitSetGraphRequest)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Clients/ContextServiceClient.cs/#L530"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Clients/ContextServiceClient.cs/#L460"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Sets the knowledge graph for a knowledge unit.</p>
@@ -806,7 +811,7 @@ Class ContextServiceClient  <a class="header-action link-secondary" title="View 
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Task&lt;ContextServiceResponse&lt;ResourceProviderActionResult&gt;&gt; SetKnowledgeUnitGraph(string instanceId, string knowledgeUnitId, ContextKnowledgeUnitSetGraphRequest setGraphRequest)</code></pre>
+    <pre><code class="lang-csharp hljs">public Task&lt;Result&lt;ResourceProviderActionResult&gt;&gt; SetKnowledgeUnitGraph(string instanceId, string knowledgeUnitId, ContextKnowledgeUnitSetGraphRequest setGraphRequest)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -824,7 +829,7 @@ Class ContextServiceClient  <a class="header-action link-secondary" title="View 
 
   <h4 class="section">Returns</h4>
   <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Context.ContextServiceResponse-1.html">ContextServiceResponse</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderActionResult.html">ResourceProviderActionResult</a>&gt;&gt;</dt>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Services.Result-1.html">Result</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderActionResult.html">ResourceProviderActionResult</a>&gt;&gt;</dt>
     <dd><p>A response indicating the success of the operation and an optional error message.</p>
 </dd>
   </dl>
@@ -843,7 +848,7 @@ Class ContextServiceClient  <a class="header-action link-secondary" title="View 
 
   <h3 id="FoundationaLLM_Common_Clients_ContextServiceClient_UpsertKnowledgeSource_System_String_FoundationaLLM_Common_Models_ResourceProviders_Context_KnowledgeSource_" data-uid="FoundationaLLM.Common.Clients.ContextServiceClient.UpsertKnowledgeSource(System.String,FoundationaLLM.Common.Models.ResourceProviders.Context.KnowledgeSource)">
   UpsertKnowledgeSource(string, KnowledgeSource)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Clients/ContextServiceClient.cs/#L478"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Clients/ContextServiceClient.cs/#L412"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Creates or updates a knowledge source in the context service.</p>
@@ -851,7 +856,7 @@ Class ContextServiceClient  <a class="header-action link-secondary" title="View 
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Task&lt;ContextServiceResponse&lt;ResourceProviderUpsertResult&lt;KnowledgeSource&gt;&gt;&gt; UpsertKnowledgeSource(string instanceId, KnowledgeSource knowledgeSource)</code></pre>
+    <pre><code class="lang-csharp hljs">public Task&lt;Result&lt;ResourceProviderUpsertResult&lt;KnowledgeSource&gt;&gt;&gt; UpsertKnowledgeSource(string instanceId, KnowledgeSource knowledgeSource)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -866,7 +871,7 @@ Class ContextServiceClient  <a class="header-action link-secondary" title="View 
 
   <h4 class="section">Returns</h4>
   <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Context.ContextServiceResponse-1.html">ContextServiceResponse</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderUpsertResult-1.html">ResourceProviderUpsertResult</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.Context.KnowledgeSource.html">KnowledgeSource</a>&gt;&gt;&gt;</dt>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Services.Result-1.html">Result</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderUpsertResult-1.html">ResourceProviderUpsertResult</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.Context.KnowledgeSource.html">KnowledgeSource</a>&gt;&gt;&gt;</dt>
     <dd></dd>
   </dl>
 
@@ -884,7 +889,7 @@ Class ContextServiceClient  <a class="header-action link-secondary" title="View 
 
   <h3 id="FoundationaLLM_Common_Clients_ContextServiceClient_UpsertKnowledgeUnit_System_String_FoundationaLLM_Common_Models_ResourceProviders_Context_KnowledgeUnit_" data-uid="FoundationaLLM.Common.Clients.ContextServiceClient.UpsertKnowledgeUnit(System.String,FoundationaLLM.Common.Models.ResourceProviders.Context.KnowledgeUnit)">
   UpsertKnowledgeUnit(string, KnowledgeUnit)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Clients/ContextServiceClient.cs/#L469"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Clients/ContextServiceClient.cs/#L403"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Creates or updates a knowledge unit in the context service.</p>
@@ -892,7 +897,7 @@ Class ContextServiceClient  <a class="header-action link-secondary" title="View 
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Task&lt;ContextServiceResponse&lt;ResourceProviderUpsertResult&lt;KnowledgeUnit&gt;&gt;&gt; UpsertKnowledgeUnit(string instanceId, KnowledgeUnit knowledgeUnit)</code></pre>
+    <pre><code class="lang-csharp hljs">public Task&lt;Result&lt;ResourceProviderUpsertResult&lt;KnowledgeUnit&gt;&gt;&gt; UpsertKnowledgeUnit(string instanceId, KnowledgeUnit knowledgeUnit)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -907,7 +912,7 @@ Class ContextServiceClient  <a class="header-action link-secondary" title="View 
 
   <h4 class="section">Returns</h4>
   <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Context.ContextServiceResponse-1.html">ContextServiceResponse</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderUpsertResult-1.html">ResourceProviderUpsertResult</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.Context.KnowledgeUnit.html">KnowledgeUnit</a>&gt;&gt;&gt;</dt>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Services.Result-1.html">Result</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderUpsertResult-1.html">ResourceProviderUpsertResult</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.Context.KnowledgeUnit.html">KnowledgeUnit</a>&gt;&gt;&gt;</dt>
     <dd></dd>
   </dl>
 
@@ -925,7 +930,7 @@ Class ContextServiceClient  <a class="header-action link-secondary" title="View 
 </article>
 
         <div class="contribution d-print-none">
-          <a href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Clients/ContextServiceClient.cs/#L19" class="edit-link">Edit this page</a>
+          <a href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Clients/ContextServiceClient.cs/#L20" class="edit-link">Edit this page</a>
         </div>
 
 

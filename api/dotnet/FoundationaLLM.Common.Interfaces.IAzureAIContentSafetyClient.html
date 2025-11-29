@@ -135,7 +135,8 @@ Interface IAzureAIContentSafetyClient  <a class="header-action link-secondary" t
   <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Interfaces/IAzureAIContentSafetyClient.cs/#L18"><i class="bi bi-code-slash"></i></a>
   </h3>
 
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Analyzes the specified text and returns the results of the analysis.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
@@ -145,15 +146,18 @@ Interface IAzureAIContentSafetyClient  <a class="header-action link-secondary" t
   <h4 class="section">Parameters</h4>
   <dl class="parameters">
     <dt><code>request</code> <a class="xref" href="FoundationaLLM.Common.Models.ContentSafety.AnalyzeTextRequest.html">AnalyzeTextRequest</a></dt>
-    <dd></dd>
+    <dd><p>The request containing the text to analyze.</p>
+</dd>
     <dt><code>cancellationToken</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></dt>
-    <dd></dd>
+    <dd><p>The optional cancellation token used to signal a cancellation request.</p>
+</dd>
   </dl>
 
   <h4 class="section">Returns</h4>
   <dl class="parameters">
     <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<span class="xref">ClientResult</span>&lt;<a class="xref" href="FoundationaLLM.Common.Models.ContentSafety.AnalyzeTextResult.html">AnalyzeTextResult</a>&gt;&gt;</dt>
-    <dd></dd>
+    <dd><p>A task that represents the asynchronous operation. The task result contains an  <span class="xref">System.ClientModel.ClientResult</span> object with the results of the analysis.</p>
+</dd>
   </dl>
 
 
@@ -173,7 +177,8 @@ Interface IAzureAIContentSafetyClient  <a class="header-action link-secondary" t
   <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Interfaces/IAzureAIContentSafetyClient.cs/#L29"><i class="bi bi-code-slash"></i></a>
   </h3>
 
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Analyzes a user prompt and associated documents for various prompt attacks.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
@@ -183,15 +188,18 @@ Interface IAzureAIContentSafetyClient  <a class="header-action link-secondary" t
   <h4 class="section">Parameters</h4>
   <dl class="parameters">
     <dt><code>request</code> <a class="xref" href="FoundationaLLM.Common.Models.ContentSafety.ShieldPromptRequest.html">ShieldPromptRequest</a></dt>
-    <dd></dd>
+    <dd><p>The request containing the user prompt and associated documents.</p>
+</dd>
     <dt><code>cancellationToken</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></dt>
-    <dd></dd>
+    <dd><p>The optional cancellation token used to signal a cancellation request.</p>
+</dd>
   </dl>
 
   <h4 class="section">Returns</h4>
   <dl class="parameters">
     <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<span class="xref">ClientResult</span>&lt;<a class="xref" href="FoundationaLLM.Common.Models.ContentSafety.ShieldPromptResult.html">ShieldPromptResult</a>&gt;&gt;</dt>
-    <dd></dd>
+    <dd><p>A task that represents the asynchronous operation. The task result contains an  <span class="xref">System.ClientModel.ClientResult</span> object with the results of the analysis.</p>
+</dd>
   </dl>
 
 

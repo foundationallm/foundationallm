@@ -364,7 +364,7 @@ Class AzureCosmosDBDataPipelineService  <a class="header-action link-secondary" 
 
   <h3 id="FoundationaLLM_DataPipelineEngine_Services_CosmosDB_AzureCosmosDBDataPipelineService_GetDataPipelineContentItem_System_String_System_String_" data-uid="FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService.GetDataPipelineContentItem(System.String,System.String)">
   GetDataPipelineContentItem(string, string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/DataPipelineEngine/Services/CosmosDB/AzureCosmosDBDataPipelineService.cs/#L271"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/DataPipelineEngine/Services/CosmosDB/AzureCosmosDBDataPipelineService.cs/#L298"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Get a data pipeline content item by its canonical identifier.</p>
@@ -413,7 +413,7 @@ Class AzureCosmosDBDataPipelineService  <a class="header-action link-secondary" 
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Task&lt;List&lt;DataPipelineRun&gt;&gt; GetDataPipelineRuns(DataPipelineRunFilter dataPipelineRunFilter)</code></pre>
+    <pre><code class="lang-csharp hljs">public Task&lt;DataPipelineRunFilterResponse&gt; GetDataPipelineRuns(DataPipelineRunFilter dataPipelineRunFilter)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -425,7 +425,7 @@ Class AzureCosmosDBDataPipelineService  <a class="header-action link-secondary" 
 
   <h4 class="section">Returns</h4>
   <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRun.html">DataPipelineRun</a>&gt;&gt;</dt>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRunFilterResponse.html">DataPipelineRunFilterResponse</a>&gt;</dt>
     <dd><p>The list of requests data pipeline runs.</p>
 </dd>
   </dl>
@@ -629,7 +629,7 @@ Class AzureCosmosDBDataPipelineService  <a class="header-action link-secondary" 
 
   <h3 id="FoundationaLLM_DataPipelineEngine_Services_CosmosDB_AzureCosmosDBDataPipelineService_StartChangeFeedProcessorAsync_System_Func_FoundationaLLM_Common_Models_DataPipelines_DataPipelineRunWorkItem_System_Threading_Tasks_Task__" data-uid="FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService.StartChangeFeedProcessorAsync(System.Func{FoundationaLLM.Common.Models.DataPipelines.DataPipelineRunWorkItem,System.Threading.Tasks.Task})">
   StartChangeFeedProcessorAsync(Func&lt;DataPipelineRunWorkItem, Task&gt;)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/DataPipelineEngine/Services/CosmosDB/AzureCosmosDBDataPipelineService.cs/#L291"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/DataPipelineEngine/Services/CosmosDB/AzureCosmosDBDataPipelineService.cs/#L318"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Starts the change feed processor for the data pipeline run work items.</p>
@@ -668,7 +668,7 @@ Class AzureCosmosDBDataPipelineService  <a class="header-action link-secondary" 
 
   <h3 id="FoundationaLLM_DataPipelineEngine_Services_CosmosDB_AzureCosmosDBDataPipelineService_StopChangeFeedProcessorAsync" data-uid="FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService.StopChangeFeedProcessorAsync">
   StopChangeFeedProcessorAsync()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/DataPipelineEngine/Services/CosmosDB/AzureCosmosDBDataPipelineService.cs/#L322"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/DataPipelineEngine/Services/CosmosDB/AzureCosmosDBDataPipelineService.cs/#L349"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Stops the change feed processor for the data pipeline run work items.</p>

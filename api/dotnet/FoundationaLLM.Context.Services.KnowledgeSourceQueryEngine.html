@@ -89,7 +89,7 @@
 
 
   <h1 id="FoundationaLLM_Context_Services_KnowledgeSourceQueryEngine" data-uid="FoundationaLLM.Context.Services.KnowledgeSourceQueryEngine" class="text-break">
-Class KnowledgeSourceQueryEngine  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/ContextEngine/Services/KnowledgeSourceQueryEngine.cs/#L13"><i class="bi bi-code-slash"></i></a>
+Class KnowledgeSourceQueryEngine  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/ContextEngine/Services/KnowledgeSourceQueryEngine.cs/#L14"><i class="bi bi-code-slash"></i></a>
   </h1>
 
   <div class="facts text-secondary">
@@ -164,7 +164,7 @@ Class KnowledgeSourceQueryEngine  <a class="header-action link-secondary" title=
 
   <h3 id="FoundationaLLM_Context_Services_KnowledgeSourceQueryEngine__ctor_System_String_System_Collections_Generic_IEnumerable_FoundationaLLM_Context_Services_KnowledgeUnitQueryEngine__Microsoft_Extensions_Logging_ILogger_FoundationaLLM_Context_Services_KnowledgeSourceQueryEngine__" data-uid="FoundationaLLM.Context.Services.KnowledgeSourceQueryEngine.#ctor(System.String,System.Collections.Generic.IEnumerable{FoundationaLLM.Context.Services.KnowledgeUnitQueryEngine},Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Context.Services.KnowledgeSourceQueryEngine})">
   KnowledgeSourceQueryEngine(string, IEnumerable&lt;KnowledgeUnitQueryEngine&gt;, ILogger&lt;KnowledgeSourceQueryEngine&gt;)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/ContextEngine/Services/KnowledgeSourceQueryEngine.cs/#L13"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/ContextEngine/Services/KnowledgeSourceQueryEngine.cs/#L14"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Provides methods for querying knowledge sources.</p>
@@ -207,7 +207,7 @@ Class KnowledgeSourceQueryEngine  <a class="header-action link-secondary" title=
 
   <h3 id="FoundationaLLM_Context_Services_KnowledgeSourceQueryEngine_QueryAsync_FoundationaLLM_Common_Models_Context_Knowledge_ContextKnowledgeSourceQueryRequest_" data-uid="FoundationaLLM.Context.Services.KnowledgeSourceQueryEngine.QueryAsync(FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeSourceQueryRequest)">
   QueryAsync(ContextKnowledgeSourceQueryRequest)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/ContextEngine/Services/KnowledgeSourceQueryEngine.cs/#L32"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/ContextEngine/Services/KnowledgeSourceQueryEngine.cs/#L33"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Executes an asynchronous query against the context knowledge source.</p>
@@ -215,7 +215,7 @@ Class KnowledgeSourceQueryEngine  <a class="header-action link-secondary" title=
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Task&lt;ContextKnowledgeSourceQueryResponse&gt; QueryAsync(ContextKnowledgeSourceQueryRequest queryRequest)</code></pre>
+    <pre><code class="lang-csharp hljs">public Task&lt;Result&lt;ContextKnowledgeSourceQueryResponse&gt;&gt; QueryAsync(ContextKnowledgeSourceQueryRequest queryRequest)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -227,7 +227,7 @@ Class KnowledgeSourceQueryEngine  <a class="header-action link-secondary" title=
 
   <h4 class="section">Returns</h4>
   <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeSourceQueryResponse.html">ContextKnowledgeSourceQueryResponse</a>&gt;</dt>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Services.Result-1.html">Result</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeSourceQueryResponse.html">ContextKnowledgeSourceQueryResponse</a>&gt;&gt;</dt>
     <dd><p>A task that represents the asynchronous operation. The task result contains  a <a class="xref" href="FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeSourceQueryResponse.html">ContextKnowledgeSourceQueryResponse</a> object with the results of the query.</p>
 </dd>
   </dl>
@@ -251,7 +251,7 @@ before calling this method.</p>
 </article>
 
         <div class="contribution d-print-none">
-          <a href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/ContextEngine/Services/KnowledgeSourceQueryEngine.cs/#L13" class="edit-link">Edit this page</a>
+          <a href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/ContextEngine/Services/KnowledgeSourceQueryEngine.cs/#L14" class="edit-link">Edit this page</a>
         </div>
 
 

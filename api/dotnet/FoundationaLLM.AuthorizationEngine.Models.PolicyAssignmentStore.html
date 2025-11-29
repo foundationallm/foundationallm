@@ -193,6 +193,38 @@ public required string InstanceId { get; set; }</code></pre>
 
 
 
+  <a id="FoundationaLLM_AuthorizationEngine_Models_PolicyAssignmentStore_InvalidPolicyAssignments_" data-uid="FoundationaLLM.AuthorizationEngine.Models.PolicyAssignmentStore.InvalidPolicyAssignments*"></a>
+
+  <h3 id="FoundationaLLM_AuthorizationEngine_Models_PolicyAssignmentStore_InvalidPolicyAssignments" data-uid="FoundationaLLM.AuthorizationEngine.Models.PolicyAssignmentStore.InvalidPolicyAssignments">
+  InvalidPolicyAssignments
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/AuthorizationEngine/Models/PolicyAssignmentStore.cs/#L23"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[JsonIgnore]
+public List&lt;PolicyAssignment&gt; InvalidPolicyAssignments { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Authorization.PolicyAssignment.html">PolicyAssignment</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
   <a id="FoundationaLLM_AuthorizationEngine_Models_PolicyAssignmentStore_PolicyAssignments_" data-uid="FoundationaLLM.AuthorizationEngine.Models.PolicyAssignmentStore.PolicyAssignments*"></a>
 
   <h3 id="FoundationaLLM_AuthorizationEngine_Models_PolicyAssignmentStore_PolicyAssignments" data-uid="FoundationaLLM.AuthorizationEngine.Models.PolicyAssignmentStore.PolicyAssignments">
@@ -226,6 +258,38 @@ public required List&lt;PolicyAssignment&gt; PolicyAssignments { get; set; }</co
 
 
 
+  <a id="FoundationaLLM_AuthorizationEngine_Models_PolicyAssignmentStore_ValidationErrors_" data-uid="FoundationaLLM.AuthorizationEngine.Models.PolicyAssignmentStore.ValidationErrors*"></a>
+
+  <h3 id="FoundationaLLM_AuthorizationEngine_Models_PolicyAssignmentStore_ValidationErrors" data-uid="FoundationaLLM.AuthorizationEngine.Models.PolicyAssignmentStore.ValidationErrors">
+  ValidationErrors
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/AuthorizationEngine/Models/PolicyAssignmentStore.cs/#L26"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[JsonIgnore]
+public Dictionary&lt;string, string&gt; ValidationErrors { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2">Dictionary</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
   <h2 class="section" id="methods">Methods
 </h2>
 
@@ -234,7 +298,7 @@ public required List&lt;PolicyAssignment&gt; PolicyAssignments { get; set; }</co
 
   <h3 id="FoundationaLLM_AuthorizationEngine_Models_PolicyAssignmentStore_EnrichPolicyAssignments" data-uid="FoundationaLLM.AuthorizationEngine.Models.PolicyAssignmentStore.EnrichPolicyAssignments">
   EnrichPolicyAssignments()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/AuthorizationEngine/Models/PolicyAssignmentStore.cs/#L26"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/AuthorizationEngine/Models/PolicyAssignmentStore.cs/#L32"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Loads calculated properties for all policy assignments.</p>

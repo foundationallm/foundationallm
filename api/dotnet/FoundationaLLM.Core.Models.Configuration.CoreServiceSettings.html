@@ -89,7 +89,7 @@
 
 
   <h1 id="FoundationaLLM_Core_Models_Configuration_CoreServiceSettings" data-uid="FoundationaLLM.Core.Models.Configuration.CoreServiceSettings" class="text-break">
-Class CoreServiceSettings  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Core/Models/Configuration/CoreServiceSettings.cs/#L6"><i class="bi bi-code-slash"></i></a>
+Class CoreServiceSettings  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Core/Models/Configuration/CoreServiceSettings.cs/#L8"><i class="bi bi-code-slash"></i></a>
   </h1>
 
   <div class="facts text-secondary">
@@ -164,7 +164,7 @@ Class CoreServiceSettings  <a class="header-action link-secondary" title="View s
 
   <h3 id="FoundationaLLM_Core_Models_Configuration_CoreServiceSettings_AzureAIAgentsFileSearchFileExtensions" data-uid="FoundationaLLM.Core.Models.Configuration.CoreServiceSettings.AzureAIAgentsFileSearchFileExtensions">
   AzureAIAgentsFileSearchFileExtensions
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Core/Models/Configuration/CoreServiceSettings.cs/#L26"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Core/Models/Configuration/CoreServiceSettings.cs/#L28"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>The comma-separated list file extensions that are supported by the Azure AI Agent Service file search tool.</p>
@@ -196,7 +196,7 @@ Class CoreServiceSettings  <a class="header-action link-secondary" title="View s
 
   <h3 id="FoundationaLLM_Core_Models_Configuration_CoreServiceSettings_AzureOpenAIAssistantsFileSearchFileExtensions" data-uid="FoundationaLLM.Core.Models.Configuration.CoreServiceSettings.AzureOpenAIAssistantsFileSearchFileExtensions">
   AzureOpenAIAssistantsFileSearchFileExtensions
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Core/Models/Configuration/CoreServiceSettings.cs/#L21"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Core/Models/Configuration/CoreServiceSettings.cs/#L23"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>The comma-separated list file extensions that are supported by the Azure OpenAI Assistants file search tool.</p>
@@ -228,7 +228,7 @@ Class CoreServiceSettings  <a class="header-action link-secondary" title="View s
 
   <h3 id="FoundationaLLM_Core_Models_Configuration_CoreServiceSettings_BypassGatekeeper" data-uid="FoundationaLLM.Core.Models.Configuration.CoreServiceSettings.BypassGatekeeper">
   BypassGatekeeper
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Core/Models/Configuration/CoreServiceSettings.cs/#L16"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Core/Models/Configuration/CoreServiceSettings.cs/#L18"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Controls whether the Gatekeeper API will be invoked or not.</p>
@@ -256,11 +256,74 @@ Class CoreServiceSettings  <a class="header-action link-secondary" title="View s
 
 
 
+  <a id="FoundationaLLM_Core_Models_Configuration_CoreServiceSettings_CompletionResponsePollingIntervalMilliseconds_" data-uid="FoundationaLLM.Core.Models.Configuration.CoreServiceSettings.CompletionResponsePollingIntervalMilliseconds*"></a>
+
+  <h3 id="FoundationaLLM_Core_Models_Configuration_CoreServiceSettings_CompletionResponsePollingIntervalMilliseconds" data-uid="FoundationaLLM.Core.Models.Configuration.CoreServiceSettings.CompletionResponsePollingIntervalMilliseconds">
+  CompletionResponsePollingIntervalMilliseconds
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Core/Models/Configuration/CoreServiceSettings.cs/#L38"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ConfigurationValue&lt;int&gt; CompletionResponsePollingIntervalMilliseconds { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValue-1.html">ConfigurationValue</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="FoundationaLLM_Core_Models_Configuration_CoreServiceSettings_MaxUploadsPerMessage_" data-uid="FoundationaLLM.Core.Models.Configuration.CoreServiceSettings.MaxUploadsPerMessage*"></a>
+
+  <h3 id="FoundationaLLM_Core_Models_Configuration_CoreServiceSettings_MaxUploadsPerMessage" data-uid="FoundationaLLM.Core.Models.Configuration.CoreServiceSettings.MaxUploadsPerMessage">
+  MaxUploadsPerMessage
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Core/Models/Configuration/CoreServiceSettings.cs/#L33"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the maximum number of file uploads that can be included in a single message.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ConfigurationValue&lt;int&gt; MaxUploadsPerMessage { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValue-1.html">ConfigurationValue</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
   <a id="FoundationaLLM_Core_Models_Configuration_CoreServiceSettings_SessionSummarization_" data-uid="FoundationaLLM.Core.Models.Configuration.CoreServiceSettings.SessionSummarization*"></a>
 
   <h3 id="FoundationaLLM_Core_Models_Configuration_CoreServiceSettings_SessionSummarization" data-uid="FoundationaLLM.Core.Models.Configuration.CoreServiceSettings.SessionSummarization">
   SessionSummarization
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Core/Models/Configuration/CoreServiceSettings.cs/#L11"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Core/Models/Configuration/CoreServiceSettings.cs/#L13"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>The type of summarization for chat session names.</p>
@@ -292,7 +355,7 @@ Class CoreServiceSettings  <a class="header-action link-secondary" title="View s
 </article>
 
         <div class="contribution d-print-none">
-          <a href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Core/Models/Configuration/CoreServiceSettings.cs/#L6" class="edit-link">Edit this page</a>
+          <a href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Core/Models/Configuration/CoreServiceSettings.cs/#L8" class="edit-link">Edit this page</a>
         </div>
 
 

@@ -250,17 +250,17 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Agent.Validation.Metadata.KnowledgeManagementAgentValidator.yml",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Agent.Validation.Metadata.GenericAgentValidator.yml",
       "output": {
         ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Agent.Validation.Metadata.KnowledgeManagementAgentValidator.html"
+          "relative_path": "api/dotnet/FoundationaLLM.Agent.Validation.Metadata.GenericAgentValidator.html"
         }
       },
       "version": "",
       "Uid": null,
       "IsMRef": true,
-      "Title": "FoundationaLLM.Agent.Validation.Metadata.KnowledgeManagementAgentValidator",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Agent.Validation.Metadata.KnowledgeManagementAgentValidator.yml\" sourcestartlinenumber=\"1\">Validator for the <xref href=\"FoundationaLLM.Common.Models.ResourceProviders.Agent.KnowledgeManagementAgent\" data-throw-if-not-resolved=\"false\"></xref> model.</p>\n"
+      "Title": "FoundationaLLM.Agent.Validation.Metadata.GenericAgentValidator",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Agent.Validation.Metadata.GenericAgentValidator.yml\" sourcestartlinenumber=\"1\">Validator for the <xref href=\"FoundationaLLM.Common.Models.ResourceProviders.Agent.GenericAgent\" data-throw-if-not-resolved=\"false\"></xref> model.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -2560,6 +2560,20 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Constants.DataPipelines.WellKnownDataPipelineNames.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Constants.DataPipelines.WellKnownDataPipelineNames.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Constants.DataPipelines.WellKnownDataPipelineNames",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Constants.DataPipelines.WellKnownDataPipelineNames.yml\" sourcestartlinenumber=\"1\">Provides a collection of well-known names for data pipelines.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/dotnet/FoundationaLLM.Common.Constants.DataPipelines.yml",
       "output": {
         ".html": {
@@ -4058,6 +4072,20 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Exceptions.ContentSafetyException.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Exceptions.ContentSafetyException.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Exceptions.ContentSafetyException",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Exceptions.ContentSafetyException.yml\" sourcestartlinenumber=\"1\">Represents an error related to content safety.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/dotnet/FoundationaLLM.Common.Exceptions.CoreServiceException.yml",
       "output": {
         ".html": {
@@ -4587,6 +4615,34 @@
       "IsMRef": true,
       "Title": "FoundationaLLM.Common.Interfaces.ICacheService",
       "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Interfaces.ICacheService.yml\" sourcestartlinenumber=\"1\">Caches objects.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Interfaces.IClientFactoryService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Interfaces.IClientFactoryService.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Interfaces.IClientFactoryService",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Interfaces.IClientFactoryService.yml\" sourcestartlinenumber=\"1\">Defines a service for creating client instances used to process requests and responses.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Interfaces.IContentSafetyService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Interfaces.IContentSafetyService.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Interfaces.IContentSafetyService",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Interfaces.IContentSafetyService.yml\" sourcestartlinenumber=\"1\">Interface for calling a content safety service.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -6200,6 +6256,34 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Configuration.ContentSafety.AzureContentSafetySettings.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.Configuration.ContentSafety.AzureContentSafetySettings.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Models.Configuration.ContentSafety.AzureContentSafetySettings",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.Configuration.ContentSafety.AzureContentSafetySettings.yml\" sourcestartlinenumber=\"1\">Provides configuration options for the Azure Content Safety service.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Configuration.ContentSafety.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.Configuration.ContentSafety.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Models.Configuration.ContentSafety",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Configuration.CosmosDB.AzureCosmosDBSettings.yml",
       "output": {
         ".html": {
@@ -6606,6 +6690,48 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.ContentSafety.ContentSafetyAnalysisResult.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.ContentSafety.ContentSafetyAnalysisResult.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Models.ContentSafety.ContentSafetyAnalysisResult",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.ContentSafety.ContentSafetyAnalysisResult.yml\" sourcestartlinenumber=\"1\">Represents the result of a content safety analysis.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.ContentSafety.ContentSafetyDocument.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.ContentSafety.ContentSafetyDocument.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Models.ContentSafety.ContentSafetyDocument",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.ContentSafety.ContentSafetyDocument.yml\" sourcestartlinenumber=\"1\">Represents a document to be analyzed for content safety.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.ContentSafety.ContentSafetyDocumentAnalysisResult.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.ContentSafety.ContentSafetyDocumentAnalysisResult.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Models.ContentSafety.ContentSafetyDocumentAnalysisResult",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.ContentSafety.ContentSafetyDocumentAnalysisResult.yml\" sourcestartlinenumber=\"1\">Represents the result of a content safety analysis for multiple documents.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.ContentSafety.ShieldPromptDetails.yml",
       "output": {
         ".html": {
@@ -6757,34 +6883,6 @@
       "IsMRef": true,
       "Title": "FoundationaLLM.Common.Models.Context.ContextRecord",
       "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.Context.ContextRecord.yml\" sourcestartlinenumber=\"1\">Represents a file record.</p>\n"
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Context.ContextServiceResponse-1.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.Context.ContextServiceResponse-1.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Common.Models.Context.ContextServiceResponse<T>",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.Context.ContextServiceResponse-1.yml\" sourcestartlinenumber=\"1\">Represents a response from the FoundationaLLM Context API.</p>\n"
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Context.ContextServiceResponse.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.Context.ContextServiceResponse.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Common.Models.Context.ContextServiceResponse",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.Context.ContextServiceResponse.yml\" sourcestartlinenumber=\"1\">Represents a response from the FoundationaLLM Context API.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -9140,6 +9238,34 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows.GenericAgentWorkflow.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows.GenericAgentWorkflow.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows.GenericAgentWorkflow",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows.GenericAgentWorkflow.yml\" sourcestartlinenumber=\"1\">Provides an agent workflow configuration for a Generic Agent workflow implemented by a plugin.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows.LangChainAgentWorkflow.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows.LangChainAgentWorkflow.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows.LangChainAgentWorkflow",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows.LangChainAgentWorkflow.yml\" sourcestartlinenumber=\"1\">Provides an agent workflow configuration for a LangChain Expression Language workflow.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows.LangChainExpressionLanguageAgentWorkflow.yml",
       "output": {
         ".html": {
@@ -9182,17 +9308,17 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Agent.KnowledgeManagementAgent.yml",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Agent.GenericAgent.yml",
       "output": {
         ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Agent.KnowledgeManagementAgent.html"
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Agent.GenericAgent.html"
         }
       },
       "version": "",
       "Uid": null,
       "IsMRef": true,
-      "Title": "FoundationaLLM.Common.Models.ResourceProviders.Agent.KnowledgeManagementAgent",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Agent.KnowledgeManagementAgent.yml\" sourcestartlinenumber=\"1\">The Knowledge Management agent metadata model.</p>\n"
+      "Title": "FoundationaLLM.Common.Models.ResourceProviders.Agent.GenericAgent",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.Agent.GenericAgent.yml\" sourcestartlinenumber=\"1\">The Generic agent metadata model.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -9851,6 +9977,20 @@
       "IsMRef": true,
       "Title": "FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRunFilter",
       "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRunFilter.yml\" sourcestartlinenumber=\"1\">Represents a filter for querying <xref href=\"FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRun\" data-throw-if-not-resolved=\"false\"></xref> resources in the FoundationaLLM.DataPipeline resource provider.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRunFilterResponse.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRunFilterResponse.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRunFilterResponse",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRunFilterResponse.yml\" sourcestartlinenumber=\"1\">Provider the model for a data pipeline run filter response.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -10554,6 +10694,20 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.ResourceReferenceListSchemaUpgrade-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.ResourceReferenceListSchemaUpgrade-1.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Models.ResourceProviders.ResourceReferenceListSchemaUpgrade<T>",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.ResourceReferenceListSchemaUpgrade-1.yml\" sourcestartlinenumber=\"1\">Provides the details necessary to upgrade the schema of a resource reference list.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.ResourceProviders.ResourceTypeAction.yml",
       "output": {
         ".html": {
@@ -10890,6 +11044,62 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Services.DomainError.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.Services.DomainError.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Models.Services.DomainError",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.Services.DomainError.yml\" sourcestartlinenumber=\"1\">Represents a domain-specific error (RFC 7807 style).</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Services.Result-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.Services.Result-1.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Models.Services.Result<T>",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.Services.Result-1.yml\" sourcestartlinenumber=\"1\">Represents the result of an operation that can succeed with a value of a specified reference type or fail with a\ndomain error.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Services.Result.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.Services.Result.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Models.Services.Result",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.Services.Result.yml\" sourcestartlinenumber=\"1\">Represents the outcome of an operation, indicating either success or failure and providing error information if\napplicable.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Services.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.Services.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Models.Services",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Vectorization.ContentIdentifier.yml",
       "output": {
         ".html": {
@@ -11142,6 +11352,20 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Services.API.ClientFactoryService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Services.API.ClientFactoryService.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Services.API.ClientFactoryService",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Services.API.ClientFactoryService.yml\" sourcestartlinenumber=\"1\">Provides methods for creating client pipelines for communication with API endpoints.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/dotnet/FoundationaLLM.Common.Services.API.DownstreamAPIService.yml",
       "output": {
         ".html": {
@@ -11279,6 +11503,20 @@
       "IsMRef": true,
       "Title": "FoundationaLLM.Common.Services.Azure",
       "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Services.AzureContentSafetyService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Services.AzureContentSafetyService.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Services.AzureContentSafetyService",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Services.AzureContentSafetyService.yml\" sourcestartlinenumber=\"1\">Implements the <xref href=\"FoundationaLLM.Common.Interfaces.IContentSafetyService\" data-throw-if-not-resolved=\"false\"></xref> interface.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -12245,6 +12483,20 @@
       "IsMRef": true,
       "Title": "FoundationaLLM.Common.Utils.ResourcePathUtils",
       "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Utils.ResourcePathUtils.yml\" sourcestartlinenumber=\"1\">Utilities dedicated to the <xref href=\"FoundationaLLM.Common.Models.ResourceProviders.ResourcePath\" data-throw-if-not-resolved=\"false\"></xref> class.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Utils.RetryHelper.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Utils.RetryHelper.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Utils.RetryHelper",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Utils.RetryHelper.yml\" sourcestartlinenumber=\"1\">Provides helper methods for implementing retry logic in applications.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -14834,7 +15086,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "FoundationaLLM.DependencyInjection",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.DependencyInjection.yml\" sourcestartlinenumber=\"1\">Provides extension methods used to configure dependency injection.</p>\n"
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.DependencyInjection.yml\" sourcestartlinenumber=\"1\">Provides dependency injection extensions for the FoundationaLLM Data Pipeline service.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -14908,20 +15160,6 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Gatekeeper.Core.Interfaces.IContentSafetyService.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Gatekeeper.Core.Interfaces.IContentSafetyService.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Gatekeeper.Core.Interfaces.IContentSafetyService",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Gatekeeper.Core.Interfaces.IContentSafetyService.yml\" sourcestartlinenumber=\"1\">Interface for calling a content safety service.</p>\n"
-    },
-    {
-      "type": "ManagedReference",
       "source_relative_path": "api/dotnet/FoundationaLLM.Gatekeeper.Core.Interfaces.IEnkryptGuardrailsService.yml",
       "output": {
         ".html": {
@@ -14992,20 +15230,6 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Gatekeeper.Core.Models.ConfigurationOptions.AzureContentSafetySettings.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Gatekeeper.Core.Models.ConfigurationOptions.AzureContentSafetySettings.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Gatekeeper.Core.Models.ConfigurationOptions.AzureContentSafetySettings",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Gatekeeper.Core.Models.ConfigurationOptions.AzureContentSafetySettings.yml\" sourcestartlinenumber=\"1\">Provides configuration options for the Azure Content Safety service.</p>\n"
-    },
-    {
-      "type": "ManagedReference",
       "source_relative_path": "api/dotnet/FoundationaLLM.Gatekeeper.Core.Models.ConfigurationOptions.EnkryptGuardrailsServiceSettings.yml",
       "output": {
         ".html": {
@@ -15058,34 +15282,6 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "FoundationaLLM.Gatekeeper.Core.Models.ConfigurationOptions",
-      "Summary": null
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Gatekeeper.Core.Models.ContentSafety.AnalyzeTextFilterResult.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Gatekeeper.Core.Models.ContentSafety.AnalyzeTextFilterResult.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Gatekeeper.Core.Models.ContentSafety.AnalyzeTextFilterResult",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Gatekeeper.Core.Models.ContentSafety.AnalyzeTextFilterResult.yml\" sourcestartlinenumber=\"1\">Content filter text analysis restult.</p>\n"
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Gatekeeper.Core.Models.ContentSafety.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Gatekeeper.Core.Models.ContentSafety.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Gatekeeper.Core.Models.ContentSafety",
       "Summary": null
     },
     {
@@ -15297,20 +15493,6 @@
       "IsMRef": true,
       "Title": null,
       "Summary": null
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Gatekeeper.Core.Services.AzureContentSafetyService.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Gatekeeper.Core.Services.AzureContentSafetyService.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Gatekeeper.Core.Services.AzureContentSafetyService",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Gatekeeper.Core.Services.AzureContentSafetyService.yml\" sourcestartlinenumber=\"1\">Implements the <xref href=\"FoundationaLLM.Gatekeeper.Core.Interfaces.IContentSafetyService\" data-throw-if-not-resolved=\"false\"></xref> interface.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -16826,6 +17008,20 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.AzureAIContentSafetyShieldingDataPipelineStagePlugin.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.AzureAIContentSafetyShieldingDataPipelineStagePlugin.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.AzureAIContentSafetyShieldingDataPipelineStagePlugin",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.AzureAIContentSafetyShieldingDataPipelineStagePlugin.yml\" sourcestartlinenumber=\"1\">Implements the Azure AI Content Safety Shielding Data Pipeline Stage Plugin.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/dotnet/FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.AzureAISearchIndexingDataPipelineStagePlugin.yml",
       "output": {
         ".html": {
@@ -17872,1588 +18068,6 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "FoundationaLLM.Vector.ResourceProviders",
-      "Summary": null
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Vectorization.API.Controllers.StatusController.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Vectorization.API.Controllers.StatusController.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Vectorization.API.Controllers.StatusController",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Vectorization.API.Controllers.StatusController.yml\" sourcestartlinenumber=\"1\">Provides methods for checking the status of the service.</p>\n"
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Vectorization.API.Controllers.VectorizationRequestController.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Vectorization.API.Controllers.VectorizationRequestController.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Vectorization.API.Controllers.VectorizationRequestController",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Vectorization.API.Controllers.VectorizationRequestController.yml\" sourcestartlinenumber=\"1\">Methods for managing vectorization requests.</p>\n"
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Vectorization.API.Controllers.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Vectorization.API.Controllers.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Vectorization.API.Controllers",
-      "Summary": null
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Vectorization.Client.VectorizationServiceClient.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Vectorization.Client.VectorizationServiceClient.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Vectorization.Client.VectorizationServiceClient",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Vectorization.Client.VectorizationServiceClient.yml\" sourcestartlinenumber=\"1\">Provides method calls to the Vectorization API service.</p>\n"
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Vectorization.Client.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Vectorization.Client.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Vectorization.Client",
-      "Summary": null
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Vectorization.DataFormats.Office.DOCXTextExtractor.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Vectorization.DataFormats.Office.DOCXTextExtractor.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Vectorization.DataFormats.Office.DOCXTextExtractor",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Vectorization.DataFormats.Office.DOCXTextExtractor.yml\" sourcestartlinenumber=\"1\">Extracts text from DOCX files.</p>\n"
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Vectorization.DataFormats.Office.PPTXTextExtractor.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Vectorization.DataFormats.Office.PPTXTextExtractor.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Vectorization.DataFormats.Office.PPTXTextExtractor",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Vectorization.DataFormats.Office.PPTXTextExtractor.yml\" sourcestartlinenumber=\"1\">Extracts text from PPTX files.</p>\n"
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Vectorization.DataFormats.Office.XLSXTextExtractor.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Vectorization.DataFormats.Office.XLSXTextExtractor.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Vectorization.DataFormats.Office.XLSXTextExtractor",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Vectorization.DataFormats.Office.XLSXTextExtractor.yml\" sourcestartlinenumber=\"1\">Extracts text from XLSX files.</p>\n"
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Vectorization.DataFormats.Office.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Vectorization.DataFormats.Office.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Vectorization.DataFormats.Office",
-      "Summary": null
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Vectorization.DataFormats.PDF.PDFTextExtractor.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Vectorization.DataFormats.PDF.PDFTextExtractor.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Vectorization.DataFormats.PDF.PDFTextExtractor",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Vectorization.DataFormats.PDF.PDFTextExtractor.yml\" sourcestartlinenumber=\"1\">Extracts text from PDF files.</p>\n"
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Vectorization.DataFormats.PDF.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Vectorization.DataFormats.PDF.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Vectorization.DataFormats.PDF",
-      "Summary": null
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Vectorization.DataFormats.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Vectorization.DataFormats.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": null,
-      "Summary": null
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Vectorization.Extensions.VectorizationRequestExtensions.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Vectorization.Extensions.VectorizationRequestExtensions.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Vectorization.Extensions.VectorizationRequestExtensions",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Vectorization.Extensions.VectorizationRequestExtensions.yml\" sourcestartlinenumber=\"1\">Extension methods for <xref href=\"FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest\" data-throw-if-not-resolved=\"false\"></xref>.</p>\n"
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Vectorization.Extensions.VectorizationResourceProviderServiceExtensions.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Vectorization.Extensions.VectorizationResourceProviderServiceExtensions.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Vectorization.Extensions.VectorizationResourceProviderServiceExtensions",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Vectorization.Extensions.VectorizationResourceProviderServiceExtensions.yml\" sourcestartlinenumber=\"1\">Extension methods for <xref href=\"FoundationaLLM.Vectorization.ResourceProviders.VectorizationResourceProviderService\" data-throw-if-not-resolved=\"false\"></xref>.</p>\n"
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Vectorization.Extensions.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Vectorization.Extensions.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Vectorization.Extensions",
-      "Summary": null
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Vectorization.Handlers.EmbeddingHandler.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Vectorization.Handlers.EmbeddingHandler.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Vectorization.Handlers.EmbeddingHandler",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Vectorization.Handlers.EmbeddingHandler.yml\" sourcestartlinenumber=\"1\">Handles the embedding stage of the vectorization pipeline.</p>\n"
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Vectorization.Handlers.ExtractionHandler.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Vectorization.Handlers.ExtractionHandler.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Vectorization.Handlers.ExtractionHandler",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Vectorization.Handlers.ExtractionHandler.yml\" sourcestartlinenumber=\"1\">Handles the extraction stage of the vectorization pipeline.</p>\n"
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Vectorization.Handlers.IndexingHandler.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Vectorization.Handlers.IndexingHandler.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Vectorization.Handlers.IndexingHandler",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Vectorization.Handlers.IndexingHandler.yml\" sourcestartlinenumber=\"1\">Handles the indexing stage of the vectorization pipeline.</p>\n"
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Vectorization.Handlers.PartitionHandler.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Vectorization.Handlers.PartitionHandler.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Vectorization.Handlers.PartitionHandler",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Vectorization.Handlers.PartitionHandler.yml\" sourcestartlinenumber=\"1\">Handles the partitioning stage of the vectorization pipeline.</p>\n"
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Vectorization.Handlers.VectorizationStepHandlerBase.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Vectorization.Handlers.VectorizationStepHandlerBase.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Vectorization.Handlers.VectorizationStepHandlerBase",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Vectorization.Handlers.VectorizationStepHandlerBase.yml\" sourcestartlinenumber=\"1\">Implements basic vectorization step handler functionality.</p>\n"
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Vectorization.Handlers.VectorizationStepHandlerFactory.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Vectorization.Handlers.VectorizationStepHandlerFactory.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Vectorization.Handlers.VectorizationStepHandlerFactory",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Vectorization.Handlers.VectorizationStepHandlerFactory.yml\" sourcestartlinenumber=\"1\">Implements a factory that creates vectorization step handlers.</p>\n"
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Vectorization.Handlers.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Vectorization.Handlers.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Vectorization.Handlers",
-      "Summary": null
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Vectorization.Interfaces.IContentSourceService.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Vectorization.Interfaces.IContentSourceService.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Vectorization.Interfaces.IContentSourceService",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Vectorization.Interfaces.IContentSourceService.yml\" sourcestartlinenumber=\"1\">Provides access to items in a data source.</p>\n"
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Vectorization.Interfaces.IPipelineExecutionService.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Vectorization.Interfaces.IPipelineExecutionService.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Vectorization.Interfaces.IPipelineExecutionService",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Vectorization.Interfaces.IPipelineExecutionService.yml\" sourcestartlinenumber=\"1\">Provides services to interact with the pipeline execution service.</p>\n"
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Vectorization.Interfaces.IRequestManagerService.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Vectorization.Interfaces.IRequestManagerService.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Vectorization.Interfaces.IRequestManagerService",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Vectorization.Interfaces.IRequestManagerService.yml\" sourcestartlinenumber=\"1\">Manages vectorization requests.</p>\n"
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Vectorization.Interfaces.IRequestSourceService.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Vectorization.Interfaces.IRequestSourceService.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Vectorization.Interfaces.IRequestSourceService",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Vectorization.Interfaces.IRequestSourceService.yml\" sourcestartlinenumber=\"1\">Manages vectorization requests.</p>\n"
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Vectorization.Interfaces.IRequestSourcesCache.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Vectorization.Interfaces.IRequestSourcesCache.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Vectorization.Interfaces.IRequestSourcesCache",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Vectorization.Interfaces.IRequestSourcesCache.yml\" sourcestartlinenumber=\"1\">Defines a cache of <xref href=\"FoundationaLLM.Vectorization.Interfaces.IRequestSourceService\" data-throw-if-not-resolved=\"false\"></xref> objects.</p>\n"
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Vectorization.Interfaces.IVectorizationRequestProcessor.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Vectorization.Interfaces.IVectorizationRequestProcessor.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Vectorization.Interfaces.IVectorizationRequestProcessor",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Vectorization.Interfaces.IVectorizationRequestProcessor.yml\" sourcestartlinenumber=\"1\">Interface for the vectorization request processor.</p>\n"
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Vectorization.Interfaces.IVectorizationService.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Vectorization.Interfaces.IVectorizationService.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Vectorization.Interfaces.IVectorizationService",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Vectorization.Interfaces.IVectorizationService.yml\" sourcestartlinenumber=\"1\">Interface for the vectorization service.</p>\n"
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Vectorization.Interfaces.IVectorizationServiceClient.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Vectorization.Interfaces.IVectorizationServiceClient.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Vectorization.Interfaces.IVectorizationServiceClient",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Vectorization.Interfaces.IVectorizationServiceClient.yml\" sourcestartlinenumber=\"1\">Defines the interface for the Vectorization API client.</p>\n"
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Vectorization.Interfaces.IVectorizationServiceFactory-1.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Vectorization.Interfaces.IVectorizationServiceFactory-1.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Vectorization.Interfaces.IVectorizationServiceFactory<T>",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Vectorization.Interfaces.IVectorizationServiceFactory-1.yml\" sourcestartlinenumber=\"1\">Creates typed service instances.</p>\n"
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Vectorization.Interfaces.IVectorizationStateService.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Vectorization.Interfaces.IVectorizationStateService.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Vectorization.Interfaces.IVectorizationStateService",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Vectorization.Interfaces.IVectorizationStateService.yml\" sourcestartlinenumber=\"1\">Provides persistence services for vectorization pipeline states.</p>\n"
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Vectorization.Interfaces.IVectorizationStepHandler.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Vectorization.Interfaces.IVectorizationStepHandler.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Vectorization.Interfaces.IVectorizationStepHandler",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Vectorization.Interfaces.IVectorizationStepHandler.yml\" sourcestartlinenumber=\"1\">Handles requests associated with a specific vectorization pipeline step.</p>\n"
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Vectorization.Interfaces.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Vectorization.Interfaces.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Vectorization.Interfaces",
-      "Summary": null
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Vectorization.Models.Configuration.AzureSQLDatabaseContentSourceServiceSettings.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Vectorization.Models.Configuration.AzureSQLDatabaseContentSourceServiceSettings.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Vectorization.Models.Configuration.AzureSQLDatabaseContentSourceServiceSettings",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Vectorization.Models.Configuration.AzureSQLDatabaseContentSourceServiceSettings.yml\" sourcestartlinenumber=\"1\">Provides configuration settings to initialize a Sql Database content source service.</p>\n"
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Vectorization.Models.Configuration.RequestManagerServiceSettings.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Vectorization.Models.Configuration.RequestManagerServiceSettings.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Vectorization.Models.Configuration.RequestManagerServiceSettings",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Vectorization.Models.Configuration.RequestManagerServiceSettings.yml\" sourcestartlinenumber=\"1\">Provides configuration settings to initialize a request manager instance.</p>\n"
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Vectorization.Models.Configuration.RequestSourceServiceSettings.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Vectorization.Models.Configuration.RequestSourceServiceSettings.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Vectorization.Models.Configuration.RequestSourceServiceSettings",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Vectorization.Models.Configuration.RequestSourceServiceSettings.yml\" sourcestartlinenumber=\"1\">Provides configuration settings to initialize a request source service.</p>\n"
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Vectorization.Models.Configuration.SharePointOnlineContentSourceServiceSettings.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Vectorization.Models.Configuration.SharePointOnlineContentSourceServiceSettings.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Vectorization.Models.Configuration.SharePointOnlineContentSourceServiceSettings",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Vectorization.Models.Configuration.SharePointOnlineContentSourceServiceSettings.yml\" sourcestartlinenumber=\"1\">Provides configuration settings to initialize a SharePoint Online content source service.</p>\n"
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Vectorization.Models.Configuration.VectorizationStateServiceSettings.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Vectorization.Models.Configuration.VectorizationStateServiceSettings.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Vectorization.Models.Configuration.VectorizationStateServiceSettings",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Vectorization.Models.Configuration.VectorizationStateServiceSettings.yml\" sourcestartlinenumber=\"1\">Provides configuration settings to initialize a vectorization state service.</p>\n"
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Vectorization.Models.Configuration.VectorizationWorkerSettings.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Vectorization.Models.Configuration.VectorizationWorkerSettings.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Vectorization.Models.Configuration.VectorizationWorkerSettings",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Vectorization.Models.Configuration.VectorizationWorkerSettings.yml\" sourcestartlinenumber=\"1\">Settings for the vectorization worker.</p>\n"
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Vectorization.Models.Configuration.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Vectorization.Models.Configuration.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Vectorization.Models.Configuration",
-      "Summary": null
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Vectorization.Models.Resources.ResourceStore-1.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Vectorization.Models.Resources.ResourceStore-1.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Vectorization.Models.Resources.ResourceStore<T>",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Vectorization.Models.Resources.ResourceStore-1.yml\" sourcestartlinenumber=\"1\">Models the content of a resource store managed by the FoundationaLLM.Vectorization resource provider.</p>\n"
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Vectorization.Models.Resources.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Vectorization.Models.Resources.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Vectorization.Models.Resources",
-      "Summary": null
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Vectorization.Models.VectorizationArtifact.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Vectorization.Models.VectorizationArtifact.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Vectorization.Models.VectorizationArtifact",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Vectorization.Models.VectorizationArtifact.yml\" sourcestartlinenumber=\"1\">Represents a vectorization artifact.</p>\n"
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Vectorization.Models.VectorizationArtifactType.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Vectorization.Models.VectorizationArtifactType.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Vectorization.Models.VectorizationArtifactType",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Vectorization.Models.VectorizationArtifactType.yml\" sourcestartlinenumber=\"1\">Deifines types of vectorization artifacts.</p>\n"
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Vectorization.Models.VectorizationDequeuedRequest.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Vectorization.Models.VectorizationDequeuedRequest.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Vectorization.Models.VectorizationDequeuedRequest",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Vectorization.Models.VectorizationDequeuedRequest.yml\" sourcestartlinenumber=\"1\">Represents a vectorization request that has been dequeued from a request source.</p>\n"
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Vectorization.Models.VectorizationIndexReference.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Vectorization.Models.VectorizationIndexReference.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Vectorization.Models.VectorizationIndexReference",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Vectorization.Models.VectorizationIndexReference.yml\" sourcestartlinenumber=\"1\">Represents a reference to an index entry that contains vectorized content.</p>\n"
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Vectorization.Models.VectorizationLogEntry.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Vectorization.Models.VectorizationLogEntry.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Vectorization.Models.VectorizationLogEntry",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Vectorization.Models.VectorizationLogEntry.yml\" sourcestartlinenumber=\"1\">Represents a log entry that contains information about vectorization operations.</p>\n"
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Vectorization.Models.VectorizationQueuing.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Vectorization.Models.VectorizationQueuing.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Vectorization.Models.VectorizationQueuing",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Vectorization.Models.VectorizationQueuing.yml\" sourcestartlinenumber=\"1\">Types of queuing engines used to dispatch vectorization requests.</p>\n"
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Vectorization.Models.VectorizationRequestProcessingContext.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Vectorization.Models.VectorizationRequestProcessingContext.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Vectorization.Models.VectorizationRequestProcessingContext",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Vectorization.Models.VectorizationRequestProcessingContext.yml\" sourcestartlinenumber=\"1\">Represents a vectorization request processing context.\nThis class associates a dequeued request with the corresponding vectorization request resource.</p>\n"
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Vectorization.Models.VectorizationState.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Vectorization.Models.VectorizationState.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Vectorization.Models.VectorizationState",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Vectorization.Models.VectorizationState.yml\" sourcestartlinenumber=\"1\">Holds the state associated with each step of the vectorization pipeline\nfor a specified content item (i.e., document).</p>\n"
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Vectorization.Models.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Vectorization.Models.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Vectorization.Models",
-      "Summary": null
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Vectorization.ResourceProviders.VectorizationResourceProviderService.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Vectorization.ResourceProviders.VectorizationResourceProviderService.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Vectorization.ResourceProviders.VectorizationResourceProviderService",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Vectorization.ResourceProviders.VectorizationResourceProviderService.yml\" sourcestartlinenumber=\"1\">Implements the FoundationaLLM.Vectorization resource provider.</p>\n"
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Vectorization.ResourceProviders.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Vectorization.ResourceProviders.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Vectorization.ResourceProviders",
-      "Summary": null
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Vectorization.Serializers.CosmosSystemTextJsonSerializer.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Vectorization.Serializers.CosmosSystemTextJsonSerializer.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Vectorization.Serializers.CosmosSystemTextJsonSerializer",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Vectorization.Serializers.CosmosSystemTextJsonSerializer.yml\" sourcestartlinenumber=\"1\">This class provides a default implementation of System.Text.Json Cosmos Linq Serializer.</p>\n"
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Vectorization.Serializers.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Vectorization.Serializers.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Vectorization.Serializers",
-      "Summary": null
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Vectorization.Services.ContentSources.AzureSQLDatabaseContentSourceService.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Vectorization.Services.ContentSources.AzureSQLDatabaseContentSourceService.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Vectorization.Services.ContentSources.AzureSQLDatabaseContentSourceService",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Vectorization.Services.ContentSources.AzureSQLDatabaseContentSourceService.yml\" sourcestartlinenumber=\"1\">Implements a vectorization content source for content residing in Azure SQL.</p>\n"
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Vectorization.Services.ContentSources.ContentSourceServiceBase.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Vectorization.Services.ContentSources.ContentSourceServiceBase.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Vectorization.Services.ContentSources.ContentSourceServiceBase",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Vectorization.Services.ContentSources.ContentSourceServiceBase.yml\" sourcestartlinenumber=\"1\">Provides common functionalities for all content sources.</p>\n"
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Vectorization.Services.ContentSources.ContentSourceServiceFactory.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Vectorization.Services.ContentSources.ContentSourceServiceFactory.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Vectorization.Services.ContentSources.ContentSourceServiceFactory",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Vectorization.Services.ContentSources.ContentSourceServiceFactory.yml\" sourcestartlinenumber=\"1\">Manages content sources registered for use in the vectorization pipelines.</p>\n"
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Vectorization.Services.ContentSources.DataLakeContentSourceService.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Vectorization.Services.ContentSources.DataLakeContentSourceService.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Vectorization.Services.ContentSources.DataLakeContentSourceService",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Vectorization.Services.ContentSources.DataLakeContentSourceService.yml\" sourcestartlinenumber=\"1\">Implements a vectorization content source for content residing in data lake storage.</p>\n"
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Vectorization.Services.ContentSources.SharePointOnlineContentSourceService.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Vectorization.Services.ContentSources.SharePointOnlineContentSourceService.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Vectorization.Services.ContentSources.SharePointOnlineContentSourceService",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Vectorization.Services.ContentSources.SharePointOnlineContentSourceService.yml\" sourcestartlinenumber=\"1\">Implements a vectorization content source for content residing in SharePoint Online.</p>\n"
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Vectorization.Services.ContentSources.WebContentSourceService.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Vectorization.Services.ContentSources.WebContentSourceService.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Vectorization.Services.ContentSources.WebContentSourceService",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Vectorization.Services.ContentSources.WebContentSourceService.yml\" sourcestartlinenumber=\"1\">Extracts text from a web page.</p>\n"
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Vectorization.Services.ContentSources.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Vectorization.Services.ContentSources.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Vectorization.Services.ContentSources",
-      "Summary": null
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Vectorization.Services.DataSources.AzureDataLakeDataSourceService.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Vectorization.Services.DataSources.AzureDataLakeDataSourceService.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Vectorization.Services.DataSources.AzureDataLakeDataSourceService",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Vectorization.Services.DataSources.AzureDataLakeDataSourceService.yml\" sourcestartlinenumber=\"1\">Provides access to Azure Data Lake based on a data source.</p>\n"
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Vectorization.Services.DataSources.AzureSQLDatabaseDataSourceService.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Vectorization.Services.DataSources.AzureSQLDatabaseDataSourceService.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Vectorization.Services.DataSources.AzureSQLDatabaseDataSourceService",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Vectorization.Services.DataSources.AzureSQLDatabaseDataSourceService.yml\" sourcestartlinenumber=\"1\">Class responsible for retrieving data source data from an Azure SQL database.</p>\n"
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Vectorization.Services.DataSources.Configuration.SQLDatabase.SQLDatabaseServiceSettings.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Vectorization.Services.DataSources.Configuration.SQLDatabase.SQLDatabaseServiceSettings.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Vectorization.Services.DataSources.Configuration.SQLDatabase.SQLDatabaseServiceSettings",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Vectorization.Services.DataSources.Configuration.SQLDatabase.SQLDatabaseServiceSettings.yml\" sourcestartlinenumber=\"1\">Provides configuration settings to initialize an SQL database service.</p>\n"
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Vectorization.Services.DataSources.Configuration.SQLDatabase.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Vectorization.Services.DataSources.Configuration.SQLDatabase.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Vectorization.Services.DataSources.Configuration.SQLDatabase",
-      "Summary": null
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Vectorization.Services.DataSources.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Vectorization.Services.DataSources.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Vectorization.Services.DataSources",
-      "Summary": null
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Vectorization.Services.Pipelines.PipelineExecutionService.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Vectorization.Services.Pipelines.PipelineExecutionService.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Vectorization.Services.Pipelines.PipelineExecutionService",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Vectorization.Services.Pipelines.PipelineExecutionService.yml\" sourcestartlinenumber=\"1\">Executes active vectorization data pipelines.</p>\n"
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Vectorization.Services.Pipelines.PipelineWorker.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Vectorization.Services.Pipelines.PipelineWorker.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Vectorization.Services.Pipelines.PipelineWorker",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Vectorization.Services.Pipelines.PipelineWorker.yml\" sourcestartlinenumber=\"1\">Background worker used to manage vectorization data pipelines.</p>\n"
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Vectorization.Services.Pipelines.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Vectorization.Services.Pipelines.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Vectorization.Services.Pipelines",
-      "Summary": null
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Vectorization.Services.RequestManagerService.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Vectorization.Services.RequestManagerService.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Vectorization.Services.RequestManagerService",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Vectorization.Services.RequestManagerService.yml\" sourcestartlinenumber=\"1\">Manages vectorization requests originating from a specific request source.</p>\n"
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Vectorization.Services.RequestProcessors.LocalVectorizationRequestProcessor.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Vectorization.Services.RequestProcessors.LocalVectorizationRequestProcessor.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Vectorization.Services.RequestProcessors.LocalVectorizationRequestProcessor",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Vectorization.Services.RequestProcessors.LocalVectorizationRequestProcessor.yml\" sourcestartlinenumber=\"1\">Processes the vectorization request internally.</p>\n"
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Vectorization.Services.RequestProcessors.RemoteVectorizationRequestProcessor.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Vectorization.Services.RequestProcessors.RemoteVectorizationRequestProcessor.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Vectorization.Services.RequestProcessors.RemoteVectorizationRequestProcessor",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Vectorization.Services.RequestProcessors.RemoteVectorizationRequestProcessor.yml\" sourcestartlinenumber=\"1\">Processes the vectorization request remotely using the <xref href=\"FoundationaLLM.Vectorization.Interfaces.IVectorizationServiceClient\" data-throw-if-not-resolved=\"false\"></xref> over HTTP.</p>\n"
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Vectorization.Services.RequestProcessors.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Vectorization.Services.RequestProcessors.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Vectorization.Services.RequestProcessors",
-      "Summary": null
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Vectorization.Services.RequestSources.MemoryRequestSourceService.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Vectorization.Services.RequestSources.MemoryRequestSourceService.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Vectorization.Services.RequestSources.MemoryRequestSourceService",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Vectorization.Services.RequestSources.MemoryRequestSourceService.yml\" sourcestartlinenumber=\"1\">Implements an in-memory request source, suitable for testing and quick prototyping.</p>\n"
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Vectorization.Services.RequestSources.RequestSourcesBuilder.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Vectorization.Services.RequestSources.RequestSourcesBuilder.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Vectorization.Services.RequestSources.RequestSourcesBuilder",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Vectorization.Services.RequestSources.RequestSourcesBuilder.yml\" sourcestartlinenumber=\"1\">Implements a builder for a dictionary of request sources (hashed by the identifier of the request source).</p>\n"
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Vectorization.Services.RequestSources.RequestSourcesCache.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Vectorization.Services.RequestSources.RequestSourcesCache.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Vectorization.Services.RequestSources.RequestSourcesCache",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Vectorization.Services.RequestSources.RequestSourcesCache.yml\" sourcestartlinenumber=\"1\">Implements a cache of <xref href=\"FoundationaLLM.Vectorization.Interfaces.IRequestSourceService\" data-throw-if-not-resolved=\"false\"></xref> objects as defined by <xref href=\"FoundationaLLM.Vectorization.Interfaces.IRequestSourcesCache\" data-throw-if-not-resolved=\"false\"></xref>.</p>\n"
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Vectorization.Services.RequestSources.StorageQueueRequestSourceService.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Vectorization.Services.RequestSources.StorageQueueRequestSourceService.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Vectorization.Services.RequestSources.StorageQueueRequestSourceService",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Vectorization.Services.RequestSources.StorageQueueRequestSourceService.yml\" sourcestartlinenumber=\"1\">Implements a request source that uses Azure storage queues.</p>\n"
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Vectorization.Services.RequestSources.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Vectorization.Services.RequestSources.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Vectorization.Services.RequestSources",
-      "Summary": null
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Vectorization.Services.Text.GatewayTextEmbeddingService.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Vectorization.Services.Text.GatewayTextEmbeddingService.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Vectorization.Services.Text.GatewayTextEmbeddingService",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Vectorization.Services.Text.GatewayTextEmbeddingService.yml\" sourcestartlinenumber=\"1\">Generates text embeddings by routing requests through the FoundationaLLM Gateway API.</p>\n"
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Vectorization.Services.Text.IndexingServiceFactory.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Vectorization.Services.Text.IndexingServiceFactory.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Vectorization.Services.Text.IndexingServiceFactory",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Vectorization.Services.Text.IndexingServiceFactory.yml\" sourcestartlinenumber=\"1\">Creates text splitter service instances.</p>\n"
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Vectorization.Services.Text.TextEmbeddingServiceFactory.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Vectorization.Services.Text.TextEmbeddingServiceFactory.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Vectorization.Services.Text.TextEmbeddingServiceFactory",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Vectorization.Services.Text.TextEmbeddingServiceFactory.yml\" sourcestartlinenumber=\"1\">Creates text splitter service instances.</p>\n"
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Vectorization.Services.Text.TextSplitterServiceFactory.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Vectorization.Services.Text.TextSplitterServiceFactory.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Vectorization.Services.Text.TextSplitterServiceFactory",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Vectorization.Services.Text.TextSplitterServiceFactory.yml\" sourcestartlinenumber=\"1\">Creates text splitter service instances.</p>\n"
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Vectorization.Services.Text.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Vectorization.Services.Text.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Vectorization.Services.Text",
-      "Summary": null
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Vectorization.Services.VectorizationServices.AsynchronousVectorizationService.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Vectorization.Services.VectorizationServices.AsynchronousVectorizationService.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Vectorization.Services.VectorizationServices.AsynchronousVectorizationService",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Vectorization.Services.VectorizationServices.AsynchronousVectorizationService.yml\" sourcestartlinenumber=\"1\">Implements the <xref href=\"FoundationaLLM.Vectorization.Interfaces.IVectorizationService\" data-throw-if-not-resolved=\"false\"></xref> interface for Asynchronous vectorization requests.</p>\n"
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Vectorization.Services.VectorizationServices.SynchronousVectorizationService.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Vectorization.Services.VectorizationServices.SynchronousVectorizationService.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Vectorization.Services.VectorizationServices.SynchronousVectorizationService",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Vectorization.Services.VectorizationServices.SynchronousVectorizationService.yml\" sourcestartlinenumber=\"1\">Handles synchronous in-memory vectorization requests.</p>\n"
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Vectorization.Services.VectorizationServices.VectorizationServiceFactory.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Vectorization.Services.VectorizationServices.VectorizationServiceFactory.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Vectorization.Services.VectorizationServices.VectorizationServiceFactory",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Vectorization.Services.VectorizationServices.VectorizationServiceFactory.yml\" sourcestartlinenumber=\"1\">Responsible for creating the appropriate vectorization service based on the request processing type.</p>\n"
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Vectorization.Services.VectorizationServices.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Vectorization.Services.VectorizationServices.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Vectorization.Services.VectorizationServices",
-      "Summary": null
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Vectorization.Services.VectorizationStates.BlobStorageVectorizationStateService.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Vectorization.Services.VectorizationStates.BlobStorageVectorizationStateService.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Vectorization.Services.VectorizationStates.BlobStorageVectorizationStateService",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Vectorization.Services.VectorizationStates.BlobStorageVectorizationStateService.yml\" sourcestartlinenumber=\"1\">Provides vectorization state persistence services using  Azure blob storage.</p>\n"
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Vectorization.Services.VectorizationStates.MemoryVectorizationStateService.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Vectorization.Services.VectorizationStates.MemoryVectorizationStateService.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Vectorization.Services.VectorizationStates.MemoryVectorizationStateService",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Vectorization.Services.VectorizationStates.MemoryVectorizationStateService.yml\" sourcestartlinenumber=\"1\">Provides in-memory vectorization state persistence.</p>\n"
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Vectorization.Services.VectorizationStates.VectorizationStateItem.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Vectorization.Services.VectorizationStates.VectorizationStateItem.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Vectorization.Services.VectorizationStates.VectorizationStateItem",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Vectorization.Services.VectorizationStates.VectorizationStateItem.yml\" sourcestartlinenumber=\"1\">Properties that are serialized in the Parquet file associated with the vectorization state.\nCombines properties from the TextPartition and the TextEmbeddingVector artifacts.</p>\n"
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Vectorization.Services.VectorizationStates.VectorizationStateServiceBase.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Vectorization.Services.VectorizationStates.VectorizationStateServiceBase.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Vectorization.Services.VectorizationStates.VectorizationStateServiceBase",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Vectorization.Services.VectorizationStates.VectorizationStateServiceBase.yml\" sourcestartlinenumber=\"1\">Provides base services for the vectorization state services.</p>\n"
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Vectorization.Services.VectorizationStates.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Vectorization.Services.VectorizationStates.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Vectorization.Services.VectorizationStates",
-      "Summary": null
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Vectorization.Services.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Vectorization.Services.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Vectorization.Services",
-      "Summary": null
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Vectorization.Validation.Resources.IndexingProfileValidator.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Vectorization.Validation.Resources.IndexingProfileValidator.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Vectorization.Validation.Resources.IndexingProfileValidator",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Vectorization.Validation.Resources.IndexingProfileValidator.yml\" sourcestartlinenumber=\"1\">Validator for the <xref href=\"FoundationaLLM.Common.Models.ResourceProviders.Vectorization.IndexingProfile\" data-throw-if-not-resolved=\"false\"></xref> model.</p>\n"
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Vectorization.Validation.Resources.TextEmbeddingProfileValidator.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Vectorization.Validation.Resources.TextEmbeddingProfileValidator.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Vectorization.Validation.Resources.TextEmbeddingProfileValidator",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Vectorization.Validation.Resources.TextEmbeddingProfileValidator.yml\" sourcestartlinenumber=\"1\">Validator for the <xref href=\"FoundationaLLM.Common.Models.ResourceProviders.Vectorization.TextEmbeddingProfile\" data-throw-if-not-resolved=\"false\"></xref> model.</p>\n"
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Vectorization.Validation.Resources.TextPartitioningProfileValidator.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Vectorization.Validation.Resources.TextPartitioningProfileValidator.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Vectorization.Validation.Resources.TextPartitioningProfileValidator",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Vectorization.Validation.Resources.TextPartitioningProfileValidator.yml\" sourcestartlinenumber=\"1\">Validator for the <xref href=\"FoundationaLLM.Common.Models.ResourceProviders.Vectorization.TextPartitioningProfile\" data-throw-if-not-resolved=\"false\"></xref> model.</p>\n"
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Vectorization.Validation.Resources.VectorizationPipelineValidator.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Vectorization.Validation.Resources.VectorizationPipelineValidator.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Vectorization.Validation.Resources.VectorizationPipelineValidator",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Vectorization.Validation.Resources.VectorizationPipelineValidator.yml\" sourcestartlinenumber=\"1\">Validator for the <xref href=\"FoundationaLLM.Common.Models.Vectorization.VectorizationPipeline\" data-throw-if-not-resolved=\"false\"></xref> model.</p>\n"
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Vectorization.Validation.Resources.VectorizationProfileBaseValidator.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Vectorization.Validation.Resources.VectorizationProfileBaseValidator.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Vectorization.Validation.Resources.VectorizationProfileBaseValidator",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Vectorization.Validation.Resources.VectorizationProfileBaseValidator.yml\" sourcestartlinenumber=\"1\">Validator for the <xref href=\"FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationProfileBase\" data-throw-if-not-resolved=\"false\"></xref> model.</p>\n"
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Vectorization.Validation.Resources.VectorizationRequestCreationTimeValidator.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Vectorization.Validation.Resources.VectorizationRequestCreationTimeValidator.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Vectorization.Validation.Resources.VectorizationRequestCreationTimeValidator",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Vectorization.Validation.Resources.VectorizationRequestCreationTimeValidator.yml\" sourcestartlinenumber=\"1\">Validator for the creation of a <xref href=\"FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest\" data-throw-if-not-resolved=\"false\"></xref>.</p>\n"
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Vectorization.Validation.Resources.VectorizationRequestValidator.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Vectorization.Validation.Resources.VectorizationRequestValidator.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Vectorization.Validation.Resources.VectorizationRequestValidator",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Vectorization.Validation.Resources.VectorizationRequestValidator.yml\" sourcestartlinenumber=\"1\">Validator for the <xref href=\"FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest\" data-throw-if-not-resolved=\"false\"></xref> model.</p>\n"
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Vectorization.Validation.Resources.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Vectorization.Validation.Resources.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Vectorization.Validation.Resources",
-      "Summary": null
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Vectorization.Validation.Vectorization.ContentIdentifierValidator.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Vectorization.Validation.Vectorization.ContentIdentifierValidator.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Vectorization.Validation.Vectorization.ContentIdentifierValidator",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Vectorization.Validation.Vectorization.ContentIdentifierValidator.yml\" sourcestartlinenumber=\"1\">Validator for the <xref href=\"FoundationaLLM.Common.Models.Vectorization.ContentIdentifier\" data-throw-if-not-resolved=\"false\"></xref> model.</p>\n"
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Vectorization.Validation.Vectorization.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Vectorization.Validation.Vectorization.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Vectorization.Validation.Vectorization",
-      "Summary": null
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Vectorization.Validation.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Vectorization.Validation.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": null,
-      "Summary": null
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Vectorization.VectorizationWorker.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Vectorization.VectorizationWorker.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Vectorization.VectorizationWorker",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Vectorization.VectorizationWorker.yml\" sourcestartlinenumber=\"1\">Provides the core execution context for the vectorization worker.</p>\n"
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Vectorization.VectorizationWorkerBuilder.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Vectorization.VectorizationWorkerBuilder.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Vectorization.VectorizationWorkerBuilder",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Vectorization.VectorizationWorkerBuilder.yml\" sourcestartlinenumber=\"1\">Implements a builder for a vectorization worker.</p>\n"
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Vectorization.Worker.Controllers.StatusController.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Vectorization.Worker.Controllers.StatusController.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Vectorization.Worker.Controllers.StatusController",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Vectorization.Worker.Controllers.StatusController.yml\" sourcestartlinenumber=\"1\">Provides methods for checking the status of the service.</p>\n"
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Vectorization.Worker.Controllers.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Vectorization.Worker.Controllers.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Vectorization.Worker.Controllers",
-      "Summary": null
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Vectorization.Worker.Worker.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Vectorization.Worker.Worker.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Vectorization.Worker.Worker",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Vectorization.Worker.Worker.yml\" sourcestartlinenumber=\"1\">The background service used to run the worker.</p>\n"
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Vectorization.Worker.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Vectorization.Worker.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Vectorization.Worker",
-      "Summary": null
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Vectorization.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Vectorization.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FoundationaLLM.Vectorization",
       "Summary": null
     },
     {
@@ -21429,6 +20043,16 @@
       "output": {
         ".html": {
           "relative_path": "release-notes/breaking-changes.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "release-notes/release_notes_0.9.7.md",
+      "output": {
+        ".html": {
+          "relative_path": "release-notes/release_notes_0.9.7.html"
         }
       },
       "version": ""

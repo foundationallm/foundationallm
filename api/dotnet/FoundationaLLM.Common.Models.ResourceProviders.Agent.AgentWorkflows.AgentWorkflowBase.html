@@ -103,8 +103,10 @@ Class AgentWorkflowBase  <a class="header-action link-secondary" title="View sou
 
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[JsonPolymorphic(TypeDiscriminatorPropertyName = &quot;type&quot;)]
+[JsonDerivedType(typeof(GenericAgentWorkflow), &quot;generic-agent-workflow&quot;)]
 [JsonDerivedType(typeof(AzureAIAgentServiceAgentWorkflow), &quot;azure-ai-agent-service-workflow&quot;)]
 [JsonDerivedType(typeof(AzureOpenAIAssistantsAgentWorkflow), &quot;azure-openai-assistants-workflow&quot;)]
+[JsonDerivedType(typeof(LangChainAgentWorkflow), &quot;langchain-agent-workflow&quot;)]
 [JsonDerivedType(typeof(LangChainExpressionLanguageAgentWorkflow), &quot;langchain-expression-language-workflow&quot;)]
 [JsonDerivedType(typeof(LangGraphReactAgentWorkflow), &quot;langgraph-react-agent-workflow&quot;)]
 [JsonDerivedType(typeof(ExternalAgentWorkflow), &quot;external-agent-workflow&quot;)]
@@ -129,6 +131,8 @@ public class AgentWorkflowBase</code></pre>
       <div><a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows.AzureAIAgentServiceAgentWorkflow.html">AzureAIAgentServiceAgentWorkflow</a></div>
       <div><a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows.AzureOpenAIAssistantsAgentWorkflow.html">AzureOpenAIAssistantsAgentWorkflow</a></div>
       <div><a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows.ExternalAgentWorkflow.html">ExternalAgentWorkflow</a></div>
+      <div><a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows.GenericAgentWorkflow.html">GenericAgentWorkflow</a></div>
+      <div><a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows.LangChainAgentWorkflow.html">LangChainAgentWorkflow</a></div>
       <div><a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows.LangChainExpressionLanguageAgentWorkflow.html">LangChainExpressionLanguageAgentWorkflow</a></div>
       <div><a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows.LangGraphReactAgentWorkflow.html">LangGraphReactAgentWorkflow</a></div>
     </dd>
@@ -180,7 +184,7 @@ public class AgentWorkflowBase</code></pre>
 
   <h3 id="FoundationaLLM_Common_Models_ResourceProviders_Agent_AgentWorkflows_AgentWorkflowBase_AIProjectObjectId" data-uid="FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows.AgentWorkflowBase.AIProjectObjectId">
   AIProjectObjectId
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Agent/AgentWorkflows/AgentWorkflowBase.cs/#L121"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Agent/AgentWorkflows/AgentWorkflowBase.cs/#L123"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets the AI object identifier.</p>
@@ -213,7 +217,7 @@ public string? AIProjectObjectId { get; }</code></pre>
 
   <h3 id="FoundationaLLM_Common_Models_ResourceProviders_Agent_AgentWorkflows_AgentWorkflowBase_ClassName" data-uid="FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows.AgentWorkflowBase.ClassName">
   ClassName
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Agent/AgentWorkflows/AgentWorkflowBase.cs/#L42"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Agent/AgentWorkflows/AgentWorkflowBase.cs/#L44"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>The class name of the workflow.
@@ -248,7 +252,7 @@ public string? ClassName { get; set; }</code></pre>
 
   <h3 id="FoundationaLLM_Common_Models_ResourceProviders_Agent_AgentWorkflows_AgentWorkflowBase_FilesPromptObjectId" data-uid="FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows.AgentWorkflowBase.FilesPromptObjectId">
   FilesPromptObjectId
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Agent/AgentWorkflows/AgentWorkflowBase.cs/#L101"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Agent/AgentWorkflows/AgentWorkflowBase.cs/#L103"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets the files prompt object identifier.</p>
@@ -281,7 +285,7 @@ public string? FilesPromptObjectId { get; }</code></pre>
 
   <h3 id="FoundationaLLM_Common_Models_ResourceProviders_Agent_AgentWorkflows_AgentWorkflowBase_FinalPromptObjectId" data-uid="FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows.AgentWorkflowBase.FinalPromptObjectId">
   FinalPromptObjectId
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Agent/AgentWorkflows/AgentWorkflowBase.cs/#L111"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Agent/AgentWorkflows/AgentWorkflowBase.cs/#L113"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets the final prompt object identifier.</p>
@@ -314,7 +318,7 @@ public string? FinalPromptObjectId { get; }</code></pre>
 
   <h3 id="FoundationaLLM_Common_Models_ResourceProviders_Agent_AgentWorkflows_AgentWorkflowBase_MainAIModelObjectId" data-uid="FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows.AgentWorkflowBase.MainAIModelObjectId">
   MainAIModelObjectId
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Agent/AgentWorkflows/AgentWorkflowBase.cs/#L71"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Agent/AgentWorkflows/AgentWorkflowBase.cs/#L73"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets the main AI model object identifier.</p>
@@ -347,7 +351,7 @@ public string? MainAIModelObjectId { get; }</code></pre>
 
   <h3 id="FoundationaLLM_Common_Models_ResourceProviders_Agent_AgentWorkflows_AgentWorkflowBase_MainPromptObjectId" data-uid="FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows.AgentWorkflowBase.MainPromptObjectId">
   MainPromptObjectId
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Agent/AgentWorkflows/AgentWorkflowBase.cs/#L81"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Agent/AgentWorkflows/AgentWorkflowBase.cs/#L83"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets the main prompt object identifier.</p>
@@ -380,7 +384,7 @@ public string? MainPromptObjectId { get; }</code></pre>
 
   <h3 id="FoundationaLLM_Common_Models_ResourceProviders_Agent_AgentWorkflows_AgentWorkflowBase_Name" data-uid="FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows.AgentWorkflowBase.Name">
   Name
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Agent/AgentWorkflows/AgentWorkflowBase.cs/#L26"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Agent/AgentWorkflows/AgentWorkflowBase.cs/#L28"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>The name of the workflow.</p>
@@ -413,7 +417,7 @@ public required string Name { get; set; }</code></pre>
 
   <h3 id="FoundationaLLM_Common_Models_ResourceProviders_Agent_AgentWorkflows_AgentWorkflowBase_PackageName" data-uid="FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows.AgentWorkflowBase.PackageName">
   PackageName
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Agent/AgentWorkflows/AgentWorkflowBase.cs/#L34"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Agent/AgentWorkflows/AgentWorkflowBase.cs/#L36"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets the package name of the workflow.
@@ -448,7 +452,7 @@ public required string PackageName { get; set; }</code></pre>
 
   <h3 id="FoundationaLLM_Common_Models_ResourceProviders_Agent_AgentWorkflows_AgentWorkflowBase_Properties" data-uid="FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows.AgentWorkflowBase.Properties">
   Properties
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Agent/AgentWorkflows/AgentWorkflowBase.cs/#L65"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Agent/AgentWorkflows/AgentWorkflowBase.cs/#L67"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets a dictionary of properties that are specific to the workflow.</p>
@@ -481,7 +485,7 @@ public Dictionary&lt;string, object&gt;? Properties { get; set; }</code></pre>
 
   <h3 id="FoundationaLLM_Common_Models_ResourceProviders_Agent_AgentWorkflows_AgentWorkflowBase_ResourceObjectIds" data-uid="FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows.AgentWorkflowBase.ResourceObjectIds">
   ResourceObjectIds
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Agent/AgentWorkflows/AgentWorkflowBase.cs/#L59"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Agent/AgentWorkflows/AgentWorkflowBase.cs/#L61"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets a dictionary of resource objects.</p>
@@ -514,7 +518,7 @@ public Dictionary&lt;string, ResourceObjectIdProperties&gt; ResourceObjectIds { 
 
   <h3 id="FoundationaLLM_Common_Models_ResourceProviders_Agent_AgentWorkflows_AgentWorkflowBase_RouterPromptObjectId" data-uid="FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows.AgentWorkflowBase.RouterPromptObjectId">
   RouterPromptObjectId
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Agent/AgentWorkflows/AgentWorkflowBase.cs/#L91"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Agent/AgentWorkflows/AgentWorkflowBase.cs/#L93"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets the router prompt object identifier.</p>
@@ -547,7 +551,7 @@ public string? RouterPromptObjectId { get; }</code></pre>
 
   <h3 id="FoundationaLLM_Common_Models_ResourceProviders_Agent_AgentWorkflows_AgentWorkflowBase_Type" data-uid="FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows.AgentWorkflowBase.Type">
   Type
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Agent/AgentWorkflows/AgentWorkflowBase.cs/#L20"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Agent/AgentWorkflows/AgentWorkflowBase.cs/#L22"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>The workflow resource associated with the agent.</p>
@@ -580,7 +584,7 @@ public virtual string? Type { get; set; }</code></pre>
 
   <h3 id="FoundationaLLM_Common_Models_ResourceProviders_Agent_AgentWorkflows_AgentWorkflowBase_WorkflowHost" data-uid="FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows.AgentWorkflowBase.WorkflowHost">
   WorkflowHost
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Agent/AgentWorkflows/AgentWorkflowBase.cs/#L53"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/Agent/AgentWorkflows/AgentWorkflowBase.cs/#L55"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>The host of the workflow environment.</p>

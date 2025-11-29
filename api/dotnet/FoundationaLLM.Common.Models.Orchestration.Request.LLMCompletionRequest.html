@@ -189,7 +189,7 @@ Class LLMCompletionRequest  <a class="header-action link-secondary" title="View 
 
   <h3 id="FoundationaLLM_Common_Models_Orchestration_Request_LLMCompletionRequest_AIModel" data-uid="FoundationaLLM.Common.Models.Orchestration.Request.LLMCompletionRequest.AIModel">
   AIModel
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Models/Orchestration/Request/LLMCompletionRequest.cs/#L202"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Models/Orchestration/Request/LLMCompletionRequest.cs/#L148"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>The <a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.AIModel.AIModelBase.html">AIModelBase</a> object from the Objects dictionary. Ensure the Validate method is called before accessing this property.</p>
@@ -225,7 +225,7 @@ public AIModelBase AIModel { get; }</code></pre>
 
   <h3 id="FoundationaLLM_Common_Models_Orchestration_Request_LLMCompletionRequest_AIModelEndpointConfiguration" data-uid="FoundationaLLM.Common.Models.Orchestration.Request.LLMCompletionRequest.AIModelEndpointConfiguration">
   AIModelEndpointConfiguration
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Models/Orchestration/Request/LLMCompletionRequest.cs/#L227"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Models/Orchestration/Request/LLMCompletionRequest.cs/#L173"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>The <a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.Configuration.APIEndpointConfiguration.html">APIEndpointConfiguration</a> object from the Objects dictionary corresponding to the <a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.AIModel.AIModelBase.html">AIModelBase</a> object from the same dictionary. Ensure the Validate method is called before accessing this property.</p>
@@ -323,42 +323,6 @@ public List&lt;AttachmentProperties&gt; Attachments { get; init; }</code></pre>
 
 
 
-  <a id="FoundationaLLM_Common_Models_Orchestration_Request_LLMCompletionRequest_IndexingProfiles_" data-uid="FoundationaLLM.Common.Models.Orchestration.Request.LLMCompletionRequest.IndexingProfiles*"></a>
-
-  <h3 id="FoundationaLLM_Common_Models_Orchestration_Request_LLMCompletionRequest_IndexingProfiles" data-uid="FoundationaLLM.Common.Models.Orchestration.Request.LLMCompletionRequest.IndexingProfiles">
-  IndexingProfiles
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Models/Orchestration/Request/LLMCompletionRequest.cs/#L335"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"><p>The list of <a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.Vectorization.IndexingProfile.html">IndexingProfile</a> objects from the Objects dictionary. Ensure the Validate method is called before accessing this property.</p>
-<p>
-These objects are supposed to be added to the Objects dictionary by the instantiator of this request based on the object identifiers set on the agent's vectorization settings.
-</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[JsonIgnore]
-public List&lt;IndexingProfile&gt;? IndexingProfiles { get; }</code></pre>
-  </div>
-
-
-
-
-
-  <h4 class="section">Property Value</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.Vectorization.IndexingProfile.html">IndexingProfile</a>&gt;</dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
   <a id="FoundationaLLM_Common_Models_Orchestration_Request_LLMCompletionRequest_Objects_" data-uid="FoundationaLLM.Common.Models.Orchestration.Request.LLMCompletionRequest.Objects*"></a>
 
   <h3 id="FoundationaLLM_Common_Models_Orchestration_Request_LLMCompletionRequest_Objects" data-uid="FoundationaLLM.Common.Models.Orchestration.Request.LLMCompletionRequest.Objects">
@@ -415,7 +379,7 @@ public Dictionary&lt;string, object&gt; Objects { get; set; }</code></pre>
 
   <h3 id="FoundationaLLM_Common_Models_Orchestration_Request_LLMCompletionRequest_OtherAgentsDescriptions" data-uid="FoundationaLLM.Common.Models.Orchestration.Request.LLMCompletionRequest.OtherAgentsDescriptions">
   OtherAgentsDescriptions
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Models/Orchestration/Request/LLMCompletionRequest.cs/#L253"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Models/Orchestration/Request/LLMCompletionRequest.cs/#L199"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>The dictionary of other agent descriptions from the Objects dictionary. Ensure the Validate method is called before accessing this property.</p>
@@ -451,7 +415,7 @@ public Dictionary&lt;string, string&gt; OtherAgentsDescriptions { get; }</code><
 
   <h3 id="FoundationaLLM_Common_Models_Orchestration_Request_LLMCompletionRequest_Prompt" data-uid="FoundationaLLM.Common.Models.Orchestration.Request.LLMCompletionRequest.Prompt">
   Prompt
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Models/Orchestration/Request/LLMCompletionRequest.cs/#L280"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Models/Orchestration/Request/LLMCompletionRequest.cs/#L226"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>The <a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.Prompt.MultipartPrompt.html">MultipartPrompt</a> object from the Objects dictionary. Ensure the Validate method is called before accessing this property.</p>
@@ -483,47 +447,11 @@ public MultipartPrompt Prompt { get; }</code></pre>
 
 
 
-  <a id="FoundationaLLM_Common_Models_Orchestration_Request_LLMCompletionRequest_TextEmbeddingProfile_" data-uid="FoundationaLLM.Common.Models.Orchestration.Request.LLMCompletionRequest.TextEmbeddingProfile*"></a>
-
-  <h3 id="FoundationaLLM_Common_Models_Orchestration_Request_LLMCompletionRequest_TextEmbeddingProfile" data-uid="FoundationaLLM.Common.Models.Orchestration.Request.LLMCompletionRequest.TextEmbeddingProfile">
-  TextEmbeddingProfile
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Models/Orchestration/Request/LLMCompletionRequest.cs/#L306"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"><p>The <a class="xref" href="FoundationaLLM.Common.Models.Orchestration.Request.LLMCompletionRequest.html#FoundationaLLM_Common_Models_Orchestration_Request_LLMCompletionRequest_TextEmbeddingProfile">TextEmbeddingProfile</a> object from the Objects dictionary. Ensure the Validate method is called before accessing this property.</p>
-<p>
-This object is supposed to be added to the Objects dictionary by the instantiator of this request based on the object identifier set on the agent's vectorization settings.
-</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[JsonIgnore]
-public TextEmbeddingProfile? TextEmbeddingProfile { get; }</code></pre>
-  </div>
-
-
-
-
-
-  <h4 class="section">Property Value</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.Vectorization.TextEmbeddingProfile.html">TextEmbeddingProfile</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
   <a id="FoundationaLLM_Common_Models_Orchestration_Request_LLMCompletionRequest_TraceCompletionRequest_" data-uid="FoundationaLLM.Common.Models.Orchestration.Request.LLMCompletionRequest.TraceCompletionRequest*"></a>
 
   <h3 id="FoundationaLLM_Common_Models_Orchestration_Request_LLMCompletionRequest_TraceCompletionRequest" data-uid="FoundationaLLM.Common.Models.Orchestration.Request.LLMCompletionRequest.TraceCompletionRequest">
   TraceCompletionRequest
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Models/Orchestration/Request/LLMCompletionRequest.cs/#L367"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Models/Orchestration/Request/LLMCompletionRequest.cs/#L249"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets a flag indicating whether to trace the completion request for debugging purposes.</p>

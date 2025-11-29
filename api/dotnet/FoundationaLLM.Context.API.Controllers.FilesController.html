@@ -732,7 +732,7 @@ public class FilesController : ControllerBase</code></pre>
 
   <h3 id="FoundationaLLM_Context_API_Controllers_FilesController_DeleteFileRecord_System_String_System_String_" data-uid="FoundationaLLM.Context.API.Controllers.FilesController.DeleteFileRecord(System.String,System.String)">
   DeleteFileRecord(string, string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/ContextAPI/Controllers/FilesController.cs/#L147"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/ContextAPI/Controllers/FilesController.cs/#L155"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Deletes a file record.</p>
@@ -774,7 +774,7 @@ public Task&lt;IActionResult&gt; DeleteFileRecord(string instanceId, string file
 
   <h3 id="FoundationaLLM_Context_API_Controllers_FilesController_DownloadFile_System_String_System_String_" data-uid="FoundationaLLM.Context.API.Controllers.FilesController.DownloadFile(System.String,System.String)">
   DownloadFile(string, string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/ContextAPI/Controllers/FilesController.cs/#L106"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/ContextAPI/Controllers/FilesController.cs/#L111"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Downloads a file.</p>
@@ -816,7 +816,7 @@ public Task&lt;IActionResult&gt; DownloadFile(string instanceId, string fileId)<
 
   <h3 id="FoundationaLLM_Context_API_Controllers_FilesController_GetFileRecord_System_String_System_String_" data-uid="FoundationaLLM.Context.API.Controllers.FilesController.GetFileRecord(System.String,System.String)">
   GetFileRecord(string, string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/ContextAPI/Controllers/FilesController.cs/#L128"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/ContextAPI/Controllers/FilesController.cs/#L135"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Retrieves a file record.</p>
@@ -858,7 +858,7 @@ public Task&lt;IActionResult&gt; GetFileRecord(string instanceId, string fileId)
 
   <h3 id="FoundationaLLM_Context_API_Controllers_FilesController_UploadFileForAgent_System_String_System_String_" data-uid="FoundationaLLM.Context.API.Controllers.FilesController.UploadFileForAgent(System.String,System.String)">
   UploadFileForAgent(string, string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/ContextAPI/Controllers/FilesController.cs/#L69"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/ContextAPI/Controllers/FilesController.cs/#L73"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Uploads a file to an agent.</p>
@@ -898,9 +898,9 @@ public Task&lt;IActionResult&gt; UploadFileForAgent(string instanceId, string ag
 
   <a id="FoundationaLLM_Context_API_Controllers_FilesController_UploadFileForConversation_" data-uid="FoundationaLLM.Context.API.Controllers.FilesController.UploadFileForConversation*"></a>
 
-  <h3 id="FoundationaLLM_Context_API_Controllers_FilesController_UploadFileForConversation_System_String_System_String_" data-uid="FoundationaLLM.Context.API.Controllers.FilesController.UploadFileForConversation(System.String,System.String)">
-  UploadFileForConversation(string, string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/ContextAPI/Controllers/FilesController.cs/#L33"><i class="bi bi-code-slash"></i></a>
+  <h3 id="FoundationaLLM_Context_API_Controllers_FilesController_UploadFileForConversation_System_String_System_String_System_String_" data-uid="FoundationaLLM.Context.API.Controllers.FilesController.UploadFileForConversation(System.String,System.String,System.String)">
+  UploadFileForConversation(string, string, string?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/ContextAPI/Controllers/FilesController.cs/#L34"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Uploads a file to a conversation.</p>
@@ -909,7 +909,7 @@ public Task&lt;IActionResult&gt; UploadFileForAgent(string instanceId, string ag
 
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[HttpPost(&quot;conversations/{conversationId}/files&quot;)]
-public Task&lt;IActionResult&gt; UploadFileForConversation(string instanceId, string conversationId)</code></pre>
+public Task&lt;IActionResult&gt; UploadFileForConversation(string instanceId, string conversationId, string? agentName)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -919,6 +919,9 @@ public Task&lt;IActionResult&gt; UploadFileForConversation(string instanceId, st
 </dd>
     <dt><code>conversationId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
     <dd><p>The conversation identifier.</p>
+</dd>
+    <dt><code>agentName</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The name of the agent.</p>
 </dd>
   </dl>
 

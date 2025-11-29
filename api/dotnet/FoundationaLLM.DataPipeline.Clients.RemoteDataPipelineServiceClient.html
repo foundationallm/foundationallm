@@ -214,7 +214,7 @@ Class RemoteDataPipelineServiceClient  <a class="header-action link-secondary" t
 
   <h3 id="FoundationaLLM_DataPipeline_Clients_RemoteDataPipelineServiceClient_ResourceProviders" data-uid="FoundationaLLM.DataPipeline.Clients.RemoteDataPipelineServiceClient.ResourceProviders">
   ResourceProviders
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/DataPipeline/Clients/RemoteDataPipelineServiceClient.cs/#L53"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/DataPipeline/Clients/RemoteDataPipelineServiceClient.cs/#L46"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Sets the resource providers collection.</p>
@@ -254,7 +254,7 @@ These are background services that both provide and consume services to and from
 
   <h3 id="FoundationaLLM_DataPipeline_Clients_RemoteDataPipelineServiceClient_CreateDataPipelineRunAsync_System_String_FoundationaLLM_Common_Models_ResourceProviders_DataPipeline_DataPipelineRun_FoundationaLLM_Common_Models_ResourceProviders_DataPipeline_DataPipelineDefinitionSnapshot_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_" data-uid="FoundationaLLM.DataPipeline.Clients.RemoteDataPipelineServiceClient.CreateDataPipelineRunAsync(System.String,FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRun,FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineDefinitionSnapshot,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)">
   CreateDataPipelineRunAsync(string, DataPipelineRun, DataPipelineDefinitionSnapshot, UnifiedUserIdentity)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/DataPipeline/Clients/RemoteDataPipelineServiceClient.cs/#L56"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/DataPipeline/Clients/RemoteDataPipelineServiceClient.cs/#L49"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Creates a new data pipeline run.</p>
@@ -301,7 +301,7 @@ These are background services that both provide and consume services to and from
 
   <h3 id="FoundationaLLM_DataPipeline_Clients_RemoteDataPipelineServiceClient_GetDataPipelineRunAsync_System_String_System_String_System_String_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_" data-uid="FoundationaLLM.DataPipeline.Clients.RemoteDataPipelineServiceClient.GetDataPipelineRunAsync(System.String,System.String,System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)">
   GetDataPipelineRunAsync(string, string, string, UnifiedUserIdentity)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/DataPipeline/Clients/RemoteDataPipelineServiceClient.cs/#L91"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/DataPipeline/Clients/RemoteDataPipelineServiceClient.cs/#L84"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets a data pipeline run by its identifier.</p>
@@ -348,7 +348,7 @@ These are background services that both provide and consume services to and from
 
   <h3 id="FoundationaLLM_DataPipeline_Clients_RemoteDataPipelineServiceClient_GetDataPipelineRunsAsync_System_String_FoundationaLLM_Common_Models_ResourceProviders_DataPipeline_DataPipelineRunFilter_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_" data-uid="FoundationaLLM.DataPipeline.Clients.RemoteDataPipelineServiceClient.GetDataPipelineRunsAsync(System.String,FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRunFilter,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)">
   GetDataPipelineRunsAsync(string, DataPipelineRunFilter, UnifiedUserIdentity)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/DataPipeline/Clients/RemoteDataPipelineServiceClient.cs/#L125"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/DataPipeline/Clients/RemoteDataPipelineServiceClient.cs/#L118"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Retrieves a list of data pipeline runs filtered by the provided filter criteria.</p>
@@ -356,7 +356,7 @@ These are background services that both provide and consume services to and from
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Task&lt;List&lt;DataPipelineRun&gt;&gt; GetDataPipelineRunsAsync(string instanceId, DataPipelineRunFilter dataPipelineRunFilter, UnifiedUserIdentity userIdentity)</code></pre>
+    <pre><code class="lang-csharp hljs">public Task&lt;DataPipelineRunFilterResponse&gt; GetDataPipelineRunsAsync(string instanceId, DataPipelineRunFilter dataPipelineRunFilter, UnifiedUserIdentity userIdentity)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -374,7 +374,7 @@ These are background services that both provide and consume services to and from
 
   <h4 class="section">Returns</h4>
   <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRun.html">DataPipelineRun</a>&gt;&gt;</dt>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRunFilterResponse.html">DataPipelineRunFilterResponse</a>&gt;</dt>
     <dd><p>The requested list of data pipeline run objects.</p>
 </dd>
   </dl>
@@ -393,7 +393,7 @@ These are background services that both provide and consume services to and from
 
   <h3 id="FoundationaLLM_DataPipeline_Clients_RemoteDataPipelineServiceClient_GetServiceStateAsync" data-uid="FoundationaLLM.DataPipeline.Clients.RemoteDataPipelineServiceClient.GetServiceStateAsync">
   GetServiceStateAsync()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/DataPipeline/Clients/RemoteDataPipelineServiceClient.cs/#L159"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/DataPipeline/Clients/RemoteDataPipelineServiceClient.cs/#L152"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Retrieves the current state of the Data Pipeline service.</p>

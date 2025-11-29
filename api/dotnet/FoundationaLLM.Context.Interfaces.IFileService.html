@@ -89,7 +89,7 @@
 
 
   <h1 id="FoundationaLLM_Context_Interfaces_IFileService" data-uid="FoundationaLLM.Context.Interfaces.IFileService" class="text-break">
-Interface IFileService  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/ContextEngine/Interfaces/IFileService.cs/#L9"><i class="bi bi-code-slash"></i></a>
+Interface IFileService  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/ContextEngine/Interfaces/IFileService.cs/#L10"><i class="bi bi-code-slash"></i></a>
   </h1>
 
   <div class="facts text-secondary">
@@ -132,7 +132,7 @@ Interface IFileService  <a class="header-action link-secondary" title="View sour
 
   <h3 id="FoundationaLLM_Context_Interfaces_IFileService_CreateFileForAgent_System_String_System_String_System_String_System_String_System_String_System_IO_Stream_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_System_Collections_Generic_Dictionary_System_String_System_String__" data-uid="FoundationaLLM.Context.Interfaces.IFileService.CreateFileForAgent(System.String,System.String,System.String,System.String,System.String,System.IO.Stream,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity,System.Collections.Generic.Dictionary{System.String,System.String})">
   CreateFileForAgent(string, string, string, string, string, Stream, UnifiedUserIdentity, Dictionary&lt;string, string&gt;?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/ContextEngine/Interfaces/IFileService.cs/#L45"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/ContextEngine/Interfaces/IFileService.cs/#L52"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Create a new file.</p>
@@ -140,7 +140,7 @@ Interface IFileService  <a class="header-action link-secondary" title="View sour
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">Task&lt;ContextFileRecord&gt; CreateFileForAgent(string instanceId, string origin, string agentName, string fileName, string contentType, Stream content, UnifiedUserIdentity userIdentity, Dictionary&lt;string, string&gt;? metadata = null)</code></pre>
+    <pre><code class="lang-csharp hljs">Task&lt;Result&lt;ContextFileRecord&gt;&gt; CreateFileForAgent(string instanceId, string origin, string agentName, string fileName, string contentType, Stream content, UnifiedUserIdentity userIdentity, Dictionary&lt;string, string&gt;? metadata = null)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -173,8 +173,8 @@ Interface IFileService  <a class="header-action link-secondary" title="View sour
 
   <h4 class="section">Returns</h4>
   <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Context.ContextFileRecord.html">ContextFileRecord</a>&gt;</dt>
-    <dd><p>A <a class="xref" href="FoundationaLLM.Common.Models.Context.ContextFileRecord.html">ContextFileRecord</a> instance with details about the newly created file.</p>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Services.Result-1.html">Result</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Context.ContextFileRecord.html">ContextFileRecord</a>&gt;&gt;</dt>
+    <dd><p>A <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a> producing a <a class="xref" href="FoundationaLLM.Common.Models.Services.Result-1.html">Result&lt;T&gt;</a> whose value is a <a class="xref" href="FoundationaLLM.Common.Models.Context.ContextFileRecord.html">ContextFileRecord</a> describing the newly created file when successful; otherwise a failed result containing a domain error.</p>
 </dd>
   </dl>
 
@@ -190,9 +190,9 @@ Interface IFileService  <a class="header-action link-secondary" title="View sour
 
   <a id="FoundationaLLM_Context_Interfaces_IFileService_CreateFileForConversation_" data-uid="FoundationaLLM.Context.Interfaces.IFileService.CreateFileForConversation*"></a>
 
-  <h3 id="FoundationaLLM_Context_Interfaces_IFileService_CreateFileForConversation_System_String_System_String_System_String_System_String_System_String_System_IO_Stream_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_System_Collections_Generic_Dictionary_System_String_System_String__" data-uid="FoundationaLLM.Context.Interfaces.IFileService.CreateFileForConversation(System.String,System.String,System.String,System.String,System.String,System.IO.Stream,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity,System.Collections.Generic.Dictionary{System.String,System.String})">
-  CreateFileForConversation(string, string, string, string, string, Stream, UnifiedUserIdentity, Dictionary&lt;string, string&gt;?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/ContextEngine/Interfaces/IFileService.cs/#L23"><i class="bi bi-code-slash"></i></a>
+  <h3 id="FoundationaLLM_Context_Interfaces_IFileService_CreateFileForConversation_System_String_System_String_System_String_System_String_System_String_System_String_System_IO_Stream_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_System_Collections_Generic_Dictionary_System_String_System_String__" data-uid="FoundationaLLM.Context.Interfaces.IFileService.CreateFileForConversation(System.String,System.String,System.String,System.String,System.String,System.String,System.IO.Stream,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity,System.Collections.Generic.Dictionary{System.String,System.String})">
+  CreateFileForConversation(string, string, string?, string, string, string, Stream, UnifiedUserIdentity, Dictionary&lt;string, string&gt;?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/ContextEngine/Interfaces/IFileService.cs/#L27"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Create a new file.</p>
@@ -200,7 +200,7 @@ Interface IFileService  <a class="header-action link-secondary" title="View sour
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">Task&lt;ContextFileRecord&gt; CreateFileForConversation(string instanceId, string origin, string conversationId, string fileName, string contentType, Stream content, UnifiedUserIdentity userIdentity, Dictionary&lt;string, string&gt;? metadata = null)</code></pre>
+    <pre><code class="lang-csharp hljs">Task&lt;Result&lt;ContextFileRecord&gt;&gt; CreateFileForConversation(string instanceId, string origin, string? agentName, string conversationId, string fileName, string contentType, Stream content, UnifiedUserIdentity userIdentity, Dictionary&lt;string, string&gt;? metadata = null)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -210,6 +210,9 @@ Interface IFileService  <a class="header-action link-secondary" title="View sour
 </dd>
     <dt><code>origin</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
     <dd><p>The origin of the file.</p>
+</dd>
+    <dt><code>agentName</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The name of the agent.</p>
 </dd>
     <dt><code>conversationId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
     <dd><p>The conversation identifier.</p>
@@ -233,8 +236,8 @@ Interface IFileService  <a class="header-action link-secondary" title="View sour
 
   <h4 class="section">Returns</h4>
   <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Context.ContextFileRecord.html">ContextFileRecord</a>&gt;</dt>
-    <dd><p>A <a class="xref" href="FoundationaLLM.Common.Models.Context.ContextFileRecord.html">ContextFileRecord</a> instance with details about the newly created file.</p>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Services.Result-1.html">Result</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Context.ContextFileRecord.html">ContextFileRecord</a>&gt;&gt;</dt>
+    <dd><p>A <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a> producing a <a class="xref" href="FoundationaLLM.Common.Models.Services.Result-1.html">Result&lt;T&gt;</a> whose value is a <a class="xref" href="FoundationaLLM.Common.Models.Context.ContextFileRecord.html">ContextFileRecord</a> describing the newly created file when successful; otherwise a failed result containing a domain error.</p>
 </dd>
   </dl>
 
@@ -252,7 +255,7 @@ Interface IFileService  <a class="header-action link-secondary" title="View sour
 
   <h3 id="FoundationaLLM_Context_Interfaces_IFileService_DeleteFileRecord_System_String_System_String_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_" data-uid="FoundationaLLM.Context.Interfaces.IFileService.DeleteFileRecord(System.String,System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)">
   DeleteFileRecord(string, string, UnifiedUserIdentity)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/ContextEngine/Interfaces/IFileService.cs/#L99"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/ContextEngine/Interfaces/IFileService.cs/#L115"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Deletes the file record associated with a file.</p>
@@ -260,7 +263,7 @@ Interface IFileService  <a class="header-action link-secondary" title="View sour
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">Task DeleteFileRecord(string instanceId, string fileId, UnifiedUserIdentity userIdentity)</code></pre>
+    <pre><code class="lang-csharp hljs">Task&lt;Result&gt; DeleteFileRecord(string instanceId, string fileId, UnifiedUserIdentity userIdentity)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -278,8 +281,9 @@ Interface IFileService  <a class="header-action link-secondary" title="View sour
 
   <h4 class="section">Returns</h4>
   <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></dt>
-    <dd></dd>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Services.Result.html">Result</a>&gt;</dt>
+    <dd><p>A <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a> producing a <a class="xref" href="FoundationaLLM.Common.Models.Services.Result.html">Result</a> indicating success when the record is deleted; otherwise a failed result containing a domain error.</p>
+</dd>
   </dl>
 
 
@@ -296,7 +300,7 @@ Interface IFileService  <a class="header-action link-secondary" title="View sour
 
   <h3 id="FoundationaLLM_Context_Interfaces_IFileService_GetFileContent_System_String_System_String_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_" data-uid="FoundationaLLM.Context.Interfaces.IFileService.GetFileContent(System.String,System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)">
   GetFileContent(string, string, UnifiedUserIdentity)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/ContextEngine/Interfaces/IFileService.cs/#L76"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/ContextEngine/Interfaces/IFileService.cs/#L87"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Get the binary content of a file.</p>
@@ -304,7 +308,7 @@ Interface IFileService  <a class="header-action link-secondary" title="View sour
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">Task&lt;ContextFileContent?&gt; GetFileContent(string instanceId, string fileId, UnifiedUserIdentity userIdentity)</code></pre>
+    <pre><code class="lang-csharp hljs">Task&lt;Result&lt;ContextFileContent&gt;&gt; GetFileContent(string instanceId, string fileId, UnifiedUserIdentity userIdentity)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -322,8 +326,8 @@ Interface IFileService  <a class="header-action link-secondary" title="View sour
 
   <h4 class="section">Returns</h4>
   <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Context.ContextFileContent.html">ContextFileContent</a>&gt;</dt>
-    <dd><p>A <a class="xref" href="FoundationaLLM.Common.Models.Context.ContextFileContent.html">ContextFileContent</a> instance with the content of the file.</p>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Services.Result-1.html">Result</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Context.ContextFileContent.html">ContextFileContent</a>&gt;&gt;</dt>
+    <dd><p>A <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a> producing a <a class="xref" href="FoundationaLLM.Common.Models.Services.Result-1.html">Result&lt;T&gt;</a> whose value is a <a class="xref" href="FoundationaLLM.Common.Models.Context.ContextFileContent.html">ContextFileContent</a> containing the file's binary content when successful; otherwise a failed result containing a domain error.</p>
 </dd>
   </dl>
 
@@ -341,7 +345,7 @@ Interface IFileService  <a class="header-action link-secondary" title="View sour
 
   <h3 id="FoundationaLLM_Context_Interfaces_IFileService_GetFileContent_System_String_System_String_System_String_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_" data-uid="FoundationaLLM.Context.Interfaces.IFileService.GetFileContent(System.String,System.String,System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)">
   GetFileContent(string, string, string, UnifiedUserIdentity)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/ContextEngine/Interfaces/IFileService.cs/#L63"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/ContextEngine/Interfaces/IFileService.cs/#L72"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Get the binary content of a file.</p>
@@ -349,7 +353,7 @@ Interface IFileService  <a class="header-action link-secondary" title="View sour
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">Task&lt;ContextFileContent?&gt; GetFileContent(string instanceId, string conversationId, string fileName, UnifiedUserIdentity userIdentity)</code></pre>
+    <pre><code class="lang-csharp hljs">Task&lt;Result&lt;ContextFileContent&gt;&gt; GetFileContent(string instanceId, string conversationId, string fileName, UnifiedUserIdentity userIdentity)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -370,8 +374,8 @@ Interface IFileService  <a class="header-action link-secondary" title="View sour
 
   <h4 class="section">Returns</h4>
   <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Context.ContextFileContent.html">ContextFileContent</a>&gt;</dt>
-    <dd><p>A <a class="xref" href="FoundationaLLM.Common.Models.Context.ContextFileContent.html">ContextFileContent</a> instance with the content of the file.</p>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Services.Result-1.html">Result</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Context.ContextFileContent.html">ContextFileContent</a>&gt;&gt;</dt>
+    <dd><p>A <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a> producing a <a class="xref" href="FoundationaLLM.Common.Models.Services.Result-1.html">Result&lt;T&gt;</a> whose value is a <a class="xref" href="FoundationaLLM.Common.Models.Context.ContextFileContent.html">ContextFileContent</a> containing the file's binary content when successful; otherwise a failed result containing a domain error.</p>
 </dd>
   </dl>
 
@@ -389,7 +393,7 @@ Interface IFileService  <a class="header-action link-secondary" title="View sour
 
   <h3 id="FoundationaLLM_Context_Interfaces_IFileService_GetFileRecord_System_String_System_String_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_" data-uid="FoundationaLLM.Context.Interfaces.IFileService.GetFileRecord(System.String,System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)">
   GetFileRecord(string, string, UnifiedUserIdentity)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/ContextEngine/Interfaces/IFileService.cs/#L88"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/ContextEngine/Interfaces/IFileService.cs/#L101"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Get the file record associated with a file.</p>
@@ -397,7 +401,7 @@ Interface IFileService  <a class="header-action link-secondary" title="View sour
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">Task&lt;ContextFileRecord?&gt; GetFileRecord(string instanceId, string fileId, UnifiedUserIdentity userIdentity)</code></pre>
+    <pre><code class="lang-csharp hljs">Task&lt;Result&lt;ContextFileRecord&gt;&gt; GetFileRecord(string instanceId, string fileId, UnifiedUserIdentity userIdentity)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -415,8 +419,8 @@ Interface IFileService  <a class="header-action link-secondary" title="View sour
 
   <h4 class="section">Returns</h4>
   <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Context.ContextFileRecord.html">ContextFileRecord</a>&gt;</dt>
-    <dd><p>A <a class="xref" href="FoundationaLLM.Common.Models.Context.ContextFileRecord.html">ContextFileRecord</a> with the file record.</p>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Services.Result-1.html">Result</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Context.ContextFileRecord.html">ContextFileRecord</a>&gt;&gt;</dt>
+    <dd><p>A <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a> producing a <a class="xref" href="FoundationaLLM.Common.Models.Services.Result-1.html">Result&lt;T&gt;</a> whose value is a <a class="xref" href="FoundationaLLM.Common.Models.Context.ContextFileRecord.html">ContextFileRecord</a> representing the file record when successful; otherwise a failed result containing a domain error.</p>
 </dd>
   </dl>
 
@@ -434,7 +438,7 @@ Interface IFileService  <a class="header-action link-secondary" title="View sour
 </article>
 
         <div class="contribution d-print-none">
-          <a href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/ContextEngine/Interfaces/IFileService.cs/#L9" class="edit-link">Edit this page</a>
+          <a href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/ContextEngine/Interfaces/IFileService.cs/#L10" class="edit-link">Edit this page</a>
         </div>
 
 

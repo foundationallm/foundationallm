@@ -196,6 +196,9 @@ Class DataPipelineResourceProviderService  <a class="header-action link-secondar
       <a class="xref" href="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1_WaitForInitialization">ResourceProviderServiceBase&lt;DataPipelineReference&gt;.WaitForInitialization()</a>
     </div>
     <div>
+      <a class="xref" href="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1_GetResourceReferenceSchemaUpgrades">ResourceProviderServiceBase&lt;DataPipelineReference&gt;.GetResourceReferenceSchemaUpgrades()</a>
+    </div>
+    <div>
       <a class="xref" href="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html#FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1_HandleGetAsync_System_String_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_FoundationaLLM_Common_Models_ResourceProviders_ResourceProviderGetOptions_System_Func_System_Net_Http_HttpMethod_FoundationaLLM_Common_Models_ResourceProviders_ResourcePath_System_Boolean__">ResourceProviderServiceBase&lt;DataPipelineReference&gt;.HandleGetAsync(string, UnifiedUserIdentity, ResourceProviderGetOptions, Func&lt;HttpMethod, ResourcePath, bool&gt;)</a>
     </div>
     <div>
@@ -515,7 +518,7 @@ of the authorization result should be returned (if any).</li></ol>
 
   <h3 id="FoundationaLLM_DataPipeline_ResourceProviders_DataPipelineResourceProviderService_ExecuteResourceActionAsyncInternal__3_FoundationaLLM_Common_Models_ResourceProviders_ResourcePath_FoundationaLLM_Common_Models_Authorization_ResourcePathAuthorizationResult___1_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_" data-uid="FoundationaLLM.DataPipeline.ResourceProviders.DataPipelineResourceProviderService.ExecuteResourceActionAsyncInternal``3(FoundationaLLM.Common.Models.ResourceProviders.ResourcePath,FoundationaLLM.Common.Models.Authorization.ResourcePathAuthorizationResult,``1,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)">
   ExecuteResourceActionAsyncInternal&lt;T, TAction, TResult&gt;(ResourcePath, ResourcePathAuthorizationResult, TAction, UnifiedUserIdentity)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/DataPipeline/ResourceProviders/DataPipelineResourceProviderService.cs/#L396"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/DataPipeline/ResourceProviders/DataPipelineResourceProviderService.cs/#L394"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>The internal implementation of ExecuteResourceActionAsync. Must be overridden in derived classes.</p>
@@ -580,7 +583,7 @@ of the authorization result should be returned (if any).</li></ol>
 
   <h3 id="FoundationaLLM_DataPipeline_ResourceProviders_DataPipelineResourceProviderService_GetResourceAsyncInternal__1_FoundationaLLM_Common_Models_ResourceProviders_ResourcePath_FoundationaLLM_Common_Models_Authorization_ResourcePathAuthorizationResult_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_FoundationaLLM_Common_Models_ResourceProviders_ResourceProviderGetOptions_FoundationaLLM_Common_Models_ResourceProviders_ResourceBase_" data-uid="FoundationaLLM.DataPipeline.ResourceProviders.DataPipelineResourceProviderService.GetResourceAsyncInternal``1(FoundationaLLM.Common.Models.ResourceProviders.ResourcePath,FoundationaLLM.Common.Models.Authorization.ResourcePathAuthorizationResult,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity,FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderGetOptions,FoundationaLLM.Common.Models.ResourceProviders.ResourceBase)">
   GetResourceAsyncInternal&lt;T&gt;(ResourcePath, ResourcePathAuthorizationResult, UnifiedUserIdentity, ResourceProviderGetOptions?, ResourceBase?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/DataPipeline/ResourceProviders/DataPipelineResourceProviderService.cs/#L364"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/DataPipeline/ResourceProviders/DataPipelineResourceProviderService.cs/#L362"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>The internal implementation of GetResource. Must be overridden in derived classes.</p>
@@ -639,7 +642,7 @@ the parent resource instance is used to authorize the request for any of those a
 
   <h3 id="FoundationaLLM_DataPipeline_ResourceProviders_DataPipelineResourceProviderService_GetResourceProviderState" data-uid="FoundationaLLM.DataPipeline.ResourceProviders.DataPipelineResourceProviderService.GetResourceProviderState">
   GetResourceProviderState()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/DataPipeline/ResourceProviders/DataPipelineResourceProviderService.cs/#L485"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/DataPipeline/ResourceProviders/DataPipelineResourceProviderService.cs/#L483"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets the resource provider state.</p>
@@ -847,7 +850,7 @@ resource after deserialization.</p>
 
   <h3 id="FoundationaLLM_DataPipeline_ResourceProviders_DataPipelineResourceProviderService_UpsertResourceAsyncInternal__2_FoundationaLLM_Common_Models_ResourceProviders_ResourcePath_FoundationaLLM_Common_Models_Authorization_ResourcePathAuthorizationResult___0_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_FoundationaLLM_Common_Models_ResourceProviders_ResourceProviderUpsertOptions_" data-uid="FoundationaLLM.DataPipeline.ResourceProviders.DataPipelineResourceProviderService.UpsertResourceAsyncInternal``2(FoundationaLLM.Common.Models.ResourceProviders.ResourcePath,FoundationaLLM.Common.Models.Authorization.ResourcePathAuthorizationResult,``0,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity,FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderUpsertOptions)">
   UpsertResourceAsyncInternal&lt;T, TResult&gt;(ResourcePath, ResourcePathAuthorizationResult, T, UnifiedUserIdentity, ResourceProviderUpsertOptions?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/DataPipeline/ResourceProviders/DataPipelineResourceProviderService.cs/#L347"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/DataPipeline/ResourceProviders/DataPipelineResourceProviderService.cs/#L345"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>The internal implementation of UpsertResourceAsync. Must be overridden in derived classes.</p>

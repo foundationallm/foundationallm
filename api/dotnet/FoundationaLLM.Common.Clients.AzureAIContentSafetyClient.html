@@ -168,9 +168,9 @@ Class AzureAIContentSafetyClient  <a class="header-action link-secondary" title=
 
   <a id="FoundationaLLM_Common_Clients_AzureAIContentSafetyClient__ctor_" data-uid="FoundationaLLM.Common.Clients.AzureAIContentSafetyClient.#ctor*"></a>
 
-  <h3 id="FoundationaLLM_Common_Clients_AzureAIContentSafetyClient__ctor_System_Uri_Azure_AzureKeyCredential_FoundationaLLM_Common_Clients_Http_APIEndpointClientOptions_" data-uid="FoundationaLLM.Common.Clients.AzureAIContentSafetyClient.#ctor(System.Uri,Azure.AzureKeyCredential,FoundationaLLM.Common.Clients.Http.APIEndpointClientOptions)">
-  AzureAIContentSafetyClient(Uri, AzureKeyCredential, APIEndpointClientOptions?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Clients/AzureAIContentSafetyClient.cs/#L30"><i class="bi bi-code-slash"></i></a>
+  <h3 id="FoundationaLLM_Common_Clients_AzureAIContentSafetyClient__ctor_System_Uri_Azure_AzureKeyCredential_FoundationaLLM_Common_Clients_Http_APIEndpointClientOptions_System_Boolean_" data-uid="FoundationaLLM.Common.Clients.AzureAIContentSafetyClient.#ctor(System.Uri,Azure.AzureKeyCredential,FoundationaLLM.Common.Clients.Http.APIEndpointClientOptions,System.Boolean)">
+  AzureAIContentSafetyClient(Uri, AzureKeyCredential, APIEndpointClientOptions?, bool)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Clients/AzureAIContentSafetyClient.cs/#L31"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="FoundationaLLM.Common.Clients.AzureAIContentSafetyClient.html">AzureAIContentSafetyClient</a> class.</p>
@@ -178,7 +178,7 @@ Class AzureAIContentSafetyClient  <a class="header-action link-secondary" title=
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public AzureAIContentSafetyClient(Uri endpoint, AzureKeyCredential credential, APIEndpointClientOptions? options)</code></pre>
+    <pre><code class="lang-csharp hljs">public AzureAIContentSafetyClient(Uri endpoint, AzureKeyCredential credential, APIEndpointClientOptions? options, bool enableRetry)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -191,6 +191,9 @@ Class AzureAIContentSafetyClient  <a class="header-action link-secondary" title=
 </dd>
     <dt><code>options</code> <a class="xref" href="FoundationaLLM.Common.Clients.Http.APIEndpointClientOptions.html">APIEndpointClientOptions</a></dt>
     <dd><p>Optional configuration settings for the client, such as retry policies and timeouts.</p>
+</dd>
+    <dt><code>enableRetry</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>Indicates whether to enable retry logic for transient failures.</p>
 </dd>
   </dl>
 
@@ -213,10 +216,11 @@ Class AzureAIContentSafetyClient  <a class="header-action link-secondary" title=
 
   <h3 id="FoundationaLLM_Common_Clients_AzureAIContentSafetyClient_AnalyzeText_FoundationaLLM_Common_Models_ContentSafety_AnalyzeTextRequest_System_Threading_CancellationToken_" data-uid="FoundationaLLM.Common.Clients.AzureAIContentSafetyClient.AnalyzeText(FoundationaLLM.Common.Models.ContentSafety.AnalyzeTextRequest,System.Threading.CancellationToken)">
   AnalyzeText(AnalyzeTextRequest, CancellationToken)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Clients/AzureAIContentSafetyClient.cs/#L69"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Clients/AzureAIContentSafetyClient.cs/#L77"><i class="bi bi-code-slash"></i></a>
   </h3>
 
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Analyzes the specified text and returns the results of the analysis.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
@@ -226,15 +230,18 @@ Class AzureAIContentSafetyClient  <a class="header-action link-secondary" title=
   <h4 class="section">Parameters</h4>
   <dl class="parameters">
     <dt><code>request</code> <a class="xref" href="FoundationaLLM.Common.Models.ContentSafety.AnalyzeTextRequest.html">AnalyzeTextRequest</a></dt>
-    <dd></dd>
+    <dd><p>The request containing the text to analyze.</p>
+</dd>
     <dt><code>cancellationToken</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></dt>
-    <dd></dd>
+    <dd><p>The optional cancellation token used to signal a cancellation request.</p>
+</dd>
   </dl>
 
   <h4 class="section">Returns</h4>
   <dl class="parameters">
     <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<span class="xref">ClientResult</span>&lt;<a class="xref" href="FoundationaLLM.Common.Models.ContentSafety.AnalyzeTextResult.html">AnalyzeTextResult</a>&gt;&gt;</dt>
-    <dd></dd>
+    <dd><p>A task that represents the asynchronous operation. The task result contains an  <span class="xref">System.ClientModel.ClientResult</span> object with the results of the analysis.</p>
+</dd>
   </dl>
 
 
@@ -251,7 +258,7 @@ Class AzureAIContentSafetyClient  <a class="header-action link-secondary" title=
 
   <h3 id="FoundationaLLM_Common_Clients_AzureAIContentSafetyClient_BuildClient_System_Collections_Generic_Dictionary_System_String_System_Object__" data-uid="FoundationaLLM.Common.Clients.AzureAIContentSafetyClient.BuildClient(System.Collections.Generic.Dictionary{System.String,System.Object})">
   BuildClient(Dictionary&lt;string, object&gt;)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Clients/AzureAIContentSafetyClient.cs/#L56"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Clients/AzureAIContentSafetyClient.cs/#L62"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Creates and configures a new instance of the <a class="xref" href="FoundationaLLM.Common.Clients.AzureAIContentSafetyClient.html">AzureAIContentSafetyClient</a>.</p>
@@ -291,10 +298,11 @@ Class AzureAIContentSafetyClient  <a class="header-action link-secondary" title=
 
   <h3 id="FoundationaLLM_Common_Clients_AzureAIContentSafetyClient_ShieldPrompt_FoundationaLLM_Common_Models_ContentSafety_ShieldPromptRequest_System_Threading_CancellationToken_" data-uid="FoundationaLLM.Common.Clients.AzureAIContentSafetyClient.ShieldPrompt(FoundationaLLM.Common.Models.ContentSafety.ShieldPromptRequest,System.Threading.CancellationToken)">
   ShieldPrompt(ShieldPromptRequest, CancellationToken)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Clients/AzureAIContentSafetyClient.cs/#L101"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Clients/AzureAIContentSafetyClient.cs/#L109"><i class="bi bi-code-slash"></i></a>
   </h3>
 
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Analyzes a user prompt and associated documents for various prompt attacks.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
@@ -304,15 +312,18 @@ Class AzureAIContentSafetyClient  <a class="header-action link-secondary" title=
   <h4 class="section">Parameters</h4>
   <dl class="parameters">
     <dt><code>request</code> <a class="xref" href="FoundationaLLM.Common.Models.ContentSafety.ShieldPromptRequest.html">ShieldPromptRequest</a></dt>
-    <dd></dd>
+    <dd><p>The request containing the user prompt and associated documents.</p>
+</dd>
     <dt><code>cancellationToken</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></dt>
-    <dd></dd>
+    <dd><p>The optional cancellation token used to signal a cancellation request.</p>
+</dd>
   </dl>
 
   <h4 class="section">Returns</h4>
   <dl class="parameters">
     <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<span class="xref">ClientResult</span>&lt;<a class="xref" href="FoundationaLLM.Common.Models.ContentSafety.ShieldPromptResult.html">ShieldPromptResult</a>&gt;&gt;</dt>
-    <dd></dd>
+    <dd><p>A task that represents the asynchronous operation. The task result contains an  <span class="xref">System.ClientModel.ClientResult</span> object with the results of the analysis.</p>
+</dd>
   </dl>
 
 

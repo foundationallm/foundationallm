@@ -132,7 +132,7 @@ Interface IAzureCosmosDBFileService  <a class="header-action link-secondary" tit
 
   <h3 id="FoundationaLLM_Context_Interfaces_IAzureCosmosDBFileService_DeleteFileRecord_System_String_System_String_System_String_" data-uid="FoundationaLLM.Context.Interfaces.IAzureCosmosDBFileService.DeleteFileRecord(System.String,System.String,System.String)">
   DeleteFileRecord(string, string, string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/ContextEngine/Interfaces/IAzureCosmosDBFileService.cs/#L54"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/ContextEngine/Interfaces/IAzureCosmosDBFileService.cs/#L56"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Deletes the file record for a specified file identifier.</p>
@@ -160,6 +160,56 @@ Interface IAzureCosmosDBFileService  <a class="header-action link-secondary" tit
   <dl class="parameters">
     <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></dt>
     <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+  <h4 class="section" id="FoundationaLLM_Context_Interfaces_IAzureCosmosDBFileService_DeleteFileRecord_System_String_System_String_System_String__remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>Bypassing owner check cannot be performed here as we need the partition key (which is the UPN)
+to perform the delete operation.</p>
+</div>
+
+
+
+
+  <a id="FoundationaLLM_Context_Interfaces_IAzureCosmosDBFileService_FileRecordExists_" data-uid="FoundationaLLM.Context.Interfaces.IAzureCosmosDBFileService.FileRecordExists*"></a>
+
+  <h3 id="FoundationaLLM_Context_Interfaces_IAzureCosmosDBFileService_FileRecordExists_System_String_System_String_System_String_" data-uid="FoundationaLLM.Context.Interfaces.IAzureCosmosDBFileService.FileRecordExists(System.String,System.String,System.String)">
+  FileRecordExists(string, string, string)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/ContextEngine/Interfaces/IAzureCosmosDBFileService.cs/#L69"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Determines whether a file record exists for the specified file and user.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">Task&lt;bool&gt; FileRecordExists(string instanceId, string fileId, string userPrincipalName)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>instanceId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The FoundationaLLM instance identifier.</p>
+</dd>
+    <dt><code>fileId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The unique identifier of the file to check for existence. Cannot be null or empty.</p>
+</dd>
+    <dt><code>userPrincipalName</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The user principal name associated with the file record. Cannot be null or empty.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a>&gt;</dt>
+    <dd><p>A task that represents the asynchronous operation. The task result is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if the file
+record exists for the specified user and instance; otherwise, <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.</p>
+</dd>
   </dl>
 
 

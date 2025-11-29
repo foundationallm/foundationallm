@@ -620,6 +620,45 @@ the parent resource instance is used to authorize the request for any of those a
 
 
 
+  <a id="FoundationaLLM_Agent_ResourceProviders_AgentResourceProviderService_GetResourceReferenceSchemaUpgrades_" data-uid="FoundationaLLM.Agent.ResourceProviders.AgentResourceProviderService.GetResourceReferenceSchemaUpgrades*"></a>
+
+  <h3 id="FoundationaLLM_Agent_ResourceProviders_AgentResourceProviderService_GetResourceReferenceSchemaUpgrades" data-uid="FoundationaLLM.Agent.ResourceProviders.AgentResourceProviderService.GetResourceReferenceSchemaUpgrades">
+  GetResourceReferenceSchemaUpgrades()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Agent/ResourceProviders/AgentResourceProviderService.cs/#L1929"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Retrieves a list of schema upgrades for resource references.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override List&lt;ResourceReferenceListSchemaUpgrade&lt;AgentReference&gt;&gt; GetResourceReferenceSchemaUpgrades()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.ResourceReferenceListSchemaUpgrade-1.html">ResourceReferenceListSchemaUpgrade</a>&lt;<a class="xref" href="FoundationaLLM.Agent.Models.Resources.AgentReference.html">AgentReference</a>&gt;&gt;</dt>
+    <dd><p>A list of <a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.ResourceReferenceListSchemaUpgrade-1.html">ResourceReferenceListSchemaUpgrade&lt;T&gt;</a> objects representing the
+schema upgrades.  The list is empty by default.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+  <h4 class="section" id="FoundationaLLM_Agent_ResourceProviders_AgentResourceProviderService_GetResourceReferenceSchemaUpgrades_remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>This method returns a collection of schema upgrade definitions that can be applied to
+resource references of type <a class="xref" href="FoundationaLLM.Agent.Models.Resources.AgentReference.html">AgentReference</a>. Override this method in a derived
+class to provide custom schema upgrade logic.</p>
+</div>
+
+
+
+
   <a id="FoundationaLLM_Agent_ResourceProviders_AgentResourceProviderService_GetResourceTypes_" data-uid="FoundationaLLM.Agent.ResourceProviders.AgentResourceProviderService.GetResourceTypes*"></a>
 
   <h3 id="FoundationaLLM_Agent_ResourceProviders_AgentResourceProviderService_GetResourceTypes" data-uid="FoundationaLLM.Agent.ResourceProviders.AgentResourceProviderService.GetResourceTypes">

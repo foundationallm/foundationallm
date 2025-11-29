@@ -173,7 +173,7 @@ Class ShieldPromptResult  <a class="header-action link-secondary" title="View so
 
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[JsonPropertyName(&quot;documentsAnalysis&quot;)]
-public required List&lt;ShieldPromptDetails&gt; DocumentsAnalysis { get; set; }</code></pre>
+public List&lt;ShieldPromptDetails&gt;? DocumentsAnalysis { get; set; }</code></pre>
   </div>
 
 
@@ -206,7 +206,7 @@ public required List&lt;ShieldPromptDetails&gt; DocumentsAnalysis { get; set; }<
 
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[JsonPropertyName(&quot;userPromptAnalysis&quot;)]
-public required ShieldPromptDetails UserPromptAnalysis { get; set; }</code></pre>
+public ShieldPromptDetails? UserPromptAnalysis { get; set; }</code></pre>
   </div>
 
 

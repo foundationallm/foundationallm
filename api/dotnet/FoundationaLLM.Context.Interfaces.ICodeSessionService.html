@@ -89,7 +89,7 @@
 
 
   <h1 id="FoundationaLLM_Context_Interfaces_ICodeSessionService" data-uid="FoundationaLLM.Context.Interfaces.ICodeSessionService" class="text-break">
-Interface ICodeSessionService  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/ContextEngine/Interfaces/ICodeSessionService.cs/#L9"><i class="bi bi-code-slash"></i></a>
+Interface ICodeSessionService  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/ContextEngine/Interfaces/ICodeSessionService.cs/#L10"><i class="bi bi-code-slash"></i></a>
   </h1>
 
   <div class="facts text-secondary">
@@ -132,7 +132,7 @@ Interface ICodeSessionService  <a class="header-action link-secondary" title="Vi
 
   <h3 id="FoundationaLLM_Context_Interfaces_ICodeSessionService_CreateCodeSession_System_String_FoundationaLLM_Common_Models_CodeExecution_CreateCodeSessionRequest_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_" data-uid="FoundationaLLM.Context.Interfaces.ICodeSessionService.CreateCodeSession(System.String,FoundationaLLM.Common.Models.CodeExecution.CreateCodeSessionRequest,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)">
   CreateCodeSession(string, CreateCodeSessionRequest, UnifiedUserIdentity)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/ContextEngine/Interfaces/ICodeSessionService.cs/#L18"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/ContextEngine/Interfaces/ICodeSessionService.cs/#L19"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Creates a new code session using one of the registered code session providers.</p>
@@ -140,7 +140,7 @@ Interface ICodeSessionService  <a class="header-action link-secondary" title="Vi
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">Task&lt;CreateCodeSessionResponse&gt; CreateCodeSession(string instanceId, CreateCodeSessionRequest codeSessionRequest, UnifiedUserIdentity userIdentity)</code></pre>
+    <pre><code class="lang-csharp hljs">Task&lt;Result&lt;CreateCodeSessionResponse&gt;&gt; CreateCodeSession(string instanceId, CreateCodeSessionRequest codeSessionRequest, UnifiedUserIdentity userIdentity)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -158,8 +158,8 @@ Interface ICodeSessionService  <a class="header-action link-secondary" title="Vi
 
   <h4 class="section">Returns</h4>
   <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.CodeExecution.CreateCodeSessionResponse.html">CreateCodeSessionResponse</a>&gt;</dt>
-    <dd><p>The properties of the code execution session.</p>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Services.Result-1.html">Result</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.CodeExecution.CreateCodeSessionResponse.html">CreateCodeSessionResponse</a>&gt;&gt;</dt>
+    <dd><p>A <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a> producing a <a class="xref" href="FoundationaLLM.Common.Models.Services.Result-1.html">Result&lt;T&gt;</a> whose value is a <a class="xref" href="FoundationaLLM.Common.Models.CodeExecution.CreateCodeSessionResponse.html">CreateCodeSessionResponse</a> on success; otherwise a failed <a class="xref" href="FoundationaLLM.Common.Models.Services.Result-1.html">Result&lt;T&gt;</a> with a domain error.</p>
 </dd>
   </dl>
 
@@ -177,7 +177,7 @@ Interface ICodeSessionService  <a class="header-action link-secondary" title="Vi
 
   <h3 id="FoundationaLLM_Context_Interfaces_ICodeSessionService_DownloadFilesFromCodeSession_System_String_System_String_System_String_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_" data-uid="FoundationaLLM.Context.Interfaces.ICodeSessionService.DownloadFilesFromCodeSession(System.String,System.String,System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)">
   DownloadFilesFromCodeSession(string, string, string, UnifiedUserIdentity)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/ContextEngine/Interfaces/ICodeSessionService.cs/#L49"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/ContextEngine/Interfaces/ICodeSessionService.cs/#L50"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Downloads newly created files from a code session.</p>
@@ -185,7 +185,7 @@ Interface ICodeSessionService  <a class="header-action link-secondary" title="Vi
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">Task&lt;CodeSessionFileDownloadResponse&gt; DownloadFilesFromCodeSession(string instanceId, string sessionId, string operationId, UnifiedUserIdentity userIdentity)</code></pre>
+    <pre><code class="lang-csharp hljs">Task&lt;Result&lt;CodeSessionFileDownloadResponse&gt;&gt; DownloadFilesFromCodeSession(string instanceId, string sessionId, string operationId, UnifiedUserIdentity userIdentity)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -206,8 +206,8 @@ Interface ICodeSessionService  <a class="header-action link-secondary" title="Vi
 
   <h4 class="section">Returns</h4>
   <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.CodeExecution.CodeSessionFileDownloadResponse.html">CodeSessionFileDownloadResponse</a>&gt;</dt>
-    <dd><p>The result of downloading the newly created in the form of a dictionary with file names and file identifiers.</p>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Services.Result-1.html">Result</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.CodeExecution.CodeSessionFileDownloadResponse.html">CodeSessionFileDownloadResponse</a>&gt;&gt;</dt>
+    <dd><p>A <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a> producing a <a class="xref" href="FoundationaLLM.Common.Models.Services.Result-1.html">Result&lt;T&gt;</a> whose value is a <a class="xref" href="FoundationaLLM.Common.Models.CodeExecution.CodeSessionFileDownloadResponse.html">CodeSessionFileDownloadResponse</a> containing downloaded file records and any errors; otherwise a failed result with a domain error.</p>
 </dd>
   </dl>
 
@@ -229,7 +229,7 @@ The <code class="paramref">operationId</code> is the identifier of the file uplo
 
   <h3 id="FoundationaLLM_Context_Interfaces_ICodeSessionService_ExecuteCodeInCodeSession_System_String_System_String_System_String_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_" data-uid="FoundationaLLM.Context.Interfaces.ICodeSessionService.ExecuteCodeInCodeSession(System.String,System.String,System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)">
   ExecuteCodeInCodeSession(string, string, string, UnifiedUserIdentity)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/ContextEngine/Interfaces/ICodeSessionService.cs/#L63"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/ContextEngine/Interfaces/ICodeSessionService.cs/#L64"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Executes code in a code session and returns the result of the execution.</p>
@@ -237,7 +237,7 @@ The <code class="paramref">operationId</code> is the identifier of the file uplo
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">Task&lt;CodeSessionCodeExecuteResponse&gt; ExecuteCodeInCodeSession(string instanceId, string sessionId, string codeToExecute, UnifiedUserIdentity userIdentity)</code></pre>
+    <pre><code class="lang-csharp hljs">Task&lt;Result&lt;CodeSessionCodeExecuteResponse&gt;&gt; ExecuteCodeInCodeSession(string instanceId, string sessionId, string codeToExecute, UnifiedUserIdentity userIdentity)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -258,8 +258,8 @@ The <code class="paramref">operationId</code> is the identifier of the file uplo
 
   <h4 class="section">Returns</h4>
   <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.CodeExecution.CodeSessionCodeExecuteResponse.html">CodeSessionCodeExecuteResponse</a>&gt;</dt>
-    <dd><p>The result of the code execution including standard and error outputs.</p>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Services.Result-1.html">Result</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.CodeExecution.CodeSessionCodeExecuteResponse.html">CodeSessionCodeExecuteResponse</a>&gt;&gt;</dt>
+    <dd><p>A <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a> producing a <a class="xref" href="FoundationaLLM.Common.Models.Services.Result-1.html">Result&lt;T&gt;</a> whose value is a <a class="xref" href="FoundationaLLM.Common.Models.CodeExecution.CodeSessionCodeExecuteResponse.html">CodeSessionCodeExecuteResponse</a> with execution status, result, standard output, and error output; otherwise a failed result with a domain error.</p>
 </dd>
   </dl>
 
@@ -277,7 +277,7 @@ The <code class="paramref">operationId</code> is the identifier of the file uplo
 
   <h3 id="FoundationaLLM_Context_Interfaces_ICodeSessionService_UploadFilesToCodeSession_System_String_System_String_FoundationaLLM_Common_Models_CodeExecution_CodeSessionFileUploadRequest_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_" data-uid="FoundationaLLM.Context.Interfaces.ICodeSessionService.UploadFilesToCodeSession(System.String,System.String,FoundationaLLM.Common.Models.CodeExecution.CodeSessionFileUploadRequest,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)">
   UploadFilesToCodeSession(string, string, CodeSessionFileUploadRequest, UnifiedUserIdentity)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/ContextEngine/Interfaces/ICodeSessionService.cs/#L31"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/ContextEngine/Interfaces/ICodeSessionService.cs/#L32"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Uploads files to a code session.</p>
@@ -285,7 +285,7 @@ The <code class="paramref">operationId</code> is the identifier of the file uplo
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">Task&lt;CodeSessionFileUploadResponse&gt; UploadFilesToCodeSession(string instanceId, string sessionId, CodeSessionFileUploadRequest request, UnifiedUserIdentity userIdentity)</code></pre>
+    <pre><code class="lang-csharp hljs">Task&lt;Result&lt;CodeSessionFileUploadResponse&gt;&gt; UploadFilesToCodeSession(string instanceId, string sessionId, CodeSessionFileUploadRequest request, UnifiedUserIdentity userIdentity)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -306,8 +306,8 @@ The <code class="paramref">operationId</code> is the identifier of the file uplo
 
   <h4 class="section">Returns</h4>
   <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.CodeExecution.CodeSessionFileUploadResponse.html">CodeSessionFileUploadResponse</a>&gt;</dt>
-    <dd><p>The result of uploading the files to the code session in the form of a dictionary where the keys are the file names and the values are true/false.</p>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Services.Result-1.html">Result</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.CodeExecution.CodeSessionFileUploadResponse.html">CodeSessionFileUploadResponse</a>&gt;&gt;</dt>
+    <dd><p>A <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a> producing a <a class="xref" href="FoundationaLLM.Common.Models.Services.Result-1.html">Result&lt;T&gt;</a> whose value is a <a class="xref" href="FoundationaLLM.Common.Models.CodeExecution.CodeSessionFileUploadResponse.html">CodeSessionFileUploadResponse</a> containing per-file upload success data; otherwise a failed result with a domain error.</p>
 </dd>
   </dl>
 
@@ -325,7 +325,7 @@ The <code class="paramref">operationId</code> is the identifier of the file uplo
 </article>
 
         <div class="contribution d-print-none">
-          <a href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/ContextEngine/Interfaces/ICodeSessionService.cs/#L9" class="edit-link">Edit this page</a>
+          <a href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/ContextEngine/Interfaces/ICodeSessionService.cs/#L10" class="edit-link">Edit this page</a>
         </div>
 
 

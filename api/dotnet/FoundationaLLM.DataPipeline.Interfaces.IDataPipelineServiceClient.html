@@ -241,7 +241,7 @@ Interface IDataPipelineServiceClient  <a class="header-action link-secondary" ti
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">Task&lt;List&lt;DataPipelineRun&gt;&gt; GetDataPipelineRunsAsync(string instanceId, DataPipelineRunFilter dataPipelineRunFilter, UnifiedUserIdentity userIdentity)</code></pre>
+    <pre><code class="lang-csharp hljs">Task&lt;DataPipelineRunFilterResponse&gt; GetDataPipelineRunsAsync(string instanceId, DataPipelineRunFilter dataPipelineRunFilter, UnifiedUserIdentity userIdentity)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -259,7 +259,7 @@ Interface IDataPipelineServiceClient  <a class="header-action link-secondary" ti
 
   <h4 class="section">Returns</h4>
   <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRun.html">DataPipelineRun</a>&gt;&gt;</dt>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRunFilterResponse.html">DataPipelineRunFilterResponse</a>&gt;</dt>
     <dd><p>The requested list of data pipeline run objects.</p>
 </dd>
   </dl>
