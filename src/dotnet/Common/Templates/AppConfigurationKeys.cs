@@ -518,13 +518,6 @@ namespace FoundationaLLM.Common.Constants.Configuration
             "FoundationaLLM:APIEndpoints:CoreAPI:Configuration:AzureAIAgentsFileSearchFileExtensions";
         
         /// <summary>
-        /// The app configuration key for the FoundationaLLM:APIEndpoints:CoreAPI:Configuration:AllowedUploadFileExtensions setting.
-        /// <para>Value description:<br/>The comma-separated list file extensions that users are allowed to upload to a conversation.</para>
-        /// </summary>
-        public const string FoundationaLLM_APIEndpoints_CoreAPI_Configuration_AllowedUploadFileExtensions =
-            "FoundationaLLM:APIEndpoints:CoreAPI:Configuration:AllowedUploadFileExtensions";
-        
-        /// <summary>
         /// The app configuration key for the FoundationaLLM:APIEndpoints:CoreAPI:Configuration:MaxUploadsPerMessage setting.
         /// <para>Value description:<br/>The maximum number of files that can be uploaded for a single conversation message.</para>
         /// </summary>
@@ -1155,6 +1148,13 @@ namespace FoundationaLLM.Common.Constants.Configuration
         /// </summary>
         public const string FoundationaLLM_APIEndpoints_ContextAPI_Configuration_FileService_CosmosDB_Containers =
             "FoundationaLLM:APIEndpoints:ContextAPI:Configuration:FileService:CosmosDB:Containers";
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:APIEndpoints:ContextAPI:Configuration:FileService:AllowedFileExtensions setting.
+        /// <para>Value description:<br/>The comma-separated list of file extensions that are supported by the file service.</para>
+        /// </summary>
+        public const string FoundationaLLM_APIEndpoints_ContextAPI_Configuration_FileService_AllowedFileExtensions =
+            "FoundationaLLM:APIEndpoints:ContextAPI:Configuration:FileService:AllowedFileExtensions";
         
         /// <summary>
         /// The app configuration key for the FoundationaLLM:APIEndpoints:ContextAPI:Configuration:FileService:KnowledgeSearchFileExtensions setting.

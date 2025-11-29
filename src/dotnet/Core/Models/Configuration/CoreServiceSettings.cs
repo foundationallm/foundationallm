@@ -1,4 +1,6 @@
-﻿namespace FoundationaLLM.Core.Models.Configuration
+﻿using FoundationaLLM.Common.Models.ResourceProviders.Configuration;
+
+namespace FoundationaLLM.Core.Models.Configuration
 {
     /// <summary>
     /// Provides settings for the CoreService.
@@ -24,5 +26,15 @@
         /// The comma-separated list file extensions that are supported by the Azure AI Agent Service file search tool.
         /// </summary>
         public required string AzureAIAgentsFileSearchFileExtensions { get; set; }
+
+        /// <summary>
+        /// Gets or sets the maximum number of file uploads that can be included in a single message.
+        /// </summary>
+        public ConfigurationValue<int> MaxUploadsPerMessage { get; set; } = new ConfigurationValue<int>() { Value = 5 };
+
+        /// <summary>
+        /// Gets or sets the polling interval, in milliseconds, used when waiting for completion responses from the
+        /// service.
+        public ConfigurationValue<int> CompletionResponsePollingIntervalMilliseconds { get; set; } = new ConfigurationValue<int>() { Value = 1000 };
     }
 }
