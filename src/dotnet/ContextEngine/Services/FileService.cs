@@ -46,6 +46,10 @@ namespace FoundationaLLM.Context.Services
         private readonly IStorageService _storageService = storageService;
         private readonly IAuthorizationServiceClient _authorizationServiceClient = authorizationServiceClient;
         private readonly FileServiceSettings _settings = settings;
+        private readonly HashSet<string> _allowedFileTypes = [.. settings
+            .AllowedFileExtensions
+            .Split(",")
+            .Select(s => s.Trim().ToLower())];
         private readonly HashSet<string> _knowledgeSearchFileTypes = [.. settings
             .KnowledgeSearchFileExtensions
             .Split(",")
@@ -59,6 +63,7 @@ namespace FoundationaLLM.Context.Services
                 settings.KnowledgeSearchContextFileMaxSizeBytes ?? "{}")!
             .Select(x => x.Key
                 .Split(",")
+                .Select(s => s.Trim().ToLower())
                 .Select(y => new KeyValuePair<string, int>(
                     y.Trim().ToLower(),
                     x.Value)))
@@ -78,11 +83,30 @@ namespace FoundationaLLM.Context.Services
             UnifiedUserIdentity userIdentity,
             Dictionary<string, string>? metadata)
         {
+            if (origin == ContextRecordOrigins.UserUpload
+                && string.IsNullOrWhiteSpace(agentName))
+                return Result<ContextFileRecord>.FailureFromErrorMessage(
+                    "An agent name must be provided when the file originates from a user upload.",
+                    StatusCodes.Status400BadRequest);
+
             try
             {
+                if (!IsFileAllowedForConversation(
+                    origin,
+                    fileName,
+                    contentType,
+                    content.Length))
+                {
+                    _logger.LogWarning("{InstanceId}: The {FileName} for agent {AgentName} and conversation {ConversationId} is not supported.",
+                        instanceId, fileName, agentName ?? "N/A", conversationId);
+                    return Result<ContextFileRecord>.FailureFromErrorMessage(
+                        $"The {fileName} is not supported.",
+                        StatusCodes.Status415UnsupportedMediaType);
+                }
+
                 var fileProcessingType = GetFileProcessingType(
                     origin,
-                    Path.GetExtension(fileName).Replace(".", string.Empty).ToLower(),
+                    fileName,
                     content.Length);
 
                 var fileRecord = new ContextFileRecord(
@@ -120,42 +144,15 @@ namespace FoundationaLLM.Context.Services
                             instanceId, fileName, fileRecord.Id, conversationId);
 
                         // First, if an agent is specified, try to get the data pipeline to execute from the agent's settings.
-                        string? agentDataPipelineObjectId = null;
-
-                        if (agentName is not null)
-                        {
-                            try
-                            {
-                                var agent = await _agentResourceProvider.GetResourceAsync<AgentBase>(
-                                    instanceId,
-                                    agentName!,
-                                    userIdentity);
-
-                                // If the agent has knowledge search settings, we will honor those settings.
-                                var knowledgeSearchSettings = agent!.Tools
-                                    .Select(t => t.GetKnowledgeSearchSettings())
-                                    .Where(s => s != null)
-                                    .SingleOrDefault();
-
-                                if (knowledgeSearchSettings is not null)
-                                {
-                                    agentDataPipelineObjectId = knowledgeSearchSettings.FileUploadDataPipelineObjectId;
-                                    _logger.LogInformation("{InstanceId}: While processing uploaded file {FileName} ({FileId}) for conversation {ConversationId}, agent {AgentName} requires the {DataPipelineObjectId} to be run.",
-                                        instanceId, fileName, fileRecord.Id, conversationId, agentName, agentDataPipelineObjectId);
-                                }
-                                else
-                                    _logger.LogInformation("{InstanceId}: While processing uploaded file {FileName} ({FileId}) for conversation {ConversationId}, agent {AgentName} does not have knowledge search settings.",
-                                        instanceId, fileName, fileRecord.Id, conversationId, agentName);
-                            }
-                            catch (Exception ex)
-                            {
-                                _logger.LogError(ex, "{InstanceId}: While processing uploaded file {FileName} ({FileId}) for conversation {ConversationId}, agent {AgentName} could not be loaded.",
-                                    instanceId, fileName, fileRecord.Id, conversationId, agentName);
-                            }
-                        }
+                        var agentDataPipelineObjectId = await GetAgentDataPipelineObjectId(
+                            instanceId,
+                            agentName,
+                            conversationId,
+                            fileRecord,
+                            userIdentity);
 
                         if (agentDataPipelineObjectId is not null
-                            && fileProcessingType == FileProcessingTypes.ConversationDataPipeline)
+                            && fileProcessingType == FileProcessingTypes.DataPipeline)
                         {
                             _logger.LogInformation("{InstanceId}: File {FileName} ({FileId}) for conversation {ConversationId} will be processed using the {DataPipelineObjectId} data pipeline based on the {AgentName} agent settings.",
                                 instanceId, fileName, fileRecord.Id, conversationId, agentDataPipelineObjectId, agentName);
@@ -165,41 +162,17 @@ namespace FoundationaLLM.Context.Services
                         }
                         else
                         {
-                            var dataPipelineObjectId = ResourcePath.GetObjectId(
-                                instanceId,
-                                ResourceProviderNames.FoundationaLLM_DataPipeline,
-                                DataPipelineResourceTypeNames.DataPipelines,
-                                WellKnownDataPipelineNames.ShieldedFileContent);
-                            _logger.LogInformation("{InstanceId}: File {FileName} ({FileId}) for conversation {ConversationId} will be processed using the {DataPipelineObjectId} data pipeline.",
-                                instanceId, fileName, fileRecord.Id, conversationId, dataPipelineObjectId);
-
-                            var newDataPipelineRun = DataPipelineRun.Create(
-                                dataPipelineObjectId,
-                                DataPipelineTriggerNames.DefaultManualTrigger,
-                                new()
-                                {
-                                { DataPipelineTriggerParameterNames.DataSourceContextFileContextFileObjectId, fileRecord.FileObjectId},
-                                { DataPipelineTriggerParameterNames.DataSourceContextFileContentAction, ContentItemActions.AddOrUpdate },
-                                { DataPipelineTriggerParameterNames.StageExtractMaxContentSizeCharacters, 10_000_000 }
-                                },
-                                userIdentity.UPN!,
-                                DataPipelineRunProcessors.Frontend);
-
-                            _logger.LogInformation("{InstanceId}: File {FileName} ({FileId}) for conversation {ConversationId}: triggering {DataPipelineObjectId} data pipeline.",
-                               instanceId, fileName, fileRecord.Id, conversationId, dataPipelineObjectId);
-
-                            var dataPipelineSuccess = await PollingResourceRunner<DataPipelineRun>.Start(
-                                instanceId,
-                                _dataPipelineResourceProvider,
-                                newDataPipelineRun,
-                                TimeSpan.FromSeconds(1),
-                                TimeSpan.FromSeconds(60),
-                                _logger,
-                                ServiceContext.ServiceIdentity!);
-                            safetyBreachDetected = !dataPipelineSuccess;
-
-                            _logger.LogInformation("{InstanceId}: File {FileName} ({FileId}) for conversation {ConversationId}: execution of {DataPipelineObjectId} data pipeline completed with (Success = {Success}).",
-                               instanceId, fileName, fileRecord.Id, conversationId, dataPipelineObjectId, dataPipelineSuccess);
+                            if (ContentTypeMappings.MediaContentTypes.Contains(contentType.ToLower()))
+                            {
+                                // NOTE: In the current version, media files are considered safe.
+                            }
+                            else
+                                safetyBreachDetected = await IsFileUnsafe(
+                                    instanceId,
+                                    agentName,
+                                    conversationId,
+                                    fileRecord,
+                                    userIdentity);
                         }
                     }
                     catch (Exception ex)
@@ -210,29 +183,15 @@ namespace FoundationaLLM.Context.Services
                     }
                 }
 
-                if (safetyBreachDetected)
-                {
-                    // Delete the file record and the file itself.
-                    var deleteResult = await DeleteFileRecord(
-                        instanceId,
-                        fileRecord.Id,
-                        userIdentity);
+                var result = await FinalizeCreateFileResult(
+                    instanceId,
+                    agentName,
+                    conversationId,
+                    fileRecord,
+                    safetyBreachDetected,
+                    userIdentity);
 
-                    if (deleteResult.IsSuccess)
-                        return Result<ContextFileRecord>.FailureFromErrorMessage(
-                            $"The file {fileName} ({fileRecord.Id}) could not be uploaded for conversation {conversationId} because it did not pass the safety guardrails.",
-                            StatusCodes.Status422UnprocessableEntity);
-                    else
-                    {
-                        _logger.LogError("{InstanceId}: There was an error deleting the file record {FileId} after a safety breach was detected for file {FileName} for conversation {ConversationId}.",
-                            instanceId, fileRecord.Id, fileName, conversationId);
-                        return Result<ContextFileRecord>.FailureFromErrorMessage(
-                            $"The file {fileName} ({fileRecord.Id}) could not be uploaded for conversation {conversationId} because it did not pass the safety guardrails. WARNING: There was an error deleting the file record.",
-                            StatusCodes.Status422UnprocessableEntity);
-                    }
-                }
-                else
-                    return Result<ContextFileRecord>.Success(fileRecord);
+                return result;
             }
             catch (Exception ex)
             {
@@ -255,6 +214,19 @@ namespace FoundationaLLM.Context.Services
         {
             try
             {
+                if (!IsFileAllowedForAgent(
+                    origin,
+                    fileName,
+                    contentType,
+                    content.Length))
+                {
+                    _logger.LogWarning("{InstanceId}: The {FileName} for agent {AgentName} is not supported.",
+                        instanceId, fileName, agentName ?? "N/A");
+                    return Result<ContextFileRecord>.FailureFromErrorMessage(
+                        $"The {fileName} is not supported.",
+                        StatusCodes.Status415UnsupportedMediaType);
+                }
+
                 var fileRecord = new ContextFileRecord(
                     instanceId,
                     origin,
@@ -265,7 +237,7 @@ namespace FoundationaLLM.Context.Services
                     content.Length,
                     GetFileProcessingType(
                         origin,
-                        Path.GetExtension(fileName).Replace(".", string.Empty).ToLower(),
+                        fileName,
                         content.Length),
                     userIdentity,
                     metadata);
@@ -496,23 +468,25 @@ namespace FoundationaLLM.Context.Services
 
         private string GetFileProcessingType(
             string fileOrigin,
-            string fileExtension,
-            long fileSizeBytes) =>
-            fileOrigin switch
-            {
-                ContextRecordOrigins.CodeSession => FileProcessingTypes.None,
-                ContextRecordOrigins.UserUpload =>
-                    _knowledgeSearchFileTypes.Contains(fileExtension)
-                        ? (
-                            _knowledgeSearchContextFileTypes.Contains(fileExtension)
-                            && _maxFileSizes.TryGetValue(fileExtension, out var maxSize)
-                            && fileSizeBytes <= maxSize
-                                ? FileProcessingTypes.CompletionRequestContext
-                                : FileProcessingTypes.ConversationDataPipeline
-                        )
-                        : FileProcessingTypes.None,
-                _ => FileProcessingTypes.None
-            };
+            string fileName,
+            long fileSizeBytes)
+        {
+            var fileExtension = Path.GetExtension(fileName).Replace(".", string.Empty).ToLower();
+
+            var processingRequired =
+                fileOrigin == ContextRecordOrigins.UserUpload
+                && _knowledgeSearchFileTypes.Contains(fileExtension);
+
+            if (!processingRequired)
+                return FileProcessingTypes.None;
+
+            return
+                _knowledgeSearchContextFileTypes.Contains(fileExtension)
+                && _maxFileSizes.TryGetValue(fileExtension, out var maxSize)
+                && fileSizeBytes <= maxSize
+                    ? FileProcessingTypes.CompletionRequestContext
+                    : FileProcessingTypes.DataPipeline;
+        }
 
         private Stream StandardizeTextContentEncoding(
             Stream content)
@@ -538,6 +512,201 @@ namespace FoundationaLLM.Context.Services
             string text = streamReader.ReadToEnd();
             byte[] utf8Bytes = Encoding.UTF8.GetBytes(text);
             return new MemoryStream(utf8Bytes);
+        }
+
+        private async Task<string?> GetAgentDataPipelineObjectId(
+            string instanceId,
+            string? agentName,
+            string? conversationId,
+            ContextFileRecord fileRecord,
+            UnifiedUserIdentity userIdentity)
+        {
+            string agentDataPipelineObjectId = null!;
+
+            if (agentName is not null)
+            {
+                try
+                {
+                    var agent = await _agentResourceProvider.GetResourceAsync<AgentBase>(
+                        instanceId,
+                        agentName!,
+                        userIdentity);
+
+                    // If the agent has knowledge search settings, we will honor those settings.
+                    var knowledgeSearchSettings = agent!.Tools
+                        .Select(t => t.GetKnowledgeSearchSettings())
+                        .Where(s => s != null)
+                        .SingleOrDefault();
+
+                    if (knowledgeSearchSettings is not null)
+                    {
+                        agentDataPipelineObjectId = knowledgeSearchSettings.FileUploadDataPipelineObjectId;
+                        _logger.LogInformation("{InstanceId}: While processing uploaded file {FileName} ({FileId}) for conversation {ConversationId}, agent {AgentName} requires the {DataPipelineObjectId} to be run.",
+                            instanceId, fileRecord.FileName, fileRecord.Id, conversationId ?? "N/A", agentName, agentDataPipelineObjectId);
+                    }
+                    else
+                        _logger.LogInformation("{InstanceId}: While processing uploaded file {FileName} ({FileId}) for conversation {ConversationId}, agent {AgentName} does not have knowledge search settings.",
+                            instanceId, fileRecord.FileName, fileRecord.Id, conversationId ?? "N/A", agentName);
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "{InstanceId}: While processing uploaded file {FileName} ({FileId}) for conversation {ConversationId}, agent {AgentName} could not be loaded.",
+                        instanceId, fileRecord.FileName, fileRecord.Id, conversationId ?? "N/A", agentName);
+                }
+            }
+
+            return agentDataPipelineObjectId;
+        }
+
+        private bool IsFileAllowedForConversation(
+            string fileOrigin,
+            string fileName,
+            string contentType,
+            long fileSizeBytes)
+        {
+            // Files originating from sources other than user uploads are always allowed.
+            if (fileOrigin != ContextRecordOrigins.UserUpload)
+                return true;
+
+            var fileExtension = Path.GetExtension(fileName).Replace(".", string.Empty).ToLower();
+
+            // The type of the file uploaded by the user must be in the allowed file types list.
+            if (!_allowedFileTypes.Contains(fileExtension))
+                return false;
+
+            // Because user uploaded media files can only be processed by sending them directly in
+            // the context window of a completion request, we need to enforce
+            // that their extension allows that processing (including size limits).
+            if (ContentTypeMappings.MediaContentTypes.Contains(contentType.ToLower()))
+                if (_knowledgeSearchContextFileTypes.Contains(fileExtension))
+                {
+                    if (_maxFileSizes.TryGetValue(fileExtension, out var maxSize))
+                        return fileSizeBytes <= maxSize;
+                    else
+                        return false;
+                }
+                else
+                    return false;
+
+            return true;
+        }
+
+        private bool IsFileAllowedForAgent(
+            string fileOrigin,
+            string fileName,
+            string contentType,
+            long fileSizeBytes)
+        {
+            // Files originating from sources other than user uploads are always allowed.
+            if (fileOrigin != ContextRecordOrigins.UserUpload)
+                return true;
+
+            var fileExtension = Path.GetExtension(fileName).Replace(".", string.Empty).ToLower();
+
+            // The type of the file uploaded by the user must be in the allowed file types list.
+            if (!_allowedFileTypes.Contains(fileExtension))
+                return false;
+
+            // Any additional checks should be performed when agen files are associated with tools.
+
+            return true;
+        }
+
+        private async Task<bool> IsFileUnsafe(
+            string instanceId,
+            string? agentName,
+            string? conversationId,
+            ContextFileRecord fileRecord,
+            UnifiedUserIdentity userIdentity)
+        {
+            var dataPipelineObjectId = ResourcePath.GetObjectId(
+                                instanceId,
+                                ResourceProviderNames.FoundationaLLM_DataPipeline,
+                                DataPipelineResourceTypeNames.DataPipelines,
+                                WellKnownDataPipelineNames.ShieldedFileContent);
+            _logger.LogInformation("{InstanceId}: File {FileName} ({FileId}) for agent {AgentName} and conversation {ConversationId} will be processed using the {DataPipelineObjectId} data pipeline.",
+                instanceId, fileRecord.FileName, fileRecord.Id, agentName ?? "N/A", conversationId ?? "N/A", dataPipelineObjectId);
+
+            var newDataPipelineRun = DataPipelineRun.Create(
+                dataPipelineObjectId,
+                DataPipelineTriggerNames.DefaultManualTrigger,
+                new()
+                {
+                                { DataPipelineTriggerParameterNames.DataSourceContextFileContextFileObjectId, fileRecord.FileObjectId},
+                                { DataPipelineTriggerParameterNames.DataSourceContextFileContentAction, ContentItemActions.AddOrUpdate },
+                                { DataPipelineTriggerParameterNames.StageExtractMaxContentSizeCharacters, 10_000_000 }
+                },
+                userIdentity.UPN!,
+                DataPipelineRunProcessors.Frontend);
+
+            _logger.LogInformation("{InstanceId}: File {FileName} ({FileId}) for agent {AgentName} and conversation {ConversationId}: triggering {DataPipelineObjectId} data pipeline.",
+               instanceId, fileRecord.FileName, fileRecord.Id, agentName ?? "N/A", conversationId ?? "N/A", dataPipelineObjectId);
+
+            var dataPipelineSuccess = await PollingResourceRunner<DataPipelineRun>.Start(
+                instanceId,
+                _dataPipelineResourceProvider,
+                newDataPipelineRun,
+                TimeSpan.FromSeconds(1),
+                TimeSpan.FromSeconds(60),
+                _logger,
+                ServiceContext.ServiceIdentity!);
+
+            // Taking the safeguard that if the data pipeline fails, we consider the file unsafe.
+            bool safetyBreachDetected = !dataPipelineSuccess;
+
+            _logger.LogInformation("{InstanceId}: File {FileName} ({FileId}) for agent {AgentName} and conversation {ConversationId}: execution of {DataPipelineObjectId} data pipeline completed with (Success = {Success}).",
+               instanceId, fileRecord.FileName, fileRecord.Id, agentName ?? "N/A", conversationId ?? "N/A", dataPipelineObjectId, dataPipelineSuccess);
+
+            return safetyBreachDetected;
+        }
+
+        private async Task<Result<ContextFileRecord>> FinalizeCreateFileResult(
+            string instanceId,
+            string? agentName,
+            string? conversationId,
+            ContextFileRecord fileRecord,
+            bool safetyBreachDetected,
+            UnifiedUserIdentity userIdentity)
+        {
+            if (safetyBreachDetected)
+            {
+                if (await _cosmosDBService.FileRecordExists(
+                    instanceId,
+                    fileRecord.Id,
+                    fileRecord.UPN))
+                {
+                    // The file record still exists, we need to delete it.
+
+                    // Delete the file record and the file itself.
+                    var deleteResult = await DeleteFileRecord(
+                        instanceId,
+                        fileRecord.Id,
+                        userIdentity);
+
+                    if (deleteResult.IsSuccess)
+                        return Result<ContextFileRecord>.FailureFromErrorMessage(
+                            $"The file {fileRecord.FileName} ({fileRecord.Id}) could not be uploaded for agent {agentName ?? "N/A"} and conversation {conversationId ?? "N/A"} because it did not pass the safety guardrails.",
+                            StatusCodes.Status422UnprocessableEntity);
+                    else
+                    {
+                        _logger.LogError("{InstanceId}: There was an error deleting the file record {FileId} after a safety breach was detected for file {FileName} for agent {AgentName} and conversation {ConversationId}.",
+                            instanceId, fileRecord.Id, fileRecord.FileName, agentName ?? "N/A", conversationId ?? "N/A");
+                        return Result<ContextFileRecord>.FailureFromErrorMessage(
+                            $"The file {fileRecord.FileName} ({fileRecord.Id}) could not be uploaded for agent {agentName ?? "N/A"} and conversation {conversationId ?? "N/A"} because it did not pass the safety guardrails. WARNING: There was an error deleting the file record.",
+                            StatusCodes.Status422UnprocessableEntity);
+                    }
+                }
+                else
+                {
+                    // The file record was already deleted, most likely by a data pipeline.
+
+                    return Result<ContextFileRecord>.FailureFromErrorMessage(
+                        $"The file {fileRecord.FileName} ({fileRecord.Id}) could not be uploaded for agent {agentName ?? "N/A"} and conversation {conversationId ?? "N/A"} because it did not pass the safety guardrails.",
+                        StatusCodes.Status422UnprocessableEntity);
+                }
+            }
+            else
+                return Result<ContextFileRecord>.Success(fileRecord);
         }
     }
 }

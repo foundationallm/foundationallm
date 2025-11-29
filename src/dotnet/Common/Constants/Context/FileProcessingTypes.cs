@@ -13,9 +13,9 @@ namespace FoundationaLLM.Common.Constants.Context
         public const string None = "none";
 
         /// <summary>
-        /// The file must be processed by a data pipeline in the context of a conversation.
+        /// The file must be processed by a data pipeline.
         /// </summary>
-        public const string ConversationDataPipeline = "conversation_data_pipeline";
+        public const string DataPipeline = "data_pipeline";
 
         /// <summary>
         /// The file's content must be used in the completion request context (it's content should be directly embedded into the completion request).
@@ -27,7 +27,8 @@ namespace FoundationaLLM.Common.Constants.Context
         /// </summary>
         public static readonly ImmutableArray<string> All = [
             None,
-            ConversationDataPipeline
+            DataPipeline,
+            CompletionRequestContext
         ];
     }
 }

@@ -8,6 +8,7 @@ using Microsoft.Azure.Cosmos.Fluent;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System.Diagnostics;
+using System.Net;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
@@ -118,6 +119,28 @@ namespace FoundationaLLM.Context.Services.CosmosDB
             }
 
             return output;
+        }
+
+        public async Task<bool> ItemExists<T>(
+            string partitionKey,
+            string id,
+            Func<T,bool>? existencePredicate)
+        {
+            try
+            {
+                var response = await _contextContainer.ReadItemAsync<T>(
+                    id,
+                    new PartitionKey(partitionKey));
+
+                return
+                    response.StatusCode == HttpStatusCode.OK
+                    && (existencePredicate is null || existencePredicate(response.Resource));
+            }
+            catch (CosmosException ex) when (ex.StatusCode == HttpStatusCode.NotFound)
+            {
+                // Item does not exist
+                return false;
+            }
         }
     }
 }
