@@ -56,5 +56,10 @@ namespace FoundationaLLM.Common.Interfaces
         /// Gets user activity timeline.
         /// </summary>
         Task<UserActivityTimeline> GetUserActivityTimelineAsync(string instanceId, string username, DateTime? startDate, DateTime? endDate, CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// Gets daily message counts per agent for the specified date range.
+        /// </summary>
+        Task<List<DailyMessageCount>> GetDailyMessageCountsPerAgentAsync(string instanceId, DateTime? startDate, DateTime? endDate, CancellationToken cancellationToken = default);
     }
 }

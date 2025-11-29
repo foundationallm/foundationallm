@@ -28,22 +28,24 @@ namespace FoundationaLLM.Common.Services.Analytics
 
             try
             {
-                // Get total conversations
-                var sessionsQuery = new QueryDefinition("SELECT VALUE COUNT(1) FROM c WHERE c.type = @type AND c._ts >= @startTimestamp AND c._ts < @endTimestamp")
+                // Get total conversations - use SELECT instead of SELECT VALUE to return JSON object
+                var sessionsQuery = new QueryDefinition("SELECT COUNT(1) AS count FROM c WHERE c.type = @type AND c._ts >= @startTimestamp AND c._ts < @endTimestamp")
                     .WithParameter("@type", "Session")
                     .WithParameter("@startTimestamp", startTimestamp)
                     .WithParameter("@endTimestamp", endTimestamp);
                 var totalConversations = await ExecuteCountQueryAsync(sessionsQuery, cancellationToken);
 
-                // Get total tokens
-                var tokensQuery = new QueryDefinition("SELECT VALUE SUM(c.tokensUsed) FROM c WHERE c.type = @type AND c._ts >= @startTimestamp AND c._ts < @endTimestamp")
-                    .WithParameter("@type", "Session")
+                // Get total tokens - tokens are stored in Message documents, not Session documents
+                // Sum all tokens from Message documents (both User and Agent messages)
+                var tokensQuery = new QueryDefinition("SELECT SUM(c.tokens) AS sum FROM c WHERE c.type = @type AND c._ts >= @startTimestamp AND c._ts < @endTimestamp AND IS_DEFINED(c.tokens)")
+                    .WithParameter("@type", "Message")
                     .WithParameter("@startTimestamp", startTimestamp)
                     .WithParameter("@endTimestamp", endTimestamp);
                 var totalTokens = await ExecuteSumQueryAsync(tokensQuery, cancellationToken);
+                _logger.LogInformation("Total tokens query result: {TotalTokens} for period {StartDate} to {EndDate}", totalTokens, start, end);
 
                 // Get unique users - Cosmos DB doesn't support COUNT(DISTINCT) directly, so we'll get distinct UPNs and count
-                var usersQuery = new QueryDefinition("SELECT DISTINCT c.upn FROM c WHERE c.type = @type AND c._ts >= @startTimestamp AND c._ts < @endTimestamp AND c.upn IS NOT NULL")
+                var usersQuery = new QueryDefinition("SELECT DISTINCT c.upn FROM c WHERE c.type = @type AND c._ts >= @startTimestamp AND c._ts < @endTimestamp AND IS_DEFINED(c.upn) AND c.upn != null")
                     .WithParameter("@type", "Session")
                     .WithParameter("@startTimestamp", startTimestamp)
                     .WithParameter("@endTimestamp", endTimestamp);
@@ -53,12 +55,25 @@ namespace FoundationaLLM.Common.Services.Analytics
                     cancellationToken);
                 var activeUsers = distinctUsers.Count;
 
+                // Get distinct agents - query Message documents for distinct senderDisplayName where sender = "Agent"
+                var agentsQuery = new QueryDefinition("SELECT DISTINCT c.senderDisplayName FROM c WHERE c.type = @type AND c.sender = @sender AND c._ts >= @startTimestamp AND c._ts < @endTimestamp AND IS_DEFINED(c.senderDisplayName) AND c.senderDisplayName != null")
+                    .WithParameter("@type", "Message")
+                    .WithParameter("@sender", "Agent")
+                    .WithParameter("@startTimestamp", startTimestamp)
+                    .WithParameter("@endTimestamp", endTimestamp);
+                var distinctAgents = await _cosmosDBService.QueryItemsAsync<System.Text.Json.JsonElement>(
+                    AzureCosmosDBContainers.Sessions,
+                    agentsQuery,
+                    cancellationToken);
+                var totalAgents = distinctAgents.Count;
+                _logger.LogInformation("Total agents query result: {TotalAgents} distinct agents for period {StartDate} to {EndDate}", totalAgents, start, end);
+
                 return new AnalyticsOverview
                 {
                     TotalConversations = totalConversations,
                     TotalTokens = totalTokens,
                     ActiveUsers = activeUsers,
-                    TotalAgents = 0, // Will be populated from Application Insights
+                    TotalAgents = totalAgents,
                     AvgResponseTimeMs = 0, // Will be populated from Application Insights
                     TotalTools = 0, // Will be populated from tool analysis
                     TotalModels = 0 // Will be populated from Application Insights
@@ -242,7 +257,7 @@ namespace FoundationaLLM.Common.Services.Analytics
                     WHERE c.type = ""Session""
                         AND c._ts >= @startTimestamp
                         AND c._ts < @endTimestamp
-                        AND c.upn IS NOT NULL
+                        AND IS_DEFINED(c.upn) AND c.upn != null
                     GROUP BY c.upn
                     ORDER BY {orderBy}
                     OFFSET 0 LIMIT @topCount")
@@ -530,7 +545,8 @@ namespace FoundationaLLM.Common.Services.Analytics
         {
             try
             {
-                var results = await _cosmosDBService.QueryItemsAsync<System.Text.Json.JsonElement>(
+                // Use Dictionary<string, object> to handle the result object
+                var results = await _cosmosDBService.QueryItemsAsync<Dictionary<string, object>>(
                     AzureCosmosDBContainers.Sessions,
                     query,
                     cancellationToken);
@@ -538,17 +554,25 @@ namespace FoundationaLLM.Common.Services.Analytics
                 if (results.Any())
                 {
                     var first = results.First();
-                    if (first.ValueKind == System.Text.Json.JsonValueKind.Number)
+                    // Query returns { "count": value } object
+                    if (first.TryGetValue("count", out var countValue))
                     {
-                        return first.GetInt32();
-                    }
-                    if (first.TryGetProperty("count", out var countElement))
-                    {
-                        return countElement.GetInt32();
+                        if (countValue is long longCount)
+                        {
+                            return (int)longCount;
+                        }
+                        if (countValue is int intCount)
+                        {
+                            return intCount;
+                        }
+                        if (countValue is System.Text.Json.JsonElement jsonElement && jsonElement.ValueKind == System.Text.Json.JsonValueKind.Number)
+                        {
+                            return jsonElement.GetInt32();
+                        }
                     }
                 }
 
-                return results.Count;
+                return 0;
             }
             catch (Exception ex)
             {
@@ -561,18 +585,62 @@ namespace FoundationaLLM.Common.Services.Analytics
         {
             try
             {
-                var results = await _cosmosDBService.QueryItemsAsync<System.Text.Json.JsonElement>(
+                // Use Dictionary<string, object> to handle the result object
+                var results = await _cosmosDBService.QueryItemsAsync<Dictionary<string, object>>(
                     AzureCosmosDBContainers.Sessions,
                     query,
                     cancellationToken);
 
+                _logger.LogDebug("Sum query returned {Count} results", results.Count);
+
                 if (results.Any())
                 {
                     var first = results.First();
-                    if (first.ValueKind == System.Text.Json.JsonValueKind.Number)
+                    _logger.LogDebug("Sum query result dictionary keys: {Keys}", string.Join(", ", first.Keys));
+                    
+                    // Query returns { "sum": value } object
+                    if (first.TryGetValue("sum", out var sumValue))
                     {
-                        return first.GetInt64();
+                        _logger.LogDebug("Sum value type: {Type}, value: {Value}", sumValue?.GetType().Name, sumValue);
+                        
+                        // SUM returns null when there are no matching rows
+                        if (sumValue == null)
+                        {
+                            return 0;
+                        }
+                        if (sumValue is long longSum)
+                        {
+                            return longSum;
+                        }
+                        if (sumValue is int intSum)
+                        {
+                            return intSum;
+                        }
+                        if (sumValue is System.Text.Json.JsonElement jsonElement)
+                        {
+                            if (jsonElement.ValueKind == System.Text.Json.JsonValueKind.Null)
+                            {
+                                return 0;
+                            }
+                            if (jsonElement.ValueKind == System.Text.Json.JsonValueKind.Number)
+                            {
+                                return jsonElement.GetInt64();
+                            }
+                        }
+                        // Try to convert if it's a boxed numeric type
+                        if (sumValue is IConvertible convertible)
+                        {
+                            return convertible.ToInt64(System.Globalization.CultureInfo.InvariantCulture);
+                        }
                     }
+                    else
+                    {
+                        _logger.LogWarning("Sum query result does not contain 'sum' key. Available keys: {Keys}", string.Join(", ", first.Keys));
+                    }
+                }
+                else
+                {
+                    _logger.LogWarning("Sum query returned no results");
                 }
 
                 return 0;
@@ -581,6 +649,111 @@ namespace FoundationaLLM.Common.Services.Analytics
             {
                 _logger.LogError(ex, "Error executing sum query");
                 return 0;
+            }
+        }
+
+        /// <inheritdoc/>
+        public async Task<List<DailyMessageCount>> GetDailyMessageCountsPerAgentAsync(string instanceId, DateTime? startDate, DateTime? endDate, CancellationToken cancellationToken = default)
+        {
+            var start = startDate ?? DateTime.UtcNow.AddDays(-30);
+            var end = endDate ?? DateTime.UtcNow;
+            var startTimestamp = ((DateTimeOffset)start).ToUnixTimeSeconds();
+            var endTimestamp = ((DateTimeOffset)end).ToUnixTimeSeconds();
+
+            try
+            {
+                // Query messages grouped by date and agent
+                // Cosmos DB doesn't support DATE functions directly, so we'll need to group by _ts and process in memory
+                var query = new QueryDefinition(@"
+                    SELECT 
+                        c._ts as timestamp,
+                        c.senderDisplayName as agentName
+                    FROM c 
+                    WHERE c.type = @type 
+                        AND c.sender = @sender 
+                        AND c._ts >= @startTimestamp 
+                        AND c._ts < @endTimestamp
+                        AND IS_DEFINED(c.senderDisplayName) 
+                        AND c.senderDisplayName != null")
+                    .WithParameter("@type", "Message")
+                    .WithParameter("@sender", "Agent")
+                    .WithParameter("@startTimestamp", startTimestamp)
+                    .WithParameter("@endTimestamp", endTimestamp);
+
+                var results = await _cosmosDBService.QueryItemsAsync<Dictionary<string, object>>(
+                    AzureCosmosDBContainers.Sessions,
+                    query,
+                    cancellationToken);
+
+                // Group by date and agent
+                var dailyCounts = new Dictionary<DateTime, Dictionary<string, int>>();
+                
+                foreach (var result in results)
+                {
+                    if (result.TryGetValue("timestamp", out var tsValue) && result.TryGetValue("agentName", out var agentValue))
+                    {
+                        if (tsValue is long timestamp && agentValue is string agentName)
+                        {
+                            var date = DateTimeOffset.FromUnixTimeSeconds(timestamp).Date;
+                            
+                            if (!dailyCounts.ContainsKey(date))
+                            {
+                                dailyCounts[date] = new Dictionary<string, int>();
+                            }
+                            
+                            if (!dailyCounts[date].ContainsKey(agentName))
+                            {
+                                dailyCounts[date][agentName] = 0;
+                            }
+                            
+                            dailyCounts[date][agentName]++;
+                        }
+                    }
+                }
+
+                // Convert to list and fill in missing dates
+                var resultList = new List<DailyMessageCount>();
+                var currentDate = start.Date;
+                var allAgents = dailyCounts.Values
+                    .SelectMany(d => d.Keys)
+                    .Distinct()
+                    .OrderBy(a => a)
+                    .ToList();
+
+                while (currentDate <= end.Date)
+                {
+                    var dailyCount = new DailyMessageCount
+                    {
+                        Date = currentDate,
+                        AgentCounts = new Dictionary<string, int>()
+                    };
+
+                    if (dailyCounts.ContainsKey(currentDate))
+                    {
+                        foreach (var agent in allAgents)
+                        {
+                            dailyCount.AgentCounts[agent] = dailyCounts[currentDate].GetValueOrDefault(agent, 0);
+                        }
+                    }
+                    else
+                    {
+                        // No messages for this date, set all agents to 0
+                        foreach (var agent in allAgents)
+                        {
+                            dailyCount.AgentCounts[agent] = 0;
+                        }
+                    }
+
+                    resultList.Add(dailyCount);
+                    currentDate = currentDate.AddDays(1);
+                }
+
+                return resultList.OrderBy(d => d.Date).ToList();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error getting daily message counts per agent");
+                throw;
             }
         }
     }

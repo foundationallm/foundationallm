@@ -356,5 +356,30 @@ namespace FoundationaLLM.Management.API.Controllers
                 return StatusCode(500, new { error = ex.Message });
             }
         }
+
+        /// <summary>
+        /// Gets daily message counts per agent for the specified date range.
+        /// </summary>
+        /// <param name="startDate">Optional start date for the analytics period.</param>
+        /// <param name="endDate">Optional end date for the analytics period.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>List of daily message counts per agent.</returns>
+        [HttpGet("daily-message-counts")]
+        public async Task<ActionResult<List<DailyMessageCount>>> GetDailyMessageCountsPerAgentAsync(
+            [FromQuery] DateTime? startDate,
+            [FromQuery] DateTime? endDate,
+            CancellationToken cancellationToken = default)
+        {
+            try
+            {
+                var instanceId = _callContext.InstanceId;
+                var dailyCounts = await _analyticsService.GetDailyMessageCountsPerAgentAsync(instanceId, startDate, endDate, cancellationToken);
+                return Ok(dailyCounts);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { error = ex.Message });
+            }
+        }
     }
 }
