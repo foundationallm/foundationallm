@@ -138,8 +138,8 @@ export const useAppConfigStore = defineStore('appConfig', {
 					// Map configuration values from the app configuration set to store properties
 					if (configValues) {
 
-						if (configValues['FoundationaLLM:APIEndpoints:CoreAPI:Configuration:AllowedUploadFileExtensions']) {
-							this.allowedUploadFileExtensions = configValues['FoundationaLLM:APIEndpoints:CoreAPI:Configuration:AllowedUploadFileExtensions'] as string;
+						if (configValues['FoundationaLLM:APIEndpoints:ContextAPI:Configuration:FileService:AllowedFileExtensions']) {
+							this.allowedUploadFileExtensions = configValues['FoundationaLLM:APIEndpoints:ContextAPI:Configuration:FileService:AllowedFileExtensions'] as string;
 						}
 
 						// UserPortal configuration
