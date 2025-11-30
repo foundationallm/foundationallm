@@ -7,14 +7,17 @@ on:
     - "core_api-0.*.*-alpha*"
     - "core_api-0.*.*-beta*"
     - "core_api-0.*.*-rc*"
+    - "core_api-0.*.*-post*"
     - "core_api-1.*.*"
     - "core_api-1.*.*-alpha*"
     - "core_api-1.*.*-beta*"
     - "core_api-1.*.*-rc*"
+    - "core_api-1.*.*-post*"
     - "core_api-2.*.*"
     - "core_api-2.*.*-alpha*"
     - "core_api-2.*.*-beta*"
     - "core_api-2.*.*-rc*"
+    - "core_api-2.*.*-post*"
   workflow_dispatch:
     inputs: {}
 

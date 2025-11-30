@@ -8,9 +8,9 @@ echo "The raw tag is: '$RAW_TAG'"
 # or 1.0.0-rc1 or 1.0.0-poc1 or 1.0.0-base1)
 # Build the regex in readable pieces so it's easier to maintain.
 VERSION_REGEX='^(nuget-|pypi-|context_api-|user_portal-|core_api-)?'
-VERSION_REGEX+='([0-9]+\.[0-9]+\.[0-9]+(\.[0-9]+)?'
+VERSION_REGEX+='([0-9]+\.[0-9]+\.[0-9]+'
 # allow optional pre-release like -rc485 or -rc485.1 (numeric, optional ".<num>")
-VERSION_REGEX+='(-(alpha|beta|rc|poc|base)[1-9]+(\.[0-9]+)?)?'
+VERSION_REGEX+='(-(alpha|beta|rc|poc|base|post)[1-9]+(\.[0-9]+)?)?'
 VERSION_REGEX+=')$'
 
 if [[ "$RAW_TAG" =~ $VERSION_REGEX ]]; then
@@ -26,17 +26,20 @@ fi
 
 # Convert .NET versioning to Python versioning
 PYTHON_VERSION="$VERSION"
-if [[ "$VERSION" =~ ([0-9]+\.[0-9]+\.[0-9]+(\.[0-9]+)?)-alpha([1-9]+)(\.[0-9]+)?$ ]]; then
-  PYTHON_VERSION="${BASH_REMATCH[1]}a${BASH_REMATCH[3]}${BASH_REMATCH[4]}"
-elif [[ "$VERSION" =~ ([0-9]+\.[0-9]+\.[0-9]+(\.[0-9]+)?)-beta([1-9]+)(\.[0-9]+)?$ ]]; then
-  PYTHON_VERSION="${BASH_REMATCH[1]}b${BASH_REMATCH[3]}${BASH_REMATCH[4]}"
-elif [[ "$VERSION" =~ ([0-9]+\.[0-9]+\.[0-9]+(\.[0-9]+)?)-rc([1-9]+)(\.[0-9]+)?$ ]]; then
-  PYTHON_VERSION="${BASH_REMATCH[1]}rc${BASH_REMATCH[3]}${BASH_REMATCH[4]}"
-elif [[ "$VERSION" =~ ([0-9]+\.[0-9]+\.[0-9]+(\.[0-9]+)?)-poc([1-9]+)(\.[0-9]+)?$ ]]; then
-  PYTHON_VERSION="${BASH_REMATCH[1]}+poc${BASH_REMATCH[3]}${BASH_REMATCH[4]}"
-elif [[ "$VERSION" =~ ([0-9]+\.[0-9]+\.[0-9]+(\.[0-9]+)?)-base([1-9]+)(\.[0-9]+)?$ ]]; then
-  PYTHON_VERSION="${BASH_REMATCH[1]}+base${BASH_REMATCH[3]}${BASH_REMATCH[4]}"
+if [[ "$VERSION" =~ ([0-9]+\.[0-9]+\.[0-9]+)-alpha([1-9]+)(\.[0-9]+)?$ ]]; then
+  PYTHON_VERSION="${BASH_REMATCH[1]}a${BASH_REMATCH[2]}${BASH_REMATCH[3]}"
+elif [[ "$VERSION" =~ ([0-9]+\.[0-9]+\.[0-9]+)-beta([1-9]+)(\.[0-9]+)?$ ]]; then
+  PYTHON_VERSION="${BASH_REMATCH[1]}b${BASH_REMATCH[2]}${BASH_REMATCH[3]}"
+elif [[ "$VERSION" =~ ([0-9]+\.[0-9]+\.[0-9]+)-rc([1-9]+)(\.[0-9]+)?$ ]]; then
+  PYTHON_VERSION="${BASH_REMATCH[1]}rc${BASH_REMATCH[2]}${BASH_REMATCH[3]}"
+elif [[ "$VERSION" =~ ([0-9]+\.[0-9]+\.[0-9]+)-poc([1-9]+)(\.[0-9]+)?$ ]]; then
+  PYTHON_VERSION="${BASH_REMATCH[1]}+poc${BASH_REMATCH[2]}${BASH_REMATCH[3]}"
+elif [[ "$VERSION" =~ ([0-9]+\.[0-9]+\.[0-9]+)-base([1-9]+)(\.[0-9]+)?$ ]]; then
+  PYTHON_VERSION="${BASH_REMATCH[1]}+base${BASH_REMATCH[2]}${BASH_REMATCH[3]}"
+elif [[ "$VERSION" =~ ([0-9]+\.[0-9]+\.[0-9]+)-post([1-9]+)(\.[0-9]+)?$ ]]; then
+  PYTHON_VERSION="${BASH_REMATCH[1]}.post${BASH_REMATCH[2]}${BASH_REMATCH[3]}"
 fi
+
 
 # Output versions for GitHub Actions
 echo "dotnet_version=$VERSION" >> "$GITHUB_OUTPUT"

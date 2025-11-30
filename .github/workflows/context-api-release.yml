@@ -7,14 +7,17 @@ on:
     - "context_api-0.*.*-alpha*"
     - "context_api-0.*.*-beta*"
     - "context_api-0.*.*-rc*"
+    - "context_api-0.*.*-post*"
     - "context_api-1.*.*"
     - "context_api-1.*.*-alpha*"
     - "context_api-1.*.*-beta*"
     - "context_api-1.*.*-rc*"
+    - "context_api-1.*.*-post*"
     - "context_api-2.*.*"
     - "context_api-2.*.*-alpha*"
     - "context_api-2.*.*-beta*"
     - "context_api-2.*.*-rc*"
+    - "context_api-2.*.*-post*"
   workflow_dispatch:
     inputs: {}
 

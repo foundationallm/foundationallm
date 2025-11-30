@@ -7,14 +7,17 @@ on:
     - "user_portal-0.*.*-alpha*"
     - "user_portal-0.*.*-beta*"
     - "user_portal-0.*.*-rc*"
+    - "user_portal-0.*.*-post*"
     - "user_portal-1.*.*"
     - "user_portal-1.*.*-alpha*"
     - "user_portal-1.*.*-beta*"
     - "user_portal-1.*.*-rc*"
+    - "user_portal-1.*.*-post*"
     - "user_portal-2.*.*"
     - "user_portal-2.*.*-alpha*"
     - "user_portal-2.*.*-beta*"
     - "user_portal-2.*.*-rc*"
+    - "user_portal-2.*.*-post*"
   workflow_dispatch:
     inputs: {}
 
