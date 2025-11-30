@@ -64,6 +64,168 @@
             "tags": {}
         },
         {
+            "key": "FoundationaLLM:Analytics:Enabled",
+            "value": "false",
+            "key_vault_secret_name": null,
+            "key_vault_secret_value": null,
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:Analytics:AnonymizationSalt",
+            "value": "{\"uri\":\"${env:AZURE_KEY_VAULT_ENDPOINT}secrets/foundationallm-foundationallm-analytics-anonymizationsalt\"}",
+            "key_vault_secret_name": "foundationallm-foundationallm-analytics-anonymizationsalt",
+            "key_vault_secret_value": "${env:ANALYTICS_ANONYMIZATIONSALT}",
+            "label": null,
+            "content_type": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:Analytics:LogAnalyticsWorkspaceId",
+            "value": "${env:ANALYTICS_LOG_ANALYTICS_WORKSPACEID}",
+            "key_vault_secret_name": null,
+            "key_vault_secret_value": null,
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:Analytics:LogAnalyticsSharedKey",
+            "value": "{\"uri\":\"${env:AZURE_KEY_VAULT_ENDPOINT}secrets/foundationallm-foundationallm-analytics-loganalytics-sharedkey\"}",
+            "key_vault_secret_name": "foundationallm-foundationallm-analytics-loganalytics-sharedkey",
+            "key_vault_secret_value": "${env:ANALYTICS_LOG_ANALYTICS_SHAREDKEY}",
+            "label": null,
+            "content_type": "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:Analytics:CacheDurationMinutes",
+            "value": "5",
+            "key_vault_secret_name": null,
+            "key_vault_secret_value": null,
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:Analytics:RetentionDays",
+            "value": "90",
+            "key_vault_secret_name": null,
+            "key_vault_secret_value": null,
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:Analytics:EnableRealTimeUpdates",
+            "value": "false",
+            "key_vault_secret_name": null,
+            "key_vault_secret_value": null,
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:Analytics:AbuseDetection:Enabled",
+            "value": "true",
+            "key_vault_secret_name": null,
+            "key_vault_secret_value": null,
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:Analytics:AbuseDetection:HighRequestRateThreshold",
+            "value": "100",
+            "key_vault_secret_name": null,
+            "key_vault_secret_value": null,
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:Analytics:AbuseDetection:ExtremeRequestRateThreshold",
+            "value": "500",
+            "key_vault_secret_name": null,
+            "key_vault_secret_value": null,
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:Analytics:AbuseDetection:RapidFireThreshold",
+            "value": "20",
+            "key_vault_secret_name": null,
+            "key_vault_secret_value": null,
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:Analytics:AbuseDetection:RapidFireWindowMinutes",
+            "value": "1",
+            "key_vault_secret_name": null,
+            "key_vault_secret_value": null,
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:Analytics:AbuseDetection:ContinuousUsageHours",
+            "value": "20",
+            "key_vault_secret_name": null,
+            "key_vault_secret_value": null,
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:Analytics:AbuseDetection:AgentHoppingThreshold",
+            "value": "10",
+            "key_vault_secret_name": null,
+            "key_vault_secret_value": null,
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:Analytics:AbuseDetection:AgentHoppingWindowMinutes",
+            "value": "60",
+            "key_vault_secret_name": null,
+            "key_vault_secret_value": null,
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:Analytics:AbuseDetection:FileUploadAbuseCount",
+            "value": "50",
+            "key_vault_secret_name": null,
+            "key_vault_secret_value": null,
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:Analytics:AbuseDetection:FileUploadAbuseSizeGB",
+            "value": "1",
+            "key_vault_secret_name": null,
+            "key_vault_secret_value": null,
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
+            "key": "FoundationaLLM:Analytics:AbuseDetection:HighErrorRateThreshold",
+            "value": "30",
+            "key_vault_secret_name": null,
+            "key_vault_secret_value": null,
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
             "key": "FoundationaLLM:PythonSDK:Logging:LogLevel:Default",
             "value": "Information",
             "key_vault_secret_name": null,

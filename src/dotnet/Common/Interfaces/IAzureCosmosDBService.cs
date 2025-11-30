@@ -1,4 +1,4 @@
-﻿using FoundationaLLM.Common.Models.Azure.CosmosDB;
+using FoundationaLLM.Common.Models.Azure.CosmosDB;
 using FoundationaLLM.Common.Models.Configuration.Users;
 using FoundationaLLM.Common.Models.Conversation;
 using FoundationaLLM.Common.Models.Orchestration;
@@ -6,6 +6,7 @@ using FoundationaLLM.Common.Models.Orchestration.Response;
 using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFiles;
 using FoundationaLLM.Common.Models.ResourceProviders.Attachment;
+using Microsoft.Azure.Cosmos;
 
 namespace FoundationaLLM.Common.Interfaces;
 
@@ -49,6 +50,16 @@ public interface IAzureCosmosDBService
     /// <returns>The patched object of type <typeparam name="T"></typeparam>.</returns>
     Task<T> PatchItemPropertiesAsync<T>(string containerName, string partitionKey, string id,
         string upn, Dictionary<string, object?> propertyValues, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Executes a query against a Cosmos DB container and returns the results.
+    /// </summary>
+    /// <typeparam name="T">The type of items to return.</typeparam>
+    /// <param name="containerName">The name of the container to query.</param>
+    /// <param name="query">The query definition.</param>
+    /// <param name="cancellationToken">Cancellation token for async calls.</param>
+    /// <returns>A list of items matching the query.</returns>
+    Task<List<T>> QueryItemsAsync<T>(string containerName, QueryDefinition query, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Gets a list of all current conversations.
