@@ -72,5 +72,11 @@ namespace FoundationaLLM.Common.Models.Analytics
         /// </summary>
         [JsonPropertyName("avg_rounds_per_conversation")]
         public double AvgRoundsPerConversation { get; set; }
+
+        /// <summary>
+        /// The average number of tools used per agent message.
+        /// </summary>
+        [JsonPropertyName("avg_tools_used")]
+        public double AvgToolsUsed { get; set; }
     }
 }

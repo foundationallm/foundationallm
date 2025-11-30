@@ -3,6 +3,7 @@ using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Analytics;
 using Microsoft.Azure.Cosmos;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json.Linq;
 
 namespace FoundationaLLM.Common.Services.Analytics
 {
@@ -42,7 +43,6 @@ namespace FoundationaLLM.Common.Services.Analytics
                     .WithParameter("@startTimestamp", startTimestamp)
                     .WithParameter("@endTimestamp", endTimestamp);
                 var totalTokens = await ExecuteSumQueryAsync(tokensQuery, cancellationToken);
-                _logger.LogInformation("Total tokens query result: {TotalTokens} for period {StartDate} to {EndDate}", totalTokens, start, end);
 
                 // Get unique users - Cosmos DB doesn't support COUNT(DISTINCT) directly, so we'll get distinct UPNs and count
                 var usersQuery = new QueryDefinition("SELECT DISTINCT c.upn FROM c WHERE c.type = @type AND c._ts >= @startTimestamp AND c._ts < @endTimestamp AND IS_DEFINED(c.upn) AND c.upn != null")
@@ -66,7 +66,6 @@ namespace FoundationaLLM.Common.Services.Analytics
                     agentsQuery,
                     cancellationToken);
                 var totalAgents = distinctAgents.Count;
-                _logger.LogInformation("Total agents query result: {TotalAgents} distinct agents for period {StartDate} to {EndDate}", totalAgents, start, end);
 
                 return new AnalyticsOverview
                 {
@@ -89,10 +88,199 @@ namespace FoundationaLLM.Common.Services.Analytics
         /// <inheritdoc/>
         public async Task<List<AgentAnalyticsSummary>> GetAllAgentsAnalyticsAsync(string instanceId, DateTime? startDate, DateTime? endDate, CancellationToken cancellationToken = default)
         {
-            // Note: Agent names need to be extracted from Application Insights telemetry
-            // For now, return empty list - this will be implemented with Application Insights queries
-            _logger.LogWarning("GetAllAgentsAnalyticsAsync: Agent analytics requires Application Insights integration");
-            return new List<AgentAnalyticsSummary>();
+            var start = startDate ?? DateTime.UtcNow.AddDays(-30);
+            var end = endDate ?? DateTime.UtcNow;
+            var startTimestamp = ((DateTimeOffset)start).ToUnixTimeSeconds();
+            var endTimestamp = ((DateTimeOffset)end).ToUnixTimeSeconds();
+
+            try
+            {
+                // Get all agent messages with their details
+                var messagesQuery = new QueryDefinition(@"
+                    SELECT 
+                        c.senderDisplayName as agentName,
+                        c.upn,
+                        c.sessionId,
+                        c.tokens,
+                        c.contentArtifacts
+                    FROM c 
+                    WHERE c.type = @type 
+                        AND c.sender = @sender 
+                        AND c._ts >= @startTimestamp 
+                        AND c._ts < @endTimestamp
+                        AND IS_DEFINED(c.senderDisplayName) 
+                        AND c.senderDisplayName != null")
+                    .WithParameter("@type", "Message")
+                    .WithParameter("@sender", "Agent")
+                    .WithParameter("@startTimestamp", startTimestamp)
+                    .WithParameter("@endTimestamp", endTimestamp);
+
+                var messages = await _cosmosDBService.QueryItemsAsync<Dictionary<string, object>>(
+                    AzureCosmosDBContainers.Sessions,
+                    messagesQuery,
+                    cancellationToken);
+
+                // Group by agent
+                var agentData = new Dictionary<string, AgentMetrics>();
+
+                foreach (var message in messages)
+                {
+                    if (message == null || !message.TryGetValue("agentName", out var agentNameObj) || agentNameObj is not string agentName || string.IsNullOrEmpty(agentName))
+                        continue;
+
+                    if (!agentData.ContainsKey(agentName))
+                    {
+                        agentData[agentName] = new AgentMetrics
+                        {
+                            AgentName = agentName,
+                            UniqueUsers = new HashSet<string>(),
+                            Sessions = new HashSet<string>(),
+                            TotalTokens = 0,
+                            TotalMessages = 0,
+                            TotalToolsUsed = 0
+                        };
+                    }
+
+                    var metrics = agentData[agentName];
+
+                    // Track unique users
+                    if (message.TryGetValue("upn", out var upnObj) && upnObj is string upn && !string.IsNullOrEmpty(upn))
+                    {
+                        metrics.UniqueUsers.Add(upn);
+                    }
+
+                    // Track unique sessions
+                    if (message.TryGetValue("sessionId", out var sessionIdObj) && sessionIdObj is string sessionId && !string.IsNullOrEmpty(sessionId))
+                    {
+                        metrics.Sessions.Add(sessionId);
+                    }
+
+                    // Sum tokens
+                    if (message.TryGetValue("tokens", out var tokensObj))
+                    {
+                        if (tokensObj is long tokensLong)
+                        {
+                            metrics.TotalTokens += tokensLong;
+                        }
+                        else if (tokensObj is int tokensInt)
+                        {
+                            metrics.TotalTokens += tokensInt;
+                        }
+                    }
+
+                    // Count tools used (ToolExecution in contentArtifacts)
+                    metrics.TotalMessages++;
+                    int toolCount = 0;
+                    
+                    if (message.TryGetValue("contentArtifacts", out var artifactsObj) && artifactsObj != null)
+                    {
+                        try
+                        {
+                            // Handle Newtonsoft.Json JArray (most common case based on logs)
+                            if (artifactsObj is JArray jArray)
+                            {
+                                foreach (var artifact in jArray)
+                                {
+                                    if (artifact is JObject artifactObj && artifactObj["type"] != null)
+                                    {
+                                        var typeValue = artifactObj["type"].ToString();
+                                        if (typeValue == "ToolExecution")
+                                        {
+                                            toolCount++;
+                                        }
+                                    }
+                                }
+                            }
+                            // Handle JsonElement array
+                            else if (artifactsObj is System.Text.Json.JsonElement artifactsElement)
+                            {
+                                if (artifactsElement.ValueKind == System.Text.Json.JsonValueKind.Array)
+                                {
+                                    foreach (var artifact in artifactsElement.EnumerateArray())
+                                    {
+                                        if (artifact.ValueKind == System.Text.Json.JsonValueKind.Object &&
+                                            artifact.TryGetProperty("type", out var typeElement) && 
+                                            typeElement.ValueKind == System.Text.Json.JsonValueKind.String)
+                                        {
+                                            var typeValue = typeElement.GetString();
+                                            if (typeValue == "ToolExecution")
+                                            {
+                                                toolCount++;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            // Handle List<Dictionary<string, object>> or similar
+                            else if (artifactsObj is System.Collections.IEnumerable enumerable && !(artifactsObj is string))
+                            {
+                                foreach (var item in enumerable)
+                                {
+                                    if (item is Dictionary<string, object> artifactDict)
+                                    {
+                                        if (artifactDict.TryGetValue("type", out var typeObj) && typeObj is string typeStr && typeStr == "ToolExecution")
+                                        {
+                                            toolCount++;
+                                        }
+                                    }
+                                    else if (item is JObject jObject && jObject["type"] != null)
+                                    {
+                                        var typeValue = jObject["type"].ToString();
+                                        if (typeValue == "ToolExecution")
+                                        {
+                                            toolCount++;
+                                        }
+                                    }
+                                    else if (item is System.Text.Json.JsonElement artifactElement && artifactElement.ValueKind == System.Text.Json.JsonValueKind.Object)
+                                    {
+                                        if (artifactElement.TryGetProperty("type", out var typeElement) && typeElement.ValueKind == System.Text.Json.JsonValueKind.String)
+                                        {
+                                            var typeValue = typeElement.GetString();
+                                            if (typeValue == "ToolExecution")
+                                            {
+                                                toolCount++;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            _logger.LogWarning(ex, "Error parsing contentArtifacts for agent {AgentName}", agentName);
+                        }
+                    }
+                    
+                    metrics.TotalToolsUsed += toolCount;
+                }
+
+                // Convert to AgentAnalyticsSummary list
+                var summaries = agentData.Values.Select(metrics => new AgentAnalyticsSummary
+                {
+                    AgentName = metrics.AgentName,
+                    UniqueUsers = metrics.UniqueUsers.Count,
+                    TotalConversations = metrics.Sessions.Count,
+                    TotalTokens = metrics.TotalTokens,
+                    AvgToolsUsed = metrics.TotalMessages > 0 ? (double)metrics.TotalToolsUsed / metrics.TotalMessages : 0.0
+                }).OrderBy(a => a.AgentName).ToList();
+
+                return summaries;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error getting all agents analytics");
+                throw;
+            }
+        }
+
+        private class AgentMetrics
+        {
+            public string AgentName { get; set; } = string.Empty;
+            public HashSet<string> UniqueUsers { get; set; } = new();
+            public HashSet<string> Sessions { get; set; } = new();
+            public long TotalTokens { get; set; }
+            public int TotalMessages { get; set; }
+            public int TotalToolsUsed { get; set; }
         }
 
         /// <inheritdoc/>
