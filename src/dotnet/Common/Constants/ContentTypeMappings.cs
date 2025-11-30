@@ -14,9 +14,15 @@
         public static readonly IReadOnlyDictionary<string, string> Map = new Dictionary<string, string>
         {
             { "application/pdf", "PDF" },
+            // Current Microsoft Office formats
             { "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "DOCX" },
             { "application/vnd.openxmlformats-officedocument.presentationml.presentation", "PPTX" },
             { "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "XLSX" },
+            // Legacy Microsoft Office formats
+            { "application/msword", "DOC"  },
+            { "application/vnd.ms-powerpoint", "PPT" },
+            { "application/vnd.ms-excel", "XLS" },
+            // Other formats
             { "application/rtf", "RTF" },
             { "application/javascript", "JS" },
             { "application/yaml", "YAML" },
@@ -95,6 +101,17 @@
             "audio/wav",
             "audio/x-wav",
             "audio/vnd.wave"
+        ];
+
+        /// <summary>
+        /// Provides a set of MIME content types associated with legacy Microsoft Office file formats, including Word,
+        /// PowerPoint, and Excel documents.
+        /// </summary>
+        public static readonly HashSet<string> MicrosoftOfficeLegacyContentTypes =
+        [
+            "application/msword",
+            "application/vnd.ms-powerpoint",
+            "application/vnd.ms-excel"
         ];
     }
 }
