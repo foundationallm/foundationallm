@@ -1123,5 +1123,183 @@ namespace FoundationaLLM.Common.Services.Analytics
                 throw;
             }
         }
+
+        /// <inheritdoc/>
+        public async Task<List<UserAnalyticsSummarySimple>> GetAllUsersAnalyticsAsync(string instanceId, DateTime? startDate, DateTime? endDate, CancellationToken cancellationToken = default)
+        {
+            var start = startDate ?? DateTime.UtcNow.AddDays(-30);
+            var end = endDate ?? DateTime.UtcNow;
+            var startTimestamp = ((DateTimeOffset)start).ToUnixTimeSeconds();
+            var endTimestamp = ((DateTimeOffset)end).ToUnixTimeSeconds();
+
+            try
+            {
+                // Get all messages (both User and Agent) with their details
+                var messagesQuery = new QueryDefinition(@"
+                    SELECT 
+                        c.upn as username,
+                        c.sessionId,
+                        c.tokens
+                    FROM c 
+                    WHERE c.type = @type 
+                        AND c._ts >= @startTimestamp 
+                        AND c._ts < @endTimestamp
+                        AND IS_DEFINED(c.upn) 
+                        AND c.upn != null")
+                    .WithParameter("@type", "Message")
+                    .WithParameter("@startTimestamp", startTimestamp)
+                    .WithParameter("@endTimestamp", endTimestamp);
+
+                var messages = await _cosmosDBService.QueryItemsAsync<Dictionary<string, object>>(
+                    AzureCosmosDBContainers.Sessions,
+                    messagesQuery,
+                    cancellationToken);
+
+                // Group by user
+                var userData = new Dictionary<string, UserMetrics>();
+
+                foreach (var message in messages)
+                {
+                    if (message == null || !message.TryGetValue("username", out var usernameObj) || usernameObj is not string username || string.IsNullOrEmpty(username))
+                        continue;
+
+                    if (!userData.ContainsKey(username))
+                    {
+                        userData[username] = new UserMetrics
+                        {
+                            Username = username,
+                            Sessions = new HashSet<string>(),
+                            TotalTokens = 0,
+                            TotalMessages = 0
+                        };
+                    }
+
+                    var metrics = userData[username];
+
+                    // Track unique sessions
+                    if (message.TryGetValue("sessionId", out var sessionIdObj) && sessionIdObj is string sessionId && !string.IsNullOrEmpty(sessionId))
+                    {
+                        metrics.Sessions.Add(sessionId);
+                    }
+
+                    // Sum tokens
+                    if (message.TryGetValue("tokens", out var tokensObj))
+                    {
+                        if (tokensObj is long tokensLong)
+                        {
+                            metrics.TotalTokens += tokensLong;
+                        }
+                        else if (tokensObj is int tokensInt)
+                        {
+                            metrics.TotalTokens += tokensInt;
+                        }
+                    }
+
+                    // Count messages
+                    metrics.TotalMessages++;
+                }
+
+                // Convert to UserAnalyticsSummarySimple list
+                var summaries = userData.Values.Select(metrics => new UserAnalyticsSummarySimple
+                {
+                    Username = metrics.Username,
+                    TotalConversations = metrics.Sessions.Count,
+                    TotalMessages = metrics.TotalMessages,
+                    TotalTokens = metrics.TotalTokens
+                }).OrderBy(u => u.Username).ToList();
+
+                return summaries;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error getting all users analytics");
+                throw;
+            }
+        }
+
+        private class UserMetrics
+        {
+            public string Username { get; set; } = string.Empty;
+            public HashSet<string> Sessions { get; set; } = new();
+            public long TotalTokens { get; set; }
+            public int TotalMessages { get; set; }
+        }
+
+        /// <inheritdoc/>
+        public async Task<List<DailyActiveUserCount>> GetDailyActiveUserCountsAsync(string instanceId, DateTime? startDate, DateTime? endDate, CancellationToken cancellationToken = default)
+        {
+            var start = startDate ?? DateTime.UtcNow.AddDays(-30);
+            var end = endDate ?? DateTime.UtcNow;
+            var startTimestamp = ((DateTimeOffset)start).ToUnixTimeSeconds();
+            var endTimestamp = ((DateTimeOffset)end).ToUnixTimeSeconds();
+
+            try
+            {
+                // Query messages to get distinct users per day
+                var query = new QueryDefinition(@"
+                    SELECT 
+                        c._ts as timestamp,
+                        c.upn as username
+                    FROM c 
+                    WHERE c.type = @type 
+                        AND c._ts >= @startTimestamp 
+                        AND c._ts < @endTimestamp
+                        AND IS_DEFINED(c.upn) 
+                        AND c.upn != null")
+                    .WithParameter("@type", "Message")
+                    .WithParameter("@startTimestamp", startTimestamp)
+                    .WithParameter("@endTimestamp", endTimestamp);
+
+                var results = await _cosmosDBService.QueryItemsAsync<Dictionary<string, object>>(
+                    AzureCosmosDBContainers.Sessions,
+                    query,
+                    cancellationToken);
+
+                // Group by date and count distinct users per day
+                var dailyCounts = new Dictionary<DateTime, HashSet<string>>();
+
+                foreach (var result in results)
+                {
+                    if (result.TryGetValue("timestamp", out var tsValue) && 
+                        result.TryGetValue("username", out var userValue))
+                    {
+                        if (tsValue is long timestamp && userValue is string username && !string.IsNullOrEmpty(username))
+                        {
+                            var date = DateTimeOffset.FromUnixTimeSeconds(timestamp).Date;
+
+                            if (!dailyCounts.ContainsKey(date))
+                            {
+                                dailyCounts[date] = new HashSet<string>();
+                            }
+
+                            dailyCounts[date].Add(username);
+                        }
+                    }
+                }
+
+                // Convert to list and fill in missing dates
+                var resultList = new List<DailyActiveUserCount>();
+                var currentDate = start.Date;
+
+                while (currentDate <= end.Date)
+                {
+                    var dailyCount = new DailyActiveUserCount
+                    {
+                        Date = currentDate,
+                        Count = dailyCounts.ContainsKey(currentDate) ? dailyCounts[currentDate].Count : 0
+                    };
+
+                    resultList.Add(dailyCount);
+                    currentDate = currentDate.AddDays(1);
+                }
+
+                return resultList.OrderBy(d => d.Date).ToList();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error getting daily active user counts");
+                throw;
+            }
+        }
     }
 }

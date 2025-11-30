@@ -71,5 +71,15 @@ namespace FoundationaLLM.Common.Interfaces
         /// Gets daily user counts per agent for the specified date range.
         /// </summary>
         Task<List<DailyUserCount>> GetDailyUserCountsPerAgentAsync(string instanceId, DateTime? startDate, DateTime? endDate, CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// Gets analytics summary for all users.
+        /// </summary>
+        Task<List<UserAnalyticsSummarySimple>> GetAllUsersAnalyticsAsync(string instanceId, DateTime? startDate, DateTime? endDate, CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// Gets daily active user counts for the specified date range.
+        /// </summary>
+        Task<List<DailyActiveUserCount>> GetDailyActiveUserCountsAsync(string instanceId, DateTime? startDate, DateTime? endDate, CancellationToken cancellationToken = default);
     }
 }

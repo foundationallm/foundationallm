@@ -116,6 +116,26 @@ export default {
 		});
 	},
 
+	async getAllUsersAnalytics(startDate?: string, endDate?: string) {
+		const params: any = {};
+		if (startDate) params.startDate = startDate;
+		if (endDate) params.endDate = endDate;
+		return await this.fetch(`/api/analytics/users?api-version=${this.apiVersion}`, {
+			method: 'GET',
+			params,
+		});
+	},
+
+	async getDailyActiveUserCounts(startDate?: string, endDate?: string) {
+		const params: any = {};
+		if (startDate) params.startDate = startDate;
+		if (endDate) params.endDate = endDate;
+		return await this.fetch(`/api/analytics/daily-active-user-counts?api-version=${this.apiVersion}`, {
+			method: 'GET',
+			params,
+		});
+	},
+
 	async getAllAgentsAnalytics(startDate?: string, endDate?: string) {
 		const params: any = {};
 		if (startDate) params.startDate = startDate;

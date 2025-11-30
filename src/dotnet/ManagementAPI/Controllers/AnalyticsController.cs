@@ -408,5 +408,55 @@ namespace FoundationaLLM.Management.API.Controllers
                 return StatusCode(500, new { error = ex.Message });
             }
         }
+
+        /// <summary>
+        /// Gets analytics summary for all users.
+        /// </summary>
+        /// <param name="startDate">Optional start date for the analytics period.</param>
+        /// <param name="endDate">Optional end date for the analytics period.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>List of user analytics summaries.</returns>
+        [HttpGet("users")]
+        public async Task<ActionResult<List<UserAnalyticsSummarySimple>>> GetAllUsersAnalyticsAsync(
+            [FromQuery] DateTime? startDate,
+            [FromQuery] DateTime? endDate,
+            CancellationToken cancellationToken = default)
+        {
+            try
+            {
+                var instanceId = _callContext.InstanceId;
+                var users = await _analyticsService.GetAllUsersAnalyticsAsync(instanceId, startDate, endDate, cancellationToken);
+                return Ok(users);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { error = ex.Message });
+            }
+        }
+
+        /// <summary>
+        /// Gets daily active user counts for the specified date range.
+        /// </summary>
+        /// <param name="startDate">Optional start date for the analytics period.</param>
+        /// <param name="endDate">Optional end date for the analytics period.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>List of daily active user counts.</returns>
+        [HttpGet("daily-active-user-counts")]
+        public async Task<ActionResult<List<DailyActiveUserCount>>> GetDailyActiveUserCountsAsync(
+            [FromQuery] DateTime? startDate,
+            [FromQuery] DateTime? endDate,
+            CancellationToken cancellationToken = default)
+        {
+            try
+            {
+                var instanceId = _callContext.InstanceId;
+                var dailyCounts = await _analyticsService.GetDailyActiveUserCountsAsync(instanceId, startDate, endDate, cancellationToken);
+                return Ok(dailyCounts);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { error = ex.Message });
+            }
+        }
     }
 }
