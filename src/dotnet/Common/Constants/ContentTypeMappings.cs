@@ -19,6 +19,7 @@
             { "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "XLSX" },
             { "application/rtf", "RTF" },
             { "application/javascript", "JS" },
+            { "application/yaml", "YAML" },
             { "application/x-yaml", "YAML" },
             { "application/toml", "TOML" },
             { "application/zip", "ZIP" },
@@ -43,11 +44,14 @@
             { "image/png", "PNG" },
             { "image/gif", "GIF" },
             { "image/bmp", "BMP" },
-            { "image/tiff", "TIFF" }
+            { "image/tiff", "TIFF" },
+            { "audio/wav", "WAV" },
+            { "audio/x-wav", "WAV" },
+            { "audio/vnd.wave", "WAV" }
         };
 
         /// <summary>
-        /// Represents a collection of MIME types that are commonly associated with text-based content.
+        /// Provides a set of MIME types that are commonly associated with text-based content.
         /// </summary>
         /// <remarks>This collection includes MIME types for various text formats such as plain text,
         /// markup languages, programming languages, and data serialization formats. It can be used to identify or
@@ -56,6 +60,7 @@
         [
             "application/rtf",
             "application/javascript",
+            "application/yaml",
             "application/x-yaml",
             "application/toml",
             "application/json",
@@ -75,6 +80,21 @@
             "text/x-shellscript",
             "text/yaml",
             "text/x-ini"
+        ];
+
+        /// <summary>
+        /// Provides a set of MIME types that are commonly associated with media content, such as images and audio files.
+        /// </summary>
+        public static readonly HashSet<string> MediaContentTypes =
+        [
+            "image/jpeg",
+            "image/png",
+            "image/gif",
+            "image/bmp",
+            "image/tiff",
+            "audio/wav",
+            "audio/x-wav",
+            "audio/vnd.wave"
         ];
     }
 }

@@ -874,14 +874,6 @@
 				"first_version": "0.9.7"
 			},
 			{
-				"name": "AllowedUploadFileExtensions",
-				"description": "The comma-separated list file extensions that users are allowed to upload to a conversation.",
-				"secret": "",
-				"value": "c, cpp, cs, css, csv, doc, docx, gif, html, java, jpeg, jpg, js, json, md, pdf, php, png, pptx, py, rb, sh, tar, tex, ts, txt, xlsx, xml, zip",
-				"content_type": "",
-				"first_version": "0.8.0"
-			},
-			{
 				"name": "MaxUploadsPerMessage",
 				"description": "The maximum number of files that can be uploaded for a single conversation message.",
 				"secret": "",
@@ -1715,10 +1707,18 @@
 				"first_version": "0.9.7"
 			},
 			{
+				"name": "FileService:AllowedFileExtensions",
+				"description": "The comma-separated list of file extensions that are supported by the file service.",
+				"secret": "",
+				"value": "c, cpp, cs, css, html, java, js, json, jsonl, md, php, py, rb, sh, tex, ts, txt, xml, yaml, yml, gif, jpeg, jpg, png, wav, pdf, docx, pptx, xlsx, csv, zip, tar",
+				"content_type": "",
+				"first_version": "0.8.0"
+			},
+			{
 				"name": "FileService:KnowledgeSearchFileExtensions",
 				"description": "The comma-separated list of file extensions that are subject to knowledge search.",
 				"secret": "",
-				"value": "c, cpp, cs, css, doc, docx, html, java, js, json, md, pdf, php, pptx, py, rb, sh, tex, ts, txt, gif, jpeg, jpg, png",
+				"value": "c, cpp, cs, css, html, java, js, json, jsonl, md, php, py, rb, sh, tex, ts, txt, xml, yaml, yml, gif, jpeg, jpg, png, wav, pdf, docx, pptx",
 				"content_type": "",
 				"first_version": "0.9.7"
 			},
@@ -1726,7 +1726,7 @@
 				"name": "FileService:KnowledgeSearchContextFileExtensions",
 				"description": "The comma-separated list of file extensions that indicate files that can be directly used in the context of a completion request.",
 				"secret": "",
-				"value": "c, cs, cpp, css, html, java, js, json, jsonl, md, php, py, rb, sh, ts, tex, txt, gif, jpeg, jpg, png",
+				"value": "c, cpp, cs, css, html, java, js, json, jsonl, md, php, py, rb, sh, tex, ts, txt, xml, yaml, yml, gif, jpeg, jpg, png, wav",
 				"content_type": "",
 				"first_version": "0.9.7"
 			},
@@ -1734,7 +1734,7 @@
 				"name": "FileService:KnowledgeSearchContextFileMaxSizeBytes",
 				"description": "The dictionary of lists of extensions of files that can be directly used in the context of a completion request and their associated maximum file sizes.",
 				"secret": "",
-				"value": "{\\\"c,cs,cpp,html,java,js,json,jsonl,md,php,py,rb,sh,ts,tex,txt\\\": 25000, \\\"gif,jpeg,jpg,png\\\":500000}",
+				"value": "{\\\"c, cpp, cs, css, html, java, js, json, jsonl, md, php, py, rb, sh, tex, ts, txt, xml, yaml, yml\\\": 1048576, \\\"gif, jpeg, jpg, png, wav\\\":20971520}",
 				"content_type": "",
 				"first_version": "0.9.7"
 			},
@@ -2011,7 +2011,9 @@
 	{
 		"namespace": "APIEndpoints:AzureContentSafety:Essentials",
 		"dependency_injection_key": null,
-		"configuration_section": null,
+		"configuration_section": {
+			"description": "Configuration section used to identify the essential settings for the Azure Content Safety service."
+		},
 		"configuration_keys": [
 			{
 				"name": "APIKey",

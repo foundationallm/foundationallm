@@ -1,6 +1,5 @@
 using FoundationaLLM.Common.Constants;
 using FoundationaLLM.Common.Constants.Configuration;
-using FoundationaLLM.Common.Constants.Context;
 using FoundationaLLM.Common.Constants.Orchestration;
 using FoundationaLLM.Common.Constants.ResourceProviders;
 using FoundationaLLM.Common.Exceptions;
@@ -94,16 +93,14 @@ public partial class CoreService(
         resourceProviderServices.Single(rps => rps.Name == ResourceProviderNames.FoundationaLLM_Conversation);
 
     private readonly HashSet<string> _azureOpenAIFileSearchFileExtensions =
-        settings.Value.AzureOpenAIAssistantsFileSearchFileExtensions
+        [.. settings.Value.AzureOpenAIAssistantsFileSearchFileExtensions
             .Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries)
-            .Select(s => s.ToLowerInvariant())
-            .ToHashSet();
+            .Select(s => s.ToLowerInvariant())];
 
     private readonly HashSet<string> _azureAIAgentServiceFileSearchFileExtensions =
-        settings.Value.AzureAIAgentsFileSearchFileExtensions
+        [.. settings.Value.AzureAIAgentsFileSearchFileExtensions
             .Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries)
-            .Select(s => s.ToLowerInvariant())
-            .ToHashSet();
+            .Select(s => s.ToLowerInvariant())];
 
     #region Conversation management - FoundationaLLM.Conversation resource provider
 
@@ -136,6 +133,7 @@ public partial class CoreService(
             SessionId = newConversationId,
             Name = newConversationId,
             DisplayName = chatSessionProperties.Name,
+            Metadata = chatSessionProperties.Metadata,
             Type = _sessionType,
             UPN = _userIdentity.UPN!
         };
@@ -765,34 +763,36 @@ public partial class CoreService(
        
         var serviceResult = await _contextServiceClient.CreateFileForConversation(
             instanceId,
+            agentName,
             sessionId,
             attachmentFile.OriginalFileName,
             attachmentFile.ContentType!,
             new MemoryStream(attachmentFile.Content!));
 
-            if (serviceResult.Success)
+            if (serviceResult.TryGetValue(out var fileRecord))
             {
                 return new ResourceProviderUpsertResult<AttachmentFile>
                 {
-                    ObjectId = serviceResult.Result!.FileObjectId,
+                    ObjectId = fileRecord.FileObjectId,
                     ResourceExists = false,
                     Resource = new AttachmentFile
                     {
-                        Name = serviceResult.Result.Id,
-                        ObjectId = serviceResult.Result.FileObjectId,
-                        DisplayName = serviceResult.Result.FileName,
-                        CreatedBy = serviceResult.Result.UPN,
-                        CreatedOn = serviceResult.Result.CreatedAt,
+                        Name = fileRecord.Id,
+                        ObjectId = fileRecord.FileObjectId,
+                        DisplayName = fileRecord.FileName,
+                        CreatedBy = fileRecord.UPN,
+                        CreatedOn = fileRecord.CreatedAt,
 
-                        ContentType = serviceResult.Result.ContentType,
-                        Path = serviceResult.Result.FilePath,
-                        OriginalFileName = serviceResult.Result.FileName,
+                        ContentType = fileRecord.ContentType,
+                        Path = fileRecord.FilePath,
+                        OriginalFileName = fileRecord.FileName,
                     }
                 };
             }
             else
                 throw new CoreServiceException(
-                    serviceResult.ErrorMessage);
+                    serviceResult.Error?.Detail,
+                    serviceResult.Error?.Status ?? StatusCodes.Status500InternalServerError);
         
     }
 
@@ -837,18 +837,18 @@ public partial class CoreService(
                     };
                 case ResourceProviderNames.FoundationaLLM_Context:
 
-                    var responseMessage = await _contextServiceClient.GetFileContent(instanceId, fileId);
+                    var serviceResult = await _contextServiceClient.GetFileContent(instanceId, fileId);
 
-                    if (responseMessage.Success)
+                    if (serviceResult.TryGetValue(out var fileContent))
                     {
                         var content = new MemoryStream();
-                        await responseMessage.Result!.FileContent!.CopyToAsync(content);
+                        await fileContent.FileContent!.CopyToAsync(content);
 
                         return new AttachmentFile
                         {
-                            Name = responseMessage.Result!.FileName,
-                            OriginalFileName = responseMessage.Result!.FileName,
-                            ContentType = responseMessage.Result!.ContentType,
+                            Name = fileContent.FileName,
+                            OriginalFileName = fileContent.FileName,
+                            ContentType = fileContent.ContentType,
                             Content = content.ToArray()
                         };
                     }
@@ -892,7 +892,7 @@ public partial class CoreService(
                         var contextServiceResponse = await _contextServiceClient.DeleteFileRecord(resourcePath.InstanceId!, resourcePath.MainResourceId!);
                         results[rawResourcePath] = new ResourceProviderDeleteResult()
                         {
-                            Deleted = contextServiceResponse.Success
+                            Deleted = contextServiceResponse.IsSuccess
                         };
                         break;
                     default:
@@ -984,13 +984,17 @@ public partial class CoreService(
             }
             else
             {
-                var contextAttachmentResult =
+                var contextAttachmentResults =
                     contextAttachmentIds
                     .ToAsyncEnumerable()
                     .SelectAwait(async x => await _contextServiceClient.GetFileRecord(instanceId, x));
-                await foreach (var attachment in contextAttachmentResult)
+                await foreach (var attachmentResult in contextAttachmentResults)
                 {
-                    attachmentReferences.Add(AttachmentDetail.FromContextFileRecord(attachment.Result!));
+                    if (attachmentResult.TryGetValue(out var fileRecord))
+                        attachmentReferences.Add(AttachmentDetail.FromContextFileRecord(fileRecord));
+                    else
+                        _logger.LogWarning("Could not retrieve context file record for attachment with id {AttachmentId} in conversation {SessionId}. The error was: {ErrorDetail}",
+                            attachmentResult.Error?.Instance ?? "N/A", sessionId, attachmentResult.Error?.Detail ?? "N/A");
                 }
             }
 
@@ -1067,15 +1071,12 @@ public partial class CoreService(
     {
         var configuration = new CoreConfiguration
         {
-            FileStoreConnectors = await GetFileStoreConnectors(instanceId, _userIdentity),
-            MaxUploadsPerMessage = await GetCoreConfigurationValue<int>(
-                instanceId,
-                AppConfigurationKeys.FoundationaLLM_APIEndpoints_CoreAPI_Configuration_MaxUploadsPerMessage,
-                _userIdentity),
-            CompletionResponsePollingIntervalMilliseconds = await GetCoreConfigurationValue<int>(
-                instanceId,
-                AppConfigurationKeys.FoundationaLLM_APIEndpoints_CoreAPI_Configuration_CompletionResponsePollingIntervalMilliseconds,
-                _userIdentity),
+            FileStoreConnectors =
+                await GetFileStoreConnectors(instanceId, _userIdentity),
+            MaxUploadsPerMessage =
+                _settings.MaxUploadsPerMessage.GetValueForUser(_userIdentity.UPN!),
+            CompletionResponsePollingIntervalMilliseconds =
+                _settings.CompletionResponsePollingIntervalMilliseconds.GetValueForUser(_userIdentity.UPN!)
         };
 
         return configuration;
@@ -1268,9 +1269,26 @@ public partial class CoreService(
     /// <param name="longRunningOperation">Indicates whether this is a long-running operation.</param>
     /// <returns>The updated completion request with pre-processing applied.</returns>
     private async Task<CompletionRequest> PrepareCompletionRequest(
-        string instanceId, CompletionRequest request, AgentBase agent, bool longRunningOperation = false)
+        string instanceId,
+        CompletionRequest request,
+        AgentBase agent,
+        bool longRunningOperation = false)
     {
         request.LongRunningOperation = longRunningOperation;
+
+        if (request.Attachments is { Count: > 0 })
+        {
+            if (agent.ShowFileUpload is null
+                || !agent.ShowFileUpload.Value)
+                throw new CoreServiceException(
+                    $"File uploads are not enabled for the {request.AgentName} agent.",
+                    StatusCodes.Status400BadRequest);
+
+            if (request.Attachments.Count > _settings.MaxUploadsPerMessage.GetValueForUser(_userIdentity.UPN!))
+                throw new CoreServiceException(
+                    $"The maximum number of attachments per message is {_settings.MaxUploadsPerMessage.Value}.",
+                    StatusCodes.Status400BadRequest);
+        }
 
         List<MessageHistoryItem> messageHistoryList = [];
         List<string> contentArtifactTypes = (agent.ConversationHistorySettings?.Enabled ?? false)
@@ -1323,10 +1341,19 @@ public partial class CoreService(
                                 var fileResponse = await _contextServiceClient.GetFileRecord(
                                     instanceId,
                                     resourcePath.MainResourceId!);
-                                if (fileResponse.Success)
+                                if (fileResponse.TryGetValue(out var fileRecord))
                                 {
+                                    if (fileRecord.AgentName != request.AgentName!)
+                                    {
+                                        _logger.LogError("Attachment agent name {AttachmentAgentName} does not match the current agent {CurrentAgentName} for attachment {AttachmentObjectId}.",
+                                            fileRecord.AgentName, request.AgentName, attachmentObjectId);
+                                        throw new CoreServiceException(
+                                            $"Attachment agent name does not match the current agent for attachment {attachmentObjectId}.",
+                                            StatusCodes.Status400BadRequest);
+                                    }
+
                                     fileHistory.Add(FileHistoryItem.FromContextFileRecord(
-                                        fileResponse.Result!,
+                                        fileRecord,
                                         ++attachmentOrder,
                                         false,
                                         false));
@@ -1370,10 +1397,10 @@ public partial class CoreService(
                         var fileResponse = await _contextServiceClient.GetFileRecord(
                             instanceId,
                             resourcePath.MainResourceId!);
-                        if (fileResponse.Success)
+                        if (fileResponse.TryGetValue(out var fileRecord))
                         {
                             fileHistory.Add(FileHistoryItem.FromContextFileRecord(
-                                fileResponse.Result!,
+                                fileRecord,
                                 ++attachmentOrder,
                                 true,
                                 true));
@@ -1428,16 +1455,6 @@ public partial class CoreService(
         }
         message = string.Empty;
         return false;
-    }
-
-    private async Task<T> GetCoreConfigurationValue<T>(string instanceId, string configurationName, UnifiedUserIdentity userIdentity)
-    {
-        var appConfigurationValue = await _configurationResourceProvider.GetResourceAsync<AppConfigurationKeyBase>(
-            instanceId,
-            configurationName,
-            userIdentity);
-
-        return ConfigurationValue<T>.Deserialize(appConfigurationValue.Value!).GetValueForUser(userIdentity.UPN!);
     }
 
     private static async Task<string> GetBaseUrl(

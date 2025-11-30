@@ -367,6 +367,12 @@ namespace FoundationaLLM.Common.Constants.Configuration
             "FoundationaLLM:APIEndpoints:AzureAIStudio:Configuration:Storage:*";
         
         /// <summary>
+        /// Filter for the configuration section used to identify the essential settings for the Azure Content Safety service.
+        /// </summary>
+        public const string FoundationaLLM_APIEndpoints_AzureContentSafety_Essentials =
+            "FoundationaLLM:APIEndpoints:AzureContentSafety:Essentials:*";
+        
+        /// <summary>
         /// Filter for the configuration section used to identify the settings for the Azure Content Safety service.
         /// </summary>
         public const string FoundationaLLM_APIEndpoints_AzureContentSafety_Configuration =

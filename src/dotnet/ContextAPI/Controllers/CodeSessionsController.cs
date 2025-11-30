@@ -35,12 +35,13 @@ namespace FoundationaLLM.Context.API.Controllers
             string instanceId,
             [FromBody] CreateCodeSessionRequest request)
         {
-            var response = await _codeSessionService.CreateCodeSession(
+            var result = await _codeSessionService.CreateCodeSession(
                 instanceId,
                 request,
                 _callContext.CurrentUserIdentity!);
 
-            return new OkObjectResult(response);
+            return
+                result.ToActionResult();
         }
 
         /// <summary>
@@ -56,13 +57,14 @@ namespace FoundationaLLM.Context.API.Controllers
             string sessionId,
             [FromBody] CodeSessionFileUploadRequest request)
         {
-            var response = await _codeSessionService.UploadFilesToCodeSession(
+            var result = await _codeSessionService.UploadFilesToCodeSession(
                 instanceId,
                 sessionId,
                 request,
                 _callContext.CurrentUserIdentity!);
 
-            return new OkObjectResult(response);
+            return
+                result.ToActionResult();
         }
 
         /// <summary>
@@ -78,13 +80,14 @@ namespace FoundationaLLM.Context.API.Controllers
             string sessionId,
             [FromBody] CodeSessionFileDownloadRequest request)
         {
-            var response = await _codeSessionService.DownloadFilesFromCodeSession(
+            var result = await _codeSessionService.DownloadFilesFromCodeSession(
                 instanceId,
                 sessionId,
                 request.OperationId,
                 _callContext.CurrentUserIdentity!);
 
-            return new OkObjectResult(response);
+            return
+                result.ToActionResult();
         }
 
         /// <summary>
@@ -100,12 +103,14 @@ namespace FoundationaLLM.Context.API.Controllers
             string sessionId,
             [FromBody] CodeSessionCodeExecuteRequest codeExecutionRequest)
         {
-            var response = await _codeSessionService.ExecuteCodeInCodeSession(
+            var result = await _codeSessionService.ExecuteCodeInCodeSession(
                 instanceId,
                 sessionId,
                 codeExecutionRequest.CodeToExecute,
                 _callContext.CurrentUserIdentity!);
-            return new OkObjectResult(response);
+
+            return
+                result.ToActionResult();
         }
     }
 }

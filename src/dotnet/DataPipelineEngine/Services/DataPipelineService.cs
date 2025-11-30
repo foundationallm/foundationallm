@@ -54,17 +54,17 @@ namespace FoundationaLLM.DataPipelineEngine.Services
                 userIdentity);
 
         /// <inheritdoc/>
-        public async Task<List<DataPipelineRun>> GetDataPipelineRuns(
+        public async Task<DataPipelineRunFilterResponse> GetDataPipelineRuns(
             string instanceId,
             DataPipelineRunFilter dataPipelineRunFilter,
             UnifiedUserIdentity userIdentity) =>
             (await _dataPipelineResourceProvider.ExecuteResourceActionAsync<
-                DataPipelineDefinition, DataPipelineRun, DataPipelineRunFilter, ResourceProviderActionResult<ResourceCollection<DataPipelineRun>>>(
+                DataPipelineDefinition, DataPipelineRun, DataPipelineRunFilter, ResourceProviderActionResult<DataPipelineRunFilterResponse>>(
                     instanceId,
                     dataPipelineRunFilter.DataPipelineName!,
                     null!,
                     ResourceProviderActions.Filter,
                     dataPipelineRunFilter,
-                    userIdentity)).Resource?.Resources.ToList() ?? [];
+                    userIdentity)).Resource!;
     }
 }

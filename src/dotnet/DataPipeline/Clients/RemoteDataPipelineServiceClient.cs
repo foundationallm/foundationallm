@@ -35,19 +35,12 @@ namespace FoundationaLLM.DataPipeline.Clients
             ILogger<RemoteDataPipelineServiceClient> logger)
         {
             _instanceSettings = instanceOptions.Value;
-            _httpClientTask = CreateHttpClient(
+            _httpClientTask = httpClientFactoryService.CreateClient(
                 _instanceSettings.Id,
-                httpClientFactoryService);
-            _logger = logger;
-        }
-
-        private static async Task<HttpClient> CreateHttpClient(
-            string instanceId,
-            IHttpClientFactoryService httpClientFactory) =>
-           await httpClientFactory.CreateClient(
-                instanceId,
                 HttpClientNames.DataPipelineAPI,
                 ServiceContext.ServiceIdentity!);
+            _logger = logger;
+        }
 
         /// <inheritdoc/>
         public IEnumerable<IResourceProviderService> ResourceProviders { set { } }
@@ -122,7 +115,7 @@ namespace FoundationaLLM.DataPipeline.Clients
         }
 
         /// <inheritdoc/>
-        public async Task<List<DataPipelineRun>> GetDataPipelineRunsAsync(
+        public async Task<DataPipelineRunFilterResponse> GetDataPipelineRunsAsync(
             string instanceId,
             DataPipelineRunFilter dataPipelineRunFilter,
             UnifiedUserIdentity userIdentity)
@@ -138,7 +131,7 @@ namespace FoundationaLLM.DataPipeline.Clients
                 if (responseMessage.IsSuccessStatusCode)
                 {
                     var responseContent = await responseMessage.Content.ReadAsStringAsync();
-                    var response = JsonSerializer.Deserialize<List<DataPipelineRun>>(responseContent);
+                    var response = JsonSerializer.Deserialize<DataPipelineRunFilterResponse>(responseContent);
                     return response!;
                 }
 
@@ -146,12 +139,12 @@ namespace FoundationaLLM.DataPipeline.Clients
                     "An error occurred while retrieving the data pipeline runs. Status code: {StatusCode}.",
                     responseMessage.StatusCode);
 
-                return [];
+                return new DataPipelineRunFilterResponse { Name = string.Empty };
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "An error occurred while retrieving the data pipeline runs.");
-                return [];
+                return new DataPipelineRunFilterResponse { Name = string.Empty };
             }
         }
 

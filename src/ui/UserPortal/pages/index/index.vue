@@ -4,9 +4,9 @@
 		<div v-if="$appConfigStore.hasConfigurationAccessError" class="access-denied-overlay">
 			<div class="access-denied-container">
 				<div class="access-denied-icon">
-					<i class="pi pi-ban" style="font-size: 4rem; color: #e74c3c;"></i>
+					<i class="pi pi-ban" style="font-size: 3rem; color: #e74c3c;"></i>
 				</div>
-				<h2 class="access-denied-title">Access Denied</h2>
+				<p class="access-denied-title">Access Denied</p>
 				<p class="access-denied-message">
 					{{ $appConfigStore.configurationAccessErrorMessage }}
 				</p>
@@ -84,6 +84,7 @@ export default {
 	},
 
 	mounted() {
+		this.syncSidebarWidthVar();
 		if (window.innerWidth < 950) {
 			this.$appStore.toggleSidebar();
 		}
@@ -102,6 +103,11 @@ export default {
 	},
 
 	methods: {
+		syncSidebarWidthVar() {
+			if (typeof document !== 'undefined') {
+				document.documentElement.style.setProperty('--sidebar-width', `${this.sidebarWidth}px`);
+			}
+		},
 		startResizing(event: Event) {
 			// Prevent default action and bubbling
 			event.preventDefault();
@@ -127,6 +133,7 @@ export default {
 			// Update the sidebar width
 			this.sidebarWidth = newWidth;
 			this.$refs.sidebar.style.width = `${this.sidebarWidth}px`;
+			this.syncSidebarWidthVar();
 		},
 
 		resizeSidebarWithKeyboard(offset: number) {
@@ -143,6 +150,7 @@ export default {
 			this.$refs.sidebar.style.width = `${this.sidebarWidth}px`;
 			// resets tooltip location
 			this.skidding = this.sidebarWidth * 0.001;
+			this.syncSidebarWidthVar();
 		},
 
 		showDropZone(event) {

@@ -11,13 +11,13 @@ namespace FoundationaLLM.Common.Models.ContentSafety
         /// Contains analysis results for the user prompt.	
         /// </summary>
         [JsonPropertyName("userPromptAnalysis")]
-        public required ShieldPromptDetails UserPromptAnalysis { get; set; }
+        public ShieldPromptDetails? UserPromptAnalysis { get; set; }
 
         /// <summary>
         /// Contains a list of analysis results for each document provided.
         /// </summary>
         [JsonPropertyName("documentsAnalysis")]
-        public required List<ShieldPromptDetails> DocumentsAnalysis { get; set; }
+        public List<ShieldPromptDetails>? DocumentsAnalysis { get; set; }
     }
 
     /// <summary>

@@ -26,7 +26,7 @@ def test_azure_ai_search_service_completion_request():
          """,
          agent=GenericAgent(
             name="sotu",
-            type="knowledge-management",
+            type="generic-agent",
             description="Knowledge Management Agent that queries the State of the Union speech transcript.",
             orchestration_settings=OrchestrationSettings(
                 orchestrator = "LangChain",
@@ -71,7 +71,7 @@ def test_azure_ai_search_service_completion_request_zoo():
          """,
          agent=KnowledgeManagementAgent(
             name="sdwa",
-            type="knowledge-management",
+            type="generic-agent",
             description="Zoo Journal Index",
             vectorization=AgentVectorizationSettings(
                 indexing_profile_object_id="/instances/11111111-1111-1111-1111-111111111111/providers/FoundationaLLM.Vectorization/indexingprofiles/AzureAISearch_CPTEST",

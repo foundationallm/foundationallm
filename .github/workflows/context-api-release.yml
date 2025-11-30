@@ -1,14 +1,50 @@
 name: Context API Release
 
 on:
+  push:
+    tags:
+    - "context_api-0.*.*"
+    - "context_api-0.*.*-alpha*"
+    - "context_api-0.*.*-beta*"
+    - "context_api-0.*.*-rc*"
+    - "context_api-0.*.*-post*"
+    - "context_api-1.*.*"
+    - "context_api-1.*.*-alpha*"
+    - "context_api-1.*.*-beta*"
+    - "context_api-1.*.*-rc*"
+    - "context_api-1.*.*-post*"
+    - "context_api-2.*.*"
+    - "context_api-2.*.*-alpha*"
+    - "context_api-2.*.*-beta*"
+    - "context_api-2.*.*-rc*"
+    - "context_api-2.*.*-post*"
   workflow_dispatch:
     inputs: {}
 
 jobs:
-  release_docker_image:
-    name: Release Docker Image
-    uses: ./.github/workflows/release-docker-image.yml
+  prepare:
+    runs-on: ubuntu-latest
+    outputs:
+      docker_tag: ${{ steps.docker-tag.outputs.docker_tag }}
+    steps:
+    - name: Set Docker Tag
+      id: docker-tag
+      run: |
+        DOCKER_TAG="${GITHUB_REF_NAME#context_api-}"
+        echo "DOCKER_TAG=$DOCKER_TAG" >> $GITHUB_ENV
+        echo "docker_tag: Latest Tag is : $DOCKER_TAG"
+        echo "docker_tag=$DOCKER_TAG" >> $GITHUB_OUTPUT
+  docker_build:
+    name: Build Docker Image
+    needs:
+      - prepare
+    uses: ./.github/workflows/build-docker-image.yml
     with:
       image: context-api
       context: ./src
       dockerfile: ./src/dotnet/ContextAPI/Dockerfile
+      registry: foundationallm.azurecr.io
+      tag: ${{ needs.prepare.outputs.docker_tag }}
+      username: foundationallm
+      target: sandbox
+    secrets: inherit

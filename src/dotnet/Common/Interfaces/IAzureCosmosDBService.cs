@@ -47,7 +47,7 @@ public interface IAzureCosmosDBService
     /// <param name="upn">The user principal name used for matching the UPN of the item.</param>
     /// <param name="propertyValues">Dictionary of the property names and values to patch.</param>
     /// <param name="cancellationToken">Cancellation token for async calls.</param>
-    /// <returns>The patched object of type <typeparam name="T"></typeparam>.</returns>
+    /// <returns>The patched object of type <typeparamref name="T"/>.</returns>
     Task<T> PatchItemPropertiesAsync<T>(string containerName, string partitionKey, string id,
         string upn, Dictionary<string, object?> propertyValues, CancellationToken cancellationToken = default);
 
@@ -159,7 +159,6 @@ public interface IAzureCosmosDBService
     /// <summary>
     /// Updates a subset of the properties of one or more items of a specified type from the Sessions collection.
     /// </summary>
-    /// <typeparam name="T"></typeparam>
     /// <param name="partitionKey">The partition key of the item(s) being updated. Batch operations
     /// must occur within the same partition key.</param>
     /// <param name="patchOperations">The patch operations to perform on each object, including the

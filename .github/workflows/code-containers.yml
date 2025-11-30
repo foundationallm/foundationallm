@@ -47,7 +47,7 @@ jobs:
 
   docker_build:
     name: Build Docker Images
-    if: startsWith(github.ref, 'refs/heads/release/') || startsWith(github.ref, 'refs/heads/poc/') || (github.ref_type == 'tag' && contains(github.ref_name, '-rc')) || (github.ref_type == 'tag' && contains(github.ref_name, '-poc'))
+    if: startsWith(github.ref, 'refs/heads/release/') || startsWith(github.ref, 'refs/heads/poc/') || (github.ref_type == 'tag')
     needs: 
       - generate_matrix
     strategy:

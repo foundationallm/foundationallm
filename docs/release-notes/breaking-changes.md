@@ -3,6 +3,59 @@
 > [!NOTE]
 > This section is for changes that are not yet released but will affect future releases.
 
+## Starting from 0.9.7
+
+### Configuration changes
+
+The`FoundationaLLM:APIEndpoints:CoreAPI:Configuration:AllowedUploadFileExtensions` configuration entry has been removed and was replaced by the `FoundationaLLM:APIEndpoints:ContextAPI:Configuration:FileService:AllowedFileExtensions` configuration entry.
+
+The following configuration entries have changed their default values:
+
+| Name | New value |
+| --- | --- |
+| `FoundationaLLM:APIEndpoints:ContextAPI:Configuration:FileService:AllowedFileExtensions` | `c, cpp, cs, css, html, java, js, json, jsonl, md, php, py, rb, sh, tex, ts, txt, xml, yaml, yml, gif, jpeg, jpg, png, wav, pdf, docx, pptx, xlsx, csv, zip, tar` |
+| `FoundationaLLM:APIEndpoints:ContextAPI:Configuration:FileService:KnowledgeSearchContextFileExtensions` | `c, cpp, cs, css, html, java, js, json, jsonl, md, php, py, rb, sh, tex, ts, txt, xml, yaml, yml, gif, jpeg, jpg, png, wav` |
+| `FoundationaLLM:APIEndpoints:ContextAPI:Configuration:FileService:KnowledgeSearchContextFileMaxSizeBytes` | `{"c, cpp, cs, css, html, java, js, json, jsonl, md, php, py, rb, sh, tex, ts, txt, xml, yaml, yml": 1048576, "gif, jpeg, jpg, png, wav":20971520}` |
+| `FoundationaLLM:APIEndpoints:ContextAPI:Configuration:FileService:KnowledgeSearchFileExtensions` | `c, cpp, cs, css, html, java, js, json, jsonl, md, php, py, rb, sh, tex, ts, txt, xml, yaml, yml, gif, jpeg, jpg, png, wav, pdf, docx, pptx` |
+
+## Starting from 0.9.7-rc487
+
+### Artifact changes
+
+The new data pipeline `ShieldedFileContent` is available.
+
+### Role assignment changes
+
+The following role assignments must be added to the Context API's Managed Identity:
+
+| Name | Type | Target |
+| --- | --- | --- |
+| `Data Pipelines Execution Manager` | FoundationaLLM | FoundationaLLM instance.|
+
+## Starting from 0.9.7-rc477
+
+### Artifact changes
+
+A new workflow resource must be added to support the `LangChainAgentWorkflow`. Ensure the reference is added to `_resource-references.json` as well.
+
+```json
+{
+    "type": "langchain-agent-workflow",
+    "name": "LangChainAgentWorkflow",
+    "object_id": "/instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.Agent/workflows/LangChainAgentWorkflow",
+    "display_name": "LangChainAgentWorkflow",
+    "description": "LangChain Agent workflow",
+    "cost_center": null,
+    "properties": null,
+    "created_on": "2025-11-16T00:00:00+00:00",
+    "updated_on": "0001-01-01T00:00:00+00:00",
+    "created_by": "SYSTEM",
+    "updated_by": null,
+    "deleted": false,
+    "expiration_date": null
+}
+```
+
 ## Starting from 0.9.7-rc472
 
 ### Configuration changes
@@ -73,6 +126,8 @@ The following configuration values are obsolete and must be removed:
 ### Permissions changes
 
 All User Portal users must have read permission on the `/instances/<instance_id_>/providers/FoundationaLLM.Configuration/appConfigurationSets/UserPortal` scope.
+
+`AllAgentsVirtualSecurityGroup` (`5bb493a2-5909-4771-93ba-d83b7b5a1de9`) must have read permission on the `/instances/<instance_id_>/providers/FoundationaLLM.Configuration/appConfigurationSets/UserPortal` scope.
 
 All Management Portal users must have read permissions on the `/instances/<instance_id_>/providers/FoundationaLLM.Configuration/appConfigurationSets/ManagementPortal` scope.
 

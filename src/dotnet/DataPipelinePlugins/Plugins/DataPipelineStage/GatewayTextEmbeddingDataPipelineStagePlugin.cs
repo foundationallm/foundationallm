@@ -85,6 +85,12 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
                 throw new PluginException(
                     $"The plugin {Name} requires the {PluginParameterNames.GATEWAYTEXTEMBEDDING_DATAPIPELINESTAGE_KNOWLEDGEUNITOBJECTID} parameter.");
 
+            var embeddingRequestSizeTokens = 100_000; // Default value.
+            if (_pluginParameters.TryGetValue(
+                PluginParameterNames.GATEWAYTEXTEMBEDDING_DATAPIPELINESTAGE_EMBEDDINGREQUESTSIZETOKENS,
+                out var embeddingRequestSizeTokensObj))
+                embeddingRequestSizeTokens = (int)embeddingRequestSizeTokensObj;
+
             var knowledgeUnit = await _contextResourceProvider.GetResourceAsync<KnowledgeUnit>(
                 knowledgeUnitObjectId.ToString()!,
                 ServiceContext.ServiceIdentity!);
@@ -105,45 +111,35 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
                     HttpClientNames.GatewayAPI, ServiceContext.ServiceIdentity!),
                 _serviceProvider.GetRequiredService<ILogger<GatewayServiceClient>>());
 
-            var textEmbeddingRequest = new TextEmbeddingRequest
+            var contentItemPartGroups = GetContentItemPartGroups(
+                changedContentItemParts,
+                embeddingRequestSizeTokens);
+            _logger.LogInformation(
+                "Data pipeline run {DataPipelineRunId} text parts embedding for {ContentItemCanonicalId}: {GroupsCount} operations with max request size of {EmbeddingMaxRequestSizeToken} tokens.",
+                dataPipelineRun.Id,
+                dataPipelineRunWorkItem.ContentItemCanonicalId,
+                contentItemPartGroups.Count,
+                embeddingRequestSizeTokens);
+
+            var embeddingsDictionary = new Dictionary<int, Embedding?>();
+            for (var i = 0; i < contentItemPartGroups.Count; i++)
             {
-                EmbeddingModelName = vectorDatabase.EmbeddingModel,
-                EmbeddingModelDimensions = vectorDatabase.EmbeddingDimensions,
-                Prioritized = false,
-                TextChunks = [.. changedContentItemParts
-                    .Select(part => new TextChunk
-                    {
-                        Position = part.Position,
-                        Content = part.Content,
-                        TokensCount = part.ContentSizeTokens
-                    })]
-            };
+                var embeddingResult = await ExecuteEmbeddingOperation(
+                    dataPipelineRun,
+                    dataPipelineRunWorkItem,
+                    vectorDatabase,
+                    contentItemPartGroups[i],
+                    embeddingServiceClient,
+                    i + 1,
+                    contentItemPartGroups.Count);
 
-            var embeddingResult = await embeddingServiceClient.StartEmbeddingOperation(
-                dataPipelineRun.InstanceId,
-                textEmbeddingRequest);
+                if (embeddingResult.Failed)
+                    return new PluginResult(false, false,
+                        $"The {Name} plugin failed to process the work item {dataPipelineRunWorkItem.Id} due to a failure in embedding chunk group {i + 1}.");
 
-            while (embeddingResult.InProgress)
-            {
-                await Task.Delay(TimeSpan.FromSeconds(GATEWAY_SERVICE_CLIENT_POLLING_INTERVAL_SECONDS));
-                embeddingResult = await embeddingServiceClient.GetEmbeddingOperationResult(
-                    dataPipelineRun.InstanceId,
-                    embeddingResult.OperationId!);
-
-                _logger.LogInformation("Data pipeline run {DataPipelineRunId} text parts embedding for {ContentItemCanonicalId}: {ProcessedEntityCount} of {TotalEntityCount} entities processed.",
-                    dataPipelineRun.Id,
-                    dataPipelineRunWorkItem.ContentItemCanonicalId,
-                    embeddingResult.ProcessedTextChunksCount,
-                    textEmbeddingRequest.TextChunks.Count);
+                foreach (var textChunk in embeddingResult.TextChunks)
+                    embeddingsDictionary[textChunk.Position] = textChunk.Embedding;
             }
-
-            if (embeddingResult.Failed)
-                return new PluginResult(false, false,
-                    $"The {Name} plugin failed to process the work item {dataPipelineRunWorkItem.Id} due to a failure in the Gateway API.");
-
-            var embeddingsDictionary = embeddingResult.TextChunks.ToDictionary(
-                chunk => chunk.Position,
-                chunk => chunk.Embedding);
 
             foreach (var contentItemPart in changedContentItemParts)
             {
@@ -163,6 +159,101 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
                 DataPipelineStateFileNames.ContentParts);
 
             return new PluginResult(true, false);
+        }
+
+        private async Task<TextOperationResult>ExecuteEmbeddingOperation(
+            DataPipelineRun dataPipelineRun,
+            DataPipelineRunWorkItem dataPipelineRunWorkItem,
+            VectorDatabase vectorDatabase,
+            List<DataPipelineContentItemContentPart> contentItemParts,
+            GatewayServiceClient embeddingServiceClient,
+            int embeddingOperationIndex,
+            int embeddingOperationsCount)
+        {
+            var startTime = DateTimeOffset.UtcNow;
+
+            var textEmbeddingRequest = new TextEmbeddingRequest
+            {
+                EmbeddingModelName = vectorDatabase.EmbeddingModel,
+                EmbeddingModelDimensions = vectorDatabase.EmbeddingDimensions,
+                Prioritized = false,
+                TextChunks = [.. contentItemParts
+                    .Select(part => new TextChunk
+                    {
+                        Position = part.Position,
+                        Content = part.Content,
+                        TokensCount = part.ContentSizeTokens
+                    })]
+            };
+
+            var embeddingResult = await embeddingServiceClient.StartEmbeddingOperation(
+                dataPipelineRun.InstanceId,
+                textEmbeddingRequest);
+
+            while (embeddingResult.InProgress)
+            {
+                await Task.Delay(TimeSpan.FromSeconds(GATEWAY_SERVICE_CLIENT_POLLING_INTERVAL_SECONDS));
+                embeddingResult = await embeddingServiceClient.GetEmbeddingOperationResult(
+                    dataPipelineRun.InstanceId,
+                    embeddingResult.OperationId!);
+
+                _logger.LogInformation("Data pipeline run {DataPipelineRunId} text parts embedding for {ContentItemCanonicalId}: Operation {EmbeddingOperationIndex} of {EmbeddingOperationsCount} - {ProcessedEntityCount} of {TotalEntityCount} entities processed.",
+                    dataPipelineRun.Id,
+                    dataPipelineRunWorkItem.ContentItemCanonicalId,
+                    embeddingOperationIndex,
+                    embeddingOperationsCount,
+                    embeddingResult.ProcessedTextChunksCount,
+                    textEmbeddingRequest.TextChunks.Count);
+            }
+
+            _logger.LogInformation("Data pipeline run {DataPipelineRunId} text parts embedding for {ContentItemCanonicalId}: Operation {EmbeddingOperationIndex} of {EmbeddingOperationsCount} completed in {OperationDurationSeconds} seconds.",
+                dataPipelineRun.Id,
+                dataPipelineRunWorkItem.ContentItemCanonicalId,
+                embeddingOperationIndex,
+                embeddingOperationsCount,
+                (DateTimeOffset.UtcNow - startTime).TotalSeconds);
+
+            return embeddingResult;
+        }
+
+        private static List<List<DataPipelineContentItemContentPart>> GetContentItemPartGroups(
+            List<DataPipelineContentItemContentPart> contentItemParts,
+            int maxTokensPerGroup)
+        {
+            var groups = new List<List<DataPipelineContentItemContentPart>>();
+            var currentGroup = new List<DataPipelineContentItemContentPart>();
+            var currentTokens = 0;
+
+            foreach (var contentItemPart in contentItemParts)
+            {
+                // If a single part exceeds the limit, send it alone.
+                if (contentItemPart.ContentSizeTokens > maxTokensPerGroup)
+                {
+                    if (currentGroup.Count > 0)
+                    {
+                        groups.Add(currentGroup);
+                        currentGroup = [];
+                        currentTokens = 0;
+                    }
+                    groups.Add([contentItemPart]);
+                    continue;
+                }
+
+                if (currentTokens + contentItemPart.ContentSizeTokens > maxTokensPerGroup)
+                {
+                    groups.Add(currentGroup);
+                    currentGroup = [];
+                    currentTokens = 0;
+                }
+
+                currentGroup.Add(contentItemPart);
+                currentTokens += contentItemPart.ContentSizeTokens;
+            }
+
+            if (currentGroup.Count > 0)
+                groups.Add(currentGroup);
+
+            return groups;
         }
     }
 }

@@ -1,0 +1,921 @@
+"""FoundationaLLM Agent Test Harness"""
+
+import base64
+import concurrent.futures
+import json
+import mimetypes
+import os
+import time
+import uuid
+
+import urllib3
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+
+from datetime import datetime, timezone
+
+import pandas as pd
+import requests
+
+from tqdm import tqdm
+
+from test_authentication_manager import TestAuthenticationManager
+
+# Global test authentication manager instance
+test_authentication_manager = TestAuthenticationManager()
+
+# -----------------------------
+# Results helpers
+# -----------------------------
+def _safe_dump(obj, limit=50000):
+    try:
+        s = json.dumps(obj, ensure_ascii=False)
+    except Exception:
+        return "[]"
+    return s if len(s) <= limit else s[:limit] + "... [truncated]"
+
+def _safe_text(val, limit=5000):
+    if val is None:
+        return ""
+    s = str(val)
+    return s if len(s) <= limit else s[:limit] + "... [truncated]"
+
+def _single_line(val: str) -> str:
+    try:
+        return ' '.join((val or '').split())
+    except Exception:
+        return str(val) if val is not None else ''
+
+def _ellipsis(val: str, limit: int = 200) -> str:
+    s = _single_line(val or '')
+    return s if len(s) <= limit else s[:limit] + '...'
+
+# -----------------------------
+# Management API (Prompts) helpers
+# -----------------------------
+def _get_management_api_headers():
+
+    headers = test_authentication_manager.get_management_api_auth_header()
+    headers["Content-Type"] = "application/json"
+    return headers
+
+def _get_core_api_headers(
+    require_json_content: bool = True
+):
+
+    headers = test_authentication_manager.get_core_api_auth_header()
+    if require_json_content:
+        headers["Content-Type"] = "application/json"
+    return headers
+
+def list_prompts():
+    """List all Prompt resources accessible to the caller via the Management API."""
+    mgmt_endpoint = os.getenv("FLLM_MGMT_ENDPOINT")
+    if not mgmt_endpoint:
+        raise RuntimeError("FLLM_MGMT_ENDPOINT environment variable is not set. Set it to the Management API base URL including /instances/{instanceId}/ and a trailing slash.")
+
+    url = f"{mgmt_endpoint}providers/FoundationaLLM.Prompt/prompts"
+    headers = _get_management_api_headers()
+    try:
+        response = requests.get(url, headers=headers)
+        response.raise_for_status()
+        return response.json()
+    except requests.exceptions.RequestException as e:
+        print(f"An error occurred listing prompts: {str(e)}")
+        if hasattr(e, 'response') and e.response is not None:
+            print(f"Response Status Code: {e.response.status_code}")
+            print(f"Response Text: {e.response.text}")
+        return None
+
+def get_prompt(prompt_name: str):
+    """Get a Prompt resource by name via the Management API."""
+    mgmt_endpoint = os.getenv("FLLM_MGMT_ENDPOINT")
+    if not mgmt_endpoint:
+        raise RuntimeError("FLLM_MGMT_ENDPOINT environment variable is not set. Set it to the Management API base URL including /instances/{instanceId}/ and a trailing slash.")
+
+    url = f"{mgmt_endpoint}providers/FoundationaLLM.Prompt/prompts/{prompt_name}"
+    headers = _get_management_api_headers()
+    try:
+        response = requests.get(url, headers=headers)
+        response.raise_for_status()
+        payload = response.json()
+        if isinstance(payload, list) and len(payload) > 0:
+            return payload[0].get("resource") or payload[0]
+        return payload
+    except requests.exceptions.RequestException as e:
+        print(f"An error occurred getting prompt '{prompt_name}': {str(e)}")
+        if hasattr(e, 'response') and e.response is not None:
+            print(f"Response Status Code: {e.response.status_code}")
+            print(f"Response Text: {e.response.text}")
+        return None
+
+def upsert_prompt(prompt_object: dict):
+    """Create or update a Prompt resource via the Management API.
+
+    The prompt_object should follow the PromptBase contract. For multipart prompts provide keys:
+    {"type":"multipart","name":"<name>","category": <optional>, "prefix": "...", "suffix": "..."}
+    """
+    mgmt_endpoint = os.getenv("FLLM_MGMT_ENDPOINT")
+    if not mgmt_endpoint:
+        raise RuntimeError("FLLM_MGMT_ENDPOINT environment variable is not set. Set it to the Management API base URL including /instances/{instanceId}/ and a trailing slash.")
+
+    if not isinstance(prompt_object, dict) or not prompt_object.get("name"):
+        raise ValueError("prompt_object must be a dict containing at least a 'name' key")
+
+    url = f"{mgmt_endpoint}providers/FoundationaLLM.Prompt/prompts/{prompt_object['name']}"
+    headers = _get_management_api_headers()
+    try:
+        response = requests.post(
+            url,
+            headers=headers,
+            json=prompt_object,
+            verify=False,
+            timeout=300)
+        response.raise_for_status()
+        return response.json()
+    except requests.exceptions.RequestException as e:
+        print(f"An error occurred upserting prompt '{prompt_object.get('name','')}': {str(e)}")
+        if hasattr(e, 'response') and e.response is not None:
+            print(f"Response Status Code: {e.response.status_code}")
+            print(f"Response Text: {e.response.text}")
+        return None
+
+def create_conversation(
+    suite_name: str,
+    suite_timestamp: datetime
+):
+    """Create a new conversation via the Core API and return the conversation identifier."""
+    fllm_endpoint = os.getenv("FLLM_ENDPOINT")
+    if not fllm_endpoint:
+        print("Error: FLLM_ENDPOINT environment variable is not set")
+        print("Make sure you have a .env file with FLLM_ENDPOINT defined")
+        return None
+
+    url = f"{fllm_endpoint}sessions"
+
+    headers = _get_core_api_headers()
+
+    # Generate a new GUID for the session name
+    conversation_guid = base64.b64encode(uuid.uuid4().bytes) \
+        .decode('utf-8') \
+        .replace("=", "") \
+        .replace("/", "-") \
+        .replace("+", "-")
+    conversation_name = f"{suite_timestamp:%Y%m%d-%H%M%S}-{suite_name}-{conversation_guid}"
+
+    # Request body
+    payload = {
+        "name": conversation_name,
+        "metadata": json.dumps({
+            "test_suite_name": suite_name,
+            "test_suite_timestamp": suite_timestamp.timestamp(),
+            "creation_timestamp": datetime.now(timezone.utc).timestamp()
+        })
+    }
+
+    try:
+
+        # Make the POST request
+        response = requests.post(
+            url,
+            headers=headers,
+            json=payload,
+            verify=False,
+            timeout=300)
+
+        # Check if the request was successful
+        response.raise_for_status()
+
+        # Get the response JSON
+        response_json = response.json()
+
+        # Print the response
+        print(f"Session Creation Status Code: {response.status_code}")
+
+        # Return the sessionId
+        return response_json.get('sessionId')
+
+    except requests.exceptions.RequestException as e:
+        print(f"An error occurred: {str(e)}")
+        if hasattr(e, 'response') and e.response is not None:
+            print(f"Response Status Code: {e.response.status_code}")
+            print(f"Response Text: {e.response.text}")
+        return None
+
+def send_completion_request(session_id, agent_name, user_prompt, attachments=[]):
+    fllm_endpoint = os.getenv("FLLM_ENDPOINT")
+    if not fllm_endpoint:
+        print("Error: FLLM_ENDPOINT environment variable is not set")
+        print("Make sure you have a .env file with FLLM_ENDPOINT defined")
+        return None, "FLLM_ENDPOINT environment variable is not set"
+    url = f"{fllm_endpoint}completions"
+
+    headers = _get_core_api_headers()
+
+    # Request body
+    payload = {
+        "user_prompt": user_prompt,
+        "agent_name": agent_name,
+        "session_id": session_id,
+        "attachments": attachments
+    }
+
+    try:
+        print(f"Sending completion request for user prompt: {user_prompt}")
+
+        # Make the POST request with timeout to prevent hanging
+        # Set timeout to 300 seconds (5 minutes) for long-running completions
+        response = requests.post(
+            url,
+            headers=headers,
+            json=payload,
+            verify=False,
+            timeout=300)
+        
+        # Check if the request was successful
+        response.raise_for_status()
+        
+        # Get the response JSON
+        response_json = response.json()
+        
+        # Print the response
+        print(f"Completion Request Status Code: {response.status_code}")
+        print("Completion Request Response:")
+        print(json.dumps(response_json, indent=2))
+        
+        return response_json, None
+        
+    except requests.exceptions.Timeout as e:
+        print(f"Request timeout: The completion request took longer than 5 minutes")
+        print(f"Error details: {str(e)}")
+        return None, f"Completion request timed out after 300s\nError: {str(e)}"
+    except requests.exceptions.ChunkedEncodingError as e:
+        print(f"Response ended prematurely: The server closed the connection before completing the response")
+        print(f"Error details: {str(e)}")
+        return None, f"Response ended prematurely\nError: {str(e)}"
+    except requests.exceptions.RequestException as e:
+        print(f"An error occurred: {str(e)}")
+        detail_lines = [f"Error: {str(e)}"]
+        status = "unknown"
+        text = ""
+        if hasattr(e, 'response') and e.response is not None:
+            status = e.response.status_code
+            text = e.response.text or ""
+            print(f"Response Status Code: {status}")
+            print(f"Response Text: {text}")
+            detail_lines.insert(0, f"HTTP {status} error calling completions endpoint")
+            if text:
+                detail_lines.append(f"Response Text: {text}")
+        else:
+            detail_lines.insert(0, "HTTP error calling completions endpoint (status unknown)")
+        detail = "\n".join(line for line in detail_lines if line)
+        return None, detail
+
+def upload_file_with_progress(file_path, fllm_endpoint, session_id, agent_name):
+
+    # Get file size for progress tracking
+    file_size = os.path.getsize(file_path)
+    
+    # Create a progress bar
+    progress_bar = tqdm(
+        total=file_size,
+        unit='B',
+        unit_scale=True,
+        desc=f"Uploading {os.path.basename(file_path)}"
+    )
+
+    # Prepare the upload
+    with open(file_path, 'rb') as file:
+        # Create a custom file-like object that updates progress
+        class ProgressFile:
+            def __init__(self, file_obj, progress_bar):
+                self.file_obj = file_obj
+                self.progress_bar = progress_bar
+
+            def read(self, *args, **kwargs):
+                chunk = self.file_obj.read(*args, **kwargs)
+                if chunk:
+                    self.progress_bar.update(len(chunk))
+                return chunk
+
+        # Wrap the file with our progress tracking
+        progress_file = ProgressFile(file, progress_bar)
+        
+        # Get the MIME type of the file
+        mime_type, _ = mimetypes.guess_type(file_path)
+        # If the mime type is not recognized, we will leave it as None
+        # as the Core API will make its own attempt to determine it.
+        
+        # Prepare the multipart form data with MIME type
+        files = {
+            'file': (
+                os.path.basename(file_path),
+                progress_file,
+                mime_type
+            )
+        }
+        
+        # Construct the upload URL
+        upload_url = f"{fllm_endpoint}files/upload"
+        
+        # Add query parameters
+        params = {
+            'sessionId': session_id,
+            'agentName': agent_name
+        }
+        
+        headers = _get_core_api_headers(require_json_content=False)
+
+        try:
+            # Make the POST request with streaming upload
+            response = requests.post(
+                upload_url,
+                params=params,
+                headers=headers,
+                files=files,
+                verify=False,
+                timeout=300
+            )
+            
+            # Close the progress bar
+            progress_bar.close()
+            
+            # Check if the request was successful
+            if response.status_code >= 200 and response.status_code < 300:
+                return response.json()
+            else:
+                raise Exception(f"Upload failed with status {response.status_code}: {response.text}")
+                
+        except Exception as e:
+            progress_bar.close()
+            raise e
+
+
+def process_question(
+    question,
+    answer,
+    filename,
+    agent_name,
+    suite_name: str,
+    suites_root_folder: str,
+    suite_timestamp: datetime,
+    validation_rules="{}",
+    validation_mode="hybrid",
+    session_id=None,
+    conversation_turn=None,
+    conversation_mode=False
+):
+
+    # Time the session creation (only when not reusing)
+    session_duration = 0
+    reused_session = session_id is not None
+    if not reused_session:
+        session_start_time = time.time()
+        session_id = create_conversation(suite_name, suite_timestamp)
+        time.sleep(0.1)
+        session_duration = time.time() - session_start_time
+    
+    if not session_id:
+        print(f"Failed to create session for question: {question}")
+        return {
+            'Question': question,
+            'Answer': answer,
+            'AgentAnswer': '',
+            'OtherAgentContent': [],
+            'Tokens': 0,
+            'SessionRequestDuration': session_duration,
+            'CompletionRequestDuration': 0,
+            'ErrorOccured': 1,
+            'ErrorDetails': 'Failed to create session',
+            'ErrorDetailsFull': 'Failed to create session'
+        }
+    
+    # Normalize filename for output
+    input_filename = '' if pd.isna(filename) else str(filename)
+
+    # Time the completion request
+    completion_start_time = time.time()
+    completion_error = None
+    if (not pd.isna(filename)):
+        # Upload the file
+        file_path = os.path.join(suites_root_folder, '../uploads', input_filename)
+        fllm_endpoint = os.getenv("FLLM_ENDPOINT")
+        upload_response = upload_file_with_progress(file_path, fllm_endpoint, session_id, agent_name)
+
+        response, completion_error = send_completion_request(
+            session_id=session_id,
+            agent_name=agent_name,
+            user_prompt=question,
+            attachments=[upload_response.get('object_id') or upload_response.get('objectId')]
+        )
+    else:   
+        response, completion_error = send_completion_request(
+            session_id=session_id,
+            agent_name=agent_name,
+            user_prompt=question
+        )
+    completion_duration = time.time() - completion_start_time
+    
+    if response:
+        # Initialize error tracking variables
+        error_occurred = 0
+        error_details = ""
+        agent_answer = ""
+        other_agent_content = []
+        
+        try:
+            content_items = response.get('content', [])
+            if not content_items:
+                error_occurred = 1
+                error_details = "Empty content array"
+                print(f"Warning: Empty content array for question: {question}")
+            else:
+                # Preserve all content items in other_agent_content
+                other_agent_content = content_items
+                # Concatenate all content items into agent_answer
+                agent_answer_parts = []
+                for item in content_items:
+                    if item.get('value'):
+                        agent_answer_parts.append(item.get('value'))
+                agent_answer = '\n'.join(agent_answer_parts)
+                if not agent_answer:
+                    error_occurred = 1
+                    error_details = "No content values found in any items"
+                    print(f"Warning: No content values found in any items for question: {question}")
+        except (IndexError, AttributeError, KeyError) as e:
+            error_occurred = 1
+            error_details = str(e)
+            print(f"Error extracting content field for question: {question}")
+            print(f"Error details: {error_details}")
+        
+        tokens = response.get('tokens', 0)
+
+        # Extract content artifacts (handles both snake_case and camelCase)
+        artifacts = response.get('content_artifacts') or response.get('contentArtifacts') or []
+
+        # Build a compact summary per artifact
+        def _summarize_artifact(a):
+            meta = a.get('metadata') or {}
+            return {
+                'id': a.get('id'),
+                'title': a.get('title'),
+                'type': a.get('type'),
+                'source': a.get('source'),
+                'filepath': a.get('filepath'),
+                'tool_result': meta.get('tool_result'),
+                'tool_error': meta.get('tool_error'),
+                'tool_generated_code': meta.get('tool_generated_code'),
+                'tool_input_prompt': meta.get('tool_input_prompt'),
+                'tool_input_files': meta.get('tool_input_files'),
+                'tool_output': meta.get('tool_output')
+            }
+
+        artifacts_summary = [_summarize_artifact(a) for a in artifacts]
+        artifacts_json = _safe_dump(artifacts)
+        artifacts_summary_json = _safe_dump(artifacts_summary)
+
+        # Extract details from Code tool execution artifact(s)
+        # Only consider tool execution artifacts for code success/failure evaluation.
+        code_artifacts = [a for a in artifacts if a.get('type') == 'ToolExecution']
+        code_count = len(code_artifacts)
+        code_meta = (code_artifacts[0].get('metadata') or {}) if code_artifacts else {}
+
+        code_original_user_prompt = _safe_text(code_meta.get('original_user_prompt'))
+        code_tool_input_prompt   = _safe_text(code_meta.get('tool_input_prompt'))
+        code_tool_input_files    = _safe_text(code_meta.get('tool_input_files'))
+        code_tool_generated_code = _safe_text(code_meta.get('tool_generated_code'))
+        code_tool_output         = _safe_text(code_meta.get('tool_output'))
+        code_tool_error          = _safe_text(code_meta.get('tool_error'))
+        code_tool_result         = _safe_text(code_meta.get('tool_result'))
+
+        # Determine Code tool failures across all Code artifacts
+        failed_msgs = []
+        for a in code_artifacts:
+            tr = ((a.get('metadata') or {}).get('tool_result') or '')
+            if isinstance(tr, str) and tr.startswith('Code execution failed'):
+                failed_msgs.append(_safe_text(tr))
+        code_tool_failed = len(failed_msgs) > 0
+        if code_tool_failed:
+            error_occurred = 1
+            error_details = (error_details + ('; ' if error_details else '')) + ' | '.join(failed_msgs)
+
+        # Extract file artifacts (produced files)
+        file_artifacts = [a for a in artifacts if a.get('type') == 'File']
+        produced_files_count = len(file_artifacts)
+        def _summarize_file(a):
+            meta = a.get('metadata') or {}
+            return {
+                'id': a.get('id'),
+                'title': a.get('title'),
+                'original_file_name': meta.get('original_file_name'),
+                'content_type': meta.get('content_type'),
+                'file_size': meta.get('file_size'),
+                'file_object_id': meta.get('file_object_id'),
+                'filepath': a.get('filepath')
+            }
+        produced_files_summary_json = _safe_dump([_summarize_file(a) for a in file_artifacts])
+        
+        # Prepare answer preview and sanitized error details for CSV readability
+        agent_answer_full = agent_answer
+        agent_answer_preview = _single_line(agent_answer_full)[:50]
+        error_details_single_line = _single_line(error_details)
+
+        # Add validation results if validation is enabled
+        validation_passed = -1  # -1 = not validated, 0 = failed, 1 = passed
+        validation_score = 0
+        validation_details = ""
+        
+        # Try to import and use validator if available
+        try:
+            from validator import TestValidator
+            validator = TestValidator()
+            
+            # Create test result dict for validation
+            test_result = {
+                'Question': question,
+                'AgentAnswer': agent_answer_full,
+                'ExpectedAnswer': answer,
+                'ValidationRules': validation_rules,
+                'ValidationMode': validation_mode,
+                'ErrorOccured': error_occurred,
+                'CodeToolFailed': code_tool_failed,
+                'ProducedFilesCount': produced_files_count,
+                'ArtifactsSummary': artifacts_summary_json
+            }
+            
+            # Perform validation
+            validation_result = validator._validate_single_test(test_result, 'hybrid', False)
+            validation_passed = 1 if validation_result['passed'] else 0
+            validation_score = validation_result['score']
+            validation_details = validation_result['reason']
+            
+        except ImportError:
+            # Validator not available, skip validation
+            pass
+        except Exception as e:
+            # Validation failed, mark as not validated
+            validation_details = f"Validation error: {str(e)}"
+        
+        return {
+            'Question': question,
+            'Filename': input_filename,
+            'Answer': answer,
+            'AgentAnswer': agent_answer_full,
+            'AgentAnswerPreview': agent_answer_preview,
+            'OtherAgentContent': other_agent_content,
+            'Tokens': tokens,
+            'SessionRequestDuration': session_duration,
+            'CompletionRequestDuration': completion_duration,
+            'ErrorOccured': error_occurred,
+            'ErrorDetails': error_details_single_line,
+            'ErrorDetailsFull': error_details,
+            'ContentArtifacts': artifacts_json,
+            'ArtifactsSummary': artifacts_summary_json,
+            'CodeArtifactCount': code_count,
+            'CodeOriginalUserPrompt': code_original_user_prompt,
+            'CodeToolInputPrompt': code_tool_input_prompt,
+            'CodeToolInputFiles': code_tool_input_files,
+            'CodeToolGeneratedCode': code_tool_generated_code,
+            'CodeToolOutput': code_tool_output,
+            'CodeToolError': code_tool_error,
+            'CodeToolResult': code_tool_result,
+            'CodeToolFailed': code_tool_failed,
+            'ProducedFilesCount': produced_files_count,
+            'ProducedFilesSummary': produced_files_summary_json,
+            'ValidationRules': validation_rules,
+            'ValidationMode': validation_mode,
+            'ValidationPassed': validation_passed,
+            'ValidationScore': validation_score,
+            'ValidationDetails': validation_details,
+            'ConversationMode': conversation_mode,
+            'ConversationTurn': conversation_turn if conversation_mode else None,
+            'ConversationSessionId': session_id if conversation_mode else ''
+        }
+    else:
+        print(f"Failed to get completion for question: {question}")
+        completion_error_details = completion_error or 'Failed to get completion response'
+        completion_error_single_line = _single_line(completion_error_details)
+        return {
+            'Question': question,
+            'Filename': input_filename,
+            'Answer': answer,
+            'AgentAnswer': '',
+            'AgentAnswerPreview': '',
+            'OtherAgentContent': [],
+            'Tokens': 0,
+            'SessionRequestDuration': session_duration,
+            'CompletionRequestDuration': completion_duration,
+            'ErrorOccured': 1,
+            'ErrorDetails': completion_error_single_line or 'Failed to get completion response',
+            'ErrorDetailsFull': completion_error_details,
+            'ContentArtifacts': '[]',
+            'ArtifactsSummary': '[]',
+            'CodeArtifactCount': 0,
+            'CodeOriginalUserPrompt': '',
+            'CodeToolInputPrompt': '',
+            'CodeToolInputFiles': '',
+            'CodeToolGeneratedCode': '',
+            'CodeToolOutput': '',
+            'CodeToolError': '',
+            'CodeToolResult': '',
+            'CodeToolFailed': False,
+            'ProducedFilesCount': 0,
+            'ProducedFilesSummary': '[]',
+            'ValidationPassed': -1,
+            'ValidationScore': 0,
+            'ValidationDetails': 'Test execution failed',
+            'ConversationMode': conversation_mode,
+            'ConversationTurn': conversation_turn if conversation_mode else None,
+            'ConversationSessionId': session_id if conversation_mode else ''
+        }
+
+def execute_tests(
+    test_file,
+    agent_name,
+    suite_name: str,
+    suites_root_folder: str,
+    suite_timestamp: datetime,
+    max_workers=5,
+    output_dir=None
+):
+    # Read the CSV file with proper handling of quoted fields
+    try:
+        df = pd.read_csv(test_file, quotechar='"', escapechar='\\')
+    except FileNotFoundError:
+        print(f"Error: {test_file} file not found")
+        return None
+    
+    # Initialize list to store results
+    results = []
+    
+    # Process questions in parallel
+    with concurrent.futures.ThreadPoolExecutor(max_workers=max_workers) as executor:
+        # Create future objects for each question
+        future_to_question = {
+            executor.submit(
+                process_question,
+                row['Question'],
+                row['Answer'],
+                row['Filename'],
+                agent_name,
+                suite_name,
+                suites_root_folder,
+                suite_timestamp,
+                row.get('ValidationRules', '{}'),
+                row.get('ValidationMode', 'hybrid')): index 
+            for index, row in df.iterrows()
+        }
+        
+        # Process completed futures as they finish
+        for future in concurrent.futures.as_completed(future_to_question):
+            index = future_to_question[future]
+            try:
+                result = future.result()
+                if result:
+                    result['Ordinal'] = index + 1
+                    results.append(result)
+                else:
+                    # Get the original question from the DataFrame
+                    original_question = df.iloc[index]['Question']
+                    original_answer = df.iloc[index]['Answer']
+                    # Add a row with error details
+                    results.append({
+                        'Ordinal': index + 1,
+                        'Question': original_question,
+                        'Answer': original_answer,
+                        'AgentAnswer': '',
+                        'OtherAgentContent': [],
+                        'Tokens': 0,
+                        'SessionRequestDuration': 0,
+                        'CompletionRequestDuration': 0,
+                        'ErrorOccured': 1,
+                        'ErrorDetails': 'Result was None',
+                        'ErrorDetailsFull': 'Result was None',
+                        'ConversationMode': False,
+                        'ConversationTurn': None,
+                        'ConversationSessionId': ''
+                    })
+            except Exception as e:
+                # Get the original question from the DataFrame
+                original_question = df.iloc[index]['Question']
+                original_answer = df.iloc[index]['Answer']
+                # Add a row with exception details
+                results.append({
+                    'Ordinal': index + 1,
+                    'Question': original_question,
+                    'Answer': original_answer,
+                    'AgentAnswer': '',
+                    'OtherAgentContent': [],
+                    'Tokens': 0,
+                    'SessionRequestDuration': 0,
+                    'CompletionRequestDuration': 0,
+                    'ErrorOccured': 1,
+                    'ErrorDetails': str(e),
+                    'ErrorDetailsFull': str(e),
+                    'ConversationMode': False,
+                    'ConversationTurn': None,
+                    'ConversationSessionId': ''
+                })
+                print(f"Error processing question at index {index}: {str(e)}")
+    
+    # Create DataFrame from results
+    results_df = pd.DataFrame(results)
+
+    # Save compact CSV (summary columns kept on one line)
+    summary_columns = [
+        'Question','Filename','AgentAnswerPreview','ErrorOccured','ErrorDetails','ErrorDetailsFull','Tokens',
+        'SessionRequestDuration','CompletionRequestDuration','CodeArtifactCount',
+        'CodeToolFailed','CodeToolError','CodeToolResult',
+        'ProducedFilesCount','ProducedFilesSummary','ArtifactsSummary',
+        'ConversationMode','ConversationTurn','ConversationSessionId'
+    ]
+    # Only use columns that exist (older runs may not have all fields)
+    summary_columns = [c for c in summary_columns if c in results_df.columns]
+    
+    # Save files to output_dir if provided, otherwise skip (test_suite_manager handles saving)
+    if output_dir:
+        os.makedirs(output_dir, exist_ok=True)
+        csv_path = os.path.join(output_dir, 'test_results.csv')
+        json_path = os.path.join(output_dir, 'test_results.json')
+        results_df.to_csv(csv_path, index=False, columns=summary_columns)
+        
+        # Save full-fidelity JSON
+        try:
+            with open(json_path, 'w', encoding='utf-8') as f:
+                json.dump(results, f, ensure_ascii=False, indent=2)
+        except Exception as e:
+            print(f"Warning: could not write test_results.json: {e}\n")
+    
+    return results_df
+
+def execute_tests_from_dataframe(
+    df,
+    agent_name,
+    suite_name: str,
+    suites_root_folder: str,
+    suite_timestamp: datetime,
+    max_workers=5
+):
+    """Execute tests from a pandas DataFrame instead of reading from CSV file"""
+    # Initialize list to store results
+    results = []
+    
+    # Process questions in parallel
+    with concurrent.futures.ThreadPoolExecutor(max_workers=max_workers) as executor:
+        # Create future objects for each question
+        future_to_question = {
+            executor.submit(
+                process_question,
+                row['Question'],
+                row['Answer'],
+                row['Filename'],
+                agent_name,
+                suite_name,
+                suites_root_folder,
+                suite_timestamp,
+                row.get('ValidationRules', '{}'),
+                row.get('ValidationMode', 'hybrid')): index 
+            for index, row in df.iterrows()
+        }
+        
+        # Process completed futures as they finish
+        for future in concurrent.futures.as_completed(future_to_question):
+            index = future_to_question[future]
+            try:
+                result = future.result()
+                # Get the row to access metadata
+                row_data = df.iloc[index]
+                # Use original test index if available, otherwise use current index
+                ordinal_index = row_data.get('_original_test_index', index)
+                if result:
+                    # Add repeat information if available
+                    if '_repeat_index' in row_data:
+                        result['RepeatIndex'] = row_data['_repeat_index']
+                        result['OriginalIndex'] = row_data['_original_index']
+                    result['Ordinal'] = ordinal_index + 1
+                    results.append(result)
+                else:
+                    # Get the original question from the DataFrame
+                    original_question = row_data['Question']
+                    print(f"Failed to process question: {original_question}")
+                    # Create a failed result entry
+                    failed_result = {
+                        'Question': original_question,
+                        'Filename': row_data['Filename'],
+                        'Answer': row_data['Answer'],
+                        'AgentAnswer': 'Failed to process',
+                        'ErrorOccured': 1,
+                        'ErrorDetails': 'Test execution failed',
+                        'ErrorDetailsFull': 'Test execution failed',
+                        'Ordinal': ordinal_index + 1,
+                        'ConversationMode': False,
+                        'ConversationTurn': None,
+                        'ConversationSessionId': ''
+                    }
+                    # Add repeat information if available
+                    if '_repeat_index' in row_data:
+                        failed_result['RepeatIndex'] = row_data['_repeat_index']
+                        failed_result['OriginalIndex'] = row_data['_original_index']
+                    results.append(failed_result)
+            except Exception as e:
+                # Get the row to access metadata
+                row_data = df.iloc[index]
+                ordinal_index = row_data.get('_original_test_index', index)
+                # Show both current and original index for clarity
+                if ordinal_index != index:
+                    print(f"Error processing question at index {index} (original index {ordinal_index}): {e}")
+                else:
+                    print(f"Error processing question at index {index}: {e}")
+                # Create a failed result entry
+                failed_result = {
+                    'Question': row_data['Question'],
+                    'Filename': row_data['Filename'],
+                    'Answer': row_data['Answer'],
+                    'AgentAnswer': 'Failed to process',
+                    'ErrorOccured': 1,
+                    'ErrorDetails': str(e),
+                    'ErrorDetailsFull': str(e),
+                    'Ordinal': ordinal_index + 1,
+                    'ConversationMode': False,
+                    'ConversationTurn': None,
+                    'ConversationSessionId': ''
+                }
+                # Add repeat information if available
+                if '_repeat_index' in row_data:
+                    failed_result['RepeatIndex'] = row_data['_repeat_index']
+                    failed_result['OriginalIndex'] = row_data['_original_index']
+                results.append(failed_result)
+    
+    # Convert results to DataFrame
+    if results:
+        results_df = pd.DataFrame(results)
+        return results_df
+    else:
+        print("No results to return")
+        return None
+
+def execute_tests_single_conversation(
+    df,
+    agent_name,
+    suite_name: str,
+    suites_root_folder: str,
+    suite_timestamp: datetime
+):
+    """Execute tests sequentially using a single shared conversation session"""
+    if df is None or df.empty:
+        print("No tests to execute")
+        return None
+
+    df = df.reset_index(drop=True)
+    session_id = create_conversation(suite_name, suite_timestamp)
+    if not session_id:
+        print("Failed to create session for single conversation run")
+        return None
+    time.sleep(0.1)
+
+    results = []
+    for ordinal, (_, row) in enumerate(df.iterrows(), start=1):
+        result = process_question(
+            row['Question'],
+            row['Answer'],
+            row['Filename'],
+            agent_name,
+            suite_name,
+            suites_root_folder,
+            suite_timestamp,
+            row.get('ValidationRules', '{}'),
+            row.get('ValidationMode', 'hybrid'),
+            session_id=session_id,
+            conversation_turn=ordinal,
+            conversation_mode=True
+        )
+
+        if result:
+            result['Ordinal'] = ordinal
+            result['ConversationTurn'] = ordinal
+            result['ConversationSessionId'] = session_id
+            results.append(result)
+        else:
+            results.append({
+                'Question': row['Question'],
+                'Filename': row['Filename'],
+                'Answer': row['Answer'],
+                'AgentAnswer': '',
+                'ErrorOccured': 1,
+                'ErrorDetails': 'Failed to process question',
+                'ErrorDetailsFull': 'Failed to process question',
+                'Ordinal': ordinal,
+                'ConversationMode': True,
+                'ConversationTurn': ordinal,
+                'ConversationSessionId': session_id
+            })
+
+    if results:
+        return pd.DataFrame(results)
+
+    return None
+
+if __name__ == "__main__":
+    # Legacy execution - now handled by run_tests.py
+    print("This script is now called through run_tests.py")
+    print("Use: python run_tests.py --suite <suite> --agent <agent>")
+    print("Example: python run_tests.py --suite code-interpreter --agent MAA-02 --quick")

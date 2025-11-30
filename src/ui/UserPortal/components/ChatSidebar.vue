@@ -104,7 +104,7 @@
 										class="chat-sidebar__button"
 										style="color: var(--primary-text) !important"
 										aria-label="Delete conversation"
-										@click.stop="conversationToDelete = session"
+										@click.stop="confirmDeleteSession(session)"
 										@keydown.esc="hideAllPoppers"
 									/>
 									<template #popper><div role="tooltip">Delete conversation</div></template>
@@ -194,49 +194,6 @@
 			</template>
 		</Dialog>
 
-		<!-- Delete session dialog -->
-		<Dialog
-			v-if="conversationToDelete !== null"
-			v-focustrap
-			:visible="conversationToDelete !== null"
-			:closable="false"
-			class="sidebar-dialog"
-			modal
-			header="Delete conversation"
-			@keydown="deleteSessionKeydown"
-		>
-			<div v-if="deleteProcessing" class="delete-dialog-content">
-				<div role="status">
-					<i
-						class="pi pi-spin pi-spinner"
-						style="font-size: 2rem"
-						role="img"
-						aria-label="Loading"
-					></i>
-				</div>
-			</div>
-			<div v-else>
-				<p>Do you want to delete the chat "{{ conversationToDelete.display_name }}" ?</p>
-			</div>
-			<template #footer>
-				<Button
-					class="sidebar-dialog__button"
-					label="Cancel"
-					text
-					autofocus
-					:disabled="deleteProcessing"
-					@click="conversationToDelete = null"
-				/>
-				<Button
-					class="sidebar-dialog__button"
-					label="Delete"
-					severity="danger"
-					:disabled="deleteProcessing"
-					@click="handleDeleteSession"
-				/>
-			</template>
-		</Dialog>
-
 		<Dialog
 			id="settings-modal"
 			v-model:visible="$appStore.settingsModalVisible"
@@ -291,15 +248,15 @@
 											class="custom-checkbox"
 											:class="{
 												'checked': getAgents.enabled,
-												'disabled': isCurrentAgent(getAgents) && getAgents.enabled
+												'disabled': preventDisable(getAgents)
 											}"
-											@click="isCurrentAgent(getAgents) && getAgents.enabled ? null : toggleAgentStatus(getAgents)"
+											@click="preventDisable(getAgents) ? null : toggleAgentStatus(getAgents)"
 											:aria-label="`Toggle agent status - ${getAgents.enabled ? 'enabled' : 'disabled'}${getAgents.isFeatured ? ' (featured agent)' : ''}`"
 											role="checkbox"
 											:aria-checked="getAgents.enabled"
-											:tabindex="isCurrentAgent(getAgents) && getAgents.enabled ? -1 : 0"
-											@keydown.enter="isCurrentAgent(getAgents) && getAgents.enabled ? null : toggleAgentStatus(getAgents)"
-											@keydown.space.prevent="isCurrentAgent(getAgents) && getAgents.enabled ? null : toggleAgentStatus(getAgents)"
+											:tabindex="preventDisable(getAgents) ? -1 : 0"
+											@keydown.enter="preventDisable(getAgents) ? null : toggleAgentStatus(getAgents)"
+											@keydown.space.prevent="preventDisable(getAgents) ? null : toggleAgentStatus(getAgents)"
 										>
 											<i v-if="getAgents.enabled" class="pi pi-check"></i>
 										</div>
@@ -423,6 +380,7 @@ import { useAuthStore } from '@/stores/authStore';
 	declare const process: any;
 
 	import api from '@/js/api';
+	import { useConfirmationStore } from '@/stores/confirmationStore';
 
 	export default {
 		name: 'ChatSidebar',
@@ -443,8 +401,6 @@ import { useAuthStore } from '@/stores/authStore';
 				conversationToUpdate: null as Session | null,
 				newConversationName: '' as string,
 				newConversationMetadata: null as any | null,
-				conversationToDelete: null as Session | null,
-				deleteProcessing: false,
 				isMobile: window.screen.width < 950,
 				createProcessing: false,
 				debounceTimeout: null as ReturnType<typeof setTimeout> | null,
@@ -475,12 +431,6 @@ import { useAuthStore } from '@/stores/authStore';
 
 			currentSession(): Session | null {
 				return (this.$appStore as any).currentSession;
-			},
-
-			featuredAgentNames(): string[] {
-				const featuredNamesString = (this.$appConfigStore as any).featuredAgentNames;
-				if (!featuredNamesString) return [];
-				return featuredNamesString.split(',').map((name: string) => name.trim()).filter((name: string) => name.length > 0);
 			},
 
 			filteredAgents(): AgentOption[] {
@@ -522,6 +472,15 @@ import { useAuthStore } from '@/stores/authStore';
 					if (newVal) {
 						// Trigger reactivity by updating a local data property
 						this.configLoadedTrigger = Date.now();
+					}
+				},
+				immediate: true,
+			},
+			'$appConfigStore.isFeaturedAgentNamesLoaded': {
+				async handler(newVal) {
+					if (newVal) {
+						// Refresh agents now that config (and featuredAgentNames) is loaded
+        		await this.loadAllowedAgents();
 					}
 				},
 				immediate: true,
@@ -579,7 +538,7 @@ import { useAuthStore } from '@/stores/authStore';
 
 			await this.setAgentOptions();
 			await this.loadUserProfile();
-			await this.loadgetAgents();
+			await this.loadAllowedAgents();
 			await this.checkContributorRoles();
 		},
 
@@ -660,59 +619,85 @@ import { useAuthStore } from '@/stores/authStore';
 				}
 			},
 
-		async handleAddSession() {
-			if (this.createProcessing) return;
+			async handleAddSession() {
+				if (this.createProcessing) return;
 
-			if (this.debounceTimeout) {
-				(this.$appStore as any).addToast({
-					severity: 'warn',
-					summary: 'Warning',
-					detail: 'Please wait before creating another session.',
-					life: 3000,
-				});
-				return;
-			}
+				if (this.debounceTimeout) {
+					(this.$appStore as any).addToast({
+						severity: 'warn',
+						summary: 'Warning',
+						detail: 'Please wait before creating another session.',
+						life: 3000,
+					});
+					return;
+				}
 
-			this.createProcessing = true;
+				this.createProcessing = true;
 
-			try {
-			const currentAgent = this.currentSession ? (this.$appStore as any).getSessionAgent(this.currentSession) : null;
-				const mostRecentSession = this.sessions[0];
-				if (mostRecentSession) {
-					const isEmptySession = await (this.$appStore as any).isSessionEmpty(mostRecentSession.sessionId);
-					if (isEmptySession) {
-						const timestamp = (this.$appStore as any).getDefaultChatSessionProperties().name;
-						await (this.$appStore as any).updateConversation(mostRecentSession, timestamp, mostRecentSession.metadata || '');
-						if (currentAgent) {
-							(this.$appStore as any).setSessionAgent(mostRecentSession, currentAgent, true);
+				try {
+				const currentAgent = this.currentSession ? (this.$appStore as any).getSessionAgent(this.currentSession) : null;
+					const mostRecentSession = this.sessions[0];
+					if (mostRecentSession) {
+						const isEmptySession = await (this.$appStore as any).isSessionEmpty(mostRecentSession.sessionId);
+						if (isEmptySession) {
+							const timestamp = (this.$appStore as any).getDefaultChatSessionProperties().name;
+							await (this.$appStore as any).updateConversation(mostRecentSession, timestamp, mostRecentSession.metadata || '');
+							if (currentAgent) {
+								(this.$appStore as any).setSessionAgent(mostRecentSession, currentAgent, true);
+							}
+							this.handleSessionSelected(mostRecentSession);
+							this.debounceTimeout = setTimeout(() => {
+								this.debounceTimeout = null;
+							}, 2000);
+							return;
 						}
-						this.handleSessionSelected(mostRecentSession);
-						this.debounceTimeout = setTimeout(() => {
-							this.debounceTimeout = null;
-						}, 2000);
-						return;
 					}
-				}
-				const newSession = await (this.$appStore as any).addSession();
-				if (currentAgent) {
-					(this.$appStore as any).setSessionAgent(newSession, currentAgent, true);
-				}
-				this.handleSessionSelected(newSession);
+					const newSession = await (this.$appStore as any).addSession();
+					if (currentAgent) {
+						(this.$appStore as any).setSessionAgent(newSession, currentAgent, true);
+					}
+					this.handleSessionSelected(newSession);
 
-				this.debounceTimeout = setTimeout(() => {
-					this.debounceTimeout = null;
-				}, 2000);
-			} catch (error) {
-				(this.$appStore as any).addToast({
-					severity: 'error',
-					summary: 'Error',
-					detail: 'Could not create a new session. Please try again.',
-					life: 5000,
+					this.debounceTimeout = setTimeout(() => {
+						this.debounceTimeout = null;
+					}, 2000);
+				} catch (error) {
+					(this.$appStore as any).addToast({
+						severity: 'error',
+						summary: 'Error',
+						detail: 'Could not create a new session. Please try again.',
+						life: 5000,
+					});
+				} finally {
+					this.createProcessing = false; // Re-enable the button
+				}
+			},
+
+			async confirmDeleteSession(session: Session) {
+				const confirmationStore = useConfirmationStore();
+				const confirmed = await confirmationStore.confirmAsync({
+					title: 'Delete conversation',
+					message: `Do you want to delete the chat "${session.display_name}" ?`,
+					confirmText: 'Yes',
+					cancelText: 'Cancel',
+					confirmButtonSeverity: 'danger',
 				});
-			} finally {
-				this.createProcessing = false; // Re-enable the button
-			}
-		},
+
+				if (!confirmed) {
+					return;
+				}
+
+				try {
+					await (this.$appStore as any).deleteSession(session);
+				} catch (error) {
+					(this.$appStore as any).addToast({
+						severity: 'error',
+						summary: 'Error',
+						detail: 'Could not delete the session. Please try again.',
+						life: 5000,
+					});
+				}
+			},
 
 			handleUpdateConversation() {
 				let metadataJson = this.newConversationMetadata;
@@ -734,23 +719,6 @@ import { useAuthStore } from '@/stores/authStore';
 				this.newConversationMetadata = '';
 			},
 
-			async handleDeleteSession() {
-				this.deleteProcessing = true;
-				try {
-					await (this.$appStore as any).deleteSession(this.conversationToDelete!);
-					this.conversationToDelete = null;
-				} catch (error) {
-					(this.$appStore as any).addToast({
-						severity: 'error',
-						summary: 'Error',
-						detail: 'Could not delete the session. Please try again.',
-						life: 5000,
-					});
-				} finally {
-					this.deleteProcessing = false;
-				}
-			},
-
 			updateConversationInputKeydown(event: KeyboardEvent) {
 				if (event.key === 'Enter') {
 					this.handleUpdateConversation();
@@ -760,17 +728,11 @@ import { useAuthStore } from '@/stores/authStore';
 				}
 			},
 
-			deleteSessionKeydown(event: KeyboardEvent) {
-				if (event.key === 'Escape') {
-					this.conversationToDelete = null;
-				}
-			},
-
-			handleChatKeydown(event: KeyboardEvent, session: Session) {
+			async handleChatKeydown(event: KeyboardEvent, session: Session) {
 				// MacOS'ta "Delete" tuşu aslında "Backspace" olarak algılanır.
 				if (event.key === 'Delete' || event.key === 'Backspace') {
-					this.conversationToDelete = session;
 					event.preventDefault();
+					await this.confirmDeleteSession(session);
 				}
 			},
 
@@ -807,7 +769,12 @@ import { useAuthStore } from '@/stores/authStore';
 				}
 			},
 
-			async loadgetAgents() {
+			async loadAllowedAgents() {
+
+				if (!this.$appConfigStore.isFeaturedAgentNamesLoaded) {
+					return; // the watcher will re-invoke this when the featured agent names are available.
+				}
+
 				this.loadingAgents2 = true;
 				this.agentError2 = '';
 
@@ -824,7 +791,8 @@ import { useAuthStore } from '@/stores/authStore';
 						const isAgentSelected = this.userProfile?.agents?.includes(agent.object_id) || false;
 
 						// Check if this agent is a featured agent (by name, as per memory: resource names are reliable identifiers)
-						const isFeaturedAgent = this.featuredAgentNames.includes(agent.name);
+						const isFeaturedAgent = this.$appConfigStore.featuredAgentNames?.includes(agent.name);
+						const isPinnedFeaturedAgent = this.$appConfigStore.pinnedFeaturedAgentNames?.includes(agent.name);
 
 						return {
 							object_id: agent.object_id,
@@ -837,6 +805,7 @@ import { useAuthStore } from '@/stores/authStore';
 							enabled: isAgentSelected,
 							isReadonly: isAgentReadonly(ResourceProviderGetResult.roles || []),
 							isFeatured: isFeaturedAgent, // Add featured flag for UI logic
+							isPinnedFeatured: isPinnedFeaturedAgent
 						};
 					});
 				} catch (error) {
@@ -850,13 +819,19 @@ import { useAuthStore } from '@/stores/authStore';
 
 			async refreshAgents() {
 				await this.loadUserProfile();
-				await this.loadgetAgents();
+				await this.loadAllowedAgents();
 			},
 
 			isCurrentAgent(agent: AgentOption): boolean {
 				const currentAgent = (this.$appStore as any).getSessionAgent((this.$appStore as any).currentSession);
 				if (!currentAgent) return false;
 				return currentAgent.resource?.object_id === agent.object_id;
+			},
+
+			preventDisable(agent: AgentOption): boolean {
+				// Prevent disabling if it's the current agent in use
+				return agent.enabled
+					&& (this.isCurrentAgent(agent) || agent.isPinnedFeatured);
 			},
 
 			selectAgent(getAgents: AgentOption) {
@@ -866,7 +841,7 @@ import { useAuthStore } from '@/stores/authStore';
 			async toggleAgentStatus(agent: AgentOption) {
 
 				// Prevent disabling the current conversation's agent
-				if (this.isCurrentAgent(agent) && agent.enabled) {
+				if (this.preventDisable(agent)) {
 					(this.$appStore as any).addToast({
 						severity: 'warn',
 						life: 5000,

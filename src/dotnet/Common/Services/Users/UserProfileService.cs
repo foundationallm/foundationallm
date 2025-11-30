@@ -3,9 +3,9 @@ using FoundationaLLM.Common.Constants.Configuration;
 using FoundationaLLM.Common.Constants.ResourceProviders;
 using FoundationaLLM.Common.Exceptions;
 using FoundationaLLM.Common.Interfaces;
-using FoundationaLLM.Common.Models.Configuration.AppConfiguration;
 using FoundationaLLM.Common.Models.Configuration.Users;
 using FoundationaLLM.Common.Models.ResourceProviders;
+using FoundationaLLM.Common.Models.ResourceProviders.Agent;
 using FoundationaLLM.Common.Models.ResourceProviders.Configuration;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
@@ -19,6 +19,7 @@ namespace FoundationaLLM.Common.Services.Users
         private readonly ILogger<UserProfileService> _logger;
         private readonly IOrchestrationContext _callContext;
         private readonly IResourceProviderService _configurationResourceProvider;
+        private readonly IResourceProviderService _agentResourceProvider;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="UserProfileService"/> class.
@@ -38,6 +39,9 @@ namespace FoundationaLLM.Common.Services.Users
             _logger = logger;
             _callContext = callContext;
 
+            _agentResourceProvider = resourceProviderServices
+                .SingleOrDefault(rp => rp.Name == ResourceProviderNames.FoundationaLLM_Agent)
+                ?? throw new ResourceProviderException($"The resource provider service for '{ResourceProviderNames.FoundationaLLM_Agent}' is not registered.");
             _configurationResourceProvider = resourceProviderServices
                 .SingleOrDefault(rp => rp.Name == ResourceProviderNames.FoundationaLLM_Configuration)
                 ?? throw new ResourceProviderException($"The resource provider service for '{ResourceProviderNames.FoundationaLLM_Configuration}' is not registered.");
@@ -164,28 +168,42 @@ namespace FoundationaLLM.Common.Services.Users
 
             if (userProfile.UpdatedOn == DateTimeOffset.MinValue)
             {
-                // Reset selected agents to featured agents.
+                // Reset selected agents to all existing agents.
 
-                var userPortalAppConfigurationSet = await _configurationResourceProvider.GetResourceAsync<AppConfigurationSet>(
+                //var userPortalAppConfigurationSet = await _configurationResourceProvider.GetResourceAsync<AppConfigurationSet>(
+                //    _callContext.InstanceId!,
+                //    WellKnownAppConfigurationSetNames.UserPortal,
+                //    _callContext.CurrentUserIdentity!);
+
+                //if (userPortalAppConfigurationSet.ConfigurationValues.TryGetValue(
+                //        AppConfigurationKeys.FoundationaLLM_UserPortal_Configuration_FeaturedAgentNames, out var featuredAgentsConfigValueObj)
+                //    && featuredAgentsConfigValueObj is string featuredAgents
+                //    && !string.IsNullOrWhiteSpace(featuredAgents))
+                //{
+                //    userProfile.Agents = [.. featuredAgents
+                //        .Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
+                //        .Select(agentName => ResourcePath.GetObjectId(
+                //            _callContext.InstanceId!,
+                //            ResourceProviderNames.FoundationaLLM_Agent,
+                //            AgentResourceTypeNames.Agents,
+                //            agentName))];
+                //    userProfile.UpdatedOn = DateTimeOffset.UtcNow;
+                //    await _cosmosDBService.UpsertUserProfileAsync(userProfile);
+                //}
+
+                var agents = await _agentResourceProvider.GetResourcesAsync<AgentBase>(
                     _callContext.InstanceId!,
-                    WellKnownAppConfigurationSetNames.UserPortal,
-                    _callContext.CurrentUserIdentity!);
+                    _callContext.CurrentUserIdentity!,
+                    new ResourceProviderGetOptions
+                    {
+                        IncludeActions = false,
+                        IncludeRoles = false
+                    });
 
-                if (userPortalAppConfigurationSet.ConfigurationValues.TryGetValue(
-                        AppConfigurationKeys.FoundationaLLM_UserPortal_Configuration_FeaturedAgentNames, out var featuredAgentsConfigValueObj)
-                    && featuredAgentsConfigValueObj is string featuredAgents
-                    && !string.IsNullOrWhiteSpace(featuredAgents))
-                {
-                    userProfile.Agents = [.. featuredAgents
-                        .Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
-                        .Select(agentName => ResourcePath.GetObjectId(
-                            _callContext.InstanceId!,
-                            ResourceProviderNames.FoundationaLLM_Agent,
-                            AgentResourceTypeNames.Agents,
-                            agentName))];
-                    userProfile.UpdatedOn = DateTimeOffset.UtcNow;
-                    await _cosmosDBService.UpsertUserProfileAsync(userProfile);
-                }
+                userProfile.Agents = [.. agents
+                    .Select(a => a.Resource.ObjectId!)];
+                userProfile.UpdatedOn = DateTimeOffset.UtcNow;
+                await _cosmosDBService.UpsertUserProfileAsync(userProfile);
             }
 
             return userProfile;

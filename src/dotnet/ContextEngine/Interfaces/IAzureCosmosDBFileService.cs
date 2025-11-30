@@ -51,7 +51,22 @@ namespace FoundationaLLM.Context.Interfaces
         /// <param name="fileId">The idenfier of the file.</param>
         /// <param name="userPrincipalName">The user principal name of the user associated with the file record.</param>
         /// <returns></returns>
+        /// <remarks>Bypassing owner check cannot be performed here as we need the partition key (which is the UPN)
+        /// to perform the delete operation.</remarks>
         Task DeleteFileRecord(
+            string instanceId,
+            string fileId,
+            string userPrincipalName);
+
+        /// <summary>
+        /// Determines whether a file record exists for the specified file and user.
+        /// </summary>
+        /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
+        /// <param name="fileId">The unique identifier of the file to check for existence. Cannot be null or empty.</param>
+        /// <param name="userPrincipalName">The user principal name associated with the file record. Cannot be null or empty.</param>
+        /// <returns>A task that represents the asynchronous operation. The task result is <see langword="true"/> if the file
+        /// record exists for the specified user and instance; otherwise, <see langword="false"/>.</returns>
+        Task<bool> FileRecordExists(
             string instanceId,
             string fileId,
             string userPrincipalName);

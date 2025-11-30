@@ -6,9 +6,9 @@ A comprehensive test framework for FoundationaLLM agents that provides automated
 
 ### Prerequisites
 - Python 3.10 or later
-- FoundationaLLM agent with access token
 
 ### Setup (One-time)
+
 1. **Create a local virtual environment:**
    ```powershell
    .\create_venv.ps1
@@ -20,8 +20,18 @@ A comprehensive test framework for FoundationaLLM agents that provides automated
    ```
 
 3. **Install dependencies:**
+   
+   If you are using the framework as a customer:
+
    ```powershell
-   pip install -r requirements.txt
+   pip install <path-to-package>
+   ```
+   If you are developing or contributing to the framework:
+
+   ```powershell
+   # Deploy the Python package in editable mode
+   # Make sure the command is run from the /evaluation/python/agent-test-harness/pkg folder
+   pip install -e .
    ```
 
 4. **Configure environment:**
@@ -29,6 +39,10 @@ A comprehensive test framework for FoundationaLLM agents that provides automated
    copy sample.env .env
    # Edit .env with your values
    ```
+   >[!NOTE]
+   >Remove the lines with `FLLM_ACCESS_TOKEN` and `FLLM_MGMT_BEARER_TOKEN` if you want to use dynamically retrieved bearer tokens.
+   >When using dynamicaly retrieved bearer tokens, ensure you've run the `az login` command and the account you use for login
+   >has sufficient permissions to access the FoundationaLLM agents and/or the management endpoint.
 
 5. **Validate setup:**
    ```powershell
@@ -38,8 +52,33 @@ A comprehensive test framework for FoundationaLLM agents that provides automated
 ### Run Your First Test
 ```powershell
 # Quick test
-python run_tests.py --suite code-interpreter --agent MAA-02 --quick --report
+fllm-agent-eval --suite who-are-you --agent MAA-02 --quick --report
 ```
+
+>[!NOTE] NOTE for developers
+>If you are using Visual Studio Code and you want to debug the evaluation code, you can add the following configuration to your `launch.json` file:
+>```json
+>{
+>   "name": "Python: Agent Evaluation",
+>   "type": "debugpy",
+>   "request": "launch",
+>   "module": "foundationallm_agent_evaluation.run_tests",
+>   "console": "integratedTerminal",
+>   "cwd" : "${workspaceFolder}/evaluation/python/agent-test-harness",
+>   "args": [
+>         "--test-suites-dir", "${env:FOUNDATIONALLM_TEST_SUITES_PATH}",
+>         "--suite", "who-are-you",
+>         "--agents", "MAA-02",
+>         "--quick",
+>         "--report"
+>   ],
+>   "python": "${workspaceFolder}/evaluation/python/agent-test-harness/pkg/.venv/Scripts/python.exe",
+>   "justMyCode": true
+>}
+>```
+>
+>Make sure to set the `FOUNDATIONALLM_TEST_SUITES_PATH` environment variable to point to your test suites directory, as this is the preferred way to provide the test suites path that prevents hardcoding paths in the launch configuration.
+
 
 ## 📋 Test Framework Features
 
@@ -70,56 +109,107 @@ python run_tests.py --suite code-interpreter --agent MAA-02 --quick --report
 ### Basic Test Execution
 ```powershell
 # Run a specific test suite
-python run_tests.py --suite code-interpreter --agent MAA-02
+fllm-agent-eval --suite who-are-you --agent MAA-02
 
 # Quick mode (first N tests)
-python run_tests.py --suite code-interpreter --agent MAA-02 --quick
+fllm-agent-eval --suite who-are-you --agent MAA-02 --quick
 
 # Specific test by index
-python run_tests.py --suite code-interpreter --agent MAA-02 --test-index 3
+fllm-agent-eval --suite who-are-you --agent MAA-02 --test-index 3
 
 # Repeat each test 3 times for reliability testing
-python run_tests.py --suite code-interpreter --agent MAA-02 --repeat-test 3
+fllm-agent-eval --suite who-are-you --agent MAA-02 --repeat-test 3
 ```
 
 ### Advanced Testing
 ```powershell
 # Comprehensive validation with LLM
-python run_tests.py --suite all --agent MAA-02  --report
+fllm-agent-eval --suite all --agent MAA-02  --report
 
-# Cross-agent comparison
-python run_tests.py --suite code-interpreter --agents MAA-02,MAA-04,MAA-06 --report
+# Cross-agent comparison (report generated automatically)
+fllm-agent-eval --suite who-are-you --agents MAA-02,MAA-04,MAA-06 --report
 
 # Repeat tests for reliability analysis
-python run_tests.py --suite code-interpreter --agent MAA-02 --repeat-test 5
+fllm-agent-eval --suite who-are-you --agent MAA-02 --repeat-test 5
 
+# Run the entire suite as a single ordered conversation
+fllm-agent-eval --suite conversational --agent MAA-02 --single-conversation --report
 ```
+
+### Single Conversation Mode
+
+Use the `--single-conversation` switch when you need the harness to execute every test in the suite as part of one persistent conversation session. This mode is useful for multi-turn workflows where later prompts depend on earlier context.
+
+- Tests are executed strictly in the CSV order, regardless of the `--workers` setting (parallelism is disabled).
+- A single session is created and reused for every turn; the HTML report highlights the `Single Conversation` badge, shows the shared session ID, and lists tests in execution order with turn numbers.
+- Results JSON/CSV files include `ConversationMode`, `ConversationTurn`, and `ConversationSessionId` fields so downstream automation can replay or validate the interaction sequence.
+- `--repeat-test` is ignored when conversation mode is enabled (each prompt must stay unique).
 
 ### Test Generation
 ```powershell
 # Interactive mode - create new test suite
-python generate_tests.py --interactive --suite-name my-custom-tests
+fllm-agent-test --interactive --suite-name my-custom-tests
 
 # Generate test variations using suite names
-python generate_tests.py --input-suite code-interpreter --output-suite code-interpreter-variations --strategy variations --count 9
+fllm-agent-test --input-suite code-interpreter --output-suite code-interpreter-variations --strategy variations --count 9
 
 # Generate edge cases
-python generate_tests.py --input seed-tests.csv --output edge-cases.csv --strategy edge-cases --count 3
+fllm-agent-test --input seed-tests.csv --output edge-cases.csv --strategy edge-cases --count 3
 
 # Append to existing suite
-python generate_tests.py --input seed.csv --output test-data/code-interpreter/TestQuestions-code-interpreter.csv --append
+fllm-agent-test --input seed.csv --output test-suites/code-interpreter/TestQuestions-code-interpreter.csv --append
+
+# Create test suite in custom directory
+fllm-agent-test --test-suites-dir /path/to/custom-test-suites --interactive --suite-name my-custom-tests
+
+# Add tests to existing suite in custom directory
+fllm-agent-test --test-suites-dir /path/to/custom-test-suites --interactive --existing-suite code-interpreter
 ```
+
+### Custom Test-Suites Directory
+
+The `--test-suites-dir` switch allows you to maintain test suites in directories outside the repository (e.g., for local-only test suites that shouldn't be checked into source control). When not provided, the default `test-suites/` directory (relative to the script) is used.
+
+>[!IMPORTANT]
+>By convention, the files used by the test suites must be available in a folder named `uploads` located in the same parent directory as the test suites directory. For example, if you specify `--test-suites-dir /path/to/custom-test-suites`, the corresponding files should be placed in `/path/to/uploads`.
+
+#### Using with run_tests.py
+```powershell
+# Run tests from a custom test-suites directory
+fllm-agent-eval --test-suites-dir /path/to/custom-test-suites --suite who-are-you --agent MAA-02
+
+# List suites from a custom directory
+fllm-agent-eval --test-suites-dir /path/to/custom-test-suites --list-suites
+
+# Sync test suites in a custom directory
+fllm-agent-eval --test-suites-dir /path/to/custom-test-suites --sync-test-index
+
+# Validate CSV in a custom directory
+fllm-agent-eval --test-suites-dir /path/to/custom-test-suites --validate-csv who-are-you
+```
+
+#### Using with generate_tests.py
+```powershell
+# Create a new test suite in a custom directory
+fllm-agent-test --test-suites-dir /path/to/custom-test-suites --interactive --suite-name my-local-tests
+
+# Add tests to an existing suite in a custom directory
+fllm-agent-test --test-suites-dir /path/to/custom-test-suites --interactive --existing-suite code-interpreter
+```
+
+>[!NOTE]
+>The custom directory must exist and contain a `test_suites.json` file (or one will be created when you add your first suite). All suite CSV files and the configuration file will be created relative to the specified directory.
 
 ### Interactive Test Suite Creation
 ```powershell
 # Create a new test suite interactively
-python generate_tests.py --interactive --suite-name my-custom-tests
+fllm-agent-test --interactive --suite-name my-custom-tests
 
 # Add tests to an existing test suite
-python generate_tests.py --interactive --existing-suite code-interpreter
+fllm-agent-test --interactive --existing-suite code-interpreter
 
 # If you try to create a suite that already exists, you'll get options:
-python generate_tests.py --interactive --suite-name existing-suite-name
+fllm-agent-test --interactive --suite-name existing-suite-name
 # This will prompt you to:
 # 1. Append new tests to the existing suite
 # 2. Create a new suite with a different name  
@@ -161,13 +251,13 @@ ethereum	ETH	Ethereum	2261.91
 ### Report Generation from Existing Results
 ```powershell
 # Generate HTML report from single JSON results file
-python run_tests.py --report-from-results results/20251021_201101-MAA-02-code-interpreter-results.json
+fllm-agent-eval --report-from-results results/20251021_201101-MAA-02-code-interpreter-results.json
 
 # Generate HTML report from all JSON files in directory
-python run_tests.py --report-from-dir results/
+fllm-agent-eval --report-from-dir results/
 
 # Generate report with custom output directory
-python run_tests.py --report-from-dir results/ --output-dir reports/
+fllm-agent-eval --report-from-dir results/ --output-dir reports/
 
 # The HTML report includes:
 # - Test summary with pass/fail statistics
@@ -183,19 +273,22 @@ python run_tests.py --report-from-dir results/ --output-dir reports/
 ### Utility Commands
 ```powershell
 # List available test suites
-python run_tests.py --list-suites
+fllm-agent-eval --list-suites
 
 # Validate CSV format
-python run_tests.py --validate-csv code-interpreter
+fllm-agent-eval --validate-csv who-are-you
 
 # Dry run (validate config)
-python run_tests.py --suite all --agent MAA-02 --dry-run
+fllm-agent-eval --suite all --agent MAA-02 --dry-run
+
+# Use custom test-suites directory
+fllm-agent-eval --test-suites-dir /path/to/custom-test-suites --suite who-are-you --agent MAA-02
 
 # Generate HTML report from existing results
-python run_tests.py --report-from-results results/20251021_201101-MAA-02-code-interpreter-results.json
+fllm-agent-eval --report-from-results results/20251021_201101-MAA-02-code-interpreter-results.json
 
 # Generate HTML report from all JSON files in directory
-python run_tests.py --report-from-dir results/
+fllm-agent-eval --report-from-dir results/
 ```
 
 ## 📖 Command-Line Reference
@@ -205,9 +298,10 @@ python run_tests.py --report-from-dir results/
 #### Basic Parameters
 | Parameter | Purpose | Values/Examples |
 |-----------|---------|-----------------|
-| `--suite` | Test suite to run | `code-interpreter`, `document-analysis`, `file-operations`, `routing`, `dataframe-tests`, `all` |
+| `--suite` | Test suite to run | `who-are-you`, `code-interpreter`, `document-analysis`, `file-operations`, `routing`, `dataframe-tests`, `all` |
 | `--agent` | Single agent to test | `MAA-02`, `MAA-04`, `MAA-06`, etc. |
 | `--agents` | Multiple agents (comma-separated) | `MAA-02,MAA-04,MAA-06` |
+| `--test-suites-dir` | Path to custom test-suites directory | `--test-suites-dir /path/to/custom-test-suites` (default: `test-suites/` relative to script) |
 
 #### Execution Control
 | Parameter | Purpose | Values/Examples |
@@ -234,20 +328,19 @@ python run_tests.py --report-from-dir results/
 #### Examples
 ```powershell
 # Basic test execution
-python run_tests.py --suite code-interpreter --agent MAA-02
+fllm-agent-eval --suite who-are-you --agent MAA-02
 
 # Multi-agent comparison with validation
-python run_tests.py --suite dataframe-tests --agents MAA-02,MAA-04,MAA-06 --report
+fllm-agent-eval --suite who-are-you --agents MAA-02,MAA-04,MAA-06 --report
 
 # Quick test with specific test
-python run_tests.py --suite document-analysis --agent MAA-02 --quick --test-index 2
+fllm-agent-eval --suite who-are-you --agent MAA-02 --quick --test-index 2
 
 # Repeat tests for reliability analysis
-python run_tests.py --suite code-interpreter --agent MAA-02 --repeat-test 3 --report
+fllm-agent-eval --suite who-are-you --agent MAA-02 --repeat-test 3 --report
 
 # Generate report from existing results
-python run_tests.py --report-from-results results/20251021_220653-MAA-02-dataframe-tests-results.json
-
+fllm-agent-eval --report-from-results results/20251021_220653-MAA-02-dataframe-tests-results.json
 ```
 
 ### generate_tests.py - Test Generation
@@ -258,6 +351,7 @@ python run_tests.py --report-from-results results/20251021_220653-MAA-02-datafra
 | `--interactive` | Enable interactive mode | `--interactive` |
 | `--suite-name` | Name for new test suite | `--suite-name my-custom-tests` |
 | `--existing-suite` | Add to existing suite | `--existing-suite code-interpreter` |
+| `--test-suites-dir` | Path to test-suites directory (default: test-suites/) | `--test-suites-dir /path/to/custom-test-suites` |
 
 #### File-based Generation
 | Parameter | Purpose | Values/Examples |
@@ -269,6 +363,7 @@ python run_tests.py --report-from-results results/20251021_220653-MAA-02-datafra
 | `--strategy` | Generation strategy | `variations`, `edge-cases`, `negative-tests`, `combinations` |
 | `--count` | Number of tests to generate | `--count 5` |
 | `--append` | Append to existing file | `--append` |
+| `--test-suites-dir` | Path to test-suites directory (default: test-suites/) | `--test-suites-dir /path/to/custom-test-suites` |
 
 #### Generation Strategies
 | Strategy | Purpose | Example Output |
@@ -314,10 +409,10 @@ What can you tell me about who are you?,,I am a helpful assistant.,"{""llm_valid
 **Usage:**
 ```powershell
 # Generate 9 variations using suite names (recommended)
-python generate_tests.py --input-suite code-interpreter --output-suite code-interpreter-variations --strategy variations --count 9
+fllm-agent-test --input-suite code-interpreter --output-suite code-interpreter-variations --strategy variations --count 9
 
 # Or using CSV file paths
-python generate_tests.py --input seed-tests.csv --output variations.csv --strategy variations --count 9
+fllm-agent-test --input seed-tests.csv --output variations.csv --strategy variations --count 9
 ```
 
 #### Edge-Cases Strategy Details
@@ -358,10 +453,10 @@ What text is in file-with-特殊字符.txt?,file-with-特殊字符.txt,"File con
 **Usage:**
 ```powershell
 # Generate edge cases using suite names (recommended)
-python generate_tests.py --input-suite document-analysis --output-suite document-analysis-edge-cases --strategy edge-cases --count 5
+fllm-agent-test --input-suite document-analysis --output-suite document-analysis-edge-cases --strategy edge-cases --count 5
 
 # Or using CSV file paths
-python generate_tests.py --input seed-tests.csv --output edge-cases.csv --strategy edge-cases --count 5
+fllm-agent-test --input seed-tests.csv --output edge-cases.csv --strategy edge-cases --count 5
 ```
 
 **Note:** For best results, configure Azure OpenAI credentials in your `.env` file. The LLM will generate more sophisticated edge cases than the basic rule-based fallback.
@@ -412,10 +507,10 @@ Create a PDF with no content specified,,Error: Missing required content for PDF 
 **Usage:**
 ```powershell
 # Generate negative tests using suite names (recommended)
-python generate_tests.py --input-suite code-interpreter --output-suite code-interpreter-negative --strategy negative-tests --count 5
+fllm-agent-test --input-suite code-interpreter --output-suite code-interpreter-negative --strategy negative-tests --count 5
 
 # Or using CSV file paths
-python generate_tests.py --input seed-tests.csv --output negative-tests.csv --strategy negative-tests --count 5
+fllm-agent-test --input seed-tests.csv --output negative-tests.csv --strategy negative-tests --count 5
 ```
 
 **Important Notes:**
@@ -445,25 +540,25 @@ python generate_tests.py --input seed-tests.csv --output negative-tests.csv --st
 #### Examples
 ```powershell
 # Interactive test creation
-python generate_tests.py --interactive --suite-name my-custom-tests
+fllm-agent-test --interactive --suite-name my-custom-tests
 
 # Add tests to existing suite
-python generate_tests.py --interactive --existing-suite code-interpreter
+fllm-agent-test --interactive --existing-suite code-interpreter
 
 # Generate test variations using suite names (recommended)
-python generate_tests.py --input-suite code-interpreter --output-suite code-interpreter-variations --strategy variations --count 9
+fllm-agent-test --input-suite code-interpreter --output-suite code-interpreter-variations --strategy variations --count 9
 
 # Generate edge cases using suite names
-python generate_tests.py --input-suite document-analysis --output-suite document-analysis-edge-cases --strategy edge-cases --count 5
+fllm-agent-test --input-suite document-analysis --output-suite document-analysis-edge-cases --strategy edge-cases --count 5
 
 # Generate variations using CSV file paths
-python generate_tests.py --input seed-tests.csv --output variations.csv --strategy variations --count 10
+fllm-agent-test --input seed-tests.csv --output variations.csv --strategy variations --count 10
 
 # Generate negative tests
-python generate_tests.py --input seed-tests.csv --output negative-tests.csv --strategy negative-tests --count 3
+fllm-agent-test --input seed-tests.csv --output negative-tests.csv --strategy negative-tests --count 3
 
 # Generate combinations
-python generate_tests.py --input seed-tests.csv --output combinations.csv --strategy combinations --count 8
+fllm-agent-test --input seed-tests.csv --output combinations.csv --strategy combinations --count 8
 ```
 
 ### Test Suite Management
@@ -472,26 +567,27 @@ python generate_tests.py --input seed-tests.csv --output combinations.csv --stra
 | Parameter | Purpose | Values/Examples |
 |-----------|---------|-----------------|
 | `--list-suites` | List all available test suites | `--list-suites` |
-| `--validate-csv` | Validate CSV format for a test suite | `--validate-csv code-interpreter` |
+| `--validate-csv` | Validate CSV format for a test suite | `--validate-csv who-are-you` |
 | `--dry-run` | Validate configuration without executing tests | `--dry-run` |
+| `--test-suites-dir` | Path to custom test-suites directory | `--test-suites-dir /path/to/custom-test-suites` |
 
 #### Test Suite Operations
 | Operation | Purpose | Command Example |
 |-----------|---------|-----------------|
-| **List Suites** | Show all available test suites with descriptions | `python run_tests.py --list-suites` |
-| **Validate CSV** | Check CSV format and structure for a specific suite | `python run_tests.py --validate-csv code-interpreter` |
-| **Dry Run** | Validate configuration without running tests | `python run_tests.py --suite code-interpreter --agent MAA-02 --dry-run` |
+| **List Suites** | Show all available test suites with descriptions | `fllm-agent-eval --list-suites` |
+| **Validate CSV** | Check CSV format and structure for a specific suite | `fllm-agent-eval --validate-csv who-are-you` |
+| **Dry Run** | Validate configuration without running tests | `fllm-agent-eval --suite who-are-you --agent MAA-02 --dry-run` |
 
 #### Dry-Run Validation Details
 The `--dry-run` switch performs comprehensive configuration validation without executing tests:
 
 **Environment Validation:**
 - Virtual environment activation (local `.venv` directory)
-- Required environment variables (`FLLM_ACCESS_TOKEN`, `FLLM_ENDPOINT`)
+- Required environment variables (`FLLM_ENDPOINT`)
 - Output directory creation
 
 **Test Suite Validation:**
-- Suite existence in `test_suites.json`
+- Suite existence in `test-suites/test_suites.json`
 - CSV file path configuration
 - CSV file existence verification
 
@@ -513,30 +609,52 @@ The `--dry-run` switch performs comprehensive configuration validation without e
 - CI/CD environment validation
 
 #### Test Suite Configuration
-Test suites are configured in `test_suites.json` with the following structure:
+Test suites are configured in `test-suites/test_suites.json` with the following structure:
 ```json
 {
   "suite-name": {
-    "csv_file": "test-data/suite-name/TestQuestions-suite-name.csv",
+    "csv_file": "test-suites/suite-name/TestQuestions-suite-name.csv",
     "description": "Description of the test suite",
     "quick_mode_limit": 5
   }
 }
 ```
 
+**Custom Test-Suites Directory:**
+You can specify a custom location for test suites using the `--test-suites-dir` parameter. This is useful for:
+- Using different test suites for different environments
+- Sharing test suites across multiple projects
+- Organizing test suites in a custom directory structure
+
+When using `--test-suites-dir`, the system expects:
+- A directory containing a `test_suites.json` configuration file (or it will create a default one)
+- Subdirectories for each test suite (e.g., `who-are-you/`, `code-interpreter/`)
+- CSV files following the naming pattern: `TestQuestions-{suite-name}.csv`
+
+**Note:** CSV file paths in `test_suites.json` should be relative to the test-suites directory (e.g., `who-are-you/TestQuestions-who-are-you.csv`), not absolute paths.
+
 #### Examples
 ```powershell
 # List all available test suites
-python run_tests.py --list-suites
+fllm-agent-eval --list-suites
 
 # Validate CSV format for a specific suite
-python run_tests.py --validate-csv code-interpreter
+fllm-agent-eval --validate-csv who-are-you
 
 # Validate configuration without running tests
-python run_tests.py --suite document-analysis --agent MAA-02 --dry-run
+fllm-agent-eval --suite who-are-you --agent MAA-02 --dry-run
 
 # Check if a suite exists and is properly configured
-python run_tests.py --suite dataframe-tests --agent MAA-02 --dry-run --verbose
+fllm-agent-eval --suite who-are-you --agent MAA-02 --dry-run --verbose
+
+# Use a custom test-suites directory
+fllm-agent-eval --test-suites-dir /path/to/custom-test-suites --suite who-are-you --agent MAA-02
+
+# List suites from a custom directory
+fllm-agent-eval --test-suites-dir /path/to/custom-test-suites --list-suites
+
+# Sync test suites in a custom directory
+fllm-agent-eval --test-suites-dir /path/to/custom-test-suites --sync-test-index
 ```
 
 ## 📁 Test Data Structure
@@ -562,7 +680,7 @@ Question,Filename,ExpectedAnswer,ValidationRules,ValidationMode
 
 ### Test Suite Organization
 ```
-test-data/
+test-suites/
 ├── code-interpreter/
 │   └── TestQuestions-code-interpreter.csv
 ├── document-analysis/
@@ -582,12 +700,12 @@ test-data/
 ### Environment Variables
 Required in `.env` file:
 ```env
-FLLM_ACCESS_TOKEN=keya.your-token.ayek
 FLLM_ENDPOINT=https://your-endpoint.azurecontainerapps.io/instances/your-instance/
 ```
 
 Optional for enhanced features:
 ```env
+FLLM_ACCESS_TOKEN=keya.your-token.ayek
 FLLM_MGMT_ENDPOINT=https://your-mgmt-endpoint/instances/your-instance/
 FLLM_MGMT_BEARER_TOKEN=your-bearer-token
 AZURE_OPENAI_ENDPOINT=https://your-openai-endpoint.openai.azure.com/
@@ -596,11 +714,11 @@ AZURE_OPENAI_DEPLOYMENT=gpt-4
 ```
 
 ### Test Suite Configuration
-Edit `test_suites.json` to add new test suites:
+Edit `test-suites/test_suites.json` to add new test suites:
 ```json
 {
   "my-feature": {
-    "csv_file": "test-data/my-feature/TestQuestions-my-feature.csv",
+    "csv_file": "test-suites/my-feature/TestQuestions-my-feature.csv",
     "description": "Tests for my custom feature",
     "quick_mode_limit": 5
   }
@@ -639,25 +757,24 @@ Total Tokens: 45,230
 ### Continuous Integration
 ```powershell
 # CI-friendly execution
-python run_tests.py --suite all --agent MAA-02 --strict --no-report
+fllm-agent-eval --suite all --agent MAA-02 --strict --no-report
 
 # Save results for artifacts
-python run_tests.py --suite all --agent MAA-02 --output-dir ./ci-results
+fllm-agent-eval --suite all --agent MAA-02 --output-dir ./ci-results
 ```
 
 ### Development Testing
 ```powershell
 # Quick regression test
-python run_tests.py --suite code-interpreter --agent MAA-02 --quick 
+fllm-agent-eval --suite who-are-you --agent MAA-02 --quick 
 # Debug mode
-python run_tests.py --suite code-interpreter --agent MAA-02 --verbose
+fllm-agent-eval --suite who-are-you --agent MAA-02 --verbose
 ```
 
 ### Release Validation
 ```powershell
 # Comprehensive pre-release testing
-python run_tests.py --suite all --agent MAA-02  --report --workers 10
-
+fllm-agent-eval --suite all --agent MAA-02  --report --workers 10
 ```
 
 ## 🔍 Troubleshooting
@@ -674,13 +791,13 @@ python run_tests.py --suite all --agent MAA-02  --report --workers 10
 .\validate_setup.ps1
 
 # Check test suite configuration
-python run_tests.py --list-suites
+fllm-agent-eval --list-suites
 
 # Validate CSV format
-python run_tests.py --validate-csv code-interpreter
+fllm-agent-eval --validate-csv who-are-you
 
 # Dry run to check configuration
-python run_tests.py --suite code-interpreter --agent MAA-02 --dry-run
+fllm-agent-eval --suite who-are-you --agent MAA-02 --dry-run
 ```
 
 ## 📚 Additional Resources
@@ -691,7 +808,7 @@ python run_tests.py --suite code-interpreter --agent MAA-02 --dry-run
 
 For more information, see the inline help:
 ```powershell
-python run_tests.py --help
-python generate_tests.py --help
+fllm-agent-eval --help
+fllm-agent-test --help
 ```
 

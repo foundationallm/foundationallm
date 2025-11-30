@@ -302,10 +302,7 @@
 				}
 
 				// Get featured agent names from config
-				const featuredAgentNames = this.$appConfigStore.featuredAgentNames;
-				const featuredAgentNamesList = featuredAgentNames
-					? featuredAgentNames.split(',').map((name: string) => name.trim())
-					: [];
+				const featuredAgentNamesList = this.$appConfigStore.featuredAgentNames;
 
 				// Separate agents into featured and non-featured
 				const featuredAgents: AgentDropdownOption[] = [];
@@ -341,17 +338,7 @@
 				if (!this.$appStore.getSessionAgent(this.currentSession) && this.currentSession) {
 					let selectedAgent = null;
 
-					if (nonFeaturedAgents.length > 0 && enabledAgentIds.length > 0) {
-						const profileOtherAgents = nonFeaturedAgents.filter(agent =>
-							enabledAgentIds.some(agentId => agentId == agent.value.resource.object_id)
-						);
-
-						if (profileOtherAgents.length > 0) {
-							selectedAgent = profileOtherAgents[0];
-						}
-					}
-
-					if (!selectedAgent && featuredAgents.length > 0) {
+					if (featuredAgents.length > 0) {
 						selectedAgent = featuredAgents[0];
 					}
 

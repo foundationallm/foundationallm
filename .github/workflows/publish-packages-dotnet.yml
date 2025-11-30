@@ -7,6 +7,7 @@ on:
     - "nuget-*.*.*-alpha*"
     - "nuget-*.*.*-beta*"
     - "nuget-*.*.*-rc*"
+    - "nuget-*.*.*-post*"
   workflow_dispatch:
 
 env:

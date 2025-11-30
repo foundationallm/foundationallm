@@ -117,5 +117,15 @@ namespace FoundationaLLM.Context.Services.CosmosDB
                 throw new Exception($"File record with id {fileId} not found for deletion.", ex);
             }
         }
+
+        /// <inheritdoc/>
+        public async Task<bool> FileRecordExists(
+            string instanceId,
+            string fileId,
+            string userPrincipalName) =>
+            await _cosmosDB.ItemExists<ContextFileRecord>(
+                userPrincipalName,
+                fileId,
+                fileRecord => !fileRecord.Deleted);
     }
 }

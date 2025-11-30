@@ -1,6 +1,0 @@
-@VectorizationAPI_HostAddress = http://localhost:5144
-
-GET {{VectorizationAPI_HostAddress}}/status/
-Accept: application/json
-
-###

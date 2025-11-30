@@ -1,0 +1,4 @@
+**foundationallm**.zip
+.venv
+**/dist
+**/*.egg-info

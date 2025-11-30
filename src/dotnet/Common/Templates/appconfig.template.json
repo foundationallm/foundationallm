@@ -640,15 +640,6 @@
             "tags": {}
         },
         {
-            "key": "FoundationaLLM:APIEndpoints:CoreAPI:Configuration:AllowedUploadFileExtensions",
-            "value": "c, cpp, cs, css, csv, doc, docx, gif, html, java, jpeg, jpg, js, json, md, pdf, php, png, pptx, py, rb, sh, tar, tex, ts, txt, xlsx, xml, zip",
-            "key_vault_secret_name": null,
-            "key_vault_secret_value": null,
-            "label": null,
-            "content_type": "",
-            "tags": {}
-        },
-        {
             "key": "FoundationaLLM:APIEndpoints:CoreAPI:Configuration:MaxUploadsPerMessage",
             "value": "{ \"value\": 10, \"value_exceptions\": []}",
             "key_vault_secret_name": null,
@@ -1333,8 +1324,17 @@
             "tags": {}
         },
         {
+            "key": "FoundationaLLM:APIEndpoints:ContextAPI:Configuration:FileService:AllowedFileExtensions",
+            "value": "c, cpp, cs, css, html, java, js, json, jsonl, md, php, py, rb, sh, tex, ts, txt, xml, yaml, yml, gif, jpeg, jpg, png, wav, pdf, docx, pptx, xlsx, csv, zip, tar",
+            "key_vault_secret_name": null,
+            "key_vault_secret_value": null,
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
             "key": "FoundationaLLM:APIEndpoints:ContextAPI:Configuration:FileService:KnowledgeSearchFileExtensions",
-            "value": "c, cpp, cs, css, doc, docx, html, java, js, json, md, pdf, php, pptx, py, rb, sh, tex, ts, txt, gif, jpeg, jpg, png",
+            "value": "c, cpp, cs, css, html, java, js, json, jsonl, md, php, py, rb, sh, tex, ts, txt, xml, yaml, yml, gif, jpeg, jpg, png, wav, pdf, docx, pptx",
             "key_vault_secret_name": null,
             "key_vault_secret_value": null,
             "label": null,
@@ -1343,7 +1343,7 @@
         },
         {
             "key": "FoundationaLLM:APIEndpoints:ContextAPI:Configuration:FileService:KnowledgeSearchContextFileExtensions",
-            "value": "c, cs, cpp, css, html, java, js, json, jsonl, md, php, py, rb, sh, ts, tex, txt, gif, jpeg, jpg, png",
+            "value": "c, cpp, cs, css, html, java, js, json, jsonl, md, php, py, rb, sh, tex, ts, txt, xml, yaml, yml, gif, jpeg, jpg, png, wav",
             "key_vault_secret_name": null,
             "key_vault_secret_value": null,
             "label": null,
@@ -1352,7 +1352,7 @@
         },
         {
             "key": "FoundationaLLM:APIEndpoints:ContextAPI:Configuration:FileService:KnowledgeSearchContextFileMaxSizeBytes",
-            "value": "{\"c,cs,cpp,html,java,js,json,jsonl,md,php,py,rb,sh,ts,tex,txt\": 25000, \"gif,jpeg,jpg,png\":500000}",
+            "value": "{\"c, cpp, cs, css, html, java, js, json, jsonl, md, php, py, rb, sh, tex, ts, txt, xml, yaml, yml\": 1048576, \"gif, jpeg, jpg, png, wav\":20971520}",
             "key_vault_secret_name": null,
             "key_vault_secret_value": null,
             "label": null,

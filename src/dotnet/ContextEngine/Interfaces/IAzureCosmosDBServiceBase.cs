@@ -33,5 +33,19 @@ namespace FoundationaLLM.Context.Interfaces
         /// <returns>The list of retrieved items.</returns>
         Task<List<T>> RetrieveItems<T>(
             QueryDefinition query);
+
+        /// <summary>
+        /// Determines whether an item with the specified partition key and identifier exists in the data store.
+        /// </summary>
+        /// <typeparam name="T">The type of the item to check for existence.</typeparam>
+        /// <param name="partitionKey">The partition key that identifies the logical partition containing the item. Cannot be null or empty.</param>
+        /// <param name="id">The unique identifier of the item within the specified partition. Cannot be null or empty.</param>
+        /// <param name="existencePredicate">An optional predicate function to further validate the existence of the item based on its properties.</param>
+        /// <returns>A task that represents the asynchronous operation. The task result is <see langword="true"/> if the item
+        /// exists; otherwise, <see langword="false"/>.</returns>
+        Task<bool> ItemExists<T>(
+            string partitionKey,
+            string id,
+            Func<T, bool>? existencePredicate);
     }
 }
