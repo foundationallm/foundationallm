@@ -7,14 +7,17 @@ on:
     - "0.*.*-alpha*"
     - "0.*.*-beta*"
     - "0.*.*-rc*"
+    - "0.*.*-post*"
     - "1.*.*"
     - "1.*.*-alpha*"
     - "1.*.*-beta*"
     - "1.*.*-rc*"
+    - "1.*.*-post*"
     - "2.*.*"
     - "2.*.*-alpha*"
     - "2.*.*-beta*"
     - "2.*.*-rc*"
+    - "2.*.*-post*"
   workflow_dispatch:
     inputs: {}
 
