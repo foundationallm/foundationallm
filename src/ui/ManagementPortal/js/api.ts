@@ -85,10 +85,11 @@ export default {
 	/*
 		Analytics
 	 */
-	async getAnalyticsOverview(startDate?: string, endDate?: string) {
+	async getAnalyticsOverview(startDate?: string, endDate?: string, agentName?: string) {
 		const params: any = {};
 		if (startDate) params.startDate = startDate;
 		if (endDate) params.endDate = endDate;
+		if (agentName) params.agentName = agentName;
 		return await this.fetch(`/api/analytics/overview?api-version=${this.apiVersion}`, {
 			method: 'GET',
 			params,
@@ -100,6 +101,16 @@ export default {
 		if (startDate) params.startDate = startDate;
 		if (endDate) params.endDate = endDate;
 		return await this.fetch(`/api/analytics/daily-message-counts?api-version=${this.apiVersion}`, {
+			method: 'GET',
+			params,
+		});
+	},
+
+	async getDailyUserCounts(startDate?: string, endDate?: string) {
+		const params: any = {};
+		if (startDate) params.startDate = startDate;
+		if (endDate) params.endDate = endDate;
+		return await this.fetch(`/api/analytics/daily-user-counts?api-version=${this.apiVersion}`, {
 			method: 'GET',
 			params,
 		});

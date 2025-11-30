@@ -10,7 +10,12 @@ namespace FoundationaLLM.Common.Interfaces
         /// <summary>
         /// Gets analytics overview for the platform.
         /// </summary>
-        Task<AnalyticsOverview> GetAnalyticsOverviewAsync(string instanceId, DateTime? startDate, DateTime? endDate, CancellationToken cancellationToken = default);
+        /// <param name="instanceId">The instance ID.</param>
+        /// <param name="startDate">Optional start date for the analytics period.</param>
+        /// <param name="endDate">Optional end date for the analytics period.</param>
+        /// <param name="agentName">Optional agent name to filter by.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        Task<AnalyticsOverview> GetAnalyticsOverviewAsync(string instanceId, DateTime? startDate, DateTime? endDate, string? agentName = null, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Gets analytics summary for all agents.
@@ -61,5 +66,10 @@ namespace FoundationaLLM.Common.Interfaces
         /// Gets daily message counts per agent for the specified date range.
         /// </summary>
         Task<List<DailyMessageCount>> GetDailyMessageCountsPerAgentAsync(string instanceId, DateTime? startDate, DateTime? endDate, CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// Gets daily user counts per agent for the specified date range.
+        /// </summary>
+        Task<List<DailyUserCount>> GetDailyUserCountsPerAgentAsync(string instanceId, DateTime? startDate, DateTime? endDate, CancellationToken cancellationToken = default);
     }
 }

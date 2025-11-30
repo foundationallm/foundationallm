@@ -131,37 +131,37 @@
 					</div>
 				</Dialog>
 				</div>
+			</div>
 
-				<div class="search-filter">
-					<span class="p-input-icon-left">
-						<i class="pi pi-search" />
-						<InputText 
-							v-model="filters.global.value" 
-							placeholder="Search by Agent Name" 
-							class="p-inputtext-sm"
-						/>
-					</span>
-				</div>
+			<div v-if="chartData" class="chart-container">
+				<Card>
+					<template #title>Daily Usage by Agent</template>
+					<template #content>
+						<div class="chart-wrapper">
+							<canvas ref="chartCanvas"></canvas>
+						</div>
+					</template>
+				</Card>
+			</div>
+
+			<div v-if="userChartData" class="chart-container">
+				<Card>
+					<template #title>Number of Users per Day by Agent</template>
+					<template #content>
+						<div class="chart-wrapper">
+							<canvas ref="userChartCanvas"></canvas>
+						</div>
+					</template>
+				</Card>
 			</div>
 
 			<DataTable 
 				:value="agents" 
 				:paginator="true" 
 				:rows="20" 
-				:globalFilterFields="['agent_name']"
-				v-model:filters="filters"
 				class="agents-table"
 			>
-				<Column field="agent_name" header="Agent Name" sortable filterMatchMode="contains">
-					<template #filter="{ filterModel, filterCallback }">
-						<InputText 
-							v-model="filterModel.value" 
-							type="text" 
-							@input="filterCallback()" 
-							placeholder="Search by name"
-							class="p-column-filter"
-						/>
-					</template>
+				<Column field="agent_name" header="Agent Name" sortable>
 				</Column>
 				<Column field="unique_users" header="Unique Users" sortable>
 					<template #body="slotProps">
@@ -189,22 +189,28 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, computed, watch, nextTick } from 'vue';
+import { ref, onMounted, onUnmounted, computed, watch, nextTick } from 'vue';
 import api from '@/js/api';
+import { Chart, registerables } from 'chart.js';
+
+Chart.register(...registerables);
 
 const loading = ref(true);
 const error = ref<string | null>(null);
 const agents = ref<any[]>([]);
+const chartData = ref<any[]>([]);
+const chartCanvas = ref<HTMLCanvasElement | null>(null);
+let chartInstance: Chart | null = null;
+const userChartData = ref<any[]>([]);
+const userChartCanvas = ref<HTMLCanvasElement | null>(null);
+let userChartInstance: Chart | null = null;
+const filteredAgent = ref<string | null>(null);
 // Initialize date range to last 3 months
 const endDate = ref<Date>(new Date());
 const startDate = ref<Date>(new Date(new Date().setMonth(new Date().getMonth() - 3)));
 const dateRangePanel = ref();
 const showCustomDialog = ref(false);
 
-const filters = ref({
-	global: { value: null, matchMode: 'contains' },
-	agent_name: { value: null, matchMode: 'contains' }
-});
 
 const formatNumber = (num: number) => {
 	if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
@@ -392,7 +398,15 @@ const loadData = async () => {
 	try {
 		const start = startDate.value?.toISOString();
 		const end = endDate.value?.toISOString();
-		agents.value = await api.getAllAgentsAnalytics(start, end);
+		[agents.value, chartData.value, userChartData.value] = await Promise.all([
+			api.getAllAgentsAnalytics(start, end),
+			api.getDailyMessageCounts(start, end),
+			api.getDailyUserCounts(start, end)
+		]);
+		
+		await nextTick();
+		updateChart();
+		updateUserChart();
 	} catch (err: any) {
 		error.value = err.data?.error || err.data?.message || err.message || 'Failed to load agent analytics';
 	} finally {
@@ -400,8 +414,297 @@ const loadData = async () => {
 	}
 };
 
+const updateChart = () => {
+	if (!chartCanvas.value || !chartData.value || chartData.value.length === 0) {
+		return;
+	}
+
+	// Destroy existing chart
+	if (chartInstance) {
+		chartInstance.destroy();
+	}
+
+	// Get all unique agent names
+	const allAgents = new Set<string>();
+	chartData.value.forEach(day => {
+		Object.keys(day.agent_counts || {}).forEach(agent => allAgents.add(agent));
+	});
+	const agentNames = Array.from(allAgents).sort();
+
+	// Filter agents if a filter is active
+	const agentsToShow = filteredAgent.value 
+		? agentNames.filter(agent => agent === filteredAgent.value)
+		: agentNames;
+
+	// Generate colors for each agent
+	const colors = [
+		'#4A90E2', '#50C878', '#FF6B6B', '#FFD93D', '#9B59B6',
+		'#1ABC9C', '#E74C3C', '#F39C12', '#3498DB', '#E67E22',
+		'#95A5A6', '#34495E', '#16A085', '#27AE60', '#2980B9'
+	];
+
+	// Prepare datasets
+	const datasets = agentsToShow.map((agent, index) => {
+		const originalIndex = agentNames.indexOf(agent);
+		return {
+			label: agent,
+			data: chartData.value.map(day => day.agent_counts?.[agent] || 0),
+			backgroundColor: colors[originalIndex % colors.length],
+			borderColor: colors[originalIndex % colors.length],
+			borderWidth: 1
+		};
+	});
+
+	// Prepare labels (dates)
+	const labels = chartData.value.map(day => {
+		// Handle both ISO string and Date object
+		const date = typeof day.date === 'string' ? new Date(day.date) : day.date;
+		return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+	});
+
+	chartInstance = new Chart(chartCanvas.value, {
+		type: 'bar',
+		data: {
+			labels,
+			datasets
+		},
+		options: {
+			responsive: true,
+			maintainAspectRatio: false,
+			onClick: (event, elements) => {
+				if (elements.length > 0) {
+					const element = elements[0];
+					const datasetIndex = element.datasetIndex;
+					const clickedAgent = datasets[datasetIndex].label;
+					
+					// Toggle filter - if already filtered to this agent, clear filter
+					if (filteredAgent.value === clickedAgent) {
+						filteredAgent.value = null;
+					} else {
+						filteredAgent.value = clickedAgent;
+					}
+					updateChart();
+					updateUserChart();
+				}
+			},
+			onHover: (event, elements) => {
+				if (event.native) {
+					(event.native.target as HTMLElement).style.cursor = elements.length > 0 ? 'pointer' : 'default';
+				}
+			},
+			scales: {
+				x: {
+					stacked: true,
+					title: {
+						display: true,
+						text: 'Date'
+					}
+				},
+				y: {
+					stacked: true,
+					beginAtZero: true,
+					title: {
+						display: true,
+						text: 'Number of Messages'
+					}
+				}
+			},
+			plugins: {
+				legend: {
+					display: true,
+					position: 'bottom',
+					onClick: (e, legendItem, legend) => {
+						e.native?.stopPropagation();
+						const clickedAgent = legendItem.text;
+						
+						// Toggle filter - if already filtered to this agent, clear filter
+						if (filteredAgent.value === clickedAgent) {
+							filteredAgent.value = null;
+						} else {
+							filteredAgent.value = clickedAgent;
+						}
+						updateChart();
+						updateUserChart();
+						return false; // Prevent default legend behavior
+					}
+				},
+				title: {
+					display: false
+				}
+			}
+		}
+	});
+};
+
+const updateUserChart = () => {
+	if (!userChartCanvas.value || !userChartData.value || userChartData.value.length === 0) {
+		return;
+	}
+
+	// Destroy existing chart
+	if (userChartInstance) {
+		userChartInstance.destroy();
+	}
+
+	// Get all unique agent names
+	const allAgents = new Set<string>();
+	userChartData.value.forEach(day => {
+		Object.keys(day.agent_counts || {}).forEach(agent => allAgents.add(agent));
+	});
+	const agentNames = Array.from(allAgents).sort();
+
+	// Filter agents if a filter is active
+	const agentsToShow = filteredAgent.value 
+		? agentNames.filter(agent => agent === filteredAgent.value)
+		: agentNames;
+
+	// Generate colors for each agent (same as message chart)
+	const colors = [
+		'#4A90E2', '#50C878', '#FF6B6B', '#FFD93D', '#9B59B6',
+		'#1ABC9C', '#E74C3C', '#F39C12', '#3498DB', '#E67E22',
+		'#95A5A6', '#34495E', '#16A085', '#27AE60', '#2980B9'
+	];
+
+	// Prepare datasets
+	const datasets = agentsToShow.map((agent, index) => {
+		const originalIndex = agentNames.indexOf(agent);
+		return {
+			label: agent,
+			data: userChartData.value.map(day => day.agent_counts?.[agent] || 0),
+			backgroundColor: colors[originalIndex % colors.length],
+			borderColor: colors[originalIndex % colors.length],
+			borderWidth: 1
+		};
+	});
+
+	// Prepare labels (dates)
+	const labels = userChartData.value.map(day => {
+		// Handle both ISO string and Date object
+		const date = typeof day.date === 'string' ? new Date(day.date) : day.date;
+		return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+	});
+
+	userChartInstance = new Chart(userChartCanvas.value, {
+		type: 'bar',
+		data: {
+			labels,
+			datasets
+		},
+		options: {
+			responsive: true,
+			maintainAspectRatio: false,
+			onClick: (event, elements) => {
+				if (elements.length > 0) {
+					const element = elements[0];
+					const datasetIndex = element.datasetIndex;
+					const clickedAgent = datasets[datasetIndex].label;
+					
+					// Toggle filter - if already filtered to this agent, clear filter
+					if (filteredAgent.value === clickedAgent) {
+						filteredAgent.value = null;
+					} else {
+						filteredAgent.value = clickedAgent;
+					}
+					updateChart();
+					updateUserChart();
+				}
+			},
+			onHover: (event, elements) => {
+				if (event.native) {
+					(event.native.target as HTMLElement).style.cursor = elements.length > 0 ? 'pointer' : 'default';
+				}
+			},
+			scales: {
+				x: {
+					stacked: true,
+					title: {
+						display: true,
+						text: 'Date'
+					}
+				},
+				y: {
+					stacked: true,
+					beginAtZero: true,
+					title: {
+						display: true,
+						text: 'Number of Users'
+					}
+				}
+			},
+			plugins: {
+				legend: {
+					display: true,
+					position: 'bottom',
+					onClick: (e, legendItem, legend) => {
+						e.native?.stopPropagation();
+						const clickedAgent = legendItem.text;
+						
+						// Toggle filter - if already filtered to this agent, clear filter
+						if (filteredAgent.value === clickedAgent) {
+							filteredAgent.value = null;
+						} else {
+							filteredAgent.value = clickedAgent;
+						}
+						updateChart();
+						updateUserChart();
+						return false; // Prevent default legend behavior
+					}
+				},
+				title: {
+					display: false
+				}
+			}
+		}
+	});
+};
+
+watch([chartData, chartCanvas], () => {
+	if (chartData.value && chartCanvas.value) {
+		nextTick(() => {
+			updateChart();
+			// Add double-click handler once when canvas is available
+			if (chartCanvas.value && !chartCanvas.value.hasAttribute('data-dblclick-handler')) {
+				chartCanvas.value.setAttribute('data-dblclick-handler', 'true');
+				chartCanvas.value.addEventListener('dblclick', () => {
+					filteredAgent.value = null;
+					updateChart();
+					updateUserChart();
+				});
+			}
+		});
+	}
+}, { deep: true });
+
+watch([userChartData, userChartCanvas], () => {
+	if (userChartData.value && userChartCanvas.value) {
+		nextTick(() => {
+			updateUserChart();
+			// Add double-click handler once when canvas is available
+			if (userChartCanvas.value && !userChartCanvas.value.hasAttribute('data-dblclick-handler')) {
+				userChartCanvas.value.setAttribute('data-dblclick-handler', 'true');
+				userChartCanvas.value.addEventListener('dblclick', () => {
+					filteredAgent.value = null;
+					updateChart();
+					updateUserChart();
+				});
+			}
+		});
+	}
+}, { deep: true });
+
 onMounted(() => {
 	loadData();
+});
+
+onUnmounted(() => {
+	if (chartInstance) {
+		chartInstance.destroy();
+		chartInstance = null;
+	}
+	if (userChartInstance) {
+		userChartInstance.destroy();
+		userChartInstance = null;
+	}
 });
 </script>
 
@@ -415,17 +718,13 @@ onMounted(() => {
 	gap: 1rem;
 	align-items: center;
 	margin-bottom: 2rem;
-	justify-content: space-between;
+	justify-content: flex-start;
 }
 
 .date-range-selector {
 	display: flex;
 	gap: 1rem;
 	align-items: center;
-}
-
-.search-filter {
-	flex: 0 0 auto;
 }
 
 .date-range-menu {
@@ -499,9 +798,21 @@ onMounted(() => {
 	margin-top: 1rem;
 }
 
+.chart-container {
+	margin-top: 0;
+	margin-bottom: 2rem;
+}
+
+.chart-wrapper {
+	position: relative;
+	height: 400px;
+	width: 100%;
+}
+
 .agents-table {
 	margin-top: 0;
 }
+
 
 .p-input-icon-left {
 	position: relative;

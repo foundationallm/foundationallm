@@ -378,13 +378,14 @@ const loadData = async () => {
 	try {
 		const start = startDate.value?.toISOString();
 		const end = endDate.value?.toISOString();
+		const agentFilter = filteredAgent.value;
 		[overview.value, chartData.value] = await Promise.all([
-			api.getAnalyticsOverview(start, end),
+			api.getAnalyticsOverview(start, end, agentFilter || undefined),
 			api.getDailyMessageCounts(start, end)
 		]);
 		console.log('Analytics overview data:', overview.value);
 		console.log('Chart data:', chartData.value);
-		console.log('Date range:', { start, end, startDate: startDate.value, endDate: endDate.value });
+		console.log('Date range:', { start, end, startDate: startDate.value, endDate: endDate.value, agentFilter });
 		
 		await nextTick();
 		updateChart();
@@ -475,6 +476,7 @@ const updateChart = () => {
 						filteredAgent.value = clickedAgent;
 					}
 					updateChart();
+					loadData(); // Reload overview data with agent filter
 				}
 			},
 			onHover: (event, elements) => {
@@ -514,6 +516,7 @@ const updateChart = () => {
 							filteredAgent.value = clickedAgent;
 						}
 						updateChart();
+						loadData(); // Reload overview data with agent filter
 						return false; // Prevent default legend behavior
 					}
 				},
@@ -535,6 +538,7 @@ watch([chartData, chartCanvas], () => {
 				chartCanvas.value.addEventListener('dblclick', () => {
 					filteredAgent.value = null;
 					updateChart();
+					loadData(); // Reload overview data without agent filter
 				});
 			}
 		});

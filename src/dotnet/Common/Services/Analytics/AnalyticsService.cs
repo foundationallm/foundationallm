@@ -20,7 +20,7 @@ namespace FoundationaLLM.Common.Services.Analytics
         private readonly ILogger<AnalyticsService> _logger = logger;
 
         /// <inheritdoc/>
-        public async Task<AnalyticsOverview> GetAnalyticsOverviewAsync(string instanceId, DateTime? startDate, DateTime? endDate, CancellationToken cancellationToken = default)
+        public async Task<AnalyticsOverview> GetAnalyticsOverviewAsync(string instanceId, DateTime? startDate, DateTime? endDate, string? agentName = null, CancellationToken cancellationToken = default)
         {
             var start = startDate ?? DateTime.UtcNow.AddDays(-30);
             var end = endDate ?? DateTime.UtcNow;
@@ -29,26 +29,74 @@ namespace FoundationaLLM.Common.Services.Analytics
 
             try
             {
-                // Get total conversations - use SELECT instead of SELECT VALUE to return JSON object
-                var sessionsQuery = new QueryDefinition("SELECT COUNT(1) AS count FROM c WHERE c.type = @type AND c._ts >= @startTimestamp AND c._ts < @endTimestamp")
-                    .WithParameter("@type", "Session")
-                    .WithParameter("@startTimestamp", startTimestamp)
-                    .WithParameter("@endTimestamp", endTimestamp);
-                var totalConversations = await ExecuteCountQueryAsync(sessionsQuery, cancellationToken);
+                // Build query for conversations - if agentName is provided, filter by sessions that have messages from that agent
+                int totalConversations;
+                if (!string.IsNullOrEmpty(agentName))
+                {
+                    // Get distinct sessions that have at least one message from the specified agent
+                    // Cosmos DB doesn't support COUNT(DISTINCT) directly, so we'll get distinct sessionIds and count
+                    var sessionsQuery = new QueryDefinition("SELECT DISTINCT c.sessionId FROM c WHERE c.type = @type AND c.sender = @sender AND c.senderDisplayName = @agentName AND c._ts >= @startTimestamp AND c._ts < @endTimestamp AND IS_DEFINED(c.sessionId) AND c.sessionId != null")
+                        .WithParameter("@type", "Message")
+                        .WithParameter("@sender", "Agent")
+                        .WithParameter("@agentName", agentName)
+                        .WithParameter("@startTimestamp", startTimestamp)
+                        .WithParameter("@endTimestamp", endTimestamp);
+                    var distinctSessions = await _cosmosDBService.QueryItemsAsync<System.Text.Json.JsonElement>(
+                        AzureCosmosDBContainers.Sessions,
+                        sessionsQuery,
+                        cancellationToken);
+                    totalConversations = distinctSessions.Count;
+                }
+                else
+                {
+                    var sessionsQuery = new QueryDefinition("SELECT COUNT(1) AS count FROM c WHERE c.type = @type AND c._ts >= @startTimestamp AND c._ts < @endTimestamp")
+                        .WithParameter("@type", "Session")
+                        .WithParameter("@startTimestamp", startTimestamp)
+                        .WithParameter("@endTimestamp", endTimestamp);
+                    totalConversations = await ExecuteCountQueryAsync(sessionsQuery, cancellationToken);
+                }
 
                 // Get total tokens - tokens are stored in Message documents, not Session documents
                 // Sum all tokens from Message documents (both User and Agent messages)
-                var tokensQuery = new QueryDefinition("SELECT SUM(c.tokens) AS sum FROM c WHERE c.type = @type AND c._ts >= @startTimestamp AND c._ts < @endTimestamp AND IS_DEFINED(c.tokens)")
-                    .WithParameter("@type", "Message")
-                    .WithParameter("@startTimestamp", startTimestamp)
-                    .WithParameter("@endTimestamp", endTimestamp);
+                // If agentName is provided, only count tokens from that agent's messages
+                QueryDefinition tokensQuery;
+                if (!string.IsNullOrEmpty(agentName))
+                {
+                    tokensQuery = new QueryDefinition("SELECT SUM(c.tokens) AS sum FROM c WHERE c.type = @type AND c.sender = @sender AND c.senderDisplayName = @agentName AND c._ts >= @startTimestamp AND c._ts < @endTimestamp AND IS_DEFINED(c.tokens)")
+                        .WithParameter("@type", "Message")
+                        .WithParameter("@sender", "Agent")
+                        .WithParameter("@agentName", agentName)
+                        .WithParameter("@startTimestamp", startTimestamp)
+                        .WithParameter("@endTimestamp", endTimestamp);
+                }
+                else
+                {
+                    tokensQuery = new QueryDefinition("SELECT SUM(c.tokens) AS sum FROM c WHERE c.type = @type AND c._ts >= @startTimestamp AND c._ts < @endTimestamp AND IS_DEFINED(c.tokens)")
+                        .WithParameter("@type", "Message")
+                        .WithParameter("@startTimestamp", startTimestamp)
+                        .WithParameter("@endTimestamp", endTimestamp);
+                }
                 var totalTokens = await ExecuteSumQueryAsync(tokensQuery, cancellationToken);
 
                 // Get unique users - Cosmos DB doesn't support COUNT(DISTINCT) directly, so we'll get distinct UPNs and count
-                var usersQuery = new QueryDefinition("SELECT DISTINCT c.upn FROM c WHERE c.type = @type AND c._ts >= @startTimestamp AND c._ts < @endTimestamp AND IS_DEFINED(c.upn) AND c.upn != null")
-                    .WithParameter("@type", "Session")
-                    .WithParameter("@startTimestamp", startTimestamp)
-                    .WithParameter("@endTimestamp", endTimestamp);
+                // If agentName is provided, only count users who interacted with that agent
+                QueryDefinition usersQuery;
+                if (!string.IsNullOrEmpty(agentName))
+                {
+                    usersQuery = new QueryDefinition("SELECT DISTINCT c.upn FROM c WHERE c.type = @type AND c.sender = @sender AND c.senderDisplayName = @agentName AND c._ts >= @startTimestamp AND c._ts < @endTimestamp AND IS_DEFINED(c.upn) AND c.upn != null")
+                        .WithParameter("@type", "Message")
+                        .WithParameter("@sender", "Agent")
+                        .WithParameter("@agentName", agentName)
+                        .WithParameter("@startTimestamp", startTimestamp)
+                        .WithParameter("@endTimestamp", endTimestamp);
+                }
+                else
+                {
+                    usersQuery = new QueryDefinition("SELECT DISTINCT c.upn FROM c WHERE c.type = @type AND c._ts >= @startTimestamp AND c._ts < @endTimestamp AND IS_DEFINED(c.upn) AND c.upn != null")
+                        .WithParameter("@type", "Session")
+                        .WithParameter("@startTimestamp", startTimestamp)
+                        .WithParameter("@endTimestamp", endTimestamp);
+                }
                 var distinctUsers = await _cosmosDBService.QueryItemsAsync<System.Text.Json.JsonElement>(
                     AzureCosmosDBContainers.Sessions,
                     usersQuery,
@@ -56,16 +104,36 @@ namespace FoundationaLLM.Common.Services.Analytics
                 var activeUsers = distinctUsers.Count;
 
                 // Get distinct agents - query Message documents for distinct senderDisplayName where sender = "Agent"
-                var agentsQuery = new QueryDefinition("SELECT DISTINCT c.senderDisplayName FROM c WHERE c.type = @type AND c.sender = @sender AND c._ts >= @startTimestamp AND c._ts < @endTimestamp AND IS_DEFINED(c.senderDisplayName) AND c.senderDisplayName != null")
-                    .WithParameter("@type", "Message")
-                    .WithParameter("@sender", "Agent")
-                    .WithParameter("@startTimestamp", startTimestamp)
-                    .WithParameter("@endTimestamp", endTimestamp);
-                var distinctAgents = await _cosmosDBService.QueryItemsAsync<System.Text.Json.JsonElement>(
-                    AzureCosmosDBContainers.Sessions,
-                    agentsQuery,
-                    cancellationToken);
-                var totalAgents = distinctAgents.Count;
+                // If agentName is provided, totalAgents will be 1 (just that agent) or 0
+                int totalAgents;
+                if (!string.IsNullOrEmpty(agentName))
+                {
+                    // Check if the agent exists in the date range
+                    var agentCheckQuery = new QueryDefinition("SELECT TOP 1 c.senderDisplayName FROM c WHERE c.type = @type AND c.sender = @sender AND c.senderDisplayName = @agentName AND c._ts >= @startTimestamp AND c._ts < @endTimestamp AND IS_DEFINED(c.senderDisplayName) AND c.senderDisplayName != null")
+                        .WithParameter("@type", "Message")
+                        .WithParameter("@sender", "Agent")
+                        .WithParameter("@agentName", agentName)
+                        .WithParameter("@startTimestamp", startTimestamp)
+                        .WithParameter("@endTimestamp", endTimestamp);
+                    var agentCheck = await _cosmosDBService.QueryItemsAsync<System.Text.Json.JsonElement>(
+                        AzureCosmosDBContainers.Sessions,
+                        agentCheckQuery,
+                        cancellationToken);
+                    totalAgents = agentCheck.Any() ? 1 : 0;
+                }
+                else
+                {
+                    var agentsQuery = new QueryDefinition("SELECT DISTINCT c.senderDisplayName FROM c WHERE c.type = @type AND c.sender = @sender AND c._ts >= @startTimestamp AND c._ts < @endTimestamp AND IS_DEFINED(c.senderDisplayName) AND c.senderDisplayName != null")
+                        .WithParameter("@type", "Message")
+                        .WithParameter("@sender", "Agent")
+                        .WithParameter("@startTimestamp", startTimestamp)
+                        .WithParameter("@endTimestamp", endTimestamp);
+                    var distinctAgents = await _cosmosDBService.QueryItemsAsync<System.Text.Json.JsonElement>(
+                        AzureCosmosDBContainers.Sessions,
+                        agentsQuery,
+                        cancellationToken);
+                    totalAgents = distinctAgents.Count;
+                }
 
                 return new AnalyticsOverview
                 {
@@ -941,6 +1009,117 @@ namespace FoundationaLLM.Common.Services.Analytics
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error getting daily message counts per agent");
+                throw;
+            }
+        }
+
+        /// <inheritdoc/>
+        public async Task<List<DailyUserCount>> GetDailyUserCountsPerAgentAsync(string instanceId, DateTime? startDate, DateTime? endDate, CancellationToken cancellationToken = default)
+        {
+            var start = startDate ?? DateTime.UtcNow.AddDays(-30);
+            var end = endDate ?? DateTime.UtcNow;
+            var startTimestamp = ((DateTimeOffset)start).ToUnixTimeSeconds();
+            var endTimestamp = ((DateTimeOffset)end).ToUnixTimeSeconds();
+
+            try
+            {
+                // Query agent messages grouped by date, agent, and user
+                var query = new QueryDefinition(@"
+                    SELECT 
+                        c._ts as timestamp,
+                        c.senderDisplayName as agentName,
+                        c.upn as username
+                    FROM c 
+                    WHERE c.type = @type 
+                        AND c.sender = @sender 
+                        AND c._ts >= @startTimestamp 
+                        AND c._ts < @endTimestamp
+                        AND IS_DEFINED(c.senderDisplayName) 
+                        AND c.senderDisplayName != null
+                        AND IS_DEFINED(c.upn)
+                        AND c.upn != null")
+                    .WithParameter("@type", "Message")
+                    .WithParameter("@sender", "Agent")
+                    .WithParameter("@startTimestamp", startTimestamp)
+                    .WithParameter("@endTimestamp", endTimestamp);
+
+                var results = await _cosmosDBService.QueryItemsAsync<Dictionary<string, object>>(
+                    AzureCosmosDBContainers.Sessions,
+                    query,
+                    cancellationToken);
+
+                // Group by date and agent, then count distinct users per day per agent
+                var dailyCounts = new Dictionary<DateTime, Dictionary<string, HashSet<string>>>();
+
+                foreach (var result in results)
+                {
+                    if (result.TryGetValue("timestamp", out var tsValue) && 
+                        result.TryGetValue("agentName", out var agentValue) &&
+                        result.TryGetValue("username", out var userValue))
+                    {
+                        if (tsValue is long timestamp && 
+                            agentValue is string agentName && 
+                            userValue is string username)
+                        {
+                            var date = DateTimeOffset.FromUnixTimeSeconds(timestamp).Date;
+
+                            if (!dailyCounts.ContainsKey(date))
+                            {
+                                dailyCounts[date] = new Dictionary<string, HashSet<string>>();
+                            }
+
+                            if (!dailyCounts[date].ContainsKey(agentName))
+                            {
+                                dailyCounts[date][agentName] = new HashSet<string>();
+                            }
+
+                            dailyCounts[date][agentName].Add(username);
+                        }
+                    }
+                }
+
+                // Convert to list and fill in missing dates
+                var resultList = new List<DailyUserCount>();
+                var currentDate = start.Date;
+                var allAgents = dailyCounts.Values
+                    .SelectMany(d => d.Keys)
+                    .Distinct()
+                    .OrderBy(a => a)
+                    .ToList();
+
+                while (currentDate <= end.Date)
+                {
+                    var dailyCount = new DailyUserCount
+                    {
+                        Date = currentDate,
+                        AgentCounts = new Dictionary<string, int>()
+                    };
+
+                    if (dailyCounts.ContainsKey(currentDate))
+                    {
+                        foreach (var agent in allAgents)
+                        {
+                            dailyCount.AgentCounts[agent] = dailyCounts[currentDate].GetValueOrDefault(agent, new HashSet<string>()).Count;
+                        }
+                    }
+                    else
+                    {
+                        // No users for this date, set all agents to 0
+                        foreach (var agent in allAgents)
+                        {
+                            dailyCount.AgentCounts[agent] = 0;
+                        }
+                    }
+
+                    resultList.Add(dailyCount);
+                    currentDate = currentDate.AddDays(1);
+                }
+
+                return resultList.OrderBy(d => d.Date).ToList();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error getting daily user counts per agent");
                 throw;
             }
         }

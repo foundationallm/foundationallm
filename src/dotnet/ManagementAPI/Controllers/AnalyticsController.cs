@@ -28,18 +28,20 @@ namespace FoundationaLLM.Management.API.Controllers
         /// </summary>
         /// <param name="startDate">Optional start date for the analytics period.</param>
         /// <param name="endDate">Optional end date for the analytics period.</param>
+        /// <param name="agentName">Optional agent name to filter by.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>Analytics overview.</returns>
         [HttpGet("overview")]
         public async Task<ActionResult<AnalyticsOverview>> GetAnalyticsOverviewAsync(
             [FromQuery] DateTime? startDate,
             [FromQuery] DateTime? endDate,
+            [FromQuery] string? agentName = null,
             CancellationToken cancellationToken = default)
         {
             try
             {
                 var instanceId = _callContext.InstanceId;
-                var overview = await _analyticsService.GetAnalyticsOverviewAsync(instanceId, startDate, endDate, cancellationToken);
+                var overview = await _analyticsService.GetAnalyticsOverviewAsync(instanceId, startDate, endDate, agentName, cancellationToken);
                 return Ok(overview);
             }
             catch (Exception ex)
@@ -374,6 +376,31 @@ namespace FoundationaLLM.Management.API.Controllers
             {
                 var instanceId = _callContext.InstanceId;
                 var dailyCounts = await _analyticsService.GetDailyMessageCountsPerAgentAsync(instanceId, startDate, endDate, cancellationToken);
+                return Ok(dailyCounts);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { error = ex.Message });
+            }
+        }
+
+        /// <summary>
+        /// Gets daily user counts per agent for the specified date range.
+        /// </summary>
+        /// <param name="startDate">Optional start date for the analytics period.</param>
+        /// <param name="endDate">Optional end date for the analytics period.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>List of daily user counts per agent.</returns>
+        [HttpGet("daily-user-counts")]
+        public async Task<ActionResult<List<DailyUserCount>>> GetDailyUserCountsPerAgentAsync(
+            [FromQuery] DateTime? startDate,
+            [FromQuery] DateTime? endDate,
+            CancellationToken cancellationToken = default)
+        {
+            try
+            {
+                var instanceId = _callContext.InstanceId;
+                var dailyCounts = await _analyticsService.GetDailyUserCountsPerAgentAsync(instanceId, startDate, endDate, cancellationToken);
                 return Ok(dailyCounts);
             }
             catch (Exception ex)
