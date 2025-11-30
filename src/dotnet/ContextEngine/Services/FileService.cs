@@ -166,6 +166,10 @@ namespace FoundationaLLM.Context.Services
                             {
                                 // NOTE: In the current version, media files are considered safe.
                             }
+                            else if (ContentTypeMappings.MicrosoftOfficeLegacyContentTypes.Contains(contentType.ToLower()))
+                            {
+                                // NOTE: In the current version, legacy Microsoft Office files cannot be processed for safety.
+                            }
                             else
                                 safetyBreachDetected = await IsFileUnsafe(
                                     instanceId,
