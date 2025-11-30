@@ -25,6 +25,12 @@ namespace FoundationaLLM.Common.Constants.Configuration
             "FoundationaLLM:Configuration:*";
         
         /// <summary>
+        /// Filter for the configuration section used to identify the settings for analytics.
+        /// </summary>
+        public const string FoundationaLLM_Analytics =
+            "FoundationaLLM:Analytics:*";
+        
+        /// <summary>
         /// Filter for the configuration section used to identify the Python SDK settings.
         /// </summary>
         public const string FoundationaLLM_PythonSDK =

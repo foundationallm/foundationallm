@@ -33,6 +33,9 @@ import IconField from 'primevue/iconfield';
 import InputIcon from 'primevue/inputicon';
 import Slider from 'primevue/slider';
 import InputTextArea from 'primevue/textarea';
+import ProgressSpinner from 'primevue/progressspinner';
+import Message from 'primevue/message';
+import OverlayPanel from 'primevue/overlaypanel';
 
 import { defineNuxtPlugin } from '#app';
 
@@ -70,5 +73,8 @@ export default defineNuxtPlugin((nuxtApp) => {
 	nuxtApp.vueApp.component('InputIcon', InputIcon);
 	nuxtApp.vueApp.component('Slider', Slider);
 	nuxtApp.vueApp.component('InputTextArea', InputTextArea);
+	nuxtApp.vueApp.component('ProgressSpinner', ProgressSpinner);
+	nuxtApp.vueApp.component('Message', Message);
+	nuxtApp.vueApp.component('OverlayPanel', OverlayPanel);
 	nuxtApp.vueApp.use(ToastService);
 });
