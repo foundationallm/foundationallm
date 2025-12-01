@@ -390,14 +390,14 @@ export default {
 
 		currentAgent: {
 			handler(newAgent) {
-				const sessionId = this.$appStore.currentSession.sessionId
-                if (!isAgentFileUploadEnabled(
-					newAgent
-				)) {
-                    // clear local session file buffers
-                    this.clearFilesForSession(sessionId);
+				// If there is no agent or the agent does not support file upload,
+				// ensure local session file buffers and attachments are cleared so
+				// the UI state stays consistent with capabilities.
+				const sessionId = this.$appStore.currentSession.sessionId;
+				if (!isAgentFileUploadEnabled(newAgent)) {
+					this.clearFilesForSession(sessionId);
 					this.$appStore.deleteAttachmentsForSession(sessionId);
-                }
+				}
 			}
 		}
 	},
