@@ -1,0 +1,50 @@
+name: Management Portal Release
+
+on:
+  push:
+    tags:
+    - "management_portal-0.*.*"
+    - "management_portal-0.*.*-alpha*"
+    - "management_portal-0.*.*-beta*"
+    - "management_portal-0.*.*-rc*"
+    - "management_portal-0.*.*-post*"
+    - "management_portal-1.*.*"
+    - "management_portal-1.*.*-alpha*"
+    - "management_portal-1.*.*-beta*"
+    - "management_portal-1.*.*-rc*"
+    - "management_portal-1.*.*-post*"
+    - "management_portal-2.*.*"
+    - "management_portal-2.*.*-alpha*"
+    - "management_portal-2.*.*-beta*"
+    - "management_portal-2.*.*-rc*"
+    - "management_portal-2.*.*-post*"
+  workflow_dispatch:
+    inputs: {}
+
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    outputs:
+      docker_tag: ${{ steps.docker-tag.outputs.docker_tag }}
+    steps:
+    - name: Set Docker Tag
+      id: docker-tag
+      run: |
+        DOCKER_TAG="${GITHUB_REF_NAME#user_portal-}"
+        echo "DOCKER_TAG=$DOCKER_TAG" >> $GITHUB_ENV
+        echo "docker_tag: Latest Tag is : $DOCKER_TAG"
+        echo "docker_tag=$DOCKER_TAG" >> $GITHUB_OUTPUT
+  docker_build:
+    name: Build Docker Image
+    needs:
+      - prepare
+    uses: ./.github/workflows/build-docker-image.yml
+    with:
+      image: management-ui
+      context: ./src/ui/ManagementPortal
+      dockerfile: ./src/ui/ManagementPortal/Dockerfile
+      registry: foundationallm.azurecr.io
+      tag: ${{ needs.prepare.outputs.docker_tag }}
+      username: foundationallm
+      target: sandbox
+    secrets: inherit
