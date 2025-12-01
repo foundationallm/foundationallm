@@ -29,9 +29,6 @@ export default defineNuxtPlugin(async (nuxtApp: any) => {
 		appConfigStore.loadBasicBrandingConfiguration()
 	]);
 
-	await authStore.init();
-	resolveAuthReady();
-
 	const config = useRuntimeConfig();
 	// Set API URL and Instance ID after loading auth config
 	const localApiUrl = config.public.LOCAL_API_URL;
@@ -45,6 +42,9 @@ export default defineNuxtPlugin(async (nuxtApp: any) => {
 	if (appConfigStore.instanceId) {
 		api.setInstanceId(appConfigStore.instanceId);
 	}
+
+	await authStore.init();
+	resolveAuthReady();
 
 	// Only load full configuration if user is authenticated
 	// This prevents API calls before authentication is complete
