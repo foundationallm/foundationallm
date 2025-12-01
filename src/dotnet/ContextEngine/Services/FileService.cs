@@ -170,6 +170,10 @@ namespace FoundationaLLM.Context.Services
                             {
                                 // NOTE: In the current version, legacy Microsoft Office files cannot be processed for safety.
                             }
+                            else if (ContentTypeMappings.ArchiveContentTypes.Contains(contentType.ToLower()))
+                            {
+                                // NOTE: In the current version, archive files cannot be processed for safety.
+                            }
                             else
                                 safetyBreachDetected = await IsFileUnsafe(
                                     instanceId,
