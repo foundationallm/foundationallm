@@ -48,7 +48,7 @@ const allowedKeys = [
 	'FoundationaLLM:UserPortal:Configuration:ShowFileUpload',
 	'FoundationaLLM:UserPortal:Configuration:FeaturedAgentNames',
 	'FoundationaLLM:UserPortal:Configuration:AgentManagementPermissionRequestUrl',
-	'FoundationaLLM:APIEndpoints:CoreAPI:Configuration:AllowedUploadFileExtensions',
+	'FoundationaLLM:APIEndpoints:ContextAPI:Configuration:FileService:AllowedFileExtensions',
 ];
 
 export default defineEventHandler(async (event) => {

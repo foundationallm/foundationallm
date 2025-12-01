@@ -6,13 +6,26 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
 
 	if (to.name === 'status') return false;
 
-	const authStore = useNuxtApp().$authStore;
-	const appConfigStore = useNuxtApp().$appConfigStore;
+	// Wait for authentication initialization to complete
+	const nuxtApp = useNuxtApp();
+  	await nuxtApp.$authReady;
+
+	const authStore = nuxtApp.$authStore;
+	const appConfigStore = nuxtApp.$appConfigStore;
+
+	const msal = authStore.msalInstance;
+	if (!msal) {
+		console.error(
+			'MSAL instance not initialized in authStore middleware. ' +
+			'This is unexpected since the authReady promise was awaited.'
+		);
+		return false;
+	}
 
 	// Handle MSAL redirect promise
 	let redirectResult = null;
 	try {
-		redirectResult = await authStore.msalInstance.handleRedirectPromise();
+		redirectResult = await msal.handleRedirectPromise();
 	} catch (ex) {
 		if (ex.name === 'InteractionRequiredAuthError' && ex.message.includes('AADSTS65004')) {
 			localStorage.setItem('oneDriveWorkSchoolConsentRedirect', JSON.stringify(false));
@@ -28,14 +41,14 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
 		if (redirectResult.account) {
 			try {
 				// Set the active account directly from redirect result
-				authStore.msalInstance.setActiveAccount(redirectResult.account);
+				msal.setActiveAccount(redirectResult.account);
 				authStore.isExpired = false;
 
 				// Small delay to ensure MSAL state is fully updated
 				await new Promise(resolve => setTimeout(resolve, 500));
 
 				// Force trigger reactive updates
-				const activeAccount = authStore.msalInstance.getActiveAccount();
+				const activeAccount = msal.getActiveAccount();
 				if (activeAccount) {
 					authStore.forceAccountUpdate();
 				}
@@ -86,8 +99,8 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
 						isAuthenticated: isAuthenticated,
 						currentAccount: authStore.currentAccount,
 						hasCurrentAccount: !!authStore.currentAccount,
-						msalActiveAccount: authStore.msalInstance?.getActiveAccount(),
-						hasMsalActiveAccount: !!authStore.msalInstance?.getActiveAccount()
+						msalActiveAccount: msal.getActiveAccount(),
+						hasMsalActiveAccount: !!msal.getActiveAccount()
 					};
 					window.dispatchEvent(new CustomEvent('auth-updated', { detail: authDetail }));
 				}
