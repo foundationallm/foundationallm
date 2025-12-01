@@ -108,7 +108,7 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
 
             if (!ContentTypeMappings.Map.TryGetValue(
                 rawContentResult.Value!.ContentType,
-                out var contentType))
+                out var fileType))
             {
                 return new PluginResult(false, true,
                     $"The content type {rawContentResult.Value.ContentType} is not supported by the {Name} plugin.");
@@ -116,87 +116,62 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
 
             var textContent = string.Empty;
 
-            switch (contentType)
+            if ( ContentTypeMappings.BinaryDocumentFileExtensions.Contains(fileType))
             {
-                case "PDF":
-                case "DOCX":
-                case "PPTX":
-                case "XLSX":
+                // Find all text extraction plugins that support the content type
+                var textExtractionPluginsMetadata = _packageManager
+                    .GetMetadata(dataPipelineRun.InstanceId)
+                    .Plugins
+                    .Where(p =>
+                        p.Category == PluginCategoryNames.ContentTextExtraction
+                        && (p.Subcategory?.Split(',').Contains(fileType) ?? false))
+                    .ToList();
 
-                    // Find all text extraction plugins that support the content type
-                    var textExtractionPluginsMetadata = _packageManager
-                        .GetMetadata(dataPipelineRun.InstanceId)
-                        .Plugins
-                        .Where(p =>
-                            p.Category == PluginCategoryNames.ContentTextExtraction
-                            && (p.Subcategory?.Split(',').Contains(contentType) ?? false))
-                        .ToList();
+                if (textExtractionPluginsMetadata.Count == 0)
+                    throw new PluginException(
+                        $"The {Name} plugin cannot map the file type {fileType} to a content text extraction plugin.");
 
-                    if (textExtractionPluginsMetadata.Count == 0)
-                        throw new PluginException(
-                            $"The {Name} plugin cannot map the content type {contentType} to a content text extraction plugin.");
+                var dataPipelineStage = dataPipelineDefinition.GetStage(
+                    dataPipelineRunWorkItem.Stage);
 
-                    var dataPipelineStage = dataPipelineDefinition.GetStage(
-                        dataPipelineRunWorkItem.Stage);
+                // Find the first plugin dependency that supports the content type
+                var pluginDependency = dataPipelineStage.PluginDependencies
+                    .FirstOrDefault(pd => textExtractionPluginsMetadata.Select(p => p.ObjectId).Contains(pd.PluginObjectId))
+                    ?? throw new PluginException(
+                        $"The {dataPipelineRunWorkItem.Stage} stage does not have a dependency content text extraction plugin to handle the {fileType} file type.");
 
-                    // Find the first plugin dependency that supports the content type
-                    var pluginDependency = dataPipelineStage.PluginDependencies
-                        .FirstOrDefault(pd => textExtractionPluginsMetadata.Select(p => p.ObjectId).Contains(pd.PluginObjectId))
-                        ?? throw new PluginException(
-                            $"The {dataPipelineRunWorkItem.Stage} stage does not have a dependency content text extraction plugin to handle the {contentType} content type.");
+                var textExtractionPluginMetadata = textExtractionPluginsMetadata
+                    .Single(p => p.ObjectId == pluginDependency.PluginObjectId);
 
-                    var textExtractionPluginMetadata = textExtractionPluginsMetadata
-                        .Single(p => p.ObjectId == pluginDependency.PluginObjectId);
+                // This plugin might originate from a different package manager instance,
+                // so we need to resolve the package manager for plugin dependency plugin.
+                var dependencyPackageManager = await _packageManagerResolver.GetPluginPackageManager(
+                    pluginDependency.PluginObjectId,
+                    ServiceContext.ServiceIdentity!);
 
-                    // This plugin might originate from a different package manager instance,
-                    // so we need to resolve the package manager for plugin dependency plugin.
-                    var dependencyPackageManager = await _packageManagerResolver.GetPluginPackageManager(
-                        pluginDependency.PluginObjectId,
-                        ServiceContext.ServiceIdentity!);
+                var textExtractionPlugin = dependencyPackageManager
+                    .GetContentTextExtractionPlugin(
+                        textExtractionPluginMetadata.Name,
+                        dataPipelineRun.TriggerParameterValues.FilterKeys(
+                            $"Stage.{dataPipelineRunWorkItem.Stage}.Dependency.{textExtractionPluginMetadata.Name.Split('-').Last()}."),
+                        _packageManagerResolver,
+                        _serviceProvider);
 
-                    var textExtractionPlugin = dependencyPackageManager
-                        .GetContentTextExtractionPlugin(
-                            textExtractionPluginMetadata.Name,
-                            dataPipelineRun.TriggerParameterValues.FilterKeys(
-                                $"Stage.{dataPipelineRunWorkItem.Stage}.Dependency.{textExtractionPluginMetadata.Name.Split('-').Last()}."),
-                            _packageManagerResolver,
-                            _serviceProvider);
+                var textContentResult = await textExtractionPlugin.ExtractText(
+                    rawContentResult.Value.RawContent);
 
-                    var textContentResult = await textExtractionPlugin.ExtractText(
-                        rawContentResult.Value.RawContent);
+                if (!textContentResult.Success)
+                    return new PluginResult(false, false, textContentResult.ErrorMessage);
 
-                    if (!textContentResult.Success)
-                        return new PluginResult(false, false, textContentResult.ErrorMessage);
-
-                    textContent = textContentResult.Value!;
-
-                    break;
-
-                case "TXT":
-                case "MD":
-                case "HTML":
-                case "RTF":
-                case "JS":
-                case "YAML":
-                case "TOML":
-                case "JSON":
-                case "JSONL":
-                case "XML":
-                case "TSV":
-                case "CSV":
-                case "CSS":
-                case "PY":
-                case "JAVA":
-                case "SH":
-
-                    textContent = rawContentResult.Value.RawContent.ToString();
-
-                    break;
-
-                default:
-                    return new PluginResult(false, true,
-                        $"The content type {contentType} is not supported by the {Name} plugin.");
+                textContent = textContentResult.Value!;
             }
+            else if (ContentTypeMappings.TextFileExtensions.Contains(fileType))
+            {
+                textContent = rawContentResult.Value.RawContent.ToString();
+            }
+            else
+                return new PluginResult(false, true,
+                    $"The file type {fileType} is not supported by the {Name} plugin.");
 
             // Enforce new line normalization
             textContent = textContent.Replace("\r\n", "\n").Replace("\r", "\n");
