@@ -21,7 +21,7 @@
 				:globalFilterFields="['created_on']"
 				v-model:filters="filters"
 				filterDisplay="menu"
-				:value="pipelineRuns"
+				:value="filteredPipelineRuns"
 				striped-rows
 				scrollable
 				:sort-field="'created_on'"
@@ -30,49 +30,95 @@
 				size="small"
 			>
 				<template #header>
-					<div class="w-full flex gap-4">
-						<!-- <TableSearch v-model="filters" placeholder="Search by name" /> -->
-                        <Dropdown
-                            v-model="selectedPipelineName"
-                            :options="pipelineNames"
-                            option-label="value"
-                            option-value="value"
-                            placeholder="--Select Data Pipeline--"
-                            @change="getPipelineRuns(false)"
-					    />
-                        <div class="flex align-items-center justify-content-center gap-2" style="padding-top: 0.75rem;">
-                            <Checkbox
-                                inputId="allCB"
-                                v-model="showAll"
-                                binary
-                                size="large"
-                                @change="getPipelineRuns(false)"
-                            />
-                            <label for="allCB">All</label>
-                            <Checkbox
-                                inputId="completedCB"
-                                v-model="completed"
-                                binary
-                                size="large"
-                                :disabled="showAll"
-                                @change="getPipelineRuns(false)"
-                            />
-                            <label for="completedCB">Completed</label>
-                            <Checkbox
-                                inputId="successfulCB"
-                                v-model="successful"
-                                binary
-                                size="large"
-                                :disabled="showAll"
-                                @change="getPipelineRuns(false)"
-                            />
-                            <label for="successfulCB">Successful</label>
-                        </div>
-						<Button
-							type="button"
-							icon="pi pi-refresh"
-							@click="getPipelineRuns(false)"
-						/>
+					<div class="filters">
+						<div class="filter-group">
+							<label for="pipelineFilter">Item</label>
+							<Dropdown
+								id="pipelineFilter"
+								v-model="selectedPipelineName"
+								:options="pipelineNames"
+								option-label="label"
+								option-value="value"
+								placeholder="Select"
+								@change="handleItemFilterChange"
+							/>
+						</div>
+
+						<div class="filter-group">
+							<label for="statusFilter">Status</label>
+							<Dropdown
+								id="statusFilter"
+								v-model="statusFilter"
+								:options="statusOptions"
+								option-label="label"
+								option-value="value"
+								@change="handleStatusFilterChange"
+							/>
+						</div>
+
+						<div class="filter-group">
+							<label for="successFilter">Success</label>
+							<Dropdown
+								id="successFilter"
+								v-model="successFilter"
+								:options="successOptions"
+								option-label="label"
+								option-value="value"
+								@change="handleSuccessFilterChange"
+							/>
+						</div>
+
+						<div class="filter-group">
+							<label for="timeFilter">Start time</label>
+							<Dropdown
+								id="timeFilter"
+								v-model="timeFilter"
+								:options="timeOptions"
+								option-label="label"
+								option-value="value"
+								@change="handleTimeFilterChange"
+							/>
+						</div>
+
+						<div class="filter-group">
+							<label for="startFrom">Start time from</label>
+							<Calendar
+								id="startFrom"
+								v-model="startFrom"
+								show-icon
+								show-button-bar
+								show-time
+								hour-format="24"
+								date-format="yy-mm-dd"
+								class="datetime-input"
+								:disabled="timeFilter !== 'custom'"
+								@update:model-value="handleTimeFilterChange"
+							/>
+						</div>
+
+						<div class="filter-group">
+							<label for="startTo">Start time to</label>
+							<Calendar
+								id="startTo"
+								v-model="startTo"
+								show-icon
+								show-button-bar
+								show-time
+								hour-format="24"
+								date-format="yy-mm-dd"
+								class="datetime-input"
+								:disabled="timeFilter !== 'custom'"
+								@update:model-value="handleTimeFilterChange"
+							/>
+						</div>
+
+						<div class="filter-actions">
+							<Button
+								type="button"
+								label="Clear Filters"
+								@click="clearFilters"
+							/>
+						</div>
 					</div>
 				</template>
 
@@ -82,19 +128,20 @@
 
 				<template #loading>Loading data pipeline runs. Please wait.</template>
 
-				<!-- Name -->
-				<!-- <Column
-					field="name"
-					header="Name"
-					sortable
-					style="min-width: 200px"
+				<Column
+					header="Item"
+					style="min-width: 160px"
 					:pt="{
 						headerCell: {
 							style: { backgroundColor: 'var(--primary-color)', color: 'var(--primary-text)' },
 						},
 						sortIcon: { style: { color: 'var(--primary-text)' } },
 					}"
-				></Column> -->
+				>
+					<template #body="slotProps">
+						{{ getPipelineNameFromObjectId(slotProps.data.object_id) }}
+					</template>
+				</Column>
 
                 <!-- Start Time -->
 				<Column
@@ -116,7 +163,7 @@
                 <!-- Completed -->
 				<Column
 					field="completed"
-					header="Completed"
+					header="Status"
 					sortable
 					:pt="{
 						headerCell: {
@@ -124,12 +171,21 @@
 						},
 						sortIcon: { style: { color: 'var(--primary-text)' } },
 					}"
-				></Column>
+				>
+					<template #body="slotProps">
+						<span
+							class="status-pill"
+							:class="slotProps.data.completed ? 'status-pill--completed' : 'status-pill--inprogress'"
+						>
+							{{ slotProps.data.completed ? 'Completed' : 'In progress' }}
+						</span>
+					</template>
+				</Column>
 
 				<!-- Successful -->
 				<Column
 					field="successful"
-					header="Successful"
+					header="Success"
 					sortable
 					:pt="{
 						headerCell: {
@@ -137,9 +193,18 @@
 						},
 						sortIcon: { style: { color: 'var(--primary-text)' } },
 					}"
-				></Column>
+				>
+					<template #body="slotProps">
+						<span
+							class="success-pill"
+							:class="slotProps.data.successful ? 'success-pill--true' : 'success-pill--false'"
+						>
+							{{ slotProps.data.successful ? 'Success' : 'Failure' }}
+						</span>
+					</template>
+				</Column>
 
-                <!-- Active Stages -->
+                <!-- Active Stages 
 				<Column
 					field="active_stages"
 					header="Active Stages"
@@ -154,7 +219,7 @@
                     {{ slotProps.data.active_stages.join(', ') }}
                 </template>
 				</Column>
-
+				-->
                 <!-- Completed Stages -->
 				<Column
 					field="completed_stages"
@@ -300,21 +365,80 @@ export default {
 	data() {
 		return {
 			pipelineRuns: [] as any[],
-            pipelineNames: [],
-            selectedRun: null,
-            stage_metrics_formatted_data: [],
-            selectedPipelineName: null as string | null,
-            showParametersDialog: false as boolean,
-            showAll: true as boolean,
-            completed: true as boolean,
-            successful: true as boolean,
+			pipelineNames: [],
+			selectedRun: null,
+			stage_metrics_formatted_data: [],
+			// When null, no item is selected and the dropdown shows the placeholder ("Select").
+			selectedPipelineName: null as string | null,
+			showParametersDialog: false as boolean,
+			showAll: true as boolean,
+			completed: true as boolean,
+			successful: true as boolean,
+			statusFilter: 'all' as 'all' | 'completed' | 'in-progress',
+			successFilter: 'all' as 'all' | 'true' | 'false',
+			timeFilter: 'all' as 'all' | 'last-1h' | 'last-24h' | 'last-7d' | 'last-30d' | 'custom',
+			startFrom: null as Date | null,
+			startTo: null as Date | null,
+			statusOptions: [
+				{ label: 'All', value: 'all' },
+				{ label: 'Completed', value: 'completed' },
+				{ label: 'In progress', value: 'in-progress' },
+			],
+			successOptions: [
+				{ label: 'All', value: 'all' },
+				{ label: 'Success', value: 'true' },
+				{ label: 'Failure', value: 'false' },
+			],
+			timeOptions: [
+				{ label: 'All time', value: 'all' },
+				{ label: 'Last 1 hour', value: 'last-1h' },
+				{ label: 'Last 24 hours', value: 'last-24h' },
+				{ label: 'Last 7 days', value: 'last-7d' },
+				{ label: 'Last 30 days', value: 'last-30d' },
+				{ label: 'Custom range', value: 'custom' },
+			],
 			loading: false as boolean,
 			loadingStatusText: 'Retrieving data...' as string,
-            continuationToken: null as string | null,
+			continuationToken: null as string | null,
 			filters: {
-				global: { value: null, matchMode: 'contains' }
-			}
+				global: { value: null, matchMode: 'contains' },
+			},
 		};
+	},
+
+	computed: {
+		filteredPipelineRuns(): any[] {
+			let runs = this.pipelineRuns || [];
+
+			if (this.statusFilter === 'completed') {
+				runs = runs.filter((run: any) => run.completed === true);
+			} else if (this.statusFilter === 'in-progress') {
+				runs = runs.filter((run: any) => run.completed === false);
+			}
+
+			if (this.successFilter === 'true') {
+				runs = runs.filter((run: any) => run.successful === true);
+			} else if (this.successFilter === 'false') {
+				runs = runs.filter((run: any) => run.successful === false);
+			}
+
+			const { from, to } = this.getTimeRange();
+
+			if (from || to) {
+				runs = runs.filter((run: any) => {
+					const runDate = new Date(run.created_on);
+					if (from && runDate < from) {
+						return false;
+					}
+					if (to && runDate > to) {
+						return false;
+					}
+					return true;
+				});
+			}
+
+			return runs;
+		},
 	},
 
 	async created() {
@@ -330,10 +454,14 @@ export default {
         async getPipelines() {
 			this.loading = true;
 			try {
-				var pipelines = await api.getPipelines();
-                this.pipelineNames = pipelines.map((pipeline) => ({
-                    value: pipeline.resource.name
-                }));
+				const pipelines = await api.getPipelines();
+				this.pipelineNames = [
+					{ label: 'All', value: 'all' },
+					...pipelines.map((pipeline: any) => ({
+						label: pipeline.resource.name,
+						value: pipeline.resource.name,
+					})),
+				];
 			} catch (error) {
 				this.$toast.add({
 					severity: 'error',
@@ -350,16 +478,21 @@ export default {
                 if (!append) {
                     this.continuationToken = null;
                 }
+				const isAll = !this.selectedPipelineName || this.selectedPipelineName === 'all';
+				const mainResourceId = isAll ? 'all' : this.selectedPipelineName;
+
+				const { from, to } = this.getTimeRange();
 
                 const payload = {
-                    data_pipeline_name_filter: this.selectedPipelineName,
+                    data_pipeline_name_filter: isAll ? null : this.selectedPipelineName,
                     completed: this.showAll ? null : this.completed,
                     successful: this.showAll ? null : this.successful,
                     continuation_token: this.continuationToken,
-                    //start_time: "2025-06-26",
+					start_time: from ? from.toISOString() : null,
+					end_time: to ? to.toISOString() : null,
 			    };
 
-                var response = await api.getPipelineRuns(this.selectedPipelineName || '', payload);
+                const response = await api.getPipelineRuns(mainResourceId || 'all', payload);
                 
                 if (append) {
                     this.pipelineRuns = [...this.pipelineRuns, ...response.resource.resources];
@@ -399,6 +532,119 @@ export default {
         pad(number, digits = 2) {
             return String(number).padStart(digits, '0')
         },
+
+		getPipelineNameFromObjectId(objectId: string) {
+			if (!objectId) {
+				return '-';
+			}
+
+			const pipelinesMarker = '/dataPipelines/';
+			const runsMarker = '/dataPipelineRuns';
+
+			const startIndex = objectId.indexOf(pipelinesMarker);
+			if (startIndex === -1) {
+				return '-';
+			}
+
+			const afterPipelines = objectId.substring(startIndex + pipelinesMarker.length);
+			const endIndex = afterPipelines.indexOf(runsMarker);
+
+			const name =
+				endIndex === -1 ? afterPipelines : afterPipelines.substring(0, endIndex);
+
+			return name || '-';
+		},
+
+		getTimeRange() {
+			const now = new Date();
+			let from: Date | null = null;
+			let to: Date | null = null;
+
+			switch (this.timeFilter) {
+				case 'last-1h':
+					from = new Date(now.getTime() - 1 * 60 * 60 * 1000);
+					to = now;
+					break;
+				case 'last-24h':
+					from = new Date(now.getTime() - 24 * 60 * 60 * 1000);
+					to = now;
+					break;
+				case 'last-7d':
+					from = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+					to = now;
+					break;
+				case 'last-30d':
+					from = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
+					to = now;
+					break;
+				case 'custom':
+					from = this.startFrom ? new Date(this.startFrom) : null;
+					to = this.startTo ? new Date(this.startTo) : null;
+					break;
+				case 'all':
+				default:
+					from = null;
+					to = null;
+					break;
+			}
+
+			return { from, to };
+		},
+
+		syncBooleanFiltersFromDropdowns() {
+			this.showAll = this.statusFilter === 'all' && this.successFilter === 'all';
+
+			if (this.statusFilter === 'completed') {
+				this.completed = true;
+			} else if (this.statusFilter === 'in-progress') {
+				this.completed = false;
+			}
+
+			if (this.successFilter === 'true') {
+				this.successful = true;
+			} else if (this.successFilter === 'false') {
+				this.successful = false;
+			}
+		},
+
+		handleItemFilterChange() {
+			this.getPipelineRuns(false);
+		},
+
+		handleStatusFilterChange() {
+			this.syncBooleanFiltersFromDropdowns();
+			this.getPipelineRuns(false);
+		},
+
+		handleSuccessFilterChange() {
+			this.syncBooleanFiltersFromDropdowns();
+			this.getPipelineRuns(false);
+		},
+
+		handleTimeFilterChange() {
+			if (this.timeFilter !== 'custom') {
+				this.startFrom = '';
+				this.startTo = '';
+				this.getPipelineRuns(false);
+				return;
+			}
+			if (this.startFrom || this.startTo) {
+				this.getPipelineRuns(false);
+			}
+		},
+
+		clearFilters() {
+			this.statusFilter = 'all';
+			this.successFilter = 'all';
+			this.timeFilter = 'all';
+			this.startFrom = null;
+			this.startTo = null;
+			this.selectedPipelineName = null;
+			this.showAll = true;
+			this.completed = true;
+			this.successful = true;
+			this.getPipelineRuns(false);
+		},
 
         openParameters(pipelineRun) {
             this.showParametersDialog = true;
@@ -482,5 +728,69 @@ export default {
 .pipeline-runs-table td {
 	padding: 0.5rem;
 	text-align: left;
+}
+
+.status-pill,
+.success-pill {
+	display: inline-block;
+	padding: 0.25rem 0.75rem;
+	border-radius: 999px;
+	font-size: 0.85rem;
+	font-weight: 600;
+}
+
+.status-pill--completed {
+	background-color: #e6f4ea;
+	color: #137333;
+}
+
+.status-pill--inprogress {
+	background-color: #e8f0fe;
+	color: #174ea6;
+}
+
+.success-pill--true {
+	background-color: #e6f4ea;
+	color: #137333;
+}
+
+.success-pill--false {
+	background-color: #fce8e6;
+	color: #c5221f;
+}
+
+.filters {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.75rem;
+	padding: 0.75rem 1rem;
+	margin-bottom: 0.75rem;
+	align-items: flex-end;
+	background-color: #ffffff;
+	border-radius: 8px;
+	box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+}
+
+.filter-group {
+	display: flex;
+	flex-direction: column;
+	font-size: 0.875rem;
+}
+
+.filter-group label {
+	margin-bottom: 0.25rem;
+	font-weight: 600;
+}
+
+.filter-actions {
+	margin-left: auto;
+	display: flex;
+	gap: 0.5rem;
+	align-items: flex-end;
+}
+
+.datetime-input {
+	border-radius: 4px;
+	max-width: 250px;
 }
 </style>
