@@ -39,7 +39,7 @@
 								:options="pipelineNames"
 								option-label="label"
 								option-value="value"
-								placeholder="All"
+								placeholder="Select"
 								@change="handleItemFilterChange"
 							/>
 						</div>
@@ -82,32 +82,40 @@
 
 						<div class="filter-group">
 							<label for="startFrom">Start time from</label>
-							<input
+							<Calendar
 								id="startFrom"
 								v-model="startFrom"
-								type="datetime-local"
+								show-icon
+								show-button-bar
+								show-time
+								hour-format="24"
+								date-format="yy-mm-dd"
 								class="datetime-input"
 								:disabled="timeFilter !== 'custom'"
-								@change="handleTimeFilterChange"
+								@update:model-value="handleTimeFilterChange"
 							/>
 						</div>
 
 						<div class="filter-group">
 							<label for="startTo">Start time to</label>
-							<input
+							<Calendar
 								id="startTo"
 								v-model="startTo"
-								type="datetime-local"
+								show-icon
+								show-button-bar
+								show-time
+								hour-format="24"
+								date-format="yy-mm-dd"
 								class="datetime-input"
 								:disabled="timeFilter !== 'custom'"
-								@change="handleTimeFilterChange"
+								@update:model-value="handleTimeFilterChange"
 							/>
 						</div>
 
 						<div class="filter-actions">
 							<Button
 								type="button"
-								label="Clear filters"
+								label="Clear Filters"
 								@click="clearFilters"
 							/>
 						</div>
@@ -120,19 +128,20 @@
 
 				<template #loading>Loading data pipeline runs. Please wait.</template>
 
-				<!-- Name -->
-				<!-- <Column
-					field="name"
-					header="Name"
-					sortable
-					style="min-width: 200px"
+				<Column
+					header="Item"
+					style="min-width: 160px"
 					:pt="{
 						headerCell: {
 							style: { backgroundColor: 'var(--primary-color)', color: 'var(--primary-text)' },
 						},
 						sortIcon: { style: { color: 'var(--primary-text)' } },
 					}"
-				></Column> -->
+				>
+					<template #body="slotProps">
+						{{ getPipelineNameFromObjectId(slotProps.data.object_id) }}
+					</template>
+				</Column>
 
                 <!-- Start Time -->
 				<Column
@@ -154,7 +163,7 @@
                 <!-- Completed -->
 				<Column
 					field="completed"
-					header="Completed"
+					header="Status"
 					sortable
 					:pt="{
 						headerCell: {
@@ -162,12 +171,21 @@
 						},
 						sortIcon: { style: { color: 'var(--primary-text)' } },
 					}"
-				></Column>
+				>
+					<template #body="slotProps">
+						<span
+							class="status-pill"
+							:class="slotProps.data.completed ? 'status-pill--completed' : 'status-pill--inprogress'"
+						>
+							{{ slotProps.data.completed ? 'Completed' : 'In progress' }}
+						</span>
+					</template>
+				</Column>
 
 				<!-- Successful -->
 				<Column
 					field="successful"
-					header="Successful"
+					header="Success"
 					sortable
 					:pt="{
 						headerCell: {
@@ -175,9 +193,18 @@
 						},
 						sortIcon: { style: { color: 'var(--primary-text)' } },
 					}"
-				></Column>
+				>
+					<template #body="slotProps">
+						<span
+							class="success-pill"
+							:class="slotProps.data.successful ? 'success-pill--true' : 'success-pill--false'"
+						>
+							{{ slotProps.data.successful ? 'Success' : 'Failure' }}
+						</span>
+					</template>
+				</Column>
 
-                <!-- Active Stages -->
+                <!-- Active Stages 
 				<Column
 					field="active_stages"
 					header="Active Stages"
@@ -192,7 +219,7 @@
                     {{ slotProps.data.active_stages.join(', ') }}
                 </template>
 				</Column>
-
+				-->
                 <!-- Completed Stages -->
 				<Column
 					field="completed_stages"
@@ -341,6 +368,7 @@ export default {
 			pipelineNames: [],
 			selectedRun: null,
 			stage_metrics_formatted_data: [],
+			// When null, no item is selected and the dropdown shows the placeholder ("Select").
 			selectedPipelineName: null as string | null,
 			showParametersDialog: false as boolean,
 			showAll: true as boolean,
@@ -349,8 +377,8 @@ export default {
 			statusFilter: 'all' as 'all' | 'completed' | 'in-progress',
 			successFilter: 'all' as 'all' | 'true' | 'false',
 			timeFilter: 'all' as 'all' | 'last-1h' | 'last-24h' | 'last-7d' | 'last-30d' | 'custom',
-			startFrom: '' as string,
-			startTo: '' as string,
+			startFrom: null as Date | null,
+			startTo: null as Date | null,
 			statusOptions: [
 				{ label: 'All', value: 'all' },
 				{ label: 'Completed', value: 'completed' },
@@ -358,8 +386,8 @@ export default {
 			],
 			successOptions: [
 				{ label: 'All', value: 'all' },
-				{ label: 'Successful', value: 'true' },
-				{ label: 'Failed', value: 'false' },
+				{ label: 'Success', value: 'true' },
+				{ label: 'Failure', value: 'false' },
 			],
 			timeOptions: [
 				{ label: 'All time', value: 'all' },
@@ -382,21 +410,18 @@ export default {
 		filteredPipelineRuns(): any[] {
 			let runs = this.pipelineRuns || [];
 
-			// Status filter (completed / in-progress)
 			if (this.statusFilter === 'completed') {
 				runs = runs.filter((run: any) => run.completed === true);
 			} else if (this.statusFilter === 'in-progress') {
 				runs = runs.filter((run: any) => run.completed === false);
 			}
 
-			// Success filter
 			if (this.successFilter === 'true') {
 				runs = runs.filter((run: any) => run.successful === true);
 			} else if (this.successFilter === 'false') {
 				runs = runs.filter((run: any) => run.successful === false);
 			}
 
-			// Time filter (relative or custom)
 			const { from, to } = this.getTimeRange();
 
 			if (from || to) {
@@ -431,7 +456,7 @@ export default {
 			try {
 				const pipelines = await api.getPipelines();
 				this.pipelineNames = [
-					{ label: 'All', value: null },
+					{ label: 'All', value: 'all' },
 					...pipelines.map((pipeline: any) => ({
 						label: pipeline.resource.name,
 						value: pipeline.resource.name,
@@ -453,11 +478,13 @@ export default {
                 if (!append) {
                     this.continuationToken = null;
                 }
+				const isAll = !this.selectedPipelineName || this.selectedPipelineName === 'all';
+				const mainResourceId = isAll ? 'all' : this.selectedPipelineName;
 
 				const { from, to } = this.getTimeRange();
 
                 const payload = {
-                    data_pipeline_name_filter: this.selectedPipelineName ?? null,
+                    data_pipeline_name_filter: isAll ? null : this.selectedPipelineName,
                     completed: this.showAll ? null : this.completed,
                     successful: this.showAll ? null : this.successful,
                     continuation_token: this.continuationToken,
@@ -465,7 +492,7 @@ export default {
 					end_time: to ? to.toISOString() : null,
 			    };
 
-                var response = await api.getPipelineRuns(this.selectedPipelineName || '', payload);
+                const response = await api.getPipelineRuns(mainResourceId || 'all', payload);
                 
                 if (append) {
                     this.pipelineRuns = [...this.pipelineRuns, ...response.resource.resources];
@@ -505,6 +532,28 @@ export default {
         pad(number, digits = 2) {
             return String(number).padStart(digits, '0')
         },
+
+		getPipelineNameFromObjectId(objectId: string) {
+			if (!objectId) {
+				return '-';
+			}
+
+			const pipelinesMarker = '/dataPipelines/';
+			const runsMarker = '/dataPipelineRuns';
+
+			const startIndex = objectId.indexOf(pipelinesMarker);
+			if (startIndex === -1) {
+				return '-';
+			}
+
+			const afterPipelines = objectId.substring(startIndex + pipelinesMarker.length);
+			const endIndex = afterPipelines.indexOf(runsMarker);
+
+			const name =
+				endIndex === -1 ? afterPipelines : afterPipelines.substring(0, endIndex);
+
+			return name || '-';
+		},
 
 		getTimeRange() {
 			const now = new Date();
@@ -588,8 +637,9 @@ export default {
 			this.statusFilter = 'all';
 			this.successFilter = 'all';
 			this.timeFilter = 'all';
-			this.startFrom = '';
-			this.startTo = '';
+			this.startFrom = null;
+			this.startTo = null;
+			this.selectedPipelineName = null;
 			this.showAll = true;
 			this.completed = true;
 			this.successful = true;
@@ -680,6 +730,35 @@ export default {
 	text-align: left;
 }
 
+.status-pill,
+.success-pill {
+	display: inline-block;
+	padding: 0.25rem 0.75rem;
+	border-radius: 999px;
+	font-size: 0.85rem;
+	font-weight: 600;
+}
+
+.status-pill--completed {
+	background-color: #e6f4ea;
+	color: #137333;
+}
+
+.status-pill--inprogress {
+	background-color: #e8f0fe;
+	color: #174ea6;
+}
+
+.success-pill--true {
+	background-color: #e6f4ea;
+	color: #137333;
+}
+
+.success-pill--false {
+	background-color: #fce8e6;
+	color: #c5221f;
+}
+
 .filters {
 	display: flex;
 	flex-wrap: wrap;
@@ -711,9 +790,7 @@ export default {
 }
 
 .datetime-input {
-	padding: 0.25rem 0.5rem;
 	border-radius: 4px;
-	border: 1px solid #ccc;
-	min-width: 180px;
+	max-width: 250px;
 }
 </style>
