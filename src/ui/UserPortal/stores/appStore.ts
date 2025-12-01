@@ -51,19 +51,19 @@ export const useAppStore = defineStore('app', {
 
 	getters: {
 		agentShowMessageTokens(): boolean {
-			return this.lastSelectedAgent?.resource.show_message_tokens ?? true;
+			return !!(this.lastSelectedAgent && this.lastSelectedAgent.resource?.show_message_tokens);
 		},
 
 		agentShowMessageRating(): boolean {
-			return this.lastSelectedAgent?.resource.show_message_rating ?? true;
+			return !!(this.lastSelectedAgent && this.lastSelectedAgent.resource?.show_message_rating);
 		},
 
 		agentShowViewPrompt(): boolean {
-			return this.lastSelectedAgent?.resource.show_view_prompt ?? true;
+			return !!(this.lastSelectedAgent && this.lastSelectedAgent.resource?.show_view_prompt);
 		},
 
 		agentShowFileUpload(): boolean {
-			return this.lastSelectedAgent?.resource.show_file_upload ?? true;
+			return !!(this.lastSelectedAgent && this.lastSelectedAgent.resource?.show_file_upload);
 		},
 	},
 
@@ -121,7 +121,7 @@ export const useAppStore = defineStore('app', {
 				// Check if the most recent session is empty
 				const mostRecentSession = this.sessions[0];
 				const isEmpty = await this.isSessionEmpty(mostRecentSession.sessionId);
-				
+
 				if (isEmpty) {
 					// Use the existing empty session
 					this.resetSessionAgent(mostRecentSession);
@@ -138,7 +138,7 @@ export const useAppStore = defineStore('app', {
 			}
 
 			await this.getUserProfiles();
-			
+
 			// Mark initialization as complete
 			this.isInitialized = true;
 		},
