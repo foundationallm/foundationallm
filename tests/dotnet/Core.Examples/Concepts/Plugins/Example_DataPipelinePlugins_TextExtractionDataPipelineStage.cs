@@ -70,10 +70,14 @@ namespace FoundationaLLM.Core.Examples.Concepts.Plugins
         new()
         {
             {
-                "work-item-9-6fwGcjSUi1qH49Awg72A",
-                "run-20250808-090426-OSy-VjeS70WdouRRz-jkSA-TAfGit69y0OhQOwAAtltKw",
+                "work-item-7mf2sJXGN02tMPemT1VNlA",
+                "run-20251201-195436-WjZmcmmi30-e1WVaFUiK2g-TAfGit69y0OhQOwAAtltKw",
                 new Dictionary<string, object>
                 {
+                    {
+                        PluginParameterNames.TEXTEXTRACTION_DATAPIPELINESTAGE_MAXCONTENTSIZECHARACTERS,
+                        10_000_000
+                    }
                 }
             }
         };
