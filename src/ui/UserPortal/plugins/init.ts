@@ -5,19 +5,34 @@ import { useAuthStore } from '@/stores/authStore';
 import { useAppStore } from '@/stores/appStore';
 
 export default defineNuxtPlugin(async (nuxtApp: any) => {
-	// Load authentication config variables first (required for auth initialization)
+	
+	// Create a promise that resolves when authentication initialization is complete
+	let resolveAuthReady: () => void;
+	const authReadyPromise = new Promise<void>((resolve) =>
+		(resolveAuthReady = resolve));
+	nuxtApp.provide('authReady', authReadyPromise);
+
+	// Initialize and provide the appConfigStore and authStore
+	// to avoid potential race conditions in middleware.
+
 	const appConfigStore = useAppConfigStore(nuxtApp.$pinia);
-	await appConfigStore.getConfigVariables();
-
-	// Load basic branding configuration for signin page (logoUrl, logoText)
-	// This ensures the signin page displays the correct branding before authentication
-	await appConfigStore.loadBasicBrandingConfiguration();
-
-	const config = useRuntimeConfig();
-
-	// Make stores globally accessible on the nuxt app instance
 	nuxtApp.provide('appConfigStore', appConfigStore);
 
+	const authStore = await useAuthStore(nuxtApp.$pinia).init();
+	nuxtApp.provide('authStore', authStore);
+	
+	await Promise.all([
+		// Load authentication config variables first (required for auth initialization)
+		appConfigStore.getConfigVariables(),
+		// Load basic branding configuration for signin page (logoUrl, logoText)
+		// This ensures the signin page displays the correct branding before authentication
+		appConfigStore.loadBasicBrandingConfiguration()
+	]);
+
+	await authStore.init();
+	resolveAuthReady();
+
+	const config = useRuntimeConfig();
 	// Set API URL and Instance ID after loading auth config
 	const localApiUrl = config.public.LOCAL_API_URL;
 	const apiUrl = localApiUrl || appConfigStore.apiUrl;
@@ -30,10 +45,6 @@ export default defineNuxtPlugin(async (nuxtApp: any) => {
 	if (appConfigStore.instanceId) {
 		api.setInstanceId(appConfigStore.instanceId);
 	}
-
-	// Initialize authentication store
-	const authStore = await useAuthStore(nuxtApp.$pinia).init();
-	nuxtApp.provide('authStore', authStore);
 
 	// Only load full configuration if user is authenticated
 	// This prevents API calls before authentication is complete
