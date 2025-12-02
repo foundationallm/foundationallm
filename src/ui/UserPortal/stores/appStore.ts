@@ -137,6 +137,12 @@ export const useAppStore = defineStore('app', {
 				this.changeSession(newSession);
 			}
 
+			// Restore agent for the chosen currentSession, if any
+			if (this.currentSession) {
+				const restoredAgent = this.getSessionAgent(this.currentSession);
+				this.lastSelectedAgent = restoredAgent;
+			}
+
 			await this.getUserProfiles();
 
 			// Mark initialization as complete
