@@ -606,10 +606,12 @@ namespace FoundationaLLM.Plugin.ResourceProviders
             // 2. X.Y.ZrcN
             // 3. X.Y.ZaN
             // 4. X.Y.ZbN
+            // 5/ X.Y.Z.postN
             SemanticVersion.Parse(pythonVersion
                 .Replace("rc", "-rc")
                 .Replace("a", "-alpha")
-                .Replace("b", "-beta"));
+                .Replace("b", "-beta")
+                .Replace(".post", "-post"));
 
         #endregion
 
