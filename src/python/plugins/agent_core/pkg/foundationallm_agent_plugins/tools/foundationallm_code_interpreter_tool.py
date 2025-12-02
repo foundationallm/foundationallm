@@ -200,6 +200,12 @@ class FoundationaLLMCodeInterpreterTool(FoundationaLLMToolBase):
                 final_response = code_execution_response['execution_result']
             else:
                 final_response = code_execution_response['standard_output']
+            
+            # If we have files but no output, provide context about what was created
+            if not final_response.strip() and files_list:
+                file_descriptions = [f"- {file_data['file_name']}" for file_data in files_list.values()]
+                final_response = f"Code executed successfully. The following files were created:\n" + "\n".join(file_descriptions)
+
         else:
             status = code_execution_response.get('status', 'Unknown')
             error_output = code_execution_response.get('error_output', '')
