@@ -119,6 +119,11 @@
 								@click="clearFilters"
 							/>
 						</div>
+						<Button
+							type="button"
+							icon="pi pi-refresh"
+							@click="getPipelineRuns"
+						/>
 					</div>
 				</template>
 
