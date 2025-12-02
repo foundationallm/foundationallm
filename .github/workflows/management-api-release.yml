@@ -30,7 +30,7 @@ jobs:
     - name: Set Docker Tag
       id: docker-tag
       run: |
-        DOCKER_TAG="${GITHUB_REF_NAME#core_api-}"
+        DOCKER_TAG="${GITHUB_REF_NAME#management_api-}"
         echo "DOCKER_TAG=$DOCKER_TAG" >> $GITHUB_ENV
         echo "docker_tag: Latest Tag is : $DOCKER_TAG"
         echo "docker_tag=$DOCKER_TAG" >> $GITHUB_OUTPUT
