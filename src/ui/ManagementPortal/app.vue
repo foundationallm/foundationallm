@@ -2,7 +2,7 @@
 	<Head>
 		<Title>{{ pageTitle }}</Title>
 		<Meta name="description" :content="pageTitle" />
-		<Link rel="icon" type="image/x-icon" :href="iconLink" />
+		<Link rel="icon" type="image/x-icon" :href="iconLinkComputed" />
 	</Head>
 
 	<div class="main-content">
@@ -19,24 +19,31 @@ export default {
 	data() {
 		return {
 			pageTitle: 'FoundationaLLM Management',
-			iconLink: this.$appConfigStore.favIconUrl || '/favicon.ico',
 		};
 	},
 
 	computed: {
+		iconLinkComputed() {
+			const appConfigStore = this.$appConfigStore;
+			return (appConfigStore && appConfigStore.favIconUrl) ? appConfigStore.favIconUrl : '/favicon.ico';
+		},
 		style() {
+			const appConfigStore = this.$appConfigStore;
+			if (!appConfigStore) {
+				return {};
+			}
 			return {
-				'--primary-bg': this.$appConfigStore.primaryBg,
-				'--primary-color': this.$appConfigStore.primaryColor,
-				'--secondary-color': this.$appConfigStore.secondaryColor,
-				'--accent-color': this.$appConfigStore.accentColor,
-				'--primary-text': this.$appConfigStore.primaryText,
-				'--secondary-text': this.$appConfigStore.secondaryText,
-				'--accent-text': this.$appConfigStore.accentText,
-				'--primary-button-bg': this.$appConfigStore.primaryButtonBg,
-				'--primary-button-text': this.$appConfigStore.primaryButtonText,
-				'--secondary-button-bg': this.$appConfigStore.secondaryButtonBg,
-				'--secondary-button-text': this.$appConfigStore.secondaryButtonText,
+				'--primary-bg': appConfigStore.primaryBg,
+				'--primary-color': appConfigStore.primaryColor,
+				'--secondary-color': appConfigStore.secondaryColor,
+				'--accent-color': appConfigStore.accentColor,
+				'--primary-text': appConfigStore.primaryText,
+				'--secondary-text': appConfigStore.secondaryText,
+				'--accent-text': appConfigStore.accentText,
+				'--primary-button-bg': appConfigStore.primaryButtonBg,
+				'--primary-button-text': appConfigStore.primaryButtonText,
+				'--secondary-button-bg': appConfigStore.secondaryButtonBg,
+				'--secondary-button-text': appConfigStore.secondaryButtonText,
 			};
 		},
 	},
