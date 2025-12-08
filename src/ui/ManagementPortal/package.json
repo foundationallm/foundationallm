@@ -33,6 +33,8 @@
 		"vue-router": "^4.5.1"
 	},
 	"dependencies": {
+		"chart.js": "^4.4.0",
+		"vue-chartjs": "^5.2.0",
 		"@azure/app-configuration": "^1.7.0",
 		"@azure/msal-browser": "^4.15.0",
 		"@pinia/nuxt": "^0.11.1",
