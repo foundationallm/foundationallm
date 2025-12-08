@@ -8,25 +8,30 @@
 		class="confirmation-dialog"
 	>
 		<div class="confirmation-message">
-			<slot>{{ message }}</slot>
+			<slot :message="resolvedMessage" :message-html="messageHtml">
+				<div v-if="messageHtml" class="confirmation-message-content" v-html="messageHtml" />
+				<p v-else>{{ resolvedMessage }}</p>
+			</slot>
 		</div>
 
 		<template #footer>
 			<div class="confirmation-dialog-footer">
 				<Button
-					:severity="confirmButtonSeverity === 'danger' ? 'danger' : 'primary'"
+					:severity="confirmButtonSeverity"
 					:label="confirmText"
 					@click="handleConfirm"
 					autofocus
 				/>
 
-				<Button class="ml-2" :label="cancelText" text @click="handleCancel" />
+				<Button v-if="hasCancelButton" class="ml-2" :label="cancelText" text @click="handleCancel" />
 			</div>
 		</template>
 	</Dialog>
 </template>
 
 <script lang="ts">
+import { marked } from 'marked';
+import DOMPurify from 'dompurify';
 import { useConfirmationStore } from '@/stores/confirmationStore';
 
 export default {
@@ -39,6 +44,12 @@ export default {
 
 		confirmText: {
 			type: String,
+			required: false,
+			default: undefined,
+		},
+
+		hasCancelButton: {
+			type: Boolean,
 			required: false,
 			default: undefined,
 		},
@@ -64,7 +75,7 @@ export default {
 		confirmButtonSeverity: {
 			type: String as () => 'primary' | 'danger' | 'success' | 'warning',
 			required: false,
-			default: 'primary',
+			default: undefined,
 		},
 	},
 
@@ -84,12 +95,26 @@ export default {
 			return this.header || this.confirmationStore.title;
 		},
 
-		message() {
+		resolvedMessage() {
 			return this.$props.message || this.confirmationStore.message;
+		},
+
+		messageHtml() {
+			const rawMessage = this.resolvedMessage || '';
+			if (!rawMessage) {
+				return '';
+			}
+
+			const html = marked.parse(rawMessage, { async: false });
+			return DOMPurify.sanitize(html);
 		},
 
 		confirmText() {
 			return this.$props.confirmText || this.confirmationStore.confirmText;
+		},
+
+		hasCancelButton() {
+			return this.$props.hasCancelButton || this.confirmationStore.hasCancelButton;
 		},
 
 		cancelText() {

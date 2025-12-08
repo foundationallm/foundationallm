@@ -679,8 +679,9 @@ import { useAuthStore } from '@/stores/authStore';
 					title: 'Delete conversation',
 					message: `Do you want to delete the chat "${session.display_name}" ?`,
 					confirmText: 'Yes',
-					cancelText: 'Cancel',
+					cancelText: 'No',
 					confirmButtonSeverity: 'danger',
+					hasCancelButton: true
 				});
 
 				if (!confirmed) {
