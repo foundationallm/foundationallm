@@ -20,6 +20,15 @@ from tqdm import tqdm
 
 from test_authentication_manager import TestAuthenticationManager
 
+class FileUploadError(Exception):
+    """Custom exception for file upload failures that carries HTTP status and response text."""
+
+    def __init__(self, status_code: int, response_text: str):
+        super().__init__(f"Upload failed with status {status_code}: {response_text}")
+        self.status_code = status_code
+        self.response_text = response_text
+
+
 # Global test authentication manager instance
 test_authentication_manager = TestAuthenticationManager()
 
@@ -340,10 +349,11 @@ def upload_file_with_progress(file_path, fllm_endpoint, session_id, agent_name):
             progress_bar.close()
             
             # Check if the request was successful
-            if response.status_code >= 200 and response.status_code < 300:
+            if 200 <= response.status_code < 300:
                 return response.json()
             else:
-                raise Exception(f"Upload failed with status {response.status_code}: {response.text}")
+                # Raise a structured error so callers can handle specific HTTP codes.
+                raise FileUploadError(response.status_code, response.text)
                 
         except Exception as e:
             progress_bar.close()
@@ -399,14 +409,49 @@ def process_question(
         # Upload the file
         file_path = os.path.join(suites_root_folder, '../uploads', input_filename)
         fllm_endpoint = os.getenv("FLLM_ENDPOINT")
-        upload_response = upload_file_with_progress(file_path, fllm_endpoint, session_id, agent_name)
+        try:
+            upload_response = upload_file_with_progress(file_path, fllm_endpoint, session_id, agent_name)
 
-        response, completion_error = send_completion_request(
-            session_id=session_id,
-            agent_name=agent_name,
-            user_prompt=question,
-            attachments=[upload_response.get('object_id') or upload_response.get('objectId')]
-        )
+            response, completion_error = send_completion_request(
+                session_id=session_id,
+                agent_name=agent_name,
+                user_prompt=question,
+                attachments=[upload_response.get('object_id') or upload_response.get('objectId')]
+            )
+        except FileUploadError as e:
+            
+            # Handle file upload errors to avoid crashing the entire test suite.
+
+            if e.status_code in (415, 422):
+                
+                # For HTTP 415/422 we treat this as a test result
+                # rather than an error (we assume the test expected the upload to fail).
+
+                response = {
+                    'content': [
+                        {
+                            'type': 'text',
+                            'value': 'File upload failed'
+                        }
+                    ],
+                    'tokens': 0,
+                    'content_artifacts': []
+                }
+                
+            else:
+                print(f"Failed to upload file: {input_filename}")
+                return {
+                    'Question': question,
+                    'Answer': answer,
+                    'AgentAnswer': '',
+                    'OtherAgentContent': [],
+                    'Tokens': 0,
+                    'SessionRequestDuration': session_duration,
+                    'CompletionRequestDuration': 0,
+                    'ErrorOccured': 1,
+                    'ErrorDetails': 'Failed to upload file',
+                    'ErrorDetailsFull': 'Failed to upload file: ' + e.response_text
+                }
     else:   
         response, completion_error = send_completion_request(
             session_id=session_id,
