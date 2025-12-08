@@ -98,9 +98,11 @@ namespace FoundationaLLM.Context.Services
                     conversationId,
                     fileName,
                     contentType,
-                    BinaryData.FromStream(content));
+                    BinaryData.FromStream(content),
+                    out var validatedContentType);
                 if (contentTypeResult is not null)
                     return contentTypeResult;
+                contentType = validatedContentType!;
 
 
                 if (!IsFileAllowedForConversation(
@@ -240,9 +242,11 @@ namespace FoundationaLLM.Context.Services
                     null,
                     fileName,
                     contentType,
-                    BinaryData.FromStream(content));
+                    BinaryData.FromStream(content),
+                    out var validatedContentType);
                 if (contentTypeResult is not null)
                     return contentTypeResult;
+                contentType = validatedContentType!;
 
                 if (!IsFileAllowedForAgent(
                     origin,
@@ -745,8 +749,11 @@ namespace FoundationaLLM.Context.Services
             string? conversationId,
             string fileName,
             string contentType,
-            BinaryData fileContent)
+            BinaryData fileContent,
+            out string? validatedContentType)
         {
+            validatedContentType = null;
+
             var contentTypeResult = FileUtils.GetFileContentType(
                 fileName,
                 fileContent);
@@ -775,6 +782,7 @@ namespace FoundationaLLM.Context.Services
                     instanceId, contentType, fileName, agentName ?? "N/A", conversationId ?? "N/A", contentTypeResult.ContentType);
             }
 
+            validatedContentType = contentTypeResult.ContentType;
             return null;
         }
     }
