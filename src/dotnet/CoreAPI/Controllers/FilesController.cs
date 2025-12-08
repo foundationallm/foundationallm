@@ -85,14 +85,22 @@ namespace FoundationaLLM.Core.API.Controllers
             var name = $"a-{Guid.NewGuid()}-{DateTime.UtcNow.Ticks}";
             var contentType = file.ContentType;
 
-            if (string.IsNullOrWhiteSpace(contentType)
-                || contentType == "null")
-                contentType = FileMethods.GetMimeType(fileName);
-
             await using var stream = file.OpenReadStream();
-            using var memoryStream = new MemoryStream();
-            await stream.CopyToAsync(memoryStream);
-            var content = memoryStream.ToArray();
+            var content = await BinaryData.FromStreamAsync(stream);
+            var contentTypeResult = FileUtils.GetFileContentType(fileName, content);
+
+            if (!contentTypeResult.IsSupported
+                || !contentTypeResult.MatchesExtension)
+            {
+                _logger.LogError(
+                    "File upload failed due to unsupported file type or file type mismatch. FileName: {FileName}, DetectedContentType: {DetectedContentType}, IsSupported: {IsSupported}, MatchesExtension: {MatchesExtension}",
+                    fileName,
+                    contentTypeResult.ContentType,
+                    contentTypeResult.IsSupported,
+                    contentTypeResult.MatchesExtension);
+                return UnprocessableEntity(
+                    "The file type is not supported or does not match file extension.");
+            }
 
             var uploadResult = await _coreService.UploadAttachment(
                 instanceId,
@@ -149,7 +157,10 @@ namespace FoundationaLLM.Core.API.Controllers
 
             return attachment == null
                 ? NotFound()
-                : File(attachment.Content!, FileMethods.GetMimeType(attachment.Content!), attachment.OriginalFileName);
+                : File(
+                    attachment.Content!.ToStream(),
+                    attachment.ContentType!,
+                    attachment.OriginalFileName);
         }
 
         /// <summary>

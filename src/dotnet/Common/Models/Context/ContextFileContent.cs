@@ -20,9 +20,9 @@ namespace FoundationaLLM.Common.Models.Context
         public required string ContentType { get; set; }
 
         /// <summary>
-        /// Gets or sets the stream containing the binary file content.
+        /// Gets or sets the the binary file content.
         /// </summary>
         [JsonPropertyName("file_content")]
-        public Stream? FileContent { get; set; }
+        public BinaryData? FileContent { get; set; }
     }
 }

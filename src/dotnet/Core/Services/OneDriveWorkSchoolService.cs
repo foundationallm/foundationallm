@@ -97,10 +97,6 @@ namespace FoundationaLLM.Core.Services
                 throw new InvalidOperationException($"Could not retrieve OneDrive item contents for {oneDriveItem.Id}. Status code: {response.StatusCode}.");
             var stream = await response.Content.ReadAsStreamAsync();
 
-            using var memoryStream = new MemoryStream();
-            await stream.CopyToAsync(memoryStream);
-            var content = memoryStream.ToArray();
-
             var fileName = itemObj?.Name ?? Guid.NewGuid().ToString();
             var name = $"a-{Guid.NewGuid()}-{DateTime.UtcNow.Ticks}";
             var contentType = itemObj?.File?.MimeType ?? "application/octet-stream";
@@ -111,7 +107,7 @@ namespace FoundationaLLM.Core.Services
                     new AttachmentFile
                     {
                         Name = name,
-                        Content = content,
+                        Content = BinaryData.FromStream(stream),
                         DisplayName = fileName,
                         ContentType = contentType,
                         OriginalFileName = fileName

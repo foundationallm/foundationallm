@@ -370,7 +370,7 @@ namespace AzureAI.ResourceProviders
                     Name = fileMapping.AzureAIAgentFileId,
                     OriginalFileName = fileMapping.OriginalFileName,
                     ContentType = fileMapping.FileContentType,
-                    BinaryContent = result.Value.ToMemory()
+                    BinaryContent = result.Value
                 }
             };
         }

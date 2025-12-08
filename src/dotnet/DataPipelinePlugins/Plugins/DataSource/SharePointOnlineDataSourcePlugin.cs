@@ -167,12 +167,27 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataSource
 
             Stream downloadedContentStream = await document.GetContentAsync(true);
             var binaryData = await BinaryData.FromStreamAsync(downloadedContentStream, default);
+            var contentTypeResult = FileUtils.GetFileContentType(document.Name, binaryData);
+
+            if (!contentTypeResult.IsSupported
+                || !contentTypeResult.MatchesExtension)
+            {
+                _logger.LogWarning(
+                    "The {PluginName} plugin cannot process the content item with identifier {ContentItemIdentifier} because the file type is not supported or does not match the file extension.",
+                    Name,
+                    contentItemCanonicalId);
+                return new PluginResult<ContentItemRawContent>(
+                    null,
+                    false,
+                    false,
+                    ErrorMessage: "The file type is not supported or does not match the file extension.");
+            }
 
             return new PluginResult<ContentItemRawContent>(
                 new ContentItemRawContent
                 {
                     Name = document.Name,
-                    ContentType = FileMethods.GetMimeType(document.Name),
+                    ContentType = contentTypeResult.ContentType,
                     RawContent = binaryData,
                     Metadata = new Dictionary<string, object>
                     {

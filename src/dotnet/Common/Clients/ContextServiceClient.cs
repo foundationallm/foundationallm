@@ -45,7 +45,8 @@ namespace FoundationaLLM.Common.Clients
                     return Result<ContextFileContent>.Success(
                         new ContextFileContent
                         {
-                            FileContent = await responseMessage.Content.ReadAsStreamAsync(),
+                            FileContent = BinaryData.FromStream(
+                                await responseMessage.Content.ReadAsStreamAsync()),
                             FileName = responseMessage!.Content.Headers.ContentDisposition!.FileNameStar!,
                             ContentType = responseMessage!.Content.Headers.ContentType!.MediaType!
                         });
@@ -140,7 +141,7 @@ namespace FoundationaLLM.Common.Clients
             string conversationId,
             string fileName,
             string fileContentType,
-            Stream fileContent) =>
+            BinaryData fileContent) =>
             await CreateFile(
                 instanceId,
                 $"conversations/{conversationId}",
@@ -155,7 +156,7 @@ namespace FoundationaLLM.Common.Clients
             string agentName,
             string fileName,
             string fileContentType,
-            Stream fileContent) =>
+            BinaryData fileContent) =>
             await CreateFile(
                 instanceId,
                 $"agents/{agentName}",
@@ -171,7 +172,7 @@ namespace FoundationaLLM.Common.Clients
             string? queryParameters,
             string fileName,
             string fileContentType,
-            Stream fileContent)
+            BinaryData fileContent)
         {
             try
             {
@@ -181,7 +182,7 @@ namespace FoundationaLLM.Common.Clients
                     _callContext.CurrentUserIdentity!);
 
                 var multipartFormDataContent = new MultipartFormDataContent();
-                var streamContent = new StreamContent(fileContent);
+                var streamContent = new StreamContent(fileContent.ToStream());
                 streamContent.Headers.ContentType = new MediaTypeHeaderValue(fileContentType);
                 streamContent.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data")
                 {

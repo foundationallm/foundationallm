@@ -12,6 +12,7 @@ using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders.Agent;
 using FoundationaLLM.Common.Models.ResourceProviders.DataPipeline;
 using FoundationaLLM.Common.Models.Services;
+using FoundationaLLM.Common.Utils;
 using FoundationaLLM.Context.Interfaces;
 using FoundationaLLM.Context.Models.Configuration;
 using Microsoft.AspNetCore.Http;
@@ -91,6 +92,17 @@ namespace FoundationaLLM.Context.Services
 
             try
             {
+                var contentTypeResult = ValidateContentType(
+                    instanceId,
+                    agentName,
+                    conversationId,
+                    fileName,
+                    contentType,
+                    BinaryData.FromStream(content));
+                if (contentTypeResult is not null)
+                    return contentTypeResult;
+
+
                 if (!IsFileAllowedForConversation(
                     origin,
                     fileName,
@@ -222,6 +234,16 @@ namespace FoundationaLLM.Context.Services
         {
             try
             {
+                var contentTypeResult = ValidateContentType(
+                    instanceId,
+                    agentName,
+                    null,
+                    fileName,
+                    contentType,
+                    BinaryData.FromStream(content));
+                if (contentTypeResult is not null)
+                    return contentTypeResult;
+
                 if (!IsFileAllowedForAgent(
                     origin,
                     fileName,
@@ -314,7 +336,7 @@ namespace FoundationaLLM.Context.Services
                     {
                         FileName = fileRecord.FileName,
                         ContentType = fileRecord.ContentType,
-                        FileContent = fileContent.ToStream()
+                        FileContent = fileContent
                     });
             }
             catch (Exception ex)
@@ -354,7 +376,7 @@ namespace FoundationaLLM.Context.Services
                     {
                         FileName = fileRecord.FileName,
                         ContentType = fileRecord.ContentType,
-                        FileContent = fileContent.ToStream()
+                        FileContent = fileContent
                     });
             }
             catch (Exception ex)
@@ -715,6 +737,45 @@ namespace FoundationaLLM.Context.Services
             }
             else
                 return Result<ContextFileRecord>.Success(fileRecord);
+        }
+
+        private Result<ContextFileRecord>? ValidateContentType(
+            string instanceId,
+            string? agentName,
+            string? conversationId,
+            string fileName,
+            string contentType,
+            BinaryData fileContent)
+        {
+            var contentTypeResult = FileUtils.GetFileContentType(
+                fileName,
+                fileContent);
+
+            if (!contentTypeResult.IsSupported)
+            {
+                _logger.LogError("{InstanceId}: The content type {ContentType} for file {FileName} for agent {AgentName} and conversation {ConversationId} is not supported.",
+                    instanceId, contentType, fileName, agentName ?? "N/A", conversationId ?? "N/A");
+                return Result<ContextFileRecord>.FailureFromErrorMessage(
+                    $"The content type {contentType} for file {fileName} for agent {agentName ?? "N/A"} and conversation {conversationId ?? "N/A"} is not supported.",
+                    StatusCodes.Status415UnsupportedMediaType);
+            }
+
+            if (!contentTypeResult.MatchesExtension)
+            {
+                _logger.LogError("{InstanceId}: The content type {ContentType} for file {FileName} for agent {AgentName} and conversation {ConversationId} does not match the actual content of the file.",
+                    instanceId, contentType, fileName, agentName ?? "N/A", conversationId ?? "N/A");
+                return Result<ContextFileRecord>.FailureFromErrorMessage(
+                    $"The content type {contentType} for file {fileName} for agent {agentName ?? "N/A"} and conversation {conversationId ?? "N/A"} does not match the actual content of the file.",
+                    StatusCodes.Status422UnprocessableEntity);
+            }
+
+            if (contentTypeResult.ContentType != contentType)
+            {
+                _logger.LogWarning("{InstanceId}: The provided content type {ProvidedContentType} for file {FileName} for agent {AgentName} and conversation {ConversationId} does not match the detected content type {DetectedContentType}. Using detected content type.",
+                    instanceId, contentType, fileName, agentName ?? "N/A", conversationId ?? "N/A", contentTypeResult.ContentType);
+            }
+
+            return null;
         }
     }
 }
