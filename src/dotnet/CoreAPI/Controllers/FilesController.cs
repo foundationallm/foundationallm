@@ -101,6 +101,15 @@ namespace FoundationaLLM.Core.API.Controllers
                 return UnprocessableEntity(
                     "The file type is not supported or does not match file extension.");
             }
+            if (contentType != contentTypeResult.ContentType)
+            {
+                _logger.LogWarning(
+                    "File content type mismatch detected (the detected content type will be used). FileName: {FileName}, OriginalContentType: {OriginalContentType}, DetectedContentType: {DetectedContentType}",
+                    fileName,
+                    contentType,
+                    contentTypeResult.ContentType);
+                contentType = contentTypeResult.ContentType;
+            }
 
             var uploadResult = await _coreService.UploadAttachment(
                 instanceId,
