@@ -577,19 +577,28 @@ export default {
 					currentFiles.uploadedFiles.push(file);
 				} catch (error) {
 					filesFailed += 1;
+					const confirmationStore = useConfirmationStore();
 					if (error.status === 422) {
-						this.$appStore.addToast({
-							severity: 'error',
-							summary: 'File rejected',
-							detail: `The file "${file.name}" was rejected because it does not meet the content safety standards of the platform.`,
-							life: 5000,
+						await confirmationStore.confirmAsync({
+							title: 'File rejected',
+							message:
+								`The file <span style="color:red">**\`${file.name}\`**</span> was rejected because it failed one of the following checks:\n\n` +
+								'- The file content does not match the expected format (defined by the file extension).\n' +
+								'- The file content failed content safety checks.\n' +
+								'- The file type is not allowed.\n',
+							confirmText: 'OK',
+							confirmButtonSeverity: 'warning',
+							hasCancelButton: false,
 						});
 					} else {
-						this.$appStore.addToast({
-							severity: 'error',
-							summary: 'Error',
-							detail: `File upload failed for "${file.name}". ${error.message || error.title || ''}`,
-							life: 5000,
+						await confirmationStore.confirmAsync({
+							title: 'File upload error',
+							message:
+								`The file <span style="color:red">**\`${file.name}\`**</span> could not be uploaded due to a server error. ` +
+								`Please try again later or contact support.`,
+							confirmText: 'OK',
+							confirmButtonSeverity: 'error',
+							hasCancelButton: false,
 						});
 					}
 				} finally {
@@ -644,10 +653,11 @@ export default {
 			const confirmationStore = useConfirmationStore();
 			const confirmed = await confirmationStore.confirmAsync({
 				title: type === 'attachment' ? 'Delete attachment' : 'Remove file',
-				message: `Do you want to remove the file "${name}"?`,
+				message: `Do you want to remove the file **\`${name}\`**?`,
 				confirmText: 'Yes',
-				cancelText: 'Cancel',
+				cancelText: 'No',
 				confirmButtonSeverity: 'danger',
+				hasCancelButton: true
 			});
 
 			if (!confirmed) {
