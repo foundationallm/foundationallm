@@ -314,7 +314,7 @@ namespace FoundationaLLM.Context.Services
                     {
                         FileName = fileRecord.FileName,
                         ContentType = fileRecord.ContentType,
-                        FileContent = fileContent.ToStream()
+                        FileContent = fileContent
                     });
             }
             catch (Exception ex)
@@ -354,7 +354,7 @@ namespace FoundationaLLM.Context.Services
                     {
                         FileName = fileRecord.FileName,
                         ContentType = fileRecord.ContentType,
-                        FileContent = fileContent.ToStream()
+                        FileContent = fileContent
                     });
             }
             catch (Exception ex)

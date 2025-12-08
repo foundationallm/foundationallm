@@ -38,13 +38,13 @@ namespace FoundationaLLM.Context.Interfaces
         /// <param name="codeSessionId">The identifier of the code session.</param>
         /// <param name="endpoint">The endpoint of the code session service.</param>
         /// <param name="fileName">The name of the file to upload.</param>
-        /// <param name="fileContent">The stream containing the binary content of the file to upload.</param>
+        /// <param name="fileContent">The binary content of the file to upload.</param>
         /// <returns></returns>
         Task<bool> UploadFileToCodeSession(
             string codeSessionId,
             string endpoint,
             string fileName,
-            Stream fileContent);
+            BinaryData fileContent);
 
         /// <summary>
         /// Lists files from a code session.

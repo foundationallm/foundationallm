@@ -269,7 +269,7 @@ namespace FoundationaLLM.Attachment.ResourceProviders
                     _storageContainerName,
                     attachment.Filename,
                     default);
-                attachmentFile.Content = fileContent.ToArray();
+                attachmentFile.Content = fileContent;
             }
 
             return attachmentFile;
@@ -294,7 +294,7 @@ namespace FoundationaLLM.Attachment.ResourceProviders
                 Name = attachmentFile.Name,
                 Type = AttachmentTypes.File,
                 Filename = $"/{_name}/{fullName}",
-                Size = attachmentFile.Content!.Length,
+                Size = attachmentFile.Content!.ToMemory().Length,
                 SecondaryProvider = attachmentFile.SecondaryProvider,
                 UPN = userIdentity.UPN ?? string.Empty,
                 Deleted = false
@@ -314,7 +314,7 @@ namespace FoundationaLLM.Attachment.ResourceProviders
 
             await CreateResource(
                 attachment,
-                new MemoryStream(attachmentFile.Content!),
+                attachmentFile.Content!,
                 attachmentFile.ContentType ?? default);
 
             await _cosmosDBService.CreateAttachment(attachment);

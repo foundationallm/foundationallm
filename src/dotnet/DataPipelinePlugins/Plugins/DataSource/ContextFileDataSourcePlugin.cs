@@ -91,7 +91,7 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataSource
                         {
                             Name = fileContent.FileName,
                             ContentType = fileContent.ContentType,
-                            RawContent = BinaryData.FromStream(fileContent.FileContent!),
+                            RawContent = fileContent.FileContent!,
                             Metadata = new Dictionary<string, object>
                             {
                                 { "FileId", contentItemCanonicalId },

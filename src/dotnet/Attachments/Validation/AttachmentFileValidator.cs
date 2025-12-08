@@ -18,7 +18,7 @@ namespace FoundationaLLM.Attachment.Validation
 
             RuleFor(x => x.Content)
                 .NotNull()
-                .Must(content => content!.Length > 0)
+                .Must(content => content!.ToMemory().Length > 0)
                 .WithMessage("The attachment content is null.");
         }
     }

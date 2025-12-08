@@ -23,6 +23,6 @@ namespace FoundationaLLM.Common.Models.ResourceProviders
         /// The binary content of the file.
         /// </summary>
         [JsonIgnore]
-        public ReadOnlyMemory<byte>? BinaryContent { get; set; }
+        public BinaryData? BinaryContent { get; set; }
     }
 }

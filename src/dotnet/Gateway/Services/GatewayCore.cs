@@ -487,7 +487,7 @@ namespace FoundationaLLM.Gateway.Services
             {
                 var fileClient = GetAzureOpenAIFileClient(azureOpenAIAccount.Endpoint);
                 var originalFileName = string.Empty;
-                byte[]? fileContent = null;
+                Stream? fileContentStream = null;
 
                 // check if it's an attachment or an agent file
                 var attachmentObjectId = GetParameterValue<string>(parameters, OpenAIAgentCapabilityParameterNames.AttachmentObjectId, string.Empty);
@@ -495,25 +495,25 @@ namespace FoundationaLLM.Gateway.Services
                 {
                     var attachmentFile = await _attachmentResourceProvider.GetResourceAsync<AttachmentFile>(attachmentObjectId, userIdentity, new ResourceProviderGetOptions { LoadContent = true });
                     originalFileName = attachmentFile.OriginalFileName;
-                    fileContent = attachmentFile.Content;
+                    fileContentStream = attachmentFile.Content!.ToStream();
                 }
                 else
                 {
                     var agentFileObjectId = GetParameterValue<string>(parameters, OpenAIAgentCapabilityParameterNames.AgentFileObjectId, string.Empty);
                     var agentFile = await _agentResourceProvider.GetResourceAsync<Common.Models.ResourceProviders.Agent.AgentFiles.AgentFile>(agentFileObjectId, userIdentity, new ResourceProviderGetOptions { LoadContent = true });
                     originalFileName = agentFile.DisplayName;
-                    fileContent = agentFile.Content;
+                    fileContentStream = agentFile.Content!.ToStream();
                 }
                 if (string.IsNullOrWhiteSpace(originalFileName))
                 {
                     throw new GatewayException("The request does not have a valid AttachmentObjectId or AgentFileObjectId parameter value.", StatusCodes.Status400BadRequest);
                 }
-                if (fileContent == null)
+                if (fileContentStream == null)
                 {
                     throw new GatewayException("The file content is null.", StatusCodes.Status400BadRequest);
                 }
                 var fileResult = await fileClient.UploadFileAsync(
-                    new MemoryStream(fileContent!),
+                    fileContentStream!,
                     originalFileName,
                     FileUploadPurpose.Assistants);
                 var file = fileResult.Value;
@@ -791,7 +791,7 @@ namespace FoundationaLLM.Gateway.Services
             if (createAgentFile)
             {
                 var originalFileName = string.Empty;
-                byte[]? fileContent = null;
+                BinaryData? fileContent = null;
 
                 // check if it's an attachment or an agent file
                 var attachmentObjectId = GetParameterValue<string>(parameters, AzureAIAgentServiceCapabilityParameterNames.AttachmentObjectId, string.Empty);
@@ -818,7 +818,7 @@ namespace FoundationaLLM.Gateway.Services
                 }
 
                 var fileResponse = await agentsClient.UploadFileAsync(
-                    new MemoryStream(fileContent!),
+                    fileContent.ToStream(),
                     AgentFilePurpose.Agents,
                     originalFileName
                     );
