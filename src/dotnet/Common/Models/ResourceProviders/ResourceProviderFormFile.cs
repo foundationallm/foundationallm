@@ -18,7 +18,7 @@
         /// <summary>
         /// The binary content of the file.
         /// </summary>
-        public required ReadOnlyMemory<byte> BinaryContent { get; set; }
+        public required BinaryData BinaryContent { get; set; }
 
         /// <summary>
         /// Additional optional parameters from the form payload.

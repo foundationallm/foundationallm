@@ -120,7 +120,7 @@ namespace FoundationaLLM.Context.API.Controllers
 
             return result.TryGetValue(out var fileContent)
                 ? File(
-                    fileContent!.FileContent!,
+                    fileContent!.FileContent!.ToStream(),
                     fileContent!.ContentType!,
                     fileContent!.FileName!)
                 : result.ToActionResult();

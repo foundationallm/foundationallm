@@ -1683,7 +1683,7 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
         /// <param name="contentType">The resource content type, if applicable.</param>
         /// <returns></returns>
         /// <exception cref="ResourceProviderException"></exception>
-        protected async Task CreateResource(TResourceReference resourceReference, Stream content, string? contentType)
+        protected async Task CreateResource(TResourceReference resourceReference, BinaryData content, string? contentType)
         {
             try
             {
@@ -1692,7 +1692,7 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
                 await _storageService.WriteFileAsync(
                     _storageContainerName,
                     resourceReference.Filename,
-                    content,
+                    content.ToStream(),
                     contentType ?? default,
                     default);
 

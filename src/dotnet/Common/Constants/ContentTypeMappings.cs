@@ -6,6 +6,15 @@
     public static class ContentTypeMappings
     {
         /// <summary>
+        /// Provides a read-only mapping of file extensions to their canonical names.
+        /// </summary>
+        public static readonly IReadOnlyDictionary<string, string> FileExtensionMap = new Dictionary<string, string>
+        {
+            { "JPG", "JPEG" },
+            { "YML", "YAML" }
+        };
+
+        /// <summary>
         /// Provides a read-only mapping of MIME types to their corresponding plain text or data file format
         /// identifiers.
         /// </summary>
@@ -21,12 +30,13 @@
             { "text/html", "HTML" },                                                                        // .HTML file
             { "text/x-ini", "INI" },                                                                        // .INI file
             { "text/x-java-source", "JAVA" },                                                               // .JAVA file
+            { "text/javascript", "JS" },                                                                    // .JS file
             { "application/javascript", "JS" },                                                             // .JS file
             { "application/json", "JSON" },                                                                 // .JSON file
             { "application/x-ndjson", "JSONL" },                                                            // .JSONL file
             { "application/jsonlines", "JSONL" },                                                           // .JSONL file
             { "text/markdown", "MD" },                                                                      // .MD file
-            { "application/x-https-php", "PHP" },                                                           // .PHP file
+            { "application/x-httpd-php", "PHP" },                                                           // .PHP file
             { "text/php", "PHP" },                                                                          // .PHP file
             { "application/php", "PHP" },                                                                   // .PHP file 
             { "text/x-python", "PY" },                                                                      // .PY file
@@ -34,6 +44,7 @@
             { "application/x-ruby", "RB" },                                                                 // .RB file
             { "application/rtf", "RTF" },                                                                   // .RTF file
             { "text/x-shellscript", "SH" },                                                                 // .SH file
+            { "application/x-sh", "SH" },                                                                   // .SH file
             { "application/x-tex", "TEX" },                                                                 // .TEX file
             { "application/toml", "TOML" },                                                                 // .TOML file
             { "application/typescript", "TS" },                                                             // .TS file
@@ -75,7 +86,9 @@
             // Legacy Microsoft Office formats
             //---------------------------------------------------------------------------------------------------------------------------
             { "application/msword", "DOC"  },                                                               // .DOC file
+            { "application/mspowerpoint", "PPT" },                                                          // .PPT file
             { "application/vnd.ms-powerpoint", "PPT" },                                                     // .PPT file
+            { "application/excel", "XLS" },                                                                 // .XLS file
             { "application/vnd.ms-excel", "XLS" },                                                          // .XLS file
         };
 
@@ -102,6 +115,7 @@
             // Archive files
             //---------------------------------------------------------------------------------------------------------------------------
             { "application/zip", "ZIP" },                                                                   // .ZIP file
+            { "application/x-compressed", "ZIP" },                                                          // .ZIP file
             { "application/x-tar", "TAR" }                                                                  // .TAR file
         };
 

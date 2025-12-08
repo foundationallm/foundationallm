@@ -766,7 +766,7 @@ public partial class CoreService(
             sessionId,
             attachmentFile.OriginalFileName,
             attachmentFile.ContentType!,
-            new MemoryStream(attachmentFile.Content!));
+            attachmentFile.Content!);
 
             if (serviceResult.TryGetValue(out var fileRecord))
             {
@@ -817,7 +817,7 @@ public partial class CoreService(
                         Name = result.Resource!.Name,
                         OriginalFileName = result.Resource!.OriginalFileName,
                         ContentType = result.Resource!.ContentType,
-                        Content = result.Resource!.BinaryContent!.Value.ToArray()
+                        Content = result.Resource!.BinaryContent
                     };
                 case ResourceProviderNames.FoundationaLLM_AzureAI:
                     var azureAIResponse = await _azureAIResourceProvider.ExecuteResourceActionAsync<AzureAIAgentFileMapping, object?, ResourceProviderActionResult<FileContent>>(
@@ -832,7 +832,7 @@ public partial class CoreService(
                         Name = azureAIResponse.Resource!.Name,
                         OriginalFileName = azureAIResponse.Resource!.OriginalFileName,
                         ContentType = azureAIResponse.Resource!.ContentType,
-                        Content = azureAIResponse.Resource!.BinaryContent!.Value.ToArray()
+                        Content = azureAIResponse.Resource!.BinaryContent
                     };
                 case ResourceProviderNames.FoundationaLLM_Context:
 
@@ -840,15 +840,12 @@ public partial class CoreService(
 
                     if (serviceResult.TryGetValue(out var fileContent))
                     {
-                        var content = new MemoryStream();
-                        await fileContent.FileContent!.CopyToAsync(content);
-
                         return new AttachmentFile
                         {
                             Name = fileContent.FileName,
                             OriginalFileName = fileContent.FileName,
                             ContentType = fileContent.ContentType,
-                            Content = content.ToArray()
+                            Content = fileContent.FileContent
                         };
                     }
 
@@ -1182,7 +1179,7 @@ public partial class CoreService(
                             {
                                 newContent.Add(new MessageContent
                                 {
-                                    Type = FileMethods.GetMessageContentFileType(annotation.Text, annotation.Type),
+                                    Type = FileUtils.GetMessageContentFileType(annotation.Text, annotation.Type),
                                     FileName = annotation.Text,
                                     Value = annotation.FileUrl
                                 });

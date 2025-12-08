@@ -23,7 +23,7 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFiles
         /// File stream of the attachment contents.
         /// </summary>
         [JsonPropertyName("content")]
-        public byte[]? Content { get; set; }
+        public BinaryData? Content { get; set; }
 
         /// <summary>
         /// The mime content type of the attachment.
