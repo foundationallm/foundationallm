@@ -1,0 +1,24 @@
+# Sample TOML configuration file
+
+[server]
+host = "localhost"
+port = 8080
+
+[database]
+type = "postgres"
+user = "admin"
+password = "secret"
+database = "sampledb"
+
+[features]
+logging = true
+debug = false
+max_connections = 20
+
+[[users]]
+name = "Alice"
+role = "admin"
+
+[[users]]
+name = "Bob"
+role = "editor"

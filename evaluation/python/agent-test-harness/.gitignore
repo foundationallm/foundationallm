@@ -1,6 +1,8 @@
 test-suites-private/
 *.csv
 uploads/*
+!uploads/content-type-testing
+!uploads/content-type-testing/**
 !uploads/archive.zip
 !uploads/Biden-SOTU.doc
 !uploads/cat_selfie.jpg
