@@ -981,8 +981,8 @@ manage resources instead of managing them locally.</p>
 
   <a id="FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1_CreateResource_" data-uid="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase`1.CreateResource*"></a>
 
-  <h3 id="FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1_CreateResource__0_System_IO_Stream_System_String_" data-uid="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase`1.CreateResource(`0,System.IO.Stream,System.String)">
-  CreateResource(TResourceReference, Stream, string?)
+  <h3 id="FoundationaLLM_Common_Services_ResourceProviders_ResourceProviderServiceBase_1_CreateResource__0_System_BinaryData_System_String_" data-uid="FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase`1.CreateResource(`0,System.BinaryData,System.String)">
+  CreateResource(TResourceReference, BinaryData, string?)
   <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Services/ResourceProviders/ResourceProviderServiceBase.cs/#L1686"><i class="bi bi-code-slash"></i></a>
   </h3>
 
@@ -991,7 +991,7 @@ manage resources instead of managing them locally.</p>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected Task CreateResource(TResourceReference resourceReference, Stream content, string? contentType)</code></pre>
+    <pre><code class="lang-csharp hljs">protected Task CreateResource(TResourceReference resourceReference, BinaryData content, string? contentType)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -999,7 +999,7 @@ manage resources instead of managing them locally.</p>
     <dt><code>resourceReference</code> <span class="xref">TResourceReference</span></dt>
     <dd><p>The resource reference used to identify the resource.</p>
 </dd>
-    <dt><code>content</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.io.stream">Stream</a></dt>
+    <dt><code>content</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.binarydata">BinaryData</a></dt>
     <dd><p>The resource itself.</p>
 </dd>
     <dt><code>contentType</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>

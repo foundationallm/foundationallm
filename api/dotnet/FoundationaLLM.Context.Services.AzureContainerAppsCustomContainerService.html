@@ -490,8 +490,8 @@ Class AzureContainerAppsCustomContainerService  <a class="header-action link-sec
 
   <a id="FoundationaLLM_Context_Services_AzureContainerAppsCustomContainerService_UploadFileToCodeSession_" data-uid="FoundationaLLM.Context.Services.AzureContainerAppsCustomContainerService.UploadFileToCodeSession*"></a>
 
-  <h3 id="FoundationaLLM_Context_Services_AzureContainerAppsCustomContainerService_UploadFileToCodeSession_System_String_System_String_System_String_System_IO_Stream_" data-uid="FoundationaLLM.Context.Services.AzureContainerAppsCustomContainerService.UploadFileToCodeSession(System.String,System.String,System.String,System.IO.Stream)">
-  UploadFileToCodeSession(string, string, string, Stream)
+  <h3 id="FoundationaLLM_Context_Services_AzureContainerAppsCustomContainerService_UploadFileToCodeSession_System_String_System_String_System_String_System_BinaryData_" data-uid="FoundationaLLM.Context.Services.AzureContainerAppsCustomContainerService.UploadFileToCodeSession(System.String,System.String,System.String,System.BinaryData)">
+  UploadFileToCodeSession(string, string, string, BinaryData)
   <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/ContextEngine/Services/AzureContainerAppsCustomContainerService.cs/#L56"><i class="bi bi-code-slash"></i></a>
   </h3>
 
@@ -500,7 +500,7 @@ Class AzureContainerAppsCustomContainerService  <a class="header-action link-sec
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Task&lt;bool&gt; UploadFileToCodeSession(string codeSessionId, string endpoint, string fileName, Stream fileContent)</code></pre>
+    <pre><code class="lang-csharp hljs">public Task&lt;bool&gt; UploadFileToCodeSession(string codeSessionId, string endpoint, string fileName, BinaryData fileContent)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -514,8 +514,8 @@ Class AzureContainerAppsCustomContainerService  <a class="header-action link-sec
     <dt><code>fileName</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
     <dd><p>The name of the file to upload.</p>
 </dd>
-    <dt><code>fileContent</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.io.stream">Stream</a></dt>
-    <dd><p>The stream containing the binary content of the file to upload.</p>
+    <dt><code>fileContent</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.binarydata">BinaryData</a></dt>
+    <dd><p>The binary content of the file to upload.</p>
 </dd>
   </dl>
 

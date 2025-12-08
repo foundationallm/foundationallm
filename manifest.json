@@ -7474,6 +7474,34 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Files.FileContentTypeResult.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.Files.FileContentTypeResult.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Models.Files.FileContentTypeResult",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Models.Files.FileContentTypeResult.yml\" sourcestartlinenumber=\"1\">Represents the result of determining the content type for a file, including the detected MIME type and whether\nit matches the file's extension.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Files.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Models.Files.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FoundationaLLM.Common.Models.Files",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/dotnet/FoundationaLLM.Common.Models.Gateway.AgentCapabilityRequest.yml",
       "output": {
         ".html": {
@@ -12444,17 +12472,17 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Utils.FileMethods.yml",
+      "source_relative_path": "api/dotnet/FoundationaLLM.Common.Utils.FileUtils.yml",
       "output": {
         ".html": {
-          "relative_path": "api/dotnet/FoundationaLLM.Common.Utils.FileMethods.html"
+          "relative_path": "api/dotnet/FoundationaLLM.Common.Utils.FileUtils.html"
         }
       },
       "version": "",
       "Uid": null,
       "IsMRef": true,
-      "Title": "FoundationaLLM.Common.Utils.FileMethods",
-      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Utils.FileMethods.yml\" sourcestartlinenumber=\"1\">Contains methods for working with files.</p>\n"
+      "Title": "FoundationaLLM.Common.Utils.FileUtils",
+      "Summary": "<p sourcefile=\"api/dotnet/FoundationaLLM.Common.Utils.FileUtils.yml\" sourcestartlinenumber=\"1\">Contains methods for working with files.</p>\n"
     },
     {
       "type": "ManagedReference",
