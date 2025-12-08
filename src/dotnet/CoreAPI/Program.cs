@@ -272,11 +272,14 @@ namespace FoundationaLLM.Core.API
                         }
 
                         if (exceptionHandlerPathFeature?.Error is CoreServiceException coreServiceException
-                            && coreServiceException.StatusCode == StatusCodes.Status422UnprocessableEntity)
+                            && (
+                                coreServiceException.StatusCode == StatusCodes.Status415UnsupportedMediaType
+                                || coreServiceException.StatusCode == StatusCodes.Status422UnprocessableEntity
+                            ))
                         {
                             await Results.Problem(
                                 statusCode: coreServiceException.StatusCode,
-                                title: "The request does not meet the content safety standards.").ExecuteAsync(context);
+                                title: "The request cannot be processed due to unsupported, invalid, or unsafe content.").ExecuteAsync(context);
                             return;
                         }
 

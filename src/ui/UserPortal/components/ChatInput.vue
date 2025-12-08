@@ -575,10 +575,12 @@ export default {
 					}
 					filesUploaded += 1;
 					currentFiles.uploadedFiles.push(file);
-				} catch (error) {
+				} catch (error: any) {
 					filesFailed += 1;
 					const confirmationStore = useConfirmationStore();
-					if (error.status === 422) {
+					if (error.status === 422
+						|| error.status === 415
+					) {
 						await confirmationStore.confirmAsync({
 							title: 'File rejected',
 							message:
