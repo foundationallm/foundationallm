@@ -92,6 +92,8 @@ namespace FoundationaLLM.Context.Services
 
             try
             {
+                if (content.CanSeek)
+                    content.Seek(0, SeekOrigin.Begin);
                 var contentTypeResult = ValidateContentType(
                     instanceId,
                     agentName,
@@ -236,6 +238,8 @@ namespace FoundationaLLM.Context.Services
         {
             try
             {
+                if (content.CanSeek)
+                    content.Seek(0, SeekOrigin.Begin);
                 var contentTypeResult = ValidateContentType(
                     instanceId,
                     agentName,
