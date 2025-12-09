@@ -119,11 +119,11 @@
 								@click="clearFilters"
 							/>
 						</div>
-						<Button
-							type="button"
-							icon="pi pi-refresh"
-							@click="getPipelineRuns"
-						/>
+					<Button
+						type="button"
+						icon="pi pi-refresh"
+						@click="getPipelineRuns(false)"
+					/>
 					</div>
 				</template>
 
@@ -644,7 +644,7 @@ export default {
 			this.timeFilter = 'all';
 			this.startFrom = null;
 			this.startTo = null;
-			this.selectedPipelineName = null;
+			this.selectedPipelineName = 'all';
 			this.showAll = true;
 			this.completed = true;
 			this.successful = true;
