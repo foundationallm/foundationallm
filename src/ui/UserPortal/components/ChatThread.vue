@@ -218,7 +218,7 @@ export default {
 			}
 
 			// Check if the agent is accessible to the user
-			const userProfile = this.appStore.userProfiles;
+			const userProfile = this.appStore.userProfile;
 			const enabledAgentIds = userProfile?.agents || [];
 
 			// If user has no enabled agents, show no agents message

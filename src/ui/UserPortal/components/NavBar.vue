@@ -187,7 +187,7 @@
 				},
 				deep: true,
 			},
-			'appStore.userProfiles': {
+			'appStore.userProfile': {
 				handler() {
 					this.setAgentOptions();
 				},
@@ -269,8 +269,8 @@
 					);
 				};
 
-				// Get user profiles to filter enabled agents
-				const userProfile = this.appStore.userProfiles;
+				// Get user profile to filter enabled agents
+				const userProfile = this.appStore.userProfile;
 				const enabledAgentIds = userProfile?.agents || [];
 
 				// Filter out expired agents, disabled agents, and agents not enabled in user profile
