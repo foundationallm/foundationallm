@@ -17,13 +17,13 @@
 		<template #footer>
 			<div class="confirmation-dialog-footer">
 				<Button
-					:severity="confirmButtonSeverity"
-					:label="confirmText"
+					:severity="resolvedConfirmButtonSeverity"
+					:label="resolvedConfirmText"
 					@click="handleConfirm"
 					autofocus
 				/>
 
-				<Button v-if="hasCancelButton" class="ml-2" :label="cancelText" text @click="handleCancel" />
+				<Button v-if="resolvedHasCancelButton" class="ml-2" :label="resolvedCancelText" text @click="handleCancel" />
 			</div>
 		</template>
 	</Dialog>
@@ -109,19 +109,19 @@ export default {
 			return DOMPurify.sanitize(html);
 		},
 
-		confirmText() {
+		resolvedConfirmText() {
 			return this.$props.confirmText || this.confirmationStore.confirmText;
 		},
 
-		hasCancelButton() {
-			return this.$props.hasCancelButton || this.confirmationStore.hasCancelButton;
+		resolvedHasCancelButton() {
+			return this.$props.hasCancelButton !== undefined ? this.$props.hasCancelButton : this.confirmationStore.hasCancelButton;
 		},
 
-		cancelText() {
+		resolvedCancelText() {
 			return this.$props.cancelText || this.confirmationStore.cancelText;
 		},
 
-		confirmButtonSeverity() {
+		resolvedConfirmButtonSeverity() {
 			return this.$props.confirmButtonSeverity || this.confirmationStore.confirmButtonSeverity;
 		},
 	},

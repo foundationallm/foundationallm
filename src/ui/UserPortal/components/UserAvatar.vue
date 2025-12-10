@@ -1,10 +1,11 @@
 <template>
-	<!-- <Avatar v-if="loading" icon="pi pi-spinner" /> -->
-	<Avatar v-if="profilePhotoSrc" :image="profilePhotoSrc" />
+	<!-- <Avatar v-if="loading" icon="pi pi-spinner" v-bind="$attrs" /> -->
+	<Avatar v-if="profilePhotoSrc" :image="profilePhotoSrc" v-bind="$attrs" />
 	<Avatar
 		v-else
 		:label="userInitials"
 		:style="`background-color: ${userColors.background}; color: ${userColors.text};`"
+		v-bind="$attrs"
 	/>
 </template>
 
@@ -86,6 +87,8 @@ function getInitials(text) {
 }
 
 export default {
+	inheritAttrs: false,
+
 	data() {
 		return {
 			// loading: false,
@@ -139,3 +142,4 @@ export default {
 	},
 };
 </script>
+

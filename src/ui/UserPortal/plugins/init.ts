@@ -17,9 +17,6 @@ export default defineNuxtPlugin(async (nuxtApp: any) => {
 
 	const appConfigStore = useAppConfigStore(nuxtApp.$pinia);
 	nuxtApp.provide('appConfigStore', appConfigStore);
-
-	const authStore = await useAuthStore(nuxtApp.$pinia).init();
-	nuxtApp.provide('authStore', authStore);
 	
 	await Promise.all([
 		// Load authentication config variables first (required for auth initialization)
@@ -43,7 +40,8 @@ export default defineNuxtPlugin(async (nuxtApp: any) => {
 		api.setInstanceId(appConfigStore.instanceId);
 	}
 
-	await authStore.init();
+	const authStore = await useAuthStore(nuxtApp.$pinia).init();
+	nuxtApp.provide('authStore', authStore);
 	resolveAuthReady();
 
 	// Only load full configuration if user is authenticated

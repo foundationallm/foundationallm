@@ -810,7 +810,7 @@ export default {
 		},
 
 		async connectOneDriveWorkSchool() {
-			await this.$authStore.requestOneDriveWorkSchoolConsent();
+			await this.$authStore.getOneDriveWorkSchoolGraphAPIToken();
 			if (localStorage.getItem('oneDriveWorkSchoolConsentRedirect') !== 'true') {
 				await this.oneDriveWorkSchoolConnect();
 			}
@@ -847,10 +847,10 @@ export default {
 
 			let oneDriveToken;
 			try {
-				oneDriveToken = await this.$authStore.getOneDriveWorkSchoolToken();
+				oneDriveToken = await this.$authStore.getOneDriveWorkSchoolSPOToken();
 			} catch (error) {
 				console.error(error);
-				oneDriveToken = await this.$authStore.requestOneDriveWorkSchoolConsent();
+				oneDriveToken = await this.$authStore.getOneDriveWorkSchoolGraphAPIToken();
 			}
 
 			const iframe = document.createElement('iframe');
@@ -877,7 +877,7 @@ export default {
 			const input = iframe.contentWindow.document.createElement('input');
 			input.setAttribute('type', 'hidden');
 			input.setAttribute('name', 'access_token');
-			input.setAttribute('value', oneDriveToken.accessToken);
+			input.setAttribute('value', oneDriveToken);
 			form.appendChild(input);
 
 			form.submit();
@@ -921,7 +921,7 @@ export default {
 
 					switch (command.command) {
 						case 'authenticate': {
-							const token = await this.$authStore.getOneDriveWorkSchoolToken();
+							const token = await this.$authStore.getOneDriveWorkSchoolSPOToken();
 
 							if (token) {
 								this.port.postMessage({
@@ -929,7 +929,7 @@ export default {
 									id: message.id,
 									data: {
 										result: 'token',
-										token: token.accessToken,
+										token: token,
 									},
 								});
 							} else {
@@ -992,7 +992,7 @@ export default {
 		},
 
 		async callCoreApiOneDriveWorkSchoolDownloadEndpoint(id, driveId) {
-			const oneDriveToken = await this.$authStore.requestOneDriveWorkSchoolConsent();
+			const oneDriveToken = await this.$authStore.getOneDriveWorkSchoolGraphAPIToken();
 
 			await this.$appStore.oneDriveWorkSchoolDownload(this.$appStore.currentSession.sessionId, {
 				id,

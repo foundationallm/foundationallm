@@ -5,22 +5,22 @@
 			<!-- Sidebar header -->
 			<div class="navbar__header">
 				<img
-					v-if="$appConfigStore.logoUrl !== ''"
-					:src="$appConfigStore.logoUrl"
-					:alt="$appConfigStore.logoText"
+					v-if="appConfigStore.logoUrl !== ''"
+					:src="appConfigStore.logoUrl"
+					:alt="appConfigStore.logoText"
 				/>
-				<span v-else>{{ $appConfigStore.logoText }}</span>
+				<span v-else>{{ appConfigStore.logoText }}</span>
 
-				<template v-if="!$appConfigStore.isKioskMode">
+				<template v-if="!appConfigStore.isKioskMode">
 					<VTooltip :auto-hide="isMobile" :popper-triggers="isMobile ? [] : ['hover']">
 						<Button
 							class="navbar__header__button"
-							:icon="$appStore.isSidebarClosed ? 'pi pi-arrow-right' : 'pi pi-arrow-left'"
+							:icon="appStore.isSidebarClosed ? 'pi pi-arrow-right' : 'pi pi-arrow-left'"
 							size="small"
 							severity="secondary"
 							aria-label="Toggle sidebar"
-							:aria-expanded="!$appStore.isSidebarClosed"
-							@click="$appStore.toggleSidebar"
+							:aria-expanded="!appStore.isSidebarClosed"
+							@click="appStore.toggleSidebar"
 							@keydown.esc="hideAllPoppers"
 						/>
 						<template #popper><div role="tooltip">Toggle sidebar</div></template>
@@ -36,7 +36,7 @@
 							<span class="current_session_name">{{ currentSession.display_name }}</span>
 							<!-- <VTooltip :auto-hide="false" :popper-triggers="['hover']">
 								<Button
-									v-if="!$appConfigStore.isKioskMode"
+									v-if="!appConfigStore.isKioskMode"
 									class="button--share"
 									icon="pi pi-copy"
 									text
@@ -62,7 +62,7 @@
 						<span class="header__dropdown">
 							<VTooltip :auto-hide="isMobile" :popper-triggers="isMobile ? [] : ['hover']">
 								<AgentIcon
-									:src="$appConfigStore.agentIconUrl || '~/assets/FLLM-Agent-Light.svg'"
+									:src="appConfigStore.agentIconUrl || '~/assets/FLLM-Agent-Light.svg'"
 									alt="Select an agent"
 									tabindex="0"
 									@keydown.esc="hideAllPoppers"
@@ -134,9 +134,9 @@
 		name: 'NavBar',
 
 		setup() {
-			const $appStore = useAppStore();
-			const $appConfigStore = useAppConfigStore();
-			return { $appStore, $appConfigStore };
+			const appStore = useAppStore();
+			const appConfigStore = useAppConfigStore();
+			return { appStore, appConfigStore };
 		},
 
 		data() {
@@ -153,11 +153,11 @@
 
 		computed: {
 			currentSession() {
-				return this.$appStore.currentSession;
+				return this.appStore.currentSession;
 			},
 
 			showNoAgentsMessage() {
-				return this.$appStore.isInitialized && !this.hasAvailableAgents && this.emptyAgentsMessage !== null;
+				return this.appStore.isInitialized && !this.hasAvailableAgents && this.emptyAgentsMessage !== null;
 			},
 		},
 
@@ -168,32 +168,32 @@
 					this.updateAgentSelection();
 				}
 			},
-			'$appStore.selectedAgents': {
+			'appStore.selectedAgents': {
 				handler() {
 					this.updateAgentSelection();
 				},
 				deep: true,
 			},
-			'$appStore.agents': {
+			'appStore.agents': {
 				handler() {
 					this.setAgentOptions();
 				},
 				deep: true,
 			},
-			'$appStore.lastSelectedAgent': {
+			'appStore.lastSelectedAgent': {
 				handler() {
 					this.setAgentOptions();
 					this.updateAgentSelection();
 				},
 				deep: true,
 			},
-			'$appStore.userProfiles': {
+			'appStore.userProfiles': {
 				handler() {
 					this.setAgentOptions();
 				},
 				deep: true,
 			},
-			'$appConfigStore.featuredAgentNames': {
+			'appConfigStore.featuredAgentNames': {
 				handler() {
 					// Refresh agent options when featuredAgentNames configuration becomes available
 					this.setAgentOptions();
@@ -209,9 +209,9 @@
 			async handleDropdownShow() {
 				// Check if featuredAgentNames configuration is available and refresh agent options if needed
 				// This handles the case where config is loaded after login
-				if (this.$appConfigStore.featuredAgentNames === null) {
+				if (this.appConfigStore.featuredAgentNames === null) {
 					try {
-						await this.$appConfigStore.loadAppConfigurationSet();
+						await this.appConfigStore.loadAppConfigurationSet();
 						// setAgentOptions will be called automatically by the watcher
 					} catch (error) {
 						console.warn('Failed to load configuration on dropdown show:', error);
@@ -222,18 +222,18 @@
 			handleAgentChange() {
 				if (isAgentExpired(this.agentSelection!.value)) return;
 
-				this.$appStore.setSessionAgent(this.currentSession, this.agentSelection!.value, true);
+				this.appStore.setSessionAgent(this.currentSession, this.agentSelection!.value, true);
 				const message = this.agentSelection!.value
 					? `Agent changed to ${this.agentSelection!.label}`
 					: `Cleared agent hint selection`;
 
-				this.$appStore.addToast({
+				this.appStore.addToast({
 					severity: 'success',
 					life: 5000,
 					detail: message,
 				});
 
-				if (this.$appStore.currentMessages?.length > 0) {
+				if (this.appStore.currentMessages?.length > 0) {
 					// Emit the event to create a new session.
 					// TODO: Add flag on the agent to determine whether to create a new session.
 					eventBus.emit('agentChanged');
@@ -250,13 +250,13 @@
 
 			async setAgentOptions() {
 
-				this.hasAvailableAgents = this.$appStore.agents.some(
+				this.hasAvailableAgents = this.appStore.agents.some(
 					(agent: any) => !isAgentExpired(agent));
 
 				// Check if configuration is loaded, if not try to load it
-				if (this.$appConfigStore.featuredAgentNames === null) {
+				if (this.appConfigStore.featuredAgentNames === null) {
 					try {
-						await this.$appConfigStore.loadAppConfigurationSet();
+						await this.appConfigStore.loadAppConfigurationSet();
 					} catch (error) {
 						console.warn('Failed to load configuration in setAgentOptions:', error);
 					}
@@ -265,17 +265,17 @@
 				const isCurrentAgent = (agent: any): boolean => {
 					return (
 						agent.resource.name ===
-						this.$appStore.getSessionAgent(this.currentSession)?.resource?.name
+						this.appStore.getSessionAgent(this.currentSession)?.resource?.name
 					);
 				};
 
 				// Get user profiles to filter enabled agents
-				const userProfile = this.$appStore.userProfiles;
+				const userProfile = this.appStore.userProfiles;
 				const enabledAgentIds = userProfile?.agents || [];
 
 				// Filter out expired agents, disabled agents, and agents not enabled in user profile
 				// but keep the currently selected agent even if it doesn't meet these criteria
-				const filteredAgents = this.$appStore.agents.filter((agent: any) => {
+				const filteredAgents = this.appStore.agents.filter((agent: any) => {
 					const isExpiredOrDisabled = isAgentExpired(agent) || agent.enabled === false;
 
 					// Check if agent is in user profile by exact matching object_id
@@ -298,11 +298,11 @@
 				}));
 
 				if (this.agentOptions.length === 0) {
-					this.emptyAgentsMessage = this.$appConfigStore.noAgentsMessage ?? null;
+					this.emptyAgentsMessage = this.appConfigStore.noAgentsMessage ?? null;
 				}
 
 				// Get featured agent names from config
-				const featuredAgentNamesList = this.$appConfigStore.featuredAgentNames;
+				const featuredAgentNamesList = this.appConfigStore.featuredAgentNames;
 
 				// Separate agents into featured and non-featured
 				const featuredAgents: AgentDropdownOption[] = [];
@@ -324,7 +324,7 @@
 					}
 				});
 
-				this.virtualUser = await this.$appStore.getVirtualUser();
+				this.virtualUser = await this.appStore.getVirtualUser();
 
 				this.agentOptionsGroup = [];
 
@@ -335,7 +335,7 @@
 						items: featuredAgents,
 					});
 				}
-				if (!this.$appStore.getSessionAgent(this.currentSession) && this.currentSession) {
+				if (!this.appStore.getSessionAgent(this.currentSession) && this.currentSession) {
 					let selectedAgent = null;
 
 					if (featuredAgents.length > 0) {
@@ -344,7 +344,7 @@
 
 					if (selectedAgent) {
 						this.agentSelection = selectedAgent;
-						this.$appStore.setSessionAgent(this.currentSession, selectedAgent.value, false);
+						this.appStore.setSessionAgent(this.currentSession, selectedAgent.value, false);
 					}
 				}
 
@@ -366,14 +366,14 @@
 			// 	const chatLink = `${window.location.origin}?chat=${this.currentSession!.sessionId}`;
 			// 	navigator.clipboard.writeText(chatLink);
 
-			// 	this.$appStore.addToast({
+			// 	this.appStore.addToast({
 			// 		severity: 'success',
 			// 		detail: 'Chat link copied!',
 			// 	});
 			// },
 
 			updateAgentSelection() {
-				const agent = this.$appStore.getSessionAgent(this.currentSession);
+				const agent = this.appStore.getSessionAgent(this.currentSession);
 
 				if (!agent) {
 					this.agentSelection = null;
