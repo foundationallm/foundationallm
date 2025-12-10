@@ -192,6 +192,10 @@ namespace FoundationaLLM.Agent.ResourceProviders
                         authorizationResult,
                         serializedAction,
                         userIdentity),
+                    ResourceProviderActions.Filter => await FilterAgents(
+                        resourcePath,
+                        JsonSerializer.Deserialize<AgentFilter>(serializedAction)!,
+                        authorizationResult),
                     _ => throw new ResourceProviderException($"The action {resourcePath.Action} is not supported by the {_name} resource provider.",
                         StatusCodes.Status400BadRequest)
                 },
@@ -725,6 +729,29 @@ namespace FoundationaLLM.Agent.ResourceProviders
             return new ResourceProviderActionResult(
                 agent.ObjectId!,
                 true);
+        }
+
+        private async Task<List<ResourceProviderGetResult<AgentBase>>> FilterAgents(
+            ResourcePath resourcePath,
+            AgentFilter filter,
+            ResourcePathAuthorizationResult authorizationResult)
+        {
+            var agents = await LoadResources<AgentBase>(
+                resourcePath.ResourceTypeInstances[0],
+                authorizationResult,
+                new ResourceProviderGetOptions
+                {
+                    IncludeRoles = resourcePath.IsResourceTypePath,
+                });
+
+            if (!string.IsNullOrWhiteSpace(filter.Name))
+            {
+                agents = agents
+                    .Where(r => ((AgentBase)r.Resource).Name.Contains(filter.Name, StringComparison.OrdinalIgnoreCase))
+                    .ToList();
+            }
+
+            return agents;
         }
 
         private async Task<List<ResourceProviderGetResult<AgentAccessToken>>> LoadAgentAccessTokens(

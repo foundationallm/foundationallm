@@ -236,6 +236,15 @@ namespace FoundationaLLM.DataPipelineEngine.Services.CosmosDB
                         $"providers/{ResourceProviderNames.FoundationaLLM_DataPipeline}",
                         $"{DataPipelineResourceTypeNames.DataPipelines}/{dataPipelineRunFilter.DataPipelineName}"]));
             }
+            else if (!string.IsNullOrEmpty(dataPipelineRunFilter.DataPipelineNameFilter))
+            {
+                queryString += " AND STARTSWITH(c.object_id, @objectIdPrefix)";
+                query.WithParameter("@objectIdPrefix",
+                    string.Join('/', [
+                        $"/instances/{dataPipelineRunFilter.InstanceId}",
+                        $"providers/{ResourceProviderNames.FoundationaLLM_DataPipeline}",
+                        $"{DataPipelineResourceTypeNames.DataPipelines}/{dataPipelineRunFilter.DataPipelineNameFilter}"]));
+            }
             if (dataPipelineRunFilter.Completed.HasValue)
             {
                 queryString += " AND c.completed = @completed";
