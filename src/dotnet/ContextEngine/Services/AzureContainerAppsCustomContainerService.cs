@@ -57,12 +57,12 @@ namespace FoundationaLLM.Context.Services
             string codeSessionId,
             string endpoint,
             string fileName,
-            Stream fileContent)
+            BinaryData fileContent)
         {
             var httpClient = await CreateHttpClient();
 
             var multipartFormDataContent = new MultipartFormDataContent();
-            var streamContent = new StreamContent(fileContent);
+            var streamContent = new StreamContent(fileContent.ToStream());
             streamContent.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data")
             {
                 Name = "file",

@@ -23,9 +23,9 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
-    <Version>0.9.7-rc488.1</Version>
-    <AssemblyVersion>0.9.7</AssemblyVersion>
-    <FileVersion>0.9.7</FileVersion>
+    <Version>0.9.8-beta104.1</Version>
+    <AssemblyVersion>0.9.8</AssemblyVersion>
+    <FileVersion>0.9.8</FileVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)' != 'Debug'">

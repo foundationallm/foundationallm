@@ -84,25 +84,34 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataSource
                 resourcePath.InstanceId!,
                 contentItemCanonicalId);
 
-            return response.TryGetValue(out var fileContent)
-                ? new PluginResult<ContentItemRawContent>(
-                    new ContentItemRawContent
-                    {
-                        Name = fileContent.FileName,
-                        ContentType = fileContent.ContentType,
-                        RawContent = BinaryData.FromStream(fileContent.FileContent!),
-                        Metadata = new Dictionary<string, object>
+            if (response.IsSuccess)
+                return response.TryGetValue(out var fileContent)
+                    ? new PluginResult<ContentItemRawContent>(
+                        new ContentItemRawContent
                         {
-                            { "FileId", contentItemCanonicalId },
-                            { "FileName", fileContent.FileName }
-                        }
-                    },
-                    true,
-                    false)
-                : new PluginResult<ContentItemRawContent>(
+                            Name = fileContent.FileName,
+                            ContentType = fileContent.ContentType,
+                            RawContent = fileContent.FileContent!,
+                            Metadata = new Dictionary<string, object>
+                            {
+                                { "FileId", contentItemCanonicalId },
+                                { "FileName", fileContent.FileName }
+                            }
+                        },
+                        true,
+                        false)
+                    : new PluginResult<ContentItemRawContent>(
+                        null,
+                        false,
+                        false,
+                        ErrorMessage: "The Context API call to retrieve the file content indicated success but did not provide a valid file content.");
+            else
+                return new PluginResult<ContentItemRawContent>(
                     null,
                     false,
-                    false);
+                    false,
+                    ErrorMessage: response.Error?.Detail
+                        ?? "The Context API call to retrieve the file content failed.");
         }
 
         /// <inheritdoc/>

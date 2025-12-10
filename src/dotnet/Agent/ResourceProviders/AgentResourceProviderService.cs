@@ -972,7 +972,7 @@ namespace FoundationaLLM.Agent.ResourceProviders
                     _storageContainerName,
                     agentFileReference.Filename,
                     default);
-                agentFile.Content = fileContent.ToArray();
+                agentFile.Content = fileContent;
             }
 
             return agentFile;
@@ -980,7 +980,7 @@ namespace FoundationaLLM.Agent.ResourceProviders
 
         private async Task<ResourceProviderUpsertResult> UpdateAgentFile(ResourcePath resourcePath, ResourceProviderFormFile formFile, UnifiedUserIdentity userIdentity)
         {
-            if (formFile.BinaryContent.Length == 0)
+            if (formFile.BinaryContent.ToMemory().Length == 0)
                 throw new ResourceProviderException("The attached file is not valid.",
                     StatusCodes.Status400BadRequest);
 
@@ -997,7 +997,7 @@ namespace FoundationaLLM.Agent.ResourceProviders
                     agent.Name,
                     formFile.FileName,
                     formFile.ContentType!,
-                    new MemoryStream(formFile.BinaryContent.ToArray()));
+                    formFile.BinaryContent);
 
                 if (!contextServiceResult.TryGetValue(out var fileRecord))
                     throw new ResourceProviderException(
@@ -1014,7 +1014,7 @@ namespace FoundationaLLM.Agent.ResourceProviders
                     ContentType = formFile.ContentType!,
                     Type = AgentTypes.AgentFile,
                     Filename = fileRecord.FilePath,
-                    Size = formFile.BinaryContent.Length,
+                    Size = formFile.BinaryContent.ToMemory().Length,
                     UPN = userIdentity.UPN ?? string.Empty,
                     InstanceId = resourcePath.InstanceId!,
                     AgentName = resourcePath.MainResourceId!,
@@ -1038,7 +1038,7 @@ namespace FoundationaLLM.Agent.ResourceProviders
                     ContentType = formFile.ContentType!,
                     Type = AgentTypes.AgentFile,
                     Filename = filePath,
-                    Size = formFile.BinaryContent.Length,
+                    Size = formFile.BinaryContent.ToMemory().Length,
                     UPN = userIdentity.UPN ?? string.Empty,
                     InstanceId = resourcePath.InstanceId!,
                     AgentName = resourcePath.MainResourceId!,

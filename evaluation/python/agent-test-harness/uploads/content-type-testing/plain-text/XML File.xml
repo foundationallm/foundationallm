@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<library>
+  <name>City Library</name>
+  <location>Downtown</location>
+  <books>
+    <book id="1">
+      <title>The Hobbit</title>
+      <author>J.R.R. Tolkien</author>
+      <year>1937</year>
+    </book>
+    <book id="2">
+      <title>1984</title>
+      <author>George Orwell</author>
+      <year>1949</year>
+    </book>
+  </books>
+</library>

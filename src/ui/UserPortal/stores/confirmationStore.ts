@@ -4,6 +4,7 @@ interface ConfirmationOptions {
 	title?: string;
 	message: string;
 	confirmText?: string;
+	hasCancelButton: boolean;
 	cancelText?: string;
 	confirmButtonSeverity?: 'primary' | 'danger' | 'success' | 'warning';
 	onConfirm?: () => void | Promise<void>;
@@ -16,6 +17,7 @@ export const useConfirmationStore = defineStore('confirmation', {
 		title: 'Confirm?',
 		message: '',
 		confirmText: 'Confirm',
+		hasCancelButton: true,
 		cancelText: 'Cancel',
 		confirmButtonSeverity: 'primary' as 'primary' | 'danger' | 'success' | 'warning',
 		onConfirm: null as (() => void | Promise<void>) | null,
@@ -27,6 +29,7 @@ export const useConfirmationStore = defineStore('confirmation', {
 			this.title = options.title || 'Confirm?';
 			this.message = options.message;
 			this.confirmText = options.confirmText || 'Confirm';
+			this.hasCancelButton = options.hasCancelButton;
 			this.cancelText = options.cancelText || 'Cancel';
 			this.confirmButtonSeverity = options.confirmButtonSeverity || 'primary';
 			this.onConfirm = options.onConfirm || null;

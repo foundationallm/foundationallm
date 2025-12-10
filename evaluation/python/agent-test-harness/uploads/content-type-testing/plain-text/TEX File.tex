@@ -1,0 +1,72 @@
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}     % For math
+\usepackage{graphicx}    % For images
+\usepackage{booktabs}    % For nice tables
+\usepackage{hyperref}    % For hyperlinks
+\usepackage{geometry}    % For margins
+\geometry{margin=1in}
+
+\title{Medium Complexity LaTeX Example}
+\author{Your Name}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\section{Introduction}
+This document demonstrates a medium-level LaTeX example containing text, equations, tables, and figures.
+
+\section{Mathematics}
+Here is an example of a displayed equation:
+\[
+E = mc^2
+\]
+
+Another example with numbered equation:
+\begin{equation}
+\int_{0}^{\infty} e^{-x^2} dx = \frac{\sqrt{\pi}}{2}
+\end{equation}
+
+\section{Table Example}
+Here is a table created using the \texttt{booktabs} package:
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{lcr}
+\toprule
+Name & Grade & Score \\
+\midrule
+Alice   & A & 95 \\
+Bob     & B+ & 88 \\
+Charlie & A- & 91 \\
+\bottomrule
+\end{tabular}
+\caption{Sample student grades}
+\label{tab:grades}
+\end{table}
+
+\section{Figure Example}
+Below is an example figure inclusion:
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.5\textwidth]{example-image}
+\caption{Sample image from LaTeX}
+\label{fig:sample}
+\end{figure}
+
+\section{References}
+Here is a sample citation~\cite{latexguide}.
+
+\bibliographystyle{plain}
+\begin{thebibliography}{9}
+\bibitem{latexguide}
+Leslie Lamport,
+\textit{LaTeX: A Document Preparation System},
+Addison-Wesley, 1994.
+\end{thebibliography}
+
+\end{document}

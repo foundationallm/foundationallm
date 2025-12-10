@@ -18,6 +18,14 @@ class HTMLReporter:
     def __init__(self):
         self.template_dir = os.path.dirname(__file__)
     
+    def _escape_html(self, text: str) -> str:
+        """Escape HTML special characters and preserve newlines for display"""
+        if not text:
+            return text
+        escaped = html.escape(str(text))
+        # Convert newlines to <br> for proper display
+        return escaped.replace('\n', '<br>')
+    
     def generate_report(self, results: Dict[str, Any], output_path: str, timestamp: str):
         """Generate HTML report from test results"""
         
@@ -215,8 +223,7 @@ class HTMLReporter:
     def _generate_html(self, report_data: Dict[str, Any], timestamp: str) -> str:
         """Generate HTML content"""
         
-        return f"""
-<!DOCTYPE html>
+        return f"""<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -225,6 +232,9 @@ class HTMLReporter:
     <style>
         {self._get_css_styles()}
     </style>
+    <script>
+{self._get_javascript()}
+    </script>
 </head>
 <body>
     <div class="container">
@@ -237,10 +247,6 @@ class HTMLReporter:
         {self._generate_agents_section(report_data)}
         {self._generate_footer()}
     </div>
-    
-    <script>
-{self._get_javascript()}
-    </script>
 </body>
 </html>
         """
@@ -1057,7 +1063,7 @@ class HTMLReporter:
         for agent_name, agent_data in report_data['agents'].items():
             agents_html += f"""
             <section class="agent-section">
-                <div class="agent-header" onclick="toggleAgent('{agent_name}')">
+                <div class="agent-header" data-agent-name="{agent_name}">
                     <div class="agent-name">{agent_data['agent_name']}{'<span class="conversation-badge">Single Conversation</span>' if agent_data.get('conversation_mode') else ''}</div>
                     <div class="agent-stats">
                         <div class="agent-stat">
@@ -1111,34 +1117,41 @@ class HTMLReporter:
             error_details_block = ''
             error_details = test.get('error_details', '')
             if error_details:
-                escaped_error = html.escape(str(error_details)).replace('\n', '<br>')
+                escaped_error = self._escape_html(error_details)
                 error_details_block = f"<div class=\"error-details\"><h4>⚠️ Error Details</h4><div class=\"error-details-content\">{escaped_error}</div></div>"
+            
+            # Escape all user-generated content to prevent HTML injection
+            escaped_question = self._escape_html(test['question'])
+            escaped_question_preview = self._escape_html(test['question'][:100]) + ('...' if len(test['question']) > 100 else '')
+            escaped_agent_answer = self._escape_html(test['agent_answer']) if test['agent_answer'] else 'No answer provided'
+            escaped_expected_answer = self._escape_html(test['expected_answer']) if test['expected_answer'] else 'No expected answer defined'
+            escaped_validation_details = self._escape_html(test['validation_details']) if test.get('validation_details') else ''
             
             # Use a string with no indentation to avoid nesting issues
             tests_html += f"""<div class="test-item">
-<div class="test-header" onclick="toggleTest('test-{test['index']}')">
-<div class="test-question">{turn_badge}{test['question'][:100]}{'...' if len(test['question']) > 100 else ''}</div>
+<div class="test-header" data-test-id="test-{test['index']}">
+<div class="test-question">{turn_badge}{escaped_question_preview}</div>
 <div class="test-status {status_class}">{status_text}</div>
 </div>
 <div class="test-details" id="test-{test['index']}">
 <div class="test-question-full">
 <h4>❓ Question</h4>
-<div class="test-answer-content">{test['question']}</div>
+<div class="test-answer-content">{escaped_question}</div>
 </div>
 {self._generate_llm_validation_section(test)}
 <div class="answers-comparison">
 <div class="answer-column">
 <h4>🤖 Agent Answer</h4>
-<div class="test-answer-content">{test['agent_answer'] or 'No answer provided'}</div>
+<div class="test-answer-content">{escaped_agent_answer}</div>
 </div>
 <div class="answer-column">
 <h4>🎯 Expected Answer</h4>
-<div class="test-answer-content">{test['expected_answer'] or 'No expected answer defined'}</div>
+<div class="test-answer-content">{escaped_expected_answer}</div>
 </div>
 </div>
 {self._generate_artifacts_section(test)}
 {error_details_block}
-{f'<div class="test-answer"><h4>Validation Details:</h4><div class="test-answer-content">{test["validation_details"]}</div></div>' if test['validation_details'] else ''}
+{f'<div class="test-answer"><h4>Validation Details:</h4><div class="test-answer-content">{escaped_validation_details}</div></div>' if escaped_validation_details else ''}
 <div class="test-metrics">
 <div class="metric">
 <div class="metric-value">{test['tokens']}</div>
@@ -1346,9 +1359,10 @@ class HTMLReporter:
         
         # Validation details (if any)
         if validation_details:
+            escaped_details = self._escape_html(validation_details)
             validation_html += '<div class="validation-details">'
             validation_html += '<h5>📝 Validation Details:</h5>'
-            validation_html += f'<div class="validation-details-content">{validation_details}</div>'
+            validation_html += f'<div class="validation-details-content">{escaped_details}</div>'
             validation_html += '</div>'
         
         validation_html += '</div>'
@@ -1365,34 +1379,61 @@ class HTMLReporter:
     
     def _get_javascript(self) -> str:
         """Get JavaScript for interactive features"""
-        return """function toggleAgent(agentName) {
+        # Attach functions to window and wire up click handlers via JS
+        # so we don't depend on inline onclick attributes.
+        return """window.toggleAgent = function(agentName) {
     const content = document.getElementById('content-' + agentName);
     const icon = document.getElementById('icon-' + agentName);
     
-    if (content.classList.contains('expanded')) {
-        content.classList.remove('expanded');
-        icon.classList.remove('expanded');
-    } else {
-        content.classList.add('expanded');
-        icon.classList.add('expanded');
+    if (content && icon) {
+        if (content.classList.contains('expanded')) {
+            content.classList.remove('expanded');
+            icon.classList.remove('expanded');
+        } else {
+            content.classList.add('expanded');
+            icon.classList.add('expanded');
+        }
     }
-}
+};
 
-function toggleTest(testId) {
+window.toggleTest = function(testId) {
     const content = document.getElementById(testId);
     
-    if (content.classList.contains('expanded')) {
-        content.classList.remove('expanded');
-    } else {
-        content.classList.add('expanded');
+    if (content) {
+        if (content.classList.contains('expanded')) {
+            content.classList.remove('expanded');
+        } else {
+            content.classList.add('expanded');
+        }
     }
-}
+};
 
 // Auto-expand failed tests
 document.addEventListener('DOMContentLoaded', function() {
+    // Wire up agent header click handlers
+    const agentHeaders = document.querySelectorAll('.agent-header');
+    agentHeaders.forEach(function(header) {
+        const agentName = header.getAttribute('data-agent-name');
+        if (!agentName) return;
+        header.addEventListener('click', function() {
+            window.toggleAgent(agentName);
+        });
+    });
+
+    // Wire up test header click handlers
+    const testHeaders = document.querySelectorAll('.test-header');
+    testHeaders.forEach(function(header) {
+        const testId = header.getAttribute('data-test-id');
+        if (!testId) return;
+        header.addEventListener('click', function() {
+            window.toggleTest(testId);
+        });
+    });
+
     const failedTests = document.querySelectorAll('.test-status.failed, .test-status.error');
     failedTests.forEach(function(testStatus) {
         const testItem = testStatus.closest('.test-item');
+        if (!testItem) return;
         const testHeader = testItem.querySelector('.test-header');
         if (testHeader) {
             testHeader.click();

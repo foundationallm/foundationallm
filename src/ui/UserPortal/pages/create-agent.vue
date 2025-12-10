@@ -1578,8 +1578,9 @@ export default defineComponent({
                 title: 'Delete file',
                 message: `Do you want to delete the file "${fileName}" ?`,
                 confirmText: 'Yes',
-                cancelText: 'Cancel',
+                cancelText: 'No',
                 confirmButtonSeverity: 'danger',
+                hasPromptsContributorRole: true
             });
 
             if (!confirmed) {

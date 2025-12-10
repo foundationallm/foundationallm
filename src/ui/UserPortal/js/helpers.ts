@@ -5,7 +5,8 @@ export const isAgentExpired = (agent: ResourceProviderGetResult<AgentBase>): boo
 }
 
 export const isAgentFileUploadEnabled = (agent: ResourceProviderGetResult<AgentBase>): boolean => {
-	return agent !== null && agent.resource !== null && agent.resource.show_file_upload
+	if (!agent || !agent.resource) return false;
+	return !!agent.resource.show_file_upload;
 }
 
 // Debounce utility

@@ -30,7 +30,7 @@ namespace Management.Client.Tests.Clients.Resources
                     Resource = new AttachmentFile
                     {
                         Name = "test-attachment",
-                        Content = bytes,
+                        Content = BinaryData.FromBytes(bytes),
                         ContentType = "application/octet-stream",
                         Path = "test-attachment.txt",
                         OriginalFileName = "test-attachment.txt"
@@ -69,7 +69,7 @@ namespace Management.Client.Tests.Clients.Resources
                 Resource = new AttachmentFile
                 {
                     Name = attachmentName,
-                    Content = bytes,
+                    Content = BinaryData.FromBytes(bytes),
                     ContentType = "application/octet-stream",
                     Path = "test-attachment.txt",
                     OriginalFileName = "test-attachment.txt"

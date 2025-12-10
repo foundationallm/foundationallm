@@ -28,7 +28,7 @@ namespace FoundationaLLM.Common.Interfaces
             string conversationId,
             string fileName,
             string fileContentType,
-            Stream fileContent);
+            BinaryData fileContent);
 
         /// <summary>
         /// Calls the Context API service to create a file.
@@ -44,7 +44,7 @@ namespace FoundationaLLM.Common.Interfaces
             string agentName,
             string fileName,
             string fileContentType,
-            Stream fileContent);
+            BinaryData fileContent);
 
         /// <summary>
         /// Calls the Context API service to get the content of a file.

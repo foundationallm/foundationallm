@@ -252,7 +252,7 @@ namespace FoundationaLLM.AzureOpenAI.ResourceProviders
                     Name = fileMapping!.OpenAIFileId!,
                     OriginalFileName = fileMapping!.OriginalFileName,
                     ContentType = fileMapping.FileContentType,
-                    BinaryContent = result.Value.ToMemory()
+                    BinaryContent = result.Value
                 }
             };
         }

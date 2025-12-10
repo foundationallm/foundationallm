@@ -255,7 +255,7 @@ namespace FoundationaLLM.Plugin.ResourceProviders
                     throw new ResourceProviderException("The plugin package name does not follow the platform-based naming convention or the platform is not supported.",
                         StatusCodes.Status400BadRequest);
 
-                if (formFile == null || formFile.BinaryContent.Length == 0)
+                if (formFile == null || formFile.BinaryContent.ToMemory().Length == 0)
                     throw new ResourceProviderException("The attached plugin package is not valid.",
                         StatusCodes.Status400BadRequest);
 
@@ -334,7 +334,7 @@ namespace FoundationaLLM.Plugin.ResourceProviders
                     PackagePlatform = packagePlatform,
                     PackageVersion = packageVersion,
                     PackageFilePath = $"/{_name}/{resourcePath.InstanceId!}/{pluginPackageBase.Name}/{formFile.FileName}",
-                    PackageFileSize = formFile.BinaryContent.Length,
+                    PackageFileSize = formFile.BinaryContent.ToMemory().Length,
                     Properties = packageMetadata.Properties
                 };
             }
@@ -606,10 +606,12 @@ namespace FoundationaLLM.Plugin.ResourceProviders
             // 2. X.Y.ZrcN
             // 3. X.Y.ZaN
             // 4. X.Y.ZbN
+            // 5/ X.Y.Z.postN
             SemanticVersion.Parse(pythonVersion
                 .Replace("rc", "-rc")
                 .Replace("a", "-alpha")
-                .Replace("b", "-beta"));
+                .Replace("b", "-beta")
+                .Replace(".post", "-post"));
 
         #endregion
 

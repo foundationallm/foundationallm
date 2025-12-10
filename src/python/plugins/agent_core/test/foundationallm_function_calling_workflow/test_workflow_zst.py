@@ -79,7 +79,7 @@ conversation_id = request_json['session_id']
 # user_prompt = request_json['user_prompt']
 
 
-user_prompt = "Make the code with the updates available for download as .PY file named `sum_of_numbers.py`"
+user_prompt = "Create a pdf telling a story about a cat"
 
 
 

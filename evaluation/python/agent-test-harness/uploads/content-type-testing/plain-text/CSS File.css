@@ -1,0 +1,15 @@
+/* style.css */
+body {
+  background-color: lightblue;   /* background color for the page */
+  font-family: Arial, sans-serif; /* font style */
+}
+
+h1 {
+  color: darkblue;    /* heading text color */
+  text-align: center; /* center align heading */
+}
+
+p {
+  color: darkgreen;   /* paragraph text color */
+  font-size: 18px;    /* make text a bit larger */
+}

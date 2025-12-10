@@ -94,13 +94,11 @@ namespace FoundationaLLM.Management.API.Controllers
                     if (formFile != null && formFile.Length > 0)
                     {
                         await using var stream = formFile.OpenReadStream();
-                        using var memoryStream = new MemoryStream();
-                        await stream.CopyToAsync(memoryStream);
                         resourceProviderFormFile = new()
                         {
                             FileName = formFile.FileName,
                             ContentType = formFile.ContentType,
-                            BinaryContent = new ReadOnlyMemory<byte>(memoryStream.ToArray()),
+                            BinaryContent = BinaryData.FromStream(stream),
                             Payload = formPayload
                         };
                     }
