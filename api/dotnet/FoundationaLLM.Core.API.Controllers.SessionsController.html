@@ -736,7 +736,7 @@ sessions and messages, and for getting completions from the orchestrator.</p>
 
   <h3 id="FoundationaLLM_Core_API_Controllers_SessionsController_CreateConversation_System_String_FoundationaLLM_Common_Models_Conversation_ConversationProperties_" data-uid="FoundationaLLM.Core.API.Controllers.SessionsController.CreateConversation(System.String,FoundationaLLM.Common.Models.Conversation.ConversationProperties)">
   CreateConversation(string, ConversationProperties)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/CoreAPI/Controllers/SessionsController.cs/#L81"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/CoreAPI/Controllers/SessionsController.cs/#L90"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Creates a new chat session.</p>
@@ -778,7 +778,7 @@ public Task&lt;Conversation&gt; CreateConversation(string instanceId, Conversati
 
   <h3 id="FoundationaLLM_Core_API_Controllers_SessionsController_DeleteConversation_System_String_System_String_" data-uid="FoundationaLLM.Core.API.Controllers.SessionsController.DeleteConversation(System.String,System.String)">
   DeleteConversation(string, string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/CoreAPI/Controllers/SessionsController.cs/#L100"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/CoreAPI/Controllers/SessionsController.cs/#L109"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Delete a chat session and related messages.</p>
@@ -855,53 +855,11 @@ public Task&lt;IEnumerable&lt;Conversation&gt;&gt; GetAllChatSessions(string ins
 
 
 
-  <a id="FoundationaLLM_Core_API_Controllers_SessionsController_GetChatSessionMessages_" data-uid="FoundationaLLM.Core.API.Controllers.SessionsController.GetChatSessionMessages*"></a>
-
-  <h3 id="FoundationaLLM_Core_API_Controllers_SessionsController_GetChatSessionMessages_System_String_System_String_" data-uid="FoundationaLLM.Core.API.Controllers.SessionsController.GetChatSessionMessages(System.String,System.String)">
-  GetChatSessionMessages(string, string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/CoreAPI/Controllers/SessionsController.cs/#L49"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"><p>Returns the chat messages related to an existing session.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[HttpGet(&quot;{sessionId}/messages&quot;, Name = &quot;GetChatSessionMessages&quot;)]
-public Task&lt;IEnumerable&lt;Message&gt;&gt; GetChatSessionMessages(string instanceId, string sessionId)</code></pre>
-  </div>
-
-  <h4 class="section">Parameters</h4>
-  <dl class="parameters">
-    <dt><code>instanceId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
-    <dd><p>The id of the instance.</p>
-</dd>
-    <dt><code>sessionId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
-    <dd><p>The id of the session for which to retrieve chat messages.</p>
-</dd>
-  </dl>
-
-  <h4 class="section">Returns</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Conversation.Message.html">Message</a>&gt;&gt;</dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-
-
-
   <a id="FoundationaLLM_Core_API_Controllers_SessionsController_GetCompletionPrompt_" data-uid="FoundationaLLM.Core.API.Controllers.SessionsController.GetCompletionPrompt*"></a>
 
   <h3 id="FoundationaLLM_Core_API_Controllers_SessionsController_GetCompletionPrompt_System_String_System_String_System_String_" data-uid="FoundationaLLM.Core.API.Controllers.SessionsController.GetCompletionPrompt(System.String,System.String,System.String)">
   GetCompletionPrompt(string, string, string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/CoreAPI/Controllers/SessionsController.cs/#L72"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/CoreAPI/Controllers/SessionsController.cs/#L81"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Returns the completion prompt for a given session and completion prompt id.</p>
@@ -942,11 +900,95 @@ public Task&lt;CompletionPrompt&gt; GetCompletionPrompt(string instanceId, strin
 
 
 
+  <a id="FoundationaLLM_Core_API_Controllers_SessionsController_GetConversationMessages_" data-uid="FoundationaLLM.Core.API.Controllers.SessionsController.GetConversationMessages*"></a>
+
+  <h3 id="FoundationaLLM_Core_API_Controllers_SessionsController_GetConversationMessages_System_String_System_String_" data-uid="FoundationaLLM.Core.API.Controllers.SessionsController.GetConversationMessages(System.String,System.String)">
+  GetConversationMessages(string, string)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/CoreAPI/Controllers/SessionsController.cs/#L49"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Returns the messages for a conversation.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[HttpGet(&quot;{sessionId}/messages&quot;, Name = &quot;GetConversationMessages&quot;)]
+public Task&lt;IEnumerable&lt;Message&gt;&gt; GetConversationMessages(string instanceId, string sessionId)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>instanceId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The FoundationaLLM instance identifier.</p>
+</dd>
+    <dt><code>sessionId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The conversation identifier for which to retrieve messages.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Conversation.Message.html">Message</a>&gt;&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FoundationaLLM_Core_API_Controllers_SessionsController_GetConversationMessagesCount_" data-uid="FoundationaLLM.Core.API.Controllers.SessionsController.GetConversationMessagesCount*"></a>
+
+  <h3 id="FoundationaLLM_Core_API_Controllers_SessionsController_GetConversationMessagesCount_System_String_System_String_" data-uid="FoundationaLLM.Core.API.Controllers.SessionsController.GetConversationMessagesCount(System.String,System.String)">
+  GetConversationMessagesCount(string, string)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/CoreAPI/Controllers/SessionsController.cs/#L58"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Returns the number of messages in a conversation.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[HttpGet(&quot;{sessionId}/messagescount&quot;, Name = &quot;GetConversationMessagesCount&quot;)]
+public Task&lt;int&gt; GetConversationMessagesCount(string instanceId, string sessionId)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>instanceId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The FoundationaLLM instance identifier.</p>
+</dd>
+    <dt><code>sessionId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The conversation identifier for which to retrieve messages.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
   <a id="FoundationaLLM_Core_API_Controllers_SessionsController_RateMessage_" data-uid="FoundationaLLM.Core.API.Controllers.SessionsController.RateMessage*"></a>
 
   <h3 id="FoundationaLLM_Core_API_Controllers_SessionsController_RateMessage_System_String_System_String_System_String_FoundationaLLM_Common_Models_Conversation_MessageRatingRequest_" data-uid="FoundationaLLM.Core.API.Controllers.SessionsController.RateMessage(System.String,System.String,System.String,FoundationaLLM.Common.Models.Conversation.MessageRatingRequest)">
   RateMessage(string, string, string, MessageRatingRequest)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/CoreAPI/Controllers/SessionsController.cs/#L61"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/CoreAPI/Controllers/SessionsController.cs/#L70"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Rate an assistant message. This can be used to discover useful AI responses for training,
@@ -995,7 +1037,7 @@ public Task RateMessage(string instanceId, string messageId, string sessionId, M
 
   <h3 id="FoundationaLLM_Core_API_Controllers_SessionsController_UpdateConversation_System_String_System_String_FoundationaLLM_Common_Models_Conversation_ConversationProperties_" data-uid="FoundationaLLM.Core.API.Controllers.SessionsController.UpdateConversation(System.String,System.String,FoundationaLLM.Common.Models.Conversation.ConversationProperties)">
   UpdateConversation(string, string, ConversationProperties)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/CoreAPI/Controllers/SessionsController.cs/#L91"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/CoreAPI/Controllers/SessionsController.cs/#L100"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Update the conversation.</p>

@@ -487,47 +487,6 @@ generate a completion response, and log full completion results.</p>
 
 
 
-  <a id="FoundationaLLM_Core_Services_CoreService_GetChatSessionMessagesAsync_" data-uid="FoundationaLLM.Core.Services.CoreService.GetChatSessionMessagesAsync*"></a>
-
-  <h3 id="FoundationaLLM_Core_Services_CoreService_GetChatSessionMessagesAsync_System_String_System_String_" data-uid="FoundationaLLM.Core.Services.CoreService.GetChatSessionMessagesAsync(System.String,System.String)">
-  GetChatSessionMessagesAsync(string, string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Core/Services/CoreService.cs/#L930"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"><p>Returns the chat messages related to an existing session.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Task&lt;List&lt;Message&gt;&gt; GetChatSessionMessagesAsync(string instanceId, string sessionId)</code></pre>
-  </div>
-
-  <h4 class="section">Parameters</h4>
-  <dl class="parameters">
-    <dt><code>instanceId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
-    <dd><p>The instance id for which to retrieve chat messages.</p>
-</dd>
-    <dt><code>sessionId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
-    <dd><p>The session id for which to retrieve chat messages.</p>
-</dd>
-  </dl>
-
-  <h4 class="section">Returns</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Conversation.Message.html">Message</a>&gt;&gt;</dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-
-
-
   <a id="FoundationaLLM_Core_Services_CoreService_GetCompletionAsync_" data-uid="FoundationaLLM.Core.Services.CoreService.GetCompletionAsync*"></a>
 
   <h3 id="FoundationaLLM_Core_Services_CoreService_GetCompletionAsync_System_String_FoundationaLLM_Common_Models_Orchestration_Request_CompletionRequest_" data-uid="FoundationaLLM.Core.Services.CoreService.GetCompletionAsync(System.String,FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequest)">
@@ -615,7 +574,7 @@ generate a completion response, and log full completion results.</p>
 
   <h3 id="FoundationaLLM_Core_Services_CoreService_GetCompletionPrompt_System_String_System_String_System_String_" data-uid="FoundationaLLM.Core.Services.CoreService.GetCompletionPrompt(System.String,System.String,System.String)">
   GetCompletionPrompt(string, string, string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Core/Services/CoreService.cs/#L1052"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Core/Services/CoreService.cs/#L1069"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Returns the completion prompt for a given session and completion prompt id.</p>
@@ -655,11 +614,95 @@ generate a completion response, and log full completion results.</p>
 
 
 
+  <a id="FoundationaLLM_Core_Services_CoreService_GetConversationMessagesAsync_" data-uid="FoundationaLLM.Core.Services.CoreService.GetConversationMessagesAsync*"></a>
+
+  <h3 id="FoundationaLLM_Core_Services_CoreService_GetConversationMessagesAsync_System_String_System_String_" data-uid="FoundationaLLM.Core.Services.CoreService.GetConversationMessagesAsync(System.String,System.String)">
+  GetConversationMessagesAsync(string, string)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Core/Services/CoreService.cs/#L930"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Returns the messages for a conversation.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task&lt;List&lt;Message&gt;&gt; GetConversationMessagesAsync(string instanceId, string sessionId)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>instanceId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The FoundationaLLM instance identifier.</p>
+</dd>
+    <dt><code>sessionId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The conversation identifier for which to retrieve messages.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Conversation.Message.html">Message</a>&gt;&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FoundationaLLM_Core_Services_CoreService_GetConversationMessagesCountAsync_" data-uid="FoundationaLLM.Core.Services.CoreService.GetConversationMessagesCountAsync*"></a>
+
+  <h3 id="FoundationaLLM_Core_Services_CoreService_GetConversationMessagesCountAsync_System_String_System_String_" data-uid="FoundationaLLM.Core.Services.CoreService.GetConversationMessagesCountAsync(System.String,System.String)">
+  GetConversationMessagesCountAsync(string, string)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Core/Services/CoreService.cs/#L1037"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Returns the number of messages in a conversation.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task&lt;int&gt; GetConversationMessagesCountAsync(string instanceId, string sessionId)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>instanceId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The FoundationaLLM instance identifier.</p>
+</dd>
+    <dt><code>sessionId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The conversation identifier for which to retrieve messages.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a>&gt;</dt>
+    <dd><p>A task that represents the asynchronous operation. The task result contains the number of messages in the
+specified conversation.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
   <a id="FoundationaLLM_Core_Services_CoreService_GetCoreConfiguration_" data-uid="FoundationaLLM.Core.Services.CoreService.GetCoreConfiguration*"></a>
 
   <h3 id="FoundationaLLM_Core_Services_CoreService_GetCoreConfiguration_System_String_" data-uid="FoundationaLLM.Core.Services.CoreService.GetCoreConfiguration(System.String)">
   GetCoreConfiguration(string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Core/Services/CoreService.cs/#L1067"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Core/Services/CoreService.cs/#L1084"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets the file store configuration for the given instance.</p>
@@ -698,7 +741,7 @@ generate a completion response, and log full completion results.</p>
 
   <h3 id="FoundationaLLM_Core_Services_CoreService_RateMessageAsync_System_String_System_String_System_String_FoundationaLLM_Common_Models_Conversation_MessageRatingRequest_" data-uid="FoundationaLLM.Core.Services.CoreService.RateMessageAsync(System.String,System.String,System.String,FoundationaLLM.Common.Models.Conversation.MessageRatingRequest)">
   RateMessageAsync(string, string, string, MessageRatingRequest)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Core/Services/CoreService.cs/#L1035"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Core/Services/CoreService.cs/#L1052"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Rate an assistant message. This can be used to discover useful AI responses for training, discoverability, and other benefits down the road.</p>
