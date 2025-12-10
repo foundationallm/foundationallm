@@ -128,11 +128,20 @@ public interface ICoreService
     #region Conversation messages
 
     /// <summary>
-    /// Returns the chat messages related to an existing session.
+    /// Returns the messages for a conversation.
     /// </summary>
-    /// <param name="instanceId">The instance id for which to retrieve chat messages.</param>
-    /// <param name="sessionId">The session id for which to retrieve chat messages.</param>
-    Task<List<Message>> GetChatSessionMessagesAsync(string instanceId, string sessionId);
+    /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
+    /// <param name="sessionId">The conversation identifier for which to retrieve messages.</param>
+    Task<List<Message>> GetConversationMessagesAsync(string instanceId, string sessionId);
+
+    /// <summary>
+    /// Returns the number of messages in a conversation.
+    /// </summary>
+    /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
+    /// <param name="sessionId">The conversation identifier for which to retrieve messages.</param>
+    /// <returns>A task that represents the asynchronous operation. The task result contains the number of messages in the
+    /// specified conversation.</returns>
+    Task<int> GetConversationMessagesCountAsync(string instanceId, string sessionId);
 
     /// <summary>
     /// Rate an assistant message. This can be used to discover useful AI responses for training, discoverability, and other benefits down the road.

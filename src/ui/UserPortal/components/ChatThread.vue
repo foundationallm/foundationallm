@@ -133,6 +133,9 @@ export default {
 
 	watch: {
 		async currentSession(newSession: Session, oldSession: Session) {
+			// Skip if app is still initializing (init() will handle initial message loading)
+    		if (!this.appStore.isInitialized) return;
+
 			const isReplacementForTempSession = oldSession?.is_temp && this.messages.length > 0;
 			if (newSession.sessionId === oldSession?.sessionId || isReplacementForTempSession) return;
 			this.isMessagePending = false;
@@ -179,7 +182,7 @@ export default {
 
 	created() {
 		// Wait for app initialization before setting welcome message
-    const unwatchInitialized = this.$watch(
+    	const unwatchInitialized = this.$watch(
 			() => this.appStore.isInitialized,
 			(isInitialized) => {
 				if (isInitialized) {

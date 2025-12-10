@@ -926,13 +926,15 @@ public partial class CoreService(
     #region Conversation messages
 
     /// <inheritdoc/>
-    public async Task<List<Message>> GetChatSessionMessagesAsync(string instanceId, string sessionId)
+    public async Task<List<Message>> GetConversationMessagesAsync(string instanceId, string sessionId)
     {
+        ArgumentNullException.ThrowIfNull(instanceId);
         ArgumentNullException.ThrowIfNull(sessionId);
 
+        // Verify that the conversation exists and that the user has access to it.
         _ = await _conversationResourceProvider.GetResourceAsync<Conversation>(instanceId, sessionId, _userIdentity);
 
-        var messages = await _cosmosDBService.GetSessionMessagesAsync(sessionId, _userIdentity.UPN ??
+        var messages = await _cosmosDBService.GetConversationMessagesAsync(sessionId, _userIdentity.UPN ??
             throw new InvalidOperationException("Failed to retrieve the identity of the signed in user when retrieving chat messages."));
 
         // Get a list of all attachment IDs in the messages.
@@ -1028,6 +1030,21 @@ public partial class CoreService(
         }
 
         return [.. messages];
+    }
+
+    /// <inheritdoc/>
+    public async Task<int> GetConversationMessagesCountAsync(string instanceId, string sessionId)
+    {
+        ArgumentNullException.ThrowIfNull(instanceId);
+        ArgumentNullException.ThrowIfNull(sessionId);
+
+        // Verify that the conversation exists and that the user has access to it.
+        _ = await _conversationResourceProvider.GetResourceAsync<Conversation>(instanceId, sessionId, _userIdentity);
+
+        var messagesCount = await _cosmosDBService.GetConversationMessagesCountAsync(sessionId, _userIdentity.UPN ??
+            throw new InvalidOperationException("Failed to retrieve the identity of the signed in user when retrieving chat messages."));
+
+        return messagesCount;
     }
 
     /// <inheritdoc/>
@@ -1292,7 +1309,7 @@ public partial class CoreService(
             : [];
 
         // Retrieve the complete conversation.
-        var messages = await _cosmosDBService.GetSessionMessagesAsync(request.SessionId!, _userIdentity.UPN!);
+        var messages = await _cosmosDBService.GetConversationMessagesAsync(request.SessionId!, _userIdentity.UPN!);
         var fileHistory = new List<FileHistoryItem>();
         int attachmentOrder = 0;
         foreach (var message in messages)
