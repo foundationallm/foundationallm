@@ -1,6 +1,12 @@
 import { defineStore } from 'pinia';
-import type { AccountInfo } from '@azure/msal-browser';
-import { PublicClientApplication } from '@azure/msal-browser';
+import type {
+	AccountInfo,
+	AuthenticationResult
+} from '@azure/msal-browser';
+import { 
+	PublicClientApplication,
+	InteractionRequiredAuthError
+} from '@azure/msal-browser';
 import { useAppStore } from './appStore';
 
 const SHOW_LOGS = false;
@@ -92,7 +98,7 @@ export const useAuthStore = defineStore('auth', {
 		},
 
 		createTokenRefreshTimer() {
-			const tokenExpirationTimeMS = this.apiToken.expiresOn;
+			const tokenExpirationTimeMS = this.apiToken.expiresOn.getTime();
 			const currentTime = Date.now();
 			const timeUntilExpirationMS = tokenExpirationTimeMS - currentTime;
 
@@ -125,23 +131,48 @@ export const useAuthStore = defineStore('auth', {
 			}
 		},
 
-		async getApiToken() {
+		async getApiToken(forceInteractive: boolean = false): Promise<AuthenticationResult> {
+			if (!forceInteractive) {
+				try {
+					const result = await this.msalInstance.acquireTokenSilent({
+						account: this.currentAccount,
+						scopes: this.apiScopes,
+					});
+
+					this.apiToken = result;
+					this.isExpired = false;
+					this.createTokenRefreshTimer();
+
+					return result;
+				} catch (error: any) {
+					if (this.isInteractionRequiredError(error)) {
+						SHOW_LOGS && console.warn('Auth: Silent token acquisition failed, interaction required.');
+					} else {
+						SHOW_LOGS && console.error('Auth: Silent token acquisition failed:', error);
+						this.isExpired = true;
+						throw error;
+					}
+				}
+			}
+
+			// Fallback to interactive token acquisition
 			try {
-				this.apiToken = await this.msalInstance.acquireTokenSilent({
+				const result = await this.msalInstance.acquireTokenPopup({
 					account: this.currentAccount,
 					scopes: this.apiScopes,
 				});
-
+				this.apiToken = result;
+				this.isExpired = false;
 				this.createTokenRefreshTimer();
-
-				return this.apiToken;
-			} catch (error) {
+				return result;
+			} catch (popupError: any) {
+				SHOW_LOGS && console.error('Auth: Interactive token acquisition failed:', popupError);
 				this.isExpired = true;
-				throw error;
+				throw popupError;
 			}
 		},
 
-		async requestOneDriveWorkSchoolConsent() {
+		async getOneDriveWorkSchoolGraphAPIToken() {
 			let accessToken = '';
 			const oneDriveWorkSchoolAPIScopes: any = {
 				account: this.currentAccount,
@@ -161,20 +192,28 @@ export const useAuthStore = defineStore('auth', {
 			return accessToken;
 		},
 
-		async getOneDriveWorkSchoolToken(): string | null {
+		async getOneDriveWorkSchoolSPOToken(): Promise<string | null> {
 			const appStore = useAppStore();
-			const oneDriveBaseURL = appStore.coreConfiguration?.fileStoreConnectors?.find(
-				(connector) => connector.subcategory === 'OneDriveWorkSchool',
-			)?.url;
+			const connector = appStore.coreConfiguration?.fileStoreConnectors?.find(
+				(c) => c.subcategory === 'OneDriveWorkSchool',
+			);
+			
+			if (!connector?.url || !this.oneDriveWorkSchoolScopes) {
+				throw new Error('OneDrive Work/School configuration is not available');
+			}
+
+			// The scope should be the base URL + scope suffix (e.g., "https://contoso-my.sharepoint.com/.default")
+			const fullScope = `${connector.url}${this.oneDriveWorkSchoolScopes}`;
+			
 			const oneDriveToken = await this.msalInstance.acquireTokenSilent({
 				account: this.currentAccount,
-				scopes: [`${oneDriveBaseURL}${this.oneDriveWorkSchoolScopes}`],
+				scopes: [fullScope],
 			});
 
-			return oneDriveToken;
+			return oneDriveToken.accessToken;
 		},
 
-		async getProfilePhoto(): string | null {
+		async getProfilePhoto(): Promise<string | null> {
 			try {
 				const graphScopes = ['https://graph.microsoft.com/User.Read'];
 				const graphToken = await this.msalInstance.acquireTokenSilent({
@@ -196,7 +235,7 @@ export const useAuthStore = defineStore('auth', {
 		},
 
 		async login() {
-			return await this.msalInstance.loginRedirect({
+			await this.msalInstance.loginRedirect({
 				scopes: this.apiScopes,
 			});
 		},
@@ -208,7 +247,7 @@ export const useAuthStore = defineStore('auth', {
 		async logoutSilent() {
 			const logoutHint = this.currentAccount.idTokenClaims.login_hint;
 			await this.msalInstance.logoutRedirect({
-				logoutHint,
+				...(logoutHint && { logoutHint }),
 			});
 		},
 
@@ -216,12 +255,30 @@ export const useAuthStore = defineStore('auth', {
 			await this.msalInstance.logoutRedirect({
 				account: this.currentAccount,
 			});
-
-			useNuxtApp().$router.push({ name: 'auth/login' });
 		},
 
 		forceAccountUpdate() {
-			this.accountUpdateTrigger = Date.now();
+			this.accountUpdateTrigger++;
 		},
+
+		isInteractionRequiredError(error: any): boolean {
+			if (!error) return false;
+
+			// If you have access to the error class:
+			if (error instanceof InteractionRequiredAuthError) return true;
+
+			const code = error.errorCode || error.code || "";
+			const name = error.name || "";
+
+			return (
+				name === "InteractionRequiredAuthError" ||
+				code === "interaction_required" ||
+				code === "login_required" ||
+				code === "consent_required" ||
+				code === "no_account_in_silent_request" ||
+				code === "no_tokens_found" ||
+				code === "user_login_error"
+			);
+		}
 	},
 });

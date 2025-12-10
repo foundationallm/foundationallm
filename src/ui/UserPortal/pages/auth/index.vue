@@ -28,20 +28,6 @@ const router = useRouter();
 const route = useRoute();
 
 onMounted(async () => {
-	// Handle redirect result manually if needed
-	try {
-		const redirectResult = await authStore.msalInstance.handleRedirectPromise();
-		if (redirectResult && redirectResult.account) {
-			// Set the account as active
-			authStore.msalInstance.setActiveAccount(redirectResult.account);
-			
-			await router.push({ path: '/' });
-			return;
-		}
-	} catch (error) {
-		console.error('Error handling redirect promise in login page:', error);
-	}
-
 	// If user is already authenticated, redirect to home
 	if (authStore.isAuthenticated) {
 		await router.push({ path: '/' });
@@ -50,9 +36,6 @@ onMounted(async () => {
 
 async function signIn() {
 	await authStore.login();
-	if (authStore.isAuthenticated) {
-		router.push({ path: '/', query: route.query });
-	}
 }
 
 function handleImageError(event: Event) {
