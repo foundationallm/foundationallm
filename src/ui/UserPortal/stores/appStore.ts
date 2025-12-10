@@ -40,13 +40,22 @@ export const useAppStore = defineStore('app', {
 		longRunningOperations: new Map<string, string>(), // sessionId -> operation_id
 		coreConfiguration: null as CoreConfiguration | null,
 		oneDriveWorkSchool: null as boolean | null,
-		userProfiles: null as UserProfile | null,
+		userProfile: null as UserProfile | null,
 		autoHideToasts: JSON.parse(sessionStorage.getItem('autoHideToasts') || 'true') as boolean,
 		textSize: JSON.parse(sessionStorage.getItem('textSize') || '1') as number,
 		highContrastMode: JSON.parse(sessionStorage.getItem('highContrastMode') || 'false') as boolean,
 		sessionMessagePending: false,
 		settingsModalVisible: false,
 		isInitialized: false, // Track if the app initialization is complete
+
+		agentsLoadingPromise: null as Promise<void> | null,
+		isAgentsLoaded: false,
+
+		userProfileLoadingPromise: null as Promise<UserProfile | null> | null,
+		isUserProfileLoaded: false,
+
+		messagesLoadingPromise: null as Promise<void> | null,
+		messagesLoadingSessionId: null as string | null,
 	}),
 
 	getters: {
@@ -143,7 +152,7 @@ export const useAppStore = defineStore('app', {
 				this.lastSelectedAgent = restoredAgent;
 			}
 
-			await this.getUserProfiles();
+			await this.getUserProfile();
 
 			// Mark initialization as complete
 			this.isInitialized = true;
@@ -329,6 +338,8 @@ export const useAppStore = defineStore('app', {
 		},
 
 		async getMessages() {
+			const sessionId = this.currentSession?.sessionId;
+
 			if (
 				(this.newSession && this.newSession.sessionId === this.currentSession!.sessionId) ||
 				this.currentSession.is_temp
@@ -338,44 +349,51 @@ export const useAppStore = defineStore('app', {
 				return;
 			}
 
-			const messagesResponse = await api.getMessages(this.currentSession?.sessionId);
-
-			// Temporarily filter out the duplicate streaming message instances
-			// const uniqueMessages = messagesResponse.reduceRight((acc, current) => {
-			// 	const isDuplicate = acc.find(item => {
-			// 		return item.operation_id === current.operation_id && item.sender === current.sender;
-			// 	});
-
-			// 	if (!isDuplicate || current.sender !== 'Agent') {
-			// 		acc.push(current);
-			// 	}
-
-			// 	return acc;
-			// }, []);
-
-			// uniqueMessages.reverse();
-
-			this.currentMessages = messagesResponse.map((message) => ({
-				...message,
-				content: message.content ? message.content.map(this.initializeMessageContent) : [],
-				sender: message.sender?.toLowerCase() === 'user' ? 'User' : 'Agent',
-			}));
-
-			// Determine if the latest message needs to be polled
-			if (this.currentMessages.length > 0) {
-				const latestMessage = this.currentMessages[this.currentMessages.length - 1];
-
-				// For older messages that have a status of "Pending" but no operation id, assume
-				// it is complete and do no initiate polling as it will return empty data
-				if (
-					latestMessage.operation_id &&
-					(latestMessage.status === 'InProgress' || latestMessage.status === 'Pending')
-				) {
-					this.startPolling(latestMessage, this.currentSession?.sessionId);
-				}
+			// If already loading messages for this same session, return existing promise
+			if (this.messagesLoadingPromise && this.messagesLoadingSessionId === sessionId) {
+				return this.messagesLoadingPromise;
 			}
 
-			this.calculateMessageProcessingTime();
+			// If loading a different session, let it proceed (cancel previous conceptually)
+    		this.messagesLoadingSessionId = sessionId;
+
+			this.messagesLoadingPromise = (async () => {
+				try {
+					const messagesResponse = await api.getMessages(sessionId);
+
+					// Only update if still the current session (prevent stale data from race conditions)
+            		if (this.currentSession?.sessionId === sessionId) {
+						this.currentMessages = messagesResponse.map((message) => ({
+							...message,
+							content: message.content ? message.content.map(this.initializeMessageContent) : [],
+							sender: message.sender?.toLowerCase() === 'user' ? 'User' : 'Agent',
+						}));
+
+						// Determine if the latest message needs to be polled
+						if (this.currentMessages.length > 0) {
+							const latestMessage = this.currentMessages[this.currentMessages.length - 1];
+
+							// For older messages that have a status of "Pending" but no operation id, assume
+							// it is complete and do no initiate polling as it will return empty data
+							if (
+								latestMessage.operation_id &&
+								(latestMessage.status === 'InProgress' || latestMessage.status === 'Pending')
+							) {
+								this.startPolling(latestMessage, sessionId);
+							}
+						}
+
+						this.calculateMessageProcessingTime();
+					}
+				} finally {
+					// Only clear if this is still the active load for this session
+					if (this.messagesLoadingSessionId === sessionId) {
+						this.messagesLoadingPromise = null;
+					}
+				}
+			})();
+
+			return this.messagesLoadingPromise;
 		},
 
 		calculateMessageProcessingTime() {
@@ -758,8 +776,24 @@ export const useAppStore = defineStore('app', {
 		},
 
 		async getAgents() {
-			this.agents = await api.getAllowedAgents();
-			return this.agents;
+			if (this.isAgentsLoaded) {
+				return;
+			}
+
+			if (this.agentsLoadingPromise) {
+				return this.agentsLoadingPromise;
+			}
+
+			this.agentsLoadingPromise = (async () => {
+				try {
+					this.agents = await api.getAllowedAgents();
+					this.isAgentsLoaded = true;
+				} finally {
+					this.agentsLoadingPromise = null;
+				}
+			})();
+
+			return this.agentsLoadingPromise;
 		},
 
 		mapAgentDisplayName(agentName: string) {
@@ -790,31 +824,48 @@ export const useAppStore = defineStore('app', {
 			this.oneDriveWorkSchool = false;
 		},
 
-		async getUserProfiles() {
-			this.userProfiles = await api.getUserProfile();
-			this.oneDriveWorkSchool = this.userProfiles?.flags.oneDriveWorkSchoolEnabled;
-			return this.userProfiles;
+		async getUserProfile() {
+			if (this.isUserProfileLoaded) {
+				return this.userProfile;
+			}
+
+			if (this.userProfileLoadingPromise) {
+				return this.userProfileLoadingPromise;
+			}
+
+			this.userProfileLoadingPromise = (async () => {
+				try {
+					
+					this.userProfile = await api.getUserProfile();
+					this.oneDriveWorkSchool = this.userProfile?.flags.oneDriveWorkSchoolEnabled;
+					this.isUserProfileLoaded = true;
+				} finally {
+					this.userProfileLoadingPromise = null;
+				}
+			})();
+
+			return this.userProfileLoadingPromise;
 		},
 
 		updateUserProfileAgent(agentObjectId: string, enabled: boolean) {
-			if (!this.userProfiles) {
+			if (!this.userProfile) {
 				return;
 			}
 
-			if (!this.userProfiles.agents) {
-				this.userProfiles.agents = [];
+			if (!this.userProfile.agents) {
+				this.userProfile.agents = [];
 			}
 
 			if (enabled) {
 				// Add agent if not already present
-				if (!this.userProfiles.agents.includes(agentObjectId)) {
-					this.userProfiles.agents.push(agentObjectId);
+				if (!this.userProfile.agents.includes(agentObjectId)) {
+					this.userProfile.agents.push(agentObjectId);
 				}
 			} else {
 				// Remove agent
-				const index = this.userProfiles.agents.indexOf(agentObjectId);
+				const index = this.userProfile.agents.indexOf(agentObjectId);
 				if (index > -1) {
-					this.userProfiles.agents.splice(index, 1);
+					this.userProfile.agents.splice(index, 1);
 				}
 			}
 		},

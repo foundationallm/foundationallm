@@ -536,7 +536,7 @@ export default {
 	 * @returns The user profile.
 	 */
 	async getUserProfile() {
-		return (await this.fetch(`/instances/${this.instanceId}/userProfiles/`)) as UserProfile;
+		return (await this.fetch(`/instances/${this.instanceId}/userProfiles`)) as UserProfile;
 	},
 
 	/**
