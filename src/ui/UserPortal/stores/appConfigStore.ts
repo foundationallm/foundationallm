@@ -6,9 +6,15 @@ export const useAppConfigStore = defineStore('appConfig', {
 		// Loading states
 		isConfigurationLoaded: false,
 		isFeaturedAgentNamesLoaded: false,
-		isAppConfigurationSetLoaded: false,
 		hasConfigurationAccessError: false,
 		configurationAccessErrorMessage: null as string | null,
+
+		isAppConfigurationSetLoaded: false,
+		isFeaturedFlagsLoaded: false,
+
+		// Promises to prevent duplicate loads
+		appConfigurationSetLoadingPromise: null as Promise<void> | null,
+		featureFlagsLoadingPromise: null as Promise<void> | null,
 
 		// API: Defines API-specific settings such as the base URL for application requests.
 		apiUrl: null as string | null,
@@ -119,84 +125,101 @@ export const useAppConfigStore = defineStore('appConfig', {
 		 * This is the new approach that replaces individual API calls for marked configuration values.
 		 */
 		async loadAppConfigurationSet() {
-			try {
-				// Reset error state before attempting to load
-				this.hasConfigurationAccessError = false;
-				this.configurationAccessErrorMessage = null;
 
-				const appConfigSetResults = await api.getUserPortalAppConfigurationSet();
-
-				if (appConfigSetResults && appConfigSetResults.length > 0) {
-					const configSet = appConfigSetResults[0].resource;
-
-					if (!configSet || !configSet.configuration_values) {
-						throw new Error('Invalid app configuration set structure');
-					}
-
-					const configValues = configSet.configuration_values;
-
-					// Map configuration values from the app configuration set to store properties
-					if (configValues) {
-
-						if (configValues['FoundationaLLM:APIEndpoints:ContextAPI:Configuration:FileService:AllowedFileExtensions']) {
-							this.allowedUploadFileExtensions = configValues['FoundationaLLM:APIEndpoints:ContextAPI:Configuration:FileService:AllowedFileExtensions'] as string;
-						}
-
-						// UserPortal configuration
-						if (configValues['FoundationaLLM:UserPortal:Configuration:ShowMessageRating'] !== undefined) {
-							this.showMessageRating = typeof configValues['FoundationaLLM:UserPortal:Configuration:ShowMessageRating'] === 'boolean'
-								? configValues['FoundationaLLM:UserPortal:Configuration:ShowMessageRating'] as boolean
-								: JSON.parse((configValues['FoundationaLLM:UserPortal:Configuration:ShowMessageRating'] as string).toLowerCase());
-						}
-						if (configValues['FoundationaLLM:UserPortal:Configuration:ShowLastConversationOnStartup'] !== undefined) {
-							this.showLastConversionOnStartup = typeof configValues['FoundationaLLM:UserPortal:Configuration:ShowLastConversationOnStartup'] === 'boolean'
-								? configValues['FoundationaLLM:UserPortal:Configuration:ShowLastConversationOnStartup'] as boolean
-								: JSON.parse((configValues['FoundationaLLM:UserPortal:Configuration:ShowLastConversationOnStartup'] as string).toLowerCase());
-						}
-						if (configValues['FoundationaLLM:UserPortal:Configuration:ShowMessageTokens'] !== undefined) {
-							this.showMessageTokens = typeof configValues['FoundationaLLM:UserPortal:Configuration:ShowMessageTokens'] === 'boolean'
-								? configValues['FoundationaLLM:UserPortal:Configuration:ShowMessageTokens'] as boolean
-								: JSON.parse((configValues['FoundationaLLM:UserPortal:Configuration:ShowMessageTokens'] as string).toLowerCase());
-						}
-						if (configValues['FoundationaLLM:UserPortal:Configuration:ShowViewPrompt'] !== undefined) {
-							this.showViewPrompt = typeof configValues['FoundationaLLM:UserPortal:Configuration:ShowViewPrompt'] === 'boolean'
-								? configValues['FoundationaLLM:UserPortal:Configuration:ShowViewPrompt'] as boolean
-								: JSON.parse((configValues['FoundationaLLM:UserPortal:Configuration:ShowViewPrompt'] as string).toLowerCase());
-						}
-						if (configValues['FoundationaLLM:UserPortal:Configuration:ShowFileUpload'] !== undefined) {
-							this.showFileUpload = typeof configValues['FoundationaLLM:UserPortal:Configuration:ShowFileUpload'] === 'boolean'
-								? configValues['FoundationaLLM:UserPortal:Configuration:ShowFileUpload'] as boolean
-								: JSON.parse((configValues['FoundationaLLM:UserPortal:Configuration:ShowFileUpload'] as string).toLowerCase());
-						}
-						if (configValues['FoundationaLLM:UserPortal:Configuration:FeaturedAgentNames']) {
-							const featuredAgentNamesString = configValues['FoundationaLLM:UserPortal:Configuration:FeaturedAgentNames'] as string;
-
-							this.featuredAgentNames = featuredAgentNamesString.split(',').map((name: string) => name.trim()).filter((name: string) => name.length > 0);
-							this.pinnedFeaturedAgentNames = this.featuredAgentNames.filter(name => name.endsWith('|*')).map(name => name.replace(/\|\*$/, ''));
-							this.featuredAgentNames = this.featuredAgentNames.map(name => name.replace(/\|\*$/, ''));
-
-							this.isFeaturedAgentNamesLoaded = true;
-						}
-						if (configValues['FoundationaLLM:UserPortal:Configuration:AgentManagementPermissionRequestUrl']) {
-							this.agentManagementPermissionRequestUrl = configValues['FoundationaLLM:UserPortal:Configuration:AgentManagementPermissionRequestUrl'] as string;
-						}
-					}
-				}
-				this.isAppConfigurationSetLoaded = true;
-			} catch (error: any) {
-				console.error('Failed to load app configuration set:', error);
-
-				// Check if this is a 403 Forbidden error
-				if (error?.status === 403 || error?.statusCode === 403 ||
-					(error?.message && error.message.includes('403')) ||
-					(error?.response?.status === 403)) {
-					this.hasConfigurationAccessError = true;
-					this.configurationAccessErrorMessage = 'Please contact your system administrator to request access.';
-					console.error('Access to UserPortal app configuration set is forbidden (403)');
-				}
-
-				throw error;
+			if (this.isAppConfigurationSetLoaded) {
+				return;
 			}
+
+			// If a loading promise already exists, return it to prevent duplicate loads
+			if (this.appConfigurationSetLoadingPromise) {
+				return this.appConfigurationSetLoadingPromise;
+			}
+
+			this.appConfigurationSetLoadingPromise = (async () => {
+				try {
+					// Reset error state before attempting to load
+					this.hasConfigurationAccessError = false;
+					this.configurationAccessErrorMessage = null;
+
+					const appConfigSetResults = await api.getUserPortalAppConfigurationSet();
+
+					if (appConfigSetResults && appConfigSetResults.length > 0) {
+						const configSet = appConfigSetResults[0].resource;
+
+						if (!configSet || !configSet.configuration_values) {
+							throw new Error('Invalid app configuration set structure');
+						}
+
+						const configValues = configSet.configuration_values;
+
+						// Map configuration values from the app configuration set to store properties
+						if (configValues) {
+
+							if (configValues['FoundationaLLM:APIEndpoints:ContextAPI:Configuration:FileService:AllowedFileExtensions']) {
+								this.allowedUploadFileExtensions = configValues['FoundationaLLM:APIEndpoints:ContextAPI:Configuration:FileService:AllowedFileExtensions'] as string;
+							}
+
+							// UserPortal configuration
+							if (configValues['FoundationaLLM:UserPortal:Configuration:ShowMessageRating'] !== undefined) {
+								this.showMessageRating = typeof configValues['FoundationaLLM:UserPortal:Configuration:ShowMessageRating'] === 'boolean'
+									? configValues['FoundationaLLM:UserPortal:Configuration:ShowMessageRating'] as boolean
+									: JSON.parse((configValues['FoundationaLLM:UserPortal:Configuration:ShowMessageRating'] as string).toLowerCase());
+							}
+							if (configValues['FoundationaLLM:UserPortal:Configuration:ShowLastConversationOnStartup'] !== undefined) {
+								this.showLastConversionOnStartup = typeof configValues['FoundationaLLM:UserPortal:Configuration:ShowLastConversationOnStartup'] === 'boolean'
+									? configValues['FoundationaLLM:UserPortal:Configuration:ShowLastConversationOnStartup'] as boolean
+									: JSON.parse((configValues['FoundationaLLM:UserPortal:Configuration:ShowLastConversationOnStartup'] as string).toLowerCase());
+							}
+							if (configValues['FoundationaLLM:UserPortal:Configuration:ShowMessageTokens'] !== undefined) {
+								this.showMessageTokens = typeof configValues['FoundationaLLM:UserPortal:Configuration:ShowMessageTokens'] === 'boolean'
+									? configValues['FoundationaLLM:UserPortal:Configuration:ShowMessageTokens'] as boolean
+									: JSON.parse((configValues['FoundationaLLM:UserPortal:Configuration:ShowMessageTokens'] as string).toLowerCase());
+							}
+							if (configValues['FoundationaLLM:UserPortal:Configuration:ShowViewPrompt'] !== undefined) {
+								this.showViewPrompt = typeof configValues['FoundationaLLM:UserPortal:Configuration:ShowViewPrompt'] === 'boolean'
+									? configValues['FoundationaLLM:UserPortal:Configuration:ShowViewPrompt'] as boolean
+									: JSON.parse((configValues['FoundationaLLM:UserPortal:Configuration:ShowViewPrompt'] as string).toLowerCase());
+							}
+							if (configValues['FoundationaLLM:UserPortal:Configuration:ShowFileUpload'] !== undefined) {
+								this.showFileUpload = typeof configValues['FoundationaLLM:UserPortal:Configuration:ShowFileUpload'] === 'boolean'
+									? configValues['FoundationaLLM:UserPortal:Configuration:ShowFileUpload'] as boolean
+									: JSON.parse((configValues['FoundationaLLM:UserPortal:Configuration:ShowFileUpload'] as string).toLowerCase());
+							}
+							if (configValues['FoundationaLLM:UserPortal:Configuration:FeaturedAgentNames']) {
+								const featuredAgentNamesString = configValues['FoundationaLLM:UserPortal:Configuration:FeaturedAgentNames'] as string;
+
+								this.featuredAgentNames = featuredAgentNamesString.split(',').map((name: string) => name.trim()).filter((name: string) => name.length > 0);
+								this.pinnedFeaturedAgentNames = this.featuredAgentNames.filter(name => name.endsWith('|*')).map(name => name.replace(/\|\*$/, ''));
+								this.featuredAgentNames = this.featuredAgentNames.map(name => name.replace(/\|\*$/, ''));
+
+								this.isFeaturedAgentNamesLoaded = true;
+							}
+							if (configValues['FoundationaLLM:UserPortal:Configuration:AgentManagementPermissionRequestUrl']) {
+								this.agentManagementPermissionRequestUrl = configValues['FoundationaLLM:UserPortal:Configuration:AgentManagementPermissionRequestUrl'] as string;
+							}
+						}
+					}
+					this.isAppConfigurationSetLoaded = true;
+				} catch (error: any) {
+					console.error('Failed to load app configuration set:', error);
+
+					// Check if this is a 403 Forbidden error
+					if (error?.status === 403 || error?.statusCode === 403 ||
+						(error?.message && error.message.includes('403')) ||
+						(error?.response?.status === 403)) {
+						this.hasConfigurationAccessError = true;
+						this.configurationAccessErrorMessage = 'Please contact your system administrator to request access.';
+						console.error('Access to UserPortal app configuration set is forbidden (403)');
+					}
+
+					throw error;
+				} finally {
+					// Clear the loading promise once done
+					this.appConfigurationSetLoadingPromise = null;
+				}
+			})();
+
+			return this.appConfigurationSetLoadingPromise;
 		},
 		/**
 		 * Loads only the authentication-related configuration values using individual API calls.
@@ -245,17 +268,35 @@ export const useAppConfigStore = defineStore('appConfig', {
 		},
 
 		async loadFeatureFlags() {
-			const agentSelfServiceFlag = await this.getConfigValueSafe(
-				'.appconfig.featureflag/FoundationaLLM.Agent.SelfService',
-				'{"enabled": true}',
-			);
-			try {
-				const parsedFlag = JSON.parse(agentSelfServiceFlag);
-				this.agentSelfServiceFeatureEnabled = parsedFlag.enabled === true;
-			} catch (error) {
-				console.error('Failed to parse agent self-service feature flag:', error);
-				this.agentSelfServiceFeatureEnabled = false; // Default to enabled if parsing fails
+			if (this.isFeaturedFlagsLoaded) {
+				return;
 			}
+
+			// If a loading promise already exists, return it to prevent duplicate loads
+			if (this.featureFlagsLoadingPromise) {
+				return this.featureFlagsLoadingPromise;
+			}
+
+			this.featureFlagsLoadingPromise = (async () => {
+
+				const agentSelfServiceFlag = await this.getConfigValueSafe(
+					'.appconfig.featureflag/FoundationaLLM.Agent.SelfService',
+					'{"enabled": true}',
+				);
+				try {
+					const parsedFlag = JSON.parse(agentSelfServiceFlag);
+					this.agentSelfServiceFeatureEnabled = parsedFlag.enabled === true;
+
+					this.isFeaturedFlagsLoaded = true;
+				} catch (error) {
+					console.error('Failed to parse agent self-service feature flag:', error);
+					this.agentSelfServiceFeatureEnabled = false; // Default to enabled if parsing fails
+				} finally {
+					this.featureFlagsLoadingPromise = null;
+				}
+			})();
+
+			return this.featureFlagsLoadingPromise;
 		},
 
 		/**
