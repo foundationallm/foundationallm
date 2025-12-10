@@ -280,13 +280,24 @@ export default {
 	},
 
 	/**
-	 * Retrieves messages for a given session.
-	 * @param sessionId - The ID of the session.
+	 * Retrieves messages for a given conversation.
+	 * @param sessionId - The identifier of the conversation.
 	 * @returns An array of messages.
 	 */
 	async getMessages(sessionId: string): Promise<Message[]> {
 		return await this.fetch<Message[]>(
 			`/instances/${this.instanceId}/sessions/${sessionId}/messages`,
+		);
+	},
+
+	/**
+	 * Retrieves the number of messages for a given conversation.
+	 * @param sessionId - The identifier of the conversation.
+	 * @returns An array of messages.
+	 */
+	async getMessagesCount(sessionId: string): Promise<number> {
+		return await this.fetch<number>(
+			`/instances/${this.instanceId}/sessions/${sessionId}/messagescount`,
 		);
 	},
 

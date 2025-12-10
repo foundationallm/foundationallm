@@ -536,7 +536,6 @@ import { useAuthStore } from '@/stores/authStore';
 			}
 
 			await this.setAgentOptions();
-			await this.loadUserProfile();
 			await this.loadAllowedAgents();
 			await this.checkContributorRoles();
 		},
@@ -779,10 +778,12 @@ import { useAuthStore } from '@/stores/authStore';
 					return; // the watcher will re-invoke this when the featured agent names are available.
 				}
 
+				// Ensure user profile is loaded (will use cached data if already loaded)
+				await this.loadUserProfile();
+
 				this.loadingAgents2 = true;
-				this.agentError2 = '';
-
-
+				this.agentError2 = "";
+				
 				try {
 					// Ensure agents are loaded first (this will be instant if already loaded).
         			await this.appStore.getAgents();

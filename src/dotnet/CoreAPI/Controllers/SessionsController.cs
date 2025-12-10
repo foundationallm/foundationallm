@@ -42,13 +42,22 @@ namespace FoundationaLLM.Core.API.Controllers
             await _coreService.GetAllConversationsAsync(instanceId);
 
         /// <summary>
-        /// Returns the chat messages related to an existing session.
+        /// Returns the messages for a conversation.
         /// </summary>
-        /// <param name="instanceId">The id of the instance.</param>
-        /// <param name="sessionId">The id of the session for which to retrieve chat messages.</param>
-        [HttpGet("{sessionId}/messages", Name = "GetChatSessionMessages")]
-        public async Task<IEnumerable<Message>> GetChatSessionMessages(string instanceId, string sessionId) =>
-            await _coreService.GetChatSessionMessagesAsync(instanceId, sessionId);
+        /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
+        /// <param name="sessionId">The conversation identifier for which to retrieve messages.</param>
+        [HttpGet("{sessionId}/messages", Name = "GetConversationMessages")]
+        public async Task<IEnumerable<Message>> GetConversationMessages(string instanceId, string sessionId) =>
+            await _coreService.GetConversationMessagesAsync(instanceId, sessionId);
+
+        /// <summary>
+        /// Returns the number of messages in a conversation.
+        /// </summary>
+        /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
+        /// <param name="sessionId">The conversation identifier for which to retrieve messages.</param>
+        [HttpGet("{sessionId}/messagescount", Name = "GetConversationMessagesCount")]
+        public async Task<int> GetConversationMessagesCount(string instanceId, string sessionId) =>
+            await _coreService.GetConversationMessagesCountAsync(instanceId, sessionId);
 
         /// <summary>
         /// Rate an assistant message. This can be used to discover useful AI responses for training,

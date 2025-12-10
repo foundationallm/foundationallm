@@ -27,6 +27,10 @@ export const useAppStore = defineStore('app', {
 	state: () => ({
 		sessions: [] as Session[],
 		currentSession: null as Session | null,
+		// Indicates whether we have already confirmed that the current session has no messages.
+		// In certain cases (e.g., newly created session, session already checked for messages),
+		// we know for sure whether the session has messages or not.
+		currentSessionConfirmedEmpty: false as boolean,
 		newSession: null as Session | null, // Used to store the newly created session. Deleted after the first prompt is sent. This is to prevent an unnecessary fetch of its messages.
 		pollingSession: null as string | null, // Contains the ID of a session that is currently being polled for completion.
 		renamedSessions: [] as Session[],
@@ -79,7 +83,6 @@ export const useAppStore = defineStore('app', {
 	actions: {
 		async init(sessionId: string | undefined) {
 			const appConfigStore = useAppConfigStore();
-			await this.getAgents();
 
 			// Watch for changes in autoHideToasts and update sessionStorage
 			watch(
@@ -108,12 +111,18 @@ export const useAppStore = defineStore('app', {
 
 			// No need to load sessions if in kiosk mode, simply create a new one and skip.
 			if (appConfigStore.isKioskMode) {
+				await this.getAgents();
 				const newSession = await api.addSession(this.getDefaultChatSessionProperties());
 				this.changeSession(newSession);
 				return;
 			}
 
-			await this.getSessions();
+			// Parallelize independent loads: agents, sessions, and user profile
+			const [, , ] = await Promise.all([
+				this.getAgents(),
+				this.getSessions(),
+				this.getUserProfile(),
+			]);
 
 			const requestedSession = sessionId
 				? this.sessions.find((s: Session) => s.sessionId === sessionId)
@@ -134,16 +143,16 @@ export const useAppStore = defineStore('app', {
 				if (isEmpty) {
 					// Use the existing empty session
 					this.resetSessionAgent(mostRecentSession);
-					this.changeSession(mostRecentSession);
+					this.changeSession(mostRecentSession, true);
 				} else {
 					// Create a new chat conversation
 					const newSession = await this.addSession(this.getDefaultChatSessionProperties());
-					this.changeSession(newSession);
+					this.changeSession(newSession, true);
 				}
 			} else {
 				// No sessions exist, create a new chat conversation
 				const newSession = await this.addSession(this.getDefaultChatSessionProperties());
-				this.changeSession(newSession);
+				this.changeSession(newSession, true);
 			}
 
 			// Restore agent for the chosen currentSession, if any
@@ -151,8 +160,6 @@ export const useAppStore = defineStore('app', {
 				const restoredAgent = this.getSessionAgent(this.currentSession);
 				this.lastSelectedAgent = restoredAgent;
 			}
-
-			await this.getUserProfile();
 
 			// Mark initialization as complete
 			this.isInitialized = true;
@@ -330,14 +337,20 @@ export const useAppStore = defineStore('app', {
 
 		async isSessionEmpty(sessionId: string): Promise<boolean> {
 			try {
-				const messages = await api.getMessages(sessionId);
-				return !messages || messages.length === 0;
+				const messagesCount = await api.getMessagesCount(sessionId);
+				return !messagesCount || messagesCount === 0;
 			} catch (error) {
 				return false;
 			}
 		},
 
 		async getMessages() {
+			if (this.currentSessionConfirmedEmpty) {
+				// We have already confirmed this session has no messages.
+				this.currentMessages = [];
+				return;
+			}
+
 			const sessionId = this.currentSession?.sessionId;
 
 			if (
@@ -753,22 +766,24 @@ export const useAppStore = defineStore('app', {
 			}
 		},
 
-		changeSession(newSession: Session) {
-			this.stopPolling(newSession.sessionId);
+		changeSession(
+			session: Session,
+			confirmedEmpty: boolean = false,
+		) {
+			this.stopPolling(session.sessionId);
 
 			const nuxtApp = useNuxtApp();
 			const appConfigStore = useAppConfigStore();
 
-			if (appConfigStore.isKioskMode || newSession.is_temp) {
+			if (appConfigStore.isKioskMode || session.is_temp) {
 				nuxtApp.$router.push({ query: {} });
 			} else {
-				const query = { chat: newSession.sessionId };
+				const query = { chat: session.sessionId };
 				nuxtApp.$router.push({ query });
 			}
 
-			this.currentSession = newSession;
-			// await this.getMessages();
-			// this.updateSessionAgentFromMessages(newSession);
+			this.currentSessionConfirmedEmpty = confirmedEmpty;
+			this.currentSession = session;
 		},
 
 		toggleSidebar() {

@@ -19,6 +19,10 @@ export const useAuthStore = defineStore('auth', {
 		apiToken: null,
 		// Reactive trigger to force updates when account changes
 		accountUpdateTrigger: 0,
+
+		profilePhoto: null as string | null,
+		profilePhotoLoadingPromise: null as Promise<string | null> | null,
+		isProfilePhotoLoaded: false,
 	}),
 
 	getters: {
@@ -214,24 +218,41 @@ export const useAuthStore = defineStore('auth', {
 		},
 
 		async getProfilePhoto(): Promise<string | null> {
-			try {
-				const graphScopes = ['https://graph.microsoft.com/User.Read'];
-				const graphToken = await this.msalInstance.acquireTokenSilent({
-					account: this.currentAccount,
-					scopes: graphScopes,
-				});
-
-				const profilePhotoBlob = await $fetch('https://graph.microsoft.com/v1.0/me/photo/$value', {
-					method: 'GET',
-					headers: {
-						Authorization: `Bearer ${graphToken.accessToken}`,
-					},
-				});
-
-				return URL.createObjectURL(profilePhotoBlob);
-			} catch (error) {
-				return null;
+			if (this.isProfilePhotoLoaded) {
+				return this.profilePhoto;
 			}
+			if (this.profilePhotoLoadingPromise) {
+				return this.profilePhotoLoadingPromise;
+			}
+
+			this.profilePhotoLoadingPromise = (async () => {
+				try {
+					const graphScopes = ['https://graph.microsoft.com/User.Read'];
+					const graphToken = await this.msalInstance.acquireTokenSilent({
+						account: this.currentAccount,
+						scopes: graphScopes,
+					});
+
+					const profilePhotoBlob = await $fetch('https://graph.microsoft.com/v1.0/me/photo/$value', {
+						method: 'GET',
+						headers: {
+							Authorization: `Bearer ${graphToken.accessToken}`,
+						},
+					});
+
+					this.profilePhoto = URL.createObjectURL(profilePhotoBlob);
+            		this.isProfilePhotoLoaded = true;
+					return this.profilePhoto;
+				} catch (error) {
+					this.isProfilePhotoLoaded = true; // Mark as loaded even on error to prevent retries
+					this.profilePhoto = null;
+					return null;
+				} finally {
+					this.profilePhotoLoadingPromise = null;
+				}
+			})();
+
+			return this.profilePhotoLoadingPromise;
 		},
 
 		async login() {

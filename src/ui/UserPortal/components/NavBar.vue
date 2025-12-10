@@ -82,7 +82,6 @@
 								aria-label="Select an agent"
 								aria-activedescendant="selected-agent-{{ agentSelection?.label }}"
 								@change="handleAgentChange"
-								@show="handleDropdownShow"
 							/>
 							<Button
 								class="print-button"
@@ -206,19 +205,6 @@
 		},
 
 		methods: {
-			async handleDropdownShow() {
-				// Check if featuredAgentNames configuration is available and refresh agent options if needed
-				// This handles the case where config is loaded after login
-				if (this.appConfigStore.featuredAgentNames === null) {
-					try {
-						await this.appConfigStore.loadAppConfigurationSet();
-						// setAgentOptions will be called automatically by the watcher
-					} catch (error) {
-						console.warn('Failed to load configuration on dropdown show:', error);
-					}
-				}
-			},
-
 			handleAgentChange() {
 				if (isAgentExpired(this.agentSelection!.value)) return;
 
@@ -252,15 +238,6 @@
 
 				this.hasAvailableAgents = this.appStore.agents.some(
 					(agent: any) => !isAgentExpired(agent));
-
-				// Check if configuration is loaded, if not try to load it
-				if (this.appConfigStore.featuredAgentNames === null) {
-					try {
-						await this.appConfigStore.loadAppConfigurationSet();
-					} catch (error) {
-						console.warn('Failed to load configuration in setAgentOptions:', error);
-					}
-				}
 
 				const isCurrentAgent = (agent: any): boolean => {
 					return (
