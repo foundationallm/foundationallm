@@ -3,21 +3,21 @@
 		<!-- Sidebar section header -->
 			<div class="chat-sidebar__section-header--mobile" :key="`header-${configLoadedTrigger}`">
 				<img
-					v-if="$appConfigStore.logoUrl && $appConfigStore.logoUrl !== ''"
-					:src="$filters.enforceLeadingSlash($appConfigStore.logoUrl)"
-					:alt="$appConfigStore.logoText || 'FoundationaLLM'"
+					v-if="appConfigStore.logoUrl && appConfigStore.logoUrl !== ''"
+					:src="$filters.enforceLeadingSlash(appConfigStore.logoUrl)"
+					:alt="appConfigStore.logoText || 'FoundationaLLM'"
 				/>
-				<span v-else-if="$appConfigStore.logoText">{{ $appConfigStore.logoText }}</span>
+				<span v-else-if="appConfigStore.logoText">{{ appConfigStore.logoText }}</span>
 				<span v-else>FoundationaLLM</span>
 			<VTooltip :auto-hide="isMobile" :popper-triggers="isMobile ? [] : ['hover']">
 				<Button
 					class="chat-sidebar__button"
-					:icon="$appStore.isSidebarClosed ? 'pi pi-arrow-right' : 'pi pi-arrow-left'"
+					:icon="appStore.isSidebarClosed ? 'pi pi-arrow-right' : 'pi pi-arrow-left'"
 					size="small"
 					severity="secondary"
 					aria-label="Toggle sidebar"
-					:aria-expanded="!$appStore.isSidebarClosed"
-					@click="$appStore.toggleSidebar"
+					:aria-expanded="!appStore.isSidebarClosed"
+					@click="appStore.toggleSidebar"
 					@keydown.esc="hideAllPoppers"
 				/>
 				<template #popper><div role="tooltip">Toggle sidebar</div></template>
@@ -117,19 +117,19 @@
 		</div>
 
 		<!-- Logged in user -->
-		<div v-if="$authStore.currentAccount?.name" class="chat-sidebar__account" :key="`account-${authStateTrigger}`">
+		<div v-if="authStore.currentAccount?.name" class="chat-sidebar__account" :key="`account-${authStateTrigger}`">
 			<UserAvatar size="large" class="chat-sidebar__avatar" />
 
 			<div>
 				<VTooltip :auto-hide="isMobile" :popper-triggers="isMobile ? [] : ['hover']">
 					<span
 						class="chat-sidebar__username"
-						aria-label="Logged in as {{ $authStore.currentAccount?.username }}"
+						aria-label="Logged in as {{ authStore.currentAccount?.username }}"
 					>
-						{{ $authStore.currentAccount?.name }}
+						{{ authStore.currentAccount?.name }}
 					</span>
 					<template #popper>
-						<div role="tooltip">Logged in as {{ $authStore.currentAccount?.username }}</div>
+						<div role="tooltip">Logged in as {{ authStore.currentAccount?.username }}</div>
 					</template>
 				</VTooltip>
 				<div class="chat-sidebar__options">
@@ -139,7 +139,7 @@
 						label="Sign Out"
 						severity="secondary"
 						size="small"
-						@click="$authStore.logout()"
+						@click="authStore.logout()"
 					/>
 					<VTooltip :auto-hide="isMobile" :popper-triggers="isMobile ? [] : ['hover']">
 						<Button
@@ -149,8 +149,8 @@
 							size="small"
 							aria-label="Settings"
 							aria-controls="settings-modal"
-							:aria-expanded="$appStore.settingsModalVisible"
-							@click="$appStore.settingsModalVisible = true"
+							:aria-expanded="appStore.settingsModalVisible"
+							@click="appStore.settingsModalVisible = true"
 						/>
 						<template #popper><div role="tooltip">Settings</div></template>
 					</VTooltip>
@@ -161,7 +161,6 @@
 		<!-- Update conversation dialog -->
 		<Dialog
 			v-if="conversationToUpdate !== null"
-			v-focustrap
 			:visible="conversationToUpdate !== null"
 			:header="`Conversation properties`"
 			:closable="false"
@@ -196,12 +195,11 @@
 
 		<Dialog
 			id="settings-modal"
-			v-model:visible="$appStore.settingsModalVisible"
-			v-focustrap
+			v-model:visible="appStore.settingsModalVisible"
 			modal
 			class="sidebar-dialog csm-profile-setting-modal-1 w-full"
 			header="Settings"
-			@keydown.esc="$appStore.settingsModalVisible = false"
+			@keydown.esc="appStore.settingsModalVisible = false"
 		>
 			<TabView :activeIndex="activeTabIndex" @tab-change="onTabChange">
 				<TabPanel header="Agents">
@@ -237,7 +235,7 @@
 								<tr>
 									<th>Name</th>
 									<th>Enabled</th>
-									<th v-if="$appConfigStore.agentSelfServiceFeatureEnabled">Edit</th>
+									<th v-if="appConfigStore.agentSelfServiceFeatureEnabled">Edit</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -261,7 +259,7 @@
 											<i v-if="getAgents.enabled" class="pi pi-check"></i>
 										</div>
 									</td>
-									<td v-if="$appConfigStore.agentSelfServiceFeatureEnabled">
+									<td v-if="appConfigStore.agentSelfServiceFeatureEnabled">
 										<Button
 											link
 											class="csm-table-edit-btn-1"
@@ -298,8 +296,8 @@
 					<!-- Permission Request Link -->
 					<div v-if="!hasAgentsContributorRole || !hasPromptsContributorRole">
 						<nuxt-link
-							v-if="$appConfigStore.agentManagementPermissionRequestUrl && $appConfigStore.agentSelfServiceFeatureEnabled"
-							:to="$appConfigStore.agentManagementPermissionRequestUrl"
+							v-if="appConfigStore.agentManagementPermissionRequestUrl && appConfigStore.agentSelfServiceFeatureEnabled"
+							:to="appConfigStore.agentManagementPermissionRequestUrl"
 							external
 							target="_blank"
 							class="p-component csm-only-text-btn-1"
@@ -315,13 +313,13 @@
 						<h4 id="auto-hide-toasts" class="setting-option-label">
 							Auto hide popup notifications
 						</h4>
-						<InputSwitch v-model="$appStore.autoHideToasts" aria-labelledby="auto-hide-toasts" />
+						<InputSwitch v-model="appStore.autoHideToasts" aria-labelledby="auto-hide-toasts" />
 					</div>
 					<div class="setting-option">
 						<h4 id="text-size" class="setting-option-label">Text size</h4>
 						<div class="text-size-slider-container">
 							<Slider
-								v-model="$appStore.textSize"
+								v-model="appStore.textSize"
 								:style="{ width: '100%', marginRight: '1rem' }"
 								:min="0.8"
 								:max="1.5"
@@ -329,14 +327,14 @@
 								aria-labelledby="text-size"
 								aria-valuemin="80%"
 								aria-valuemax="150%"
-								:aria-valuenow="Math.round(($appStore.textSize / 1) * 100) + '%'"
+								:aria-valuenow="Math.round((appStore.textSize / 1) * 100) + '%'"
 							/>
-							<p>{{ Math.round(($appStore.textSize / 1) * 100) }}%</p>
+							<p>{{ Math.round((appStore.textSize / 1) * 100) }}%</p>
 						</div>
 					</div>
 					<!-- <div class="setting-option">
 						<h4 id="contrast" class="setting-option-label">High contrast mode</h4>
-						<InputSwitch v-model="$appStore.highContrastMode" aria-labelledby="contrast" />
+						<InputSwitch v-model="appStore.highContrastMode" aria-labelledby="contrast" />
 					</div> -->
 				</TabPanel>
 			</TabView>
@@ -345,7 +343,7 @@
 				<div class="flex w-full justify-between items-center px-2">
 					<div class="w-full max-w-[50%] px-2">
 						<nuxt-link
-							v-if="activeTabIndex !== 1 && $appConfigStore.agentSelfServiceFeatureEnabled"
+							v-if="activeTabIndex !== 1 && appConfigStore.agentSelfServiceFeatureEnabled"
 							to="/manage-agents"
 							class="p-component csm-only-text-btn-1">
 							Manage Agents <i class="pi pi-external-link ml-1"></i>
@@ -357,7 +355,7 @@
 							class="sidebar-dialog__button"
 							label="Close"
 							text
-							@click="$appStore.settingsModalVisible = false"
+							@click="appStore.settingsModalVisible = false"
 						/>
 					</div>
 				</div>
@@ -390,15 +388,16 @@ import { useAuthStore } from '@/stores/authStore';
 		},
 
 		setup() {
-			const $appStore = useAppStore();
-			const $appConfigStore = useAppConfigStore();
-			const $authStore = useAuthStore();
-			return { $appStore, $appConfigStore, $authStore };
+			const appStore = useAppStore();
+			const appConfigStore = useAppConfigStore();
+			const authStore = useAuthStore();
+			return { appStore, appConfigStore, authStore };
 		},
 
 		data() {
 			return {
 				conversationToUpdate: null as Session | null,
+				conversationToDelete: null as Session | null,
 				newConversationName: '' as string,
 				newConversationMetadata: null as any | null,
 				isMobile: window.screen.width < 950,
@@ -426,11 +425,11 @@ import { useAuthStore } from '@/stores/authStore';
 
 		computed: {
 			sessions(): Session[] {
-				return (this.$appStore as any).sessions.filter((session: Session) => !session.is_temp);
+				return (this.appStore as any).sessions.filter((session: Session) => !session.is_temp);
 			},
 
 			currentSession(): Session | null {
-				return (this.$appStore as any).currentSession;
+				return (this.appStore as any).currentSession;
 			},
 
 			filteredAgents(): AgentOption[] {
@@ -455,19 +454,19 @@ import { useAuthStore } from '@/stores/authStore';
 		},
 
 		watch: {
-			'$appStore.agents': {
+			'appStore.agents': {
 				handler() {
 					this.setAgentOptions();
 				},
 				deep: true,
 			},
-			'$appStore.lastSelectedAgent': {
+			'appStore.lastSelectedAgent': {
 				handler() {
 					this.setAgentOptions();
 				},
 				deep: true,
 			},
-			'$appConfigStore.isConfigurationLoaded': {
+			'appConfigStore.isConfigurationLoaded': {
 				handler(newVal) {
 					if (newVal) {
 						// Trigger reactivity by updating a local data property
@@ -476,7 +475,7 @@ import { useAuthStore } from '@/stores/authStore';
 				},
 				immediate: true,
 			},
-			'$appConfigStore.isFeaturedAgentNamesLoaded': {
+			'appConfigStore.isFeaturedAgentNamesLoaded': {
 				async handler(newVal) {
 					if (newVal) {
 						// Refresh agents now that config (and featuredAgentNames) is loaded
@@ -485,7 +484,7 @@ import { useAuthStore } from '@/stores/authStore';
 				},
 				immediate: true,
 			},
-			'$authStore.isAuthenticated': {
+			'authStore.isAuthenticated': {
 				handler(newVal) {
 					if (newVal) {
 						// Trigger reactivity by updating a local data property
@@ -498,11 +497,11 @@ import { useAuthStore } from '@/stores/authStore';
 
 		async created() {
 			if (window.screen.width < 950) {
-				(this.$appStore as any).isSidebarClosed = true;
+				(this.appStore as any).isSidebarClosed = true;
 			}
 
 			if (process.client) {
-				await (this.$appStore as any).init((this.$nuxt as any)._route.query.chat);
+				await (this.appStore as any).init((this.$nuxt as any)._route.query.chat);
 			}
 
 			// Listen for the agent change event.
@@ -517,18 +516,18 @@ import { useAuthStore } from '@/stores/authStore';
 				window.addEventListener('auth-updated', this.handleAuthUpdated);
 
 				// Check if configuration is already loaded and trigger update
-				if (this.$appConfigStore.logoUrl) {
+				if (this.appConfigStore.logoUrl) {
 					this.handleConfigLoaded({ detail: {
-						logoUrl: this.$appConfigStore.logoUrl,
-						logoText: this.$appConfigStore.logoText
+						logoUrl: this.appConfigStore.logoUrl,
+						logoText: this.appConfigStore.logoText
 					}} as CustomEvent);
 				}
 
 				// Check if authentication is already available and trigger update
-				if (this.$authStore.currentAccount) {
+				if (this.authStore.currentAccount) {
 					this.handleAuthUpdated({ detail: {
-						isAuthenticated: this.$authStore.isAuthenticated,
-						currentAccount: this.$authStore.currentAccount
+						isAuthenticated: this.authStore.isAuthenticated,
+						currentAccount: this.authStore.currentAccount
 					}} as CustomEvent);
 				}
 
@@ -568,7 +567,7 @@ import { useAuthStore } from '@/stores/authStore';
 				this.authStateTrigger = Date.now();
 
 				// If we have authentication, stop polling
-				if (this.$authStore.currentAccount && this.authPollingInterval) {
+				if (this.authStore.currentAccount && this.authPollingInterval) {
 					clearInterval(this.authPollingInterval);
 					this.authPollingInterval = null;
 				}
@@ -582,10 +581,10 @@ import { useAuthStore } from '@/stores/authStore';
 					pollCount++;
 
 					// Check if we have authentication now
-					if (this.$authStore.currentAccount) {
+					if (this.authStore.currentAccount) {
 						this.handleAuthUpdated({ detail: {
-							isAuthenticated: this.$authStore.isAuthenticated,
-							currentAccount: this.$authStore.currentAccount
+							isAuthenticated: this.authStore.isAuthenticated,
+							currentAccount: this.authStore.currentAccount
 						}} as CustomEvent);
 						return; // handleAuthUpdated will clear the interval
 					}
@@ -612,10 +611,10 @@ import { useAuthStore } from '@/stores/authStore';
 			},
 
 			handleSessionSelected(session: Session) {
-				(this.$appStore as any).changeSession(session);
-				const sessionAgent = (this.$appStore as any).getSessionAgent(session);
+				(this.appStore as any).changeSession(session);
+				const sessionAgent = (this.appStore as any).getSessionAgent(session);
 				if (sessionAgent) {
-					(this.$appStore as any).setSessionAgent(session, sessionAgent, true);
+					(this.appStore as any).setSessionAgent(session, sessionAgent, true);
 				}
 			},
 
@@ -623,7 +622,7 @@ import { useAuthStore } from '@/stores/authStore';
 				if (this.createProcessing) return;
 
 				if (this.debounceTimeout) {
-					(this.$appStore as any).addToast({
+					(this.appStore as any).addToast({
 						severity: 'warn',
 						summary: 'Warning',
 						detail: 'Please wait before creating another session.',
@@ -635,15 +634,15 @@ import { useAuthStore } from '@/stores/authStore';
 				this.createProcessing = true;
 
 				try {
-				const currentAgent = this.currentSession ? (this.$appStore as any).getSessionAgent(this.currentSession) : null;
+				const currentAgent = this.currentSession ? (this.appStore as any).getSessionAgent(this.currentSession) : null;
 					const mostRecentSession = this.sessions[0];
 					if (mostRecentSession) {
-						const isEmptySession = await (this.$appStore as any).isSessionEmpty(mostRecentSession.sessionId);
+						const isEmptySession = await (this.appStore as any).isSessionEmpty(mostRecentSession.sessionId);
 						if (isEmptySession) {
-							const timestamp = (this.$appStore as any).getDefaultChatSessionProperties().name;
-							await (this.$appStore as any).updateConversation(mostRecentSession, timestamp, mostRecentSession.metadata || '');
+							const timestamp = (this.appStore as any).getDefaultChatSessionProperties().name;
+							await (this.appStore as any).updateConversation(mostRecentSession, timestamp, mostRecentSession.metadata || '');
 							if (currentAgent) {
-								(this.$appStore as any).setSessionAgent(mostRecentSession, currentAgent, true);
+								(this.appStore as any).setSessionAgent(mostRecentSession, currentAgent, true);
 							}
 							this.handleSessionSelected(mostRecentSession);
 							this.debounceTimeout = setTimeout(() => {
@@ -652,9 +651,9 @@ import { useAuthStore } from '@/stores/authStore';
 							return;
 						}
 					}
-					const newSession = await (this.$appStore as any).addSession();
+					const newSession = await (this.appStore as any).addSession();
 					if (currentAgent) {
-						(this.$appStore as any).setSessionAgent(newSession, currentAgent, true);
+						(this.appStore as any).setSessionAgent(newSession, currentAgent, true);
 					}
 					this.handleSessionSelected(newSession);
 
@@ -662,7 +661,7 @@ import { useAuthStore } from '@/stores/authStore';
 						this.debounceTimeout = null;
 					}, 2000);
 				} catch (error) {
-					(this.$appStore as any).addToast({
+					(this.appStore as any).addToast({
 						severity: 'error',
 						summary: 'Error',
 						detail: 'Could not create a new session. Please try again.',
@@ -674,6 +673,7 @@ import { useAuthStore } from '@/stores/authStore';
 			},
 
 			async confirmDeleteSession(session: Session) {
+				this.conversationToDelete = session;
 				const confirmationStore = useConfirmationStore();
 				const confirmed = await confirmationStore.confirmAsync({
 					title: 'Delete conversation',
@@ -685,18 +685,21 @@ import { useAuthStore } from '@/stores/authStore';
 				});
 
 				if (!confirmed) {
+					this.conversationToDelete = null;
 					return;
 				}
 
 				try {
-					await (this.$appStore as any).deleteSession(session);
+					await (this.appStore as any).deleteSession(session);
 				} catch (error) {
-					(this.$appStore as any).addToast({
+					(this.appStore as any).addToast({
 						severity: 'error',
 						summary: 'Error',
 						detail: 'Could not delete the session. Please try again.',
 						life: 5000,
 					});
+				} finally {
+					this.conversationToDelete = null;
 				}
 			},
 
@@ -706,7 +709,7 @@ import { useAuthStore } from '@/stores/authStore';
 					try {
 						metadataJson = JSON.parse(metadataJson);
 					} catch (e) {
-						(this.$appStore as any).addToast({
+						(this.appStore as any).addToast({
 							severity: 'error',
 							summary: 'Invalid Metadata',
 							detail: 'Metadata must be valid JSON.',
@@ -715,7 +718,7 @@ import { useAuthStore } from '@/stores/authStore';
 						return;
 					}
 				}
-				(this.$appStore as any).updateConversation(this.conversationToUpdate!, this.newConversationName, this.newConversationMetadata);
+				(this.appStore as any).updateConversation(this.conversationToUpdate!, this.newConversationName, this.newConversationMetadata);
 				this.conversationToUpdate = null;
 				this.newConversationMetadata = '';
 			},
@@ -741,12 +744,12 @@ import { useAuthStore } from '@/stores/authStore';
 				const isCurrentAgent = (agent: any): boolean => {
 					return (
 						agent.resource.name ===
-						(this.$appStore as any).getSessionAgent(this.currentSession)?.resource?.name
+						(this.appStore as any).getSessionAgent(this.currentSession)?.resource?.name
 					);
 				};
 
 				// Filter out expired agents, but keep the currently selected agent even if it is expired
-				const notExpiredOrCurrentAgents = (this.$appStore as any).agents.filter(
+				const notExpiredOrCurrentAgents = (this.appStore as any).agents.filter(
 					(agent: any) => !isAgentExpired(agent) || isCurrentAgent(agent),
 				);
 
@@ -772,7 +775,7 @@ import { useAuthStore } from '@/stores/authStore';
 
 			async loadAllowedAgents() {
 
-				if (!this.$appConfigStore.isFeaturedAgentNamesLoaded) {
+				if (!this.appConfigStore.isFeaturedAgentNamesLoaded) {
 					return; // the watcher will re-invoke this when the featured agent names are available.
 				}
 
@@ -792,8 +795,8 @@ import { useAuthStore } from '@/stores/authStore';
 						const isAgentSelected = this.userProfile?.agents?.includes(agent.object_id) || false;
 
 						// Check if this agent is a featured agent (by name, as per memory: resource names are reliable identifiers)
-						const isFeaturedAgent = this.$appConfigStore.featuredAgentNames?.includes(agent.name);
-						const isPinnedFeaturedAgent = this.$appConfigStore.pinnedFeaturedAgentNames?.includes(agent.name);
+						const isFeaturedAgent = this.appConfigStore.featuredAgentNames?.includes(agent.name);
+						const isPinnedFeaturedAgent = this.appConfigStore.pinnedFeaturedAgentNames?.includes(agent.name);
 
 						return {
 							object_id: agent.object_id,
@@ -824,7 +827,7 @@ import { useAuthStore } from '@/stores/authStore';
 			},
 
 			isCurrentAgent(agent: AgentOption): boolean {
-				const currentAgent = (this.$appStore as any).getSessionAgent((this.$appStore as any).currentSession);
+				const currentAgent = (this.appStore as any).getSessionAgent((this.appStore as any).currentSession);
 				if (!currentAgent) return false;
 				return currentAgent.resource?.object_id === agent.object_id;
 			},
@@ -843,7 +846,7 @@ import { useAuthStore } from '@/stores/authStore';
 
 				// Prevent disabling the current conversation's agent
 				if (this.preventDisable(agent)) {
-					(this.$appStore as any).addToast({
+					(this.appStore as any).addToast({
 						severity: 'warn',
 						life: 5000,
 						detail: 'Cannot disable the agent currently being used in this conversation.',
@@ -882,10 +885,10 @@ import { useAuthStore } from '@/stores/authStore';
 					}
 
 					// Update the global app store user profile
-					this.$appStore.updateUserProfileAgent(agent.object_id!, agent.enabled);
+					this.appStore.updateUserProfileAgent(agent.object_id!, agent.enabled);
 
 					// Show success message with appropriate severity
-					(this.$appStore as any).addToast({
+					(this.appStore as any).addToast({
 						severity: agent.enabled ? 'success' : 'warn',
 						summary: 'Agent Status Updated',
 						detail: `Agent "${agent.display_name || agent.name}" is now ${agent.enabled ? 'enabled' : 'disabled'}`,
@@ -896,7 +899,7 @@ import { useAuthStore } from '@/stores/authStore';
 					agent.enabled = originalStatus;
 
 					console.error('Failed to update agent status:', error);
-					(this.$appStore as any).addToast({
+					(this.appStore as any).addToast({
 						severity: 'error',
 						summary: 'Update Failed',
 						detail: 'Failed to update agent status. Please try again.',
