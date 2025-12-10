@@ -82,7 +82,6 @@
 								aria-label="Select an agent"
 								aria-activedescendant="selected-agent-{{ agentSelection?.label }}"
 								@change="handleAgentChange"
-								@show="handleDropdownShow"
 							/>
 							<Button
 								class="print-button"
@@ -187,7 +186,7 @@
 				},
 				deep: true,
 			},
-			'appStore.userProfiles': {
+			'appStore.userProfile': {
 				handler() {
 					this.setAgentOptions();
 				},
@@ -206,19 +205,6 @@
 		},
 
 		methods: {
-			async handleDropdownShow() {
-				// Check if featuredAgentNames configuration is available and refresh agent options if needed
-				// This handles the case where config is loaded after login
-				if (this.appConfigStore.featuredAgentNames === null) {
-					try {
-						await this.appConfigStore.loadAppConfigurationSet();
-						// setAgentOptions will be called automatically by the watcher
-					} catch (error) {
-						console.warn('Failed to load configuration on dropdown show:', error);
-					}
-				}
-			},
-
 			handleAgentChange() {
 				if (isAgentExpired(this.agentSelection!.value)) return;
 
@@ -253,15 +239,6 @@
 				this.hasAvailableAgents = this.appStore.agents.some(
 					(agent: any) => !isAgentExpired(agent));
 
-				// Check if configuration is loaded, if not try to load it
-				if (this.appConfigStore.featuredAgentNames === null) {
-					try {
-						await this.appConfigStore.loadAppConfigurationSet();
-					} catch (error) {
-						console.warn('Failed to load configuration in setAgentOptions:', error);
-					}
-				}
-
 				const isCurrentAgent = (agent: any): boolean => {
 					return (
 						agent.resource.name ===
@@ -269,8 +246,8 @@
 					);
 				};
 
-				// Get user profiles to filter enabled agents
-				const userProfile = this.appStore.userProfiles;
+				// Get user profile to filter enabled agents
+				const userProfile = this.appStore.userProfile;
 				const enabledAgentIds = userProfile?.agents || [];
 
 				// Filter out expired agents, disabled agents, and agents not enabled in user profile

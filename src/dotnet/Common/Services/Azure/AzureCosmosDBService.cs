@@ -322,7 +322,7 @@ namespace FoundationaLLM.Common.Services.Azure
         }
 
         /// <inheritdoc/>
-        public async Task<List<Message>> GetSessionMessagesAsync(string sessionId, string upn, int? max = null, CancellationToken cancellationToken = default)
+        public async Task<List<Message>> GetConversationMessagesAsync(string sessionId, string upn, int? max = null, CancellationToken cancellationToken = default)
         {
             var select = max.HasValue
                 ? $"SELECT TOP {max} * FROM c WHERE c.sessionId = @sessionId AND c.type = @type AND c.upn = @upn AND {SoftDeleteQueryRestriction} ORDER BY c.timeStamp DESC"
@@ -344,6 +344,32 @@ namespace FoundationaLLM.Common.Services.Azure
             output = output.OrderBy(m => m.TimeStamp).ToList();
 
             return output;
+        }
+
+        /// <inheritdoc/>
+        public async Task<int> GetConversationMessagesCountAsync(string sessionId, string upn, CancellationToken cancellationToken = default)
+        {
+            var query = new QueryDefinition($"""
+                SELECT VALUE COUNT(1)
+                FROM c
+                WHERE c.sessionId = @sessionId
+                  AND c.type = @type
+                  AND c.upn = @upn
+                  AND {SoftDeleteQueryRestriction}
+                """)
+                .WithParameter("@sessionId", sessionId)
+                .WithParameter("@type", nameof(Message))
+                .WithParameter("@upn", upn);
+
+            var iterator = _sessions.GetItemQueryIterator<int>(query);
+
+            if (!iterator.HasMoreResults)
+                return 0;
+
+            var response = await iterator.ReadNextAsync(cancellationToken);
+            var count = response.Resource.FirstOrDefault();
+
+            return count;
         }
 
         /// <inheritdoc/>

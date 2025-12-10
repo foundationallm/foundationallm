@@ -92,16 +92,26 @@ public interface IAzureCosmosDBService
     Task DeleteConversationAsync(string sessionId, CancellationToken cancellationToken = default);
 
     /// <summary>
-    /// Gets a list of all current chat messages for a specified session identifier.
+    /// Gets a list of all current messages for a specified conversation identifier.
     /// Messages are always sorted by TimeStamp in ascending order.
     /// </summary>
-    /// <param name="sessionId">Chat session identifier used to filter messages.</param>
+    /// <param name="sessionId">Conversation identifier used to filter messages.</param>
     /// <param name="upn">The user principal name used for retrieving the messages for
     /// the signed in user.</param>
     /// <param name="max">If provided, limits the number of messages.</param>
     /// <param name="cancellationToken">Cancellation token for async calls.</param>
-    /// <returns>List of chat message items for the specified session.</returns>
-    Task<List<Message>> GetSessionMessagesAsync(string sessionId, string upn, int? max = null, CancellationToken cancellationToken = default);
+    /// <returns>List of message items for the specified conversation.</returns>
+    Task<List<Message>> GetConversationMessagesAsync(string sessionId, string upn, int? max = null, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Gets the number of messages for a specified conversation identifier.
+    /// </summary>
+    /// <param name="sessionId">Conversation identifier used to count messages.</param>
+    /// <param name="upn">The user principal name used for retrieving the messages for
+    /// the signed in user.</param>
+    /// <param name="cancellationToken">Cancellation token for async calls.</param>
+    /// <returns>The number of message items for the specified conversation.</returns>
+    Task<int> GetConversationMessagesCountAsync(string sessionId, string upn, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Gets a single conversation message by its identifier.

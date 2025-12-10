@@ -536,7 +536,6 @@ import { useAuthStore } from '@/stores/authStore';
 			}
 
 			await this.setAgentOptions();
-			await this.loadUserProfile();
 			await this.loadAllowedAgents();
 			await this.checkContributorRoles();
 		},
@@ -765,8 +764,8 @@ import { useAuthStore } from '@/stores/authStore';
 
 			async loadUserProfile() {
 				try {
-					const userProfile = await api.getUserProfile();
-					this.userProfile = userProfile || null;
+					await this.appStore.getUserProfile();
+        			this.userProfile = this.appStore.userProfile || null;
 				} catch (error) {
 					console.error('Failed to load user profile:', error);
 					this.userProfile = null;
@@ -779,14 +778,17 @@ import { useAuthStore } from '@/stores/authStore';
 					return; // the watcher will re-invoke this when the featured agent names are available.
 				}
 
+				// Ensure user profile is loaded (will use cached data if already loaded)
+				await this.loadUserProfile();
+
 				this.loadingAgents2 = true;
-				this.agentError2 = '';
-
-
+				this.agentError2 = "";
+				
 				try {
-					const response = await api.getAllowedAgents();
+					// Ensure agents are loaded first (this will be instant if already loaded).
+        			await this.appStore.getAgents();
 
-					const agentsArray = Array.isArray(response) ? response : [];
+					const agentsArray = this.appStore.agents || [];
 
 					this.agentOptions2 = agentsArray.map((ResourceProviderGetResult: any, index: number): AgentOption => {
 						const agent = ResourceProviderGetResult.resource || ResourceProviderGetResult;
