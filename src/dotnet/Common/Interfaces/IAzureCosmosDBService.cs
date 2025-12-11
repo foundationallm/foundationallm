@@ -195,12 +195,28 @@ public interface IAzureCosmosDBService
     Task<UserProfile> GetUserProfileAsync(string upn, CancellationToken cancellationToken = default);
 
     /// <summary>
+    /// Returns the user data for a given user via their UPN.
+    /// </summary>
+    /// <param name="upn">The user principal name used for retrieving the data.</param>
+    /// <param name="cancellationToken">Cancellation token for async calls.</param>
+    /// <returns></returns>
+    Task<UserData?> GetUserDataAsync(string upn, CancellationToken cancellationToken = default);
+
+    /// <summary>
     /// Inserts or updates a user profile.
     /// </summary>
     /// <param name="userProfile">The user profile to upsert.</param>
     /// <param name="cancellationToken">Cancellation token for async calls.</param>
     /// <returns></returns>
     Task UpsertUserProfileAsync(UserProfile userProfile, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Inserts or updates a user data object.
+    /// </summary>
+    /// <param name="userData">The user data to upsert.</param>
+    /// <param name="cancellationToken">Cancellation token for async calls.</param>
+    /// <returns></returns>
+    Task UpsertUserDataAsync(UserData userData, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Get the context for a long running operation.
