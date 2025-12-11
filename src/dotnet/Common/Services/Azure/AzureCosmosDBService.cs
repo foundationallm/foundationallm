@@ -526,12 +526,43 @@ namespace FoundationaLLM.Common.Services.Azure
         }
 
         /// <inheritdoc/>
+        public async Task<UserData?> GetUserDataAsync(string upn, CancellationToken cancellationToken = default)
+        {
+            var userProfiles = await _userProfilesTask;
+
+            try
+            {
+                var userData = await userProfiles.ReadItemAsync<UserData>(
+                    id: UserData.GetId(upn),
+                    partitionKey: new PartitionKey(upn),
+                    cancellationToken: cancellationToken);
+
+                return userData;
+            }
+            catch (CosmosException ce) when (ce.StatusCode == System.Net.HttpStatusCode.NotFound)
+            {
+                return default;
+            }
+        }
+
+        /// <inheritdoc/>
         public async Task UpsertUserProfileAsync(UserProfile userProfile, CancellationToken cancellationToken = default)
         {
             var userProfiles = await _userProfilesTask;
             PartitionKey partitionKey = new(userProfile.UPN);
             await userProfiles.UpsertItemAsync(
                 item: userProfile,
+                partitionKey: partitionKey,
+                cancellationToken: cancellationToken);
+        }
+
+        /// <inheritdoc/>
+        public async Task UpsertUserDataAsync(UserData userData, CancellationToken cancellationToken = default)
+        {
+            var userProfiles = await _userProfilesTask;
+            PartitionKey partitionKey = new(userData.UPN);
+            await userProfiles.UpsertItemAsync(
+                item: userData,
                 partitionKey: partitionKey,
                 cancellationToken: cancellationToken);
         }
