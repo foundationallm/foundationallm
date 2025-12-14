@@ -1,79 +1,255 @@
-# FoundationaLLM Backups & data resiliency
+# Backups & Data Resiliency
 
-Before implementing any backup strategy, it's important to carefully plan and consider factors such as recovery time objectives (RTO), recovery point objectives (RPO), and compliance requirements. Choose the method or combination of methods that best align with your specific backup and recovery needs.
+This guide covers backup strategies and data resiliency options for FoundationaLLM platform components.
 
-## CosmosDB
+## Overview
 
-Ensuring regular backups for Azure Cosmos DB is crucial to protect data such as private agents, user profiles, and chat history. Backups play a vital role in safeguarding your data against accidental deletions, data corruption, or other unforeseen issues.  Here are some key points to consider when planning your Cosmos DB backup strategy:
+Before implementing backup strategies, consider:
 
-1. **Backup and Restore:**
+| Factor | Description |
+|--------|-------------|
+| **RTO** | Recovery Time Objective - acceptable downtime |
+| **RPO** | Recovery Point Objective - acceptable data loss |
+| **Compliance** | Regulatory requirements for data retention |
+| **Cost** | Storage and compute costs for backups |
 
-   - **Automated Backups:**
-     Azure Cosmos DB includes automated backups that are taken at regular intervals. These backups are used to provide point-in-time restore capabilities.
+## Cosmos DB
 
-   - **Retention Period:**
-     Backups are retained for a specific retention period, allowing you to restore your data to a previous state within that time frame.  The options for retention period are 7 or 30 days.  The Standard deployment configures 30 days retention.
+Cosmos DB stores conversations, user sessions, and other application data.
 
-   - **How to Configure Backup Policy:**
-     Backup policies can be configured at the Cosmos DB account level, specifying the frequency and duration of backups.
+### Automated Backups
 
-   - **Restore from Backup:**
-     You can initiate a point-in-time restore using the Azure Portal, Azure PowerShell, or Azure SDKs.
+| Feature | Standard Deployment Default |
+|---------|----------------------------|
+| **Backup Mode** | Continuous or Periodic |
+| **Retention Period** | 30 days |
+| **Backup Frequency** | Automatic |
+| **Restore Granularity** | Point-in-time |
 
-2. **Data Resiliency:**
+### Configuring Backup Policy
 
-   - **Global Distribution:**
-     Distributing your Cosmos DB data globally across multiple regions ensures that your data is available even in the face of regional outages. This enhances data resiliency and availability.  The Standard Deployment does not currently enable global data distribution.  Data is replicated within a single region by the Cosmos DB service.
+**Via Azure Portal:**
+1. Navigate to your Cosmos DB account
+2. Select **Settings** > **Backup & Restore**
+3. Configure backup mode and retention
 
-   - **Consistency Levels:**
-     Azure Cosmos DB offers various consistency levels, allowing you to balance between consistency and availability based on your application's requirements. The Standard Deployment uses Session consistency by default.
+**Via Azure CLI:**
+```bash
+az cosmosdb update \
+  --name <account-name> \
+  --resource-group <resource-group> \
+  --backup-policy-type Continuous
+```
 
-3. **Manual Backups and Data Migration:**
+### Restoring from Backup
 
-   - **Export and Import:**
-     You can manually export your Cosmos DB data to Azure Storage or another Cosmos DB account, providing an additional layer of backup and migration capability.  The Standard Deployment does not configure this capability by default.
+**Via Azure Portal:**
+1. Navigate to Cosmos DB account
+2. Select **Settings** > **Backup & Restore**
+3. Click **Restore**
+4. Select restore point and destination
+
+**Via Azure CLI:**
+```bash
+az cosmosdb restore \
+  --account-name <source-account> \
+  --resource-group <resource-group> \
+  --target-database-account-name <target-account> \
+  --restore-timestamp "2024-01-01T00:00:00Z" \
+  --location <region>
+```
+
+### Data Resiliency Options
+
+| Feature | Description | Default |
+|---------|-------------|---------|
+| **Global Distribution** | Multi-region replication | Not enabled |
+| **Consistency Levels** | Session, Strong, Eventual, etc. | Session |
+| **Automatic Failover** | Regional failover | Not configured |
+
+> **TODO:** Document procedure for enabling multi-region replication in Standard deployment.
 
 ## Storage Accounts
 
-Backing up the storage account where your prompts, agents, and data sources are defined is crucial to ensure the integrity and availability of your conversational data. Here are steps you can take to back up an Azure Storage account:
+Storage accounts contain prompts, agents, data sources, and vectorized content.
 
-1. **Azure Storage Account Replication:**
-   Azure Storage offers built-in redundancy options like Locally Redundant Storage (LRS), Zone-Redundant Storage (ZRS), Geo-Redundant Storage (GRS), and Read-Access Geo-Redundant Storage (RA-GRS). These options replicate your data across different locations for high availability and durability. By default, LRS is enabled for all new storage accounts in the Standard Deployment. You can change the replication option for an existing storage account by navigating to the Replication tab in the Azure portal.
+### Built-in Protection
 
-2. **Azure Backup:**
-   Azure Backup service allows you to create backups of your virtual machines, files, and databases, including Azure Storage accounts. You can configure backup policies and retention rules to meet your data protection requirements.  Configuring Azure Backup is not currently enabled in the Standard Deployment, but you can use the Azure portal to manually configure back up for your storage account.
+| Feature | Standard Deployment Default |
+|---------|----------------------------|
+| **Replication** | LRS (Locally Redundant) |
+| **Blob Versioning** | Enabled |
+| **Soft Delete (Blobs)** | 30 days |
+| **Soft Delete (Containers)** | 30 days |
 
-3. **Azure Blob Storage Versioning:**
-   Azure Blob Storage versioning is a feature that allows you to enable versioning on your storage account. When versioning is enabled, any update or deletion of a blob results in the creation of a new version of that blob. This helps you maintain a historical record of changes made to your data.  This feature is enabled in the Standard Deployment.
+### Upgrading Replication
 
-4. **Azure Blob Storage Soft Delete:**
-   Soft delete is a feature in Azure Blob Storage that provides an extra layer of protection against accidental data deletion. When soft delete is enabled, deleted blobs are retained for a specified retention period before being permanently deleted.  In the Standard Deployment, soft delete is enabled for 30 days for blobs and containers.
+| Option | Description | Use Case |
+|--------|-------------|----------|
+| **LRS** | 3 copies in single datacenter | Development |
+| **ZRS** | 3 copies across availability zones | Production |
+| **GRS** | 6 copies across two regions | Disaster recovery |
+| **RA-GRS** | GRS with read access to secondary | High availability |
+
+**Change Replication:**
+```bash
+az storage account update \
+  --name <account-name> \
+  --resource-group <resource-group> \
+  --sku Standard_GRS
+```
+
+### Azure Backup for Storage
+
+Configure Azure Backup for blob data:
+
+1. Navigate to **Recovery Services vault**
+2. Select **+ Backup**
+3. Choose **Azure Blob Storage**
+4. Select storage account
+5. Configure backup policy
+
+### Manual Export
+
+Export data for archival or migration:
+
+```bash
+# Export using AzCopy
+azcopy copy "https://<account>.blob.core.windows.net/<container>/*" \
+  "/local/backup/" \
+  --recursive
+```
 
 ## Key Vault
 
-Azure Key Vault provides several features to help you protect and manage your keys and secrets effectively.
+Key Vault stores secrets, certificates, and encryption keys.
 
-1. **Purge Protection:**
-   Purge protection is a feature in Azure Key Vault that helps prevent the permanent deletion of a key vault. When purge protection is enabled, the key vault cannot be permanently deleted immediately after deletion. Instead, there is a retention period during which the key vault is retained, and it can be recovered. Key Vaults in the Standard Deployment have purge protection enabled by default and deleted Key Vaults are retained for 7 days.
+### Built-in Protection
 
-1. **Soft Delete:**
-   Soft delete is a feature that protects keys, secrets, and certificates in Azure Key Vault from immediate and irreversible deletion. When soft delete is enabled, deleted items are retained for a specified retention period before they are permanently deleted. Soft delete is enabled by default for all new key vaults in the Standard Deployment. Deleted keys, secrets, and certificates are retained for 7 days.
+| Feature | Default |
+|---------|---------|
+| **Soft Delete** | Enabled (7-90 days) |
+| **Purge Protection** | Enabled (7 days) |
+| **Secret Versioning** | Automatic |
 
-2. **Secret Versioning:**
-   Secret versioning is a feature that allows you to store multiple versions of a secret within a key vault. Each time you create or update a secret, a new version is generated. Secret versions help you maintain a history of changes and facilitate rollbacks if needed. This feature is enabled on all Key Vaults in Azure.
+### Backing Up Secrets
 
-1. **Backups:**
-   Azure Key Vault provides a backup and restore capability, allowing you to create backups of your key vault's keys, secrets, and certificates. These backups can be used for data recovery and protection against accidental data loss. There is no way to backup the entire Key Vault or to schedule regular backups.
+**Via Azure Portal:**
+1. Navigate to Key Vault
+2. Select **Secrets**
+3. Select a secret
+4. Click **Download Backup**
 
-## App Config
+**Via Azure CLI:**
+```bash
+# Backup single secret
+az keyvault secret backup \
+  --vault-name <vault-name> \
+  --name <secret-name> \
+  --file <backup-file>
 
-Azure App Configuration provides features related to backup, versioning, and data resiliency to help you effectively manage and deploy application configuration settings.
+# Restore secret
+az keyvault secret restore \
+  --vault-name <vault-name> \
+  --file <backup-file>
+```
 
-1. **Backup in Azure App Configuration:**
-   Azure App Configuration allows you to back up your configuration settings, including feature flags, connection strings, and other key-value pairs using the Import/Export feature.  Backups can be sent to another App Configuration instance, an App Service, or a local file.
+### Backup All Secrets Script
 
-2. **Versioning in Azure App Configuration:**
-   Azure App Configuration automatically version-controls your configuration settings. Each change to a key-value pair creates a new version. Versioning helps track changes to configuration settings over time. You can access and roll back to previous versions of a key-value pair.
+```powershell
+$vaultName = "<vault-name>"
+$backupPath = "./keyvault-backup"
 
-3. **Data Resiliency in Azure App Configuration:**
-   Azure App Configuration is designed with built-in redundancy across multiple regions to ensure high availability and data resiliency. App Configuration supports multi-region replication, allowing you to replicate your configuration settings to different regions for additional resilience. This feature is not currently enabled in the Standard Deployment.
+# Create backup directory
+New-Item -ItemType Directory -Force -Path $backupPath
+
+# Get all secrets
+$secrets = az keyvault secret list --vault-name $vaultName --query "[].name" -o tsv
+
+# Backup each secret
+foreach ($secret in $secrets) {
+    az keyvault secret backup `
+        --vault-name $vaultName `
+        --name $secret `
+        --file "$backupPath/$secret.backup"
+}
+```
+
+> **Note:** Key Vault does not support full vault backup. Back up individual items.
+
+## App Configuration
+
+App Configuration stores application settings and feature flags.
+
+### Versioning
+
+- Changes are automatically versioned
+- Access history via **History** view in portal
+- Rollback by restoring previous version
+
+### Export Configuration
+
+**Via Azure Portal:**
+1. Navigate to App Configuration
+2. Select **Import/export**
+3. Select **Export**
+4. Choose destination (file, App Service, another App Config)
+
+**Via Azure CLI:**
+```bash
+# Export to file
+az appconfig kv export \
+  --name <app-config-name> \
+  --destination file \
+  --path ./config-backup.json \
+  --format json
+```
+
+### Import Configuration
+
+```bash
+# Import from file
+az appconfig kv import \
+  --name <app-config-name> \
+  --source file \
+  --path ./config-backup.json \
+  --format json
+```
+
+## Backup Schedule Recommendations
+
+| Component | Frequency | Retention |
+|-----------|-----------|-----------|
+| Cosmos DB | Continuous | 30 days |
+| Storage (critical) | Daily | 30 days |
+| Key Vault secrets | Before changes | As needed |
+| App Configuration | Before changes | As needed |
+
+## Disaster Recovery
+
+### Standard Deployment Considerations
+
+| Component | DR Strategy |
+|-----------|-------------|
+| **AKS Clusters** | Redeploy from templates |
+| **Cosmos DB** | Restore from backup |
+| **Storage** | Restore from GRS secondary |
+| **Key Vault** | Restore secrets from backup |
+| **App Config** | Import from export |
+
+### Recovery Procedure
+
+1. **Assess** - Identify affected components
+2. **Provision** - Deploy new infrastructure
+3. **Restore** - Restore data from backups
+4. **Configure** - Apply App Configuration
+5. **Validate** - Test functionality
+6. **Cutover** - Update DNS/routing
+
+> **TODO:** Add detailed disaster recovery runbook for Standard deployment.
+
+## Related Topics
+
+- [Logs & Monitoring](../monitoring-troubleshooting/logs.md)
+- [Troubleshooting](../monitoring-troubleshooting/troubleshooting.md)
+- [Standard Deployment](../deployment/deployment-standard.md)

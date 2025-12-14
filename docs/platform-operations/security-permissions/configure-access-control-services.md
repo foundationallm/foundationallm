@@ -1,88 +1,186 @@
-# Configure access control for services
+# Configure Access Control for Azure Services
 
-FoundationaLLM takes a least privilege approach to access control. This means that by default, users have no access to any resources. You must explicitly grant access to users for each resource they need to access. This guide walks you through the process of granting access to users as needed.
+FoundationaLLM uses Azure RBAC to control access to underlying Azure services. This guide covers granting access to App Configuration and Key Vault.
+
+## Overview
+
+FoundationaLLM follows least-privilege principles:
+- Default: No user access
+- Access must be explicitly granted
+- Service accounts pre-configured by deployment
 
 ## Prerequisites
 
-- You have a FoundationaLLM solution [deployed](deployment-quick-start.md) and running.
-- You have a user account with the `Contributor` role on the Azure resource group or subscription where the solution is deployed.
+- FoundationaLLM deployed and running
+- **Contributor** role on the resource group or subscription
+- Azure Portal access
 
-## Azure App Configuration service
+## Azure App Configuration
 
-The [Azure App Configuration service](https://learn.microsoft.com/azure/azure-app-configuration/overview) provides FoundationaLLM solution components with a centralized location to store and manage application settings and feature flags. Role-based access controls (RBAC) are used to control access to the App Configuration service for managing settings and feature flags, as well as accessing them. The deployment scripts assign access controls to service accounts to allow them to read application settings and feature flags. You can use the same approach to grant access to users as needed.
+Azure App Configuration stores application settings and feature flags.
 
-### App Configuration roles
+### Available Roles
 
-The following table summarizes the roles FoundationaLLM uses for the App Configuration service:
+| Role | Permissions | Use Case |
+|------|-------------|----------|
+| `App Configuration Data Reader` | Read settings and feature flags | Services, local development |
+| `App Configuration Data Owner` | Read and write settings | Administrators |
 
-Role | Description | Target Users
---- | --- | ---
-`App Configuration Data Reader` | Allows users to read settings and feature flags. | The system-assigned managed identities for the `api` services and any developers or admins that need to run the solution locally.
-`App Configuration Data Owner` | Allows users to read and write settings and feature flags. | Administrators that need to manage settings and feature flags.
+### Grant Access
 
-### Grant access to the App Configuration service
+#### Via Azure Portal
 
-Use the steps below to grant access to the App Configuration service:
+1. Navigate to [Azure Portal](https://portal.azure.com/)
+2. Go to your deployment resource group
+   
+   > **Note:** For ACA/AKS deployments, use the resource group **without** `ME_` or `MC_` prefix.
 
-1. Sign in to the [Azure portal](https://portal.azure.com/) as at least a Contributor.
-2. Navigate to the resource group where the solution is deployed.
-> [!NOTE]
-> If you performed an Azure Container Apps (ACA) or Azure Kubernetes Service (AKS) deployment, you will see an extra Resource Group that starts with `ME_` or `MC_` in addition to the Resource Group defined during the deployment. You will need to navigate to the Resource Group that **does not start with** `ME_` or `MC_` to access the App Configuration resource.
-3. Select the **App Configuration** resource. The name should end with `-appconfig`.
-4. Select **Access Control (IAM)** in the left-hand menu.
+3. Select the **App Configuration** resource (name ends with `-appconfig`)
+4. Select **Access control (IAM)** in left menu
+5. Click **+ Add** > **Add role assignment**
+6. Select role:
+   - **App Configuration Data Reader** (for read access)
+   - **App Configuration Data Owner** (for full access)
+7. Click **Next**
+8. Click **+ Select members**
+9. Search for and select the user/group
+10. Click **Select**
+11. Click **Review + assign**
 
-    ![The Access Control (IAM) menu item is highlighted.](media/appconfig-access-control-link.png)
+#### Via Azure CLI
 
-5. Select **+ Add** and then **Add role assignment**.
+```bash
+# Get resource ID
+APP_CONFIG_ID=$(az appconfig show \
+  --name <app-config-name> \
+  --resource-group <resource-group> \
+  --query id -o tsv)
 
-    ![The add role assignment menu item is highlighted.](media/add-role-assignment-link.png)
+# Assign Reader role
+az role assignment create \
+  --assignee <user-or-group-id> \
+  --role "App Configuration Data Reader" \
+  --scope $APP_CONFIG_ID
 
-6. Select the **App Configuration Data Reader** or the **App Configuration Data Owner** role and then select **Next**.
+# Or assign Owner role
+az role assignment create \
+  --assignee <user-or-group-id> \
+  --role "App Configuration Data Owner" \
+  --scope $APP_CONFIG_ID
+```
 
-    ![The App Configuration Data Reader role is selected and the Next button is highlighted.](media/appconfig-add-role-assignment-role.png)
+## Azure Key Vault
 
-7. Select the **+ Select members** link, search for user or group you want to grant access to, select the member to add them to the _Selected members_ list, and then select **Next**.
+Azure Key Vault stores secrets, certificates, and keys.
 
-    ![Each of the described steps are highlighted and numbered in order within the screenshot.](media/appconfig-add-role-assignment-members.png)
+### Available Roles
 
-8. Select **Review + assign** to complete the assignment.
+| Role | Permissions | Use Case |
+|------|-------------|----------|
+| `Key Vault Secrets User` | Read secrets | Services, local development |
+| `Key Vault Secrets Officer` | Read and write secrets | Administrators |
+| `Key Vault Administrator` | Full management | Key Vault admins |
 
-## Azure Key Vault service
+### Grant Access
 
-The [Azure Key Vault service](https://learn.microsoft.com/azure/key-vault/overview) provides FoundationaLLM solution components with a centralized location to store and manage secrets. Role-based access controls (RBAC) are used to control access to the Key Vault service for managing secrets, as well as accessing them. The deployment scripts assign access controls to service accounts to allow them to read secrets. You can use the same approach to grant access to users as needed.
+#### Via Azure Portal
 
-### Key Vault roles
+1. Navigate to your deployment resource group
+2. Select the **Key Vault** resource (name ends with `-kv`)
+3. Select **Access control (IAM)**
+4. Click **+ Add** > **Add role assignment**
+5. Select role:
+   - **Key Vault Secrets User** (for read access)
+   - **Key Vault Secrets Officer** (for management)
+6. Click **Next**
+7. Click **+ Select members**
+8. Search for and select the user/group
+9. Click **Select**
+10. Click **Review + assign**
 
-The following table summarizes the roles FoundationaLLM uses for the Key Vault service:
+#### Via Azure CLI
 
-Role | Description | Target Users
---- | --- | ---
-`Key Vault Secrets User` | Allows users to read secrets. | The system-assigned managed identities for the `api` services and any developers or admins that need to run the solution locally.
-`Key Vault Secrets Officer` | Allows users to read and write secrets. | Administrators that need to manage secrets.
+```bash
+# Get resource ID
+KEYVAULT_ID=$(az keyvault show \
+  --name <keyvault-name> \
+  --resource-group <resource-group> \
+  --query id -o tsv)
 
-### Grant access to the Key Vault service
+# Assign Secrets User role
+az role assignment create \
+  --assignee <user-or-group-id> \
+  --role "Key Vault Secrets User" \
+  --scope $KEYVAULT_ID
 
-Use the steps below to grant access to the Key Vault service:
+# Or assign Secrets Officer role
+az role assignment create \
+  --assignee <user-or-group-id> \
+  --role "Key Vault Secrets Officer" \
+  --scope $KEYVAULT_ID
+```
 
-1. Sign in to the [Azure portal](https://portal.azure.com/) as at least a Contributor.
-2. Navigate to the resource group where the solution is deployed.
-> [!NOTE]
-> If you performed an Azure Container Apps (ACA) or Azure Kubernetes Service (AKS) deployment, you will see an extra Resource Group that starts with `ME_` or `MC_` in addition to the Resource Group defined during the deployment. You will need to navigate to the Resource Group that **does not start with** `ME_` or `MC_` to access the App Configuration resource.
-3. Select the **Key Vault** resource. The name should end with `-kv`.
-4. Select **Access Control (IAM)** in the left-hand menu.
+## Other Azure Resources
 
-    ![The Access Control (IAM) menu item is highlighted.](media/keyvault-access-control-link.png)
+### Storage Accounts
 
-5. Select **+ Add** and then **Add role assignment**.
+| Role | Permissions |
+|------|-------------|
+| `Storage Blob Data Reader` | Read blobs |
+| `Storage Blob Data Contributor` | Read/write blobs |
+| `Storage Blob Data Owner` | Full blob access |
 
-    ![The add role assignment menu item is highlighted.](media/add-role-assignment-link.png)
+### Cosmos DB
 
-6. Select the **Key Vault Secrets User** or the **Key Vault Secrets Officer** role and then select **Next**.
+| Role | Permissions |
+|------|-------------|
+| `Cosmos DB Account Reader` | Read metadata |
+| `Cosmos DB Operator` | Manage accounts |
+| `DocumentDB Account Contributor` | Full access |
 
-    ![The Key Vault Secrets User role is selected and the Next button is highlighted.](media/keyvault-add-role-assignment-role.png)
+### Azure AI Search
 
-7. Select the **+ Select members** link, search for user or group you want to grant access to, select the member to add them to the _Selected members_ list, and then select **Next**.
+| Role | Permissions |
+|------|-------------|
+| `Search Index Data Reader` | Read index data |
+| `Search Index Data Contributor` | Read/write index data |
+| `Search Service Contributor` | Manage service |
 
-    ![Each of the described steps are highlighted and numbered in order within the screenshot.](media/keyvault-add-role-assignment-members.png)
+## Best Practices
 
-8. Select **Review + assign** to complete the assignment.
+| Practice | Description |
+|----------|-------------|
+| **Least Privilege** | Grant minimum required permissions |
+| **Use Groups** | Assign roles to groups, not individuals |
+| **Regular Review** | Audit role assignments periodically |
+| **Just-in-Time** | Consider PIM for sensitive roles |
+| **Document** | Track who has access and why |
+
+## Troubleshooting
+
+### Access Denied Errors
+
+1. Verify role assignment exists
+2. Check correct resource scope
+3. Allow up to 30 minutes for propagation
+4. Verify user/group object ID
+
+### Check Existing Assignments
+
+```bash
+# List role assignments
+az role assignment list \
+  --resource-group <resource-group> \
+  --output table
+
+# Check specific resource
+az role assignment list \
+  --scope <resource-id> \
+  --output table
+```
+
+## Related Topics
+
+- [Platform Security](platform-security.md)
+- [Role-Based Access Control](role-based-access-control/index.md)
+- [App Configuration Values](../deployment/app-configuration-values.md)

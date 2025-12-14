@@ -1,99 +1,373 @@
-# Troubleshooting & issue reporting guide
+# Troubleshooting Guide
 
-There are three common issues that may arise when using the FoundationaLLM platform. This guide provides a structured approach to troubleshooting these issues.
+This guide provides structured approaches to diagnosing and resolving common issues in FoundationaLLM deployments.
 
-## Troubleshooting Azure App Registration misconfiguration
+## Quick Diagnostics
 
-### 1. **Symptoms:**
+### Health Check Commands
 
-- Users unable to authenticate or access Azure services using the app.
-- Error messages related to authentication failures.
+```powershell
+# AKS deployment - check all pods
+kubectl get pods -n fllm
 
-### 2. **Troubleshooting Steps:**
+# AKS deployment - check services
+kubectl get svc -n fllm
 
-a. **Verify App Registration Configuration:**
-- Check the Azure Portal for the App Registration settings.
-- Ensure the correct redirect URIs, client secrets, and authentication settings are configured by reviewing (the setup guide)[../deployment/authentication/core-authentication-setup-entra.md#update-app-configuration-settings].
+# Quick Start - check container apps
+az containerapp list -g <resource-group> -o table
+```
 
-b. **Error Logs Examination:**
-- Review logs for any authentication-related errors.
-- Check for error details and correlate them with misconfigured settings.
+### Expected Healthy State
 
-## Troubleshooting missing Azure App Registration details in Azure App Configuration
+| Component | Status |
+|-----------|--------|
+| All pods | `Running` |
+| All services | `Active` |
+| All containers | `Running` |
 
-### 1. **Symptoms:**
+## Common Issues
 
-- Application unable to retrieve configuration settings.
-- Errors related to missing or invalid configuration values.
-- Login problems similar to those described in the previous section.
+### 1. Authentication Failures
 
-### 2. **Troubleshooting Steps:**
+#### Symptoms
+- Unable to log in to portals
+- "Invalid token" errors
+- Redirect loops after login
 
-a. **Check Azure App Configuration:**
-- Verify that the App Registration details are correctly stored in Azure App Configuration using [the setup guide](../deployment/authentication/index.md).
-- Ensure that keys, secrets, and connection strings are accurate.
+#### Diagnosis
 
-c. **Azure App Configuration Logs:**
-- Inspect Azure App Configuration logs for any errors related to configuration retrieval.
-- Look for issues such as key not found or invalid values.
+```kql
+// Check Entra ID sign-in logs
+AADSignInLogs
+| where TimeGenerated > ago(1h)
+| where ResultType != 0
+| project TimeGenerated, UserPrincipalName, AppDisplayName, ResultType, ResultDescription
+```
 
-d. **Azure Key Vault Integration:**
-- FoundationaLLM Azure Key Vault for sensitive configuration, verify the correct values are in Key Vault using [the setup guide][1].
-- Ensure the Azure App Configuration managed identity has the necessary permissions to access Key Vault secrets.
+#### Solutions
 
-## Troubleshooting container crashing
+| Issue | Solution |
+|-------|----------|
+| **Invalid redirect URI** | Update redirect URIs in App Registration |
+| **Missing scopes** | Configure API permissions |
+| **Client secret expired** | Generate new secret, update Key Vault |
+| **Wrong tenant** | Verify tenant ID in App Configuration |
 
-### 1. **Symptoms:**
+**Verify App Registration:**
+1. Open Azure Portal > **Microsoft Entra ID** > **App registrations**
+2. Select the application
+3. Check **Authentication** > **Redirect URIs**
+4. Verify the URI matches your deployment URL + `/signin-oidc`
 
-- Containers restarting frequently or failing to start.
-- Application unavailability due to container issues.
+See [Authentication Setup](../security-permissions/authentication-authorization/index.md) for detailed configuration.
 
-### 2. **Troubleshooting Steps:**
+### 2. Missing App Configuration Values
 
-a. **Container Logs Examination:**
-- Access container logs in Log Analytics to identify error messages or issues during startup.
-- Look for any crashes, exceptions, or resource constraints.
+#### Symptoms
+- Services fail to start
+- Configuration-related errors in logs
+- "Key not found" errors
 
-b. **Resource Utilization:**
-- Check resource utilization metrics (CPU, memory) for the container.
-- Ensure that the container has adequate resources allocated.
+#### Diagnosis
 
-c. **Dependency Check:**
-- Examine dependencies within the containerized application.
-- Verify that required services or components are accessible.
+```powershell
+# Check App Configuration
+az appconfig kv list --name <app-config-name> -o table
 
-d. **Container Health Checks:**
-- Identify and address health check failures impacting container stability.
+# Check specific key
+az appconfig kv show --name <app-config-name> --key "FoundationaLLM:Instance:Id"
+```
 
-e. **Container Image Update:**
-- Review the container image version, update to the latest version to receive bug fixes and new features.
+#### Solutions
 
-## Additional support and issue reporting
+1. **Verify Key Vault References**
+   ```powershell
+   # Check Key Vault secret exists
+   az keyvault secret show --vault-name <vault-name> --name <secret-name>
+   ```
 
-If you encounter an issue that is not addressed by the troubleshooting steps outlined in this document, we encourage you to open a GitHub issue. This ensures that our team can provide tailored assistance and continuously improve our troubleshooting resources.
+2. **Check Managed Identity Permissions**
+   - App Configuration Reader on App Config
+   - Key Vault Secrets User on Key Vault
 
-### Steps to open a GitHub issue
+3. **Re-run Configuration Script**
+   ```powershell
+   # Quick Start
+   cd deploy/quick-start
+   ../common/scripts/Set-AzdEnvEntra.ps1
+   ```
 
-1. **Navigate to our GitHub Repository:**
-   - Visit our GitHub repository at [https://github.com/foundationallm/foundationallm](https://github.com/foundationallm/foundationallm).
+### 3. Container Crashes
 
-2. **Check Existing Issues:**
-   - Before creating a new issue, check the existing issues to see if the problem has already been reported or discussed.
+#### Symptoms
+- Pods in `CrashLoopBackOff` state
+- Services intermittently unavailable
+- Container restarts
 
-3. **Create a New Issue:**
-   - Click on the "Issues" tab in the repository.
-   - Select "New Issue" to open a new issue template.
+#### Diagnosis
 
-4. **Provide Detailed Information:**
-   - Clearly describe the issue, including symptoms, error messages, and steps to reproduce.
-   - Attach relevant logs or screenshots that can assist in understanding the problem.
+```powershell
+# Get pod status
+kubectl get pods -n fllm
 
-5. **Tag the Issue Appropriately:**
-   - Tag the issue with relevant labels, such as "bug," "enhancement," or "question," to categorize it correctly.
+# Describe failing pod
+kubectl describe pod <pod-name> -n fllm
 
-6. **Monitor for Updates:**
-   - After creating the issue, monitor it for updates and respond promptly to any requests for additional information.
+# Get logs from crashed container
+kubectl logs <pod-name> -n fllm --previous
+```
 
-By opening a GitHub issue at [https://github.com/foundationallm/foundationallm](https://github.com/foundationallm/foundationallm), you contribute to our collaborative effort in maintaining a robust and well-supported system. Our team values your feedback, and addressing issues through GitHub allows for a transparent and efficient resolution process.
+```kql
+// Query for container crashes
+ContainerAppConsoleLogs
+| where TimeGenerated > ago(24h)
+| where Log contains "exception" or Log contains "fatal" or Log contains "crash"
+| project TimeGenerated, ContainerAppName, Log
+| order by TimeGenerated desc
+```
 
-Thank you for your collaboration, and we look forward to assisting you with any challenges you may encounter. Your input is instrumental in enhancing the overall reliability and functionality of our system.
+#### Solutions
+
+| Issue | Solution |
+|-------|----------|
+| **Out of memory** | Increase memory limits in Helm values |
+| **Missing config** | Check environment variables and App Config |
+| **Dependency unavailable** | Verify dependent services are running |
+| **Image pull error** | Check registry access and image tag |
+
+**Check Resource Usage:**
+```powershell
+kubectl top pods -n fllm
+```
+
+**Update Resource Limits:**
+```yaml
+# In Helm values
+resources:
+  limits:
+    memory: "2Gi"
+    cpu: "1000m"
+  requests:
+    memory: "1Gi"
+    cpu: "500m"
+```
+
+### 4. API Errors
+
+#### Symptoms
+- 500 errors from APIs
+- Timeout errors
+- Incomplete responses
+
+#### Diagnosis
+
+```kql
+// API error analysis
+AppRequests
+| where TimeGenerated > ago(1h)
+| where Success == false
+| summarize count() by Name, ResultCode
+| order by count_ desc
+```
+
+```powershell
+# Check API pod logs
+kubectl logs -n fllm deployment/core-api --tail=200
+```
+
+#### Solutions
+
+| Error Code | Likely Cause | Solution |
+|------------|--------------|----------|
+| **401** | Authentication | Check token and permissions |
+| **403** | Authorization | Verify RBAC roles |
+| **500** | Server error | Check logs for details |
+| **502** | Bad gateway | Check pod health |
+| **503** | Service unavailable | Check service endpoints |
+| **504** | Timeout | Check dependencies, increase timeout |
+
+### 5. Azure OpenAI Errors
+
+#### Symptoms
+- "Model deployment not found"
+- Quota exceeded errors
+- Timeout on completions
+
+#### Diagnosis
+
+```powershell
+# Check OpenAI deployment
+az cognitiveservices account deployment list \
+  --name <openai-account> \
+  --resource-group <resource-group>
+
+# Check quota
+az cognitiveservices account show \
+  --name <openai-account> \
+  --resource-group <resource-group>
+```
+
+#### Solutions
+
+| Issue | Solution |
+|-------|----------|
+| **Deployment not found** | Create model deployment in Azure Portal |
+| **Quota exceeded** | Request quota increase or use different region |
+| **Wrong deployment name** | Update App Configuration with correct name |
+| **Region unavailable** | Check model availability by region |
+
+### 6. Vector Search Issues
+
+#### Symptoms
+- No results from knowledge queries
+- "Index not found" errors
+- Slow search responses
+
+#### Diagnosis
+
+```powershell
+# Check AI Search service
+az search service show --name <search-service> --resource-group <resource-group>
+
+# List indexes
+az search index list --service-name <search-service> --resource-group <resource-group>
+```
+
+#### Solutions
+
+1. **Verify Index Exists** - Check in Azure Portal
+2. **Check Permissions** - Managed Identity needs Search Index Data Reader
+3. **Re-run Indexing** - Trigger data pipeline
+
+### 7. Network Connectivity
+
+#### Symptoms
+- Services can't communicate
+- DNS resolution failures
+- Timeout between services
+
+#### Diagnosis (AKS)
+
+```powershell
+# Check service endpoints
+kubectl get endpoints -n fllm
+
+# Test DNS resolution
+kubectl run dns-test --image=busybox --rm -it --restart=Never -- nslookup core-api.fllm.svc.cluster.local
+
+# Check network policies
+kubectl get networkpolicies -n fllm
+```
+
+#### Solutions
+
+| Issue | Solution |
+|-------|----------|
+| **No endpoints** | Check pod selector labels |
+| **DNS failure** | Restart CoreDNS pods |
+| **Network policy blocking** | Review network policy rules |
+| **Private endpoint issues** | Check NSG and private DNS zones |
+
+## Diagnostic Tools
+
+### Log Analytics Queries
+
+Save these queries for quick access:
+
+```kql
+// Error summary by service
+ContainerAppConsoleLogs
+| where TimeGenerated > ago(24h)
+| where Log contains "error" or Log contains "Error"
+| summarize ErrorCount = count() by ContainerAppName
+| order by ErrorCount desc
+
+// Request latency percentiles
+AppRequests
+| where TimeGenerated > ago(1h)
+| summarize 
+    p50 = percentile(DurationMs, 50),
+    p95 = percentile(DurationMs, 95),
+    p99 = percentile(DurationMs, 99)
+    by Name
+```
+
+### Health Check Script
+
+```powershell
+# Quick health check script
+$namespace = "fllm"
+
+Write-Host "=== Pod Status ===" -ForegroundColor Cyan
+kubectl get pods -n $namespace
+
+Write-Host "`n=== Service Status ===" -ForegroundColor Cyan
+kubectl get svc -n $namespace
+
+Write-Host "`n=== Recent Events ===" -ForegroundColor Cyan
+kubectl get events -n $namespace --sort-by='.lastTimestamp' | Select-Object -Last 10
+
+Write-Host "`n=== Resource Usage ===" -ForegroundColor Cyan
+kubectl top pods -n $namespace
+```
+
+## Reporting Issues
+
+If issues persist after troubleshooting:
+
+### 1. Check Existing Issues
+
+Search [GitHub Issues](https://github.com/foundationallm/foundationallm/issues) for similar problems.
+
+### 2. Gather Information
+
+Collect before opening an issue:
+- Deployment type (Quick Start/Standard)
+- Version/release tag
+- Error messages and logs
+- Steps to reproduce
+- Configuration (sanitized)
+
+### 3. Open GitHub Issue
+
+1. Navigate to [GitHub Issues](https://github.com/foundationallm/foundationallm/issues)
+2. Click **New Issue**
+3. Select appropriate template
+4. Provide detailed information
+5. Add relevant labels
+
+### Issue Template
+
+```markdown
+## Description
+Brief description of the issue
+
+## Environment
+- Deployment Type: [Quick Start / Standard]
+- Version: [e.g., 0.9.0]
+- Azure Region: [e.g., eastus2]
+
+## Steps to Reproduce
+1. Step 1
+2. Step 2
+3. Step 3
+
+## Expected Behavior
+What should happen
+
+## Actual Behavior
+What actually happens
+
+## Logs/Screenshots
+[Attach relevant logs or screenshots]
+
+## Additional Context
+Any other relevant information
+```
+
+## Related Topics
+
+- [System Logs](logs.md)
+- [Authentication Setup](../security-permissions/authentication-authorization/index.md)
+- [App Configuration Values](../deployment/app-configuration-values.md)
+- [Platform Security](../security-permissions/platform-security.md)

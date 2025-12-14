@@ -1,84 +1,254 @@
-# Guidance for creating release notes
+# Creating Release Notes
 
-Creating release notes is an essential part of the software development and release process. Release notes provide valuable information to end-users, stakeholders, and other team members about the changes, enhancements, and fixes introduced in a software release. Here's a structured process for creating release notes:
+This guide provides the process for creating release notes for FoundationaLLM updates.
 
-## 1. Define the release scope and content
+## Overview
 
-- Understand the changes included in the release.
-- Identify new features, enhancements, bug fixes, and any other significant changes.
+Release notes communicate changes to end-users, stakeholders, and operations teams. Well-structured notes help with:
 
-## 2. Use a version control system
+- Understanding what's new or changed
+- Planning upgrade timing
+- Identifying breaking changes
+- Tracking project evolution
 
-- Review the commit history and pull requests associated with the release.
-- Identify the issues or features implemented during the release period.
+## Release Notes Structure
 
-## 3. Categorize changes
+### Standard Format
 
-- Group changes into categories for clarity. Common categories include:
-  - New Features
-  - Enhancements
-  - Bug Fixes
-  - Deprecations
-  - Security Updates
+```markdown
+# Release X.Y.Z
 
-## 4. Collect information
+**Release Date:** YYYY-MM-DD
 
-- Gather details for each change, including:
-  - Brief description of the change.
-  - Associated issue or feature request numbers.
-  - Names of contributors or teams involved.
+## Highlights
+- Major feature or change summary
 
-## 5. Prioritize information
+## New Features
+- Feature 1 description (#issue-number)
+- Feature 2 description (#issue-number)
 
-- Arrange the changes in order of importance or relevance to users.
-- Highlight major features or critical bug fixes at the top.
+## Enhancements
+- Enhancement 1 description (#issue-number)
 
-## 6. Write Release Notes
+## Bug Fixes
+- Fix 1 description (#issue-number)
 
-- Craft concise and clear release notes.
-- Use a consistent format and style.
-- Include a header with the release version, date, and any important announcements.
+## Breaking Changes
+- Description of breaking change
+- Migration steps
 
-## 7. Provide context
+## Deprecations
+- Feature being deprecated
+- Removal timeline
 
-- Offer context for each change. Explain why a feature was added or why a bug fix was necessary.
-- Include information that helps users understand the impact of the changes.
+## Security Updates
+- Security-related fixes
 
-## 8. Include links
+## Known Issues
+- Outstanding issues
 
-- Add links to relevant documentation, issue trackers, or pull requests for more details.
-- This helps users and developers find additional information if needed.
+## Upgrade Instructions
+- Steps to upgrade
+```
 
-## 9. Test Release Notes
+## Process
 
-- Review the release notes to ensure accuracy and completeness.
-- Verify that all changes are appropriately documented.
+### 1. Define Release Scope
 
-## 10. Review with stakeholders
+- Review the milestone or sprint scope
+- Identify all changes included
+- Confirm release version number
 
-- Share the draft release notes with relevant stakeholders, such as product managers, developers, and quality assurance teams.
-- Incorporate feedback and make necessary adjustments.
+### 2. Gather Changes from Version Control
 
-## 11. Publish release notes
+**Using GitHub:**
+```bash
+# List commits since last release
+git log v0.8.3..HEAD --oneline
 
-- We will publish release notes as part of creating a new release in github.
-- If applicable, notify users through email, social media, or other communication channels.
+# List merged PRs
+gh pr list --state merged --base main --json number,title
+```
 
-## 12. Archive previous release notes
+**Using GitHub Web:**
+1. Navigate to repository
+2. Go to **Pull requests** > **Closed**
+3. Filter by milestone or date range
 
-- Maintain a historical record by archiving previous release notes.  Relase notes for previous releases will remain visible with those releases in github.
-- This helps users track changes over time and understand the evolution of the software.
+### 3. Categorize Changes
 
-## 13. Update documentation
+Group changes into standard categories:
 
-- Ensure that other documentation, such as user guides or API documentation, is updated to reflect the changes introduced in the release.
+| Category | Description |
+|----------|-------------|
+| **New Features** | New functionality |
+| **Enhancements** | Improvements to existing features |
+| **Bug Fixes** | Resolved issues |
+| **Breaking Changes** | Changes requiring user action |
+| **Deprecations** | Features being phased out |
+| **Security Updates** | Security-related changes |
 
-## 14. Automate if possible
+### 4. Write Clear Descriptions
 
-- Consider automating parts of the release notes generation process, especially if your project follows a structured development workflow with clear commit messages and pull request descriptions.
+**Good Example:**
+```markdown
+- Add support for GPT-4o model deployment in agents (#1234)
+- Fix conversation history not persisting after browser refresh (#1235)
+```
 
-## 15. Seek user feedback
+**Poor Example:**
+```markdown
+- Updated stuff
+- Fixed bug
+```
 
-- Encourage users to provide feedback on the release notes. This can help you improve the clarity and usefulness of future release notes.
+### 5. Document Breaking Changes
 
-By following this process, you can create comprehensive and user-friendly release notes that effectively communicate the changes made in each software release.
+For each breaking change:
+
+1. Describe what changed
+2. Explain the impact
+3. Provide migration steps
+4. Note any automated migration
+
+```markdown
+## Breaking Changes
+
+### Agent Configuration Format Change
+
+The agent configuration schema has changed:
+
+**Before (v0.8.x):**
+```json
+{
+  "workflow": "langchain"
+}
+```
+
+**After (v0.9.x):**
+```json
+{
+  "workflow_object_id": "/instances/{id}/providers/FoundationaLLM.Agent/workflows/langchain"
+}
+```
+
+**Migration:** Run the upgrade script `Migrate-AgentConfig.ps1` before deploying v0.9.x.
+```
+
+### 6. Include Upgrade Instructions
+
+Provide clear upgrade steps:
+
+```markdown
+## Upgrade Instructions
+
+### From v0.8.x to v0.9.x
+
+1. Backup your deployment
+2. Run pre-migration script
+3. Update container images
+4. Run post-migration script
+5. Verify functionality
+
+See [Upgrade Guide](./upgrade-guide.md) for detailed steps.
+```
+
+### 7. Review Process
+
+1. **Self-review** - Check for accuracy and completeness
+2. **Technical review** - Have developers verify changes
+3. **Stakeholder review** - Get product owner approval
+4. **Edit** - Incorporate feedback
+
+### 8. Publish
+
+**GitHub Release:**
+1. Navigate to repository > **Releases**
+2. Click **Draft a new release**
+3. Select or create tag (e.g., `v0.9.0`)
+4. Enter release title
+5. Paste release notes
+6. Attach any artifacts
+7. Click **Publish release**
+
+## Templates
+
+### Minor Release Template
+
+```markdown
+# Release X.Y.0
+
+**Release Date:** YYYY-MM-DD
+
+## Highlights
+- [Main feature or theme of this release]
+
+## New Features
+- 
+
+## Enhancements
+- 
+
+## Bug Fixes
+- 
+
+## Upgrade Instructions
+1. Pull latest container images
+2. Update App Configuration (if needed)
+3. Verify deployment
+
+See [Upgrade Guide](link) for details.
+```
+
+### Patch Release Template
+
+```markdown
+# Release X.Y.Z
+
+**Release Date:** YYYY-MM-DD
+
+This is a patch release containing bug fixes.
+
+## Bug Fixes
+- 
+
+## Upgrade Instructions
+Update container images to tag `X.Y.Z`.
+```
+
+## Best Practices
+
+| Practice | Description |
+|----------|-------------|
+| **Be Specific** | Include issue numbers and specific descriptions |
+| **User Focus** | Write from the user's perspective |
+| **Consistent Format** | Use the same structure for all releases |
+| **Link Documentation** | Reference detailed docs where appropriate |
+| **Test Instructions** | Verify upgrade steps work |
+
+## Automation
+
+Consider automating release note generation:
+
+```yaml
+# Example GitHub Action
+name: Generate Release Notes
+on:
+  release:
+    types: [created]
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Generate notes
+        run: |
+          gh api repos/${{ github.repository }}/releases/generate-notes \
+            -f tag_name=${{ github.ref_name }} \
+            -f previous_tag_name=$(git describe --tags --abbrev=0 HEAD^)
+```
+
+## Related Topics
+
+- [Updating Container Versions](updating-container-versions.md)
+- [GitHub Releases](https://github.com/foundationallm/foundationallm/releases)

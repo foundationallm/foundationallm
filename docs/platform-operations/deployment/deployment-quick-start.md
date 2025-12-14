@@ -1,136 +1,179 @@
-# Deployment - Quick Start
+# Quick Start Deployment
 
-Foundationa**LLM** is designed for seamless deployment within your Azure Subscription. It initially utilizes Azure Container Apps (ACA) for rapid deployment and streamlined development. For scaling up to production environments, FoundationaLLM also supports deployment on Azure Kubernetes Service (AKS), offering robust scalability and management features.
+The Quick Start deployment uses Azure Container Apps (ACA) for rapid deployment and streamlined development. This option is ideal for proof-of-concept, development, and smaller production workloads.
 
-Be mindful of the [Azure OpenAI regional quota limits](https://learn.microsoft.com/azure/ai-services/openai/quotas-limits) on the number of Azure OpenAI Service instances. To optimize resource usage, FoundationaLLM offers the flexibility to connect to an existing Azure OpenAI Service resource, thereby avoiding the creation of additional instances during deployment. This feature is particularly useful for managing resource allocation and ensuring efficient Azure OpenAI Service quota utilization.
+## Overview
+
+| Aspect | Details |
+|--------|---------|
+| **Infrastructure** | Azure Container Apps (ACA) |
+| **Deployment Time** | ~30 minutes |
+| **Scalability** | Auto-scaling built-in |
+| **Networking** | Public endpoints |
+| **SSL** | Managed certificates |
 
 ## Prerequisites
 
-You will need the following resources and access to deploy the solution:
+### Azure Requirements
 
-- **Azure Subscription**: An Azure Subscription is a logical container in Microsoft Azure that links to an Azure account and is the basis for billing, resource management, and allocation. It allows users to create and manage Azure resources like virtual machines, databases, and more, providing a way to organize access and costs associated with these resources.
-- **Subscription access to Azure OpenAI service**: Access to Azure OpenAI Service provides users with the ability to integrate OpenAI's advanced AI models and capabilities within Azure. This service combines OpenAI's powerful models with Azure's robust cloud infrastructure and security, offering scalable AI solutions for a variety of applications like natural language processing and generative tasks. **Start here to [Request Access to Azure OpenAI Service](https://customervoice.microsoft.com/Pages/ResponsePage.aspx?id=v4j5cvGGr0GRqy180BHbR7en2Ais5pxKtso_Pz4b1_xUNTZBNzRKNlVQSFhZMU9aV09EVzYxWFdORCQlQCN0PWcu)**
-- **Minimum quota of 65 CPUs across all VM family types**: Azure CPU quotas refer to the limits set on the number and type of virtual CPUs that can be used in an Azure Subscription. These quotas are in place to manage resource allocation and ensure fair usage across different users and services. Users can request quota increases if their application or workload requires more CPU resources. **Start here to [Manage VM Quotas](https://learn.microsoft.com/azure/quotas/per-vm-quota-requests)**
-- **App Registrations created in the Entra ID tenant (formerly Azure Active Directory)**: Azure App Registrations is a feature in Entra ID that allows developers to register their applications for identity and access management. This registration process enables applications to authenticate users, request and receive tokens, and access Azure resources that are secured by Entra ID. **Follow the instructions in the [Authentication and Authorization setup document](authentication-authorization/index.md) to configure authentication for the solution.**
-- **User with the proper role assignments**: Azure Role-Based Access Control (RBAC) roles are a set of permissions in Azure that control access to Azure resource management. These roles can be assigned to users, groups, and services in Azure, allowing granular control over who can perform what actions within a specific scope, such as a subscription, resource group, or individual resource.
-    - Owner on the target subscription
-    - Owner on the App Registrations described in the Authentication setup document
+| Requirement | Details |
+|-------------|---------|
+| **Azure Subscription** | Active subscription with billing enabled |
+| **Azure OpenAI Access** | [Request access here](https://customervoice.microsoft.com/Pages/ResponsePage.aspx?id=v4j5cvGGr0GRqy180BHbR7en2Ais5pxKtso_Pz4b1_xUNTZBNzRKNlVQSFhZMU9aV09EVzYxWFdORCQlQCN0PWcu) |
+| **VM Quota** | Minimum 65 vCPUs across all VM families |
+| **Role Assignment** | Owner on target subscription |
 
-You will use the following tools during deployment:
-- **Azure Developer CLI ([v1.6.1 or greater](https://learn.microsoft.com/azure/developer/azure-developer-cli/install-azd))**
-- **Azure CLI ([v2.51.0 or greater](https://docs.microsoft.com/cli/azure/install-azure-cli)):**
-- **Latest [Git](https://git-scm.com/downloads)**
-- **PowerShell 7 ([7.4.1 or greater](https://learn.microsoft.com/en-us/powershell/scripting/install/installing-powershell-on-windows?view=powershell-7.4))**
+### Entra ID Requirements
 
-**Optional** To run or debug the solution locally, you will need to install the following dependencies:
+| Requirement | Details |
+|-------------|---------|
+| **App Registrations** | 6 registrations required (see [Authentication Setup](security-permissions/authentication-authorization/index.md)) |
+| **Role Assignment** | Owner on app registrations |
 
-- **[.NET 8 SDK](https://dotnet.microsoft.com/download/dotnet/8.0)**
-- **Visual Studio 2022**
+### Required Tools
 
-**Optional** To build or test container images, you will need to install the following dependencies:
+| Tool | Version | Installation |
+|------|---------|--------------|
+| Azure Developer CLI | v1.6.1+ | [Install azd](https://learn.microsoft.com/azure/developer/azure-developer-cli/install-azd) |
+| Azure CLI | v2.51.0+ | [Install Azure CLI](https://docs.microsoft.com/cli/azure/install-azure-cli) |
+| PowerShell | 7.4.1+ | [Install PowerShell](https://learn.microsoft.com/powershell/scripting/install/installing-powershell) |
+| Git | Latest | [Install Git](https://git-scm.com/downloads) |
 
-- **[Docker Desktop](https://www.docker.com/products/docker-desktop/)**
+### Optional Tools
 
-> [!IMPORTANT]
-> The perception of the `main` branch in GitHub, or any version control system, can vary depending on the development workflow adopted by a particular team or organization. The Foundationa**LLM** team uses the `main` branch as the primary **development** branch. In this case, the `main` branch might indeed be considered a **work in progress**, with developers regularly pushing changes and updates directly to it. It is where ongoing development work happens. 
-So for deployment purposes, it is recommended to use the latest release branch, which is considered stable and tested. The release branch is a snapshot of the `main` branch at a specific point in time, where the code is considered stable and ready for deployment. The release branch is tagged with a version number, such as `0.6.0`, and is the recommended branch for deployment.  Please find our latest releases [here](https://github.com/foundationallm/foundationallm/releases)
+| Tool | Purpose |
+|------|---------|
+| .NET 8 SDK | Local debugging |
+| Visual Studio 2022 | Development |
+| Docker Desktop | Container testing |
 
+## Deployment Steps
 
-## Deployment steps
+### Step 1: Pre-Deployment Setup
 
-Follow the steps below to deploy the solution to your Azure subscription.
-If you are upgrading from a previous version, like `0.5.0`, please refer to the changes in the [breaking changes notes](../release-notes/breaking-changes.md).
+Complete the [Authentication Setup](security-permissions/authentication-authorization/index.md) to create the required Entra ID app registrations.
 
-> [!IMPORTANT]
-> Follow the instructions in the [Authentication and Authorization setup document](authentication-authorization/index.md) to finalize authentication and authorization for the solution. Bear in mind that creating the app registrations in the Entra ID tenant is a **prerequisite** for the deployment, but you will have to revisit some of these settings after the deployment is complete later to fill in some missing values that are generated during the deployment.
+> **Important:** App registrations must be created before deployment. You will update some values after deployment.
 
-1. Ensure all the prerequisites are met and you have installed the tools required to complete the deployment.
+### Step 2: Clone Repository
 
-2. From a PowerShell prompt, execute the following to clone the repository:
-
-    ```cmd
-    git clone https://github.com/foundationallm/foundationallm.git
-    cd foundationallm/deploy/quick-start
-    git checkout release/0.8.3
-    ```
-
-3. Run the following script to install the deployment utilities, including `AzCopy`, locally.
-
-    ```cmd
-    cd .\deploy\common\scripts
-    .\Get-AzCopy.ps1
-    ```
-
-4. Run the following commands to log into Azure CLI, Azure Developer CLI and AzCopy (the instance you just installed above):
-
-    ```azurecli
-    cd .\deploy\quick-start
-    az login                            # Log into Azure CLI
-    azd auth login                      # Log into AZD
-    ..\common\tools\azcopy\azcopy login # Log into AzCopy
-    ```
-
-5. Set up an `azd` environment targeting your Azure subscription and desired deployment region:
-
-    ```azurecli
-    # Set your target Subscription and Location
-    azd env new --location <Supported Azure Region> --subscription <Azure Subscription ID>
-    ```
-
-6. Run the following commands to set the appropriate application registration settings for OIDC authentication.
-
-    ```cmd
-    cd .\deploy\quick-start
-    ..\common\scripts\Set-AzdEnvEntra.ps1
-    ```
-
-## Optional: Bring Your Own Azure OpenAI Instance
-
-    If you have an existing Azure OpenAI instance, you can use it by setting the following environment variables:
-
-```azurecli
-    azd env set OPENAI_NAME <OpenAI Name>
-    azd env set OPENAI_RESOURCE_GROUP <OpenAI Resource Group>
-    azd env set OPENAI_SUBSCRIPTION_ID <OpenAI Subscription ID>
-```
-> [!IMPORTANT]
-> Deploying with `Bring Your Own Azure OpenAI`, customers need to make sure that the relevant Managed Identities (LangChain API, Semantic Kernel API, and Gateway API) are assigned the `Open AI reader role` on the Azure OpenAI account object.
-
-7. Deploy the solution
-
-    After setting the OIDC-specific settings in the AZD environment above, run `azd up` in the same folder location to provision the infrastructure, update the App Configuration entries, deploy the API and web app services, and import files into the storage account.
-
-    ```pwsh
-    azd up
-    ```
-
-### Running script to allow MS Graph access through Role Permissions
-
-After the deployment is complete, you will need to run the following script to allow MS Graph access through Role Permissions. (See below)
-
-> [!IMPORTANT]
-> The user running the script will need to have the appropriate permissions to assign roles to the managed identities. The user will need to be a `Global Administrator` or have the `Privileged Role Administrator` role in the Entra ID tenant.
-
-The syntax for running the script from the `deploy\quick-start\common\scripts` folder is:
-
-```pwsh
-    cd .\deploy\quick-start
-    ..\common\scripts\Set-FllmGraphRoles.ps1 -resourceGroupName rg-<azd env name>
-```
-Finally, you will need to update the Authorization Callbacks in the App Registrations created in the Entra ID tenant by running the following script:
-
-```pwsh
-    cd .\deploy\quick-start
-    ..\common\scripts\Update-OAuthCallbackUris.ps1
+```powershell
+git clone https://github.com/foundationallm/foundationallm.git
+cd foundationallm
+git checkout release/0.8.3
 ```
 
-# Teardown
+> **Note:** Use the latest [release branch](https://github.com/foundationallm/foundationallm/releases) for production deployments. The `main` branch is for development.
 
-To tear down the environment, execute `azd down` in the same folder location.
+### Step 3: Install Deployment Utilities
 
-```pwsh
+```powershell
+cd deploy/common/scripts
+./Get-AzCopy.ps1
+```
+
+### Step 4: Authenticate
+
+```powershell
+cd deploy/quick-start
+
+# Azure CLI
+az login
+
+# Azure Developer CLI
+azd auth login
+
+# AzCopy
+../common/tools/azcopy/azcopy login
+```
+
+### Step 5: Configure Environment
+
+```powershell
+azd env new --location <azure-region> --subscription <subscription-id>
+```
+
+**Supported regions:** Choose a region that supports Azure OpenAI and required models. See [Azure OpenAI regional availability](https://learn.microsoft.com/azure/ai-services/openai/concepts/models).
+
+### Step 6: Configure Authentication Settings
+
+```powershell
+../common/scripts/Set-AzdEnvEntra.ps1
+```
+
+This script prompts for your Entra ID app registration values.
+
+### Step 7: (Optional) Use Existing Azure OpenAI
+
+If you have an existing Azure OpenAI instance:
+
+```powershell
+azd env set OPENAI_NAME <openai-name>
+azd env set OPENAI_RESOURCE_GROUP <resource-group>
+azd env set OPENAI_SUBSCRIPTION_ID <subscription-id>
+```
+
+> **Important:** Ensure relevant Managed Identities (LangChain API, Semantic Kernel API, Gateway API) have `OpenAI Reader` role on the Azure OpenAI resource.
+
+### Step 8: Deploy
+
+```powershell
+azd up
+```
+
+This command:
+1. Provisions Azure infrastructure
+2. Updates App Configuration entries
+3. Deploys API and web services
+4. Imports default files to storage
+
+## Post-Deployment Configuration
+
+### Configure MS Graph Permissions
+
+Run this script to grant MS Graph access:
+
+```powershell
+cd deploy/quick-start
+../common/scripts/Set-FllmGraphRoles.ps1 -resourceGroupName rg-<azd-env-name>
+```
+
+> **Requirement:** User must be `Global Administrator` or have `Privileged Role Administrator` role.
+
+### Update OAuth Callback URIs
+
+```powershell
+../common/scripts/Update-OAuthCallbackUris.ps1
+```
+
+### Verify Deployment
+
+1. Navigate to the Chat Portal URL (from deployment output)
+2. Log in with an authorized user
+3. Send a test message to verify agent response
+
+## Teardown
+
+To remove all deployed resources:
+
+```powershell
 azd down --purge
 ```
 
-> [!NOTE]
-> The `--purge` argument in the command above. This ensures that resources that would otherwise be soft-deleted are instead completely purged from your Azure subscription.
+> **Important:** Use `--purge` to permanently delete soft-deleted resources (Azure OpenAI, Key Vault, AI Search, Content Safety).
+
+## Troubleshooting
+
+| Issue | Solution |
+|-------|----------|
+| Quota exceeded | [Request quota increase](https://learn.microsoft.com/azure/quotas/per-vm-quota-requests) |
+| Authentication errors | Verify app registration settings |
+| Deployment fails | Check `azd` logs for specific errors |
+| Container crashes | Review container logs in Azure Portal |
+
+## Related Topics
+
+- [Standard Deployment](deployment-standard.md)
+- [Authentication Setup](security-permissions/authentication-authorization/index.md)
+- [App Configuration Values](app-configuration-values.md)
+- [Troubleshooting](../monitoring-troubleshooting/troubleshooting.md)

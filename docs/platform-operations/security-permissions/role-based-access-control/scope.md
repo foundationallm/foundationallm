@@ -1,48 +1,132 @@
-# Understand scope for FoundationaLLM RBAC
+# Understanding Scope
 
-_Scope_ is the set of resources that a role assignment can access. When assigning roles, it is importan to understand how scope works so that you grant security principals only the level of access they need. Limiting scope also limits the potential damage that can be done if a security principal is compromised.
+Scope defines where a role assignment applies, controlling which resources a principal can access.
 
-## Scope levels
+## Scope Levels
 
-In FoundationaLLM, you can specify a scope at the following levels:
+| Level | Description | Example |
+|-------|-------------|---------|
+| **Instance** | Entire FoundationaLLM deployment | All agents, prompts, data sources |
+| **Resource** | Specific resource | Single agent |
 
-- _Instance_: The FoundationaLLM deployment itself.
-- _Resource_: A specific resource in FoundationaLLM, such as an agent.
+## Scope Hierarchy
 
-The following rules apply to scope levels:
-
-- Scopes are structured as a hierarchy. For example, a resource scope is always a child of an instance scope.
-- Each level make the scope more specific. For example, a resource scope is more specific than an instance scope.
-- Roles can be assigned at any of these levels of scope.
-- Lower levels inherit the permissions of higher levels. For example, a role assignment at the instance level applies to all resources in the instance.
-
-## Scope format
-
-Scope is a string that identifies the exact scope of the role assignment. The scope is usually referred to as the _resource identifier_ or _resource ID_.
-
-The scope consists of a series of identifiers separated by the slash (/) character. You can think of this string as expressing the following hierarchy, where text without placeholders (`{}`) are fixed identifiers:
-
-```text
-/instances
-    /{instanceId}
-        /providers
-            /{providerName}
-                /{resourceType}
-                    /{resourceSubType1}
-                        /{resourceSubType2}
-                            /{resourceName}
+```
+/instances/{instanceId}                           <- Instance scope
+    /providers/{providerName}
+        /{resourceType}
+            /{resourceName}                       <- Resource scope
+                /{subResourceType}
+                    /{subResourceName}            <- Sub-resource scope
 ```
 
-- `{instanceId}` is unique identifier of the FoundationaLLM deployment (a GUID).
-- `{providerName}` is the name of the FoundationaLLM resource provider (for example, `FoundationaLLM.Agent`).
-- `{resourceType}` and `{resourceSubType*}` identify levels within the resource provider.
-- `{resourceName}` is the name of a specific resource.
+## Scope Format
 
-## Scope examples
+Scopes are resource identifiers following this pattern:
 
-Scope | Example
---- | ---
-Instance | `/instances/11111111-1111-1111-1111-111111111111`
-Resource | `/instances/11111111-1111-1111-1111-111111111111/providers/FoundationaLLM.Agent/agents/agent1`
-Resource | `/instances/11111111-1111-1111-1111-111111111111/providers/FoundationaLLM.DataSource/dataSources/datasource1`
-Resource | `/instances/11111111-1111-1111-1111-111111111111/providers/FoundationaLLM.Agent/agents/agent1/models/gpt4`.
+```
+/instances/{instanceId}/providers/{providerName}/{resourceType}/{resourceName}
+```
+
+### Components
+
+| Component | Description |
+|-----------|-------------|
+| `instanceId` | Unique GUID of your FoundationaLLM deployment |
+| `providerName` | Resource provider (e.g., `FoundationaLLM.Agent`) |
+| `resourceType` | Type of resource (e.g., `agents`) |
+| `resourceName` | Name of specific resource |
+
+## Scope Examples
+
+### Instance Scope
+
+```
+/instances/11111111-1111-1111-1111-111111111111
+```
+
+Applies to all resources in the instance.
+
+### Agent Scope
+
+```
+/instances/11111111-1111-1111-1111-111111111111/providers/FoundationaLLM.Agent/agents/sales-agent
+```
+
+Applies only to the `sales-agent` agent.
+
+### Data Source Scope
+
+```
+/instances/11111111-1111-1111-1111-111111111111/providers/FoundationaLLM.DataSource/dataSources/customer-data
+```
+
+Applies only to the `customer-data` data source.
+
+### Prompt Scope
+
+```
+/instances/11111111-1111-1111-1111-111111111111/providers/FoundationaLLM.Prompt/prompts/support-prompt
+```
+
+Applies only to the `support-prompt` prompt.
+
+## Inheritance Rules
+
+| Rule | Description |
+|------|-------------|
+| **Hierarchical** | Child scopes inherit parent permissions |
+| **Additive** | Lower scopes can add permissions |
+| **No Reduction** | Cannot remove inherited permissions at lower levels |
+
+### Example
+
+| Assignment | Scope | Effect |
+|------------|-------|--------|
+| Contributor @ Instance | `/instances/{id}` | Can manage all resources |
+| Reader @ Agent | `/instances/{id}/providers/.../agents/x` | Can read agent x |
+
+A user with Contributor at instance level can manage agent x without needing the Reader assignment.
+
+## Choosing Scope
+
+| Scenario | Recommended Scope |
+|----------|-------------------|
+| Platform administrators | Instance |
+| Department access to specific agents | Resource (agent) |
+| Data team managing data sources | Resource (data sources) |
+| Read-only access to everything | Instance |
+
+## Scope in the Portal
+
+### Instance Access Control
+
+- Navigate to **Security** > **Instance Access Control**
+- Assignments here apply to all resources
+
+### Resource Access Control
+
+- Navigate to specific resource (e.g., Agent)
+- Click **Access Control** button
+- Assignments here apply only to that resource
+
+### Viewing Scope
+
+In role assignment lists, the **Scope** column shows:
+- `This resource` - Direct assignment on current resource
+- `Instance (inherited)` - Inherited from instance level
+
+## Scope Best Practices
+
+| Practice | Description |
+|----------|-------------|
+| **Start Narrow** | Grant at resource level when possible |
+| **Use Instance Sparingly** | Only for true platform administrators |
+| **Group Resources** | Consider organizational structure |
+| **Document Scope Decisions** | Add descriptions explaining scope choice |
+
+## Related Topics
+
+- [Role Definitions](role-definitions.md)
+- [Role Assignments](role-assignments.md)
+- [Role Management](role-management.md)

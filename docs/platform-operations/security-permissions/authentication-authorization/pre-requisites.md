@@ -1,36 +1,122 @@
-### Pre-requisites for post-deployment configuration
+# Post-Deployment Prerequisites
 
-> [!IMPORTANT]
-> Be aware that after completing this registration and the other app registrations in Entra ID as instructed in the [docs](docs/deployment/authentication-authorization/index.md) you will complete the deployment steps outlined at [deploy the solution](../../deployment/deployment-starter.md) then you will be revisiting your app registrations to complete some of the settings that require the solution to be deployed before the entire app registration is completed successfully.
+Complete these prerequisites before configuring authentication settings after deployment.
 
-#### Setup App Configuration access
+## Overview
 
-1. Sign in to the [Azure portal](https://portal.azure.com/) as at least a Contributor.
-2. Navigate to the Resource Group that was created as part of the deployment.
-> [!NOTE]
-> If you performed an Azure Container Apps (ACA) or Azure Kubernetes Service (AKS) deployment, you will see an extra Resource Group that starts with `ME_` or `MC_` in addition to the Resource Group defined during the deployment. You will need to navigate to the Resource Group that **does not start with** `ME_` or `MC_` to access the App Configuration resource.
-3. Select the **App Configuration** resource and select **Configuration explorer** to view the values. If you cannot access the configurations, add your user account as an **App Configuration Data Owner** through Access Control (IAM). You need this role in order to update the configurations as a required part of the authentication setup. To add your user account to the appropriate role, follow the instructions in the [Configure access control for services](../../deployment/configure-access-control-for-services.md#azure-app-configuration-service) document.
+After running `azd up` or `azd deploy`, you need to:
+1. Access App Configuration
+2. Obtain application URLs
+3. Update app registrations with deployment-specific values
 
-#### Obtain the URL for the chat UI application
+## Setup App Configuration Access
 
-You need this URL to assign the redirect URI for the client application.
+### Step 1: Navigate to Resources
 
-If you performed an **Azure Container Apps (ACA)** deployment, follow these steps to obtain the URL for the chat UI application:
+1. Sign in to [Azure Portal](https://portal.azure.com/)
+2. Navigate to your deployment resource group
 
-1. Within the Resource Group that was created as part of the deployment, select the **Container App** resource whose name ends with `chatuica`.
+> **Note:** For ACA deployments, you'll see an additional `ME_*` resource group. For AKS, you'll see `MC_*`. Access the main resource group (without prefix) for App Configuration.
 
-    ![The Chat UI container app is selected in the deployed resource group.](media/resource-group-aca.png)
+### Step 2: Verify Access
 
-2. Within the Overview pane, copy the **Application Url** value. This is the URL for the chat application.
+1. Select the **App Configuration** resource
+2. Select **Configuration explorer**
+3. Attempt to view values
 
-    ![The container app's Application Url is highlighted.](media/aca-application-url.png)
+### Step 3: Add Permissions (if needed)
 
-If you performed an **Azure Kubernetes Service (AKS)** deployment, follow these steps to obtain the URL for the chat UI application:
+If you cannot access configurations:
 
-1. Within the Resource Group that was created as part of the deployment, select the **Kubernetes Service** resource.
+1. Select **Access control (IAM)** in App Configuration
+2. Click **+ Add** > **Add role assignment**
+3. Select role: **App Configuration Data Owner**
+4. Assign to your user account
+5. Click **Review + assign**
 
-    ![The Kubernetes service is selected in the deployed resource group.](media/resource-group-aks.png)
+## Obtain Application URLs
 
-2. Select **Properties** in the left-hand menu and copy the **HTTP application routing domain** value. This is the URL for the chat application.
+### Azure Container Apps (Quick Start)
 
-    ![The HTTP application routing domain property is highlighted.](media/aks-http-app-routing-domain.png)
+**Chat Portal URL:**
+1. Navigate to resource group
+2. Select Container App ending with `chatuica`
+3. Copy **Application Url** from Overview
+
+**Management Portal URL:**
+1. Select Container App ending with `managementuica`
+2. Copy **Application Url** from Overview
+
+### Azure Kubernetes Service (Standard)
+
+**Chat Portal URL:**
+1. Navigate to resource group
+2. Select the **Kubernetes service** resource
+3. Select **Properties**
+4. Note the **HTTP application routing domain**
+5. Chat URL: `https://<domain>/`
+
+**Management Portal URL:**
+- Management URL: `https://<domain>/management/`
+
+**Or from hosts file:**
+Check `deploy/standard/config/hosts.ingress` generated during deployment.
+
+## URLs for Redirect URIs
+
+Record these URLs for app registration updates:
+
+| Application | URL Pattern (ACA) | URL Pattern (AKS) |
+|-------------|-------------------|-------------------|
+| Chat Portal | `https://<name>chatuica.<region>.azurecontainerapps.io` | `https://chat.<domain>` |
+| Management Portal | `https://<name>managementuica.<region>.azurecontainerapps.io` | `https://management.<domain>` |
+
+## Update Redirect URIs
+
+After obtaining URLs, update app registrations:
+
+### Chat Portal (FoundationaLLM-User-Portal)
+
+1. Navigate to **Microsoft Entra ID** > **App registrations**
+2. Select **FoundationaLLM-User-Portal**
+3. Select **Authentication**
+4. Under **Single-page application**, add:
+   ```
+   <CHAT_PORTAL_URL>/signin-oidc
+   ```
+5. Click **Save**
+
+### Management Portal (FoundationaLLM-Management-Portal)
+
+1. Select **FoundationaLLM-Management-Portal**
+2. Select **Authentication**
+3. Under **Single-page application**, add:
+   ```
+   <MANAGEMENT_PORTAL_URL>/signin-oidc
+   ```
+4. Click **Save**
+
+## Automation Script
+
+For Quick Start deployments, use the provided script:
+
+```powershell
+cd deploy/quick-start
+../common/scripts/Update-OAuthCallbackUris.ps1
+```
+
+This automatically updates redirect URIs based on deployed resources.
+
+## Next Steps
+
+After completing prerequisites:
+
+1. [Complete Core API Post-Deployment](post-deployment/core-authentication-post.md)
+2. [Complete Management API Post-Deployment](post-deployment/management-authentication-post.md)
+3. [Complete Authorization Post-Deployment](post-deployment/authorization-post.md)
+
+## Related Topics
+
+- [Authentication Setup Overview](index.md)
+- [App Configuration Values](../../deployment/app-configuration-values.md)
+- [Troubleshooting](../../monitoring-troubleshooting/troubleshooting.md)

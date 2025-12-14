@@ -1,60 +1,182 @@
-# Vulnerabilities: Identification, communication, and remediation
+# Vulnerability Management
 
-FoundationaLLM is committed to maintaining the security of our platform and protecting the integrity of your data. We conduct regular security testing to identify and address potential vulnerabilities in our platform.
+FoundationaLLM maintains a proactive approach to identifying, categorizing, and remediating security vulnerabilities.
 
-## **Vulnerability Identification:**
+## Vulnerability Identification
 
-1. **Regular Red-Team Exercises:**
-   - Our security protocols include routine red-team exercises aimed at identifying potential vulnerabilities and misconfigurations within the Azure platform.
-   - Through these exercises, we simulate real-world attack scenarios to proactively identify and address any weaknesses in our security posture.
+### Regular Security Testing
 
-2. **Regular Builds and Container Image Scans:**
-   - To stay ahead of emerging threats, we conduct regular builds and scans of our container images.
-   - This proactive approach involves identifying and addressing newly reported Common Vulnerabilities and Exposures (CVEs) promptly.
-   - By integrating security scans into our regular build processes, we ensure that our container images adhere to the latest security standards and mitigate potential risks effectively.
+| Activity | Frequency | Purpose |
+|----------|-----------|---------|
+| **Red Team Exercises** | Periodic | Identify attack vectors |
+| **Container Scans** | Every build | Detect CVEs |
+| **Dependency Analysis** | Continuous | Track vulnerable packages |
+| **Penetration Testing** | Periodic | External assessment |
 
-## **Vulnerability Severity Categorization:**
+### Automated Scanning
 
-Severity levels for vulnerabilities and other security findings are defined as follows:
+Every container image build includes:
+- Base image vulnerability scanning
+- Dependency analysis
+- CVE detection
+- Security best practice checks
 
-1. **Minor:**
-   - Vulnerabilities categorized as minor pose low or negligible risk to our system's security.
-   - These issues typically have minimal impact on operations and can be addressed during routine maintenance.
+## Severity Classification
 
-2. **Major:**
-   - Major vulnerabilities signify a moderate level of risk and may have a noticeable impact on security if left unaddressed.
-   - Immediate attention is given to major vulnerabilities to mitigate potential security gaps and maintain a secure environment.
+### Severity Levels
 
-3. **High:**
-   - Vulnerabilities classified as high represent a significant risk to the security and stability of our Azure platform.
-   - Urgent action is taken to address high-severity issues, often involving immediate patches or remediation steps to minimize potential threats.
+| Level | Description | Response Time |
+|-------|-------------|---------------|
+| **Critical** | Severe, imminent threat | Immediate (hours) |
+| **High** | Significant risk | 24-48 hours |
+| **Major** | Moderate risk | 1 week |
+| **Minor** | Low/negligible risk | Next release cycle |
 
-4. **Critical:**
-   - Critical vulnerabilities pose a severe and imminent threat to the integrity and confidentiality of our system.
-   - Immediate and comprehensive measures are implemented to address critical vulnerabilities, including rapid deployment of patches, configuration changes, or other necessary security controls.
+### Classification Criteria
 
-This severity categorization allows us to prioritize our response efforts based on the potential impact and urgency associated with each vulnerability. Regular assessments and adjustments are made to ensure the accuracy and relevance of the severity levels assigned to vulnerabilities.
+**Critical:**
+- Remote code execution
+- Authentication bypass
+- Data exfiltration potential
+- Active exploitation in the wild
 
-## **Communication of Patched Versions:**
+**High:**
+- Privilege escalation
+- Significant data exposure
+- Denial of service
+- Requires immediate patching
 
-We are committed to maintaining transparent and effective communication regarding security updates and patched versions. Our primary channel for disseminating information about patched versions is our official GitHub release page. This ensures that our users and stakeholders have immediate access to crucial details about the updates, including security enhancements and fixes.
+**Major:**
+- Limited impact vulnerabilities
+- Complex exploitation requirements
+- Defense-in-depth failures
+- Scheduled remediation
 
-Key points related to the communication of patched versions on our GitHub release page:
+**Minor:**
+- Information disclosure (low impact)
+- Configuration issues
+- Best practice deviations
+- Addressed in routine maintenance
 
-1. **Release Notifications:**
-   - Timely notifications about new releases, including security patches, will be posted on our GitHub release page.
-   - Users are encouraged to subscribe to release notifications to stay informed about the latest updates and security improvements.
+## Remediation Process
 
-2. **Detailed Release Notes:**
-   - Each release on our GitHub page will include comprehensive release notes outlining the changes, enhancements, and specific security vulnerabilities addressed.
-   - This transparent approach provides our community with detailed insights into the updates and the importance of applying the latest patches.
+### Critical/High Severity
 
-3. **Vulnerability Disclosure:**
-   - We adhere to responsible disclosure practices by openly acknowledging and crediting the individuals or organizations that report security vulnerabilities to us.
-   - Detailed information about the vulnerabilities, their potential impact, and the corresponding patches will be shared on our GitHub release page.
+```mermaid
+graph LR
+    A[Detect] --> B[Assess]
+    B --> C[Develop Fix]
+    C --> D[Test]
+    D --> E[Release Patch]
+    E --> F[Notify Users]
+```
 
-4. **Encouraging Regular Updates:**
-   - Users are strongly encouraged to regularly check our GitHub release page for the latest updates and security patches.
-   - Proactive adoption of the latest releases ensures that users benefit from the most recent security enhancements and protection against potential threats.
+1. **Detection** - Automated or reported
+2. **Assessment** - Verify and classify
+3. **Development** - Create fix
+4. **Testing** - Validate fix
+5. **Release** - Deploy patch
+6. **Notification** - Inform users
 
-By leveraging our GitHub release page as a central hub for communication, we aim to streamline the process of disseminating critical information and empowering our user community to maintain a secure environment.
+### Standard Remediation
+
+- Included in regular release cycles
+- Documented in release notes
+- Users upgrade at their schedule
+
+## Communication
+
+### GitHub Releases
+
+Primary channel for security updates:
+
+| Information | Location |
+|-------------|----------|
+| Security patches | Release notes |
+| Vulnerability details | Security advisories |
+| Upgrade instructions | Release documentation |
+| Breaking changes | Migration guides |
+
+### Release Notes Include
+
+- Summary of vulnerabilities addressed
+- Severity classification
+- Affected versions
+- Upgrade instructions
+- Credit to reporters
+
+### Responsible Disclosure
+
+We practice responsible disclosure:
+- Credit researchers who report vulnerabilities
+- Coordinate disclosure timing
+- Provide details after patch availability
+- Document in security advisories
+
+## Reporting Vulnerabilities
+
+### How to Report
+
+1. **Email:** security@foundationallm.ai
+2. **GitHub:** Security advisories (private)
+3. **Do not** disclose publicly before coordinated response
+
+### Report Contents
+
+Please include:
+- Description of the vulnerability
+- Steps to reproduce
+- Potential impact
+- Suggested remediation (if any)
+- Your contact information
+
+### Response Timeline
+
+| Action | Timeline |
+|--------|----------|
+| Acknowledge receipt | 24-48 hours |
+| Initial assessment | 1 week |
+| Status update | Weekly |
+| Patch development | Based on severity |
+| Coordinated disclosure | After patch available |
+
+## Staying Updated
+
+### Subscribe to Updates
+
+- Watch [GitHub repository](https://github.com/foundationallm/foundationallm)
+- Enable release notifications
+- Monitor security advisories
+
+### Version Management
+
+- Track deployed versions
+- Plan regular update cycles
+- Prioritize security patches
+
+## Customer Responsibilities
+
+### Recommended Practices
+
+| Practice | Description |
+|----------|-------------|
+| **Stay Current** | Apply updates promptly |
+| **Monitor Releases** | Watch for security patches |
+| **Test Updates** | Verify in staging first |
+| **Report Issues** | Help improve security |
+
+### Update Checklist
+
+- [ ] Review release notes
+- [ ] Identify security fixes
+- [ ] Plan update window
+- [ ] Test in staging
+- [ ] Deploy to production
+- [ ] Verify functionality
+
+## Related Topics
+
+- [Platform Security](platform-security.md)
+- [Updating Container Versions](../how-to-guides/updating-container-versions.md)
+- [Creating Release Notes](../how-to-guides/creating-release-notes.md)
+- [GitHub Releases](https://github.com/foundationallm/foundationallm/releases)

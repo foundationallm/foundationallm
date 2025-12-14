@@ -1,66 +1,169 @@
-# Understand FoundationaLLM role definitions
+# Role Definitions
 
-## Role definition
+A role definition is a collection of permissions that defines what actions can be performed.
 
-A role defininition (or just role) is a collection of permissions. A role definition lists the actions that can be performed, such as read, write, and delete.
+## Role Definition Structure
 
-The following table describes the propoerties of a role definition.
+| Property | Description |
+|----------|-------------|
+| `Name` | Display name of the role |
+| `Id` | Unique identifier (GUID) |
+| `Description` | Purpose of the role |
+| `Actions` | Control plane actions allowed |
+| `NotActions` | Actions excluded from Actions |
+| `DataActions` | Data plane actions allowed |
+| `NotDataActions` | Actions excluded from DataActions |
+| `AssignableScopes` | Where the role can be assigned |
 
-Property | Description
---- | ---
-Name | The display name of the role definition.
-Id | The unique identifier of the role definition.
-Description | The description of the role definition.
-Actions | An array of strings that lists the control plane actions that a role definition can perform. For example, `FoundationaLLM.Agent/agents/create`.
-NotActions | An array of strings that lists the actions that are excluded from the actions listed in the Actions property.
-DataActions | An array of strings that lists the data plane actions that a role definition can perform. For example, `FoundationaLLM.Agent/agents/read`.
-NotDataActions | An array of strings that lists the data plane actions that are excluded from the actions listed in the DataActions property.
-AssignableScopes | An array of strings that lists the scopes that the role definition can be assigned to.
+## Built-in Roles
 
-## Actions format
+### Owner
 
-The string that represents an action has the following format:
+Full control over all resources, including role assignment management.
 
-`FoundationaLLM.{ProviderName}/{resourceType}/{action}`
+```json
+{
+  "Name": "Owner",
+  "Id": "1301f8d4-3bea-4880-945f-315dbd2ddb46",
+  "Description": "Full access to manage all resources, including the ability to assign roles.",
+  "Actions": ["*"],
+  "NotActions": [],
+  "AssignableScopes": ["/"]
+}
+```
 
-Examples of actions include `read`, `write`, and `delete`.
+### Contributor
 
-The wildcard character (`*`) can be used to match any resource type or action. For example, `FoundationaLLM.Agent/*/read` matches all read actions for all resource types in the `FoundationaLLM.Agent` provider.
-
-## Role definition example
-
-The following example shows the `Contributor` role definition. The wildcard (`*`) character under `Actions` indicates that the principal assigned to the role can perform all actions (i.e., it can manage everything). This includes also actions defined in the future, as FoundationaLLM adds new resource types. The actions under `NotActions` are subtracted from `Actions`. In this specific case, `NotActions` removes the role's ability to manage access to resources.
+Manage all resources except role assignments.
 
 ```json
 {
   "Name": "Contributor",
   "Id": "e459c3a6-6b93-4062-85b3-fffc9fb253df",
-  "Description": "Allows you to manage everything except access to resources.",
-  "Actions": [
-    "*"
-  ],
+  "Description": "Manage everything except access to resources.",
+  "Actions": ["*"],
   "NotActions": [
     "FoundationaLLM.Authorization/*/delete",
     "FoundationaLLM.Authorization/*/write"
   ],
-  "DataActions": [],
-  "NotDataActions": [],
-  "AssignableScopes": [
-    "/"
-  ]
+  "AssignableScopes": ["/"]
 }
 ```
 
-## Control and data actions
+### Reader
 
-Control plane actions are specified in the `Actions` and `NotActions` properties.
+Read-only access to all resources.
 
-Examples of control plane actions in FoundationaLLM include:
+```json
+{
+  "Name": "Reader",
+  "Id": "00a53e72-f66e-4c03-8f81-7e885fd2eb35",
+  "Description": "Read-only access to all resources.",
+  "Actions": ["*/read"],
+  "NotActions": [],
+  "AssignableScopes": ["/"]
+}
+```
 
-- Manage access to an agent
-- Create a new data source
-- Delete a prompt
+### User Access Administrator
 
-Data plane actions are specified in the `DataActions` and `NotDataActions` properties.
+Manage role assignments only.
 
-**NOTE**: FoundationaLLM maintains a strict separation between the control and data planes. Control plane access is not inherited to the data plane. For example, if a user has the `FoundationaLLM.Agent/agents/create` permission, it does not mean that the user has the `FoundationaLLM.Agent/agents/read` permission.
+```json
+{
+  "Name": "User Access Administrator",
+  "Id": "fb8e0fd0-f7e2-4957-89d6-19f44f7d6618",
+  "Description": "Manage user access to resources.",
+  "Actions": [
+    "FoundationaLLM.Authorization/roleAssignments/read",
+    "FoundationaLLM.Authorization/roleAssignments/write",
+    "FoundationaLLM.Authorization/roleAssignments/delete"
+  ],
+  "NotActions": [],
+  "AssignableScopes": ["/"]
+}
+```
+
+## Action Format
+
+Actions follow this pattern:
+
+```
+FoundationaLLM.{ProviderName}/{resourceType}/{action}
+```
+
+### Examples
+
+| Action | Description |
+|--------|-------------|
+| `FoundationaLLM.Agent/agents/read` | Read agents |
+| `FoundationaLLM.Agent/agents/write` | Create/update agents |
+| `FoundationaLLM.Agent/agents/delete` | Delete agents |
+| `FoundationaLLM.Prompt/prompts/*` | All prompt actions |
+| `*/read` | Read all resources |
+| `*` | All actions |
+
+### Wildcards
+
+| Wildcard | Meaning |
+|----------|---------|
+| `*` | All actions on all resources |
+| `*/read` | Read all resource types |
+| `FoundationaLLM.Agent/*` | All Agent provider actions |
+| `FoundationaLLM.Agent/agents/*` | All actions on agents |
+
+## Control vs Data Plane
+
+### Control Plane Actions
+
+Specified in `Actions` and `NotActions`. Examples:
+
+- Create/update/delete resources
+- Manage configurations
+- Manage role assignments
+
+### Data Plane Actions
+
+Specified in `DataActions` and `NotDataActions`. Examples:
+
+- Read resource content
+- Execute operations
+- Access data
+
+> **Important:** Control plane access is NOT inherited to data plane. Having `FoundationaLLM.Agent/agents/write` does not grant `FoundationaLLM.Agent/agents/read`.
+
+## Listing Role Definitions
+
+### Via Management API
+
+```http
+GET /instances/{instanceId}/providers/FoundationaLLM.Authorization/roleDefinitions
+Authorization: Bearer <token>
+```
+
+### Via Azure CLI
+
+```bash
+token=$(az account get-access-token \
+  --scope api://FoundationaLLM-Management/Data.Manage \
+  --query accessToken -o tsv)
+
+curl -H "Authorization: Bearer $token" \
+  "https://<management-api>/instances/{instanceId}/providers/FoundationaLLM.Authorization/roleDefinitions"
+```
+
+## Role Selection Guide
+
+| Use Case | Recommended Role |
+|----------|------------------|
+| Full administration | Owner |
+| Resource management only | Contributor |
+| View resources only | Reader |
+| Manage access only | User Access Administrator |
+| Agent users | Reader (on specific agents) |
+
+## Related Topics
+
+- [Role Assignments](role-assignments.md)
+- [Scope](scope.md)
+- [Role Management](role-management.md)

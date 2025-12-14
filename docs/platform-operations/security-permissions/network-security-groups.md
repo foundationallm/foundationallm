@@ -1,19 +1,178 @@
-# Network Security Group Configurations
+# Network Security Groups
 
-FoundationaLLM uses Azure Virtual Networks for network segmentation.  The Standard Deployment uses Network Security Groups (NSGs) to control inbound and outbound traffic.  The following table lists the NSGs used in the Standard Deployment and the ports that are open by default.
+FoundationaLLM Standard deployment uses Network Security Groups (NSGs) to control network traffic in Azure Virtual Networks.
 
-## NSG Rules
+## Overview
 
-### Application Gateway
+NSGs provide stateful packet filtering based on:
+- Source/destination IP addresses
+- Source/destination ports
+- Protocol (TCP, UDP, etc.)
+- Direction (inbound/outbound)
 
-| Rule Name                    | Access | DestinationAddressPrefix | DestinationPortRange | Direction | Priority | Protocol | ProvisioningState | SourceAddressPrefix | SourcePortRange | Notes                                                       |
-| ---------------------------- | ------ | ------------------------ | -------------------- | --------- | -------- | -------- | ----------------- | ------------------- | --------------- | ----------------------------------------------------------- |
-| allow-internet-http-inbound  | Allow  | VirtualNetwork           | 80                   | Inbound   | 128      | Tcp      | Succeeded         | Internet            | *               | Customers may restrict inbound connectivity as desired.     |
-| allow-internet-https-inbound | Allow  | VirtualNetwork           | 443                  | Inbound   | 132      | Tcp      | Succeeded         | Internet            | *               | Customers may restrict inbound connectivity as desired.     |
-| allow-gatewaymanager-inbound | Allow  | *                        | 65200-65535          | Inbound   | 148      | Tcp      | Succeeded         | GatewayManager      | *               | This rule is required by Azure and cannot be changed.[1][1] |
-| allow-loadbalancer-inbound   | Allow  | *                        | *                    | Inbound   | 164      | *        | Succeeded         | AzureLoadBalancer   | *               | This rule is required by Azure and cannot be changed.[1][1] |
-| deny-all-inbound             | Deny   | *                        | *                    | Inbound   | 4096     | *        | Succeeded         | *                   | *               | Customers may modify this rule if needed (not reccomended)            |
+## Application Gateway NSG
 
-1: For further information regarding required NSG rules for Application Gateway, please see [this article][1].
+The Application Gateway subnet requires specific NSG rules for Azure services.
 
-[1]: https://learn.microsoft.com/en-us/azure/application-gateway/configuration-infrastructure#network-security-groups
+### Inbound Rules
+
+| Rule Name | Access | Source | Destination | Port | Protocol | Priority | Notes |
+|-----------|--------|--------|-------------|------|----------|----------|-------|
+| `allow-internet-http-inbound` | Allow | Internet | VirtualNetwork | 80 | TCP | 128 | Customizable |
+| `allow-internet-https-inbound` | Allow | Internet | VirtualNetwork | 443 | TCP | 132 | Customizable |
+| `allow-gatewaymanager-inbound` | Allow | GatewayManager | * | 65200-65535 | TCP | 148 | **Required** |
+| `allow-loadbalancer-inbound` | Allow | AzureLoadBalancer | * | * | * | 164 | **Required** |
+| `deny-all-inbound` | Deny | * | * | * | * | 4096 | Default deny |
+
+### Important Notes
+
+1. **GatewayManager Rule** - Required by Azure. Do not modify or delete.
+2. **LoadBalancer Rule** - Required by Azure. Do not modify or delete.
+3. **Internet Rules** - Can be restricted to specific IP ranges.
+
+For more information, see [Azure Application Gateway NSG requirements](https://learn.microsoft.com/azure/application-gateway/configuration-infrastructure#network-security-groups).
+
+## AKS Subnet NSGs
+
+### Backend Cluster
+
+| Direction | Source | Destination | Ports | Purpose |
+|-----------|--------|-------------|-------|---------|
+| Inbound | Application Gateway | AKS Subnet | 443 | API traffic |
+| Inbound | AzureLoadBalancer | AKS Subnet | * | Health probes |
+| Outbound | AKS Subnet | Internet | 443 | Azure services |
+| Outbound | AKS Subnet | AzureCloud | 443 | Azure APIs |
+
+### Frontend Cluster
+
+| Direction | Source | Destination | Ports | Purpose |
+|-----------|--------|-------------|-------|---------|
+| Inbound | Application Gateway | AKS Subnet | 443 | Portal traffic |
+| Inbound | AzureLoadBalancer | AKS Subnet | * | Health probes |
+| Outbound | AKS Subnet | Backend | 443 | API calls |
+| Outbound | AKS Subnet | Internet | 443 | Azure services |
+
+## Private Endpoint Subnet
+
+| Direction | Source | Destination | Ports | Purpose |
+|-----------|--------|-------------|-------|---------|
+| Inbound | AKS Subnets | Private Endpoints | 443 | Service access |
+| Inbound | Jumpbox | Private Endpoints | 443 | Admin access |
+| Outbound | * | * | * | Deny all |
+
+## Customization Guidelines
+
+### Restricting Internet Access
+
+Replace Internet source with specific CIDRs:
+
+```json
+{
+  "name": "allow-corporate-https-inbound",
+  "properties": {
+    "access": "Allow",
+    "direction": "Inbound",
+    "protocol": "Tcp",
+    "sourceAddressPrefix": "203.0.113.0/24",
+    "sourcePortRange": "*",
+    "destinationAddressPrefix": "VirtualNetwork",
+    "destinationPortRange": "443",
+    "priority": 132
+  }
+}
+```
+
+### Adding Custom Rules
+
+Example: Allow specific IP range:
+
+```bash
+az network nsg rule create \
+  --resource-group <resource-group> \
+  --nsg-name <nsg-name> \
+  --name allow-partner-https \
+  --priority 140 \
+  --access Allow \
+  --direction Inbound \
+  --protocol Tcp \
+  --source-address-prefixes 198.51.100.0/24 \
+  --source-port-ranges '*' \
+  --destination-address-prefixes VirtualNetwork \
+  --destination-port-ranges 443
+```
+
+## Service Tags
+
+Use Azure service tags for easier rule management:
+
+| Tag | Description |
+|-----|-------------|
+| `VirtualNetwork` | All VNet addresses |
+| `AzureLoadBalancer` | Azure Load Balancer |
+| `Internet` | Public internet |
+| `GatewayManager` | Azure Gateway Manager |
+| `AzureCloud` | All Azure public IPs |
+| `AzureCosmosDB` | Cosmos DB service |
+| `Storage` | Azure Storage |
+| `AzureKeyVault` | Key Vault service |
+
+## Monitoring NSG Traffic
+
+### Enable Flow Logs
+
+```bash
+az network watcher flow-log create \
+  --resource-group <resource-group> \
+  --nsg <nsg-name> \
+  --storage-account <storage-account> \
+  --enabled true
+```
+
+### View NSG Effective Rules
+
+```bash
+az network nic list-effective-nsg \
+  --resource-group <resource-group> \
+  --name <nic-name>
+```
+
+## Troubleshooting
+
+### Common Issues
+
+| Issue | Solution |
+|-------|----------|
+| Connection timeout | Check NSG rules allow traffic |
+| Service unavailable | Verify Application Gateway rules |
+| Inter-service failures | Check AKS subnet rules |
+
+### NSG Diagnostic Commands
+
+```bash
+# List NSG rules
+az network nsg rule list \
+  --resource-group <resource-group> \
+  --nsg-name <nsg-name> \
+  --output table
+
+# Check flow logs
+az network watcher flow-log show \
+  --resource-group <resource-group> \
+  --nsg <nsg-name>
+```
+
+## Best Practices
+
+| Practice | Description |
+|----------|-------------|
+| **Least Privilege** | Only allow necessary traffic |
+| **Use Service Tags** | Easier maintenance than IP ranges |
+| **Enable Flow Logs** | Audit and troubleshooting |
+| **Document Changes** | Track rule modifications |
+| **Test Changes** | Verify in staging first |
+
+## Related Topics
+
+- [Platform Security](platform-security.md)
+- [Standard Deployment](../deployment/deployment-standard.md)
+- [Troubleshooting](../monitoring-troubleshooting/troubleshooting.md)

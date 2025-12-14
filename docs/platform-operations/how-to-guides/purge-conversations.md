@@ -1,115 +1,275 @@
-# Cosmos DB stored procedure to anonymize deleted sessions (conversations)
+# Purging Deleted Conversations
 
-User conversations are stored in Cosmos DB. When a user deletes a conversation, the session document and associated documents (CompletionPrompt and Message) are marked as deleted (soft-deleted). As opposed to hard-deleting the documents, which would remove them from the database, soft-deleting allows for the possibility of restoring the conversation later. However, in some cases, it may be necessary to anonymize the deleted session to ensure that no sensitive information is retained in the database. Anonymizing the deleted session involves updating the associated documents to remove any potentially sensitive information, such as user input or analysis results. As opposed to hard-deleting the documents, which would remove them from the database, soft-deleting allows for the possibility of retaining statistical information and other metrics, such as token usage, user feedback, etc.
+This guide explains how to anonymize deleted conversations in Cosmos DB to remove sensitive information while preserving statistical data.
 
-This stored procedure anonymizes the deleted session by updating the associated documents to remove any potentially sensitive information.
+## Overview
 
-## Creating the stored procedure
+When users delete conversations in FoundationaLLM:
+- The session is **soft-deleted** (marked as deleted)
+- Original content remains in the database
+- Statistical data (tokens, feedback) is preserved
 
-To create the stored procedure, follow these steps:
+For compliance or security requirements, you may need to anonymize this content.
 
-1. Open the Azure portal and navigate to your Cosmos DB account.
-2. Select the "Data Explorer" option from the left-hand menu.
-3. Right-click the **Sessions** container and select the **New Stored Procedure** option.
-4. Copy and paste the following code into the stored procedure editor:
+## Anonymization Approach
 
-    ```javascript
-    function anonymizeDeletedSession() {
-        var collection = getContext().getCollection();
-        var response = getContext().getResponse();
-    
-        // Retrieve Session document
-        var sessionQuery = `SELECT * FROM c WHERE c.type = 'Session'`;
-    
-        var isSessionAccepted = collection.queryDocuments(
-            collection.getSelfLink(),
-            sessionQuery,
-            {},
-            function (err, sessionDocuments, responseOptions) {
-                if (err) throw err;
-    
-                if (sessionDocuments.length === 0 || !sessionDocuments[0].deleted) {
-                    response.setBody("Session cannot be anonymized because it was not deleted.");
-                    return;
-                }
-    
-                // Session marked as deleted, proceed
-                var query = `SELECT * FROM c WHERE c.type = 'CompletionPrompt' OR c.type = 'Message'`;
-    
-                var isAccepted = collection.queryDocuments(
-                    collection.getSelfLink(),
-                    query,
-                    {},
-                    function (err, documents, responseOptions) {
-                        if (err) throw err;
-    
-                        if (documents.length === 0) {
-                            response.setBody("No related documents found.");
-                            return;
-                        }
-    
-                        var updatedCount = 0;
-                        var processedCount = 0;
-    
-                        documents.forEach(function (doc) {
-                            if (doc.type === "CompletionPrompt") {
-                                doc.prompt = "Deleted";
-                            }
-    
-                            if (doc.type === "Message") {
-                                doc.text = "Deleted";
-    
-                                if (Array.isArray(doc.content)) {
-                                    doc.content.forEach(function (contentItem) {
-                                        contentItem.value = "Deleted";
-                                    });
-                                }
-    
-                                if (Array.isArray(doc.analysisResults)) {
-                                    doc.analysisResults.forEach(function (analysisItem) {
-                                        analysisItem.toolInput = "Deleted";
-                                        analysisItem.toolOutput = "Deleted";
-                                    });
-                                }
-                            }
-    
-                            // Update the document
-                            var acceptUpdate = collection.replaceDocument(doc._self, doc, function (err) {
-                                if (err) throw err;
-    
-                                updatedCount++;
-                                processedCount++;
-    
-                                // Check if all documents processed
-                                if (processedCount === documents.length) {
-                                    response.setBody("Updated " + updatedCount + " documents.");
-                                }
-                            });
-    
-                            if (!acceptUpdate) throw new Error("Update not accepted, aborting");
-                        });
-                    }
-                );
-    
-                if (!isAccepted) throw new Error("Query was not accepted by server.");
+The anonymization process:
+1. Identifies soft-deleted sessions
+2. Replaces sensitive content with "Deleted"
+3. Preserves metadata for analytics
+
+### What Gets Anonymized
+
+| Document Type | Anonymized Fields |
+|---------------|-------------------|
+| `CompletionPrompt` | `prompt` |
+| `Message` | `text`, `content.value`, `analysisResults.toolInput`, `analysisResults.toolOutput` |
+
+### What's Preserved
+
+| Data | Purpose |
+|------|---------|
+| Document IDs | Reference integrity |
+| Timestamps | Analytics |
+| Token counts | Usage metrics |
+| User feedback | Quality metrics |
+| Session structure | Statistical analysis |
+
+## Creating the Stored Procedure
+
+### Step 1: Open Azure Portal
+
+1. Navigate to your Cosmos DB account
+2. Select **Data Explorer**
+
+### Step 2: Create Stored Procedure
+
+1. Expand your database
+2. Right-click the **Sessions** container
+3. Select **New Stored Procedure**
+
+### Step 3: Add Stored Procedure Code
+
+Name: `anonymizeDeletedSession`
+
+```javascript
+function anonymizeDeletedSession() {
+    var collection = getContext().getCollection();
+    var response = getContext().getResponse();
+
+    // Retrieve Session document
+    var sessionQuery = `SELECT * FROM c WHERE c.type = 'Session'`;
+
+    var isSessionAccepted = collection.queryDocuments(
+        collection.getSelfLink(),
+        sessionQuery,
+        {},
+        function (err, sessionDocuments, responseOptions) {
+            if (err) throw err;
+
+            if (sessionDocuments.length === 0 || !sessionDocuments[0].deleted) {
+                response.setBody("Session cannot be anonymized because it was not deleted.");
+                return;
             }
-        );
+
+            // Session marked as deleted, proceed
+            var query = `SELECT * FROM c WHERE c.type = 'CompletionPrompt' OR c.type = 'Message'`;
+
+            var isAccepted = collection.queryDocuments(
+                collection.getSelfLink(),
+                query,
+                {},
+                function (err, documents, responseOptions) {
+                    if (err) throw err;
+
+                    if (documents.length === 0) {
+                        response.setBody("No related documents found.");
+                        return;
+                    }
+
+                    var updatedCount = 0;
+                    var processedCount = 0;
+
+                    documents.forEach(function (doc) {
+                        if (doc.type === "CompletionPrompt") {
+                            doc.prompt = "Deleted";
+                        }
+
+                        if (doc.type === "Message") {
+                            doc.text = "Deleted";
+
+                            if (Array.isArray(doc.content)) {
+                                doc.content.forEach(function (contentItem) {
+                                    contentItem.value = "Deleted";
+                                });
+                            }
+
+                            if (Array.isArray(doc.analysisResults)) {
+                                doc.analysisResults.forEach(function (analysisItem) {
+                                    analysisItem.toolInput = "Deleted";
+                                    analysisItem.toolOutput = "Deleted";
+                                });
+                            }
+                        }
+
+                        // Update the document
+                        var acceptUpdate = collection.replaceDocument(doc._self, doc, function (err) {
+                            if (err) throw err;
+
+                            updatedCount++;
+                            processedCount++;
+
+                            // Check if all documents processed
+                            if (processedCount === documents.length) {
+                                response.setBody("Updated " + updatedCount + " documents.");
+                            }
+                        });
+
+                        if (!acceptUpdate) throw new Error("Update not accepted, aborting");
+                    });
+                }
+            );
+
+            if (!isAccepted) throw new Error("Query was not accepted by server.");
+        }
+    );
+
+    if (!isSessionAccepted) throw new Error("Session query was not accepted by server.");
+}
+```
+
+### Step 4: Save
+
+Click **Save** to create the stored procedure.
+
+## Executing the Stored Procedure
+
+### Via Azure Portal
+
+1. Navigate to **Data Explorer**
+2. Expand **Sessions** container > **Stored Procedures**
+3. Select `anonymizeDeletedSession`
+4. Click **Execute**
+5. In the input panel:
+   - **Partition key value**: Enter the `sessionId` of the deleted session
+6. Click **Execute**
+
+### Expected Output
+
+**Success:**
+```
+Updated X documents.
+```
+
+**Session Not Deleted:**
+```
+Session cannot be anonymized because it was not deleted.
+```
+
+**No Related Documents:**
+```
+No related documents found.
+```
+
+### Via Azure CLI
+
+```bash
+# Execute stored procedure
+az cosmosdb sql stored-procedure execute \
+  --account-name <cosmos-account> \
+  --database-name <database> \
+  --container-name Sessions \
+  --name anonymizeDeletedSession \
+  --partition-key-value <session-id> \
+  --resource-group <resource-group>
+```
+
+## Bulk Anonymization
+
+For bulk anonymization of multiple sessions:
+
+### Query Deleted Sessions
+
+```sql
+SELECT c.id, c.sessionId 
+FROM c 
+WHERE c.type = 'Session' AND c.deleted = true
+```
+
+### Automation Script
+
+```powershell
+# Get all deleted sessions
+$deletedSessions = az cosmosdb sql query \
+    --account-name $cosmosAccount \
+    --database-name $database \
+    --container-name Sessions \
+    --query "SELECT c.sessionId FROM c WHERE c.type = 'Session' AND c.deleted = true" \
+    | ConvertFrom-Json
+
+# Anonymize each session
+foreach ($session in $deletedSessions) {
+    Write-Host "Anonymizing session: $($session.sessionId)"
     
-        if (!isSessionAccepted) throw new Error("Session query was not accepted by server.");
-    }
-    ```
+    az cosmosdb sql stored-procedure execute `
+        --account-name $cosmosAccount `
+        --database-name $database `
+        --container-name Sessions `
+        --name anonymizeDeletedSession `
+        --partition-key-value $session.sessionId `
+        --resource-group $resourceGroup
+}
+```
 
-5. Provide a name for the stored procedure (e.g., `anonymizeDeletedSession`).
-6. Select the **Save** button to create the stored procedure.
+## Scheduling Automatic Purges
 
-## Executing the stored procedure
+### Using Azure Functions
 
-When you wish to anonymize a deleted session, you can execute the stored procedure by following these steps:
+Create a timer-triggered function to run periodically:
 
-1. In the Azure portal, navigate to your Cosmos DB account and select the **Data Explorer** option.
-2. Expand the **Sessions** container and expand the **Stored Procedures** option.
-3. Select the stored procedure you created (e.g., `anonymizeDeletedSession`).
-4. Click the **Execute** button to run the stored procedure.
-5. In the input parameters panel that appears, enter the `sessionId` of the session you want to anonymize into the **Partition key value** field, then select **Execute**.
-6. The stored procedure will run and anonymize the deleted session, updating the associated documents as necessary. The output will indicate the number of documents that were updated.
-7. If the session was not deleted, the output will indicate that the session cannot be anonymized because it was not deleted.
+```csharp
+[FunctionName("AnonymizeDeletedSessions")]
+public static async Task Run(
+    [TimerTrigger("0 0 2 * * *")] TimerInfo timer, // Daily at 2 AM
+    [CosmosDB(
+        databaseName: "%CosmosDbDatabase%",
+        containerName: "Sessions",
+        Connection = "CosmosDbConnection")] CosmosClient client,
+    ILogger log)
+{
+    // Implementation to find and anonymize deleted sessions
+}
+```
+
+> **TODO:** Provide complete Azure Function implementation for scheduled anonymization.
+
+## Compliance Considerations
+
+| Requirement | Implementation |
+|-------------|----------------|
+| **GDPR Right to Erasure** | Anonymize user data on request |
+| **Data Retention** | Preserve aggregate statistics |
+| **Audit Trail** | Log anonymization operations |
+| **Verification** | Query to confirm anonymization |
+
+## Verification Query
+
+Confirm anonymization:
+
+```sql
+SELECT 
+    c.type,
+    c.text,
+    c.prompt
+FROM c 
+WHERE c.sessionId = '<session-id>'
+AND (c.type = 'Message' OR c.type = 'CompletionPrompt')
+```
+
+Expected result: All `text` and `prompt` fields show "Deleted".
+
+## Related Topics
+
+- [Backups & Data Resiliency](backups.md)
+- [Platform Security](../security-permissions/platform-security.md)
+- [Logs & Monitoring](../monitoring-troubleshooting/logs.md)

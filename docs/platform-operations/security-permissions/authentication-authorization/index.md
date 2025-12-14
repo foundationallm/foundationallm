@@ -1,33 +1,141 @@
-# Authentication
+# Authentication & Authorization Setup
 
-FoundationaLLM uses the [Microsoft Entra ID](https://learn.microsoft.com/entra/fundamentals/whatis) service to authenticate users and applications. Check back for additional authentication providers in the future.
+FoundationaLLM uses Microsoft Entra ID for user authentication and authorization across all platform components.
 
-## Microsoft Entra ID
+## Overview
 
-Starting `release 0.8.0` there are 2 options of completing the app registrations for the 6 apps required for FoundationaLLM. Option #1 is to run a script that will register all 6 applications for you. Option #2 is to manually register the 6 applications. The steps for both options are below.
+| Component | Authentication App | Authorization |
+|-----------|-------------------|---------------|
+| Chat Portal | FoundationaLLM-User-Portal | Core API access |
+| Core API | FoundationaLLM-Core-API | User operations |
+| Management Portal | FoundationaLLM-Management-Portal | Management API access |
+| Management API | FoundationaLLM-Management-API | Admin operations |
+| Authorization API | FoundationaLLM-Authorization-API | RBAC management |
 
-## Option #1 - Run the script to register all 6 applications
-The script is available in the `\deploy\common\scripts\` folder. The script is called `Create-FllmEntraIdApps.ps1`. The script will register the 6 required applications in the Entra ID tenant that you are logged into.
+## Required App Registrations
 
-![Entra ID app registration script](../media/EntraIDAppsCreation.png)
+You must create **6 app registrations** in Microsoft Entra ID:
 
-After the completion of the script execution, you will see the 6 applications registered in the Entra ID tenant under `App registrations`
+| App Registration | Purpose |
+|------------------|---------|
+| FoundationaLLM-User-Portal | Chat portal authentication |
+| FoundationaLLM-Core-API | Core API authentication |
+| FoundationaLLM-Management-Portal | Management portal authentication |
+| FoundationaLLM-Management-API | Management API authentication |
+| FoundationaLLM-Authorization-API | Authorization service |
+| FoundationaLLM-Reader | Read-only access (optional) |
 
-![Entra ID registered apps in Portal](../media/EntraIDRegisteredAppsPortal.png)
+## Setup Options
 
-## Option 2 - Manually registering the 6 applications
+### Option 1: Automated Script (Recommended)
 
-> [!IMPORTANT]
-> The following steps are to set up authentication and authorization for the solution. You will need to create app registrations in the Entra ID tenant in the Azure portal manually if you choose not to run the automatic script for any reason.  There are currently **five** app registrations required for the solution as listed below.  After you complete the 6 app registrations, you will need to finish the deployment process of the solution and revisit these app registrations to fill in some missing values that are generated during the deployment itself.
+Run the automated script to create all app registrations:
 
-### Steps to perform before the deployment
-- [Core API and user portal authentication pre-deployment - Microsoft Entra ID](core-authentication-setup-entra.md)
-- [Management API and portal authentication pre-deployment - Microsoft Entra ID](management-authentication-setup-entra.md)
-- [Authorization pre-deployment - Microsoft Entra ID](authorization-setup-entra.md)
+```powershell
+cd deploy/common/scripts
+./Create-FllmEntraIdApps.ps1
+```
 
-### Steps to perform after the deployment
-- [Pre-requisites for post-deployment configuration](pre-requisites.md)
-- [Core API and user portal authentication post-deployment - Microsoft Entra ID](post-core-deployment.md)
-- [Management API and portal authentication post-deployment - Microsoft Entra ID](post-management-deployment.md)
-- [Authorization post-deployment - Microsoft Entra ID](post-authorization-deployment.md)
+The script:
+- Creates all 6 app registrations
+- Configures scopes and permissions
+- Sets up proper token configurations
 
+After script completion, verify in **Azure Portal** > **Microsoft Entra ID** > **App registrations**.
+
+### Option 2: Manual Setup
+
+Complete the following guides in order:
+
+#### Pre-Deployment (Before running `azd up`)
+
+1. [Core API & User Portal Setup](pre-deployment/core-authentication-setup.md)
+2. [Management API & Portal Setup](pre-deployment/management-authentication-setup.md)
+3. [Authorization API Setup](pre-deployment/authorization-setup.md)
+
+#### Post-Deployment (After running `azd up`)
+
+1. [Prerequisites](pre-requisites.md)
+2. [Core API Post-Deployment](post-deployment/core-authentication-post.md)
+3. [Management API Post-Deployment](post-deployment/management-authentication-post.md)
+4. [Authorization Post-Deployment](post-deployment/authorization-post.md)
+
+## Configuration Summary
+
+### App Configuration Keys
+
+After setup, verify these App Configuration values:
+
+| Key | Value |
+|-----|-------|
+| `FoundationaLLM:Chat:Entra:ClientId` | User Portal client ID |
+| `FoundationaLLM:Chat:Entra:TenantId` | Your tenant ID |
+| `FoundationaLLM:Chat:Entra:Scopes` | `api://FoundationaLLM-Core/Data.Read` |
+| `FoundationaLLM:CoreAPI:Entra:ClientId` | Core API client ID |
+| `FoundationaLLM:CoreAPI:Entra:TenantId` | Your tenant ID |
+| `FoundationaLLM:Management:Entra:ClientId` | Management Portal client ID |
+| `FoundationaLLM:Management:Entra:Scopes` | `api://FoundationaLLM-Management/Data.Manage` |
+| `FoundationaLLM:ManagementAPI:Entra:ClientId` | Management API client ID |
+
+### Required Permissions
+
+| Role | Scope | Purpose |
+|------|-------|---------|
+| Cloud Application Administrator | Entra ID | Create app registrations |
+| Global Administrator OR Privileged Role Administrator | Entra ID | Assign MS Graph permissions |
+| Contributor | Azure Subscription | Access App Configuration |
+
+## Post-Deployment Scripts
+
+### Configure MS Graph Permissions
+
+After deployment, run:
+
+```powershell
+cd deploy/quick-start  # or deploy/standard
+../common/scripts/Set-FllmGraphRoles.ps1 -resourceGroupName <resource-group>
+```
+
+This grants managed identities the required MS Graph permissions.
+
+### Update OAuth Callback URIs
+
+Update redirect URIs with deployment URLs:
+
+```powershell
+../common/scripts/Update-OAuthCallbackUris.ps1
+```
+
+## Verifying Setup
+
+### Test Authentication
+
+1. Navigate to Chat Portal URL
+2. Sign in with Entra ID account
+3. Verify successful login
+
+### Troubleshoot Authentication Issues
+
+| Issue | Solution |
+|-------|----------|
+| Redirect loop | Check redirect URIs in app registration |
+| Invalid token | Verify client IDs in App Configuration |
+| Access denied | Check API permissions and scopes |
+| 401 Unauthorized | Verify tenant ID configuration |
+
+See [Troubleshooting](../../monitoring-troubleshooting/troubleshooting.md) for detailed diagnostics.
+
+## Security Considerations
+
+| Practice | Recommendation |
+|----------|----------------|
+| **Token Lifetime** | Use default settings |
+| **Conditional Access** | Configure based on security requirements |
+| **MFA** | Enable for all users |
+| **Secret Rotation** | Rotate client secrets before expiration |
+
+## Related Topics
+
+- [Role-Based Access Control](../role-based-access-control/index.md)
+- [Platform Security](../platform-security.md)
+- [App Configuration Values](../../deployment/app-configuration-values.md)

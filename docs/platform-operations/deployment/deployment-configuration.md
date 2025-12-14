@@ -1,53 +1,138 @@
-# Configuration for deployment
+# Deployment Configuration Reference
 
-## Configuration settings used by the FoundationaLLM platform
+This document provides a reference for environment variables and configuration settings used during FoundationaLLM deployment.
 
-Name | Default | Type | Area | Used by | Description
---- | --- | --- | --- | --- | ---
-`foundationallm-core-api-url` |  | Environment variable | User Portal | `ChatThread.vue`, `index.vue` | The URL of the FoundationaLLM Core API.
-`foundationallm-core-api-keyvault-name` |  | Environment variable | Core API |  | The name of the Azure Key Vault used by the Core API.
-`foundationallm-core-api-entra-instance` | `https://login.microsoftonline.com/` | Environment variable | Core API |  | The Entra instance used by the Core API.
-`foundationallm-core-api-entra-tenant-id` | View the [Entra setup document](./authentication/core-authentication-setup-entra.md) for instructions | Environment variable | Core API |  | The Entra tenant ID used by the Core API.
-`foundationallm-core-api-entra-client-id` |  | Environment variable | Core API |  | The Entra client ID used by the Core API.
-`foundationallm-core-api-entra-client-secret-name` |  | Key Vault secret| Core API |  | Name of the Entra client secret used by the Core API.
-`foundationallm-core-api-entra-callback-path` | `/signin-oidc` | Environment variable | Core API |  | The Entra callback path used by the Core API.
-`foundationallm-core-api-entra-scopes` |  | Environment variable | Core API |  | The Entra scopes used by the Core API.
-`foundationallm-core-api-gatekeeper-api-url` |  | Environment variable | Core API |  | The URL of the Gatekeeper API used by the Core API.
-`foundationallm-gatekeeper-api-keyvault-name` |  | Environment variable | Gatekeeper API | | The name of the Azure Key Vault used by the Gatekeeper API.
-`foundationallm-gatekeeper-api-key` |  | Key Vault secret| Gatekeeper API |  | The first Gatekeeper API key.
-`foundationallm-gatekeeper-api-orchestration-api-url` |  | Environment variable | Gatekeeper API |  | The URL of the Orchestration API used by the Gatekeeper API.
-`foundationallm-orchestration-api-keyvault-name` |  | Environment variable | Orchestration API |  | The name of the Azure Key Vault used by the Orchestration API.
-`foundationallm-orchestration-api-key` |  | Key Vault secret| Orchestration API |  | The first Orchestration API key.
-`foundationallm-orchestration-api-agenthub-api-url` |  | Environment variable | Orchestration API |  | The URL of the Agent Hub API used by the Orchestration API.
-`foundationallm-orchestration-api-prompthub-api-url` |  | Environment variable | Orchestration API |  | The URL of the Prompt Hub API used by the Orchestration API.
-`foundationallm-orchestration-api-datasourcehub-api-url` |  | Environment variable | Orchestration API |  | The URL of the Data Source Hub API used by the Orchestration API.
-`foundationallm-orchestration-api-langchain-api-url` |  | Environment variable | Orchestration API |  | The URL of the LangChain API used by the Orchestration API.
-`foundationallm-orchestration-api-semantickernel-api-url` |  | Environment variable | Orchestration API |  | The URL of the Semantic Kernel API used by the Orchestration API.
-`foundationallm-agenthub-api-key` |  | Key Vault secret| Agent Hub API | `APIKeyValidator` (SDK) | The Agent Hub API key.
-`foundationallm-prompthub-api-key` |  | Key Vault secret| Prompt Hub API | `APIKeyValidator` (SDK) | The Prompt Hub API key.
-`foundationallm-datasourcehub-api-key` |  | Key Vault secret| Data Source Hub API | `APIKeyValidator` (SDK) | The Data Source Hub API key.
-`foundationallm-langchain-api-key` |  | Key Vault secret| LangChain API | `APIKeyValidator` (SDK) | The first LangChain API key.
-`foundationallm-langchain-sqldb-testdb-server-name` |  | Environment variable | LangChain API | `SqlDbConfig` (SDK) | The name of the Azure SQL Server used by the LangChain testdb SQL agent.
-`foundationallm-langchain-sqldb-testdb-database-name` |  | Environment variable | LangChain API | `SqlDbConfig` (SDK) | The name of the database used by the LangChain testdb SQL agent.
-`foundationallm-langchain-sqldb-testdb-username` |  | Environment variable | LangChain API | `SqlDbConfig` (SDK) | The user name used by the LangChain testdb SQL agent.
-`foundationallm-langchain-sqldb-testdb-database-password` |  | Key Vault Secret | LangChain API | `SqlDbConfig` (SDK) | The user password used by the LangChain testdb SQL agent.
-`foundationallm-azure-openai-api-url` |  | Environment variable | LangChain API | `AzureChatLLM` (SDK) | The URL of the Azure OpenAI API.
-`foundationallm-azure-openai-api-completions-deployment` |  | Environment variable | LangChain API | `AzureChatLLM` (SDK) | The name of the completions Azure Open AI deployment used by LangChain API.
-`foundationallm-azure-openai-api-completions-model-version` |  | Environment variable | LangChain API | `AzureChatLLM` (SDK) | The version of the completions model used by LangChain API.
-`foundationallm-azure-openai-api-version` | | Environment variable | LangChain API | `AzureChatLLM` (SDK) | The version of the Azure Open AI API used by LangChain API.
-`foundationallm-azure-openai-api-key` | | Key Vault secret | LangChain API | `AzureChatLLM` (SDK) | The key of the Azure Open AI API used by LangChain API.
-`foundationallm-langchain-summary-model-name` | `gpt-35-turbo` | Environment variable | LangChain API | `SummaryAgent` (SDK) | The name of the summary model used by the LangChain summary agent.
-`foundationallm-langchain-summary-max-tokens` | `4097` | Environment variable | LangChain API | `SummaryAgent` (SDK) | The maximum number of input tokens used by the LangChain summary agent.
-`foundationallm-keyvault-name` | | Environment variable | LangChain API, PythonSDK |`AgentHub`(SDK), `DataSourceHub`(SDK),`PromptHub`(SDK) | | The name of the Azure Key Vault used by the FoundationaLLM platform.
-`foundationallm-configuration-allow-environment-variables` |  | Environment variable | PythonSDK | `Configuration`(SDK) | When True checks environment first then key vault, otherwise checks App config (not yet implemented) then key vault 
-`foundationallm-prompt-metadata-storage-container` | | Environment variable | PythonSDK | `PromptHubStorageManager`(SDK) | The name of the Azure Blob Storage container where prompt metadata is stored.
-`foundationallm-datasource-metadata-storage-container` | | Environment variable | PythonSDK | `DataSourceHubStorageManager`(SDK) | The name of the Azure Blob Storage container where data source metadata is stored.
-`foundationallm-agent-metadata-storage-container` | | Environment variable | PythonSDK | `AgentHubStorageManager`(SDK) | The name of the Azure Blob Storage container where agent metadata is stored.
+## Environment Variable Reference
 
-## Temporary configuration settings used by the FoundationaLLM platform
+> **Note:** These settings are primarily used during initial deployment. For runtime configuration, see [App Configuration Values](app-configuration-values.md).
 
->**NOTE**: These configuration settings are temporary and will be removed in the future.
+### Core API Configuration
 
-Name | Type | Area | Used by | Description
---- | --- | --- | --- | ---
-`foundationallm-langchain-csv-file-url` | Environment variable | LangChain API | `CSVAgent` (SDK) | The URL (including the SAS token) of the CSV file used by the LangChain CSV agent.
+| Variable | Type | Description |
+|----------|------|-------------|
+| `foundationallm-core-api-url` | URL | Core API endpoint |
+| `foundationallm-core-api-keyvault-name` | String | Key Vault name |
+| `foundationallm-core-api-entra-instance` | URL | Entra login URL (default: `https://login.microsoftonline.com/`) |
+| `foundationallm-core-api-entra-tenant-id` | GUID | Azure AD tenant ID |
+| `foundationallm-core-api-entra-client-id` | GUID | App registration client ID |
+| `foundationallm-core-api-entra-callback-path` | Path | OAuth callback (default: `/signin-oidc`) |
+| `foundationallm-core-api-entra-scopes` | String | Required scopes |
+| `foundationallm-core-api-gatekeeper-api-url` | URL | Gatekeeper API endpoint |
+
+### Gatekeeper API Configuration
+
+| Variable | Type | Description |
+|----------|------|-------------|
+| `foundationallm-gatekeeper-api-keyvault-name` | String | Key Vault name |
+| `foundationallm-gatekeeper-api-key` | Secret | API key (Key Vault) |
+| `foundationallm-gatekeeper-api-orchestration-api-url` | URL | Orchestration API endpoint |
+
+### Orchestration API Configuration
+
+| Variable | Type | Description |
+|----------|------|-------------|
+| `foundationallm-orchestration-api-keyvault-name` | String | Key Vault name |
+| `foundationallm-orchestration-api-key` | Secret | API key (Key Vault) |
+| `foundationallm-orchestration-api-agenthub-api-url` | URL | Agent Hub API endpoint |
+| `foundationallm-orchestration-api-prompthub-api-url` | URL | Prompt Hub API endpoint |
+| `foundationallm-orchestration-api-datasourcehub-api-url` | URL | Data Source Hub API endpoint |
+| `foundationallm-orchestration-api-langchain-api-url` | URL | LangChain API endpoint |
+| `foundationallm-orchestration-api-semantickernel-api-url` | URL | Semantic Kernel API endpoint |
+
+### Hub API Keys
+
+| Variable | Type | Description |
+|----------|------|-------------|
+| `foundationallm-agenthub-api-key` | Secret | Agent Hub API key |
+| `foundationallm-prompthub-api-key` | Secret | Prompt Hub API key |
+| `foundationallm-datasourcehub-api-key` | Secret | Data Source Hub API key |
+| `foundationallm-langchain-api-key` | Secret | LangChain API key |
+
+### Azure OpenAI Configuration
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `foundationallm-azure-openai-api-url` | (Required) | Azure OpenAI endpoint |
+| `foundationallm-azure-openai-api-key` | (Secret) | API key |
+| `foundationallm-azure-openai-api-completions-deployment` | (Required) | Completion deployment name |
+| `foundationallm-azure-openai-api-completions-model-version` | (Required) | Model version |
+| `foundationallm-azure-openai-api-version` | (Required) | API version |
+
+### LangChain Configuration
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `foundationallm-langchain-summary-model-name` | `gpt-35-turbo` | Summary model |
+| `foundationallm-langchain-summary-max-tokens` | `4097` | Max input tokens |
+
+### SQL Database Configuration (Optional)
+
+| Variable | Description |
+|----------|-------------|
+| `foundationallm-langchain-sqldb-testdb-server-name` | SQL Server name |
+| `foundationallm-langchain-sqldb-testdb-database-name` | Database name |
+| `foundationallm-langchain-sqldb-testdb-username` | Username |
+| `foundationallm-langchain-sqldb-testdb-database-password` | Password (Key Vault) |
+
+### Storage Configuration
+
+| Variable | Description |
+|----------|-------------|
+| `foundationallm-keyvault-name` | Key Vault name for SDK |
+| `foundationallm-prompt-metadata-storage-container` | Prompt storage container |
+| `foundationallm-datasource-metadata-storage-container` | Data source container |
+| `foundationallm-agent-metadata-storage-container` | Agent metadata container |
+
+### Python SDK Configuration
+
+| Variable | Description |
+|----------|-------------|
+| `foundationallm-configuration-allow-environment-variables` | When `True`, checks environment before Key Vault |
+
+## Temporary Configuration
+
+> **Note:** The following settings are temporary and will be removed in future versions.
+
+| Variable | Type | Description |
+|----------|------|-------------|
+| `foundationallm-langchain-csv-file-url` | URL | CSV file URL with SAS token |
+
+## Configuration Sources
+
+FoundationaLLM uses multiple configuration sources in this priority order:
+
+1. **Environment Variables** (highest priority)
+2. **Azure App Configuration**
+3. **Key Vault Secrets**
+4. **Default Values** (lowest priority)
+
+## Best Practices
+
+### Security
+
+- Store sensitive values in Key Vault
+- Use managed identities where possible
+- Rotate API keys regularly
+- Avoid storing secrets in environment variables
+
+### Organization
+
+- Use consistent naming conventions
+- Document custom configurations
+- Use separate App Configuration instances for dev/test/prod
+- Enable versioning for audit trails
+
+### Troubleshooting
+
+If configuration values aren't being read:
+
+1. Verify App Configuration connection string
+2. Check managed identity permissions
+3. Verify Key Vault access policies
+4. Review service logs for configuration errors
+
+## Related Topics
+
+- [App Configuration Values](app-configuration-values.md)
+- [Authentication Setup](security-permissions/authentication-authorization/index.md)
+- [Troubleshooting](../monitoring-troubleshooting/troubleshooting.md)
