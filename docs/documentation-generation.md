@@ -28,3 +28,20 @@ Execute the following command from the repository root to generate the .NET API 
 ```bash
 docfx docs/docfx.json
 ```
+
+#### Previewing Documentation Locally
+
+To preview the documentation locally in your browser, use the `--serve` flag:
+
+```bash
+docfx docs/docfx.json --serve
+```
+
+This command will:
+1. Build the documentation (same as running `docfx docs/docfx.json`)
+2. Start a local web server (typically at `http://localhost:8080`)
+3. Open the documentation site in your default browser
+
+**Note:** The `--serve` command builds the documentation once and serves the static files. If you make changes to markdown files:
+- Run `docfx docs/docfx.json` in another terminal to rebuild, or restart the serve command
+- Refresh your browser to see the updated content

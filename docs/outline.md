@@ -1,0 +1,194 @@
+# FoundationaLLM Documentation Outline
+
+## Overview of FoundationaLLM
+- Overview & Introduction (from `index.md`)
+- Architecture & Concepts
+  - Core Concepts (from `concepts/index.md`)
+    - Authorization & Security Principals
+    - Agents, Workflows, Tools
+    - Data Pipelines
+    - Plugins & Plugin Packages
+    - Prompts & Prompt Variables
+    - Quotas (API Raw Request Rate, Agent Request Rate)
+    - Resource Providers
+    - Chargeback
+- Why FoundationaLLM?
+- Where FoundationaLLM Fits
+
+## Chat User Portal
+- Overview
+  - What is the Chat User Portal?
+  - Finding your User Portal URL
+- Quick Start
+  - Quickstart Guide (from `setup-guides/quickstart.md`)
+  - Creating Your First Agent
+- How to Guides
+  - Using Agents
+    - Selecting an Agent
+    - Managing Available Agents
+    - Managing Conversations
+    - Configuring Accessibility
+    - Uploading Files to a Conversation
+    - Downloading Files from a Conversation
+    - Using the Code Interpreter Tool
+    - Using the Knowledge Tool
+    - Using other tools
+    - Monitoring Token Consumption
+    - Rating Agent Responses
+    - Copying Prompts & Formatted Results
+      - Dual-Format "Copy Message" (Markdown + Rich Text) Behavior
+      - Expected Formatting Output Rules and Limitations
+    - Printing Conversations
+    - Viewing Agent Prompts
+
+## Management Portal
+- Overview
+  - What is the Management Portal?
+  - Management Portal Guide (from `setup-guides/management-ui/management-ui.md`)
+  - Finding your User Portal and Management Portal URLs
+- Quick Start
+  - Tour of the Portal
+  - Creating a First Agent 
+- How to Guides
+  - Agents
+    - Create New Agent
+      - Create Model Agnostic Agent with Claude (from `how-to-guides/create-model-agnostic-agent-claude.md`)
+      - Create Model Agnostic Agent with GPT-4o (from `how-to-guides/create-model-agnostic-agent-gpt4o.md`)
+    - All Agents
+    - My Agents
+    - Prompts
+  - Data
+    - Data Sources
+    - Data Pipelines
+      - Creating Data Pipelines
+      - Invoking Data Pipelines
+      - Monitoring Data Pipelines (Progress/Status in Management Portal)
+    - Data Pipeline Runs
+    - Knowledge Sources
+      - Uploading Files from SharePoint Online
+      - Azure Data Lake as a Knowledge Source
+      - Private Storage for Custom Agent Owners
+      - Knowledge Graph Integration
+        - Using a Knowledge Graph as a Knowledge Source
+        - Required Schema/Format Expectations
+      - Image Description
+        - Image-to-Text Description Capability
+        - Model Limits
+        - Supported Formats
+        - Usage Guidelines
+  - Models and Endpoints
+    - AI Models
+    - API Endpoints
+  - Security
+    - Instance Access Control
+  - FLLM Platform
+    - Branding
+    - Configuration
+    - Deployment Information
+  - Vectorization [DROP THIS ALL TOGETHER]
+    - Vectorization Concepts (from `setup-guides/vectorization/vectorization-concepts.md`)
+    - Configuring Vectorization (from `setup-guides/vectorization/vectorization-configuration.md`)
+    - Managing Vectorization Profiles (from `setup-guides/vectorization/vectorization-profiles.md`)
+    - Triggering Vectorization (from `setup-guides/vectorization/vectorization-triggering.md`)
+    - Vectorization Pipelines
+      - Reduced Vectorization Latency Improvements
+      - Configuration and Tuning Options
+    - Monitoring and Troubleshooting Vectorization (from `setup-guides/vectorization/vectorization-monitoring-troubleshooting.md`)
+  - Managing Plugins
+  - Configuring Quotas
+  - Reference
+    - Concepts
+      - Agents & Agent Workflows (from `setup-guides/agents/agents_workflows.md`)
+      - Agent Access Tokens (from `setup-guides/agents/Agent_AccessToken.md`)
+      - Prompts & Prompt Resources (from `setup-guides/agents/prompt-resource.md`)
+      - [OBSOLETE] Knowledge Management Agents (from `setup-guides/agents/knowledge-management-agent.md`)
+      - Resource Management (from `setup-guides/exposed-apis/resource-management/resource-management.md`)
+      - Data Pipelines
+      - Plugins & Plugin Packages
+      - [OBSOLETE] Vectorization
+      - Quotas
+    - Branding Customization (from `setup-guides/branding/index.md`)
+      - Using App Configuration
+      - Using Management Portal
+      - Using REST API
+    - Configuration Reference [C:\Repos\foundationallm\src\dotnet\Common\Constants\Data]
+    - Permissions & Roles[C:\Repos\foundationallm\src\dotnet\Common\Constants\Data\AuthorizableActions.json]
+    [C:\Repos\foundationallm\src\dotnet\Common\Constants\Data\RoleDefinitions.json]
+## APIs & SDKs
+- APIs
+  - Core API
+    - Core API Overview (from `setup-guides/exposed-apis/core-api.md`)
+    - Finding Core API URL
+    - Directly Calling Core API (from `development/calling-apis/directly-calling-core-api.md`)
+    - Standard Deployment Local API Access (from `development/calling-apis/standard-deployment-local-api-access.md`)
+    - Core API Reference (from `api/index.md` - .NET & Python)
+  - Management API
+    - Management API Overview (from `setup-guides/exposed-apis/management-api.md`)
+    - Overview of Resource Providers [DOCS can be generated from the code C:\Repos\foundationallm\src\dotnet\Common\Constants\ResourceProviders metadata files]
+    - Directly Calling Management API (from `development/calling-apis/directly-calling-management-api.md`)
+    - Management API Reference
+    - Data Pipelines
+  - [OBSOLETE] Vectorization API
+    - Directly Calling Vectorization API (from `development/calling-apis/directly-calling-vectorization-api.md`)
+- SDKs
+  - .NET SDK (from `api/dotnet/index.md`)
+  - Python SDK (from `api/python/index.md`)
+
+## Platform Operations
+- Deployment
+  - Deployment Overview (from `deployment/index.md`)
+  - Quick Start Deployment (from `deployment/deployment-quick-start.md`)
+  - Standard Deployment (from `deployment/deployment-standard.md`)
+  - Deployment Configuration (from `deployment/deployment-configuration.md`)
+  - App Configuration Values (from `deployment/app-configuration-values.md`)
+  - Azure Resource Provider Requirements (from `deployment/azure-resource-providers-requirements.md`)
+  - Custom Domains (from `deployment/custom-domains.md`)
+  - Soft Delete (from `deployment/soft-delete.md`)
+  - Standard Deployment Manifest (from `deployment/standard/manifest.md`)
+- Security & Permissions
+  - Platform Security Features & Best Practices (from `operations/security.md`)
+  - Authentication & Authorization Setup (from `deployment/authentication-authorization/index.md`)
+    - Pre-deployment Setup
+      - Core Authentication Setup (Entra ID)
+      - Management Authentication Setup (Entra ID)
+      - Authorization Setup (Entra ID)
+    - Post-deployment Setup
+      - Core Authentication Post-deployment
+      - Management Authentication Post-deployment
+      - Authorization Post-deployment
+  - Role-Based Access Control (from `role-based-access-control/index.md`)
+    - Role Definitions
+    - Role Assignments
+    - Scope
+    - Role Management
+    - Agent Role Assignments
+  - Configure Access Control for Services (from `deployment/configure-access-control-for-services.md`)
+  - Graph API Permissions (from `operations/graph-api-permissions.md`)
+  - Network Security Groups (from `operations/network-security-groups.md`)
+  - Vulnerabilities: Identification, Communication, and Remediation (from `operations/vulnerabilities.md`)
+- Monitoring & Troubleshooting
+  - Accessing System Logs & Audit Trails (from `operations/logs.md`)
+  - Troubleshooting & Issue Reporting Guide (from `operations/troubleshooting.md`)
+- How to Guides
+  - Updating Container Versions (from `operations/update.md`)
+  - Backups & Data Resiliency (from `operations/backups.md`)
+  - Purging User Conversations (from `operations/purge-conversations.md`)
+  - Creating Release Notes (from `operations/release-notes.md`)
+
+## Additional Topics (to integrate or keep separate)
+
+### Development & Contributing
+- Development Overview (from `development/index.md`)
+- Development Approach & DevOps Guidelines (from `development/development-approach.md`)
+- Configure Local Development Environment (from `development/development-local.md`)
+- Contributing to FoundationaLLM (from `development/contributing/index.md`)
+  - Git Workflow
+  - Style Guide
+  - Bug Report Reproduction Guide
+
+### Reference Materials
+- Agent Schemas (from `schema.md`)
+- Release Notes (from `release-notes/`)
+  - Breaking Changes
+  - Version-specific Release Notes
+- Documentation Generation (from `documentation-generation.md`)
