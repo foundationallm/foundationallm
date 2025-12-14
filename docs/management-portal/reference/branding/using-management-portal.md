@@ -1,103 +1,126 @@
-![Branding Management Portal](media/branding_management_portal.png)
+# Using Management Portal for Branding
 
-## Company Name
-Not in use.  Reserved for future enhancements.
+Configure branding settings interactively through the Management Portal UI.
 
-## Fav Icon Url
-A string value to set the FavIcon Url which is displayed in the browser tab.
-> [!IMPORTANT]
-> The FavIconUrl can be an SVG or PNG image placed in the Public folder of the application's source code but will require rebuilding of the docker image to reflect the changes. The preferred ways of setting the FavIconUrl is to set it to a relative accessible public URL to an SVG or PNG image or include the full Base64 encoded image in the textbox directly.Any changes to the `Fav Icon Url` will require a restart of the `CoreAPI` image to take effect.
+## Overview
 
-## Footer Text
-A string value to set the Footer Text value which is displayed at the bottom right of the screen. You can edit the text in the HTML editor as well to include special characters like ©.
+The Management Portal provides an interactive interface for branding customization with:
+- Real-time preview of color changes
+- WCAG accessibility compliance indicators
+- Rich text editing for text fields
+- Visual logo preview
 
-## Kiosk Mode
-This is a boolean flag to indicate if the application is running in kiosk mode, if true will remove the sessions panel on the left navigation panel. 
-Kiosk mode does not store user conversations and is meant to be used within a public kiosk setting
+## Accessing Branding Settings
 
-## Logo Text
-A string value to set the Logo Text value which is displayed only if the `Logo Url` is not set.
+1. Navigate to the Management Portal
+2. In the sidebar, click **Branding** under **FLLM Platform**
 
-## Logo Url
-A string value to set the Logo Url which is displayed in top left header and also in the login screen.
-> [!IMPORTANT]
-> The Logo Url can be an SVG or PNG image placed in the Public folder of the application's source code but will require rebuilding of the docker image to reflect the changes. The preferred ways of setting the Logo Url is to set it to a relative accessible public URL to an SVG or PNG image or include the full Base64 encoded image in the textbox directly. A preview of the image will show up underneath the textbox.
+## Interface Overview
 
-## Page Title
-A string value to set the Page Title value which is displayed in the browser tab.
+The branding page is organized into sections:
 
-![PageTitle](./media/branding-5.jpg)
+### General Settings Section
 
-> [!IMPORTANT]
-> Any changes to the `Page Title` will require a restart of the `CoreAPI` image to take effect.
+Configure non-color branding elements:
+- Company Name
+- FavIcon URL
+- Footer Text (rich text editor)
+- Kiosk Mode toggle
+- Logo Text
+- Logo URL (with preview)
+- Page Title
+- Agent Icon URL
+- No Agents Message (rich text editor)
+- Default Agent Welcome Message (rich text editor)
 
-## Agent Icon Url
-A string value to set the Agent Icon Url which is displayed in the chat window.
+### Color Settings Section
 
-> [!IMPORTANT]
-> The `Agent Icon Url` can be an SVG or PNG image placed in the Public folder of the application's source code but will require rebuilding of the docker image to reflect the changes. The preferred ways of setting the LogoUrl is to set it to a relative accessible public URL to an SVG or PNG image or include the full Base64 encoded image in the textbox directly.
+Color configuration organized by functional area:
+- Accent colors (background + text)
+- Background color
+- Primary colors (background + text)
+- Secondary colors (background + text)
+- Primary button colors
+- Secondary button colors
 
-## No Agents Message
-A string value to set the No Agents Message value which is displayed in the chat window when no agents are available. HTML allowed in this field.
+## Making Changes
 
-## Default Agent Welcome Message
-A string value to set the Default Agent Welcome Message value which is displayed in the chat window when the agent is connected. HTML allowed in this field.
-Agents can have their own welcome message. If the selected agent does not have a configured welcome message, the Default Agent Welcome Message is displayed. It's also displayed when no agent is selected.
+### Text Fields
 
-## Accent Color
-Takes a hexadecimal or RGB color value to set the accent color of the chat application which is used for top header and the the token counter in the chat. You can use the color picker to choose a color
+1. Locate the setting to change
+2. Enter the new value in the text input
+3. Changes are staged (not saved until you click Save)
 
-## Accent Text Color
-Takes a hexadecimal or RGB color value to set the accent text color of the chat application which is used for top header and the the token counter in the chat. You can use the color picker to choose a color
+### Rich Text Fields
 
-## Background Color
-Takes a hexadecimal or RGB color value to set the background color of the chat application. You can use the color picker to choose a color
+For Footer Text, No Agents Message, and Default Welcome Message:
+1. Click in the editor field
+2. Use the toolbar for formatting (bold, italic, links, etc.)
+3. Enter your content
+4. Changes are staged until saved
 
-## Primary Button Background Color
-Takes a hexadecimal or RGB color value to set the Primary Button Background color of the chat application. It affects the `Send` button in the chat at the bottom right, the `Close` button the `View Prompt` screen and the `login` button in the login screen. You can use the color picker to choose a color
+### Colors
 
-## Primary Button Text Color
-Takes a hexadecimal or RGB color value to set the Primary Button Text color of the chat application. It affects the `Send` button in the chat at the bottom right, the `Close` button the `View Prompt` screen and the `login` button in the login screen. You can use the color picker to choose a color
+1. Locate the color setting to change
+2. Either:
+   - Click the color swatch to open the color picker
+   - Enter a hex or RGB value directly
+3. Review the preview square
+4. Check contrast compliance if enabled
 
-## Primary Color
-Takes a hexadecimal or RGB color value to set the Primary color of the chat application. It affects the left navigation panel and the `User Message` panel in the chat. You can use the color picker to choose a color
+### Logo
 
-## Primary Text Color
-Takes a hexadecimal or RGB color value to set the Primary Text color of the chat application. It affects the left navigation panel and the `User Message` panel in the chat. You can use the color picker to choose a color
+1. Enter the logo URL (relative to public directory)
+2. View the preview against the Primary Color background
+3. Ensure the logo is visible and appropriate size
 
-## Secondary Button Background Color
-Takes a hexadecimal or RGB color value to set the Secondary Button Background color of the chat application. It affects the `collapsable arrow` in the left navigation panel, the `Sign Out` bottom at the bottom and the `attachment` of files button in the chat window.
-You can use the color picker to choose a color
+## Accessibility Testing
 
-## Secondary Button Text Color
-Takes a hexadecimal or RGB color value to set the Secondary Button Text color of the chat application. It affects the `collapsable arrow` in the left navigation panel, the `Sign Out` bottom at the bottom and the `attachment` of files button in the chat window.
-You can use the color picker to choose a color
+Enable accessibility testing:
 
-## Secondary Color
-Takes a hexadecimal or RGB color value to set the Secondary color of the chat application. It affects the background color of the `session identifier` in the left navigations panel and the background of the entire `login screen`.
-You can use the color picker to choose a color
+1. Toggle **Show contrast information** at the top of the page
+2. For each color pair, you'll see:
+   - Contrast ratio (e.g., "4.5:1")
+   - AA compliance (Pass/Fail)
+   - AAA compliance (Pass/Fail)
 
-## Secondary Text Color
-Takes a hexadecimal or RGB color value to set the Secondary Text color of the chat application. It affects the background color of the `session identifier` in the left navigations panel.
-You can use the color picker to choose a color
+## Saving Changes
 
-## Saving, resetting and Setting Default
-![Save, reset and Default](media/save_reset_default.png)
-At the bottom of the branding page, you will find the  `Reset`, `Set Default` and `Save` buttons.
-- Reset: Returns any changed values to what they were before you changed them while editing the form.
-- Set Default: This sets the branding values to the default out-of-the-box FoundationaLLM branding settings.
-- Save: This will save the current values and apply them to the chat application.
+### Save Button
 
-## Show Contrast Information
-![Show Contrast Information](media/Contrast_info.png)
+Click **Save** to apply all changes:
+- Changes are persisted to Azure App Configuration
+- Users see updates after browser refresh
 
-At the top of the branding page, you will find the `Show Contrast Information` toggle button. This will show the contrast information of the current branding settings. 
-![Contrast](media/Contrast-AA-AAA.png)
+### Reset Button
 
-AA and AAA are levels of color contrast for web pages that indicate how readable the text is: 
-- `AA`: The minimum contrast ratio for normal text is 4.5:1, and 3:1 for large text. This level is considered a passing grade, but it might still be difficult for some users to read. 
+Click **Reset** to discard all unsaved changes:
+- Reverts to last saved values
+- Confirmation dialog appears
 
-- `AAA`: The contrast ratio for normal text is 7:1, and 4.5:1 for large text. This level is considered to create the most accessible content and best user experience. 
- 
-Color contrast is important for legibility, especially for users with color blindness or other conditions that make it difficult to differentiate between colors. The Web Content Accessibility Guidelines (WCAG) recommend these contrast ratios to help designers create readable interfaces. 
-While Level AAA is recommended, it's not required for all sites. The best approach is to consider your organization, the purpose of your content, and your typical users. 
+### Set Default Button
+
+Click **Set Default** to restore factory defaults:
+- Reverts all values to FoundationaLLM defaults
+- Still requires Save to apply
+- Confirmation dialog appears
+
+## Validation
+
+The interface validates:
+- Color format (hex/RGB)
+- URL formats (for logo/favicon)
+- Required fields
+
+## Best Practices
+
+1. **Test on both portals** - Changes affect both Management and User portals
+2. **Check accessibility** - Enable contrast information to verify WCAG compliance
+3. **Preview logos** - Use the preview to verify logo appearance
+4. **Save incrementally** - Save after major changes to avoid losing work
+
+## Related Topics
+
+- [Branding Reference](index.md)
+- [Using App Configuration for Branding](using-app-configuration.md)
+- [Branding Configuration (How-To)](../../how-to-guides/fllm-platform/branding.md)

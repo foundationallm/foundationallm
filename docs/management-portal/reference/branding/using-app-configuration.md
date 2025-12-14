@@ -1,83 +1,148 @@
-# Branding Customization using the App Configurator
+# Using App Configuration for Branding
 
-The `FoundationaLLM` application provides a way to customize the branding of the applications. The branding customization can be done by setting any of the **21 configuration values** available in the `App Configuration` resource in your Azure Resource Group.  It can also be changed using the REST API calls pertaining to Branding.
+Configure branding settings through Azure App Configuration for infrastructure-as-code deployments.
 
-### Accessing the App Configuration for branding customization
+## Overview
 
-In your Azure Resource Group, navigate to the `App Configuration` resource and select the `Configuration Explorer` option under `Operations`. You will see a list of all configuration settings for `FoundationaLLM `, filter the list on the word `Branding` and you will be able to see the 21 relevant configuration settings pertaining to Branding.
+Azure App Configuration provides a centralized store for branding settings, enabling:
+- Infrastructure-as-code management
+- Deployment automation
+- Environment-specific configurations
+- Version control of settings
 
-![Branding App Configuration](./media/branding-1.jpg)
+## Configuration Keys
 
-### The default User Interface of the `FoundationaLLM` is shown below
+All branding keys follow the pattern: `FoundationaLLM:Branding:{SettingName}`
 
-![Branding defaultn](./media/branding-2.jpg)
+### Text Settings
 
-### The Login screen can also be customized as shown below
+| Key | Type | Description |
+|-----|------|-------------|
+| `FoundationaLLM:Branding:CompanyName` | String | Organization name |
+| `FoundationaLLM:Branding:PageTitle` | String | Browser tab title |
+| `FoundationaLLM:Branding:LogoText` | String | Text if logo unavailable |
+| `FoundationaLLM:Branding:LogoUrl` | String | Logo image path |
+| `FoundationaLLM:Branding:FavIconUrl` | String | Favicon path |
+| `FoundationaLLM:Branding:AgentIconUrl` | String | Default agent icon path |
+| `FoundationaLLM:Branding:FooterText` | String | Footer HTML |
+| `FoundationaLLM:Branding:NoAgentsMessage` | String | No agents message HTML |
+| `FoundationaLLM:Branding:DefaultAgentWelcomeMessage` | String | Default welcome HTML |
 
-![Branding Login Page](./media/branding-3.jpg)
+### Color Settings
 
-### The chat window can be customized as shown below
+| Key | Type | Format |
+|-----|------|--------|
+| `FoundationaLLM:Branding:PrimaryColor` | String | Hex or RGB |
+| `FoundationaLLM:Branding:PrimaryTextColor` | String | Hex or RGB |
+| `FoundationaLLM:Branding:SecondaryColor` | String | Hex or RGB |
+| `FoundationaLLM:Branding:SecondaryTextColor` | String | Hex or RGB |
+| `FoundationaLLM:Branding:AccentColor` | String | Hex or RGB |
+| `FoundationaLLM:Branding:AccentTextColor` | String | Hex or RGB |
+| `FoundationaLLM:Branding:BackgroundColor` | String | Hex or RGB |
+| `FoundationaLLM:Branding:PrimaryButtonBackgroundColor` | String | Hex or RGB |
+| `FoundationaLLM:Branding:PrimaryButtonTextColor` | String | Hex or RGB |
+| `FoundationaLLM:Branding:SecondaryButtonBackgroundColor` | String | Hex or RGB |
+| `FoundationaLLM:Branding:SecondaryButtonTextColor` | String | Hex or RGB |
 
-![Branding Chat Page](./media/branding-4.jpg)
+### Mode Settings
 
-## FoundationaLLM:Branding:AccentColor
-Takes a hexadecimal or RGB color value to set the accent color of the chat application which is used for top header and the the token counter in the chat.
-## FoundationaLLM:Branding:AccentTextColor
-Takes a hexadecimal or RGB color value to set the accent text color of the chat application which is used for top header and the the token counter in the chat.
-## FoundationaLLM:Branding:AgentIconUrl
-A string value to set the Agent Icon Url which is displayed in the chat window.
+| Key | Type | Values |
+|-----|------|--------|
+| `FoundationaLLM:Branding:KioskMode` | String | `true` or `false` |
 
-> [!IMPORTANT]
-> The AgentIconUrl can be an SVG or PNG image placed in the Public folder of the application's source code but will require rebuilding of the docker image to reflect the changes. The preferred ways of setting the LogoUrl is to set it to a relative accessible public URL to an SVG or PNG image or include the full Base64 encoded image in the configuration value directly.
+## Setting Values via Azure Portal
 
-## FoundationaLLM:Branding:BackgroundColor
-Takes a hexadecimal or RGB color value to set the background color of the chat application.
-## FoundationaLLM:Branding:CompanyName
-Not is use.  Reserved for future enhancements.
+1. Navigate to your Azure App Configuration resource
+2. Click **Configuration explorer**
+3. Click **+ Create** > **Key-value**
+4. Enter the key (e.g., `FoundationaLLM:Branding:CompanyName`)
+5. Enter the value
+6. Click **Apply**
 
-## FoundationaLLM:Branding:FavIconUrl
-A string value to set the FavIcon Url which is displayed in the browser tab.
-> [!IMPORTANT]
-> The FavIconUrl can be an SVG or PNG image placed in the Public folder of the application's source code but will require rebuilding of the docker image to reflect the changes. The preferred ways of setting the FavIconUrl is to set it to a relative accessible public URL to an SVG or PNG image or include the full Base64 encoded image in the configuration value directly.
+## Setting Values via Azure CLI
 
-> [!IMPORTANT]
-> Any changes to the `FoundationaLLM:Branding:FavIconUrl` will require a restart of the `CoreAPI` image to take effect.
+```bash
+# Set a text value
+az appconfig kv set \
+  --name <app-config-name> \
+  --key "FoundationaLLM:Branding:CompanyName" \
+  --value "Contoso"
 
-## FoundationaLLM:Branding:FooterText
-A string value to set the Footer Text value which is displayed at the bottom right of the screen.
-## FoundationaLLM:Branding:KioskMode
-This is a boolean flag to indicate if the application is running in kiosk mode, if true will remove the sessions panel on the left navigation panel. 
-Kiosk mode does not store user conversations and is meant to be used within a public kiosk setting
-## FoundationaLLM:Branding:LogoText
-A string value to set the Logo Text value which is displayed only if the `FoundationaLLM:Branding:LogoUrl` is not set.
-## FoundationaLLM:Branding:LogoUrl
-A string value to set the Logo Url which is displayed in top left header and also in the login screen.
-> [!IMPORTANT]
-> The LogoUrl can be an SVG or PNG image placed in the Public folder of the application's source code but will require rebuilding of the docker image to reflect the changes. The preferred ways of setting the LogoUrl is to set it to a relative accessible public URL to an SVG or PNG image or include the full Base64 encoded image in the configuration value directly.
-## FoundationaLLM:Branding:PageTitle
-A string value to set the Page Title value which is displayed in the browser tab.
+# Set a color value
+az appconfig kv set \
+  --name <app-config-name> \
+  --key "FoundationaLLM:Branding:PrimaryColor" \
+  --value "#1a2b3c"
+```
 
-![PageTitle](./media/branding-5.jpg)
+## Setting Values via Bicep/ARM
 
-> [!IMPORTANT]
-> Any changes to the `FoundationaLLM:Branding:PageTitle` will require a restart of the `CoreAPI` image to take effect.
-## FoundationaLLM:Branding:PrimaryButtonBackgroundColor
-Takes a hexadecimal or RGB color value to set the Primary Button Background color of the chat application. It affects the `Send` button in the chat at the bottom right, the `Close` button the `View Prompt` screen and the `login` button in the login screen.
-## FoundationaLLM:Branding:PrimaryButtonTextColor
-Takes a hexadecimal or RGB color value to set the Primary Button Text color of the chat application. It affects the `Send` button in the chat at the bottom right, the `Close` button the `View Prompt` screen and the `login` button in the login screen.
-## FoundationaLLM:Branding:PrimaryColor
-Takes a hexadecimal or RGB color value to set the Primary color of the chat application. It affects the left navigation panel and the `User Message` panel in the chat.
-## FoundationaLLM:Branding:PrimaryTextColor
-Takes a hexadecimal or RGB color value to set the Primary Text color of the chat application. It affects the left navigation panel and the `User Message` panel in the chat.
-## FoundationaLLM:Branding:SecondaryButtonBackgroundColor
-Takes a hexadecimal or RGB color value to set the Secondary Button Background color of the chat application. It affects the `collapsable arrow` in the left navigation panel, the `Sign Out` bottom at the bottom and the `attachment` of files button in the chat window.
-## FoundationaLLM:Branding:SecondaryButtonTextColor
-Takes a hexadecimal or RGB color value to set the Secondary Button Text color of the chat application. It affects the `collapsable arrow` in the left navigation panel, the `Sign Out` bottom at the bottom and the `attachment` of files button in the chat window.
-## FoundationaLLM:Branding:SecondaryColor
-Takes a hexadecimal or RGB color value to set the Secondary color of the chat application. It affects the background color of the `session identifier` in the left navigations panel and the background of the entire `login screen`.
-## FoundationaLLM:Branding:SecondaryTextColor
-Takes a hexadecimal or RGB color value to set the Secondary Text color of the chat application. It affects the background color of the `session identifier` in the left navigations panel.
-## FoundationaLLM:Branding:NoAgentsMessage
-A string value to set the No Agents Message value which is displayed in the chat window when no agents are available. HTML allowed in this field.
-## FoundationaLLM:Branding:DefaultAgentWelcomeMessage
-A string value to set the Default Agent Welcome Message value which is displayed in the chat window when the agent is connected. HTML allowed in this field.
+```bicep
+resource appConfig 'Microsoft.AppConfiguration/configurationStores@2023-03-01' existing = {
+  name: appConfigName
+}
+
+resource brandingCompanyName 'Microsoft.AppConfiguration/configurationStores/keyValues@2023-03-01' = {
+  parent: appConfig
+  name: 'FoundationaLLM:Branding:CompanyName'
+  properties: {
+    value: 'Contoso'
+  }
+}
+
+resource brandingPrimaryColor 'Microsoft.AppConfiguration/configurationStores/keyValues@2023-03-01' = {
+  parent: appConfig
+  name: 'FoundationaLLM:Branding:PrimaryColor'
+  properties: {
+    value: '#1a2b3c'
+  }
+}
+```
+
+## Environment-Specific Configuration
+
+Use labels for environment-specific settings:
+
+```bash
+# Development
+az appconfig kv set \
+  --name <app-config-name> \
+  --key "FoundationaLLM:Branding:PageTitle" \
+  --value "FoundationaLLM (Dev)" \
+  --label "dev"
+
+# Production
+az appconfig kv set \
+  --name <app-config-name> \
+  --key "FoundationaLLM:Branding:PageTitle" \
+  --value "FoundationaLLM" \
+  --label "prod"
+```
+
+## Value Format Notes
+
+### Color Values
+
+Supported formats:
+- `#RRGGBB` (6-digit hex)
+- `#RGB` (3-digit hex, expanded to 6-digit)
+- `rgb(R, G, B)` (RGB function)
+
+### HTML Values
+
+For rich text fields (Footer, Messages), use properly escaped HTML:
+- Escape special characters if needed
+- Ensure HTML is valid
+
+## Cache Considerations
+
+App Configuration values are cached:
+- Portal applications refresh periodically
+- Users may need to refresh browser to see changes
+- Consider cache timing when deploying updates
+
+## Related Topics
+
+- [Branding Reference](index.md)
+- [Using Management Portal for Branding](using-management-portal.md)
+- [Using REST API for Branding](using-rest-api.md)

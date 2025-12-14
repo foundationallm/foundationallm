@@ -1,79 +1,221 @@
 # Create a New Agent
 
-This guide walks you through creating a new agent using the Management Portal.
+This comprehensive guide walks you through creating a new agent using the Management Portal.
 
 ## Prerequisites
 
-- Access to the FoundationaLLM Management Portal
-- Appropriate permissions to create agents
+Before creating an agent, ensure:
 
-## Steps to Create a New Agent
+- You have access to the Management Portal with appropriate permissions
+- At least one AI model is configured under **Models and Endpoints > AI Models**
+- (Optional) Prompts are created for workflow and tool configurations
+- (Optional) Data sources are configured if your agent needs knowledge retrieval
 
-### 1. Navigate to Create New Agent
+## Accessing the Agent Creation Page
 
-Navigate to the **Create New Agent** page using the side navigation bar.
-    
-![FLLM Create New Agent tab.](../../../setup-guides/media/fllm-management-interface.png "Create New Agent")
+1. In the Management Portal sidebar, click **Create New Agent**
+2. The agent creation form loads with all configuration sections
 
-### 2. Select Agent Type
+## Agent Configuration Sections
 
-Set the agent type: **Knowledge Management** or **Analytics**. FoundationaLLM currently only supports Knowledge Management agents.
+### 1. General Information
 
-![Create New Agent select Agent Type.](../../../setup-guides/media/agent-type-selection.png "Agent Type")
+| Field | Description | Requirements |
+|-------|-------------|--------------|
+| **Agent Name** | Unique identifier used internally | Letters, numbers, dashes, underscores only. No spaces or special characters. Validated in real-time. |
+| **Agent Display Name** | User-friendly name shown in portals | Any text. This is what users see. |
+| **Description** | Purpose of the agent | Recommended for discoverability |
+| **Welcome Message** | Initial greeting shown to users | Supports rich text formatting via editor |
 
-### 3. Configure Knowledge Source
+### 2. Agent Configuration
 
-Set the agent Knowledge Source:
+#### Conversation History
 
-![Agent Knowledge Source four-tile view.](../../../setup-guides/media/agent-knowledge-source.png "Agent Knowledge Source")
+Controls whether the agent remembers previous messages in a conversation.
 
-- Expand the dropdown arrow next to the upper left box. Select the correct Content Source Profile.
+| Setting | Options | Description |
+|---------|---------|-------------|
+| **Enabled** | Yes/No | Toggle conversation memory |
+| **Max Messages** | Number | How many previous messages to include (default: 5) |
 
-    ![Agent Blob Storage Data Sources.](../../../setup-guides/media/agent-data-source-dropdown.png "Blob Storage Data Sources")
+#### Gatekeeper
 
-- Expand the dropdown arrow next to the upper right box to open the Indexing Profile dropdown. Select the correct Indexing Profile.
+The gatekeeper provides content moderation and data protection.
 
-    ![Agent Knowledge Source Index Selection.](../../../setup-guides/media/aisearch-index-dropdown.png "Index Selection")
- 
-- Expand the dropdown arrow next to the lower left box. Set the **Chunk size** and **Overlap size** settings for text partitioning. Select **Done**.
+| Setting | Description |
+|---------|-------------|
+| **Use system default** | Apply instance-level gatekeeper settings |
+| **Content Safety** | Select content moderation platforms |
+| **Data Protection** | Select PII detection services |
 
-    ![Agent Splitting & Chunking Configuration.](../../../setup-guides/media/set-splitting-and-chunking.png "Splitting & Chunking")
+**Content Safety Options:**
+- Azure Content Safety
+- Azure Content Safety Prompt Shield
+- Lakera Guard
+- Enkrypt Guardrails
 
-- Expand the dropdown arrow next to the lower right box. Set the trigger **Frequency**; FoundationaLLM currently only supports Manual triggers.
+**Data Protection Options:**
+- Microsoft Presidio
 
-    ![Agent Vectorization Trigger Frequency.](../../../setup-guides/media/vectorization-trigger.png "Vectorization Trigger Frequency")
+#### User Prompt Rewrite
 
-### 4. Configure User-Agent Interactions
+Optionally rewrite user prompts before processing.
 
-Configure user-agent interactions.
+| Setting | Description |
+|---------|-------------|
+| **Enabled** | Toggle prompt rewriting |
+| **Rewrite Model** | AI model for rewriting |
+| **Rewrite Prompt** | Prompt template for rewriting |
+| **Rewrite Window Size** | Messages to consider (default: 3) |
 
-![User-Agent Interactions & Gatekeeper Configuration.](../../../setup-guides/media/user-agent-interactions-config.png "User-Agent Interactions")
+#### Semantic Cache
 
-- Enable conversation history using the `Yes/No` Radio Button. Select **Done**.
+Cache responses for semantically similar questions.
 
-    ![Agent Enable/Disable Conversation History.](../../../setup-guides/media/enable-disable-conversation-history.png "Enable/Disable Conversation History.")
+| Setting | Description |
+|---------|-------------|
+| **Enabled** | Toggle caching |
+| **Model** | Embedding model for similarity |
+| **Embedding Dimensions** | Vector size (default: 2048) |
+| **Minimum Similarity Threshold** | Match threshold (default: 0.97) |
 
-- Configure the Gatekeeper. Then, select **Done**.
-    - `Enable/Disable` the Gatekeeper using the Radio Button
-    - Set the **Content Safety** platform to either `None` or `Azure Content Safety` using the dropdown menu
-    - Set the **Data Protection** platform to either `None` or `Microsoft Presidio` using the dropdown menu
+#### Cost Center and Expiration
 
-    ![Agent Gatekeeper Status, Content Safety Configuration, and Data Protection Configuration.](../../../setup-guides/media/gatekeeper-config.png "Gatekeeper Configuration")
+| Field | Description |
+|-------|-------------|
+| **Cost Center** | Department for cost tracking (optional) |
+| **Expiration Date** | Auto-disable date (optional) |
 
-### 5. Set the System Prompt
+### 3. User Portal Experience
 
-Set the **System Prompt**. The prompt prefixes users' requests to the agent, influencing the tone and functionality of the agent.
+Control features available to users in the Chat User Portal.
 
-![Set Agent Prompt.](../../../setup-guides/media/set-system-prompt.png "Agent Prompt")
+| Setting | Default | Description |
+|---------|---------|-------------|
+| **Show Message Tokens** | Yes | Display token consumption |
+| **Allow Rating** | Yes | Enable thumbs up/down ratings |
+| **Show View Prompt** | Yes | Allow viewing completion prompts |
+| **Allow File Upload** | No | Enable file attachments |
 
-### 6. Create the Agent
+### 4. Workflow
 
-After setting the desired agent configuration, select **Create Agent** at the bottom right-hand corner of the page. You will be able to edit the agent configuration after creation from the **Public Agents** page.
+The workflow defines how the agent processes requests and generates responses.
 
-![Edit a newly-created agent in the Management UI.](../../../setup-guides/media/edit-agent-page.png "Edit agent")
+#### Selecting a Workflow Type
 
-## Next Steps
+| Type | Description | Best For |
+|------|-------------|----------|
+| **OpenAIAssistants** | Azure OpenAI Assistants API | Code Interpreter, File Search, Function Calling |
+| **LangGraphReactAgent** | LangGraph with dynamic tool selection | Flexible multi-tool agents |
+| **ExternalAgentWorkflow** | Custom Python workflows | Advanced custom logic |
 
+#### Workflow Configuration
+
+Click **Configure Workflow** to expand settings:
+
+| Field | Description |
+|-------|-------------|
+| **Workflow Name** | Identifier for this workflow |
+| **Workflow Package Name** | Python package (for custom workflows) |
+| **Workflow Class Name** | Python class (for custom workflows) |
+| **Workflow Host** | Orchestration framework (e.g., LangChain) |
+| **Workflow Main Model** | Primary AI model |
+| **Workflow Main Model Parameters** | Model settings (temperature, etc.) |
+| **Main Workflow Prompt** | System prompt defining behavior |
+
+#### Adding Workflow Resources
+
+Additional prompts and resources for the workflow:
+
+1. Click **Add Workflow Resource**
+2. Select **Resource Type**: Model, Prompt, or other
+3. Select the specific **Resource**
+4. Enter the **Resource Role** (e.g., `router_prompt`, `final_prompt`)
+5. Click **Save**
+
+### 5. Tools
+
+Tools extend the agent's capabilities beyond text generation.
+
+#### Adding a Tool
+
+1. In the Tools section, click **Add New Tool**
+2. Configure the tool:
+
+| Field | Description |
+|-------|-------------|
+| **Tool Name** | Unique identifier |
+| **Tool Description** | What the tool does (helps AI decide when to use it) |
+| **Tool Package Name** | Python package containing the tool |
+| **Tool Class Name** | Python class implementing the tool |
+
+3. Add **Tool Resources** (models, prompts, data pipelines)
+4. Add **Tool Properties** (configuration values)
+5. Click **Save**
+
+#### Common Tools
+
+| Tool | Class Name | Purpose |
+|------|------------|---------|
+| **DALL-E Image Generation** | `DALLEImageGeneration` | Generate images |
+| **Code Interpreter** | `FoundationaLLMCodeInterpreterTool` | Execute Python code |
+| **Knowledge Search** | `FoundationaLLMKnowledgeTool` | Search knowledge sources |
+
+### 6. Security (After Creation)
+
+After creating an agent, you can configure security settings:
+
+#### Virtual Security Group ID
+A unique identifier for programmatic access to the agent.
+
+#### Agent Access Tokens
+Create tokens for API access without Entra ID authentication:
+
+1. Access the agent edit page
+2. Scroll to the Security section
+3. Create and manage access tokens
+
+See [Agent Access Tokens](../../reference/concepts/agent-access-tokens.md) for details.
+
+## Creating the Agent
+
+1. Review all configuration sections
+2. Click **Create Agent** at the bottom of the page
+3. Wait for the creation process to complete
+4. Upon success, you'll be redirected or see a confirmation
+
+## Editing Existing Agents
+
+1. Navigate to **All Agents** or **My Agents**
+2. Click the **Edit** icon for the agent
+3. Modify settings as needed
+4. Click **Save Changes**
+
+> **Note:** The agent name cannot be changed after creation.
+
+## Access Control
+
+Configure who can access and manage the agent:
+
+1. Open the agent for editing
+2. Click **Access Control** at the top right
+3. Add role assignments for:
+   - **Agent scope**: Access to this specific agent
+   - **Prompt scope**: Access to the agent's prompt
+
+## Form Validation
+
+The form validates required fields before allowing creation:
+
+- Agent name must be unique and properly formatted
+- Required workflow settings must be configured
+- Model selections must be made where required
+
+Validation errors appear as red text below the relevant field.
+
+## Related Topics
+
+- [Quick Start: Creating Your First Agent](../../quick-start/creating-first-agent.md)
 - [Create Model Agnostic Agent with Claude](create-model-agnostic-agent-claude.md)
 - [Create Model Agnostic Agent with GPT-4o](create-model-agnostic-agent-gpt4o.md)
 - [Agents & Workflows Reference](../../reference/concepts/agents-workflows.md)

@@ -1,88 +1,258 @@
 # Agents and Workflows
 
-Foundationa**LLM** (FLLM) agents are the core of the solution. They are responsible for providing users with a customized experience based on its configuration.
+Agents are the core of FoundationaLLM, providing users with customized AI-powered conversational experiences based on their configuration. This reference documents the agent resource structure and workflow configuration options.
 
-## Creation of a new Agent
+## Agent Resource Structure
 
-To create a new agent, you can use the **Create Agent** hyperlink in the **Agents** section of the **Management Portal**. 
+An agent consists of several configuration sections:
 
-### The creation of a new agent consists of 5 sections:
+| Section | Purpose |
+|---------|---------|
+| **General** | Basic information (name, description, welcome message) |
+| **Agent Configuration** | Behavior settings (history, gatekeeper, cost center, expiration, portal displays) |
+| **User Portal Experience** | Portal feature visibility settings |
+| **Workflow** | Orchestration and model configuration |
+| **Tools** | Tool capabilities (Code Interpreter, Knowledge Search, DALL-E) |
+| **Security** | Access tokens and virtual security groups |
 
-- General
-- Agent Configuration
-- Workflow
-- Tools
-- Security
+## Agent JSON Structure
 
-### General Section
+```json
+{
+  "type": "agent",
+  "name": "my-agent",
+  "object_id": "/instances/{instanceId}/providers/FoundationaLLM.Agent/agents/my-agent",
+  "display_name": "My Agent",
+  "description": "Agent description",
+  "inline_context": false,
+  "conversation_history_settings": {
+    "enabled": true,
+    "max_history": 5
+  },
+  "gatekeeper_settings": {
+    "use_system_setting": false,
+    "options": ["ContentSafety", "Presidio"]
+  },
+  "orchestration_settings": {
+    "agent_parameters": {}
+  },
+  "workflow_object_id": "/instances/{instanceId}/providers/FoundationaLLM.Agent/workflows/my-workflow",
+  "tool_object_ids": [],
+  "cost_center": "",
+  "expiration_date": null
+}
+```
 
-In this section, you can define the name, description and welcome message of the agent.  The Welcome message is what a user will see in the Chat portal as soon as they pick that agent from the dropdown to learn about the agent and its services that it provides before starting a chat conversation.
+---
 
-![General Agent information](./media/agent_Workflow_1.png)
+## Workflow Types
 
-### Agent Configuration Section
+Workflows define how agents process requests and generate responses.
 
-In this section, you can define the following configurations:
+### OpenAIAssistants
 
-- **Chat History**: This setting allows you to enable or disable the chat history feature for the agent. When enabled, the agent will remember the context of previous conversations, allowing for more personalized and relevant responses. If disabled, the agent will not retain any memory of past interactions. It also allows you to define the number of messages to be stored in the chat history. The default is 5 messages.
+Uses Azure OpenAI Assistants API for orchestration.
 
-- **Gatekeeper**: This setting allows you to enable or disable the gatekeeper feature for the agent. When enabled, the agent will have a gatekeeper that can filter and moderate the content of conversations, ensuring that inappropriate or harmful content is not generated. If disabled, the agent will not have any content moderation capabilities. 
-You can choose from multiple options for the content safety:
-  - **Azure Content Safety**
-  - **Azure Content Safety Prompt Shield**
-  - **Lakera Guard**
-  - **Enkrypt Guardrails**
-The Gatekeeper also allows you to enable the Data Protection aspect of the agent, which currently uses **Microsoft Presidio** to filter sensitive data in the conversations.
+| Feature | Description |
+|---------|-------------|
+| Code Interpreter | Execute Python code for data analysis |
+| File Search | Search through uploaded documents |
+| Function Calling | Call external functions/tools |
 
-- **Cost Center**: This setting allows you to define a cost center for the agent. A cost center is a department or unit within an organization that is responsible for its own expenses and budget. By assigning a cost center to the agent, you can track and manage the costs associated with its operations.
+**Best For:** Complex multi-step tasks, code execution, file analysis
 
-- **Expiration**: This setting allows you to define an expiration date for the agent. After this date, the agent will no longer be available for use. This is useful for managing the lifecycle of agents and ensuring that they are only active when needed.
+### LangGraphReactAgent
 
-- **Chat Portal Displays**: This setting allows you to turn on or off 4 valuable capabilities in the **Chat Portal**.
-  - The amount of tokens used in the conversation. (Questions and Responses)
-  - The **prompt** used by the agent for a specific question including history and context.
-  - The option to rate the response of the agent.
-  - The ability to allow the user to upload files to the agent in the conversation.
+Uses LangGraph for dynamic tool selection with ReAct pattern.
 
-![Agent Configuration Section](./media/agent_Workflow_2.png)
+| Feature | Description |
+|---------|-------------|
+| Dynamic Tool Selection | Agent chooses tools based on context |
+| ReAct Pattern | Reasoning + Acting loop |
+| Tool Orchestration | Multiple tools in sequence |
 
-### Workflow Section
+**Best For:** Dynamic multi-tool scenarios, reasoning chains
 
-In this section, you can define the workflow of the agent. The workflow is a sequence of steps that the agent follows to process user requests and provide responses. You can define the following aspects of the workflow:
+### ExternalAgentWorkflow
 
-- **Workflow Type**: This setting allows you to choose the type of workflow for the agent. You can choose from the following options:
-  - **OpenAIAssistants**: Gives your agent the ability to take advantage of **Code Interpreter**, **File Search** and **Function Calling**.
-  - **LangGraphReactAgent**: Gives your agent the ability to dynamically choose a tool from a predefined toolset in LangGraph
-  - **ExternalAgentWorkflow**: Gives your agent the ability to use external workflows developed in Python and registered to be used by your Agent.
-- **Workflow name**: This setting allows you to define the name of the workflow for the agent. The name should be descriptive and reflect the purpose of the workflow.
-- **Workflow Package Name**: This setting allows you to define the name of the workflow package for the agent. The package name should be descriptive and reflect the purpose of the workflow.
-- **Workflow Host**: This setting allows you to define the host of the workflow for the agent. Currently the host is required to be **Langchain** for all OpenAIAssistants workflows.
-- **Workflow Main Model**: This setting allows you to define the main model of the workflow for the agent. The main model is the primary large language model (LLM) that the agent uses to generate responses. You can choose from any of the models deployed as part of your instance.
-- **Workflow Main Model Parameters**: This setting allows you to define the parameters of the main model for the agent. The parameters are the settings that control the behavior of the model, such as temperature, max tokens, and top_p. 
-- **Workflow Main Prompt**: This setting allows you to define the main prompt of the workflow for the agent. The main prompt is the definition of the persona of the agent and the instructions that it follows to generate responses.
+Enables custom Python-based workflow implementations.
 
-![Agent Workflow configuration](./media/agent_Workflow_3.png)
+| Feature | Description |
+|---------|-------------|
+| Custom Logic | Implement any workflow pattern |
+| Plugin-Based | Registered as workflow plugins |
+| Full Control | Complete control over orchestration |
 
-### Tools Section
+**Best For:** Custom business logic, specialized workflows
 
-In this section, you can define the tools that the agent can use to perform tasks and provide responses. The tools are external services or APIs that the agent can call to retrieve information or perform actions. 
+---
 
-![Agent Tools configuration](./media/agent_Workflow_4.png)
+## Workflow Configuration
 
-Currently, the following tools are available out of the box:
-- **DALLE3 Image Generator**
+### Workflow Resource Structure
 
-![DALLE3 Tool configuration](./media/agent_Workflow_5.png)
+```json
+{
+  "type": "workflow",
+  "name": "my-workflow",
+  "object_id": "/instances/{instanceId}/providers/FoundationaLLM.Agent/workflows/my-workflow",
+  "workflow_type": "OpenAIAssistants",
+  "workflow_host": "LangChain",
+  "package_name": "FoundationaLLM.Workflow",
+  "main_ai_model_object_id": "/instances/{instanceId}/providers/FoundationaLLM.AIModel/aiModels/gpt-4o",
+  "main_prompt_object_id": "/instances/{instanceId}/providers/FoundationaLLM.Prompt/prompts/system-prompt",
+  "ai_model_object_ids": {},
+  "prompt_object_ids": {},
+  "resource_object_ids": {}
+}
+```
 
-> [!Important]
-> The name of the tool HAS to be **DALLEImageGeneration** in order for the agent to be able to use it. The AI Model's Object role has to be **main_model** in the **Tool Resources** section.
+### Key Workflow Settings
 
-### Security Section
+| Setting | Description |
+|---------|-------------|
+| `workflow_type` | One of: `OpenAIAssistants`, `LangGraphReactAgent`, `ExternalAgentWorkflow` |
+| `workflow_host` | Currently `LangChain` for all workflows |
+| `package_name` | Plugin package name for external workflows |
+| `main_ai_model_object_id` | Primary model for generation |
+| `main_prompt_object_id` | System prompt defining agent persona |
+| `ai_model_object_ids` | Additional models by role |
+| `prompt_object_ids` | Additional prompts by role |
+| `resource_object_ids` | External resources (e.g., Azure AI Project) |
 
-In this section, you can define an Agent Access Token to be used by the agent. The Agent Access Token is a security token that is used to authenticate and authorize access to the agent's resources and services. It is a unique identifier that is generated for each agent and is used to ensure that only authorized users can access the agent's capabilities without requiring the user to be authenticated using Entra ID credentials. 
-This is particularly useful for public applications that want to provide access to the agent without requiring users to log in with their Entra ID credentials.
+---
 
-![Agent Access Token configuration](./media/agent_Workflow_6.png)
+## Agent Configuration Options
 
-[Access Token scenario](Agent_AccessToken.md)
+### Conversation History
 
+Controls context retention across conversation turns.
+
+| Setting | Type | Description |
+|---------|------|-------------|
+| `enabled` | boolean | Enable conversation history |
+| `max_history` | integer | Number of message pairs to retain (default: 5) |
+
+### Gatekeeper
+
+Controls content moderation and safety features.
+
+| Option | Description |
+|--------|-------------|
+| `ContentSafety` | Azure Content Safety integration |
+| `ContentSafetyPromptShield` | Azure Content Safety with prompt injection detection |
+| `LakeraGuard` | Lakera Guard integration |
+| `EnkryptGuardrails` | Enkrypt Guardrails integration |
+| `Presidio` | Microsoft Presidio for PII detection |
+
+### User Prompt Rewrite
+
+Enables query transformation for improved retrieval.
+
+| Setting | Type | Description |
+|---------|------|-------------|
+| `enabled` | boolean | Enable prompt rewriting |
+| `ai_model_object_id` | string | Model for rewriting |
+| `prompt_object_id` | string | Prompt for rewriting instructions |
+
+### Semantic Cache
+
+Caches responses for similar queries.
+
+| Setting | Type | Description |
+|---------|------|-------------|
+| `enabled` | boolean | Enable semantic caching |
+| `score_threshold` | float | Similarity threshold (0-1) |
+
+### Cost Center & Expiration
+
+| Setting | Type | Description |
+|---------|------|-------------|
+| `cost_center` | string | Cost allocation identifier |
+| `expiration_date` | datetime | Agent expiration date (null = no expiration) |
+
+---
+
+## User Portal Experience Settings
+
+Control what features are visible in the Chat User Portal.
+
+| Setting | Description |
+|---------|-------------|
+| Show Token Usage | Display token counts for requests/responses |
+| Show Prompt | Allow users to view the compiled prompt |
+| Enable Rating | Allow users to rate responses |
+| Enable File Upload | Allow users to upload files |
+
+---
+
+## Tool Configuration
+
+### Tool Resource Structure
+
+```json
+{
+  "type": "tool",
+  "name": "code-interpreter",
+  "object_id": "/instances/{instanceId}/providers/FoundationaLLM.Agent/tools/code-interpreter",
+  "tool_type": "code-interpreter",
+  "description": "Execute Python code",
+  "ai_model_object_ids": {},
+  "prompt_object_ids": {},
+  "resource_object_ids": {},
+  "properties": {}
+}
+```
+
+### Built-in Tool Types
+
+| Tool Type | Description | Configuration |
+|-----------|-------------|---------------|
+| `code-interpreter` | Python code execution | Conversation file scope |
+| `knowledge-search` | Vector search through knowledge sources | Indexing profile, data sources |
+| `dalle-image-generation` | Generate images with DALL-E | AI model with `main_model` role |
+
+### Tool Resource Mapping
+
+Tools can reference models, prompts, and resources by role:
+
+```json
+{
+  "ai_model_object_ids": {
+    "main_model": "/instances/.../aiModels/dalle-3"
+  },
+  "prompt_object_ids": {
+    "tool_prompt": "/instances/.../prompts/tool-instructions"
+  },
+  "resource_object_ids": {
+    "indexing_profile": "/instances/.../indexingProfiles/default"
+  }
+}
+```
+
+---
+
+## Security Configuration
+
+### Virtual Security Group ID
+
+Identifies the agent for external access scenarios.
+
+```json
+{
+  "virtual_security_group_id": "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"
+}
+```
+
+### Agent Access Tokens
+
+Enable unauthenticated access to specific agents. See [Agent Access Tokens](agent-access-tokens.md) for details.
+
+---
+
+## Related Topics
+
+- [Create New Agent](../../how-to-guides/agents/create-new-agent.md)
+- [Agent Access Tokens](agent-access-tokens.md)
+- [Prompts Resources](prompts-resources.md)
+- [Resource Management](resource-management.md)

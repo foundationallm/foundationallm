@@ -1,56 +1,110 @@
-# Management UI
+# Management Portal
 
-The Management UI enables FLLM administrators to configure agents without directly calling the Management API.
+The Management Portal is the administrative interface for configuring and managing your FoundationaLLM deployment.
 
-## Creating New Agent
+## Overview
 
-1. Navigate to the **Create New Agent** page using the side navigation bar.
-    
-    ![FLLM Create New Agent tab.](../media/fllm-management-interface.png "Create New Agent")
+The Management Portal provides IT administrators, developers, and power users with a comprehensive set of tools to:
 
-2. Set the agent type: **Knowledge Management** or **Analytics**. FoundationaLLM currently only supports Knowledge Management agents.
+- **Create and manage AI agents** - Configure agent behavior, workflows, and capabilities
+- **Connect data sources** - Integrate with Azure Data Lake, SharePoint, and other repositories
+- **Build data pipelines** - Process and index data for agent retrieval
+- **Configure AI models** - Manage model deployments and API endpoints
+- **Control access** - Implement role-based access control (RBAC)
+- **Customize branding** - Personalize the portal appearance
 
-    ![Create New Agent select Agent Type.](../media/agent-type-selection.png "Agent Type")
+## Target Audience
 
-3. Set the agent Knowledge Source:
+The Management Portal is designed for:
 
-    ![Agent Knowledge Source four-tile view.](../media/agent-knowledge-source.png "Agent Knowledge Source")
+| Role | Primary Tasks |
+|------|---------------|
+| **IT Administrators** | Instance configuration, security settings, deployment management |
+| **Developers** | Agent creation, workflow configuration, API integration |
+| **Power Users** | Agent management, prompt engineering, data source configuration |
 
-     - Expand the dropdown arrow next to the upper left box. Select the correct Content Source Profile.
+## Getting Started
 
-        ![Agent Blob Storage Data Sources.](../media/agent-data-source-dropdown.png "Blob Storage Data Sources")
+### Quick Start
 
-     - Expand the dropdown arrow next to the upper right box to open the Indexing Profile dropdown. Select the correct Indexing Profile.
+1. [Tour of the Management Portal](quick-start/portal-tour.md) - Learn the interface
+2. [Creating Your First Agent](quick-start/creating-first-agent.md) - Build your first AI agent
 
-        ![Agent Knowledge Source Index Selection.](../media/aisearch-index-dropdown.png "Index Selection")
-     
-     - Expand the dropdown arrow next to the lower left box. Set the **Chunk size** and **Overlap size** settings for text partitioning. Select **Done**.
+### Prerequisites
 
-        ![Agent Splitting & Chunking Configuration.](../media/set-splitting-and-chunking.png "Splitting & Chunking")
+- Microsoft Entra ID account with appropriate permissions
+- Access to a deployed FoundationaLLM instance
+- Reader or higher role assignment for Management Portal access
 
-     - Expand the dropdown arrow next to the lower right box. Set the trigger **Frequency**; FoundationaLLM currently only supports Manual triggers.
+## Key Features
 
-        ![Agent Vectorization Trigger Frequency.](../media/vectorization-trigger.png "Vectorization Trigger Frequency")
+### Agent Management
 
-4. Configure user-agent interactions.
+Create and configure AI agents with:
+- Multiple workflow types (OpenAI Assistants, LangGraph, Custom)
+- Tool integration (Code Interpreter, DALL-E, Knowledge Search)
+- Customizable system prompts
+- Gatekeeper content safety
 
-    ![User-Agent Interactions & Gatekeeper Configuration.](../media/user-agent-interactions-config.png "User-Agent Interactions")
+**Learn more:**
+- [Create New Agent](how-to-guides/agents/create-new-agent.md)
+- [All Agents](how-to-guides/agents/all-agents.md)
+- [Prompts](how-to-guides/agents/prompts.md)
 
-    - Enable conversation history using the `Yes/No` Radio Button. Select **Done**.
+### Data Management
 
-        ![Agent Enable/Disable Conversation History.](../media/enable-disable-conversation-history.png "Enable/Disable Conversation History.")
+Connect and process organizational data:
+- Configure data source connections
+- Build data processing pipelines
+- Monitor pipeline execution
 
-    - Configure the Gatekeeper. Then, select **Done**.
-        - `Enable/Disable` the Gatekeeper using the Radio Button
-        - Set the **Content Safety** platform to either `None` or `Azure Content Safety` using the dropdown menu
-        - Set the **Data Protection** platform to either `None` or `Microsoft Presidio` using the dropdown menu
+**Learn more:**
+- [Data Sources](how-to-guides/data/data-sources.md)
+- [Creating Data Pipelines](how-to-guides/data/data-pipelines/creating-data-pipelines.md)
+- [Knowledge Sources](how-to-guides/data/knowledge-sources/azure-data-lake.md)
 
-        ![Agent Gatekeeper Status, Content Safety Configuration, and Data Protection Configuration.](../media/gatekeeper-config.png "Gatekeeper Configuration")
+### Security and Access Control
 
-5. Lastly, set the **System Prompt**. The prompt prefixes users' requests to the agent, influencing the tone and functionality of the agent.
+Implement comprehensive security:
+- Role-based access control (RBAC)
+- Agent-level permissions
+- Agent access tokens for API integration
 
-    ![Set Agent Prompt.](../media/set-system-prompt.png "Agent Prompt")
+**Learn more:**
+- [Instance Access Control](how-to-guides/security/instance-access-control.md)
+- [Permissions and Roles Reference](reference/permissions-roles.md)
 
-6. After setting the desired agent configuration, select **Create Agent** at the bottom right-hand corner of the page. You will be able to edit the agent configuration after creation from the **Public Agents** page.
+### Platform Configuration
 
-    ![Edit a newly-created agent in the Management UI.](../media/edit-agent-page.png "Edit agent")
+Customize your deployment:
+- Branding and visual identity
+- Portal access configuration
+- Deployment monitoring
+
+**Learn more:**
+- [Branding Configuration](how-to-guides/fllm-platform/branding.md)
+- [Configuration](how-to-guides/fllm-platform/configuration.md)
+- [Deployment Information](how-to-guides/fllm-platform/deployment-information.md)
+
+## Portal Sections
+
+| Section | Description |
+|---------|-------------|
+| **Agents** | Create, view, and manage AI agents and prompts |
+| **Data** | Configure data sources, pipelines, and knowledge sources |
+| **Models and Endpoints** | Manage AI model deployments and API endpoints |
+| **Security** | Configure role assignments and access control |
+| **FLLM Platform** | Branding, configuration, and deployment information |
+
+## Reference Documentation
+
+- [Agents & Workflows](reference/concepts/agents-workflows.md)
+- [Data Pipelines](reference/concepts/data-pipelines.md)
+- [Resource Management](reference/concepts/resource-management.md)
+- [Configuration Reference](reference/configuration-reference.md)
+
+## Related Topics
+
+- [Chat User Portal Documentation](../chat-user-portal/index.md) - End-user chat interface
+- [APIs & SDKs](../apis-sdks/index.md) - Programmatic access
+- [Platform Operations](../platform-operations/index.md) - Deployment and operations
