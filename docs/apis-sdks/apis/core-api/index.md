@@ -1,76 +1,232 @@
 # Core API
 
-The Core API serves as the entry point for user requests to FoundationaLLM's underlying engine. While clients primarily interact with the Core API through the Chat UI, the Core API exposes some convenient interfaces for developers.
+The Core API is the primary entry point for user-facing interactions with FoundationaLLM. It handles chat completions, session management, file uploads, and agent queries.
 
-## Sessionless Completion
+## Overview
 
-The sessionless completion endpoint enables users to query agents without first creating a chat session.
+The Core API provides:
 
-**Endpoint:** `[DEPLOYMENT URL]/core/orchestration/completion?api-version=1.0`
+- **Completions**: Synchronous and asynchronous chat/completion endpoints
+- **Sessions**: Conversation management (create, list, delete)
+- **Agents**: List available agents for the current user
+- **Attachments**: File upload capabilities
+- **Branding**: Portal branding configuration
+- **Status**: Health and status endpoints
 
->**Note:** For AKS deployments, `[DEPLOYMENT URL]` is the same as the cluster FQDN, while for ACA deployments, the Core API endpoint can be found by navigating to the `[DEPLOYMENT PREFIX]coreca` Container App in the Azure Portal.
+## Base URL
 
-**Sample Request:**
+| Deployment Type | URL Pattern |
+|-----------------|-------------|
+| Azure Container Apps (ACA) | `https://{prefix}coreca.{region}.azurecontainerapps.io` |
+| Azure Kubernetes Service (AKS) | `https://{cluster-fqdn}/core` |
+
+See [Finding Your Core API URL](finding-core-api-url.md) for detailed instructions.
+
+## Authentication
+
+All Core API endpoints require authentication:
+
+| Method | Header | Description |
+|--------|--------|-------------|
+| **Entra ID (Azure AD)** | `Authorization: Bearer <token>` | Standard user authentication |
+| **Agent Access Token** | `X-AGENT-ACCESS-TOKEN: <token>` | Token-based agent access |
+
+## API Endpoints
+
+### Completions
+
+#### Synchronous Completion
+
+```http
+POST /instances/{instanceId}/completions
+Content-Type: application/json
+```
+
+Request body:
 
 ```json
 {
-    "user_prompt": "What are your capabilities?",
-    "settings": {
-        "agent_name": "internal-context",
-        "model_parameters": {
-            "temperature": 0.4,
-            "deployment_name": "completions",
-            "top_k": 5,
-            "top_p": 0.9,
-            "do_sample": true,
-            "max_new_tokens": 100,
-            "return_full_text": true,
-            "ignore_eos": true
-        },
-        "agent_parameters": {
-            "index_filter_expression": "search.ismatch('FoundationaLLM', 'Text')",
-            "index_top_n": 5
-        }
+  "user_prompt": "What are your capabilities?",
+  "session_id": "optional-session-id",
+  "agent_name": "agent-name",
+  "settings": {
+    "model_parameters": {
+      "temperature": 0.4,
+      "max_new_tokens": 1000
+    },
+    "agent_parameters": {
+      "index_top_n": 5
     }
+  }
 }
 ```
 
-> [!NOTE]
-> The `settings` object provides to override various parameters at runtime, and is optional. Within `settings` both `model_parameters` and `settings.agent_parameters` (along with their members) are optional. If not provided, the Core API will use the default model and agent settings.
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `user_prompt` | string | Yes | The user's question or prompt |
+| `session_id` | string | No | Session ID for conversation context |
+| `agent_name` | string | No | Specific agent to use |
+| `settings` | object | No | Override model and agent parameters |
 
-**model_parameters:**
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| `temperature` | `float` | Controls randomness. Lowering the temperature means that the model will produce more repetitive and deterministic responses. Increasing the temperature will result in more unexpected or creative responses. Try adjusting temperature or Top P but not both. This value should be a float between 0.0 and 1.0. |
-| `deployment_name` | `string` | The deployment name for the language model. |
-| `top_k` | `int` | The number of highest probability vocabulary tokens to keep for top-k-filtering. Default value is null, which disables top-k-filtering. |
-| `top_p` | `float` | The cumulative probability of parameter highest probability vocabulary tokens to keep for nucleus sampling. Top P (or Top Probabilities) is imilar to temperature, this controls randomness but uses a different method. Lowering Top P will narrow the model’s token selection to likelier tokens. Increasing Top P will let the model choose from tokens with both high and low likelihood. Try adjusting temperature or Top P but not both. |
-| `do_sample` | `bool` | Whether or not to use sampling; use greedy decoding otherwise. |
-| `max_new_tokens` | `int` | Sets a limit on the number of tokens per model response. The API supports a maximum of number of tokens (depending on the deployment) shared between the prompt (including system message, examples, message history, and user query) and the model's response. One token is roughly 4 characters for typical English text. |
-| `return_full_text` | `bool` | Whether or not to return the full text (prompt + response) or only the generated part (response). Default value is false. |
-| `ignore_eos` | `bool` | Whether to ignore the End of Sequence(EOS) token and continue generating tokens after the EOS token is generated. Defaults to False. |
-
-**agent_parameters:**
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| `index_filter_expression` | `string` | This value should be a string representing the search filter expression to limit documents to be searched by the index retriever |
-| `index_top_n` | `int` | Controls the number of search results to return from an index for prompt augmentation. |
-
-**Payload Headers:**
-
-| Header | Value | Details |
-| ------ | ----- | ------- |
-| `Authorization` | `Bearer [ENTRA ID BEARER TOKEN]` | Valid token from Entra ID |
-| `Content-Type` | `application/json` | |
-
-**Sample Response:**
+Response:
 
 ```json
 {
-    "text": "FoundationaLLM is a copilot platform that simplifies and streamlines building knowledge management and analytic agents over the data sources present across your enterprise. It provides integration with enterprise data sources used by agents for in-context learning, fine-grain security controls over data used by agents, and pre/post completion filters that guard against attack. The solution is scalable and load balances across multiple endpoints. It is also extensible to new data sources, new LLM orchestrators, and LLMs. You can learn more about FoundationaLLM at https://foundationallm.ai."
+  "operation_id": "guid",
+  "user_prompt": "What are your capabilities?",
+  "completion": "I can help you with...",
+  "citations": [],
+  "user_prompt_embedding": [],
+  "prompt_tokens": 150,
+  "completion_tokens": 200
 }
 ```
 
-**Sample Postman Request:** `/orchestration/completion/Requests a completion from the downstream APIs.`
+#### Asynchronous Completion
+
+For long-running completions, use the async endpoint:
+
+```http
+POST /instances/{instanceId}/async-completions
+Content-Type: application/json
+```
+
+Returns a `LongRunningOperation` object with operation status:
+
+```json
+{
+  "operation_id": "guid",
+  "status": "InProgress",
+  "status_message": "Processing request"
+}
+```
+
+### Sessions (Conversations)
+
+#### List Sessions
+
+```http
+GET /instances/{instanceId}/sessions
+```
+
+#### Create Session
+
+```http
+POST /instances/{instanceId}/sessions
+Content-Type: application/json
+
+{
+  "name": "New Conversation"
+}
+```
+
+#### Get Session Messages
+
+```http
+GET /instances/{instanceId}/sessions/{sessionId}/messages
+```
+
+#### Delete Session
+
+```http
+DELETE /instances/{instanceId}/sessions/{sessionId}
+```
+
+#### Rate Message
+
+```http
+POST /instances/{instanceId}/sessions/{sessionId}/message/{messageId}/rate
+Content-Type: application/json
+
+{
+  "rating": true,
+  "comments": "Helpful response"
+}
+```
+
+### Agents
+
+#### List Available Agents
+
+```http
+GET /instances/{instanceId}/completions/agents
+```
+
+Returns agents the current user has access to:
+
+```json
+[
+  {
+    "resource": {
+      "name": "my-agent",
+      "display_name": "My Agent",
+      "description": "Agent description"
+    },
+    "roles": ["Owner"],
+    "actions": ["read", "write", "delete"]
+  }
+]
+```
+
+### Status
+
+#### Service Status
+
+```http
+GET /instances/{instanceId}/status
+```
+
+## Model Parameters
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `temperature` | float | Randomness (0.0-1.0). Lower = more deterministic |
+| `top_p` | float | Nucleus sampling probability |
+| `top_k` | int | Top-k filtering |
+| `max_new_tokens` | int | Maximum tokens in response |
+| `deployment_name` | string | Specific model deployment |
+| `do_sample` | bool | Enable sampling vs greedy decoding |
+
+## Agent Parameters
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `index_filter_expression` | string | Search filter for index retriever |
+| `index_top_n` | int | Number of search results for context |
+
+## Error Responses
+
+| Status | Description |
+|--------|-------------|
+| 400 | Bad request (invalid parameters) |
+| 401 | Unauthorized (invalid/missing token) |
+| 403 | Forbidden (insufficient permissions) |
+| 404 | Resource not found |
+| 429 | Rate limit exceeded (quota) |
+| 500 | Internal server error |
+
+Error response body:
+
+```json
+{
+  "error": {
+    "code": "QuotaExceeded",
+    "message": "Rate limit exceeded. Try again in 60 seconds."
+  }
+}
+```
+
+## Swagger Documentation
+
+Access the interactive API documentation:
+
+- **ACA Deployment**: `https://{core-api-url}/swagger/`
+- **AKS Deployment**: `https://{aks-url}/core/swagger/v1/swagger.json`
+
+## Related Topics
+
+- [API Reference](api-reference.md)
+- [Directly Calling Core API](directly-calling-core-api.md)
+- [Finding Your Core API URL](finding-core-api-url.md)
+- [Standard Deployment Local API Access](standard-deployment-local-api-access.md)
+- [.NET SDK](../../sdks/dotnet/index.md)

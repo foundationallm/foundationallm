@@ -1,104 +1,276 @@
-# Directly calling the Management API
+# Directly Calling the Management API
 
-This guide provides steps for importing and configuring the Postman collection for the FoundationaLLM Management API. The Management API is used to manage the FoundationaLLM system, including creating and managing agents, vectorization profiles, and more. Once you configure the Postman collection, including authentication, follow the instructions in the links below to perform various operations using the Management API:
+This guide provides step-by-step instructions for configuring Postman and making direct calls to the FoundationaLLM Management API.
 
-- [Managing agents](../../setup-guides/agents/index.md)
-- [Vectorization management](../../setup-guides/vectorization/index.md)
+## Overview
 
-## Postman collection
+The Management API enables programmatic management of FoundationaLLM resources:
 
-The ability to test the API endpoints of FoundationaLLM is a critical part of the development process. Postman is a tool that allows you to do just that. This document will walk you through the process of setting up Postman to work with FoundationaLLM.
+- Agents, workflows, and tools
+- Prompts
+- Data sources and pipelines
+- AI models and API endpoints
+- Branding and configuration
+- Role assignments
 
-> [!TIP]
-> To find the Management API URL for your deployment, you can retrieve it from your App Configuration resource in the portal by viewing the `FoundationaLLM:APIs:ManagementAPI:APIUrl` configuration value.
+## Prerequisites
 
-To see the API endpoints available in FoundationaLLM, you can get your Management API endpoint from your App Configuration resource in the portal and add `/swagger/` to the end of it. For example, if your Management API endpoint is `https://fllmaca729managementca.icelake-c554b849.eastus.azurecontainerapps.io`, then you would navigate to `https://fllmaca729managementca.icelake-c554b849.eastus.azurecontainerapps.io/swagger/` to see the API endpoints.
+Before calling the Management API, you need:
 
-> [!NOTE]
-> The example link above is for a [Quick Start deployment](../../deployment/deployment-quick-start.md) of FoundationaLLM, which deploys the APIs to Azure Container Apps (ACA). If you are using the standard deployment that deploys the APIs to Azure Kubernetes Service (AKS), then you cannot currently access the Swagger UI for the APIs. However, you will be able to obtain the OpenAPI swagger.json file from the Management API endpoint by navigating to `https://{{AKS URL}}/management/swagger/v1/swagger.json`.
+1. **Management API URL** - From App Config: `FoundationaLLM:APIs:ManagementAPI:APIUrl`
+2. **Instance ID** - From App Config: `FoundationaLLM:Instance:Id`
+3. **Entra ID App Registration** - Management Portal client app
+
+## Using Postman
 
 ### Install Postman
 
-If you don't have Postman installed on your machine, visit the [Postman website](https://www.getpostman.com/) and download the app. Once you have it installed, Create a Blank Workspace.
+Download and install [Postman](https://www.getpostman.com/).
 
-### Import the Postman collection
+### Import the Collection
 
-1. First, select the button below to fork and import the Postman collection for the Management API.
+Click the button below to fork the official FoundationaLLM Management API collection:
 
-    [<img src="https://run.pstmn.io/button.svg" alt="Run In Postman" style="width: 128px; height: 32px;">](https://app.getpostman.com/run-collection/269456-839af3bb-2841-40d7-bb24-6409e9ef835e?action=collection%2Ffork&source=rip_markdown&collection-url=entityId%3D269456-839af3bb-2841-40d7-bb24-6409e9ef835e%26entityType%3Dcollection%26workspaceId%3D0d6298a2-c3cd-4530-900c-030ed0ae6dfa)
+[<img src="https://run.pstmn.io/button.svg" alt="Run In Postman" style="width: 128px; height: 32px;">](https://app.getpostman.com/run-collection/269456-839af3bb-2841-40d7-bb24-6409e9ef835e?action=collection%2Ffork&source=rip_markdown&collection-url=entityId%3D269456-839af3bb-2841-40d7-bb24-6409e9ef835e%26entityType%3Dcollection%26workspaceId%3D0d6298a2-c3cd-4530-900c-030ed0ae6dfa)
 
-2. Select **Fork Collection** to create a fork and import the collection into your Postman workspace.
+### Configure Variables
 
-    ![The Import button is highlighted.](media/postman-fork-collection.png)
+1. Select the **FoundationaLLM.Management.API** collection
+2. Click the **Variables** tab
+3. Update these **Current value** fields:
 
-3. Within the dialog that displays, enter your fork label, select the Postman workspace into which you want to create the fork, optionally check the *Watch original collection* checkbox to receive updates to the original collection, and then select **Fork collection**.
+| Variable | Description | Where to Find |
+|----------|-------------|---------------|
+| `baseUrl` | Management API URL | App Config: `FoundationaLLM:APIs:ManagementAPI:APIUrl` |
+| `instanceId` | FoundationaLLM instance GUID | App Config: `FoundationaLLM:Instance:Id` |
+| `tenantId` | Azure AD tenant ID | Entra ID portal |
+| `appClientId` | Management Portal client ID | Entra ID app registration |
+| `appScope` | API scope | Entra ID app registration |
 
-    ![The Postman import dialog is highlighted.](media/postman-fork-management-collection-form.png)
+4. Click **Save**
 
-You will now see the **FoundationaLLM.Management.API** collection in your Postman workspace.
+### Configure Authentication
 
-![The imported collection is displayed.](media/postman-imported-management-collection.png)
+> **Important:** Add `https://oauth.pstmn.io/v1/callback` as a Redirect URI in your Management Portal Entra ID app registration.
 
-### Set up the Postman environment variables
+1. Select the **Authorization** tab in the collection
+2. Verify the OAuth 2.0 settings use the collection variables
+3. Scroll down and click **Get New Access Token**
+4. Complete the login flow
+5. Click **Use Token**
+6. Click **Save**
 
-The Postman collection you imported contains a number of API endpoints that you can use to test the Management API. However, before you can use these endpoints, you need to set up a Postman environment variables within your collection that contains the Management API URL and other variables. We will set up your authentication token in the next section.
+### Make Your First Request
 
-1. Select the **FoundationaLLM.Management.API** collection in the left-hand menu.
+1. Expand the collection and find **Get Agents**
+2. Click **Send**
+3. Verify a 200 OK response
 
-2. Select the **Variables** tab.
+## Using curl
 
-    ![The Variables tab is highlighted.](media/postman-management-variables-tab.png)
+### Get Authentication Token
 
-    > [!NOTE]
-    > The `Initial value` column is the value that will be used when you first import the collection. The `Current value` column is the value that will be used when you run the collection. If you change the `Current value` column, the `Initial value` column will not be updated. For the steps that follow, you will be updating the `Current value` column.
+```bash
+# Login to Azure
+az login
 
-3. Update the `baseUrl` variable `Current value` with the Management API URL for your deployment.
+# Get token for Management API
+TOKEN=$(az account get-access-token \
+  --resource api://{management-api-client-id} \
+  --query accessToken -o tsv)
+```
 
-    ![The Management API URL variable is highlighted.](media/postman-management-api-url-variable.png)
+### List Agents
 
-4. Update the `instanceId` variable `Current value` with the instance ID of your FoundationaLLM deployment. You can find the instance ID in the `FoundationaLLM:Instance:Id` Azure App Configuration property.
+```bash
+curl -X GET \
+  "https://{management-api}/instances/{instanceId}/providers/FoundationaLLM.Agent/agents" \
+  -H "Authorization: Bearer $TOKEN"
+```
 
-    ![The instance ID variable is highlighted.](media/postman-instance-id-variable.png)
+### Get Specific Agent
 
-5. Fill out the `tenantId`, `appClientId`, and `appScope` **Current value** settings for your **Management Client** Entra ID app registration ([setup instructions](../../deployment/authentication/management-authentication-setup-entra.md#register-the-client-application-in-the-microsoft-entra-id-admin-center)). Use the list below the screenshot to find the values.
+```bash
+curl -X GET \
+  "https://{management-api}/instances/{instanceId}/providers/FoundationaLLM.Agent/agents/my-agent" \
+  -H "Authorization: Bearer $TOKEN"
+```
 
-    ![The Management API auth variables are highlighted.](media/postman-management-auth-variables.png)
+### Create Agent
 
-    - **tenantId**: The tenant ID of your Management Client (Management Portal) Entra ID app. You can find this value in the **Overview** tab of your Entra ID app in the portal.
-    - **appClientId**: The client ID of your Management Client Entra ID app. You can find this value in the **Overview** tab of your Entra ID app in the portal.
-    - **appScope**: The scope of your Management Client Entra ID app. You can find this value in the **Api Permissions** section of your Entra ID app in the portal.
+```bash
+curl -X POST \
+  "https://{management-api}/instances/{instanceId}/providers/FoundationaLLM.Agent/agents/new-agent" \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "type": "agent",
+    "name": "new-agent",
+    "display_name": "New Agent",
+    "description": "A new agent",
+    "inline_context": false,
+    "conversation_history_settings": {
+      "enabled": true,
+      "max_history": 5
+    }
+  }'
+```
 
-6. Select the **Save** button in the top right corner of the Variables pane to save your changes.
+### Delete Agent
 
-    ![The Save button is highlighted.](media/postman-management-save-button.png)
+```bash
+curl -X DELETE \
+  "https://{management-api}/instances/{instanceId}/providers/FoundationaLLM.Agent/agents/my-agent" \
+  -H "Authorization: Bearer $TOKEN"
+```
 
-### Set up the Postman authentication token
+### Purge Agent (Permanent Delete)
 
-#### Configure the Postman collection authorization token
+```bash
+curl -X POST \
+  "https://{management-api}/instances/{instanceId}/providers/FoundationaLLM.Agent/agents/my-agent/purge" \
+  -H "Authorization: Bearer $TOKEN"
+```
 
-Complete these steps to configure Postman to use the same token for all of the API calls in the collection.
+## Common Operations
 
-> [!IMPORTANT]
-> If you previously configured the Microsoft Entra ID app registration for the Management Client (UI) application, you will need to update the **Redirect URI** to `https://oauth.pstmn.io/v1/callback` in order to use the Postman mobile app to get the token. You can do this by following the steps in the [Add a redirect URI to the client application](../../deployment/authentication/management-authentication-setup-entra.md#add-a-redirect-uri-to-the-client-application) section of the authentication setup guide.
+### Managing Prompts
 
-1. Select the **Authorization** tab within the **FoundationaLLM.Management.API** collection. You will see the **Authorization** tab at the collection level. This means that you can configure the token at the collection level and use it for all of the requests in the collection. Notice that the **Token Name** is **FLLM Management Token**. This will automatically be used by the requests in the collection.
+**List Prompts:**
 
-    ![The authentication form is displayed with the token name highlighted.](media/postman-management-api-authentication.png)
+```bash
+curl -X GET \
+  "https://{management-api}/instances/{instanceId}/providers/FoundationaLLM.Prompt/prompts" \
+  -H "Authorization: Bearer $TOKEN"
+```
 
-> [!NOTE]
-> All of the values are pre-filled and use the variables that you set up in the previous section. You do not need to change any values at this time.
+**Create Prompt:**
 
-Scroll down to the bottom of the page and click on **Get New Access Token**. This will open a new window in your browser and will ask you to login with your credentials.  Once you login, you will be asked to consent to the permissions that you specified in the **Scope** field.  Click on **Accept** to consent to the permissions.  You will then be redirected to the callback url that you specified in the **Callback Url** field.  This will close the browser window and will take you back to Postman. You should now see the token in the **Authorization** tab. Click on **Use Token** to use the token in the collection.
+```bash
+curl -X POST \
+  "https://{management-api}/instances/{instanceId}/providers/FoundationaLLM.Prompt/prompts/system-prompt" \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "type": "prompt",
+    "name": "system-prompt",
+    "display_name": "System Prompt",
+    "category": "AgentWorkflow",
+    "prefix": "You are a helpful assistant specialized in..."
+  }'
+```
 
-![The Use Token button is highlighted.](media/postman-use-management-token.png)
+### Managing Data Sources
 
-> [!IMPORTANT]
-> Be sure to click the **Save** button in the top right corner of the Postman app to save your changes.
+**List Data Sources:**
 
-Now you are ready to make your first ManagementAPI request.
+```bash
+curl -X GET \
+  "https://{management-api}/instances/{instanceId}/providers/FoundationaLLM.DataSource/dataSources" \
+  -H "Authorization: Bearer $TOKEN"
+```
 
-Within the **FoundationaLLM.Management.API** collection, select the **Get Agents** GET request. When you select the `Authorization` tab, notice that the selected type is `Inherit auth from parent`. This means that the request will use the token that you configured at the collection level. Also notice that the `{{baseUrl}}` and `{{instanceId}}` variables is used in the `Request Url` field. This means that the request will use the Management API URL and Instance Id that you configured at the collection level. Select the **Send** button to send the request. Even if you do not have any agents sessions in your system, you should receive a successful response (200) from the Management API.
+**Create Azure Data Lake Source:**
 
-![The Sessions endpoint request and response are shown.](media/postman-agents-request.png)
+```bash
+curl -X POST \
+  "https://{management-api}/instances/{instanceId}/providers/FoundationaLLM.DataSource/dataSources/my-storage" \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "type": "data-source",
+    "name": "my-storage",
+    "display_name": "My Azure Storage",
+    "data_source_type": "AzureDataLake",
+    "configuration": {
+      "authentication_type": "ManagedIdentity",
+      "endpoint": "https://mystorageaccount.blob.core.windows.net"
+    }
+  }'
+```
 
-Now you can use the same token to test any other request in the collection with ease.
+### Managing Branding
+
+**Get Branding Settings:**
+
+```bash
+curl -X GET \
+  "https://{management-api}/instances/{instanceId}/providers/FoundationaLLM.Configuration/appConfigurations" \
+  -H "Authorization: Bearer $TOKEN"
+```
+
+**Update Branding:**
+
+```bash
+curl -X POST \
+  "https://{management-api}/instances/{instanceId}/providers/FoundationaLLM.Configuration/appConfigurations/Branding-CompanyName" \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "type": "app-configuration",
+    "name": "Branding-CompanyName",
+    "key": "FoundationaLLM:Branding:CompanyName",
+    "value": "My Company"
+  }'
+```
+
+### Managing Role Assignments
+
+**List Role Assignments:**
+
+```bash
+curl -X GET \
+  "https://{management-api}/instances/{instanceId}/providers/FoundationaLLM.Authorization/roleAssignments" \
+  -H "Authorization: Bearer $TOKEN"
+```
+
+**Create Role Assignment:**
+
+```bash
+curl -X POST \
+  "https://{management-api}/instances/{instanceId}/providers/FoundationaLLM.Authorization/roleAssignments/new-assignment" \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "type": "role-assignment",
+    "name": "new-assignment",
+    "principal_id": "user-guid",
+    "principal_type": "User",
+    "role_definition_id": "/providers/FoundationaLLM.Authorization/roleDefinitions/00a53e72-f66e-4c03-8f81-7e885fd2eb35",
+    "scope": "/instances/{instanceId}"
+  }'
+```
+
+## Swagger UI
+
+For interactive API exploration:
+
+| Deployment | URL |
+|------------|-----|
+| ACA | `https://{management-api-url}/swagger/` |
+| AKS | `https://{aks-url}/management/swagger/v1/swagger.json` |
+
+## Error Handling
+
+| Status | Meaning | Action |
+|--------|---------|--------|
+| 400 | Invalid request | Check JSON format and required fields |
+| 401 | Unauthorized | Refresh authentication token |
+| 403 | Forbidden | Check role permissions |
+| 404 | Not found | Verify resource path and name |
+| 409 | Conflict | Resource already exists |
+| 500 | Server error | Check API logs |
+
+## Tips
+
+1. **Use purge carefully** - Purged resources cannot be recovered
+2. **Check permissions** - Some operations require Owner or Contributor role
+3. **Validate JSON** - API returns 400 for malformed requests
+4. **Use instance ID** - All resource paths require the instance ID
+
+## Related Topics
+
+- [Management API Overview](index.md)
+- [API Reference](api-reference.md)
+- [Resource Providers Overview](resource-providers-overview.md)
+- [.NET SDK](../../sdks/dotnet/index.md)

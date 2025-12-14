@@ -1,167 +1,246 @@
-# Directly calling the Core API
+# Directly Calling the Core API
 
-Typically, the only interaction with the Foundationa**LLM** (FLLM) APIs is indirectly through the User Portal and Management Portal. However, you can also call the APIs directly to perform certain tasks, such as using your [configured FLLM agents](../../setup-guides/agents/index.md) to perform completions (via the Core API), or updating your branding configurations (via the Management API).
+This guide explains how to call the FoundationaLLM Core API directly using tools like Postman, curl, or custom applications.
 
-## API architecture
+## Overview
 
-The FLLM architecture contains layers of APIs that are used to perform different tasks along a call chain, starting with the **Core API**. The following diagram shows a very high-level flow of the API architecture:
+While users typically interact with the Core API through the Chat User Portal, developers can call the API directly to:
+
+- Integrate FoundationaLLM into custom applications
+- Build automated workflows
+- Test agent configurations
+- Create custom chat interfaces
+
+## API Architecture
+
+The Core API is the entry point to FoundationaLLM's orchestration layer:
 
 ```mermaid
 sequenceDiagram
     actor U as Caller
-    participant C as CoreAPI
-    participant A as OrchestrationAPI
-    participant O as OrchestrationWrapperAPI
+    participant C as Core API
+    participant G as Gatekeeper API
+    participant O as Orchestration API
+    participant L as LangChain API
 
-    U->>C: Calls Orchestration endpoint
-    C->>A: Calls Orchestration endpoint
-    Note over A,O: Agent resolution from cache or hubs
-    A->>+O: Invokes orchestrator
-    Note over O: Calls LangChain or Semantic Kernel
-    O->>-A: Returns result
-    A->>C: Returns result
-    C->>U: Returns result
-
+    U->>C: POST /completions
+    C->>G: Content safety check
+    G->>C: Approved request
+    C->>O: Process completion
+    O->>L: Execute orchestration
+    L->>O: LLM response
+    O->>C: Processed response
+    C->>U: Final response
 ```
 
-> [!NOTE]
-> The OrchestrationAPI contains a caching layer for the full agent metadata, including the agent, its datasource(s), and prompts. This caching layer is used to improve performance by reducing the number of calls to the underlying hubs. The OrchestrationAPI also includes endpoints to clear the cache across different categories. In the more detailed diagram below, you can see that the OrchestrationAPI calls the AgentHubAPI, PromptHubAPI, and DataSourceHubAPI to retrieve the agent metadata.
+> **Note:** The Gatekeeper can be bypassed by setting `FoundationaLLM:APIs:CoreAPI:BypassGatekeeper` to `true` in App Configuration. This improves performance but disables content filtering.
 
-When we look a level deeper, we see that there are several interactions between the APIs that occur during the call chain. The following diagram shows a more detailed flow of the API architecture:
+## Prerequisites
 
-```mermaid
-graph TD;
-    A[CoreAPI] -->|1. User Request| B[GatekeeperAPI] -->|Gatekeeper Extensions| BB[GatekeeperIntegrationAPI]
-    A -...->|"1a. User Request (Bypass Gatekeeper)"| C[OrchestrationAPI]
-    B ---->|2. Processed Request| C[OrchestrationAPI]
-    C -->|3. Request| E[(AgentHubAPI)]
-    C --->|4. Instantiate Agent| D[[Agent]]
-    D -->|Request| F[(PromptHubAPI)]
-    D -->|Request| G[(DataSourceHubAPI)]
-    E -->|Metadata| C
-    F -->|Metadata| D
-    G -->|Metadata| D
-    D -->|Hydrated Agent| C
-    D -->|5. Composed Information| H[OrchestrationWrapperAPI]
-    H -->|6. Response| D
-    C -->|7. Response| B
-    C -...->|"7a. Response (Bypass Gatekeeper)"| A
-    B -->|8. Final Response| A
+Before calling the Core API, you need:
 
-```
+1. **Core API URL** - See [Finding Your Core API URL](finding-core-api-url.md)
+2. **Instance ID** - Found in App Configuration: `FoundationaLLM:Instance:Id`
+3. **Authentication Token** - Entra ID bearer token or Agent Access Token
 
-> [!NOTE]
-> Notice that there is an alternate path that bypasses the Gatekeeper API. This path is used when the `FoundationaLLM:APIs:CoreAPI:BypassGatekeeper` configuration value is set to `true`. By default, the Core API bypasses the Gatekeeper API. To override this behavior and enable the Gatekeeper API, set this value to true. Bypassing the Gatekeeper means that you bypass content protection and filtering in favor of improved performance.
-
-## Postman collection
-
-The ability to test the API endpoints of FoundationaLLM is a critical part of the development process. Postman is a tool that allows you to do just that. This document will walk you through the process of setting up Postman to work with FoundationaLLM.
-
-> [!TIP]
-> To find the Core API URL for your deployment, you can retrieve it from your App Configuration resource in the portal by viewing the `FoundationaLLM:APIs:CoreAPI:APIUrl` configuration value. Alternatively, follow the instructions in the [Quickstart guide](../../setup-guides/quickstart.md#find-your-core-api-url) to find the Core API URL.
-
-To see the API endpoints available in FoundationaLLM, you can get your Core API endpoint from your App Configuration resource in the portal and add `/swagger/` to the end of it. For example, if your Core API endpoint is `https://fllmaca002coreca.graybush-c554b849.eastus.azurecontainerapps.io`, then you would navigate to `https://fllmaca002coreca.graybush-c554b849.eastus.azurecontainerapps.io/swagger/` to see the API endpoints.
-
-> [!NOTE]
-> The example link above is for a [Quick Start deployment](../../deployment/deployment-quick-start.md) of FoundationaLLM, which deploys the APIs to Azure Container Apps (ACA). If you are using the standard deployment that deploys the APIs to Azure Kubernetes Service (AKS), then you cannot currently access the Swagger UI for the APIs. However, you will be able to obtain the OpenAPI swagger.json file from the Core API endpoint by navigating to `https://{{AKS URL}}/core/swagger/v1/swagger.json`.
+## Using Postman
 
 ### Install Postman
 
-If you don't have Postman installed on your machine, visit the [Postman website](https://www.getpostman.com/) and download the app. Once you have it installed, Create a Blank Workspace.
+Download and install [Postman](https://www.getpostman.com/).
 
-### Import the Postman collection
+### Import the Collection
 
-1. First, select the button below to fork and import the Postman collection for the Core API.
+Click the button below to fork and import the official FoundationaLLM Core API Postman collection:
 
-    [<img src="https://run.pstmn.io/button.svg" alt="Run In Postman" style="width: 128px; height: 32px;">](https://app.getpostman.com/run-collection/269456-9ad62116-3057-4166-abfc-ece23923bff5?action=collection%2Ffork&source=rip_markdown&collection-url=entityId%3D269456-9ad62116-3057-4166-abfc-ece23923bff5%26entityType%3Dcollection%26workspaceId%3D0d6298a2-c3cd-4530-900c-030ed0ae6dfa)
+[<img src="https://run.pstmn.io/button.svg" alt="Run In Postman" style="width: 128px; height: 32px;">](https://app.getpostman.com/run-collection/269456-9ad62116-3057-4166-abfc-ece23923bff5?action=collection%2Ffork&source=rip_markdown&collection-url=entityId%3D269456-9ad62116-3057-4166-abfc-ece23923bff5%26entityType%3Dcollection%26workspaceId%3D0d6298a2-c3cd-4530-900c-030ed0ae6dfa)
 
-2. Select **Fork Collection** to create a fork and import the collection into your Postman workspace.
+### Configure Variables
 
-    ![The Import button is highlighted.](media/postman-fork-collection.png)
+1. Select the **FoundationaLLM.Core.API** collection
+2. Click the **Variables** tab
+3. Update the following **Current value** fields:
 
-3. Within the dialog that displays, enter your fork label, select the Postman workspace into which you want to create the fork, optionally check the *Watch original collection* checkbox to receive updates to the original collection, and then select **Fork collection**.
+| Variable | Value | Where to Find |
+|----------|-------|---------------|
+| `baseUrl` | Your Core API URL | App Config: `FoundationaLLM:APIs:CoreAPI:APIUrl` |
+| `instanceId` | Your instance GUID | App Config: `FoundationaLLM:Instance:Id` |
+| `tenantId` | Azure AD tenant ID | Entra ID app registration |
+| `appClientId` | Client ID | Entra ID app registration |
+| `appScope` | API scope | Entra ID app registration |
 
-    ![The Postman import dialog is highlighted.](media/postman-fork-collection-form.png)
+4. Click **Save**
 
-You will now see the **FoundationaLLM.Core.API** collection in your Postman workspace.
+### Configure Authentication
 
-![The imported collection is displayed.](media/postman-imported-collection.png)
+1. Select the **Authorization** tab in the collection
+2. Scroll to the bottom and click **Get New Access Token**
+3. Log in with your credentials
+4. Click **Use Token** after authentication
+5. Click **Save**
 
-### Set up the Postman environment variables
+> **Important:** Add `https://oauth.pstmn.io/v1/callback` as a Redirect URI in your Entra ID app registration for Postman authentication to work.
 
-The Postman collection you imported contains a number of API endpoints that you can use to test the Core API. However, before you can use these endpoints, you need to set up a Postman environment variables within your collection that contains the Core API URL, agent hint value, and other variables. We will set up your authentication token in the next section.
+### Make Your First Request
 
-1. Select the **FoundationaLLM.Core.API** collection in the left-hand menu.
+1. Expand the **sessions** folder in the collection
+2. Select the **GET Sessions** request
+3. Click **Send**
+4. Verify you receive a 200 OK response
 
-2. Select the **Variables** tab.
+## Using curl
 
-    ![The Variables tab is highlighted.](media/postman-variables-tab.png)
+### Get Authentication Token
 
-    > [!TIP]
-    > The <https://localhost:63279> value is the default value for the Core API URL (`baseUrl` variable) when debugging it locally. You can leave this value as-is if you are testing locally, or you can replace it with the Core API URL for your deployment.
+First, obtain a bearer token using Azure CLI:
 
-    > [!NOTE]
-    > The `Initial value` column is the value that will be used when you first import the collection. The `Current value` column is the value that will be used when you run the collection. If you change the `Current value` column, the `Initial value` column will not be updated. For the steps that follow, you will be updating the `Current value` column.
+```bash
+# Login to Azure
+az login
 
-3. Update the `baseUrl` variable `Current value` with the Core API URL for your deployment.
+# Get token for Core API
+TOKEN=$(az account get-access-token \
+  --resource api://{core-api-client-id} \
+  --query accessToken -o tsv)
+```
 
-    ![The Core API URL variable is highlighted.](media/postman-core-api-url-variable.png)
+### List Sessions
 
-4. Fill out the `tenantId`, `appClientId`, and `appScope` **Current value** settings for your **Core Client** Entra ID app registration ([setup instructions](../../deployment/authentication/core-authentication-setup-entra.md#register-the-client-application-in-the-microsoft-entra-id-admin-center)). Use the list below the screenshot to find the values.
+```bash
+curl -X GET \
+  "https://{core-api-url}/instances/{instanceId}/sessions" \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json"
+```
 
-    ![The additional variables are highlighted.](media/postman-core-api-variables.png)
+### Request a Completion
 
-    - **tenantId**: The tenant ID of your Core Client (Chat UI) Entra ID app. You can find this value in the **Overview** tab of your Entra ID app in the portal.
-    - **appClientId**: The client ID of your Core Client Entra ID app. You can find this value in the **Overview** tab of your Entra ID app in the portal.
-    - **appScope**: The scope of your Core Client Entra ID app. You can find this value in the **Api Permissions** section of your Entra ID app in the portal.
+```bash
+curl -X POST \
+  "https://{core-api-url}/instances/{instanceId}/completions" \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "user_prompt": "What is FoundationaLLM?",
+    "agent_name": "default-agent"
+  }'
+```
 
-5. Select the **Save** button in the top right corner of the Variables pane to save your changes.
+### Create a Session
 
-    ![The Save button is highlighted.](media/postman-save-button.png)
+```bash
+curl -X POST \
+  "https://{core-api-url}/instances/{instanceId}/sessions" \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "My New Conversation"
+  }'
+```
 
-### Set up the Postman authentication token
+### Completion with Session Context
 
-There are two ways to obtain the authentication token that you will use to authenticate your API calls:
+```bash
+curl -X POST \
+  "https://{core-api-url}/instances/{instanceId}/completions" \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "user_prompt": "Tell me more about that",
+    "session_id": "{session-id}",
+    "agent_name": "default-agent"
+  }'
+```
 
-#### Configure the Postman collection authorization token (recommended)
+## Using Agent Access Tokens
 
-Though this method takes a few more steps, it is the recommended method because it allows you to use the same token for all of the API calls in the collection.
+For unauthenticated access scenarios, use Agent Access Tokens:
 
-> [!IMPORTANT]
-> If you previously configured the Microsoft Entra ID app registration for the Chat UI application (Core Client), you will need to update the **Redirect URI** to `https://oauth.pstmn.io/v1/callback` in order to use the Postman mobile app to get the token. You can do this by following the steps in the [Add a redirect URI to the client application](../../deployment/authentication/core-authentication-setup-entra.md#add-a-redirect-uri-to-the-client-application) section of the authentication setup guide.
+```bash
+curl -X POST \
+  "https://{core-api-url}/instances/{instanceId}/completions" \
+  -H "X-AGENT-ACCESS-TOKEN: {agent-access-token}" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "user_prompt": "Hello, what can you do?"
+  }'
+```
 
-1. Select the **Authorization** tab within the **FoundationaLLM.Core.API** collection. You will see the **Authorization** tab at the collection level. This means that you can configure the token at the collection level and use it for all of the requests in the collection. Notice that the **Token Name** is **FLLM CoreAPI Token**. This will automatically be used by the requests in the collection.
+See [Agent Access Tokens](../../../management-portal/reference/concepts/agent-access-tokens.md) for setup instructions.
 
-    ![The authentication form is displayed with the token name highlighted.](media/postman-core-api-authentication.png)
+## Swagger UI
 
-> [!NOTE]
-> All of the values are pre-filled and use the variables that you set up in the previous section. You do not need to change any values at this time.
+For interactive API exploration:
 
-Scroll down to the bottom of the page and click on **Get New Access Token**. This will open a new window in your browser and will ask you to login with your credentials.  Once you login, you will be asked to consent to the permissions that you specified in the **Scope** field.  Click on **Accept** to consent to the permissions.  You will then be redirected to the callback url that you specified in the **Callback Url** field.  This will close the browser window and will take you back to Postman. You should now see the token in the **Authorization** tab. Click on **Use Token** to use the token in the collection.
+| Deployment | Swagger URL |
+|------------|-------------|
+| ACA | `https://{core-api-url}/swagger/` |
+| AKS | `https://{aks-url}/core/swagger/v1/swagger.json` |
 
-![The Use Token button is highlighted.](media/postman-use-token.png)
+## Common Request Patterns
 
-> [!IMPORTANT]
-> Be sure to click the **Save** button in the top right corner of the Postman app to save your changes.
+### Sessionless Completion (Quick Query)
 
-Now you are ready to make your first CoreAPI request.
+No conversation history:
 
-Within the **FoundationaLLM.Core.API** collection, select the **Sessions** GET request under the `sessions` folder. When you select the `Authorization` tab, notice that the selected type is `Inherit auth from parent`. This means that the request will use the token that you configured at the collection level. Also notice that the `{{baseUrl}}` variable is used in the `Request Url` field. This means that the request will use the Core API URL that you configured at the collection level. Select the **Send** button to send the request. Even if you do not have any chat sessions in your system, you should receive a successful response (200) from the Core API.
+```json
+{
+  "user_prompt": "What time is it in Tokyo?"
+}
+```
 
-![The Sessions endpoint request and response are shown.](media/postman-sessions-request.png)
+### Session-based Completion (Conversation)
 
-Now you can use the same token to test any other request in the collection with ease.
+Maintains context:
 
-#### Obtain the authentication token from the User Portal (not recommended)
+```json
+{
+  "user_prompt": "What about in London?",
+  "session_id": "existing-session-id"
+}
+```
 
-As an alternative to saving the authentication token at the collection level, you can obtain the token from the User Portal and save it at the request level. This method is not recommended because it requires you to obtain a new token for each request that you want to make, and the token expires after a certain amount of time.
+### Completion with Parameter Overrides
 
-1. Navigate to the User Portal and log in.
-2. Open the browser's developer tools (F12), select the `Network` tab, refresh the page, and copy the value of the `token` under the `XHR` tab from any of the API calls that are made to the Core API.
+Customize model behavior:
 
-    ![The token value is highlighted.](media/browser-xhr-token-value.png)
+```json
+{
+  "user_prompt": "Write a creative story",
+  "settings": {
+    "model_parameters": {
+      "temperature": 0.9,
+      "max_new_tokens": 2000
+    }
+  }
+}
+```
 
-3. Within the **FoundationaLLM.Core.API** collection, select the **Sessions** GET request under the `sessions` folder.
-4. Select the **Authorization** tab, select `Bearer Token` as the type, and paste the token value into the `Token` field. Select **Send** to send the request. Even if you do not have any chat sessions in your system, you should receive a successful response (200) from the Core API.
+### Completion with Agent Selection
 
-    ![The Sessions endpoint request and response are shown, this time with the bearer token.](media/postman-sessions-request-bearer-token.png)
+Target a specific agent:
+
+```json
+{
+  "user_prompt": "Analyze this data",
+  "agent_name": "data-analysis-agent"
+}
+```
+
+## Error Handling
+
+| Status | Meaning | Action |
+|--------|---------|--------|
+| 400 | Invalid request | Check request body format |
+| 401 | Unauthorized | Refresh authentication token |
+| 403 | Forbidden | Check user permissions |
+| 404 | Not found | Verify endpoint URL and IDs |
+| 429 | Rate limited | Wait and retry |
+| 500 | Server error | Check API logs |
+
+## Related Topics
+
+- [Core API Overview](index.md)
+- [API Reference](api-reference.md)
+- [Finding Your Core API URL](finding-core-api-url.md)
+- [.NET SDK](../../sdks/dotnet/index.md)

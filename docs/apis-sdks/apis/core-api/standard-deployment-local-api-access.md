@@ -1,29 +1,77 @@
 # Standard Deployment Local API Access
 
-Standard deployments expose backend services internally, preventing API access over the public internet. Using the `kubectl` CLI, however, it is possible to forward FoundationaLLM APIs deployed within Kubernetes for local consumption.
+Standard (AKS) deployments expose backend services internally, preventing direct API access over the public internet. This guide explains how to use `kubectl` port forwarding to access FoundationaLLM APIs locally during development.
 
-## kubectl Forwarding Script
+## Overview
 
-### Prerequisites
+In standard deployments:
+- APIs are deployed within Kubernetes and not publicly exposed
+- Access requires port forwarding through `kubectl`
+- This approach is useful for development and testing
 
-- `kubectl` with the [`kubelogin`](https://azure.github.io/kubelogin/) extension
-  - Both of these utilities can be installed by the Azure CLI: `az aks install-cli`. If you use this command, you will need to restart your terminal to reflect the changes to `$PATH`.
-- Kubernetes credentials stored in `$HOME/.kube/config`
+## Prerequisites
 
-  Obtain these credentials using the Azure CLI.
+### Required Tools
 
-  ```
-  az login
-  az aks get-credentials --name MyManagedCluster --resource-group MyResourceGroup
-  ```
+| Tool | Description | Installation |
+|------|-------------|--------------|
+| `kubectl` | Kubernetes CLI | `az aks install-cli` |
+| `kubelogin` | Azure authentication for kubectl | `az aks install-cli` |
+| Azure CLI | For authentication | [Install Azure CLI](https://docs.microsoft.com/cli/azure/install-azure-cli) |
 
-### Script
+### Setup Steps
 
-Navigate to `/deploy/standard/scripts/Kubectl-Proxy.ps1` or copy the following PowerShell script to your local environment. Before running it, ensure that no applications are running on ports 5000-5010. To stop the tunnels, press any key in the terminal context where you started the script.
+1. **Install kubectl and kubelogin:**
 
-```pwsh
+   ```bash
+   az aks install-cli
+   ```
+
+   > Restart your terminal after installation to update `$PATH`.
+
+2. **Authenticate with Azure:**
+
+   ```bash
+   az login
+   ```
+
+3. **Get Kubernetes credentials:**
+
+   ```bash
+   az aks get-credentials \
+     --name <your-aks-cluster-name> \
+     --resource-group <your-resource-group>
+   ```
+
+   This stores credentials in `$HOME/.kube/config`.
+
+## Port Forwarding Script
+
+The following PowerShell script forwards all FoundationaLLM API services to local ports:
+
+### Service Port Mappings
+
+| Service | Local Port |
+|---------|------------|
+| Orchestration API | 5000 |
+| Gatekeeper API | 5001 |
+| Agent Hub API | 5002 |
+| **Core API** | **5003** |
+| Data Source Hub API | 5004 |
+| Gatekeeper Integration API | 5005 |
+| LangChain API | 5006 |
+| **Management API** | **5007** |
+| Prompt Hub API | 5008 |
+| Semantic Kernel API | 5009 |
+| Vectorization API | 5010 |
+
+### Forwarding Script
+
+Save this script or run from `/deploy/standard/scripts/Kubectl-Proxy.ps1`:
+
+```powershell
 #!/bin/pwsh
-Set-PSDebug -Trace 0 # Echo every command (0 to disable, 1 to enable, 2 to enable verbose)
+Set-PSDebug -Trace 0
 Set-StrictMode -Version 3.0
 $ErrorActionPreference = "Stop"
 
@@ -45,7 +93,9 @@ $jobIds = @()
 try {
     foreach ($servicePortPairing in $services.GetEnumerator()) {
         Write-Host "Starting Kubectl Tunnel for $($servicePortPairing.key)"
-        $job = Start-Job -ScriptBlock ([scriptblock]::Create("kubectl port-forward service/$($servicePortPairing.key) $($servicePortPairing.value):80"))
+        $job = Start-Job -ScriptBlock ([scriptblock]::Create(
+            "kubectl port-forward service/$($servicePortPairing.key) $($servicePortPairing.value):80"
+        ))
         Write-Host "Job: $($job.Command)"
         $jobIds += $job.Id
     }
@@ -62,21 +112,100 @@ finally {
 }
 ```
 
-> [!NOTE]
-> You will need to rerun the script if you restart any nodes while the script is running.
+### Usage
 
-### Verification
+1. Ensure ports 5000-5010 are not in use
+2. Run the script:
 
-Run the following script to ensure that all APIs are accessible through `kubectl` forwarding.
+   ```powershell
+   ./Kubectl-Proxy.ps1
+   ```
 
-```pwsh
+3. The script runs until you press any key
+4. Access APIs at `http://localhost:{port}`
+
+## Verification Script
+
+Verify all APIs are accessible:
+
+```powershell
 #!/bin/pwsh
-Set-PSDebug -Trace 0 # Echo every command (0 to disable, 1 to enable, 2 to enable verbose)
+Set-PSDebug -Trace 0
 Set-StrictMode -Version 3.0
 $ErrorActionPreference = "Stop"
 
 foreach ($servicePort in 5000..5010) {
     Write-Host "Testing Port #$servicePort..."
-    curl "http://localhost:$servicePort/status"
+    try {
+        $response = Invoke-WebRequest -Uri "http://localhost:$servicePort/status" -TimeoutSec 5
+        Write-Host "  Status: $($response.StatusCode)" -ForegroundColor Green
+    }
+    catch {
+        Write-Host "  Failed: $_" -ForegroundColor Red
+    }
 }
 ```
+
+## Calling Local APIs
+
+Once forwarding is active:
+
+### Core API
+
+```bash
+# Status check
+curl http://localhost:5003/status
+
+# List sessions (with auth)
+curl http://localhost:5003/instances/{instanceId}/sessions \
+  -H "Authorization: Bearer $TOKEN"
+```
+
+### Management API
+
+```bash
+# Status check
+curl http://localhost:5007/status
+
+# List agents (with auth)
+curl http://localhost:5007/instances/{instanceId}/providers/FoundationaLLM.Agent/agents \
+  -H "Authorization: Bearer $TOKEN"
+```
+
+## Troubleshooting
+
+### "Unable to connect" Errors
+
+- Verify kubectl is authenticated: `kubectl get pods`
+- Check the service exists: `kubectl get services`
+- Ensure port is not already in use
+
+### Connection Drops
+
+- The forwarding script requires an active terminal
+- Rerun the script if connection drops
+- Node restarts may require script restart
+
+### Authentication Errors
+
+- Run `az login` to refresh Azure credentials
+- Run `az aks get-credentials` to refresh Kubernetes credentials
+- Verify kubelogin is installed: `kubelogin --version`
+
+## Alternative: Single Service Forwarding
+
+To forward just one service:
+
+```bash
+# Forward Core API only
+kubectl port-forward service/foundationallm-core-api 5003:80
+
+# Forward Management API only
+kubectl port-forward service/foundationallm-management-api 5007:80
+```
+
+## Related Topics
+
+- [Core API Overview](index.md)
+- [Finding Your Core API URL](finding-core-api-url.md)
+- [Directly Calling Core API](directly-calling-core-api.md)
