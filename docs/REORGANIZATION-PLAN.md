@@ -176,11 +176,11 @@ docs/
 │
 ├── reference/
 │   ├── agent-schemas.md
-│   ├── release-notes/
-│   │   ├── index.md
-│   │   ├── breaking-changes.md
-│   │   └── [version-specific files]
 │   └── documentation-generation.md
+│
+├── release-notes/  (kept at root level)
+│   ├── breaking-changes.md
+│   └── [version-specific files]
 │
 └── archive/  (for obsolete content)
     └── vectorization/
@@ -365,14 +365,23 @@ docs/
 | New Location | Source | Action | Notes |
 |--------------|--------|--------|-------|
 | `reference/agent-schemas.md` | `schema.md` | 🔄 MOVE | Full file move |
-| `reference/release-notes/index.md` | - | ✨ CREATE | New index for release notes |
-| `reference/release-notes/breaking-changes.md` | `release-notes/breaking-changes.md` | 🔄 MOVE | Full file move |
-| `reference/release-notes/release_notes_0.9.7.md` | `release-notes/release_notes_0.9.7.md` | 🔄 MOVE | Full file move |
 | `reference/documentation-generation.md` | `documentation-generation.md` | 🔄 MOVE | Full file move |
 
 ---
 
-## 8. Archive Section (Obsolete Content)
+## 8. Release Notes Section (Root Level)
+
+| New Location | Source | Action | Notes |
+|--------------|--------|--------|-------|
+| `release-notes/` | `release-notes/` | ✅ KEEP | Keep at root level |
+| `release-notes/breaking-changes.md` | Already exists | ✅ KEEP | No change |
+| `release-notes/release_notes_0.9.7.md` | Already exists | ✅ KEEP | No change |
+
+> **Note:** The `release-notes/` folder remains at the root level as a top-level documentation section for easy discoverability.
+
+---
+
+## 9. Archive Section (Obsolete Content)
 
 | New Location | Source | Action | Notes |
 |--------------|--------|--------|-------|
@@ -462,11 +471,11 @@ Verify all links, test docfx build.
 | Original Location | Status | New Location |
 |-------------------|--------|--------------|
 | `index.md` | MOVE + EXTRACT | `overview/index.md` |
-| `concepts/index.md` | KEEP + EXTRACT | (stays, content extracted to overview) |
+| `concepts/index.md` | MOVE | `management-portal/reference/concepts/index.md` (glossary/overview) |
 | `concepts/data-pipeline/data-pipeline.md` | MOVE | `management-portal/reference/concepts/data-pipelines.md` |
 | `concepts/plugin/plugin.md` | MOVE | `management-portal/reference/concepts/plugins-packages.md` |
 | `concepts/plugin/plugin-package.md` | MERGE | `management-portal/reference/concepts/plugins-packages.md` |
-| `concepts/prompt/prompt-variable.md` | KEEP | (already in concepts) |
+| `concepts/prompt/prompt-variable.md` | MOVE | `management-portal/reference/concepts/prompt-variables.md` |
 | `concepts/quota/quota-definition.md` | MERGE | `management-portal/reference/concepts/quotas.md` |
 | `concepts/quota/agent-request-rate.md` | MERGE | `management-portal/reference/concepts/quotas.md` |
 | `concepts/quota/api-raw-request-rate.md` | MERGE | `management-portal/reference/concepts/quotas.md` |
@@ -544,8 +553,8 @@ Verify all links, test docfx build.
 | `api/python/index.md` | MOVE | `apis-sdks/sdks/python/index.md` |
 | `documentation-generation.md` | MOVE | `reference/documentation-generation.md` |
 | `schema.md` | MOVE | `reference/agent-schemas.md` |
-| `release-notes/breaking-changes.md` | MOVE | `reference/release-notes/breaking-changes.md` |
-| `release-notes/release_notes_0.9.7.md` | MOVE | `reference/release-notes/release_notes_0.9.7.md` |
+| `release-notes/breaking-changes.md` | KEEP | Stays at root level |
+| `release-notes/release_notes_0.9.7.md` | KEEP | Stays at root level |
 | `toc.yml` | REWRITE | Complete rewrite needed |
 | `docfx.json` | UPDATE | Update paths |
 
@@ -559,6 +568,7 @@ Verify all links, test docfx build.
 | `.gitignore` | Git configuration |
 | `.ignore` | Search ignore |
 | `concepts/prompt/prompt-variable.md` | Referenced by concepts index |
+| `release-notes/` | Top-level documentation section (kept at root for discoverability) |
 
 ---
 

@@ -124,12 +124,16 @@ items:
     href: management-portal/how-to-guides/configuring-quotas.md
   - name: Reference
     items:
+    - name: Concepts Overview
+      href: management-portal/reference/concepts/index.md
     - name: Agents & Workflows
       href: management-portal/reference/concepts/agents-workflows.md
     - name: Agent Access Tokens
       href: management-portal/reference/concepts/agent-access-tokens.md
     - name: Prompts & Resources
       href: management-portal/reference/concepts/prompts-resources.md
+    - name: Prompt Variables
+      href: management-portal/reference/concepts/prompt-variables.md
     - name: Resource Management
       href: management-portal/reference/concepts/resource-management.md
     - name: Data Pipelines
@@ -294,12 +298,13 @@ items:
   items:
   - name: Agent Schemas
     href: reference/agent-schemas.md
-  - name: Release Notes
-    href: reference/release-notes/index.md
-    items:
-    - name: Breaking Changes
-      href: reference/release-notes/breaking-changes.md
-    - name: Version 0.9.7
-      href: reference/release-notes/release_notes_0.9.7.md
   - name: Documentation Generation
     href: reference/documentation-generation.md
+
+- name: Release Notes
+  href: release-notes/breaking-changes.md
+  items:
+  - name: Breaking Changes
+    href: release-notes/breaking-changes.md
+  - name: Version 0.9.7
+    href: release-notes/release_notes_0.9.7.md

@@ -188,7 +188,11 @@
 
 ### Reference Materials
 - Agent Schemas (from `schema.md`)
+- Documentation Generation (from `documentation-generation.md`)
+
+## Release Notes (Root Level)
 - Release Notes (from `release-notes/`)
   - Breaking Changes
   - Version-specific Release Notes
-- Documentation Generation (from `documentation-generation.md`)
+
+> **Note:** Release notes are kept at the root level for easy discoverability.
