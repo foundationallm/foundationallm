@@ -1,6 +1,7 @@
 # Documentation Cleanup Plan
 
 > **Status:** ✅ EXECUTED on 2024-12-14
+> **Update:** Removed redundant `reference/` folder on 2024-12-14 (content duplicated root-level files)
 
 This document outlines the plan to clean up legacy folders that remain after the documentation reorganization.
 
@@ -179,7 +180,6 @@ docs/
 ├── management-portal/       # Management Portal documentation
 ├── overview/                # Platform overview
 ├── platform-operations/     # Deployment and operations
-├── reference/               # Reference documentation
 ├── release-notes/           # Release notes (kept at root)
 │   ├── breaking-changes.md
 │   └── release_notes_0.9.7.md

@@ -294,12 +294,12 @@ items:
       href: development/contributing/repro.md
 
 - name: Reference
-  href: reference/agent-schemas.md
+  href: schema.md
   items:
   - name: Agent Schemas
-    href: reference/agent-schemas.md
+    href: schema.md
   - name: Documentation Generation
-    href: reference/documentation-generation.md
+    href: documentation-generation.md
 
 - name: Release Notes
   href: release-notes/breaking-changes.md

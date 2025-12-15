@@ -174,10 +174,6 @@ docs/
 │       ├── style-guide.md
 │       └── bug-report-reproduction.md
 │
-├── reference/
-│   ├── agent-schemas.md
-│   └── documentation-generation.md
-│
 ├── release-notes/  (kept at root level)
 │   ├── breaking-changes.md
 │   └── [version-specific files]
