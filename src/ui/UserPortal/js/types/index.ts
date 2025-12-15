@@ -13,6 +13,11 @@ export type ResourceProviderGetResult<T> = {
 	 * List of roles on the resource.
 	 */
 	roles: string[];
+
+	/**
+	 * Additional properties associated with the resource.
+	 */
+	properties: Record<string, unknown>;
 };
 
 export interface ContentArtifact {

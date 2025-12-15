@@ -1,4 +1,6 @@
 ﻿using FoundationaLLM.Common.Models.Configuration.Users;
+using FoundationaLLM.Common.Models.ResourceProviders;
+using FoundationaLLM.Common.Models.ResourceProviders.Agent;
 
 namespace FoundationaLLM.Common.Interfaces
 {
@@ -11,9 +13,15 @@ namespace FoundationaLLM.Common.Interfaces
         /// Returns the user profile of the signed in user.
         /// </summary>
         /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
+        /// <param name="agents">The list of agents the signed in user has permission to use.</param>
         /// <returns></returns>
         /// <exception cref="InvalidOperationException"></exception>
-        Task<UserProfile?> GetUserProfileAsync(string instanceId);
+        /// <remarks>The <paramref name="agents"/> parameter is provided when the caller seeks to avoid
+        /// reloading the list of agents the user has permission to use. It is the responsibility
+        /// of the caller to ensure the list is accurate.</remarks>
+        Task<UserProfile?> GetUserProfileAsync(
+            string instanceId,
+            List<ResourceProviderGetResult<AgentBase>>? agents = null);
 
         /// <summary>
         /// Returns the user profile of the specified user.
@@ -21,7 +29,9 @@ namespace FoundationaLLM.Common.Interfaces
         /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
         /// <param name="upn">The user principal name of the user for whom to return the user profile.</param>
         /// <returns></returns>
-        Task<UserProfile?> GetUserProfileForUserAsync(string instanceId, string upn);
+        Task<UserProfile?> GetUserProfileForUserAsync(
+            string instanceId,
+            string upn);
 
         /// <summary>
         /// Inserts or updates a user profile.

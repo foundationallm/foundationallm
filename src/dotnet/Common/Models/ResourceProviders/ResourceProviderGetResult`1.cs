@@ -24,5 +24,10 @@ namespace FoundationaLLM.Common.Models.ResourceProviders
         /// </summary>
         [JsonPropertyName("actions")]
         public required List<string> Actions { get; set; }
+
+        /// <summary>
+        /// Gets or sets a dictionary property bag associated with the resource.
+        /// </summary>
+        public Dictionary<string, object> Properties { get; set; } = [];
     }
 }

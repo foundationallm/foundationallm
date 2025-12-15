@@ -46,10 +46,14 @@ namespace FoundationaLLM.Common.Services.Users
         }
 
         /// <inheritdoc/>
-        public async Task<UserProfile?> GetUserProfileAsync(string instanceId) =>
+        public async Task<UserProfile?> GetUserProfileAsync(
+            string instanceId,
+            List<ResourceProviderGetResult<AgentBase>>? agents = null) =>
             await GetUserProfileInternalAsync(
                 _callContext.CurrentUserIdentity?.UPN ??
-                throw new InvalidOperationException("Failed to retrieve the identity of the signed in user when retrieving the user profile."));
+                throw new InvalidOperationException("Failed to retrieve the identity of the signed in user when retrieving the user profile."),
+                true,
+                agents);
 
         /// <inheritdoc/>
         public async Task<UserProfile?> GetUserProfileForUserAsync(string instanceId, string upn) =>
@@ -187,13 +191,16 @@ namespace FoundationaLLM.Common.Services.Users
             await _cosmosDBService.UpsertUserDataAsync(userData);
         }
 
-        private async Task<UserProfile> GetUserProfileInternalAsync(string upn)
+        private async Task<UserProfile> GetUserProfileInternalAsync(
+            string upn,
+            bool updateAgents = false,
+            List<ResourceProviderGetResult<AgentBase>>? agents = null)
         {
-            List<ResourceProviderGetResult<AgentBase>> agents = null!;
-
             var userProfile = await _cosmosDBService.GetUserProfileAsync(upn);
-            var userData = await _cosmosDBService.GetUserDataAsync(upn);
+            if (!updateAgents)
+                return userProfile;
 
+            var userData = await _cosmosDBService.GetUserDataAsync(upn);
 
             if (userProfile.UpdatedOn == DateTimeOffset.MinValue)
             {
@@ -204,7 +211,7 @@ namespace FoundationaLLM.Common.Services.Users
                 _logger.LogInformation("Updating user profile to latest version and creating user data for user '{UPN}'.",
                     upn);
 
-                agents = await _agentResourceProvider.GetResourcesAsync<AgentBase>(
+                agents ??= await _agentResourceProvider.GetResourcesAsync<AgentBase>(
                     _callContext.InstanceId!,
                     _callContext.CurrentUserIdentity!,
                     new ResourceProviderGetOptions
@@ -219,20 +226,20 @@ namespace FoundationaLLM.Common.Services.Users
                 await _cosmosDBService.UpsertUserProfileAsync(userProfile);
             }
 
+            agents ??= await _agentResourceProvider.GetResourcesAsync<AgentBase>(
+                _callContext.InstanceId!,
+                _callContext.CurrentUserIdentity!,
+                new ResourceProviderGetOptions
+                {
+                    IncludeActions = false,
+                    IncludeRoles = false
+                });
+
             if (userData is null)
             {
                 // The user alredy has the newwer version of the user profile, but does not have
                 // a user data document. Create a new user data document with an empty allowed agents list.
                 // it will be populated later when the user retrieves the list of agents.
-
-                agents ??= await _agentResourceProvider.GetResourcesAsync<AgentBase>(
-                        _callContext.InstanceId!,
-                        _callContext.CurrentUserIdentity!,
-                        new ResourceProviderGetOptions
-                        {
-                            IncludeActions = false,
-                            IncludeRoles = false
-                        });
 
                 _logger.LogInformation("Creating new user data for user '{UPN}'.",
                     upn);
@@ -242,6 +249,33 @@ namespace FoundationaLLM.Common.Services.Users
                     AllowedAgents = [.. agents.Select(a => a.Resource.ObjectId!)]
                 };
                 await _cosmosDBService.UpsertUserDataAsync(userData);
+            }
+            else
+            {
+                // All agents that are not in the loaded list of allowed agents are
+                // agents for which the user got permissions to use since the last time
+                // the list of agents was loaded. These agents will be automatically enabled for the user.
+
+                var newAllowedAgents = agents
+                    .Where(a => !userData.AllowedAgents.Contains(a.Resource.ObjectId!))
+                    .ToList();
+                var newAllowedAgentIds = newAllowedAgents
+                    .Select(a => a.Resource.ObjectId!)
+                    .ToList();
+
+                if (newAllowedAgents.Count > 0)
+                {
+                    _logger.LogInformation("Adding {AgentCount} new allowed agents to user data and enabing them for user {UPN}. The new agents are: {AgentNames}.",
+                        newAllowedAgents.Count,
+                        upn,
+                        string.Join(',', newAllowedAgents.Select(a => a.Resource.Name)));
+
+                    userData.AllowedAgents.AddRange(newAllowedAgentIds);
+                    await _cosmosDBService.UpsertUserDataAsync(userData);
+
+                    userProfile.Agents.AddRange(newAllowedAgentIds);
+                    await _cosmosDBService.UpsertUserProfileAsync(userProfile);
+                }
             }
 
             return userProfile;
