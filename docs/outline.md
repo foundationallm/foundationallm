@@ -186,9 +186,13 @@
   - Style Guide
   - Bug Report Reproduction Guide
 
-### Reference Materials
-- Agent Schemas (from `schema.md`)
+### Reference Materials (Root Level)
+- Agent Schemas (`schema.md` - at docs root)
+- Documentation Generation (`documentation-generation.md` - at docs root)
+
+## Release Notes (Root Level)
 - Release Notes (from `release-notes/`)
   - Breaking Changes
   - Version-specific Release Notes
-- Documentation Generation (from `documentation-generation.md`)
+
+> **Note:** Release notes are kept at the root level for easy discoverability.

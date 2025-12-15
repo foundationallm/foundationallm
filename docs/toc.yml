@@ -1,159 +1,310 @@
 items:
-- name: Deployment
-  href: deployment/index.md
+- name: Overview
+  href: overview/index.md
   items:
-  - name: Deployment options
-    href: deployment/index.md
-  - name: Deployment - Quick Start
-    href: deployment/deployment-quick-start.md
-  - name: Azure App Configuration values
-    href: deployment/app-configuration-values.md
-  - name: Configuration for deployment
-    href: deployment/deployment-configuration.md
-  - name: Configure access control for services
-    href: deployment/configure-access-control-for-services.md
-  - name: Soft Deletes
-    href: deployment/soft-delete.md
-  - name: Authentication and Authorization setup
-    href: deployment/authentication-authorization/index.md
+  - name: Introduction
+    href: overview/index.md
+  - name: Architecture & Concepts
+    href: overview/architecture-concepts.md
+  - name: Why FoundationaLLM?
+    href: overview/why-foundationallm.md
+  - name: Core Concepts Reference
+    href: management-portal/reference/concepts/index.md
+
+- name: Chat User Portal
+  href: chat-user-portal/index.md
+  items:
+  - name: Overview
+    href: chat-user-portal/index.md
+  - name: Quick Start
     items:
-    - name: Pre-Requisites
-      href: deployment/authentication-authorization.pre-requisites.md
-    - name: Core Authentication pre-deployment
-      href: deployment/authentication-authorization/core-authentication-setup-entra.md
-    - name: Management Authentication pre-deployment
-      href: deployment/authentication-authorization/management-authentication-setup-entra.md
-    - name: Authorization pre-deployment
-      href: deployment/authentication-authorization/authorization-setup-entra.md
-    - name: Core Authentication post-deployment
-      href: deployment/authentication-authorization/post-core-deployment.md
-    - name: Management Authentication post-deployment
-      href: deployment/authentication-authorization/post-management-deployment.md
-    - name: Authorization post-deployment
-      href: deployment/authentication-authorization/post-authorization-deployment.md
+    - name: Quickstart Guide
+      href: chat-user-portal/quick-start/quickstart.md
+    - name: Creating Your First Agent
+      href: chat-user-portal/quick-start/creating-first-agent.md
+  - name: How-To Guides
+    items:
+    - name: Selecting an Agent
+      href: chat-user-portal/how-to-guides/using-agents/selecting-agent.md
+    - name: Managing Available Agents
+      href: chat-user-portal/how-to-guides/using-agents/managing-available-agents.md
+    - name: Managing Conversations
+      href: chat-user-portal/how-to-guides/using-agents/managing-conversations.md
+    - name: Configuring Accessibility
+      href: chat-user-portal/how-to-guides/using-agents/configuring-accessibility.md
+    - name: Uploading Files
+      href: chat-user-portal/how-to-guides/using-agents/uploading-files.md
+    - name: Downloading Files
+      href: chat-user-portal/how-to-guides/using-agents/downloading-files.md
+    - name: Using Code Interpreter
+      href: chat-user-portal/how-to-guides/using-agents/using-code-interpreter.md
+    - name: Using Knowledge Tool
+      href: chat-user-portal/how-to-guides/using-agents/using-knowledge-tool.md
+    - name: Using Other Tools
+      href: chat-user-portal/how-to-guides/using-agents/using-other-tools.md
+    - name: Monitoring Token Consumption
+      href: chat-user-portal/how-to-guides/using-agents/monitoring-tokens.md
+    - name: Rating Agent Responses
+      href: chat-user-portal/how-to-guides/using-agents/rating-responses.md
+    - name: Copying Prompts & Results
+      href: chat-user-portal/how-to-guides/using-agents/copying-prompts-results.md
+    - name: Printing Conversations
+      href: chat-user-portal/how-to-guides/using-agents/printing-conversations.md
+    - name: Viewing Agent Prompts
+      href: chat-user-portal/how-to-guides/using-agents/viewing-agent-prompts.md
+
+- name: Management Portal
+  href: management-portal/index.md
+  items:
+  - name: Overview
+    href: management-portal/index.md
+  - name: Quick Start
+    items:
+    - name: Tour of the Portal
+      href: management-portal/quick-start/portal-tour.md
+    - name: Creating Your First Agent
+      href: management-portal/quick-start/creating-first-agent.md
+  - name: Agents
+    items:
+    - name: Create New Agent
+      href: management-portal/how-to-guides/agents/create-new-agent.md
+    - name: Create Agent with Claude
+      href: management-portal/how-to-guides/agents/create-model-agnostic-agent-claude.md
+    - name: Create Agent with GPT-4o
+      href: management-portal/how-to-guides/agents/create-model-agnostic-agent-gpt4o.md
+    - name: All Agents
+      href: management-portal/how-to-guides/agents/all-agents.md
+    - name: My Agents
+      href: management-portal/how-to-guides/agents/my-agents.md
+    - name: Prompts
+      href: management-portal/how-to-guides/agents/prompts.md
+  - name: Data
+    items:
+    - name: Data Sources
+      href: management-portal/how-to-guides/data/data-sources.md
+    - name: Creating Data Pipelines
+      href: management-portal/how-to-guides/data/data-pipelines/creating-data-pipelines.md
+    - name: Invoking Data Pipelines
+      href: management-portal/how-to-guides/data/data-pipelines/invoking-data-pipelines.md
+    - name: Monitoring Data Pipelines
+      href: management-portal/how-to-guides/data/data-pipelines/monitoring-data-pipelines.md
+    - name: Data Pipeline Runs
+      href: management-portal/how-to-guides/data/data-pipeline-runs.md
+    - name: SharePoint Online
+      href: management-portal/how-to-guides/data/knowledge-sources/sharepoint-online.md
+    - name: Azure Data Lake
+      href: management-portal/how-to-guides/data/knowledge-sources/azure-data-lake.md
+    - name: Private Storage
+      href: management-portal/how-to-guides/data/knowledge-sources/private-storage.md
+    - name: Knowledge Graph Integration
+      href: management-portal/how-to-guides/data/knowledge-sources/knowledge-graph-integration.md
+    - name: Image Description
+      href: management-portal/how-to-guides/data/knowledge-sources/image-description.md
+  - name: Models and Endpoints
+    items:
+    - name: AI Models
+      href: management-portal/how-to-guides/models-endpoints/ai-models.md
+    - name: API Endpoints
+      href: management-portal/how-to-guides/models-endpoints/api-endpoints.md
+  - name: Security
+    items:
+    - name: Instance Access Control
+      href: management-portal/how-to-guides/security/instance-access-control.md
+  - name: FLLM Platform
+    items:
+    - name: Branding
+      href: management-portal/how-to-guides/fllm-platform/branding.md
+    - name: Configuration
+      href: management-portal/how-to-guides/fllm-platform/configuration.md
+    - name: Deployment Information
+      href: management-portal/how-to-guides/fllm-platform/deployment-information.md
+  - name: Managing Plugins
+    href: management-portal/how-to-guides/managing-plugins.md
+  - name: Configuring Quotas
+    href: management-portal/how-to-guides/configuring-quotas.md
+  - name: Reference
+    items:
+    - name: Concepts Overview
+      href: management-portal/reference/concepts/index.md
+    - name: Agents & Workflows
+      href: management-portal/reference/concepts/agents-workflows.md
+    - name: Agent Access Tokens
+      href: management-portal/reference/concepts/agent-access-tokens.md
+    - name: Prompts & Resources
+      href: management-portal/reference/concepts/prompts-resources.md
+    - name: Prompt Variables
+      href: management-portal/reference/concepts/prompt-variables.md
+    - name: Resource Management
+      href: management-portal/reference/concepts/resource-management.md
+    - name: Data Pipelines
+      href: management-portal/reference/concepts/data-pipelines.md
+    - name: Plugins & Packages
+      href: management-portal/reference/concepts/plugins-packages.md
+    - name: Quotas
+      href: management-portal/reference/concepts/quotas.md
+    - name: Branding
+      href: management-portal/reference/branding/index.md
+      items:
+      - name: Using App Configuration
+        href: management-portal/reference/branding/using-app-configuration.md
+      - name: Using Management Portal
+        href: management-portal/reference/branding/using-management-portal.md
+      - name: Using REST API
+        href: management-portal/reference/branding/using-rest-api.md
+    - name: Configuration Reference
+      href: management-portal/reference/configuration-reference.md
+    - name: Permissions & Roles
+      href: management-portal/reference/permissions-roles.md
+
+- name: APIs & SDKs
+  href: apis-sdks/apis/core-api/index.md
+  items:
+  - name: Core API
+    items:
+    - name: Overview
+      href: apis-sdks/apis/core-api/index.md
+    - name: Finding Core API URL
+      href: apis-sdks/apis/core-api/finding-core-api-url.md
+    - name: Directly Calling Core API
+      href: apis-sdks/apis/core-api/directly-calling-core-api.md
+    - name: Local API Access
+      href: apis-sdks/apis/core-api/standard-deployment-local-api-access.md
+    - name: API Reference
+      href: apis-sdks/apis/core-api/api-reference.md
+  - name: Management API
+    items:
+    - name: Overview
+      href: apis-sdks/apis/management-api/index.md
+    - name: Resource Providers
+      href: apis-sdks/apis/management-api/resource-providers-overview.md
+    - name: Directly Calling Management API
+      href: apis-sdks/apis/management-api/directly-calling-management-api.md
+    - name: API Reference
+      href: apis-sdks/apis/management-api/api-reference.md
+    - name: Data Pipelines API
+      href: apis-sdks/apis/management-api/data-pipelines.md
+  - name: SDKs
+    items:
+    - name: .NET SDK
+      href: apis-sdks/sdks/dotnet/index.md
+    - name: Python SDK
+      href: apis-sdks/sdks/python/index.md
+
+- name: Platform Operations
+  href: platform-operations/deployment/index.md
+  items:
+  - name: Deployment
+    items:
+    - name: Deployment Overview
+      href: platform-operations/deployment/index.md
+    - name: Quick Start Deployment
+      href: platform-operations/deployment/deployment-quick-start.md
+    - name: Standard Deployment
+      href: platform-operations/deployment/deployment-standard.md
+    - name: Deployment Configuration
+      href: platform-operations/deployment/deployment-configuration.md
+    - name: App Configuration Values
+      href: platform-operations/deployment/app-configuration-values.md
+    - name: Azure Resource Providers
+      href: platform-operations/deployment/azure-resource-providers-requirements.md
+    - name: Custom Domains
+      href: platform-operations/deployment/custom-domains.md
+    - name: Soft Delete
+      href: platform-operations/deployment/soft-delete.md
+    - name: Standard Deployment Manifest
+      href: platform-operations/deployment/standard-manifest.md
+  - name: Security & Permissions
+    items:
+    - name: Platform Security
+      href: platform-operations/security-permissions/platform-security.md
+    - name: Authentication & Authorization
+      href: platform-operations/security-permissions/authentication-authorization/index.md
+      items:
+      - name: Pre-Requisites
+        href: platform-operations/security-permissions/authentication-authorization/pre-requisites.md
+      - name: Core Authentication Setup
+        href: platform-operations/security-permissions/authentication-authorization/pre-deployment/core-authentication-setup.md
+      - name: Management Authentication Setup
+        href: platform-operations/security-permissions/authentication-authorization/pre-deployment/management-authentication-setup.md
+      - name: Authorization Setup
+        href: platform-operations/security-permissions/authentication-authorization/pre-deployment/authorization-setup.md
+      - name: Core Authentication Post-Deployment
+        href: platform-operations/security-permissions/authentication-authorization/post-deployment/core-authentication-post.md
+      - name: Management Authentication Post-Deployment
+        href: platform-operations/security-permissions/authentication-authorization/post-deployment/management-authentication-post.md
+      - name: Authorization Post-Deployment
+        href: platform-operations/security-permissions/authentication-authorization/post-deployment/authorization-post.md
+    - name: Role-Based Access Control
+      href: platform-operations/security-permissions/role-based-access-control/index.md
+      items:
+      - name: Role Definitions
+        href: platform-operations/security-permissions/role-based-access-control/role-definitions.md
+      - name: Role Assignments
+        href: platform-operations/security-permissions/role-based-access-control/role-assignments.md
+      - name: Scope
+        href: platform-operations/security-permissions/role-based-access-control/scope.md
+      - name: Role Management
+        href: platform-operations/security-permissions/role-based-access-control/role-management.md
+      - name: Agent Role Assignments
+        href: platform-operations/security-permissions/role-based-access-control/agent-role-assignments.md
+    - name: Configure Access Control for Services
+      href: platform-operations/security-permissions/configure-access-control-services.md
+    - name: Graph API Permissions
+      href: platform-operations/security-permissions/graph-api-permissions.md
+    - name: Network Security Groups
+      href: platform-operations/security-permissions/network-security-groups.md
+    - name: Vulnerabilities
+      href: platform-operations/security-permissions/vulnerabilities.md
+  - name: Monitoring & Troubleshooting
+    items:
+    - name: Logs & Audit Trails
+      href: platform-operations/monitoring-troubleshooting/logs.md
+    - name: Troubleshooting Guide
+      href: platform-operations/monitoring-troubleshooting/troubleshooting.md
+  - name: How-To Guides
+    items:
+    - name: Updating Container Versions
+      href: platform-operations/how-to-guides/updating-container-versions.md
+    - name: Backups & Data Resiliency
+      href: platform-operations/how-to-guides/backups.md
+    - name: Purging User Conversations
+      href: platform-operations/how-to-guides/purge-conversations.md
+    - name: Creating Release Notes
+      href: platform-operations/how-to-guides/creating-release-notes.md
+
 - name: Development
   href: development/index.md
   items:
-  - name: Development approach
+  - name: Development Overview
     href: development/index.md
-  - name: Configure local development environment
-    href: development/development-local.md
-  - name: FoundationaLLM DevOps rules and guidelines
+  - name: Development Approach
     href: development/development-approach.md
-  - name: Directly calling APIs
-    href: development/calling-apis/index.md
-    items:
-    - name: Directly calling APIs
-      href: development/calling-apis/index.md
-    - name: Calling the Core API
-      href: development/calling-apis/directly-calling-core-api.md
-    - name: Calling the Management API
-      href: development/calling-apis/directly-calling-management-api.md
-    - name: Calling the Vectorization APIs
-      href: development/calling-apis/directly-calling-vectorization-api.md
-    - name: Local API Access for Standard Deployments
-      href: development/calling-apis/standard-deployment-local-api-access.md
+  - name: Local Development Environment
+    href: development/development-local.md
   - name: Contributing
     href: development/contributing/index.md
     items:
-    - name: Contributing to FoundationaLLM
+    - name: Contributing Guide
       href: development/contributing/index.md
-    - name: Bug report reproduction guide
-      href: development/contributing/repro.md
-    - name: Git workflow
+    - name: Git Workflow
       href: development/contributing/git-workflow.md
-    - name: Style guide
+    - name: Style Guide
       href: development/contributing/style-guide.md
-- name: Setup guides
-  href: setup-guides/index.md
+    - name: Bug Report Reproduction
+      href: development/contributing/repro.md
+
+- name: Reference
+  href: schema.md
   items:
-  - name: Setup guides
-    href: setup-guides/index.md
-  - name: Quickstart guide
-    href: setup-guides/quickstart.md
-  - name: Agents
-    href: setup-guides/agents/index.md
-    items:
-    - name: Agents
-      href: setup-guides/agents/index.md
-    - name: Knowledge management agents
-      href: setup-guides/agents/knowledge-management-agent.md
-    - name: Prompt resources
-      href: setup-guides/agents/prompt-resource.md
-    - name: Agent Workflows
-      href: setup-guides/agents/agents_workflows.md
-    - name: Agent Access Token
-      href: setup-guides/agents/Agent_AccessToken.md
-  - name: Branding
-    href: setup-guides/branding/index.md
-  - name: Exposed APIs
-    href: setup-guides/exposed-apis/index.md
-    items:
-    - name: Exposed APIs
-      href: setup-guides/exposed-apis/index.md
-    - name: Core API
-      href: setup-guides/exposed-apis/core-api.md
-    - name: Management API
-      href: setup-guides/exposed-apis/management-api.md  
-    - name: Resource management
-      href: setup-guides/exposed-apis/resource-management/resource-management.md
-  - name: Management UI
-    href: setup-guides/management-ui/management-ui.md
-  - name: Vectorization
-    href: setup-guides/vectorization/index.md
-    items:
-    - name: Vectorization concepts
-      href: setup-guides/vectorization/vectorization-concepts.md
-    - name: Configuring vectorization
-      href: setup-guides/vectorization/vectorization-configuration.md
-    - name: Managing vectorization profiles
-      href: setup-guides/vectorization/vectorization-profiles.md
-    - name: Triggering vectorization
-      href: setup-guides/vectorization/vectorization-triggering.md
-    - name: Monitoring and troubleshooting
-      href: setup-guides/vectorization/vectorization-monitoring-troubleshooting.md
-- name: Operations
-  href: operations/index.md
+  - name: Agent Schemas
+    href: schema.md
+  - name: Documentation Generation
+    href: documentation-generation.md
+
+- name: Release Notes
+  href: release-notes/breaking-changes.md
   items:
-  - name: Standard platform administration documentation
-    href: operations/index.md
-  - name: Backups & data resiliency
-    href: operations/backups.md
-  - name: Logging and auditing
-    href: operations/logs.md
-  - name: Purge user conversations
-    href: operations/purge-conversations.md
-  - name: Guidance for creating release notes
-    href: operations/release-notes.md
-  - name: Platform security features & best practices
-    href: operations/security.md
-  - name: Troubleshooting & issue reporting guide
-    href: operations/troubleshooting.md
-  - name: Updating container versions in Standard Deployment
-    href: operations/update.md
-  - name: Vulnerabilities - Identification, communication, and remediation
-    href: operations/vulnerabilities.md
-  - name: Role-based access control (RBAC)
-    href: role-based-access-control/index.md
-    items:
-      - name: Understand FoundationaLLM role definitions
-        href: role-based-access-control/role-definitions.md
-      - name: Understand FoundationaLLM role assignments
-        href: role-based-access-control/role-assignments.md
-      - name: Understand scope for FoundationaLLM RBAC
-        href: role-based-access-control/scope.md
-      - name: Manage role assignments
-        href: role-based-access-control/role-management.md
-- name: API
-  href: api/index.md
-  items:
-  - name: Dotnet
-    href: api/dotnet/index.md
-    items:
-    - name: FoundationaLLM
-      href: api/dotnet/FoundationaLLM.html
-  - name: Python
-    href: api/python/index.md
-    items:
-    - name: Python
-      href: api/python/index.md
+  - name: Breaking Changes
+    href: release-notes/breaking-changes.md
+  - name: Version 0.9.7
+    href: release-notes/release_notes_0.9.7.md
