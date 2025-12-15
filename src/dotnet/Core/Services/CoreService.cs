@@ -28,6 +28,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using System.Text.Json;
 using Conversation = FoundationaLLM.Common.Models.Conversation.Conversation;
@@ -54,6 +55,7 @@ namespace FoundationaLLM.Core.Services;
 /// <param name="configuration">The <see cref="IConfiguration"/> service providing configuration settings.</param>
 /// <param name="httpClientFactory">The <see cref="IHttpClientFactory"/> used to build HTTP clients.</param>
 /// <param name="contextServiceClient">The <see cref="IContextServiceClient"/> used to interact with the Context API.</param>
+/// <param name="userProfileService">The <see cref="IUserProfileService"/> used to manage user profiles.</param>
 public partial class CoreService(
     IAzureCosmosDBService cosmosDBService,
     IEnumerable<IDownstreamAPIService> downstreamAPIServices,
@@ -64,7 +66,8 @@ public partial class CoreService(
     IEnumerable<IResourceProviderService> resourceProviderServices,
     IConfiguration configuration,
     IHttpClientFactoryService httpClientFactory,
-    IContextServiceClient contextServiceClient) : ICoreService
+    IContextServiceClient contextServiceClient,
+    IUserProfileService userProfileService) : ICoreService
 {
     private readonly IAzureCosmosDBService _cosmosDBService = cosmosDBService;
     private readonly IDownstreamAPIService _gatekeeperAPIService = downstreamAPIServices.Single(das => das.APIName == HttpClientNames.GatekeeperAPI);
@@ -74,6 +77,7 @@ public partial class CoreService(
     private readonly string _sessionType = brandingSettings.Value.KioskMode ? ConversationTypes.KioskSession : ConversationTypes.Session;
     private readonly CoreServiceSettings _settings = settings.Value;
     private readonly IContextServiceClient _contextServiceClient = contextServiceClient;
+    private readonly IUserProfileService _userProfileService = userProfileService;
 
     private readonly string _baseUrl = GetBaseUrl(configuration, httpClientFactory, callContext).GetAwaiter().GetResult();
 
@@ -101,6 +105,27 @@ public partial class CoreService(
         [.. settings.Value.AzureAIAgentsFileSearchFileExtensions
             .Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries)
             .Select(s => s.ToLowerInvariant())];
+
+    #region Agent
+
+    /// <inheritdoc/>
+    public async Task<IEnumerable<ResourceProviderGetResult<AgentBase>>> GetAgentsAsync(
+        string instanceId)
+    {
+        var agents = await _agentResourceProvider.GetResourcesAsync<AgentBase>(
+                instanceId,
+                _userIdentity,
+                new ResourceProviderGetOptions
+                {
+                    IncludeRoles = true,
+                    IncludeActions = true,
+                    LoadContent = false
+                });
+
+        return agents;
+    }
+
+    # endregion
 
     #region Conversation management - FoundationaLLM.Conversation resource provider
 

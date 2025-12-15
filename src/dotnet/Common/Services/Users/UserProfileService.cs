@@ -1,12 +1,10 @@
 ﻿using FoundationaLLM.Common.Constants;
-using FoundationaLLM.Common.Constants.Configuration;
 using FoundationaLLM.Common.Constants.ResourceProviders;
 using FoundationaLLM.Common.Exceptions;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Configuration.Users;
 using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders.Agent;
-using FoundationaLLM.Common.Models.ResourceProviders.Configuration;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 
@@ -61,17 +59,21 @@ namespace FoundationaLLM.Common.Services.Users
         public async Task UpsertUserProfileAsync(string instanceId, UserProfile userProfile)
         {
             // Ensure the user profile contains the user's UPN.
-            if (string.IsNullOrEmpty(userProfile.UPN))
+            if (string.IsNullOrWhiteSpace(userProfile.UPN)
+                || !string.Equals(
+                        userProfile.UPN,
+                        _callContext.CurrentUserIdentity?.UPN,
+                        StringComparison.OrdinalIgnoreCase))
             {
-                userProfile.UPN = _callContext.CurrentUserIdentity?.UPN
-                    ?? throw new InvalidOperationException("Failed to retrieve the identity of the signed in user when retrieving chat sessions.");
-                userProfile.Id = userProfile.UPN;
+                throw new HttpStatusCodeException("The UPN in the user profile is invalid.",
+                    StatusCodes.Status400BadRequest);
             }
+
             await _cosmosDBService.UpsertUserProfileAsync(userProfile);
         }
 
         /// <inheritdoc/>
-        public async Task AddAgent(
+        public async Task AddAgentToUserProfileAsync(
             string instanceId,
             string agentObjectId)
         {
@@ -117,7 +119,7 @@ namespace FoundationaLLM.Common.Services.Users
         }
 
         /// <inheritdoc/>
-        public async Task RemoveAgent(
+        public async Task RemoveAgentFromUserProfileAsync(
             string instanceId,
             string agentObjectId)
         {
@@ -162,36 +164,47 @@ namespace FoundationaLLM.Common.Services.Users
             return;
         }
 
+        /// <inheritdoc/>
+        public async Task<UserData?> GetUserDataAsync(string instanceId) =>
+            await _cosmosDBService.GetUserDataAsync(
+                _callContext.CurrentUserIdentity?.UPN ??
+                    throw new InvalidOperationException("Failed to retrieve the identity of the signed in user when retrieving the user data."));
+
+        /// <inheritdoc/>
+        public async Task UpsertUserDataAsync(string instanceId, UserData userData)
+        {
+            // Ensure the user data contains the user's UPN.
+            if (string.IsNullOrWhiteSpace(userData.UPN)
+                || !string.Equals(
+                        userData.UPN,
+                        _callContext.CurrentUserIdentity?.UPN,
+                        StringComparison.OrdinalIgnoreCase))
+            {
+                throw new HttpStatusCodeException("The UPN in the user data is invalid.",
+                    StatusCodes.Status400BadRequest);
+            }
+
+            await _cosmosDBService.UpsertUserDataAsync(userData);
+        }
+
         private async Task<UserProfile> GetUserProfileInternalAsync(string upn)
         {
+            List<ResourceProviderGetResult<AgentBase>> agents = null!;
+
             var userProfile = await _cosmosDBService.GetUserProfileAsync(upn);
+            var userData = await _cosmosDBService.GetUserDataAsync(upn);
+
 
             if (userProfile.UpdatedOn == DateTimeOffset.MinValue)
             {
-                // Reset selected agents to all existing agents.
+                // This is an older user profile that needs to be updated to the newer version.
+                // Retrieve the list of agents assigned to the user and update the user profile.
+                // Then, create a user data document for the user.
 
-                //var userPortalAppConfigurationSet = await _configurationResourceProvider.GetResourceAsync<AppConfigurationSet>(
-                //    _callContext.InstanceId!,
-                //    WellKnownAppConfigurationSetNames.UserPortal,
-                //    _callContext.CurrentUserIdentity!);
+                _logger.LogInformation("Updating user profile to latest version and creating user data for user '{UPN}'.",
+                    upn);
 
-                //if (userPortalAppConfigurationSet.ConfigurationValues.TryGetValue(
-                //        AppConfigurationKeys.FoundationaLLM_UserPortal_Configuration_FeaturedAgentNames, out var featuredAgentsConfigValueObj)
-                //    && featuredAgentsConfigValueObj is string featuredAgents
-                //    && !string.IsNullOrWhiteSpace(featuredAgents))
-                //{
-                //    userProfile.Agents = [.. featuredAgents
-                //        .Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
-                //        .Select(agentName => ResourcePath.GetObjectId(
-                //            _callContext.InstanceId!,
-                //            ResourceProviderNames.FoundationaLLM_Agent,
-                //            AgentResourceTypeNames.Agents,
-                //            agentName))];
-                //    userProfile.UpdatedOn = DateTimeOffset.UtcNow;
-                //    await _cosmosDBService.UpsertUserProfileAsync(userProfile);
-                //}
-
-                var agents = await _agentResourceProvider.GetResourcesAsync<AgentBase>(
+                agents = await _agentResourceProvider.GetResourcesAsync<AgentBase>(
                     _callContext.InstanceId!,
                     _callContext.CurrentUserIdentity!,
                     new ResourceProviderGetOptions
@@ -204,6 +217,31 @@ namespace FoundationaLLM.Common.Services.Users
                     .Select(a => a.Resource.ObjectId!)];
                 userProfile.UpdatedOn = DateTimeOffset.UtcNow;
                 await _cosmosDBService.UpsertUserProfileAsync(userProfile);
+            }
+
+            if (userData is null)
+            {
+                // The user alredy has the newwer version of the user profile, but does not have
+                // a user data document. Create a new user data document with an empty allowed agents list.
+                // it will be populated later when the user retrieves the list of agents.
+
+                agents ??= await _agentResourceProvider.GetResourcesAsync<AgentBase>(
+                        _callContext.InstanceId!,
+                        _callContext.CurrentUserIdentity!,
+                        new ResourceProviderGetOptions
+                        {
+                            IncludeActions = false,
+                            IncludeRoles = false
+                        });
+
+                _logger.LogInformation("Creating new user data for user '{UPN}'.",
+                    upn);
+
+                userData = new UserData(upn)
+                {
+                    AllowedAgents = [.. agents.Select(a => a.Resource.ObjectId!)]
+                };
+                await _cosmosDBService.UpsertUserDataAsync(userData);
             }
 
             return userProfile;

@@ -2,6 +2,7 @@ using FoundationaLLM.Common.Models.Conversation;
 using FoundationaLLM.Common.Models.Orchestration;
 using FoundationaLLM.Common.Models.Orchestration.Request;
 using FoundationaLLM.Common.Models.ResourceProviders;
+using FoundationaLLM.Common.Models.ResourceProviders.Agent;
 using FoundationaLLM.Common.Models.ResourceProviders.Attachment;
 using FoundationaLLM.Common.Settings;
 
@@ -13,6 +14,16 @@ namespace FoundationaLLM.Core.Interfaces;
 /// </summary>
 public interface ICoreService
 {
+    #region Agents
+
+    /// <summary>
+    /// Returns the list of agents available for the calling user.
+    /// </summary>
+    /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
+    Task<IEnumerable<ResourceProviderGetResult<AgentBase>>> GetAgentsAsync(string instanceId);
+
+    #endregion
+
     #region Conversation management - FoundationaLLM.Conversation resource provider
 
     /// <summary>
