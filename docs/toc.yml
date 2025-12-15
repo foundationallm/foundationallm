@@ -9,7 +9,7 @@ items:
   - name: Why FoundationaLLM?
     href: overview/why-foundationallm.md
   - name: Core Concepts Reference
-    href: concepts/index.md
+    href: management-portal/reference/concepts/index.md
 
 - name: Chat User Portal
   href: chat-user-portal/index.md

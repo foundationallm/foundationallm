@@ -330,5 +330,24 @@ The documentation reorganization has been executed. All phases are complete:
 
 ---
 
+## Cleanup Status: COMPLETED
+
+Legacy folders have been cleaned up and archived:
+
+- ✅ Migrated `concepts/index.md` → `management-portal/reference/concepts/index.md`
+- ✅ Migrated `concepts/prompt/prompt-variable.md` → `management-portal/reference/concepts/prompt-variables.md`
+- ✅ Archived `api/` → `archive/api/`
+- ✅ Archived `concepts/` → `archive/concepts/`
+- ✅ Archived `deployment/` → `archive/deployment/`
+- ✅ Archived `how-to-guides/` → `archive/how-to-guides/`
+- ✅ Archived `operations/` → `archive/operations/`
+- ✅ Archived `role-based-access-control/` → `archive/role-based-access-control/`
+- ✅ Archived `setup-guides/` → `archive/setup-guides/`
+- ✅ Kept `release-notes/` at root level (top-level section)
+- ✅ Updated `archive/README.md` with all archived content
+
+---
+
 *Reorganization Completed: December 14, 2025*
-*Plan Version: 1.0*
+*Cleanup Completed: December 14, 2025*
+*Plan Version: 1.1*

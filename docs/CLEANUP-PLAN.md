@@ -1,5 +1,7 @@
 # Documentation Cleanup Plan
 
+> **Status:** ✅ EXECUTED on 2024-12-14
+
 This document outlines the plan to clean up legacy folders that remain after the documentation reorganization.
 
 ## Overview
