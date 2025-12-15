@@ -1,4 +1,5 @@
 using FoundationaLLM.Common.Constants;
+using FoundationaLLM.Common.Constants.Agents;
 using FoundationaLLM.Common.Constants.Configuration;
 using FoundationaLLM.Common.Constants.Orchestration;
 using FoundationaLLM.Common.Constants.ResourceProviders;
@@ -112,17 +113,29 @@ public partial class CoreService(
     public async Task<IEnumerable<ResourceProviderGetResult<AgentBase>>> GetAgentsAsync(
         string instanceId)
     {
-        var agents = await _agentResourceProvider.GetResourcesAsync<AgentBase>(
+        var agentResults = await _agentResourceProvider.GetResourcesAsync<AgentBase>(
                 instanceId,
                 _userIdentity,
                 new ResourceProviderGetOptions
                 {
                     IncludeRoles = true,
-                    IncludeActions = true,
+                    IncludeActions = false,
                     LoadContent = false
                 });
 
-        return agents;
+        var userProfile = await _userProfileService.GetUserProfileAsync(instanceId, agentResults);
+        var enabledAgents = userProfile!.Agents.ToHashSet();
+
+        foreach (var agentResult in agentResults)
+        {
+            agentResult.Properties ??= [];
+
+            agentResult.Properties.Add(
+                AgentPropertyNames.Enabled,
+                enabledAgents.Contains(agentResult.Resource.ObjectId!));
+        }
+
+        return agentResults;
     }
 
     # endregion

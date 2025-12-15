@@ -778,12 +778,9 @@ import { useAuthStore } from '@/stores/authStore';
 					return; // the watcher will re-invoke this when the featured agent names are available.
 				}
 
-				// Ensure user profile is loaded (will use cached data if already loaded)
-				await this.loadUserProfile();
-
 				this.loadingAgents2 = true;
 				this.agentError2 = "";
-				
+
 				try {
 					// Ensure agents are loaded first (this will be instant if already loaded).
         			await this.appStore.getAgents();
@@ -792,9 +789,10 @@ import { useAuthStore } from '@/stores/authStore';
 
 					this.agentOptions2 = agentsArray.map((ResourceProviderGetResult: any, index: number): AgentOption => {
 						const agent = ResourceProviderGetResult.resource || ResourceProviderGetResult;
+						const properties = ResourceProviderGetResult.properties || {};
 
-						// Check if this agent is in the user's selected agents list
-						const isAgentSelected = this.userProfile?.agents?.includes(agent.object_id) || false;
+						// Check if this agent is enabled by the user.
+						const isAgentSelected = properties['enabled'] || false;
 
 						// Check if this agent is a featured agent (by name, as per memory: resource names are reliable identifiers)
 						const isFeaturedAgent = this.appConfigStore.featuredAgentNames?.includes(agent.name);
@@ -824,7 +822,6 @@ import { useAuthStore } from '@/stores/authStore';
 			},
 
 			async refreshAgents() {
-				await this.loadUserProfile();
 				await this.loadAllowedAgents();
 			},
 
@@ -888,6 +885,9 @@ import { useAuthStore } from '@/stores/authStore';
 
 					// Update the global app store user profile
 					this.appStore.updateUserProfileAgent(agent.object_id!, agent.enabled);
+
+					// Update the agent's properties in the cached agents array
+					this.appStore.updateAgentProperty(agent.object_id!, 'enabled', agent.enabled);
 
 					// Show success message with appropriate severity
 					(this.appStore as any).addToast({

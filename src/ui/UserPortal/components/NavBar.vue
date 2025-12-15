@@ -246,22 +246,16 @@
 					);
 				};
 
-				// Get user profile to filter enabled agents
-				const userProfile = this.appStore.userProfile;
-				const enabledAgentIds = userProfile?.agents || [];
-
 				// Filter out expired agents, disabled agents, and agents not enabled in user profile
 				// but keep the currently selected agent even if it doesn't meet these criteria
 				const filteredAgents = this.appStore.agents.filter((agent: any) => {
 					const isExpiredOrDisabled = isAgentExpired(agent) || agent.enabled === false;
 
 					// Check if agent is in user profile by exact matching object_id
-					const foundAgent = enabledAgentIds.find((agentId: any) =>
-						agentId == agent.resource.object_id
-					);
+					const isEnabled = agent.properties['enabled'] || false;
 
 					// Include if: (not expired AND not disabled AND in user profile)
-					return (!isExpiredOrDisabled && foundAgent)
+					return (!isExpiredOrDisabled && isEnabled)
 				});
 
 				// Map filtered agents to dropdown options - no additional filtering needed since filtering was done above

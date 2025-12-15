@@ -885,6 +885,22 @@ export const useAppStore = defineStore('app', {
 			}
 		},
 
+		/**
+		 * Updates a property on an agent's properties dictionary.
+		 * @param agentObjectId The object_id of the agent to update.
+		 * @param propertyName The name of the property to set.
+		 * @param propertyValue The value to set for the property.
+		 */
+		updateAgentProperty(agentObjectId: string, propertyName: string, propertyValue: unknown) {
+			const agent = this.agents.find((a) => a.resource.object_id === agentObjectId);
+			if (agent) {
+				if (!agent.properties) {
+					agent.properties = {};
+				}
+				agent.properties[propertyName] = propertyValue;
+			}
+		},
+
 		async oneDriveWorkSchoolDownload(sessionId: string, oneDriveWorkSchool: OneDriveWorkSchool) {
 			const agent = this.getSessionAgent(this.currentSession!).resource;
 			// If the agent is not found, do not upload the attachment and display an error message.
