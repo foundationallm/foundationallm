@@ -17,12 +17,14 @@ items:
   - name: Overview
     href: chat-user-portal/index.md
   - name: Quick Start
+    href: chat-user-portal/quick-start/quickstart.md
     items:
     - name: Quickstart Guide
       href: chat-user-portal/quick-start/quickstart.md
     - name: Creating Your First Agent
       href: chat-user-portal/quick-start/creating-first-agent.md
   - name: How-To Guides
+    href: chat-user-portal/how-to-guides/using-agents/selecting-agent.md
     items:
     - name: Selecting an Agent
       href: chat-user-portal/how-to-guides/using-agents/selecting-agent.md
@@ -59,12 +61,14 @@ items:
   - name: Overview
     href: management-portal/index.md
   - name: Quick Start
+    href: management-portal/quick-start/portal-tour.md
     items:
     - name: Tour of the Portal
       href: management-portal/quick-start/portal-tour.md
     - name: Creating Your First Agent
       href: management-portal/quick-start/creating-first-agent.md
   - name: Agents
+    href: management-portal/how-to-guides/agents/all-agents.md
     items:
     - name: Create New Agent
       href: management-portal/how-to-guides/agents/create-new-agent.md
@@ -79,6 +83,7 @@ items:
     - name: Prompts
       href: management-portal/how-to-guides/agents/prompts.md
   - name: Data
+    href: management-portal/how-to-guides/data/data-sources.md
     items:
     - name: Data Sources
       href: management-portal/how-to-guides/data/data-sources.md
@@ -101,16 +106,19 @@ items:
     - name: Image Description
       href: management-portal/how-to-guides/data/knowledge-sources/image-description.md
   - name: Models and Endpoints
+    href: management-portal/how-to-guides/models-endpoints/ai-models.md
     items:
     - name: AI Models
       href: management-portal/how-to-guides/models-endpoints/ai-models.md
     - name: API Endpoints
       href: management-portal/how-to-guides/models-endpoints/api-endpoints.md
   - name: Security
+    href: management-portal/how-to-guides/security/instance-access-control.md
     items:
     - name: Instance Access Control
       href: management-portal/how-to-guides/security/instance-access-control.md
   - name: FLLM Platform
+    href: management-portal/how-to-guides/fllm-platform/branding.md
     items:
     - name: Branding
       href: management-portal/how-to-guides/fllm-platform/branding.md
@@ -123,6 +131,7 @@ items:
   - name: Configuring Quotas
     href: management-portal/how-to-guides/configuring-quotas.md
   - name: Reference
+    href: management-portal/reference/concepts/index.md
     items:
     - name: Concepts Overview
       href: management-portal/reference/concepts/index.md
@@ -160,6 +169,7 @@ items:
   href: apis-sdks/apis/core-api/index.md
   items:
   - name: Core API
+    href: apis-sdks/apis/core-api/index.md
     items:
     - name: Overview
       href: apis-sdks/apis/core-api/index.md
@@ -172,6 +182,7 @@ items:
     - name: API Reference
       href: apis-sdks/apis/core-api/api-reference.md
   - name: Management API
+    href: apis-sdks/apis/management-api/index.md
     items:
     - name: Overview
       href: apis-sdks/apis/management-api/index.md
@@ -184,6 +195,7 @@ items:
     - name: Data Pipelines API
       href: apis-sdks/apis/management-api/data-pipelines.md
   - name: SDKs
+    href: apis-sdks/sdks/dotnet/index.md
     items:
     - name: .NET SDK
       href: apis-sdks/sdks/dotnet/index.md
@@ -194,6 +206,7 @@ items:
   href: platform-operations/deployment/index.md
   items:
   - name: Deployment
+    href: platform-operations/deployment/index.md
     items:
     - name: Deployment Overview
       href: platform-operations/deployment/index.md
@@ -214,6 +227,7 @@ items:
     - name: Standard Deployment Manifest
       href: platform-operations/deployment/standard-manifest.md
   - name: Security & Permissions
+    href: platform-operations/security-permissions/platform-security.md
     items:
     - name: Platform Security
       href: platform-operations/security-permissions/platform-security.md
@@ -256,12 +270,14 @@ items:
     - name: Vulnerabilities
       href: platform-operations/security-permissions/vulnerabilities.md
   - name: Monitoring & Troubleshooting
+    href: platform-operations/monitoring-troubleshooting/logs.md
     items:
     - name: Logs & Audit Trails
       href: platform-operations/monitoring-troubleshooting/logs.md
     - name: Troubleshooting Guide
       href: platform-operations/monitoring-troubleshooting/troubleshooting.md
   - name: How-To Guides
+    href: platform-operations/how-to-guides/updating-container-versions.md
     items:
     - name: Updating Container Versions
       href: platform-operations/how-to-guides/updating-container-versions.md
@@ -277,6 +293,17 @@ items:
   items:
   - name: Development Overview
     href: development/index.md
+  - name: Calling APIs
+    href: development/calling-apis/index.md
+    items:
+    - name: Overview
+      href: development/calling-apis/index.md
+    - name: Directly Calling Core API
+      href: development/calling-apis/directly-calling-core-api.md
+    - name: Directly Calling Management API
+      href: development/calling-apis/directly-calling-management-api.md
+    - name: Local API Access
+      href: development/calling-apis/standard-deployment-local-api-access.md
   - name: Development Approach
     href: development/development-approach.md
   - name: Local Development Environment
