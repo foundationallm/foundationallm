@@ -3,7 +3,7 @@ export default {
     iconLinks: [
       {
         icon: 'github',
-        href: 'https://github.com/solliancenet/foundationallm',
+        href: 'https://github.com/foundationallm/foundationallm',
         title: 'GitHub'
       }
     ]
