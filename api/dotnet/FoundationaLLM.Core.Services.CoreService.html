@@ -89,7 +89,7 @@
 
 
   <h1 id="FoundationaLLM_Core_Services_CoreService" data-uid="FoundationaLLM.Core.Services.CoreService" class="text-break">
-Class CoreService  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Core/Services/CoreService.cs/#L57"><i class="bi bi-code-slash"></i></a>
+Class CoreService  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Core/Services/CoreService.cs/#L60"><i class="bi bi-code-slash"></i></a>
   </h1>
 
   <div class="facts text-secondary">
@@ -168,9 +168,9 @@ Class CoreService  <a class="header-action link-secondary" title="View source" h
 
   <a id="FoundationaLLM_Core_Services_CoreService__ctor_" data-uid="FoundationaLLM.Core.Services.CoreService.#ctor*"></a>
 
-  <h3 id="FoundationaLLM_Core_Services_CoreService__ctor_FoundationaLLM_Common_Interfaces_IAzureCosmosDBService_System_Collections_Generic_IEnumerable_FoundationaLLM_Common_Interfaces_IDownstreamAPIService__Microsoft_Extensions_Logging_ILogger_FoundationaLLM_Core_Services_CoreService__Microsoft_Extensions_Options_IOptions_FoundationaLLM_Common_Models_Configuration_Branding_ClientBrandingConfiguration__Microsoft_Extensions_Options_IOptions_FoundationaLLM_Core_Models_Configuration_CoreServiceSettings__FoundationaLLM_Common_Interfaces_IOrchestrationContext_System_Collections_Generic_IEnumerable_FoundationaLLM_Common_Interfaces_IResourceProviderService__Microsoft_Extensions_Configuration_IConfiguration_FoundationaLLM_Common_Interfaces_IHttpClientFactoryService_FoundationaLLM_Common_Interfaces_IContextServiceClient_" data-uid="FoundationaLLM.Core.Services.CoreService.#ctor(FoundationaLLM.Common.Interfaces.IAzureCosmosDBService,System.Collections.Generic.IEnumerable{FoundationaLLM.Common.Interfaces.IDownstreamAPIService},Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Core.Services.CoreService},Microsoft.Extensions.Options.IOptions{FoundationaLLM.Common.Models.Configuration.Branding.ClientBrandingConfiguration},Microsoft.Extensions.Options.IOptions{FoundationaLLM.Core.Models.Configuration.CoreServiceSettings},FoundationaLLM.Common.Interfaces.IOrchestrationContext,System.Collections.Generic.IEnumerable{FoundationaLLM.Common.Interfaces.IResourceProviderService},Microsoft.Extensions.Configuration.IConfiguration,FoundationaLLM.Common.Interfaces.IHttpClientFactoryService,FoundationaLLM.Common.Interfaces.IContextServiceClient)">
-  CoreService(IAzureCosmosDBService, IEnumerable&lt;IDownstreamAPIService&gt;, ILogger&lt;CoreService&gt;, IOptions&lt;ClientBrandingConfiguration&gt;, IOptions&lt;CoreServiceSettings&gt;, IOrchestrationContext, IEnumerable&lt;IResourceProviderService&gt;, IConfiguration, IHttpClientFactoryService, IContextServiceClient)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Core/Services/CoreService.cs/#L57"><i class="bi bi-code-slash"></i></a>
+  <h3 id="FoundationaLLM_Core_Services_CoreService__ctor_FoundationaLLM_Common_Interfaces_IAzureCosmosDBService_System_Collections_Generic_IEnumerable_FoundationaLLM_Common_Interfaces_IDownstreamAPIService__Microsoft_Extensions_Logging_ILogger_FoundationaLLM_Core_Services_CoreService__Microsoft_Extensions_Options_IOptions_FoundationaLLM_Common_Models_Configuration_Branding_ClientBrandingConfiguration__Microsoft_Extensions_Options_IOptions_FoundationaLLM_Core_Models_Configuration_CoreServiceSettings__FoundationaLLM_Common_Interfaces_IOrchestrationContext_System_Collections_Generic_IEnumerable_FoundationaLLM_Common_Interfaces_IResourceProviderService__Microsoft_Extensions_Configuration_IConfiguration_FoundationaLLM_Common_Interfaces_IHttpClientFactoryService_FoundationaLLM_Common_Interfaces_IContextServiceClient_FoundationaLLM_Common_Interfaces_IUserProfileService_" data-uid="FoundationaLLM.Core.Services.CoreService.#ctor(FoundationaLLM.Common.Interfaces.IAzureCosmosDBService,System.Collections.Generic.IEnumerable{FoundationaLLM.Common.Interfaces.IDownstreamAPIService},Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Core.Services.CoreService},Microsoft.Extensions.Options.IOptions{FoundationaLLM.Common.Models.Configuration.Branding.ClientBrandingConfiguration},Microsoft.Extensions.Options.IOptions{FoundationaLLM.Core.Models.Configuration.CoreServiceSettings},FoundationaLLM.Common.Interfaces.IOrchestrationContext,System.Collections.Generic.IEnumerable{FoundationaLLM.Common.Interfaces.IResourceProviderService},Microsoft.Extensions.Configuration.IConfiguration,FoundationaLLM.Common.Interfaces.IHttpClientFactoryService,FoundationaLLM.Common.Interfaces.IContextServiceClient,FoundationaLLM.Common.Interfaces.IUserProfileService)">
+  CoreService(IAzureCosmosDBService, IEnumerable&lt;IDownstreamAPIService&gt;, ILogger&lt;CoreService&gt;, IOptions&lt;ClientBrandingConfiguration&gt;, IOptions&lt;CoreServiceSettings&gt;, IOrchestrationContext, IEnumerable&lt;IResourceProviderService&gt;, IConfiguration, IHttpClientFactoryService, IContextServiceClient, IUserProfileService)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Core/Services/CoreService.cs/#L60"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="FoundationaLLM.Core.Services.CoreService.html">CoreService</a> class.</p>
@@ -178,7 +178,7 @@ Class CoreService  <a class="header-action link-secondary" title="View source" h
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public CoreService(IAzureCosmosDBService cosmosDBService, IEnumerable&lt;IDownstreamAPIService&gt; downstreamAPIServices, ILogger&lt;CoreService&gt; logger, IOptions&lt;ClientBrandingConfiguration&gt; brandingSettings, IOptions&lt;CoreServiceSettings&gt; settings, IOrchestrationContext callContext, IEnumerable&lt;IResourceProviderService&gt; resourceProviderServices, IConfiguration configuration, IHttpClientFactoryService httpClientFactory, IContextServiceClient contextServiceClient)</code></pre>
+    <pre><code class="lang-csharp hljs">public CoreService(IAzureCosmosDBService cosmosDBService, IEnumerable&lt;IDownstreamAPIService&gt; downstreamAPIServices, ILogger&lt;CoreService&gt; logger, IOptions&lt;ClientBrandingConfiguration&gt; brandingSettings, IOptions&lt;CoreServiceSettings&gt; settings, IOrchestrationContext callContext, IEnumerable&lt;IResourceProviderService&gt; resourceProviderServices, IConfiguration configuration, IHttpClientFactoryService httpClientFactory, IContextServiceClient contextServiceClient, IUserProfileService userProfileService)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -217,6 +217,9 @@ settings retrieved by the injected <a class="xref" href="https://learn.microsoft
     <dt><code>contextServiceClient</code> <a class="xref" href="FoundationaLLM.Common.Interfaces.IContextServiceClient.html">IContextServiceClient</a></dt>
     <dd><p>The <a class="xref" href="FoundationaLLM.Common.Interfaces.IContextServiceClient.html">IContextServiceClient</a> used to interact with the Context API.</p>
 </dd>
+    <dt><code>userProfileService</code> <a class="xref" href="FoundationaLLM.Common.Interfaces.IUserProfileService.html">IUserProfileService</a></dt>
+    <dd><p>The <a class="xref" href="FoundationaLLM.Common.Interfaces.IUserProfileService.html">IUserProfileService</a> used to manage user profiles.</p>
+</dd>
   </dl>
 
 
@@ -238,7 +241,7 @@ settings retrieved by the injected <a class="xref" href="https://learn.microsoft
 
   <h3 id="FoundationaLLM_Core_Services_CoreService_CreateConversationAsync_System_String_FoundationaLLM_Common_Models_Conversation_ConversationProperties_" data-uid="FoundationaLLM.Core.Services.CoreService.CreateConversationAsync(System.String,FoundationaLLM.Common.Models.Conversation.ConversationProperties)">
   CreateConversationAsync(string, ConversationProperties)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Core/Services/CoreService.cs/#L125"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Core/Services/CoreService.cs/#L163"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Creates a new chat session.</p>
@@ -279,7 +282,7 @@ settings retrieved by the injected <a class="xref" href="https://learn.microsoft
 
   <h3 id="FoundationaLLM_Core_Services_CoreService_DeleteAttachments_System_String_System_Collections_Generic_List_System_String__" data-uid="FoundationaLLM.Core.Services.CoreService.DeleteAttachments(System.String,System.Collections.Generic.List{System.String})">
   DeleteAttachments(string, List&lt;string&gt;)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Core/Services/CoreService.cs/#L865"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Core/Services/CoreService.cs/#L903"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Deletes one or more attachments.</p>
@@ -321,7 +324,7 @@ settings retrieved by the injected <a class="xref" href="https://learn.microsoft
 
   <h3 id="FoundationaLLM_Core_Services_CoreService_DeleteConversationAsync_System_String_System_String_" data-uid="FoundationaLLM.Core.Services.CoreService.DeleteConversationAsync(System.String,System.String)">
   DeleteConversationAsync(string, string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Core/Services/CoreService.cs/#L174"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Core/Services/CoreService.cs/#L212"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Delete a chat session and related messages.</p>
@@ -362,7 +365,7 @@ settings retrieved by the injected <a class="xref" href="https://learn.microsoft
 
   <h3 id="FoundationaLLM_Core_Services_CoreService_DownloadAttachment_System_String_System_String_System_String_" data-uid="FoundationaLLM.Core.Services.CoreService.DownloadAttachment(System.String,System.String,System.String)">
   DownloadAttachment(string, string, string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Core/Services/CoreService.cs/#L800"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Core/Services/CoreService.cs/#L838"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Downloads an attachment.</p>
@@ -407,11 +410,49 @@ settings retrieved by the injected <a class="xref" href="https://learn.microsoft
 
 
 
+  <a id="FoundationaLLM_Core_Services_CoreService_GetAgentsAsync_" data-uid="FoundationaLLM.Core.Services.CoreService.GetAgentsAsync*"></a>
+
+  <h3 id="FoundationaLLM_Core_Services_CoreService_GetAgentsAsync_System_String_" data-uid="FoundationaLLM.Core.Services.CoreService.GetAgentsAsync(System.String)">
+  GetAgentsAsync(string)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Core/Services/CoreService.cs/#L113"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Returns the list of agents available for the calling user.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task&lt;IEnumerable&lt;ResourceProviderGetResult&lt;AgentBase&gt;&gt;&gt; GetAgentsAsync(string instanceId)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>instanceId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The FoundationaLLM instance identifier.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderGetResult-1.html">ResourceProviderGetResult</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentBase.html">AgentBase</a>&gt;&gt;&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
   <a id="FoundationaLLM_Core_Services_CoreService_GetAllConversationsAsync_" data-uid="FoundationaLLM.Core.Services.CoreService.GetAllConversationsAsync*"></a>
 
   <h3 id="FoundationaLLM_Core_Services_CoreService_GetAllConversationsAsync_System_String_" data-uid="FoundationaLLM.Core.Services.CoreService.GetAllConversationsAsync(System.String)">
   GetAllConversationsAsync(string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Core/Services/CoreService.cs/#L108"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Core/Services/CoreService.cs/#L146"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Returns list of chat session ids and names.</p>
@@ -449,7 +490,7 @@ settings retrieved by the injected <a class="xref" href="https://learn.microsoft
 
   <h3 id="FoundationaLLM_Core_Services_CoreService_GetChatCompletionAsync_System_String_FoundationaLLM_Common_Models_Orchestration_Request_CompletionRequest_" data-uid="FoundationaLLM.Core.Services.CoreService.GetChatCompletionAsync(System.String,FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequest)">
   GetChatCompletionAsync(string, CompletionRequest)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Core/Services/CoreService.cs/#L470"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Core/Services/CoreService.cs/#L508"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Receive a prompt from a user, retrieve the message history from the related session,
@@ -491,7 +532,7 @@ generate a completion response, and log full completion results.</p>
 
   <h3 id="FoundationaLLM_Core_Services_CoreService_GetCompletionAsync_System_String_FoundationaLLM_Common_Models_Orchestration_Request_CompletionRequest_" data-uid="FoundationaLLM.Core.Services.CoreService.GetCompletionAsync(System.String,FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequest)">
   GetCompletionAsync(string, CompletionRequest)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Core/Services/CoreService.cs/#L561"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Core/Services/CoreService.cs/#L599"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Provides a completion for a user prompt, without a session.</p>
@@ -532,7 +573,7 @@ generate a completion response, and log full completion results.</p>
 
   <h3 id="FoundationaLLM_Core_Services_CoreService_GetCompletionOperationStatus_System_String_System_String_" data-uid="FoundationaLLM.Core.Services.CoreService.GetCompletionOperationStatus(System.String,System.String)">
   GetCompletionOperationStatus(string, string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Core/Services/CoreService.cs/#L327"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Core/Services/CoreService.cs/#L365"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets the status of a completion operation.</p>
@@ -574,7 +615,7 @@ generate a completion response, and log full completion results.</p>
 
   <h3 id="FoundationaLLM_Core_Services_CoreService_GetCompletionPrompt_System_String_System_String_System_String_" data-uid="FoundationaLLM.Core.Services.CoreService.GetCompletionPrompt(System.String,System.String,System.String)">
   GetCompletionPrompt(string, string, string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Core/Services/CoreService.cs/#L1069"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Core/Services/CoreService.cs/#L1107"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Returns the completion prompt for a given session and completion prompt id.</p>
@@ -618,7 +659,7 @@ generate a completion response, and log full completion results.</p>
 
   <h3 id="FoundationaLLM_Core_Services_CoreService_GetConversationMessagesAsync_System_String_System_String_" data-uid="FoundationaLLM.Core.Services.CoreService.GetConversationMessagesAsync(System.String,System.String)">
   GetConversationMessagesAsync(string, string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Core/Services/CoreService.cs/#L930"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Core/Services/CoreService.cs/#L968"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Returns the messages for a conversation.</p>
@@ -659,7 +700,7 @@ generate a completion response, and log full completion results.</p>
 
   <h3 id="FoundationaLLM_Core_Services_CoreService_GetConversationMessagesCountAsync_System_String_System_String_" data-uid="FoundationaLLM.Core.Services.CoreService.GetConversationMessagesCountAsync(System.String,System.String)">
   GetConversationMessagesCountAsync(string, string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Core/Services/CoreService.cs/#L1037"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Core/Services/CoreService.cs/#L1075"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Returns the number of messages in a conversation.</p>
@@ -702,7 +743,7 @@ specified conversation.</p>
 
   <h3 id="FoundationaLLM_Core_Services_CoreService_GetCoreConfiguration_System_String_" data-uid="FoundationaLLM.Core.Services.CoreService.GetCoreConfiguration(System.String)">
   GetCoreConfiguration(string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Core/Services/CoreService.cs/#L1084"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Core/Services/CoreService.cs/#L1122"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets the file store configuration for the given instance.</p>
@@ -741,7 +782,7 @@ specified conversation.</p>
 
   <h3 id="FoundationaLLM_Core_Services_CoreService_RateMessageAsync_System_String_System_String_System_String_FoundationaLLM_Common_Models_Conversation_MessageRatingRequest_" data-uid="FoundationaLLM.Core.Services.CoreService.RateMessageAsync(System.String,System.String,System.String,FoundationaLLM.Common.Models.Conversation.MessageRatingRequest)">
   RateMessageAsync(string, string, string, MessageRatingRequest)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Core/Services/CoreService.cs/#L1052"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Core/Services/CoreService.cs/#L1090"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Rate an assistant message. This can be used to discover useful AI responses for training, discoverability, and other benefits down the road.</p>
@@ -788,7 +829,7 @@ specified conversation.</p>
 
   <h3 id="FoundationaLLM_Core_Services_CoreService_StartCompletionOperation_System_String_FoundationaLLM_Common_Models_Orchestration_Request_CompletionRequest_" data-uid="FoundationaLLM.Core.Services.CoreService.StartCompletionOperation(System.String,FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequest)">
   StartCompletionOperation(string, CompletionRequest)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Core/Services/CoreService.cs/#L189"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Core/Services/CoreService.cs/#L227"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Begins a completion operation.</p>
@@ -830,7 +871,7 @@ specified conversation.</p>
 
   <h3 id="FoundationaLLM_Core_Services_CoreService_UpdateConversationAsync_System_String_System_String_FoundationaLLM_Common_Models_Conversation_ConversationProperties_" data-uid="FoundationaLLM.Core.Services.CoreService.UpdateConversationAsync(System.String,System.String,FoundationaLLM.Common.Models.Conversation.ConversationProperties)">
   UpdateConversationAsync(string, string, ConversationProperties)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Core/Services/CoreService.cs/#L150"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Core/Services/CoreService.cs/#L188"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Update the conversation.</p>
@@ -874,7 +915,7 @@ specified conversation.</p>
 
   <h3 id="FoundationaLLM_Core_Services_CoreService_UploadAttachment_System_String_System_String_FoundationaLLM_Common_Models_ResourceProviders_Attachment_AttachmentFile_System_String_" data-uid="FoundationaLLM.Core.Services.CoreService.UploadAttachment(System.String,System.String,FoundationaLLM.Common.Models.ResourceProviders.Attachment.AttachmentFile,System.String)">
   UploadAttachment(string, string, AttachmentFile, string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Core/Services/CoreService.cs/#L627"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Core/Services/CoreService.cs/#L665"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Uploads an attachment.</p>
@@ -922,7 +963,7 @@ specified conversation.</p>
 </article>
 
         <div class="contribution d-print-none">
-          <a href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Core/Services/CoreService.cs/#L57" class="edit-link">Edit this page</a>
+          <a href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Core/Services/CoreService.cs/#L60" class="edit-link">Edit this page</a>
         </div>
 
 

@@ -89,7 +89,7 @@
 
 
   <h1 id="FoundationaLLM_Common_Services_Users_UserProfileService" data-uid="FoundationaLLM.Common.Services.Users.UserProfileService" class="text-break">
-Class UserProfileService  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Services/Users/UserProfileService.cs/#L16"><i class="bi bi-code-slash"></i></a>
+Class UserProfileService  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Services/Users/UserProfileService.cs/#L14"><i class="bi bi-code-slash"></i></a>
   </h1>
 
   <div class="facts text-secondary">
@@ -170,7 +170,7 @@ Class UserProfileService  <a class="header-action link-secondary" title="View so
 
   <h3 id="FoundationaLLM_Common_Services_Users_UserProfileService__ctor_FoundationaLLM_Common_Interfaces_IAzureCosmosDBService_Microsoft_Extensions_Logging_ILogger_FoundationaLLM_Common_Services_Users_UserProfileService__FoundationaLLM_Common_Interfaces_IOrchestrationContext_System_Collections_Generic_IEnumerable_FoundationaLLM_Common_Interfaces_IResourceProviderService__" data-uid="FoundationaLLM.Common.Services.Users.UserProfileService.#ctor(FoundationaLLM.Common.Interfaces.IAzureCosmosDBService,Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Common.Services.Users.UserProfileService},FoundationaLLM.Common.Interfaces.IOrchestrationContext,System.Collections.Generic.IEnumerable{FoundationaLLM.Common.Interfaces.IResourceProviderService})">
   UserProfileService(IAzureCosmosDBService, ILogger&lt;UserProfileService&gt;, IOrchestrationContext, IEnumerable&lt;IResourceProviderService&gt;)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Services/Users/UserProfileService.cs/#L33"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Services/Users/UserProfileService.cs/#L31"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="FoundationaLLM.Common.Services.Users.UserProfileService.html">UserProfileService</a> class.</p>
@@ -214,11 +214,11 @@ user profiles.</p>
 </h2>
 
 
-  <a id="FoundationaLLM_Common_Services_Users_UserProfileService_AddAgent_" data-uid="FoundationaLLM.Common.Services.Users.UserProfileService.AddAgent*"></a>
+  <a id="FoundationaLLM_Common_Services_Users_UserProfileService_AddAgentToUserProfileAsync_" data-uid="FoundationaLLM.Common.Services.Users.UserProfileService.AddAgentToUserProfileAsync*"></a>
 
-  <h3 id="FoundationaLLM_Common_Services_Users_UserProfileService_AddAgent_System_String_System_String_" data-uid="FoundationaLLM.Common.Services.Users.UserProfileService.AddAgent(System.String,System.String)">
-  AddAgent(string, string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Services/Users/UserProfileService.cs/#L74"><i class="bi bi-code-slash"></i></a>
+  <h3 id="FoundationaLLM_Common_Services_Users_UserProfileService_AddAgentToUserProfileAsync_System_String_System_String_" data-uid="FoundationaLLM.Common.Services.Users.UserProfileService.AddAgentToUserProfileAsync(System.String,System.String)">
+  AddAgentToUserProfileAsync(string, string)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Services/Users/UserProfileService.cs/#L80"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Adds an agent to the user's profile.</p>
@@ -226,7 +226,7 @@ user profiles.</p>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Task AddAgent(string instanceId, string agentObjectId)</code></pre>
+    <pre><code class="lang-csharp hljs">public Task AddAgentToUserProfileAsync(string instanceId, string agentObjectId)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -255,31 +255,31 @@ user profiles.</p>
 
 
 
-  <a id="FoundationaLLM_Common_Services_Users_UserProfileService_GetUserProfileAsync_" data-uid="FoundationaLLM.Common.Services.Users.UserProfileService.GetUserProfileAsync*"></a>
+  <a id="FoundationaLLM_Common_Services_Users_UserProfileService_GetUserDataAsync_" data-uid="FoundationaLLM.Common.Services.Users.UserProfileService.GetUserDataAsync*"></a>
 
-  <h3 id="FoundationaLLM_Common_Services_Users_UserProfileService_GetUserProfileAsync_System_String_" data-uid="FoundationaLLM.Common.Services.Users.UserProfileService.GetUserProfileAsync(System.String)">
-  GetUserProfileAsync(string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Services/Users/UserProfileService.cs/#L51"><i class="bi bi-code-slash"></i></a>
+  <h3 id="FoundationaLLM_Common_Services_Users_UserProfileService_GetUserDataAsync_System_String_" data-uid="FoundationaLLM.Common.Services.Users.UserProfileService.GetUserDataAsync(System.String)">
+  GetUserDataAsync(string)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Services/Users/UserProfileService.cs/#L172"><i class="bi bi-code-slash"></i></a>
   </h3>
 
-  <div class="markdown level1 summary"><p>Returns the user profile of the signed in user.</p>
+  <div class="markdown level1 summary"><p>Returns the user data of the signed in user.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Task&lt;UserProfile?&gt; GetUserProfileAsync(string instanceId)</code></pre>
+    <pre><code class="lang-csharp hljs">public Task&lt;UserData?&gt; GetUserDataAsync(string instanceId)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
   <dl class="parameters">
     <dt><code>instanceId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
-    <dd><p>The instance ID.</p>
+    <dd><p>The FoundationaLLM instance identifier.</p>
 </dd>
   </dl>
 
   <h4 class="section">Returns</h4>
   <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Configuration.Users.UserProfile.html">UserProfile</a>&gt;</dt>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Configuration.Users.UserData.html">UserData</a>&gt;</dt>
     <dd></dd>
   </dl>
 
@@ -298,11 +298,62 @@ user profiles.</p>
 
 
 
+  <a id="FoundationaLLM_Common_Services_Users_UserProfileService_GetUserProfileAsync_" data-uid="FoundationaLLM.Common.Services.Users.UserProfileService.GetUserProfileAsync*"></a>
+
+  <h3 id="FoundationaLLM_Common_Services_Users_UserProfileService_GetUserProfileAsync_System_String_System_Collections_Generic_List_FoundationaLLM_Common_Models_ResourceProviders_ResourceProviderGetResult_FoundationaLLM_Common_Models_ResourceProviders_Agent_AgentBase___" data-uid="FoundationaLLM.Common.Services.Users.UserProfileService.GetUserProfileAsync(System.String,System.Collections.Generic.List{FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderGetResult{FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentBase}})">
+  GetUserProfileAsync(string, List&lt;ResourceProviderGetResult&lt;AgentBase&gt;&gt;?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Services/Users/UserProfileService.cs/#L49"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Returns the user profile of the signed in user.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task&lt;UserProfile?&gt; GetUserProfileAsync(string instanceId, List&lt;ResourceProviderGetResult&lt;AgentBase&gt;&gt;? agents = null)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>instanceId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The FoundationaLLM instance identifier.</p>
+</dd>
+    <dt><code>agents</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderGetResult-1.html">ResourceProviderGetResult</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentBase.html">AgentBase</a>&gt;&gt;</dt>
+    <dd><p>The list of agents the signed in user has permission to use.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FoundationaLLM.Common.Models.Configuration.Users.UserProfile.html">UserProfile</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+  <h4 class="section" id="FoundationaLLM_Common_Services_Users_UserProfileService_GetUserProfileAsync_System_String_System_Collections_Generic_List_FoundationaLLM_Common_Models_ResourceProviders_ResourceProviderGetResult_FoundationaLLM_Common_Models_ResourceProviders_Agent_AgentBase____remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>The <code class="paramref">agents</code> parameter is provided when the caller seeks to avoid
+reloading the list of agents the user has permission to use. It is the responsibility
+of the caller to ensure the list is accurate.</p>
+</div>
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.invalidoperationexception">InvalidOperationException</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
   <a id="FoundationaLLM_Common_Services_Users_UserProfileService_GetUserProfileForUserAsync_" data-uid="FoundationaLLM.Common.Services.Users.UserProfileService.GetUserProfileForUserAsync*"></a>
 
   <h3 id="FoundationaLLM_Common_Services_Users_UserProfileService_GetUserProfileForUserAsync_System_String_System_String_" data-uid="FoundationaLLM.Common.Services.Users.UserProfileService.GetUserProfileForUserAsync(System.String,System.String)">
   GetUserProfileForUserAsync(string, string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Services/Users/UserProfileService.cs/#L57"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Services/Users/UserProfileService.cs/#L59"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Returns the user profile of the specified user.</p>
@@ -316,7 +367,7 @@ user profiles.</p>
   <h4 class="section">Parameters</h4>
   <dl class="parameters">
     <dt><code>instanceId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
-    <dd><p>The instance ID.</p>
+    <dd><p>The FoundationaLLM instance identifier.</p>
 </dd>
     <dt><code>upn</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
     <dd><p>The user principal name of the user for whom to return the user profile.</p>
@@ -339,11 +390,11 @@ user profiles.</p>
 
 
 
-  <a id="FoundationaLLM_Common_Services_Users_UserProfileService_RemoveAgent_" data-uid="FoundationaLLM.Common.Services.Users.UserProfileService.RemoveAgent*"></a>
+  <a id="FoundationaLLM_Common_Services_Users_UserProfileService_RemoveAgentFromUserProfileAsync_" data-uid="FoundationaLLM.Common.Services.Users.UserProfileService.RemoveAgentFromUserProfileAsync*"></a>
 
-  <h3 id="FoundationaLLM_Common_Services_Users_UserProfileService_RemoveAgent_System_String_System_String_" data-uid="FoundationaLLM.Common.Services.Users.UserProfileService.RemoveAgent(System.String,System.String)">
-  RemoveAgent(string, string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Services/Users/UserProfileService.cs/#L120"><i class="bi bi-code-slash"></i></a>
+  <h3 id="FoundationaLLM_Common_Services_Users_UserProfileService_RemoveAgentFromUserProfileAsync_System_String_System_String_" data-uid="FoundationaLLM.Common.Services.Users.UserProfileService.RemoveAgentFromUserProfileAsync(System.String,System.String)">
+  RemoveAgentFromUserProfileAsync(string, string)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Services/Users/UserProfileService.cs/#L126"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Removes an agent to the user's profile.</p>
@@ -351,7 +402,7 @@ user profiles.</p>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Task RemoveAgent(string instanceId, string agentObjectId)</code></pre>
+    <pre><code class="lang-csharp hljs">public Task RemoveAgentFromUserProfileAsync(string instanceId, string agentObjectId)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -380,11 +431,57 @@ user profiles.</p>
 
 
 
+  <a id="FoundationaLLM_Common_Services_Users_UserProfileService_UpsertUserDataAsync_" data-uid="FoundationaLLM.Common.Services.Users.UserProfileService.UpsertUserDataAsync*"></a>
+
+  <h3 id="FoundationaLLM_Common_Services_Users_UserProfileService_UpsertUserDataAsync_System_String_FoundationaLLM_Common_Models_Configuration_Users_UserData_" data-uid="FoundationaLLM.Common.Services.Users.UserProfileService.UpsertUserDataAsync(System.String,FoundationaLLM.Common.Models.Configuration.Users.UserData)">
+  UpsertUserDataAsync(string, UserData)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Services/Users/UserProfileService.cs/#L178"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Inserts or updates a user data object.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task UpsertUserDataAsync(string instanceId, UserData userData)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>instanceId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The FoundationaLLM instance identifier.</p>
+</dd>
+    <dt><code>userData</code> <a class="xref" href="FoundationaLLM.Common.Models.Configuration.Users.UserData.html">UserData</a></dt>
+    <dd><p>The user data object to upsert.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.invalidoperationexception">InvalidOperationException</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
   <a id="FoundationaLLM_Common_Services_Users_UserProfileService_UpsertUserProfileAsync_" data-uid="FoundationaLLM.Common.Services.Users.UserProfileService.UpsertUserProfileAsync*"></a>
 
   <h3 id="FoundationaLLM_Common_Services_Users_UserProfileService_UpsertUserProfileAsync_System_String_FoundationaLLM_Common_Models_Configuration_Users_UserProfile_" data-uid="FoundationaLLM.Common.Services.Users.UserProfileService.UpsertUserProfileAsync(System.String,FoundationaLLM.Common.Models.Configuration.Users.UserProfile)">
   UpsertUserProfileAsync(string, UserProfile)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Services/Users/UserProfileService.cs/#L61"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Services/Users/UserProfileService.cs/#L63"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Inserts or updates a user profile.</p>
@@ -398,7 +495,7 @@ user profiles.</p>
   <h4 class="section">Parameters</h4>
   <dl class="parameters">
     <dt><code>instanceId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
-    <dd><p>The instance ID.</p>
+    <dd><p>The FoundationaLLM instance identifier.</p>
 </dd>
     <dt><code>userProfile</code> <a class="xref" href="FoundationaLLM.Common.Models.Configuration.Users.UserProfile.html">UserProfile</a></dt>
     <dd><p>The user profile to upsert.</p>
@@ -430,7 +527,7 @@ user profiles.</p>
 </article>
 
         <div class="contribution d-print-none">
-          <a href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Services/Users/UserProfileService.cs/#L16" class="edit-link">Edit this page</a>
+          <a href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Services/Users/UserProfileService.cs/#L14" class="edit-link">Edit this page</a>
         </div>
 
 
