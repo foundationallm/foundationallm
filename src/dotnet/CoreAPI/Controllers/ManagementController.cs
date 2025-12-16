@@ -43,9 +43,14 @@ namespace FoundationaLLM.Core.API.Controllers
         /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
         /// <param name="resourceProvider">The name of the resource provider that should handle the request.</param>
         /// <param name="resourcePath">The logical path of the resource type.</param>
+        /// <param name="queryParams">The query parameters.</param>
         /// <returns></returns>
         [HttpGet("{*resourcePath}", Name = "GetResources")]
-        public async Task<IActionResult> GetResources(string instanceId, string resourceProvider, string resourcePath) =>
+        public async Task<IActionResult> GetResources(
+            string instanceId,
+            string resourceProvider,
+            string resourcePath,
+            [FromQuery] Dictionary<string, string> queryParams) =>
             await HandleRequest(
                 resourceProvider,
                 resourcePath,
@@ -54,11 +59,13 @@ namespace FoundationaLLM.Core.API.Controllers
                     var result = await resourceProviderService.HandleGetAsync(
                         $"instances/{instanceId}/providers/{resourceProvider}/{resourcePath}",
                         _callContext.CurrentUserIdentity!,
-                        new ResourceProviderGetOptions
-                        {
-                            IncludeActions = false,
-                            IncludeRoles = true
-                        },
+                        queryParams is null
+                            ? new ResourceProviderGetOptions
+                            {
+                                IncludeActions = false,
+                                IncludeRoles = true
+                            }
+                            : ResourceProviderGetOptions.FromQueryParams(queryParams),
                         resourcePathAvailabilityChecker: _managementCapabilitiesService.IsResourcePathAvailable);
                     return new OkObjectResult(result);
                 });
