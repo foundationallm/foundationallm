@@ -41,7 +41,7 @@ jobs:
     uses: ./.github/workflows/build-docker-image.yml
     with:
       image: langchain-api
-      context: ./src
+      context: ./src/python
       dockerfile: ./src/python/LangChainAPI/Dockerfile
       registry: foundationallm.azurecr.io
       tag: ${{ needs.prepare.outputs.docker_tag }}
