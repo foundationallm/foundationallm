@@ -129,6 +129,10 @@ namespace FoundationaLLM.Prompt.ResourceProviders
                 {
                     ResourceProviderActions.CheckName => await CheckPromptName(authorizationResult, serializedAction),
                     ResourceProviderActions.Purge => await PurgeResource<PromptBase>(resourcePath),
+                    ResourceProviderActions.Filter => await FilterPrompts(
+                        resourcePath,
+                        JsonSerializer.Deserialize<PromptFilter>(serializedAction)!,
+                        authorizationResult),
                     _ => throw new ResourceProviderException(
                             $"The action {resourcePath.Action} is not supported by the {_name} resource provider.",
                             StatusCodes.Status400BadRequest)
@@ -184,6 +188,29 @@ namespace FoundationaLLM.Prompt.ResourceProviders
         #endregion
 
         #region Resource management
+
+        private async Task<List<ResourceProviderGetResult<PromptBase>>> FilterPrompts(
+            ResourcePath resourcePath,
+            PromptFilter filter,
+            ResourcePathAuthorizationResult authorizationResult)
+        {
+            var prompts = await LoadResources<PromptBase>(
+                resourcePath.ResourceTypeInstances[0],
+                authorizationResult,
+                new ResourceProviderGetOptions
+                {
+                    IncludeRoles = resourcePath.IsResourceTypePath,
+                });
+
+            if (!string.IsNullOrWhiteSpace(filter.PromptName))
+            {
+                prompts = prompts
+                    .Where(r => ((PromptBase)r.Resource).Name.Contains(filter.PromptName, StringComparison.OrdinalIgnoreCase))
+                    .ToList();
+            }
+
+            return prompts;
+        }
 
         private async Task<ResourceNameCheckResult> CheckPromptName(
             ResourcePathAuthorizationResult authorizationResult,

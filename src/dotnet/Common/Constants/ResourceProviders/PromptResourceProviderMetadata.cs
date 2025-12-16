@@ -31,6 +31,9 @@ namespace FoundationaLLM.Common.Constants.ResourceProviders
                             ]),
                             new ResourceTypeAction(ResourceProviderActions.Purge, true, false, [
                                 new ResourceTypeAllowedTypes(HttpMethod.Post.Method, AuthorizableOperations.Delete, [], [], [typeof(ResourceProviderActionResult)])
+                            ]),
+                            new ResourceTypeAction(ResourceProviderActions.Filter, false, true, [
+                                new ResourceTypeAllowedTypes(HttpMethod.Post.Method, AuthorizableOperations.Read, [], [typeof(PromptFilter)], [typeof(ResourceProviderGetResult<PromptBase>)])
                             ])
                         ]
                 }
