@@ -7,7 +7,7 @@ echo "The raw tag is: '$RAW_TAG'"
 # Extract version from branch name (format: 1.0.0 or 1.0.0-alpha1 or 1.0.0-beta1
 # or 1.0.0-rc1 or 1.0.0-poc1 or 1.0.0-base1)
 # Build the regex in readable pieces so it's easier to maintain.
-VERSION_REGEX='^(nuget-|pypi-|context_api-|user_portal-|core_api-|management_portal-|management_api-)?'
+VERSION_REGEX='^(nuget-|pypi-|context_api-|user_portal-|core_api-|management_portal-|management_api-|langchain_api-)?'
 VERSION_REGEX+='([0-9]+\.[0-9]+\.[0-9]+'
 # allow optional pre-release like -rc485 or -rc485.1 (numeric, optional ".<num>")
 VERSION_REGEX+='(-(alpha|beta|rc|poc|base|post)[1-9][0-9]{2,}(\.[0-9]+)?)?'

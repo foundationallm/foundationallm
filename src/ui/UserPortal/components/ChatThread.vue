@@ -59,7 +59,7 @@
 			<ChatInput
 				ref="chatInput"
 				:disabled="
-					isLoading || loadingFailed || isMessagePending || $appStore.sessionMessagePending
+					isLoading || loadingFailed || isMessagePending || appStore.sessionMessagePending
 				"
 				@send="handleSend"
 			/>
@@ -68,9 +68,9 @@
 		<!-- Footer -->
 		<!-- eslint-disable vue/no-v-html -->
 		<footer
-			v-if="$appConfigStore.footerText"
+			v-if="appConfigStore.footerText"
 			class="chat-thread__footer"
-			v-html="$appConfigStore.footerText"
+			v-html="appConfigStore.footerText"
 		/>
 
 		<!-- File drag and drop -->
@@ -98,9 +98,9 @@ export default {
 	emits: ['session-updated'],
 
 	setup() {
-		const $appStore = useAppStore();
-		const $appConfigStore = useAppConfigStore();
-		return { $appStore, $appConfigStore };
+		const appStore = useAppStore();
+		const appConfigStore = useAppConfigStore();
+		return { appStore, appConfigStore };
 	},
 
 	data() {
@@ -115,24 +115,27 @@ export default {
 
 	computed: {
 		currentSession() {
-			return this.$appStore.currentSession;
+			return this.appStore.currentSession;
 		},
 
 		pollingSession() {
-			return this.$appStore.pollingSession;
+			return this.appStore.pollingSession;
 		},
 
 		lastSelectedAgent() {
-			return this.$appStore.lastSelectedAgent;
+			return this.appStore.lastSelectedAgent;
 		},
 
 		messages() {
-			return this.$appStore.currentMessages;
+			return this.appStore.currentMessages;
 		},
 	},
 
 	watch: {
 		async currentSession(newSession: Session, oldSession: Session) {
+			// Skip if app is still initializing (init() will handle initial message loading)
+    		if (!this.appStore.isInitialized) return;
+
 			const isReplacementForTempSession = oldSession?.is_temp && this.messages.length > 0;
 			if (newSession.sessionId === oldSession?.sessionId || isReplacementForTempSession) return;
 			this.isMessagePending = false;
@@ -141,14 +144,14 @@ export default {
 			this.userSentMessage = false;
 
 			try {
-				await this.$appStore.getMessages();
+				await this.appStore.getMessages();
 			} catch (error) {
 				this.loadingFailed = true;
 			}
-			await this.$appStore.ensureAgentsLoaded();
+			await this.appStore.ensureAgentsLoaded();
 
-			this.$appStore.updateSessionAgentFromMessages(newSession);
-			const sessionAgent = this.$appStore.getSessionAgent(newSession);
+			this.appStore.updateSessionAgentFromMessages(newSession);
+			const sessionAgent = this.appStore.getSessionAgent(newSession);
 			this.welcomeMessage = this.getWelcomeMessage(sessionAgent);
 			this.isLoading = false;
 			this.scrollToBottom(0, true);
@@ -179,22 +182,22 @@ export default {
 
 	created() {
 		// Wait for app initialization before setting welcome message
-    const unwatchInitialized = this.$watch(
-			() => this.$appStore.isInitialized,
+    	const unwatchInitialized = this.$watch(
+			() => this.appStore.isInitialized,
 			(isInitialized) => {
 				if (isInitialized) {
 					if (
-						!this.$appConfigStore.showLastConversionOnStartup &&
+						!this.appConfigStore.showLastConversionOnStartup &&
 						(this.currentSession as Session)?.is_temp
 					) {
 						this.isLoading = false;
-						const sessionAgent = this.$appStore.getSessionAgent(this.currentSession as Session);
+						const sessionAgent = this.appStore.getSessionAgent(this.currentSession as Session);
 						if (sessionAgent) {
 							this.welcomeMessage = this.getWelcomeMessage(sessionAgent);
 						} else {
 							// If no agent is selected yet, wait for agents to load
 							this.$watch(
-								() => this.$appStore.getSessionAgent(this.currentSession as Session),
+								() => this.appStore.getSessionAgent(this.currentSession as Session),
 								(newAgent: ResourceProviderGetResult<Agent> | null) => {
 									this.isLoading = false;
 									this.welcomeMessage = this.getWelcomeMessage(newAgent);
@@ -218,7 +221,7 @@ export default {
 			}
 
 			// Check if the agent is accessible to the user
-			const userProfile = this.$appStore.userProfiles;
+			const userProfile = this.appStore.userProfile;
 			const enabledAgentIds = userProfile?.agents || [];
 
 			// If user has no enabled agents, show no agents message
@@ -239,7 +242,7 @@ export default {
 			const welcomeMessage = agent?.resource?.properties?.welcome_message?.trim();
 			return (
 				welcomeMessage ||
-				this.$appConfigStore.defaultAgentWelcomeMessage ||
+				this.appConfigStore.defaultAgentWelcomeMessage ||
 				'Start the conversation using the text box below.'
 			);
 		},
@@ -249,7 +252,7 @@ export default {
 		},
 
 		async handleRateMessage(message: Message) {
-			await this.$appStore.rateMessage(message);
+			await this.appStore.rateMessage(message);
 		},
 
 		handleParentDrop(event) {
@@ -264,11 +267,11 @@ export default {
 			this.isMessagePending = true;
 			this.userSentMessage = true;
 
-			const agent = this.$appStore.getSessionAgent(this.currentSession)?.resource;
+			const agent = this.appStore.getSessionAgent(this.currentSession)?.resource;
 
 			// Display an error toast message if agent is null or undefined.
 			if (!agent) {
-				this.$appStore.addToast({
+				this.appStore.addToast({
 					severity: 'info',
 					summary: 'Could not send message',
 					detail:
@@ -281,24 +284,24 @@ export default {
 
 			// if (agent.long_running) {
 			// 	// Handle long-running operations
-			// 	const operationId = await this.$appStore.startLongRunningProcess('/async-completions', {
+			// 	const operationId = await this.appStore.startLongRunningProcess('/async-completions', {
 			// 		session_id: this.currentSession.sessionId,
 			// 		user_prompt: text,
 			// 		agent_name: agent.name,
 			// 		settings: null,
-			// 		attachments: this.$appStore.attachments.map((attachment) => String(attachment.id)),
+			// 		attachments: this.appStore.attachments.map((attachment) => String(attachment.id)),
 			// 	});
 
 			// 	this.longRunningOperations.set(this.currentSession.sessionId, true);
 			// 	await this.pollForCompletion(this.currentSession.sessionId, operationId);
 			// } else {
-			const waitForPolling = await this.$appStore.sendMessage(text);
+			const waitForPolling = await this.appStore.sendMessage(text);
 
 			if (!waitForPolling) {
 				this.isMessagePending = false;
 			}
 			// console.log(message);
-			// await this.$appStore.getMessages();
+			// await this.appStore.getMessages();
 			// }
 
 			// this.isMessagePending = false;

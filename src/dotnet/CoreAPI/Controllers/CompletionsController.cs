@@ -163,14 +163,6 @@ namespace FoundationaLLM.Core.API.Controllers
         /// <returns>A list of available agents.</returns>
         [HttpGet("completions/agents", Name = "GetAgents")]
         public async Task<IEnumerable<ResourceProviderGetResult<AgentBase>>> GetAgents(string instanceId) =>
-            await _agentResourceProvider.GetResourcesAsync<AgentBase>(
-                instanceId,
-                _callContext.CurrentUserIdentity!,
-                new ResourceProviderGetOptions
-                {
-                    IncludeRoles = true,
-                    IncludeActions = true,
-                    LoadContent = false
-                });
+            await _coreService.GetAgentsAsync(instanceId);
     }
 }

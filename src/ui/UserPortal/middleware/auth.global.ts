@@ -2,13 +2,25 @@ import api from '@/js/api';
 import { nextTick } from 'vue';
 
 export default defineNuxtRouteMiddleware(async (to, from) => {
-	if (process.server) return false;
+	if (process.server) return;
 
-	if (to.name === 'status') return false;
+	if (to.name === 'status') return;
 
 	// Wait for authentication initialization to complete
 	const nuxtApp = useNuxtApp();
-  	await nuxtApp.$authReady;
+	try {
+		await nuxtApp.$authReady;
+	} catch (error) {
+		console.error('Auth initialization failed:', error);
+		// Redirect to login with error message
+		if (to.name !== 'auth/login') {
+			return navigateTo({
+				name: 'auth/login',
+				query: { message: 'Authentication service failed to initialize. Please try again.' }
+			});
+		}
+		return;
+	}
 
 	const authStore = nuxtApp.$authStore;
 	const appConfigStore = nuxtApp.$appConfigStore;
@@ -19,19 +31,33 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
 			'MSAL instance not initialized in authStore middleware. ' +
 			'This is unexpected since the authReady promise was awaited.'
 		);
-		return false;
+		
+		// Redirect to login with error message instead of silently failing
+		if (to.name !== 'auth/login') {
+			return navigateTo({
+				name: 'auth/login',
+				query: { message: 'Authentication service unavailable. Please refresh the page.' }
+			});
+		}
+		return;
 	}
 
 	// Handle MSAL redirect promise
 	let redirectResult = null;
 	try {
 		redirectResult = await msal.handleRedirectPromise();
-	} catch (ex) {
+	} catch (ex: any) {
 		if (ex.name === 'InteractionRequiredAuthError' && ex.message.includes('AADSTS65004')) {
 			localStorage.setItem('oneDriveWorkSchoolConsentRedirect', JSON.stringify(false));
 		} else {
 			console.error('MSAL redirect error:', ex);
-			throw ex;
+			// Redirect to login with error details
+			if (to.name !== 'auth/login') {
+				return navigateTo({
+					name: 'auth/login',
+					query: { message: 'Authentication error. Please sign in again.' }
+				});
+			}
 		}
 	}
 
@@ -43,9 +69,6 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
 				// Set the active account directly from redirect result
 				msal.setActiveAccount(redirectResult.account);
 				authStore.isExpired = false;
-
-				// Small delay to ensure MSAL state is fully updated
-				await new Promise(resolve => setTimeout(resolve, 500));
 
 				// Force trigger reactive updates
 				const activeAccount = msal.getActiveAccount();

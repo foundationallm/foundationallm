@@ -39,7 +39,7 @@ export default {
 	},
 
 	methods: {
-		pad(value) {
+		pad(value: number): string {
 			return value.toString().padStart(2, '0');
 		},
 
@@ -81,10 +81,20 @@ export default {
 			// this.$router.push({ name: 'auth/login' });
 		},
 
-		handleStayLoggedIn() {
+		async handleStayLoggedIn() {
+			clearInterval(this.dialogInterval);
 			clearInterval(this.countdownInterval);
 			this.countdownInterval = null;
-			this.showDialog = false;
+			
+			try {
+				await this.$authStore.getApiToken();
+				this.showDialog = false;
+				this.startDialogTimer();  // Restart the timer for next session check
+			} catch (error) {
+				console.error('Failed to extend session:', error);
+				// Token refresh failed, log user out
+				await this.handleLogout();
+			}
 		},
 	},
 };

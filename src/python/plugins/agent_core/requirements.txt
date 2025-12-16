@@ -10,7 +10,7 @@ azure-storage-blob==12.21.0
 databricks-sdk==0.71.0
 databricks-sql-connector[pyarrow]==4.1.4
 databricks-langchain==0.9.0
-foundationallm==0.9.7rc488
+foundationallm==0.9.8b109
 langchain==1.0.3
 langchain-aws==1.0.0
 langchain_azure_ai==1.0.2

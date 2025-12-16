@@ -14,5 +14,10 @@
         /// The identifier of the Azure OpenAI Assistant level vector store (global at the agent level).
         /// </summary>
         public const string AzureOpenAIAssistantVectorStoreId = "Azure.OpenAI.Assistant.VectorStoreId";
+
+        /// <summary>
+        /// The name of the property that indicates whether the agent is enabled by the user.
+        /// </summary>
+        public const string Enabled = "enabled";
     }
 }

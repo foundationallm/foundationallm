@@ -26,8 +26,6 @@ namespace FoundationaLLM.Common.Services.Cache
         });
 
         private readonly SemaphoreSlim _cacheLock = new(1, 1);
-        private readonly MD5 _md5 = MD5.Create();
-        private readonly object _syncRoot = new();
 
         /// <inheritdoc/>
         public async void SetValue(ActionAuthorizationRequest authorizationRequest, ActionAuthorizationResult result)
@@ -92,30 +90,40 @@ namespace FoundationaLLM.Common.Services.Cache
             return false;
         }
 
-        private string GetCacheKey(
+        private static string GetCacheKey(
             ActionAuthorizationRequest authorizationRequest)
         {
-            var resourcePaths = string.Join(",", authorizationRequest.ResourcePaths);
-            var groupIds = string.Join(",", authorizationRequest.UserContext.SecurityGroupIds);
-            var userIdentity = $"{authorizationRequest.UserContext.SecurityPrincipalId}:{groupIds}";
+            var resourcePaths = authorizationRequest.ResourcePaths is { Count: > 0 }
+                ? string.Join(",", authorizationRequest.ResourcePaths)
+                : string.Empty;
 
-            var keyString = $"{authorizationRequest.Action}:{resourcePaths}:{authorizationRequest.ExpandResourceTypePaths}:{authorizationRequest.IncludeRoles}:{authorizationRequest.IncludeActions}:{userIdentity}";
+            var groupIds = authorizationRequest.UserContext?.SecurityGroupIds is { Count: > 0 }
+                ? string.Join(",", authorizationRequest.UserContext.SecurityGroupIds)
+                : string.Empty;
 
-            try
-            {
-                byte[] hashBytes;
-                lock (_syncRoot)
-                {
-                    // ComputeHash is not thread-safe, so we need to lock it.
-                    hashBytes = _md5.ComputeHash(Encoding.UTF8.GetBytes(keyString));
-                }
-                return Convert.ToBase64String(hashBytes);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Unexpected error computing cache key for {KeyString}.", keyString);
-                return string.Empty;
-            }
+            var securityPrincipalId = authorizationRequest.UserContext?.SecurityPrincipalId ?? string.Empty;
+
+            // Use a StringBuilder for efficient concatenation.
+            var sb = new StringBuilder();
+            sb.Append(authorizationRequest.Action);
+            sb.Append(':');
+            sb.Append(resourcePaths);
+            sb.Append(':');
+            sb.Append(authorizationRequest.ExpandResourceTypePaths);
+            sb.Append(':');
+            sb.Append(authorizationRequest.IncludeRoles);
+            sb.Append(':');
+            sb.Append(authorizationRequest.IncludeActions);
+            sb.Append(':');
+            sb.Append(securityPrincipalId);
+            sb.Append(':');
+            sb.Append(groupIds);
+
+            // SHA256.HashData is thread-safe and doesn't require locking.
+            var hashBytes = SHA256.HashData(Encoding.UTF8.GetBytes(sb.ToString()));
+
+            // Convert to hex string (shorter than Base64, URL-safe).
+            return Convert.ToHexString(hashBytes);
         }
 
         private MemoryCacheEntryOptions GetMemoryCacheEntryOptions() => new MemoryCacheEntryOptions()

@@ -27,6 +27,10 @@ export const useAppStore = defineStore('app', {
 	state: () => ({
 		sessions: [] as Session[],
 		currentSession: null as Session | null,
+		// Indicates whether we have already confirmed that the current session has no messages.
+		// In certain cases (e.g., newly created session, session already checked for messages),
+		// we know for sure whether the session has messages or not.
+		currentSessionConfirmedEmpty: false as boolean,
 		newSession: null as Session | null, // Used to store the newly created session. Deleted after the first prompt is sent. This is to prevent an unnecessary fetch of its messages.
 		pollingSession: null as string | null, // Contains the ID of a session that is currently being polled for completion.
 		renamedSessions: [] as Session[],
@@ -40,13 +44,22 @@ export const useAppStore = defineStore('app', {
 		longRunningOperations: new Map<string, string>(), // sessionId -> operation_id
 		coreConfiguration: null as CoreConfiguration | null,
 		oneDriveWorkSchool: null as boolean | null,
-		userProfiles: null as UserProfile | null,
+		userProfile: null as UserProfile | null,
 		autoHideToasts: JSON.parse(sessionStorage.getItem('autoHideToasts') || 'true') as boolean,
 		textSize: JSON.parse(sessionStorage.getItem('textSize') || '1') as number,
 		highContrastMode: JSON.parse(sessionStorage.getItem('highContrastMode') || 'false') as boolean,
 		sessionMessagePending: false,
 		settingsModalVisible: false,
 		isInitialized: false, // Track if the app initialization is complete
+
+		agentsLoadingPromise: null as Promise<void> | null,
+		isAgentsLoaded: false,
+
+		userProfileLoadingPromise: null as Promise<UserProfile | null> | null,
+		isUserProfileLoaded: false,
+
+		messagesLoadingPromise: null as Promise<void> | null,
+		messagesLoadingSessionId: null as string | null,
 	}),
 
 	getters: {
@@ -70,7 +83,6 @@ export const useAppStore = defineStore('app', {
 	actions: {
 		async init(sessionId: string | undefined) {
 			const appConfigStore = useAppConfigStore();
-			await this.getAgents();
 
 			// Watch for changes in autoHideToasts and update sessionStorage
 			watch(
@@ -99,12 +111,18 @@ export const useAppStore = defineStore('app', {
 
 			// No need to load sessions if in kiosk mode, simply create a new one and skip.
 			if (appConfigStore.isKioskMode) {
+				await this.getAgents();
 				const newSession = await api.addSession(this.getDefaultChatSessionProperties());
 				this.changeSession(newSession);
 				return;
 			}
 
-			await this.getSessions();
+			// Parallelize independent loads: agents, sessions, and user profile
+			const [, , ] = await Promise.all([
+				this.getAgents(),
+				this.getSessions(),
+				this.getUserProfile(),
+			]);
 
 			const requestedSession = sessionId
 				? this.sessions.find((s: Session) => s.sessionId === sessionId)
@@ -125,16 +143,16 @@ export const useAppStore = defineStore('app', {
 				if (isEmpty) {
 					// Use the existing empty session
 					this.resetSessionAgent(mostRecentSession);
-					this.changeSession(mostRecentSession);
+					this.changeSession(mostRecentSession, true);
 				} else {
 					// Create a new chat conversation
 					const newSession = await this.addSession(this.getDefaultChatSessionProperties());
-					this.changeSession(newSession);
+					this.changeSession(newSession, true);
 				}
 			} else {
 				// No sessions exist, create a new chat conversation
 				const newSession = await this.addSession(this.getDefaultChatSessionProperties());
-				this.changeSession(newSession);
+				this.changeSession(newSession, true);
 			}
 
 			// Restore agent for the chosen currentSession, if any
@@ -142,8 +160,6 @@ export const useAppStore = defineStore('app', {
 				const restoredAgent = this.getSessionAgent(this.currentSession);
 				this.lastSelectedAgent = restoredAgent;
 			}
-
-			await this.getUserProfiles();
 
 			// Mark initialization as complete
 			this.isInitialized = true;
@@ -321,14 +337,22 @@ export const useAppStore = defineStore('app', {
 
 		async isSessionEmpty(sessionId: string): Promise<boolean> {
 			try {
-				const messages = await api.getMessages(sessionId);
-				return !messages || messages.length === 0;
+				const messagesCount = await api.getMessagesCount(sessionId);
+				return !messagesCount || messagesCount === 0;
 			} catch (error) {
 				return false;
 			}
 		},
 
 		async getMessages() {
+			if (this.currentSessionConfirmedEmpty) {
+				// We have already confirmed this session has no messages.
+				this.currentMessages = [];
+				return;
+			}
+
+			const sessionId = this.currentSession?.sessionId;
+
 			if (
 				(this.newSession && this.newSession.sessionId === this.currentSession!.sessionId) ||
 				this.currentSession.is_temp
@@ -338,44 +362,51 @@ export const useAppStore = defineStore('app', {
 				return;
 			}
 
-			const messagesResponse = await api.getMessages(this.currentSession?.sessionId);
-
-			// Temporarily filter out the duplicate streaming message instances
-			// const uniqueMessages = messagesResponse.reduceRight((acc, current) => {
-			// 	const isDuplicate = acc.find(item => {
-			// 		return item.operation_id === current.operation_id && item.sender === current.sender;
-			// 	});
-
-			// 	if (!isDuplicate || current.sender !== 'Agent') {
-			// 		acc.push(current);
-			// 	}
-
-			// 	return acc;
-			// }, []);
-
-			// uniqueMessages.reverse();
-
-			this.currentMessages = messagesResponse.map((message) => ({
-				...message,
-				content: message.content ? message.content.map(this.initializeMessageContent) : [],
-				sender: message.sender?.toLowerCase() === 'user' ? 'User' : 'Agent',
-			}));
-
-			// Determine if the latest message needs to be polled
-			if (this.currentMessages.length > 0) {
-				const latestMessage = this.currentMessages[this.currentMessages.length - 1];
-
-				// For older messages that have a status of "Pending" but no operation id, assume
-				// it is complete and do no initiate polling as it will return empty data
-				if (
-					latestMessage.operation_id &&
-					(latestMessage.status === 'InProgress' || latestMessage.status === 'Pending')
-				) {
-					this.startPolling(latestMessage, this.currentSession?.sessionId);
-				}
+			// If already loading messages for this same session, return existing promise
+			if (this.messagesLoadingPromise && this.messagesLoadingSessionId === sessionId) {
+				return this.messagesLoadingPromise;
 			}
 
-			this.calculateMessageProcessingTime();
+			// If loading a different session, let it proceed (cancel previous conceptually)
+    		this.messagesLoadingSessionId = sessionId;
+
+			this.messagesLoadingPromise = (async () => {
+				try {
+					const messagesResponse = await api.getMessages(sessionId);
+
+					// Only update if still the current session (prevent stale data from race conditions)
+            		if (this.currentSession?.sessionId === sessionId) {
+						this.currentMessages = messagesResponse.map((message) => ({
+							...message,
+							content: message.content ? message.content.map(this.initializeMessageContent) : [],
+							sender: message.sender?.toLowerCase() === 'user' ? 'User' : 'Agent',
+						}));
+
+						// Determine if the latest message needs to be polled
+						if (this.currentMessages.length > 0) {
+							const latestMessage = this.currentMessages[this.currentMessages.length - 1];
+
+							// For older messages that have a status of "Pending" but no operation id, assume
+							// it is complete and do no initiate polling as it will return empty data
+							if (
+								latestMessage.operation_id &&
+								(latestMessage.status === 'InProgress' || latestMessage.status === 'Pending')
+							) {
+								this.startPolling(latestMessage, sessionId);
+							}
+						}
+
+						this.calculateMessageProcessingTime();
+					}
+				} finally {
+					// Only clear if this is still the active load for this session
+					if (this.messagesLoadingSessionId === sessionId) {
+						this.messagesLoadingPromise = null;
+					}
+				}
+			})();
+
+			return this.messagesLoadingPromise;
 		},
 
 		calculateMessageProcessingTime() {
@@ -735,22 +766,24 @@ export const useAppStore = defineStore('app', {
 			}
 		},
 
-		changeSession(newSession: Session) {
-			this.stopPolling(newSession.sessionId);
+		changeSession(
+			session: Session,
+			confirmedEmpty: boolean = false,
+		) {
+			this.stopPolling(session.sessionId);
 
 			const nuxtApp = useNuxtApp();
 			const appConfigStore = useAppConfigStore();
 
-			if (appConfigStore.isKioskMode || newSession.is_temp) {
+			if (appConfigStore.isKioskMode || session.is_temp) {
 				nuxtApp.$router.push({ query: {} });
 			} else {
-				const query = { chat: newSession.sessionId };
+				const query = { chat: session.sessionId };
 				nuxtApp.$router.push({ query });
 			}
 
-			this.currentSession = newSession;
-			// await this.getMessages();
-			// this.updateSessionAgentFromMessages(newSession);
+			this.currentSessionConfirmedEmpty = confirmedEmpty;
+			this.currentSession = session;
 		},
 
 		toggleSidebar() {
@@ -758,8 +791,24 @@ export const useAppStore = defineStore('app', {
 		},
 
 		async getAgents() {
-			this.agents = await api.getAllowedAgents();
-			return this.agents;
+			if (this.isAgentsLoaded) {
+				return;
+			}
+
+			if (this.agentsLoadingPromise) {
+				return this.agentsLoadingPromise;
+			}
+
+			this.agentsLoadingPromise = (async () => {
+				try {
+					this.agents = await api.getAllowedAgents();
+					this.isAgentsLoaded = true;
+				} finally {
+					this.agentsLoadingPromise = null;
+				}
+			})();
+
+			return this.agentsLoadingPromise;
 		},
 
 		mapAgentDisplayName(agentName: string) {
@@ -790,32 +839,65 @@ export const useAppStore = defineStore('app', {
 			this.oneDriveWorkSchool = false;
 		},
 
-		async getUserProfiles() {
-			this.userProfiles = await api.getUserProfile();
-			this.oneDriveWorkSchool = this.userProfiles?.flags.oneDriveWorkSchoolEnabled;
-			return this.userProfiles;
+		async getUserProfile() {
+			if (this.isUserProfileLoaded) {
+				return this.userProfile;
+			}
+
+			if (this.userProfileLoadingPromise) {
+				return this.userProfileLoadingPromise;
+			}
+
+			this.userProfileLoadingPromise = (async () => {
+				try {
+					
+					this.userProfile = await api.getUserProfile();
+					this.oneDriveWorkSchool = this.userProfile?.flags.oneDriveWorkSchoolEnabled;
+					this.isUserProfileLoaded = true;
+				} finally {
+					this.userProfileLoadingPromise = null;
+				}
+			})();
+
+			return this.userProfileLoadingPromise;
 		},
 
 		updateUserProfileAgent(agentObjectId: string, enabled: boolean) {
-			if (!this.userProfiles) {
+			if (!this.userProfile) {
 				return;
 			}
 
-			if (!this.userProfiles.agents) {
-				this.userProfiles.agents = [];
+			if (!this.userProfile.agents) {
+				this.userProfile.agents = [];
 			}
 
 			if (enabled) {
 				// Add agent if not already present
-				if (!this.userProfiles.agents.includes(agentObjectId)) {
-					this.userProfiles.agents.push(agentObjectId);
+				if (!this.userProfile.agents.includes(agentObjectId)) {
+					this.userProfile.agents.push(agentObjectId);
 				}
 			} else {
 				// Remove agent
-				const index = this.userProfiles.agents.indexOf(agentObjectId);
+				const index = this.userProfile.agents.indexOf(agentObjectId);
 				if (index > -1) {
-					this.userProfiles.agents.splice(index, 1);
+					this.userProfile.agents.splice(index, 1);
 				}
+			}
+		},
+
+		/**
+		 * Updates a property on an agent's properties dictionary.
+		 * @param agentObjectId The object_id of the agent to update.
+		 * @param propertyName The name of the property to set.
+		 * @param propertyValue The value to set for the property.
+		 */
+		updateAgentProperty(agentObjectId: string, propertyName: string, propertyValue: unknown) {
+			const agent = this.agents.find((a) => a.resource.object_id === agentObjectId);
+			if (agent) {
+				if (!agent.properties) {
+					agent.properties = {};
+				}
+				agent.properties[propertyName] = propertyValue;
 			}
 		},
 

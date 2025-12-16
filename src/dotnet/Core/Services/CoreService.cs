@@ -1,4 +1,5 @@
 using FoundationaLLM.Common.Constants;
+using FoundationaLLM.Common.Constants.Agents;
 using FoundationaLLM.Common.Constants.Configuration;
 using FoundationaLLM.Common.Constants.Orchestration;
 using FoundationaLLM.Common.Constants.ResourceProviders;
@@ -28,6 +29,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using System.Text.Json;
 using Conversation = FoundationaLLM.Common.Models.Conversation.Conversation;
@@ -54,6 +56,7 @@ namespace FoundationaLLM.Core.Services;
 /// <param name="configuration">The <see cref="IConfiguration"/> service providing configuration settings.</param>
 /// <param name="httpClientFactory">The <see cref="IHttpClientFactory"/> used to build HTTP clients.</param>
 /// <param name="contextServiceClient">The <see cref="IContextServiceClient"/> used to interact with the Context API.</param>
+/// <param name="userProfileService">The <see cref="IUserProfileService"/> used to manage user profiles.</param>
 public partial class CoreService(
     IAzureCosmosDBService cosmosDBService,
     IEnumerable<IDownstreamAPIService> downstreamAPIServices,
@@ -64,7 +67,8 @@ public partial class CoreService(
     IEnumerable<IResourceProviderService> resourceProviderServices,
     IConfiguration configuration,
     IHttpClientFactoryService httpClientFactory,
-    IContextServiceClient contextServiceClient) : ICoreService
+    IContextServiceClient contextServiceClient,
+    IUserProfileService userProfileService) : ICoreService
 {
     private readonly IAzureCosmosDBService _cosmosDBService = cosmosDBService;
     private readonly IDownstreamAPIService _gatekeeperAPIService = downstreamAPIServices.Single(das => das.APIName == HttpClientNames.GatekeeperAPI);
@@ -74,6 +78,7 @@ public partial class CoreService(
     private readonly string _sessionType = brandingSettings.Value.KioskMode ? ConversationTypes.KioskSession : ConversationTypes.Session;
     private readonly CoreServiceSettings _settings = settings.Value;
     private readonly IContextServiceClient _contextServiceClient = contextServiceClient;
+    private readonly IUserProfileService _userProfileService = userProfileService;
 
     private readonly string _baseUrl = GetBaseUrl(configuration, httpClientFactory, callContext).GetAwaiter().GetResult();
 
@@ -101,6 +106,39 @@ public partial class CoreService(
         [.. settings.Value.AzureAIAgentsFileSearchFileExtensions
             .Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries)
             .Select(s => s.ToLowerInvariant())];
+
+    #region Agent
+
+    /// <inheritdoc/>
+    public async Task<IEnumerable<ResourceProviderGetResult<AgentBase>>> GetAgentsAsync(
+        string instanceId)
+    {
+        var agentResults = await _agentResourceProvider.GetResourcesAsync<AgentBase>(
+                instanceId,
+                _userIdentity,
+                new ResourceProviderGetOptions
+                {
+                    IncludeRoles = true,
+                    IncludeActions = false,
+                    LoadContent = false
+                });
+
+        var userProfile = await _userProfileService.GetUserProfileAsync(instanceId, agentResults);
+        var enabledAgents = userProfile!.Agents.ToHashSet();
+
+        foreach (var agentResult in agentResults)
+        {
+            agentResult.Properties ??= [];
+
+            agentResult.Properties.Add(
+                AgentPropertyNames.Enabled,
+                enabledAgents.Contains(agentResult.Resource.ObjectId!));
+        }
+
+        return agentResults;
+    }
+
+    # endregion
 
     #region Conversation management - FoundationaLLM.Conversation resource provider
 
@@ -927,13 +965,15 @@ public partial class CoreService(
     #region Conversation messages
 
     /// <inheritdoc/>
-    public async Task<List<Message>> GetChatSessionMessagesAsync(string instanceId, string sessionId)
+    public async Task<List<Message>> GetConversationMessagesAsync(string instanceId, string sessionId)
     {
+        ArgumentNullException.ThrowIfNull(instanceId);
         ArgumentNullException.ThrowIfNull(sessionId);
 
+        // Verify that the conversation exists and that the user has access to it.
         _ = await _conversationResourceProvider.GetResourceAsync<Conversation>(instanceId, sessionId, _userIdentity);
 
-        var messages = await _cosmosDBService.GetSessionMessagesAsync(sessionId, _userIdentity.UPN ??
+        var messages = await _cosmosDBService.GetConversationMessagesAsync(sessionId, _userIdentity.UPN ??
             throw new InvalidOperationException("Failed to retrieve the identity of the signed in user when retrieving chat messages."));
 
         // Get a list of all attachment IDs in the messages.
@@ -1029,6 +1069,21 @@ public partial class CoreService(
         }
 
         return [.. messages];
+    }
+
+    /// <inheritdoc/>
+    public async Task<int> GetConversationMessagesCountAsync(string instanceId, string sessionId)
+    {
+        ArgumentNullException.ThrowIfNull(instanceId);
+        ArgumentNullException.ThrowIfNull(sessionId);
+
+        // Verify that the conversation exists and that the user has access to it.
+        _ = await _conversationResourceProvider.GetResourceAsync<Conversation>(instanceId, sessionId, _userIdentity);
+
+        var messagesCount = await _cosmosDBService.GetConversationMessagesCountAsync(sessionId, _userIdentity.UPN ??
+            throw new InvalidOperationException("Failed to retrieve the identity of the signed in user when retrieving chat messages."));
+
+        return messagesCount;
     }
 
     /// <inheritdoc/>
@@ -1293,7 +1348,7 @@ public partial class CoreService(
             : [];
 
         // Retrieve the complete conversation.
-        var messages = await _cosmosDBService.GetSessionMessagesAsync(request.SessionId!, _userIdentity.UPN!);
+        var messages = await _cosmosDBService.GetConversationMessagesAsync(request.SessionId!, _userIdentity.UPN!);
         var fileHistory = new List<FileHistoryItem>();
         int attachmentOrder = 0;
         foreach (var message in messages)

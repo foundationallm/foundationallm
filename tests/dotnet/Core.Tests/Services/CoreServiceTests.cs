@@ -88,11 +88,11 @@ namespace FoundationaLLM.Core.Tests.Services
             var message = new Message();
             var expectedMessages = new List<Message>() { message };
 
-            _cosmosDbService.GetSessionMessagesAsync(sessionId, Arg.Any<string>())
+            _cosmosDbService.GetConversationMessagesAsync(sessionId, Arg.Any<string>())
                 .Returns(expectedMessages);
 
             // Act
-            var messages = await _testedService.GetChatSessionMessagesAsync(_instanceId, sessionId);
+            var messages = await _testedService.GetConversationMessagesAsync(_instanceId, sessionId);
 
             // Assert
             Assert.Equal(expectedMessages, messages);
@@ -103,12 +103,12 @@ namespace FoundationaLLM.Core.Tests.Services
         {
             // Arrange
             string sessionId = null!;
-            _cosmosDbService.GetSessionMessagesAsync(sessionId, "").ReturnsNull();
+            _cosmosDbService.GetConversationMessagesAsync(sessionId, "").ReturnsNull();
 
             // Assert
             var exception = await Assert.ThrowsAsync<ArgumentNullException>(async () =>
             {
-                await _testedService.GetChatSessionMessagesAsync(_instanceId, sessionId);
+                await _testedService.GetConversationMessagesAsync(_instanceId, sessionId);
             });
         }
 
@@ -248,7 +248,7 @@ namespace FoundationaLLM.Core.Tests.Services
             var expectedCompletion = new Message() { Text = "Completion" };
 
             var expectedMessages = new List<Message>();
-            _cosmosDbService.GetSessionMessagesAsync(sessionId, upn).Returns(expectedMessages);
+            _cosmosDbService.GetConversationMessagesAsync(sessionId, upn).Returns(expectedMessages);
 
             var completionResponse = new CompletionResponse() { Completion = "Completion" };
             _downstreamAPIServices.Last().GetCompletion(_instanceId, Arg.Any<CompletionRequest>()).Returns(completionResponse);

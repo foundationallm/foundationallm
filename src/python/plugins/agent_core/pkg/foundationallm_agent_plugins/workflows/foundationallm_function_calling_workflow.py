@@ -172,6 +172,7 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
         output_tokens = 0
         intermediate_responses: List[str] = []
         final_response = None
+        error_message: str = None
 
         with self.tracer.start_as_current_span(f'{self.name}_workflow', kind=SpanKind.INTERNAL):
 
@@ -196,103 +197,124 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
                 #     parsed_user_prompt = parsed_user_prompt.split(':', 1)[1].strip()
 
                 llm_bound_tools = self.workflow_llm.bind_tools(self.tools)
-                llm_response = await llm_bound_tools.ainvoke(
-                    messages,
-                    tool_choice='auto')
-                usage = self.__get_canonical_usage(llm_response)
-                input_tokens += usage['input_tokens']
-                output_tokens += usage['output_tokens']
+                try:
+                    llm_response = await llm_bound_tools.ainvoke(
+                        messages,
+                        tool_choice='auto')
+                    usage = self.__get_canonical_usage(llm_response)
+                    input_tokens += usage['input_tokens']
+                    output_tokens += usage['output_tokens']
+                except Exception as ex:
+                    self.logger.error('Error during LLM invocation: %s', str(ex))
+                    error_message = str(ex)
+
                 router_end_time = time.time()
 
-            if llm_response.tool_calls:
+            should_process_final_response = False
 
-                if 'ROUTER' in commands:
-                    # If the special command [ROUTER] is present, return the router's tool selection directly without tool execution.
+            if not error_message:
 
-                    final_response = '\n'.join(f'{tool_call["name"]} [{json.dumps(tool_call["args"])}]' for tool_call in llm_response.tool_calls)
+                if llm_response.tool_calls:
 
-                else:
+                    if 'ROUTER' in commands:
+                        # If the special command [ROUTER] is present, return the router's tool selection directly without tool execution.
 
-                    await self.operations_manager.update_operation_with_text_result_async(
-                        operation_id,
-                        self.instance_id,
-                        OperationStatus.INPROGRESS,
-                        "Running agent tools.",
-                        "Running agent tools...",
-                        self.user_identity.model_dump_json(exclude_none=True)
-                    )
+                        final_response = '\n'.join(f'{tool_call["name"]} [{json.dumps(tool_call["args"])}]' for tool_call in llm_response.tool_calls)
 
-                    intermediate_responses.append(str(llm_response.content))
-
-                    for tool_call in llm_response.tool_calls:
-
-                        with self.tracer.start_as_current_span(f'{self.name}_tool_call', kind=SpanKind.INTERNAL) as tool_call_span:
-                            tool_call_span.set_attribute('tool_call_id', tool_call['id'])
-                            tool_call_span.set_attribute('tool_call_function', tool_call['name'])
-
-                            # Get the tool from the tools list
-                            tool = next((t for t in self.tools if t.name == tool_call['name']), None)
-                            if tool:
-                                tool_result = await tool.ainvoke(tool_call, runnable_config)
-                                content_artifacts.extend(tool_result.artifact.content_artifacts)
-                                intermediate_responses.append(str(tool_result.artifact.content))
-                                input_tokens += tool_result.artifact.input_tokens
-                                output_tokens += tool_result.artifact.output_tokens
-                            else:
-                                self.logger.error(
-                                    'Tool %s not found in the tools list. Skipping tool call.', tool_call["name"])
-
-                    # Ask the LLM to verify if the answer is correct if not, loop again with the current messages.
-                    # verification_messages = messages_with_toolchain.copy()
-                    # verification_messages.append(HumanMessage(content=f'Verify the requirements are met for this request: "{llm_prompt}", use the other messages only for context. If yes, answer with the single word "DONE". If not, generate more detailed instructions to satisfy the request.'))
-                    # verification_llm_response = await self.workflow_llm.ainvoke(verification_messages, tools=None)
-                    # verification_response = verification_llm_response.content
-                    # if verification_response.strip().upper() == 'DONE':
-                    #     break # exit the loop if the requirements are met.
-                    # else:
-                    #     messages_with_toolchain.append(AIMessage(content=verification_response))
-                    #     continue # loop again if the requirements are not met.
-
-                    final_message = self.__get_message_for_final_response(
-                        intermediate_responses,
-                        llm_prompt,
-                        workflow_final_prompt
-                    )
-
-                    with self.tracer.start_as_current_span(f'{self.name}_final_llm_call', kind=SpanKind.INTERNAL):
+                    else:
 
                         await self.operations_manager.update_operation_with_text_result_async(
                             operation_id,
                             self.instance_id,
                             OperationStatus.INPROGRESS,
-                            "Preparing final response.",
-                            "Preparing final response...",
+                            "Running agent tools.",
+                            "Running agent tools...",
                             self.user_identity.model_dump_json(exclude_none=True)
                         )
 
-                        final_llm_response = await self.workflow_llm.ainvoke(
-                            [SystemMessage(content=workflow_main_prompt)]
-                            + messages[1:-1] # Exclude the original system prompt (first message) and context message (last message)
-                            + [final_message])
+                        intermediate_responses.append(str(llm_response.content))
 
-                        # ensure final_llm_response.content is a string, collapsing any lists into a single string.
-                        if isinstance(final_llm_response.content, list):
-                            final_llm_response.content = '\n'.join(final_llm_response.content)
+                        for tool_call in llm_response.tool_calls:
 
-                        usage = self.__get_canonical_usage(final_llm_response)
-                        input_tokens += usage['input_tokens']
-                        output_tokens += usage['output_tokens']
-                        final_response = final_llm_response.content
+                            with self.tracer.start_as_current_span(f'{self.name}_tool_call', kind=SpanKind.INTERNAL) as tool_call_span:
+                                tool_call_span.set_attribute('tool_call_id', tool_call['id'])
+                                tool_call_span.set_attribute('tool_call_function', tool_call['name'])
+
+                                # Get the tool from the tools list
+                                tool = next((t for t in self.tools if t.name == tool_call['name']), None)
+                                if tool:
+                                    tool_result = await tool.ainvoke(tool_call, runnable_config)
+                                    content_artifacts.extend(tool_result.artifact.content_artifacts)
+                                    intermediate_responses.append(str(tool_result.artifact.content))
+                                    input_tokens += tool_result.artifact.input_tokens
+                                    output_tokens += tool_result.artifact.output_tokens
+                                else:
+                                    self.logger.error(
+                                        'Tool %s not found in the tools list. Skipping tool call.', tool_call["name"])
+
+                        # Ask the LLM to verify if the answer is correct if not, loop again with the current messages.
+                        # verification_messages = messages_with_toolchain.copy()
+                        # verification_messages.append(HumanMessage(content=f'Verify the requirements are met for this request: "{llm_prompt}", use the other messages only for context. If yes, answer with the single word "DONE". If not, generate more detailed instructions to satisfy the request.'))
+                        # verification_llm_response = await self.workflow_llm.ainvoke(verification_messages, tools=None)
+                        # verification_response = verification_llm_response.content
+                        # if verification_response.strip().upper() == 'DONE':
+                        #     break # exit the loop if the requirements are met.
+                        # else:
+                        #     messages_with_toolchain.append(AIMessage(content=verification_response))
+                        #     continue # loop again if the requirements are not met.
+
+                        final_message = self.__get_message_for_final_response(
+                            intermediate_responses,
+                            llm_prompt,
+                            workflow_final_prompt
+                        )
+
+                        should_process_final_response = True
+
+                else:
+                    if 'ROUTER' in commands:
+                        final_response = '__NO_TOOL__'
 
             else:
-                if 'ROUTER' in commands:
-                    final_response = '__NO_TOOL__'
+                final_message = HumanMessage(content=f"Produce a non-technical summary of the following error message: {error_message}." +
+                                             "\n\nRemove any references to technology or platform names, code, stack traces, or technical details.")
+
+                should_process_final_response = True
+
+            if should_process_final_response:
+
+                with self.tracer.start_as_current_span(f'{self.name}_final_llm_call', kind=SpanKind.INTERNAL):
+
+                    await self.operations_manager.update_operation_with_text_result_async(
+                        operation_id,
+                        self.instance_id,
+                        OperationStatus.INPROGRESS,
+                        "Preparing final response.",
+                        "Preparing final response...",
+                        self.user_identity.model_dump_json(exclude_none=True)
+                    )
+
+                    final_llm_response = await self.workflow_llm.ainvoke(
+                        [SystemMessage(content=workflow_main_prompt)]
+                        + messages[1:-1] # Exclude the original system prompt (first message) and context message (last message)
+                        + [final_message])
+
+                    # ensure final_llm_response.content is a string, collapsing any lists into a single string.
+                    if isinstance(final_llm_response.content, list):
+                        final_llm_response.content = '\n'.join(final_llm_response.content)
+
+                    usage = self.__get_canonical_usage(final_llm_response)
+                    input_tokens += usage['input_tokens']
+                    output_tokens += usage['output_tokens']
+                    final_response = final_llm_response.content
 
             workflow_content_artifact = self.create_workflow_execution_content_artifact(
                 llm_prompt,
                 input_tokens,
                 output_tokens,
-                router_end_time - router_start_time)
+                router_end_time - router_start_time,
+                error_message=error_message
+            )
             content_artifacts.append(workflow_content_artifact)
 
             # Initialize response_content with the result, taking final_response as priority.
@@ -492,7 +514,7 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
 
     def __get_message_for_final_response(
             self,
-            tool_responses: List[str],
+            intermediate_responses: List[str],
             llm_prompt: str,
             workflow_final_prompt: str
     ) -> HumanMessage:
@@ -506,7 +528,7 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
         llm_prompt : str
             The original LLM prompt used to generate the response.
         """
-        tool_results = '\n\n'.join(tool_responses)
+        tool_results = '\n\n'.join(intermediate_responses)
         if workflow_final_prompt:
             final_response_content = workflow_final_prompt \
                 .replace(f'{{{{{TemplateVariables.TOOL_RESULTS}}}}}', tool_results) \

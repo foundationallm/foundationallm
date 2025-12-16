@@ -43,7 +43,7 @@ namespace FoundationaLLM.Core.API.Controllers
             string instanceId,
             [FromBody] UserProfileUpdateRequest updateRequest)
         {
-            await _userProfileService.AddAgent(instanceId, updateRequest.AgentObjectId!);
+            await _userProfileService.AddAgentToUserProfileAsync(instanceId, updateRequest.AgentObjectId!);
             return Ok();
         }
 
@@ -58,7 +58,7 @@ namespace FoundationaLLM.Core.API.Controllers
             string instanceId,
             [FromBody] UserProfileUpdateRequest updateRequest)
         {
-            await _userProfileService.RemoveAgent(instanceId, updateRequest.AgentObjectId!);
+            await _userProfileService.RemoveAgentFromUserProfileAsync(instanceId, updateRequest.AgentObjectId!);
             return Ok();
         }
     }
