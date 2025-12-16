@@ -146,7 +146,8 @@ namespace FoundationaLLM.Agent.ResourceProviders
             formFile = null!;
 
             if (result is List<ResourceProviderGetResult<AgentFile>> agentFileResults
-                && agentFileResults.Count == 1)
+                && agentFileResults.Count == 1
+                && agentFileResults[0].Resource?.Content is not null)
             {
                 formFile = new ResourceProviderFormFile
                 {

@@ -78,6 +78,8 @@ FunctionsToExport = @(
     'Import-Dotenv',
     'Get-AllAgents',
     'Get-Agent',
+    'Get-AgentFiles',
+    'Get-AgentFile',
     'Merge-Agent',
     'Get-Conversations',
     'New-Conversation',
