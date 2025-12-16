@@ -117,7 +117,8 @@ class FoundationaLLMWorkflowBase(ABC):
         original_prompt: str,
         input_tokens: int = 0,
         output_tokens: int = 0,
-        completion_time_seconds: float = 0
+        completion_time_seconds: float = 0,
+        error_message: Optional[str] = None
     ) -> ContentArtifact:
 
         content_artifact = ContentArtifact(id=self.workflow_config.name)
@@ -131,6 +132,8 @@ class FoundationaLLMWorkflowBase(ABC):
             'completion_tokens': str(output_tokens),
             'completion_time_seconds': str(completion_time_seconds)
         }
+        if error_message:
+            content_artifact.metadata['error_message'] = error_message
         return content_artifact
 
     def create_workflow_llm(
