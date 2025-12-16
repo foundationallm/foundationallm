@@ -1090,7 +1090,19 @@ const getDefaultFormValues = () => {
 		semanticCacheEmbeddingDimensions: 2048 as number,
 		semanticCacheMinimumSimilarityThreshold: 0.97 as number,
 
-		inheritable_authorizable_actions: [] as string[]
+		inheritable_authorizable_actions: [
+			"FoundationaLLM.Agent/workflows/read",
+			"FoundationaLLM.Agent/tools/read",
+			"FoundationaLLM.Prompt/prompts/read",
+			"FoundationaLLM.AIModel/aiModels/read",
+			"FoundationaLLM.Configuration/apiEndpointConfigurations/read",
+			"FoundationaLLM.DataPipeline/dataPipelines/read",
+			"FoundationaLLM.Vector/vectorDatabases/read",
+			"FoundationaLLM.Context/knowledgeSources/read",
+			"FoundationaLLM.Context/knowledgeUnits/read",
+			"FoundationaLLM.DataSource/dataSources/read",
+			"FoundationaLLM.AzureAI/projects/read"
+		] as string[]
 	};
 };
 
