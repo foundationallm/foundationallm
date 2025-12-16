@@ -26,6 +26,16 @@ function Merge-Agent {
         -Body $Agent
 }
 
+function Get-AgentFiles {
+    param (
+        [string]$AgentName
+    )
+
+    return Invoke-ManagementAPI `
+        -Method GET `
+        -RelativeUri "providers/FoundationaLLM.Agent/agents/$AgentName/agentFiles"
+}
+
 function Merge-ToolType {
     param (
         [hashtable]$ToolType
