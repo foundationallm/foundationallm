@@ -40,40 +40,22 @@ function Get-AgentFile {
     param (
         [string]$AgentName,
         [string]$FileName,
-        [switch]$LoadContent,
-        [string]$OutFile
+        [switch]$LoadContent
     )
 
     $uri = "providers/FoundationaLLM.Agent/agents/$AgentName/agentFiles/$FileName"
     if ($LoadContent) {
         $uri += "?loadContent=true"
-    }
 
-    Test-ManagementAPIAccessToken
-
-    $headers = @{
-        "Authorization" = "Bearer $($global:ManagementAPIAccessToken)"
-    }
-
-    $baseUri = Get-ManagementAPIBaseUri
-    $fullUri = "$($baseUri.AbsoluteUri)/$uri"
-
-    Write-Host "GET $fullUri" -ForegroundColor Green
-
-    if ($OutFile) {
-        # Download file directly to disk
-        return Invoke-RestMethod `
+        return Invoke-ManagementAPI `
             -Method GET `
-            -Uri $fullUri `
-            -Headers $headers `
-            -OutFile $OutFile
-    } else {
-        # Return raw byte content
-        return Invoke-WebRequest `
-            -Method GET `
-            -Uri $fullUri `
-            -Headers $headers
+            -RelativeUri $uri `
+            -BinaryOutput
     }
+
+    return Invoke-ManagementAPI `
+        -Method GET `
+        -RelativeUri $uri
 }
 
 function Merge-ToolType {

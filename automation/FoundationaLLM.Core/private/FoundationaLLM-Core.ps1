@@ -142,7 +142,8 @@ function Invoke-ManagementAPI {
         [string]$RelativeUri,
         [hashtable]$Body = $null,
         [hashtable]$Headers = $null,
-        [hashtable]$Form = $null
+        [hashtable]$Form = $null,
+        [switch]$BinaryOutput
     )
 
     Write-Host "Calling Management API:" -ForegroundColor Green
@@ -166,13 +167,29 @@ function Invoke-ManagementAPI {
     if ($Form) {
 
         $Headers["Content-Type"] = "multipart/form-data;boundary=----WebKitFormBoundaryABCDEFGHIJKLMONOPQRSTUVWXYZ"
-        return Invoke-RestMethod `
-            -Method $Method `
-            -Uri  $uri `
-            -Form $Form `
-            -Headers $Headers
+        if ($BinaryOutput) {
+            return Invoke-WebRequest `
+                -Method $Method `
+                -Uri  $uri `
+                -Form $Form `
+                -Headers $Headers
+        } else {
+            return Invoke-RestMethod `
+                -Method $Method `
+                -Uri  $uri `
+                -Form $Form `
+                -Headers $Headers
+        }
     }
 
+    if ($BinaryOutput) {
+        return Invoke-WebRequest `
+            -Method $Method `
+            -Uri  $uri `
+            -Body ($Body | ConvertTo-Json -Depth 20) `
+            -Headers $Headers
+    }
+    
     return Invoke-RestMethod `
         -Method $Method `
         -Uri  $uri `
