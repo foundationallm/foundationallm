@@ -10,7 +10,7 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.Agent
         /// <summary>
         /// Gets or sets the name of the agent to filter by.
         /// </summary>
-        [JsonPropertyName("name")]
-        public string? Name { get; set; }
+        [JsonPropertyName("agent_name")]
+        public string? AgentName { get; set; }
     }
 }
