@@ -33,6 +33,8 @@
         "_appLogoPath": "media/fllm-icon.svg",
         "_appFooter": "© FoundationaLLM. All rights reserved. | Find out more about FoundationaLLM at <a href=\"https://foundationallm.ai\">foundationallm.ai</a>.",
         "_enableSearch": true,
+        "_disableToc": false,
+        "_disableSideToc": false,
         "_disableSideFilter": false,
         "_disableNewTab": false,
         "_disableContribution": false,
