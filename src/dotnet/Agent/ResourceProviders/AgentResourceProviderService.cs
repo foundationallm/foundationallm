@@ -30,10 +30,12 @@ using FoundationaLLM.Common.Models.ResourceProviders.Configuration;
 using FoundationaLLM.Common.Models.ResourceProviders.DataPipeline;
 using FoundationaLLM.Common.Models.ResourceProviders.Prompt;
 using FoundationaLLM.Common.Services.ResourceProviders;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using OpenTelemetry.Resources;
 using System.Data;
 using System.Text;
 using System.Text.Json;
@@ -137,6 +139,26 @@ namespace FoundationaLLM.Agent.ResourceProviders
                 _ => throw new ResourceProviderException($"The resource type {resourcePath.ResourceTypeName} is not supported by the {_name} resource provider.",
                     StatusCodes.Status400BadRequest)
             };
+
+        /// <inheritdoc/>
+        protected override bool TryGetFileFromGetResult(object result, out ResourceProviderFormFile formFile)
+        {
+            formFile = null!;
+
+            if (result is List<ResourceProviderGetResult<AgentFile>> agentFileResults
+                && agentFileResults.Count == 1)
+            {
+                formFile = new ResourceProviderFormFile
+                {
+                    FileName = agentFileResults[0].Resource!.DisplayName!,
+                    ContentType = agentFileResults[0].Resource!.ContentType!,
+                    BinaryContent = agentFileResults[0].Resource!.Content!
+                };
+                return true;
+            }
+
+            return false;
+        }
 
         /// <inheritdoc/>
         protected override async Task<object> UpsertResourceAsync(
@@ -263,7 +285,7 @@ namespace FoundationaLLM.Agent.ResourceProviders
                     var agentPrivateFile = await _cosmosDBService.GetAgentFile(_instanceSettings.Id, resourcePath.MainResourceId!, resourcePath.ResourceId!)
                         ?? throw new ResourceProviderException($"The resource {resourcePath.ResourceTypeInstances[0].ResourceId!} of type {resourcePath.MainResourceTypeName} was not found.");
 
-                    return (await LoadAgentFile(agentPrivateFile, loadContent: options?.LoadContent ?? false)) as T
+                    return (await LoadAgentFile(agentPrivateFile, userIdentity, loadContent: options?.LoadContent ?? false)) as T
                         ?? throw new ResourceProviderException($"The resource {resourcePath.ResourceTypeInstances[0].ResourceId!} of type {resourcePath.MainResourceTypeName} could not be loaded.");
                 default:
                     throw new ResourceProviderException($"The resource type {resourcePath.MainResourceTypeName} is not supported by the {_name} resource provider.",
@@ -911,23 +933,33 @@ namespace FoundationaLLM.Agent.ResourceProviders
             var agentFiles = new List<AgentFileReference>();
 
             if (resourcePath.ResourceId != null)
-                agentFiles = [await _cosmosDBService.GetAgentFile(_instanceSettings.Id, resourcePath.MainResourceId!, resourcePath.ResourceId!)];
+                agentFiles = [
+                    (await _cosmosDBService.GetAgentFile(_instanceSettings.Id, resourcePath.MainResourceId!, resourcePath.ResourceId!))!
+                ];
             else
+            {
+                if (options?.LoadContent ?? false)
+                    throw new ResourceProviderException("Loading content is only supported for individual resources.",
+                        StatusCodes.Status400BadRequest);
                 agentFiles = await _cosmosDBService.GetAgentFiles(_instanceSettings.Id, resourcePath.MainResourceId!);
+            }
 
             var results = new List<AgentFile>();
             foreach (var agentFile in agentFiles)
-                results.Add(await LoadAgentFile(agentFile, options != null && options!.LoadContent));
+                results.Add(await LoadAgentFile(agentFile, userIdentity, options != null && options!.LoadContent));
 
-            return results.Select(r => new ResourceProviderGetResult<AgentFile>
+            return [.. results.Select(r => new ResourceProviderGetResult<AgentFile>
             {
                 Resource = r,
                 Roles = [],
                 Actions = []
-            }).ToList();
+            })];
         }
 
-        private async Task<AgentFile> LoadAgentFile(AgentFileReference agentFileReference, bool loadContent = false)
+        private async Task<AgentFile> LoadAgentFile(
+            AgentFileReference agentFileReference,
+            UnifiedUserIdentity userIdentity,
+            bool loadContent = false)
         {
             var agentFile = new AgentFile
             {
@@ -939,13 +971,37 @@ namespace FoundationaLLM.Agent.ResourceProviders
                 AgentObjectId = ResourcePath.GetObjectId(agentFileReference.InstanceId, _name, AgentResourceTypeNames.Agents, agentFileReference.AgentName)
             };
 
+            var agent = await LoadResource<AgentBase>(agentFileReference.AgentName);
+
             if (loadContent)
             {
-                var fileContent = await _storageService.ReadFileAsync(
+                if (agent!.HasGenericWorkflow()
+                && agent.Workflow!.ClassName == AgentWorkflowNames.FoundationaLLMFunctionCallingWorkflow)
+                {
+                    // Use the Context API to store the file.
+
+                    var contextServiceClient = GetContextServiceClient(userIdentity);
+                    var contextServiceResult = await contextServiceClient.GetFileContent(
+                        agentFileReference.InstanceId,
+                        agentFileReference.Id);
+
+                    if (contextServiceResult.IsFailure
+                        || !contextServiceResult.TryGetValue(out var fileContent))
+                        throw new ResourceProviderException(
+                            $"Failed to load the file {agentFileReference.OriginalFilename} from the FoundationaLLM file store.",
+                            StatusCodes.Status500InternalServerError);
+                    agentFile.Content = fileContent.FileContent;
+                }
+                else
+                {
+                    // Legacy file storage, load from blob storage.
+
+                    var fileContent = await _storageService.ReadFileAsync(
                     _storageContainerName,
                     agentFileReference.Filename,
                     default);
-                agentFile.Content = fileContent;
+                    agentFile.Content = fileContent;
+                }
             }
 
             return agentFile;
@@ -972,7 +1028,8 @@ namespace FoundationaLLM.Agent.ResourceProviders
                     formFile.ContentType!,
                     formFile.BinaryContent);
 
-                if (!contextServiceResult.TryGetValue(out var fileRecord))
+                if (contextServiceResult.IsFailure
+                    || !contextServiceResult.TryGetValue(out var fileRecord))
                     throw new ResourceProviderException(
                         $"Failed to add the file {formFile.FileName} to the FoundationaLLM file store.",
                         StatusCodes.Status500InternalServerError);
@@ -984,7 +1041,7 @@ namespace FoundationaLLM.Agent.ResourceProviders
                     Name = fileRecord.Id,
                     ObjectId =  objectId,
                     OriginalFilename = formFile.FileName,
-                    ContentType = formFile.ContentType!,
+                    ContentType = fileRecord.ContentType,
                     Type = AgentTypes.AgentFile,
                     Filename = fileRecord.FilePath,
                     Size = formFile.BinaryContent.ToMemory().Length,

@@ -24,6 +24,18 @@ namespace FoundationaLLM.Common.Interfaces
             Func<HttpMethod, ResourcePath, bool>? resourcePathAvailabilityChecker = null);
 
         /// <summary>
+        /// Attempts to extract a ResourceProviderFormFile from the specified result object.
+        /// </summary>
+        /// <param name="result">The object to inspect for a ResourceProviderFormFile instance. This parameter is expected to be the
+        /// result of a <see cref="IManagementProviderService.HandleGetAsync"/> call.</param>
+        /// <param name="formFile">When this method returns, contains the extracted ResourceProviderFormFile if successful; otherwise, null.
+        /// This parameter is passed uninitialized.</param>
+        /// <returns>true if a ResourceProviderFormFile was successfully extracted from the result object; otherwise, false.</returns>
+        bool TryGetResourceProviderFormFile(
+            object result,
+            out ResourceProviderFormFile formFile);
+
+        /// <summary>
         /// Handles a HTTP POST request for a specified resource path.
         /// </summary>
         /// <param name="resourcePath">The resource path.</param>

@@ -387,6 +387,12 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
         }
 
         /// <inheritdoc/>
+        public bool TryGetResourceProviderFormFile(
+            object result,
+            out ResourceProviderFormFile formFile) =>
+            TryGetFileFromGetResult(result, out formFile);
+
+        /// <inheritdoc/>
         public async Task<object> HandlePostAsync(
             string resourcePath,
             string? serializedResource,
@@ -510,6 +516,24 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
         {
             await Task.CompletedTask;
             throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Attempts to extract a ResourceProviderFormFile from the specified result object.
+        /// </summary>
+        /// <param name="result">The object to inspect for a ResourceProviderFormFile instance. This parameter is expected to be the
+        /// result of a <see cref="IManagementProviderService.HandleGetAsync"/> call.</param>
+        /// <param name="formFile">When this method returns, contains the extracted ResourceProviderFormFile if successful; otherwise, null.
+        /// This parameter is passed uninitialized.</param>
+        /// <returns>true if a ResourceProviderFormFile was successfully extracted from the result object; otherwise, false.</returns>
+        /// <remarks>This is the internal implementation of <see cref="TryGetResourceProviderFormFile"/>.
+        /// Can be overriden in derived classes.</remarks>
+        protected virtual bool TryGetFileFromGetResult(
+            object result,
+            out ResourceProviderFormFile formFile)
+        {
+            formFile = null!;
+            return false;
         }
 
         /// <summary>

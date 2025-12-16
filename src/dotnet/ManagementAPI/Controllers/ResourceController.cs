@@ -20,7 +20,7 @@ namespace FoundationaLLM.Management.API.Controllers
         Policy = AuthorizationPolicyNames.MicrosoftEntraIDStandard)]
     [ApiController]
     [Consumes("application/json","multipart/form-data")]
-    [Produces("application/json")]
+    [Produces("application/json", "application/octet-stream")]
     [Route($"instances/{{instanceId}}/providers/{{resourceProvider}}")]
     public class ResourceController(
         IOrchestrationContext callContext,
@@ -39,9 +39,14 @@ namespace FoundationaLLM.Management.API.Controllers
         /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
         /// <param name="resourceProvider">The name of the resource provider that should handle the request.</param>
         /// <param name="resourcePath">The logical path of the resource type.</param>
+        /// <param name="queryParams">The query parameters.</param>
         /// <returns></returns>
         [HttpGet("{*resourcePath}", Name = "GetResources")]
-        public async Task<IActionResult> GetResources(string instanceId, string resourceProvider, string resourcePath) =>
+        public async Task<IActionResult> GetResources(
+            string instanceId,
+            string resourceProvider,
+            string resourcePath,
+            [FromQuery] Dictionary<string, string> queryParams) =>
             await HandleRequest(
                 resourceProvider,
                 resourcePath,
@@ -50,11 +55,22 @@ namespace FoundationaLLM.Management.API.Controllers
                     var result = await resourceProviderService.HandleGetAsync(
                         $"instances/{instanceId}/providers/{resourceProvider}/{resourcePath}",
                         _callContext.CurrentUserIdentity!,
-                        new ResourceProviderGetOptions
-                        {
-                            IncludeActions = true,
-                            IncludeRoles = true
-                        });
+                        queryParams is null
+                            ? new ResourceProviderGetOptions
+                                {
+                                    IncludeActions = true,
+                                    IncludeRoles = true
+                                }
+                            : ResourceProviderGetOptions.FromQueryParams(queryParams)
+                    );
+
+                    if (resourceProviderService.TryGetResourceProviderFormFile(
+                        result, out var resourceProviderFormFile))
+                        return File(
+                            resourceProviderFormFile.BinaryContent.ToStream(),
+                            resourceProviderFormFile.ContentType,
+                            resourceProviderFormFile.FileName);
+
                     return new OkObjectResult(result);
                 });
 
@@ -130,7 +146,10 @@ namespace FoundationaLLM.Management.API.Controllers
                     return new OkObjectResult(new ResourceProviderActionResult(objectId, true));
                 });
 
-        private async Task<IActionResult> HandleRequest(string resourceProvider, string resourcePath, Func<IResourceProviderService, Task<IActionResult>> handler)
+        private async Task<IActionResult> HandleRequest(
+            string resourceProvider,
+            string resourcePath,
+            Func<IResourceProviderService, Task<IActionResult>> handler)
         {
             if (!_resourceProviderServices.TryGetValue(resourceProvider, out var resourceProviderService))
                 return new NotFoundResult();

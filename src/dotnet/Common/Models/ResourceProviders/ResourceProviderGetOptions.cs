@@ -29,5 +29,56 @@
         /// the authorizable actions assigned directly or indirectly to the resource.
         /// </remarks>
         public bool IncludeActions { get; set; }
+
+        private static readonly HashSet<string> KnownParameters = new(StringComparer.OrdinalIgnoreCase)
+        {
+            "loadContent",
+            "includeRoles",
+            "includeActions"
+        };
+
+        /// <summary>
+        /// Creates a new instance of the ResourceProviderGetOptions class by parsing option values from the specified
+        /// query parameter dictionary.
+        /// </summary>
+        /// <remarks>Boolean option values are parsed using case-insensitive string representations of
+        /// <see langword="true"/> or <see langword="false"/>. Unrecognized or missing parameters are ignored.</remarks>
+        /// <param name="queryParams">A dictionary containing query parameter names and their corresponding values. Parameter names are expected
+        /// to match option names such as "loadContent", "includeRoles", and "includeActions".</param>
+        /// <returns>A ResourceProviderGetOptions instance populated with values parsed from the query parameters. If a parameter
+        /// is missing or cannot be parsed, the corresponding option retains its default value.</returns>
+        public static ResourceProviderGetOptions FromQueryParams(Dictionary<string, string> queryParams)
+        {
+            var options = new ResourceProviderGetOptions();
+            if (queryParams is null)
+                return options;
+
+            if (queryParams.TryGetValue("loadContent", out var loadContentValue) &&
+                bool.TryParse(loadContentValue, out var loadContent))
+            {
+                options.LoadContent = loadContent;
+            }
+            if (queryParams.TryGetValue("includeRoles", out var includeRolesValue) &&
+                bool.TryParse(includeRolesValue, out var includeRoles))
+            {
+                options.IncludeRoles = includeRoles;
+            }
+            if (queryParams.TryGetValue("includeActions", out var includeActionsValue) &&
+                bool.TryParse(includeActionsValue, out var includeActions))
+            {
+                options.IncludeActions = includeActions;
+            }
+
+            // Add unrecognized query parameters to the Parameters dictionary.
+            foreach (var kvp in queryParams)
+            {
+                if (!KnownParameters.Contains(kvp.Key))
+                {
+                    options.Parameters[kvp.Key] = kvp.Value;
+                }
+            }
+
+            return options;
+        }
     }
 }
