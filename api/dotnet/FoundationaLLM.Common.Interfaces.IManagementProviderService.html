@@ -132,7 +132,7 @@ Interface IManagementProviderService  <a class="header-action link-secondary" ti
 
   <h3 id="FoundationaLLM_Common_Interfaces_IManagementProviderService_HandleDeleteAsync_System_String_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_System_Func_System_Net_Http_HttpMethod_FoundationaLLM_Common_Models_ResourceProviders_ResourcePath_System_Boolean__" data-uid="FoundationaLLM.Common.Interfaces.IManagementProviderService.HandleDeleteAsync(System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity,System.Func{System.Net.Http.HttpMethod,FoundationaLLM.Common.Models.ResourceProviders.ResourcePath,System.Boolean})">
   HandleDeleteAsync(string, UnifiedUserIdentity, Func&lt;HttpMethod, ResourcePath, bool&gt;?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Interfaces/IManagementProviderService.cs/#L52"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Interfaces/IManagementProviderService.cs/#L64"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Handles a HTTP DELETE request for a specified resource path.</p>
@@ -226,7 +226,7 @@ providers and resource types.</p>
 
   <h3 id="FoundationaLLM_Common_Interfaces_IManagementProviderService_HandlePostAsync_System_String_System_String_FoundationaLLM_Common_Models_ResourceProviders_ResourceProviderFormFile_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_System_Func_System_Net_Http_HttpMethod_FoundationaLLM_Common_Models_ResourceProviders_ResourcePath_System_Boolean__System_Func_System_Object_System_Boolean__" data-uid="FoundationaLLM.Common.Interfaces.IManagementProviderService.HandlePostAsync(System.String,System.String,FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderFormFile,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity,System.Func{System.Net.Http.HttpMethod,FoundationaLLM.Common.Models.ResourceProviders.ResourcePath,System.Boolean},System.Func{System.Object,System.Boolean})">
   HandlePostAsync(string, string?, ResourceProviderFormFile?, UnifiedUserIdentity, Func&lt;HttpMethod, ResourcePath, bool&gt;?, Func&lt;object, bool&gt;?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Interfaces/IManagementProviderService.cs/#L37"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Interfaces/IManagementProviderService.cs/#L49"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Handles a HTTP POST request for a specified resource path.</p>
@@ -264,6 +264,50 @@ providers and resource types.</p>
   <dl class="parameters">
     <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a>&gt;</dt>
     <dd><p>The serialized form of the result of handling the request.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="FoundationaLLM_Common_Interfaces_IManagementProviderService_TryGetResourceProviderFormFile_" data-uid="FoundationaLLM.Common.Interfaces.IManagementProviderService.TryGetResourceProviderFormFile*"></a>
+
+  <h3 id="FoundationaLLM_Common_Interfaces_IManagementProviderService_TryGetResourceProviderFormFile_System_Object_FoundationaLLM_Common_Models_ResourceProviders_ResourceProviderFormFile__" data-uid="FoundationaLLM.Common.Interfaces.IManagementProviderService.TryGetResourceProviderFormFile(System.Object,FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderFormFile@)">
+  TryGetResourceProviderFormFile(object, out ResourceProviderFormFile)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Interfaces/IManagementProviderService.cs/#L34"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Attempts to extract a ResourceProviderFormFile from the specified result object.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">bool TryGetResourceProviderFormFile(object result, out ResourceProviderFormFile formFile)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>result</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></dt>
+    <dd><p>The object to inspect for a ResourceProviderFormFile instance. This parameter is expected to be the
+result of a <a class="xref" href="FoundationaLLM.Common.Interfaces.IManagementProviderService.html#FoundationaLLM_Common_Interfaces_IManagementProviderService_HandleGetAsync_System_String_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_FoundationaLLM_Common_Models_ResourceProviders_ResourceProviderGetOptions_System_Func_System_Net_Http_HttpMethod_FoundationaLLM_Common_Models_ResourceProviders_ResourcePath_System_Boolean__">HandleGetAsync(string, UnifiedUserIdentity, ResourceProviderGetOptions?, Func&lt;HttpMethod, ResourcePath, bool&gt;?)</a> call.</p>
+</dd>
+    <dt><code>formFile</code> <a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderFormFile.html">ResourceProviderFormFile</a></dt>
+    <dd><p>When this method returns, contains the extracted ResourceProviderFormFile if successful; otherwise, null.
+This parameter is passed uninitialized.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>true if a ResourceProviderFormFile was successfully extracted from the result object; otherwise, false.</p>
 </dd>
   </dl>
 

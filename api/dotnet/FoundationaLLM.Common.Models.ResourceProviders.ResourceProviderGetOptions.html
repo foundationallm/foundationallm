@@ -270,6 +270,56 @@ the roles assigned directly or indirectly to the resource.
 
 
 
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="FoundationaLLM_Common_Models_ResourceProviders_ResourceProviderGetOptions_FromQueryParams_" data-uid="FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderGetOptions.FromQueryParams*"></a>
+
+  <h3 id="FoundationaLLM_Common_Models_ResourceProviders_ResourceProviderGetOptions_FromQueryParams_System_Collections_Generic_Dictionary_System_String_System_String__" data-uid="FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderGetOptions.FromQueryParams(System.Collections.Generic.Dictionary{System.String,System.String})">
+  FromQueryParams(Dictionary&lt;string, string&gt;)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/foundationallm/foundationallm/blob/main/src/dotnet/Common/Models/ResourceProviders/ResourceProviderGetOptions.cs/#L50"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates a new instance of the ResourceProviderGetOptions class by parsing option values from the specified
+query parameter dictionary.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static ResourceProviderGetOptions FromQueryParams(Dictionary&lt;string, string&gt; queryParams)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>queryParams</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2">Dictionary</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>&gt;</dt>
+    <dd><p>A dictionary containing query parameter names and their corresponding values. Parameter names are expected
+to match option names such as &quot;loadContent&quot;, &quot;includeRoles&quot;, and &quot;includeActions&quot;.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderGetOptions.html">ResourceProviderGetOptions</a></dt>
+    <dd><p>A ResourceProviderGetOptions instance populated with values parsed from the query parameters. If a parameter
+is missing or cannot be parsed, the corresponding option retains its default value.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+  <h4 class="section" id="FoundationaLLM_Common_Models_ResourceProviders_ResourceProviderGetOptions_FromQueryParams_System_Collections_Generic_Dictionary_System_String_System_String___remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>Boolean option values are parsed using case-insensitive string representations of
+<a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> or <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>. Unrecognized or missing parameters are ignored.</p>
+</div>
+
+
+
+
 
 </article>
 
