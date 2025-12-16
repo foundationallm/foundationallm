@@ -55,13 +55,10 @@ namespace FoundationaLLM.Management.API.Controllers
                     var result = await resourceProviderService.HandleGetAsync(
                         $"instances/{instanceId}/providers/{resourceProvider}/{resourcePath}",
                         _callContext.CurrentUserIdentity!,
-                        queryParams is null
-                            ? new ResourceProviderGetOptions
-                                {
-                                    IncludeActions = true,
-                                    IncludeRoles = true
-                                }
-                            : ResourceProviderGetOptions.FromQueryParams(queryParams)
+                        ResourceProviderGetOptions.FromQueryParams(
+                            queryParams,
+                            includeActionsDefault: true,
+                            includeRolesDefault: true)
                     );
 
                     if (resourceProviderService.TryGetResourceProviderFormFile(

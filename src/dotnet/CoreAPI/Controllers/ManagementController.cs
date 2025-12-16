@@ -59,13 +59,10 @@ namespace FoundationaLLM.Core.API.Controllers
                     var result = await resourceProviderService.HandleGetAsync(
                         $"instances/{instanceId}/providers/{resourceProvider}/{resourcePath}",
                         _callContext.CurrentUserIdentity!,
-                        queryParams is null
-                            ? new ResourceProviderGetOptions
-                            {
-                                IncludeActions = false,
-                                IncludeRoles = true
-                            }
-                            : ResourceProviderGetOptions.FromQueryParams(queryParams),
+                        ResourceProviderGetOptions.FromQueryParams(
+                                queryParams,
+                                includeRolesDefault: true,
+                                includeActionsDefault: false),
                         resourcePathAvailabilityChecker: _managementCapabilitiesService.IsResourcePathAvailable);
                     return new OkObjectResult(result);
                 });

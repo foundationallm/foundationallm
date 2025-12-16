@@ -45,11 +45,21 @@
         /// <see langword="true"/> or <see langword="false"/>. Unrecognized or missing parameters are ignored.</remarks>
         /// <param name="queryParams">A dictionary containing query parameter names and their corresponding values. Parameter names are expected
         /// to match option names such as "loadContent", "includeRoles", and "includeActions".</param>
+        /// <param name="includeRolesDefault">The default value to use for the IncludeRoles option if it is not specified in the query parameters.</param>
+        /// <param name="includeActionsDefault">The default value to use for the IncludeActions option if it is not specified in the query parameters.</param>
         /// <returns>A ResourceProviderGetOptions instance populated with values parsed from the query parameters. If a parameter
         /// is missing or cannot be parsed, the corresponding option retains its default value.</returns>
-        public static ResourceProviderGetOptions FromQueryParams(Dictionary<string, string> queryParams)
+        public static ResourceProviderGetOptions FromQueryParams(
+            Dictionary<string, string> queryParams,
+            bool includeRolesDefault,
+            bool includeActionsDefault)
         {
-            var options = new ResourceProviderGetOptions();
+            var options = new ResourceProviderGetOptions
+            {
+                IncludeActions = includeActionsDefault,
+                IncludeRoles = includeRolesDefault
+            };
+
             if (queryParams is null)
                 return options;
 
