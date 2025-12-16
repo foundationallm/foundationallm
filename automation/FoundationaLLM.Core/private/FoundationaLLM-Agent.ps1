@@ -36,6 +36,46 @@ function Get-AgentFiles {
         -RelativeUri "providers/FoundationaLLM.Agent/agents/$AgentName/agentFiles"
 }
 
+function Get-AgentFile {
+    param (
+        [string]$AgentName,
+        [string]$FileName,
+        [switch]$LoadContent,
+        [string]$OutFile
+    )
+
+    $uri = "providers/FoundationaLLM.Agent/agents/$AgentName/agentFiles/$FileName"
+    if ($LoadContent) {
+        $uri += "?loadContent=true"
+    }
+
+    Test-ManagementAPIAccessToken
+
+    $headers = @{
+        "Authorization" = "Bearer $($global:ManagementAPIAccessToken)"
+    }
+
+    $baseUri = Get-ManagementAPIBaseUri
+    $fullUri = "$($baseUri.AbsoluteUri)/$uri"
+
+    Write-Host "GET $fullUri" -ForegroundColor Green
+
+    if ($OutFile) {
+        # Download file directly to disk
+        return Invoke-RestMethod `
+            -Method GET `
+            -Uri $fullUri `
+            -Headers $headers `
+            -OutFile $OutFile
+    } else {
+        # Return raw byte content
+        return Invoke-WebRequest `
+            -Method GET `
+            -Uri $fullUri `
+            -Headers $headers
+    }
+}
+
 function Merge-ToolType {
     param (
         [hashtable]$ToolType
