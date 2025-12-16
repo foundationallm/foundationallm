@@ -172,7 +172,7 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
         output_tokens = 0
         intermediate_responses: List[str] = []
         final_response = None
-        llm_error = False
+        error_message: str = None
 
         with self.tracer.start_as_current_span(f'{self.name}_workflow', kind=SpanKind.INTERNAL):
 
@@ -206,12 +206,13 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
                     output_tokens += usage['output_tokens']
                 except Exception as ex:
                     self.logger.error('Error during LLM invocation: %s', str(ex))
-                    final_response = str(ex)
-                    llm_error = True
+                    error_message = str(ex)
 
                 router_end_time = time.time()
 
-            if not llm_error:
+            should_process_final_response = False
+
+            if not error_message:
 
                 if llm_response.tool_calls:
 
@@ -268,40 +269,52 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
                             workflow_final_prompt
                         )
 
-                        with self.tracer.start_as_current_span(f'{self.name}_final_llm_call', kind=SpanKind.INTERNAL):
-
-                            await self.operations_manager.update_operation_with_text_result_async(
-                                operation_id,
-                                self.instance_id,
-                                OperationStatus.INPROGRESS,
-                                "Preparing final response.",
-                                "Preparing final response...",
-                                self.user_identity.model_dump_json(exclude_none=True)
-                            )
-
-                            final_llm_response = await self.workflow_llm.ainvoke(
-                                [SystemMessage(content=workflow_main_prompt)]
-                                + messages[1:-1] # Exclude the original system prompt (first message) and context message (last message)
-                                + [final_message])
-
-                            # ensure final_llm_response.content is a string, collapsing any lists into a single string.
-                            if isinstance(final_llm_response.content, list):
-                                final_llm_response.content = '\n'.join(final_llm_response.content)
-
-                            usage = self.__get_canonical_usage(final_llm_response)
-                            input_tokens += usage['input_tokens']
-                            output_tokens += usage['output_tokens']
-                            final_response = final_llm_response.content
+                        should_process_final_response = True
 
                 else:
                     if 'ROUTER' in commands:
                         final_response = '__NO_TOOL__'
 
+            else:
+                final_message = HumanMessage(content=f"Produce a non-technical summary of the following error message: {error_message}." +
+                                             "\n\nRemove any references to technology or platform names, code, stack traces, or technical details.")
+
+                should_process_final_response = True
+
+            if should_process_final_response:
+
+                with self.tracer.start_as_current_span(f'{self.name}_final_llm_call', kind=SpanKind.INTERNAL):
+
+                    await self.operations_manager.update_operation_with_text_result_async(
+                        operation_id,
+                        self.instance_id,
+                        OperationStatus.INPROGRESS,
+                        "Preparing final response.",
+                        "Preparing final response...",
+                        self.user_identity.model_dump_json(exclude_none=True)
+                    )
+
+                    final_llm_response = await self.workflow_llm.ainvoke(
+                        [SystemMessage(content=workflow_main_prompt)]
+                        + messages[1:-1] # Exclude the original system prompt (first message) and context message (last message)
+                        + [final_message])
+
+                    # ensure final_llm_response.content is a string, collapsing any lists into a single string.
+                    if isinstance(final_llm_response.content, list):
+                        final_llm_response.content = '\n'.join(final_llm_response.content)
+
+                    usage = self.__get_canonical_usage(final_llm_response)
+                    input_tokens += usage['input_tokens']
+                    output_tokens += usage['output_tokens']
+                    final_response = final_llm_response.content
+
             workflow_content_artifact = self.create_workflow_execution_content_artifact(
                 llm_prompt,
                 input_tokens,
                 output_tokens,
-                router_end_time - router_start_time)
+                router_end_time - router_start_time,
+                error_message=error_message
+            )
             content_artifacts.append(workflow_content_artifact)
 
             # Initialize response_content with the result, taking final_response as priority.
@@ -501,7 +514,7 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
 
     def __get_message_for_final_response(
             self,
-            tool_responses: List[str],
+            intermediate_responses: List[str],
             llm_prompt: str,
             workflow_final_prompt: str
     ) -> HumanMessage:
@@ -515,7 +528,7 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
         llm_prompt : str
             The original LLM prompt used to generate the response.
         """
-        tool_results = '\n\n'.join(tool_responses)
+        tool_results = '\n\n'.join(intermediate_responses)
         if workflow_final_prompt:
             final_response_content = workflow_final_prompt \
                 .replace(f'{{{{{TemplateVariables.TOOL_RESULTS}}}}}', tool_results) \
