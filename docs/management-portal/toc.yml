@@ -1,0 +1,107 @@
+items:
+- name: Overview
+  href: index.md
+- name: Quick Start
+  href: quick-start/portal-tour.md
+  items:
+  - name: Tour of the Portal
+    href: quick-start/portal-tour.md
+  - name: Creating Your First Agent
+    href: quick-start/creating-first-agent.md
+- name: Agents
+  href: how-to-guides/agents/all-agents.md
+  items:
+  - name: Create New Agent
+    href: how-to-guides/agents/create-new-agent.md
+  - name: Create Agent with Claude
+    href: how-to-guides/agents/create-model-agnostic-agent-claude.md
+  - name: Create Agent with GPT-4o
+    href: how-to-guides/agents/create-model-agnostic-agent-gpt4o.md
+  - name: All Agents
+    href: how-to-guides/agents/all-agents.md
+  - name: My Agents
+    href: how-to-guides/agents/my-agents.md
+  - name: Prompts
+    href: how-to-guides/agents/prompts.md
+- name: Data
+  href: how-to-guides/data/data-sources.md
+  items:
+  - name: Data Sources
+    href: how-to-guides/data/data-sources.md
+  - name: Creating Data Pipelines
+    href: how-to-guides/data/data-pipelines/creating-data-pipelines.md
+  - name: Invoking Data Pipelines
+    href: how-to-guides/data/data-pipelines/invoking-data-pipelines.md
+  - name: Monitoring Data Pipelines
+    href: how-to-guides/data/data-pipelines/monitoring-data-pipelines.md
+  - name: Data Pipeline Runs
+    href: how-to-guides/data/data-pipeline-runs.md
+  - name: SharePoint Online
+    href: how-to-guides/data/knowledge-sources/sharepoint-online.md
+  - name: Azure Data Lake
+    href: how-to-guides/data/knowledge-sources/azure-data-lake.md
+  - name: Private Storage
+    href: how-to-guides/data/knowledge-sources/private-storage.md
+  - name: Knowledge Graph Integration
+    href: how-to-guides/data/knowledge-sources/knowledge-graph-integration.md
+  - name: Image Description
+    href: how-to-guides/data/knowledge-sources/image-description.md
+- name: Models and Endpoints
+  href: how-to-guides/models-endpoints/ai-models.md
+  items:
+  - name: AI Models
+    href: how-to-guides/models-endpoints/ai-models.md
+  - name: API Endpoints
+    href: how-to-guides/models-endpoints/api-endpoints.md
+- name: Security
+  href: how-to-guides/security/instance-access-control.md
+  items:
+  - name: Instance Access Control
+    href: how-to-guides/security/instance-access-control.md
+- name: FLLM Platform
+  href: how-to-guides/fllm-platform/branding.md
+  items:
+  - name: Branding
+    href: how-to-guides/fllm-platform/branding.md
+  - name: Configuration
+    href: how-to-guides/fllm-platform/configuration.md
+  - name: Deployment Information
+    href: how-to-guides/fllm-platform/deployment-information.md
+- name: Managing Plugins
+  href: how-to-guides/managing-plugins.md
+- name: Configuring Quotas
+  href: how-to-guides/configuring-quotas.md
+- name: Reference
+  href: reference/concepts/index.md
+  items:
+  - name: Concepts Overview
+    href: reference/concepts/index.md
+  - name: Agents & Workflows
+    href: reference/concepts/agents-workflows.md
+  - name: Agent Access Tokens
+    href: reference/concepts/agent-access-tokens.md
+  - name: Prompts & Resources
+    href: reference/concepts/prompts-resources.md
+  - name: Prompt Variables
+    href: reference/concepts/prompt-variables.md
+  - name: Resource Management
+    href: reference/concepts/resource-management.md
+  - name: Data Pipelines
+    href: reference/concepts/data-pipelines.md
+  - name: Plugins & Packages
+    href: reference/concepts/plugins-packages.md
+  - name: Quotas
+    href: reference/concepts/quotas.md
+  - name: Branding
+    href: reference/branding/index.md
+    items:
+    - name: Using App Configuration
+      href: reference/branding/using-app-configuration.md
+    - name: Using Management Portal
+      href: reference/branding/using-management-portal.md
+    - name: Using REST API
+      href: reference/branding/using-rest-api.md
+  - name: Configuration Reference
+    href: reference/configuration-reference.md
+  - name: Permissions & Roles
+    href: reference/permissions-roles.md

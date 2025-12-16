@@ -1,0 +1,29 @@
+items:
+- name: Development Overview
+  href: index.md
+- name: Calling APIs
+  href: calling-apis/index.md
+  items:
+  - name: Overview
+    href: calling-apis/index.md
+  - name: Directly Calling Core API
+    href: calling-apis/directly-calling-core-api.md
+  - name: Directly Calling Management API
+    href: calling-apis/directly-calling-management-api.md
+  - name: Local API Access
+    href: calling-apis/standard-deployment-local-api-access.md
+- name: Development Approach
+  href: development-approach.md
+- name: Local Development Environment
+  href: development-local.md
+- name: Contributing
+  href: contributing/index.md
+  items:
+  - name: Contributing Guide
+    href: contributing/index.md
+  - name: Git Workflow
+    href: contributing/git-workflow.md
+  - name: Style Guide
+    href: contributing/style-guide.md
+  - name: Bug Report Reproduction
+    href: contributing/repro.md
