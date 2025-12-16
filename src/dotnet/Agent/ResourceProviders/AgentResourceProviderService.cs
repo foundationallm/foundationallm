@@ -744,10 +744,10 @@ namespace FoundationaLLM.Agent.ResourceProviders
                     IncludeRoles = resourcePath.IsResourceTypePath,
                 });
 
-            if (!string.IsNullOrWhiteSpace(filter.Name))
+            if (!string.IsNullOrWhiteSpace(filter.AgentName))
             {
                 agents = agents
-                    .Where(r => ((AgentBase)r.Resource).Name.Contains(filter.Name, StringComparison.OrdinalIgnoreCase))
+                    .Where(r => ((AgentBase)r.Resource).Name.Contains(filter.AgentName, StringComparison.OrdinalIgnoreCase))
                     .ToList();
             }
 
