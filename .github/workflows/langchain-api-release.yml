@@ -1,14 +1,50 @@
 name: LangChain API Release
 
 on:
+  push:
+    tags:
+    - "langchain_api-0.*.*"
+    - "langchain_api-0.*.*-alpha*"
+    - "langchain_api-0.*.*-beta*"
+    - "langchain_api-0.*.*-rc*"
+    - "langchain_api-0.*.*-post*"
+    - "langchain_api-1.*.*"
+    - "langchain_api-1.*.*-alpha*"
+    - "langchain_api-1.*.*-beta*"
+    - "langchain_api-1.*.*-rc*"
+    - "langchain_api-1.*.*-post*"
+    - "langchain_api-2.*.*"
+    - "langchain_api-2.*.*-alpha*"
+    - "langchain_api-2.*.*-beta*"
+    - "langchain_api-2.*.*-rc*"
+    - "langchain_api-2.*.*-post*"
   workflow_dispatch:
     inputs: {}
 
 jobs:
-  release_docker_image:
-    name: Release Docker Image
-    uses: ./.github/workflows/release-docker-image.yml
+  prepare:
+    runs-on: ubuntu-latest
+    outputs:
+      docker_tag: ${{ steps.docker-tag.outputs.docker_tag }}
+    steps:
+    - name: Set Docker Tag
+      id: docker-tag
+      run: |
+        DOCKER_TAG="${GITHUB_REF_NAME#langchain_api-}"
+        echo "DOCKER_TAG=$DOCKER_TAG" >> $GITHUB_ENV
+        echo "docker_tag: Latest Tag is : $DOCKER_TAG"
+        echo "docker_tag=$DOCKER_TAG" >> $GITHUB_OUTPUT
+  docker_build:
+    name: Build Docker Image
+    needs:
+      - prepare
+    uses: ./.github/workflows/build-docker-image.yml
     with:
       image: langchain-api
-      context: ./src/python
+      context: ./src
       dockerfile: ./src/python/LangChainAPI/Dockerfile
+      registry: foundationallm.azurecr.io
+      tag: ${{ needs.prepare.outputs.docker_tag }}
+      username: foundationallm
+      target: sandbox
+    secrets: inherit
