@@ -471,3 +471,44 @@ code {
   margin: 4px 2px;
   box-shadow: var(--card-box-shadow);
 }
+
+/* -----------------------------------------------------------------------------
+   Left-hand navigation (Table of Contents)
+
+   The DocFX modern layout renders a left TOC container (`.toc-offcanvas`) and
+   populates `nav#toc` at runtime. Our custom stylesheet can unintentionally
+   impact Bootstrap/offcanvas defaults, so we make the desktop TOC explicitly
+   visible and scrollable.
+----------------------------------------------------------------------------- */
+@media (min-width: 768px) {
+  main.container-xxl {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.6rem;
+  }
+
+  main.container-xxl > .toc-offcanvas {
+    display: block !important;
+    flex: 0 0 320px;
+    max-width: 360px;
+  }
+
+  main.container-xxl > .toc-offcanvas .offcanvas-md {
+    position: sticky;
+    top: calc(60px + 1.6rem);
+    display: block !important;
+    visibility: visible !important;
+    transform: none !important;
+    border-right: 1px solid var(--bs-border-color);
+  }
+
+  main.container-xxl > .toc-offcanvas .offcanvas-body {
+    padding: 0.5rem 0.75rem;
+    overflow-y: auto;
+    max-height: calc(100vh - 60px - 1.6rem);
+  }
+
+  main.container-xxl > .toc-offcanvas nav#toc {
+    display: block;
+  }
+}
