@@ -143,10 +143,11 @@ function Invoke-ManagementAPI {
         [hashtable]$Body = $null,
         [hashtable]$Headers = $null,
         [hashtable]$Form = $null,
+        [System.Net.Http.MultipartFormDataContent]$MultipartContent = $null,
         [switch]$BinaryOutput
     )
 
-    Write-Host "Calling Management API:" -ForegroundColor Green
+    Write-Host "Calling Management API:"
 
     Test-ManagementAPIAccessToken
 
@@ -163,20 +164,50 @@ function Invoke-ManagementAPI {
 
     $uri = "$($baseUri.AbsoluteUri)/$($RelativeUri)"
 
-    Write-Host "$($Method) $($uri)" -ForegroundColor Green
+    Write-Host "$($Method) $($uri)"
+
+    # Handle MultipartFormDataContent (in-memory multipart data)
+    if ($MultipartContent) {
+        $client = [System.Net.Http.HttpClient]::new()
+        $client.DefaultRequestHeaders.Clear()
+        $client.DefaultRequestHeaders.Add("Authorization", "Bearer $($global:ManagementAPIAccessToken)")
+
+        $response = switch ($Method.ToUpper()) {
+            "POST" { $client.PostAsync($uri, $MultipartContent).Result }
+            "PUT" { $client.PutAsync($uri, $MultipartContent).Result }
+            default { throw "Unsupported HTTP method for MultipartContent: $Method" }
+        }
+
+        $responseContent = $response.Content.ReadAsStringAsync().Result
+
+        if (-not $response.IsSuccessStatusCode) {
+            throw "API call failed with status $($response.StatusCode): $responseContent"
+        }
+
+        if ($BinaryOutput) {
+            return $response
+        }
+
+        if ([string]::IsNullOrWhiteSpace($responseContent)) {
+            return $null
+        }
+
+        return $responseContent | ConvertFrom-Json
+    }
+
     if ($Form) {
 
         $Headers["Content-Type"] = "multipart/form-data;boundary=----WebKitFormBoundaryABCDEFGHIJKLMONOPQRSTUVWXYZ"
         if ($BinaryOutput) {
             return Invoke-WebRequest `
                 -Method $Method `
-                -Uri  $uri `
+                -Uri $uri `
                 -Form $Form `
                 -Headers $Headers
         } else {
             return Invoke-RestMethod `
                 -Method $Method `
-                -Uri  $uri `
+                -Uri $uri `
                 -Form $Form `
                 -Headers $Headers
         }
@@ -185,14 +216,14 @@ function Invoke-ManagementAPI {
     if ($BinaryOutput) {
         return Invoke-WebRequest `
             -Method $Method `
-            -Uri  $uri `
+            -Uri $uri `
             -Body ($Body | ConvertTo-Json -Depth 20) `
             -Headers $Headers
     }
-    
+
     return Invoke-RestMethod `
         -Method $Method `
-        -Uri  $uri `
+        -Uri $uri `
         -Body ($Body | ConvertTo-Json -Depth 20) `
         -Headers $Headers
 }
@@ -207,7 +238,7 @@ function Invoke-CoreAPI {
         [string]$FileContentType = $null
     )
 
-    Write-Host "Calling Core API:" -ForegroundColor Green
+    Write-Host "Calling Core API:"
 
     Test-CoreAPIAccessToken
 
@@ -224,7 +255,7 @@ function Invoke-CoreAPI {
 
     $uri = "$($baseUri.AbsoluteUri)/$($RelativeUri)"
 
-    Write-Host "$($Method) $($uri)" -ForegroundColor Green
+    Write-Host "$($Method) $($uri)"
     if ($FilePath) {
 
         $FileStream = [System.IO.File]::OpenRead($FilePath)
@@ -252,4 +283,37 @@ function Invoke-CoreAPI {
         -Uri  $uri `
         -Body ($Body | ConvertTo-Json -Depth 20) `
         -Headers $Headers
+}
+
+function Get-FileNameFromContentDisposition {
+    param([string]$ContentDisposition)
+
+    if ([string]::IsNullOrWhiteSpace($ContentDisposition)) { return $null }
+
+    # Prefer RFC 5987 / 6266 filename*= (e.g. UTF-8''name%20here.pdf)
+    if ($ContentDisposition -match '(?i)filename\*\s*=\s*(?<v>[^;]+)') {
+        $v = $Matches.v.Trim()
+
+        # Strip optional quotes around the whole value
+        if ($v.StartsWith('"') -and $v.EndsWith('"')) { $v = $v.Trim('"') }
+
+        # Split: charset'lang'value   (lang may be empty)
+        $parts = $v -split "'", 3
+        if ($parts.Count -eq 3) {
+            $encoded = $parts[2]
+            return [Uri]::UnescapeDataString($encoded)
+        }
+
+        # If it wasn't in charset'lang' format, still try decoding as-is
+        return [Uri]::UnescapeDataString($v)
+    }
+
+    # Fallback to filename=
+    if ($ContentDisposition -match '(?i)filename\s*=\s*(?<v>[^;]+)') {
+        $v = $Matches.v.Trim()
+        if ($v.StartsWith('"') -and $v.EndsWith('"')) { $v = $v.Trim('"') }
+        return $v
+    }
+
+    return $null
 }

@@ -47,15 +47,69 @@ function Get-AgentFile {
     if ($LoadContent) {
         $uri += "?loadContent=true"
 
-        return Invoke-ManagementAPI `
+        $result = Invoke-ManagementAPI `
             -Method GET `
             -RelativeUri $uri `
             -BinaryOutput
+
+        $contentDisposition = $result.Headers["Content-Disposition"]
+        $extractedFileName = Get-FileNameFromContentDisposition -ContentDisposition $contentDisposition
+
+        return @{
+            ContentType = $result.Headers["Content-Type"]
+            FileName = $extractedFileName
+            Content = $result.Content
+        }
     }
 
     return Invoke-ManagementAPI `
         -Method GET `
         -RelativeUri $uri
+}
+
+function Send-AgentFile {
+    param (
+        [string]$AgentName,
+        [hashtable]$FileContent
+    )
+
+    $bytes = $FileContent.Content
+    $stream = [System.IO.MemoryStream]::new($bytes)
+    $streamContent = [System.Net.Http.StreamContent]::new($stream)
+    $streamContent.Headers.ContentType = [System.Net.Http.Headers.MediaTypeHeaderValue]::Parse($FileContent.ContentType)
+
+    $multipart = [System.Net.Http.MultipartFormDataContent]::new()
+    $multipart.Add($streamContent, "file", $FileContent.FileName)
+
+    return Invoke-ManagementAPI `
+        -Method POST `
+        -RelativeUri "providers/FoundationaLLM.Agent/agents/$AgentName/agentFiles/$($FileContent.FileName)" `
+        -MultipartContent $multipart
+}
+
+function Merge-AgentFileToolAssociations {
+    param (
+        [string]$AgentName,
+        [string]$FileName,
+        [hashtable]$ToolAssociations
+    )
+
+    $agentObjectId = (Get-ObjectId -Name $AgentName -Type "FoundationaLLM.Agent/agents")
+    $agentFileObjectId = "$agentObjectId/agentFiles/$FileName"
+
+    $qualifiedToolAssociations = @{
+        "agent_file_tool_associations" = @{
+            $agentFileObjectId = @{
+                (Get-ObjectId -Name "Code" -Type "FoundationaLLM.Agent/tools") = $ToolAssociations["Code"]
+                (Get-ObjectId -Name "Knowledge" -Type "FoundationaLLM.Agent/tools") = $ToolAssociations["Knowledge"]
+            }
+        }
+    }
+
+    return Invoke-ManagementAPI `
+        -Method POST `
+        -RelativeUri "providers/FoundationaLLM.Agent/agents/$AgentName/agentFileToolAssociations/$FileName" `
+        -Body $qualifiedToolAssociations
 }
 
 function Merge-ToolType {
