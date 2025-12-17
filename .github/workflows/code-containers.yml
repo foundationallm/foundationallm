@@ -1,6 +1,23 @@
-name: Code Containers
+name: Code Containers Release
 
 on:
+  push:
+    tags:
+    - "code_containers-0.*.*"
+    - "code_containers-0.*.*-alpha*"
+    - "code_containers-0.*.*-beta*"
+    - "code_containers-0.*.*-rc*"
+    - "code_containers-0.*.*-post*"
+    - "code_containers-1.*.*"
+    - "code_containers-1.*.*-alpha*"
+    - "code_containers-1.*.*-beta*"
+    - "code_containers-1.*.*-rc*"
+    - "code_containers-1.*.*-post*"
+    - "code_containers-2.*.*"
+    - "code_containers-2.*.*-alpha*"
+    - "code_containers-2.*.*-beta*"
+    - "code_containers-2.*.*-rc*"
+    - "code_containers-2.*.*-post*"
   workflow_dispatch:
     inputs: {}
 
