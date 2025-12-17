@@ -14,7 +14,8 @@ foundationallm==0.9.8b109
 langchain==1.0.3
 langchain-aws==1.0.0
 langchain_azure_ai==1.0.2
-langchain-google-vertexai==3.0.1
+langchain-google-genai==4.1.1
+langchain-google-vertexai==3.2.0
 langchain-openai==1.0.2
 langgraph==1.0.2
 openai==2.7.0

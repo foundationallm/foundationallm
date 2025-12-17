@@ -9,7 +9,7 @@ from google.oauth2 import service_account
 from langchain_azure_ai.chat_models import AzureAIChatCompletionsModel
 from langchain_core.language_models import BaseLanguageModel
 from langchain_aws import ChatBedrockConverse
-from langchain_google_vertexai import ChatVertexAI
+from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_openai import AzureChatOpenAI, ChatOpenAI, OpenAI
 from openai import AsyncAzureOpenAI as async_aoi
 
@@ -255,7 +255,7 @@ class LanguageModelFactory:
                     raise LangChainException("Service account credentials are missing from the configuration settings.", 400)
 
                 service_account_credentials = service_account.Credentials.from_service_account_info(service_account_credentials_definition)
-                language_model = ChatVertexAI(
+                language_model = ChatGoogleGenerativeAI(
                     model=ai_model.deployment_name,
                     temperature=0,
                     max_tokens=None,
