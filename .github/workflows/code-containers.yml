@@ -40,7 +40,9 @@ jobs:
     - name: Set Git and Helm Tag
       id: docker-tag
       run: |
-        DOCKER_TAG=$(echo ${{ github.ref_name }} |  cut -d'/' -f 2)
+        ref="${{ github.ref_name }}"
+        ref="${ref#code_container-}"                  # drop optional prefix
+        DOCKER_TAG="$(cut -d'/' -f2 <<< "$ref")"      # drop optional branch prefix
         echo "DOCKER_TAG=$DOCKER_TAG" >> $GITHUB_ENV
         echo "docker_tag: Latest Tag is : $DOCKER_TAG"
         echo "docker_tag=$DOCKER_TAG" >> $GITHUB_OUTPUT      
