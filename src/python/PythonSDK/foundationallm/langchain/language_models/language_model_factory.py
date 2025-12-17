@@ -254,14 +254,18 @@ class LanguageModelFactory:
                 if not service_account_credentials_definition:
                     raise LangChainException("Service account credentials are missing from the configuration settings.", 400)
 
-                service_account_credentials = service_account.Credentials.from_service_account_info(service_account_credentials_definition)
+                service_account_credentials = service_account.Credentials.from_service_account_info(
+                    service_account_credentials_definition,
+                    scopes=["https://www.googleapis.com/auth/cloud-platform"]
+                )
                 language_model = ChatGoogleGenerativeAI(
                     model=ai_model.deployment_name,
                     temperature=0,
                     max_tokens=None,
                     max_retries=6,
                     stop=None,
-                    credentials=service_account_credentials
+                    credentials=service_account_credentials,
+                    vertexai=True
                 )
             case LanguageModelProvider.DATABRICKS:
                     
