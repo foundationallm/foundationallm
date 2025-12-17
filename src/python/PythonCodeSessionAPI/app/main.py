@@ -75,15 +75,27 @@ async def execute_code(request_body: dict):
         # Determine which variable names (if any) are referenced by the last expression
         selected_names = _extract_last_variable_names(code)
 
-        # pylint: disable=exec-used
-        exec(code, namespace, namespace)
-        # pylint: enable=exec-used
+        try:
+            # pylint: disable=exec-used
+            exec(code, namespace, namespace)
+            # pylint: enable=exec-used
+        except Exception as exec_exception:
+            # Capture execution exceptions in stderr
+            # A code execution error is not a server error, so we return status 200 with error details
+            return {
+                'detail':{
+                    'results': '',
+                    'output': '',
+                    'error': f'The code execution failed with a {type(exec_exception).__name__} error and the following exception message: {str(exec_exception)}'
+                }
+            }
+        finally:
+            # Restore original stdout and stderr
+            standard_output = new_stdout.getvalue()
+            sys.stdout = old_stdout
 
-        standard_output = new_stdout.getvalue()
-        sys.stdout = old_stdout
-
-        standard_error = new_stderr.getvalue()
-        sys.stderr = old_stderr
+            standard_error = new_stderr.getvalue()
+            sys.stderr = old_stderr
 
         # Build results: only include variables referenced by the last expression (if any)
         results = {}
