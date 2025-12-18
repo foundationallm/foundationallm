@@ -32,7 +32,12 @@
             "console": "integratedTerminal",
             "python": "${workspaceFolder}/src/python/plugins/agent_core/.venv/Scripts/python.exe",
             "cwd" : "${workspaceFolder}/src/python/plugins/agent_core",
-            "justMyCode": false
+            "justMyCode": false,
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}/src/python/LangChainAPI;${workspaceFolder}/src/python/plugins/core/pkg;",
+                "FOUNDATIONALLM_CONTEXT": "DEBUG",
+                "FOUNDATIONALLM_APP_CONFIGURATION_URI": "https://appcs-l43jljq2i5ox6.azconfig.io"
+            },
         },
         {
             "name": "Agent Plugins - Debug ZST Workflow",
@@ -123,7 +128,7 @@
             "module": "uvicorn",
             "cwd" : "${workspaceFolder}/src/python/LangChainAPI/app",
             "env": {
-                "PYTHONPATH": "${workspaceFolder}/src/python/LangChainAPI;${workspaceFolder}/src/python/PythonSDK;d:/repos/fllm/foundationallm/src/python/PythonSDK;",
+                "PYTHONPATH": "${workspaceFolder}/src/python/LangChainAPI;",
                 "FOUNDATIONALLM_CONTEXT": "DEBUG",
                 "FOUNDATIONALLM_APP_CONFIGURATION_URI": "https://appcs-l43jljq2i5ox6.azconfig.io"
             },

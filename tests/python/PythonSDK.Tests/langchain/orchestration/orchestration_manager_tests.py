@@ -3,7 +3,7 @@ from foundationallm.config import Configuration, Context, UserIdentity
 from foundationallm.models.metadata import KnowledgeManagementAgent as KnowledgeManagementAgentMetadata
 from foundationallm.models.metadata import ConversationHistory, Gatekeeper
 from foundationallm.models.language_models import LanguageModelType, LanguageModelProvider, LanguageModel
-from foundationallm.models.agents import KnowledgeManagementCompletionRequest
+from foundationallm.models.agents import CompletionRequest
 from foundationallm.langchain.agents import KnowledgeManagementAgent
 from foundationallm.langchain.orchestration import OrchestrationManager
 
@@ -17,7 +17,7 @@ def test_context():
 
 @pytest.fixture
 def test_azure_ai_search_service_completion_request():
-     req = KnowledgeManagementCompletionRequest(
+     req = CompletionRequest(
          user_prompt=""" 
             When did the State of the Union Address take place?
          """,

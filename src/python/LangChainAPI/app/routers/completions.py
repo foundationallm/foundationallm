@@ -20,7 +20,7 @@ from fastapi import (
 from opentelemetry.trace import SpanKind
 from foundationallm.config import Configuration, UserIdentity
 from foundationallm.langchain.orchestration import OrchestrationManager
-from foundationallm.models.agents import KnowledgeManagementCompletionRequest
+from foundationallm.models.agents import CompletionRequest
 from foundationallm.models.operations import (
     LongRunningOperation,
     OperationStatus
@@ -122,7 +122,7 @@ async def submit_completion_request(
 async def create_completion_response(
     operation_id: str,
     instance_id: str,
-    completion_request: KnowledgeManagementCompletionRequest,
+    completion_request: CompletionRequest,
     config: Configuration,
     plugin_manager: PluginManager,
     operations_manager: OperationsManager,
