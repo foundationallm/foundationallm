@@ -10,7 +10,6 @@ WORKDIR /code
 COPY ./LangChainAPI/requirements.txt /code/requirements.txt
 RUN python3 -m pip install --no-cache-dir --upgrade -r /code/requirements.txt
 
-COPY ./PythonSDK/foundationallm /code/foundationallm
 COPY ./LangChainAPI /code
 
 EXPOSE 80
