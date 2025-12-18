@@ -1,8 +1,8 @@
 name: github-pages
 
 on:
-    push:
-      branches: [ main ]
+    workflow_dispatch:
+        inputs: {}
 
 permissions:
     contents: write
