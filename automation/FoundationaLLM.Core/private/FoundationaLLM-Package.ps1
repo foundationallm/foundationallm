@@ -11,6 +11,16 @@ function Resolve-Placeholders {
             $value = $Parameters[$key]
             $Content = $Content -replace $placeholder, $value
         }
+
+        # Remaining placeholders that were not replaced will be removed
+
+        $pattern = "{{(.*?)}}"
+        $placeholderMatches = [regex]::Matches($Content, $pattern)
+
+        foreach ($match in $placeholderMatches) {
+            $missingPlaceholder = "{{" + $match.Groups[1].Value + "}}"
+            $Content = $Content -replace $missingPlaceholder, ""
+        }
     
         $Content
     }
