@@ -4,12 +4,12 @@ Main entry-point for the FoundationaLLM LangChain API.
 import datetime
 import json
 import logging
-from typing import Optional
 
-from fastapi import FastAPI, Header, Request
+from fastapi import FastAPI, Request
 from opentelemetry.instrumentation.fastapi import FastAPIInstrumentor
 from app.lifespan_manager import lifespan
 from app.routers import completions, status, management
+
 from foundationallm.telemetry import Telemetry
 
 app = FastAPI(

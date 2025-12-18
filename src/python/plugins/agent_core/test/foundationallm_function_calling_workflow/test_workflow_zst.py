@@ -17,7 +17,7 @@ from foundationallm_agent_plugins import (
     FoundationaLLMAgentWorkflowPluginManager
 )
 from foundationallm.config import Configuration, UserIdentity
-from foundationallm.models.agents import KnowledgeManagementCompletionRequest
+from foundationallm.models.agents import CompletionRequest
 from foundationallm.models.constants import (
     ResourceObjectIdPropertyNames,
     ResourceObjectIdPropertyValues,
@@ -84,7 +84,7 @@ user_prompt = "Create a pdf telling a story about a cat"
 
 
 
-request = KnowledgeManagementCompletionRequest(**request_json)
+request = CompletionRequest(**request_json)
 agent = request.agent
 objects = request.objects
 workflow = request.agent.workflow
