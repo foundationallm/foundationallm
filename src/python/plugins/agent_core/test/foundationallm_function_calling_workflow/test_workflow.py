@@ -14,7 +14,7 @@ from foundationallm_agent_plugins import (
     FoundationaLLMAgentWorkflowPluginManager
 )
 from foundationallm.config import Configuration, UserIdentity
-from foundationallm.models.agents import KnowledgeManagementCompletionRequest
+from foundationallm.models.agents import CompletionRequest
 from foundationallm.models.constants import (
     ResourceObjectIdPropertyNames,
     ResourceObjectIdPropertyValues,
@@ -75,7 +75,7 @@ operation_id = request_json['operation_id']
 conversation_id = request_json['session_id']
 user_prompt = request_json['user_prompt']
 
-request = KnowledgeManagementCompletionRequest(**request_json)
+request = CompletionRequest(**request_json)
 agent = request.agent
 objects = request.objects
 workflow = request.agent.workflow
@@ -135,8 +135,9 @@ workflow = workflow_plugin_manager.create_workflow(
     config,
     intercept_http_calls=True
 )
-response = asyncio.run(
-    workflow.invoke_async(
+async def run_workflow():
+    """Runs the workflow and ensures proper cleanup of resources."""
+    workflow_response = await workflow.invoke_async(
         operation_id=operation_id,
         user_prompt=parsed_user_prompt,
         user_prompt_rewrite=user_prompt_rewrite,
@@ -145,7 +146,11 @@ response = asyncio.run(
         conversation_id=conversation_id,
         objects=objects
     )
-)
+    # Close the credential to avoid "Unclosed client session" warning
+    workflow.default_credential.close()
+    return workflow_response
+
+response = asyncio.run(run_workflow())
 print("++++++++++++++++++++++++++++++++++++++")
 print('Content artifacts:')
 print(response.content_artifacts)

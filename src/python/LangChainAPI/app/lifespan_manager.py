@@ -1,15 +1,25 @@
 '''
 Handles the FastAPI application lifespan events.
 '''
+import logging
+
 from contextlib import asynccontextmanager
 
 from aiohttp import ClientSession
 from fastapi import FastAPI
 
+# Ensure foundationallm imports work.
+# For this, we need to load the foundationallm module first.
+from .foundationallm_module_loader import FoundationaLLMModuleLoader
+loader = FoundationaLLMModuleLoader(logging.getLogger(__name__))
+loader.load()
+
+# pylint: disable=C0411,C0413
 from foundationallm.config import Configuration
 from foundationallm.plugins import PluginManager
 from foundationallm.storage import BlobStorageManager
 from foundationallm.telemetry import Telemetry
+# pylint: enable=C0411
 
 COMPLETION_REQUESTS_CONFIGURATION_NAMESPACE = \
     'FoundationaLLM:APIEndpoints:OrchestrationAPI:Configuration:CompletionRequestsStorage'

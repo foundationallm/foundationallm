@@ -5,5 +5,3 @@ from .foundationallm_sql_tool import FoundationaLLMSQLTool
 from .foundationallm_databricks_tool import FoundationaLLMDatabricksTool
 from .foundationallm_kql_tool import FoundationaLLMKQLTool
 from .foundationallm_knowledge_tool import FoundationaLLMKnowledgeTool
-# The FoundationaLLMKnowledgeSearchTool is obsolete and replaced by FoundationaLLMKnowledgeTool.
-from .foundationallm_knowledge_search_tool import FoundationaLLMKnowledgeSearchTool

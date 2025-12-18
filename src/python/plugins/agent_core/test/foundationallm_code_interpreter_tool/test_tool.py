@@ -11,7 +11,7 @@ sys.path.append('src')
 
 from foundationallm_agent_plugins import FoundationaLLMAgentToolPluginManager
 from foundationallm.config import Configuration, UserIdentity
-from foundationallm.models.agents import KnowledgeManagementCompletionRequest
+from foundationallm.models.agents import CompletionRequest
 
 from foundationallm_agent_plugins.tools.foundationallm_code_interpreter_tool import FoundationaLLMCodeInterpreterFile
 
@@ -26,7 +26,7 @@ config = Configuration()
 with open(full_request_json_file_name, 'r') as f:
     request_json = json.load(f)
 
-request = KnowledgeManagementCompletionRequest(**request_json)
+request = CompletionRequest(**request_json)
 agent = request.agent
 objects = request.objects
 workflow = request.agent.workflow

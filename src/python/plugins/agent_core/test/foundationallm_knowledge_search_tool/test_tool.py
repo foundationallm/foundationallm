@@ -8,7 +8,7 @@ from langchain_core.messages import AIMessage, HumanMessage
 from langgraph.prebuilt import create_react_agent
 from foundationallm.config import Configuration, UserIdentity
 from foundationallm.langchain.language_models import LanguageModelFactory
-from foundationallm.models.agents import AgentBase, AgentTool, AgentWorkflowBase, KnowledgeManagementCompletionRequest
+from foundationallm.models.agents import AgentBase, AgentTool, AgentWorkflowBase, CompletionRequest
 from foundationallm.models.constants import (
     AIModelResourceTypeNames,
     PromptResourceTypeNames,
@@ -31,7 +31,7 @@ config = Configuration()
 with open(full_request_json_file_name, 'r') as f:
     request_json = json.load(f)
 
-request = KnowledgeManagementCompletionRequest(**request_json)
+request = CompletionRequest(**request_json)
 agent = request.agent
 agent_tool = request.agent.tools[0]
 exploded_objects_json = request.objects

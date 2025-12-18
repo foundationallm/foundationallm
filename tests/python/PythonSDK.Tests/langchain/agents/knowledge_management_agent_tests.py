@@ -8,7 +8,7 @@ from foundationallm.models.agents import (
     AgentGatekeeperSettings,
     AgentConversationHistorySettings
 )
-from foundationallm.models.agents import KnowledgeManagementCompletionRequest
+from foundationallm.models.agents import CompletionRequest
 from foundationallm.models.orchestration import OrchestrationSettings
 from foundationallm.models.language_models import LanguageModelType, LanguageModelProvider
 from foundationallm.langchain.language_models import LanguageModelFactory
@@ -20,7 +20,7 @@ def test_config():
 
 @pytest.fixture
 def test_azure_ai_search_service_completion_request():
-     req = KnowledgeManagementCompletionRequest(
+     req = CompletionRequest(
          user_prompt=""" 
             When did the State of the Union Address take place?
          """,
@@ -65,7 +65,7 @@ def test_azure_ai_search_service_completion_request():
 
 @pytest.fixture
 def test_azure_ai_search_service_completion_request_zoo():
-     req = KnowledgeManagementCompletionRequest(
+     req = CompletionRequest(
          user_prompt=""" 
             In what year was the Zoo founded?
          """,

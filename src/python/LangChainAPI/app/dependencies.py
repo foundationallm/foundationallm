@@ -9,7 +9,7 @@ from fastapi import (
 )
 from fastapi.security import APIKeyHeader
 
-from foundationallm.models.agents import KnowledgeManagementCompletionRequest
+from foundationallm.models.agents import CompletionRequest
 from foundationallm.models.orchestration import CompletionRequestBase
 from foundationallm.telemetry import Telemetry
 
@@ -50,7 +50,7 @@ async def resolve_completion_request(request_body: dict = Body(...)) -> Completi
 
     match agent_type:
         case "generic-agent":
-            request = KnowledgeManagementCompletionRequest(**request_body)
+            request = CompletionRequest(**request_body)
             request.agent.type = agent_type
             return request
         case _:

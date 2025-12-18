@@ -8,8 +8,7 @@ import json
 import re
 import time
 from typing import Dict, List, Optional
-from logging import Logger
-from opentelemetry.trace import Tracer, SpanKind
+from opentelemetry.trace import SpanKind
 
 from langchain_core.messages import (
     AIMessage,
@@ -24,7 +23,6 @@ from foundationallm.langchain.common import (
     FoundationaLLMWorkflowBase,
     FoundationaLLMToolBase
 )
-from foundationallm.langchain.language_models import LanguageModelFactory
 from foundationallm.models.agents import (
     GenericAgentWorkflow,
     ExternalAgentWorkflow
@@ -32,12 +30,7 @@ from foundationallm.models.agents import (
 from foundationallm.models.constants import (
     AgentCapabilityCategories,
     ContentArtifactTypeNames,
-    ResourceObjectIdPropertyNames,
-    ResourceObjectIdPropertyValues,
-    ResourceProviderNames,
     RunnableConfigKeys,
-    AIModelResourceTypeNames,
-    PromptResourceTypeNames,
     TemplateVariables
 )
 from foundationallm.models.messages import MessageHistoryItem
@@ -54,8 +47,6 @@ from foundationallm.models.orchestration import (
 from foundationallm.models.resource_providers.configuration import APIEndpointConfiguration
 from foundationallm.operations import OperationsManager
 from foundationallm.services import HttpClientService
-from foundationallm.telemetry import Telemetry
-from foundationallm.utils import LoggingAsyncHttpClient
 
 class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
     """
@@ -172,6 +163,7 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
         output_tokens = 0
         intermediate_responses: List[str] = []
         final_response = None
+        final_message: Optional[HumanMessage] = None
         error_message: str = None
 
         with self.tracer.start_as_current_span(f'{self.name}_workflow', kind=SpanKind.INTERNAL):
@@ -232,7 +224,9 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
                             self.user_identity.model_dump_json(exclude_none=True)
                         )
 
-                        intermediate_responses.append(str(llm_response.content))
+                        llm_response_content_text = self.get_text_from_message(llm_response)
+                        if llm_response_content_text:
+                            intermediate_responses.append(str(llm_response_content_text))
 
                         for tool_call in llm_response.tool_calls:
 
@@ -294,19 +288,29 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
                         self.user_identity.model_dump_json(exclude_none=True)
                     )
 
-                    final_llm_response = await self.workflow_llm.ainvoke(
-                        [SystemMessage(content=workflow_main_prompt)]
-                        + messages[1:-1] # Exclude the original system prompt (first message) and context message (last message)
-                        + [final_message])
+                    final_messages = [SystemMessage(content=workflow_main_prompt)] + messages[1:-1]
+                    if final_message:
+                        final_messages.append(final_message)
+                    
+                    try:
+                        final_llm_response = await self.workflow_llm.ainvoke(final_messages)
 
-                    # ensure final_llm_response.content is a string, collapsing any lists into a single string.
-                    if isinstance(final_llm_response.content, list):
-                        final_llm_response.content = '\n'.join(final_llm_response.content)
+                        usage = self.__get_canonical_usage(final_llm_response)
+                        input_tokens += usage['input_tokens']
+                        output_tokens += usage['output_tokens']
+                        final_response = self.get_text_from_message(final_llm_response)
+                    except Exception as ex:
+                        self.logger.error('Error during final LLM invocation: %s', str(ex))
+                        error_message = str(ex)
 
-                    usage = self.__get_canonical_usage(final_llm_response)
-                    input_tokens += usage['input_tokens']
-                    output_tokens += usage['output_tokens']
-                    final_response = final_llm_response.content
+                        # Attempt to extract a user-friendly error message from the exception
+                        error_llm_response = await self.workflow_llm.ainvoke([
+                            SystemMessage(content=workflow_main_prompt),
+                            HumanMessage(content=f"Produce a non-technical summary of the following error message: {error_message}." +
+                                                 "\n\nRemove any references to technology or platform names, code, stack traces, or technical details.")
+                        ])
+                        
+                        final_response = self.get_text_from_message(error_llm_response)
 
             workflow_content_artifact = self.create_workflow_execution_content_artifact(
                 llm_prompt,

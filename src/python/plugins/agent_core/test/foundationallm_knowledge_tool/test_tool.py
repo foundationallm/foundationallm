@@ -5,7 +5,7 @@ import json
 import os
 import sys
 from foundationallm.config import Configuration, UserIdentity
-from foundationallm.models.agents import KnowledgeManagementCompletionRequest
+from foundationallm.models.agents import CompletionRequest
 
 sys.path.append('src')
 from foundationallm_agent_plugins import FoundationaLLMAgentToolPluginManager # type: ignore
@@ -20,7 +20,7 @@ config = Configuration()
 with open(full_request_json_file_name, 'r') as f:
     request_json = json.load(f)
 
-request = KnowledgeManagementCompletionRequest(**request_json)
+request = CompletionRequest(**request_json)
 agent = request.agent
 agent_tool = request.agent.tools[1]
 exploded_objects_json = request.objects

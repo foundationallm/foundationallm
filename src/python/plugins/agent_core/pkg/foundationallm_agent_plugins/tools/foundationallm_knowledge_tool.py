@@ -2,7 +2,7 @@
 
 import copy
 import json
-from typing import List, Optional, Tuple, Type
+from typing import Optional, Tuple, Type
 
 from pydantic import BaseModel
 
@@ -14,19 +14,15 @@ from foundationallm.langchain.common import (
     FoundationaLLMToolBase,
     FoundationaLLMToolResult
 )
-from foundationallm.models.agents import AgentTool, VectorDatabaseConfiguration
+from foundationallm.models.agents import AgentTool
 from foundationallm.models.constants import (
     ContentArtifactTypeNames,
     ResourceObjectIdPropertyNames,
     RunnableConfigKeys
 )
 from foundationallm.models.orchestration import CompletionRequestObjectKeys, ContentArtifact
-from foundationallm.models.resource_providers import ResourcePath
 from foundationallm.models.resource_providers.configuration import APIEndpointConfiguration
 from foundationallm.services import HttpClientService
-from foundationallm.utils import ObjectUtils
-
-from foundationallm_agent_plugins.utils import AzureAISearchConversationRetriever
 
 from .foundationallm_knowledge_tool_input import FoundationaLLMKnowledgeToolInput
 
