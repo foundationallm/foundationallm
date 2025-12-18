@@ -162,9 +162,13 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
         input_tokens = 0
         output_tokens = 0
         intermediate_responses: List[str] = []
-        final_response = None
+        
+        initial_response: Optional[str] = None
+        final_response: Optional[str] = None
+        failure_response: str = 'Failed to generate a response.'
+
         final_message: Optional[HumanMessage] = None
-        error_message: str = None
+        error_message: Optional[str] = None
 
         with self.tracer.start_as_current_span(f'{self.name}_workflow', kind=SpanKind.INTERNAL):
 
@@ -193,6 +197,7 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
                     llm_response = await llm_bound_tools.ainvoke(
                         messages,
                         tool_choice='auto')
+                    initial_response = self.get_text_from_message(llm_response)
                     usage = self.__get_canonical_usage(llm_response)
                     input_tokens += usage['input_tokens']
                     output_tokens += usage['output_tokens']
@@ -327,7 +332,7 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
             # Initialize response_content with the result, taking final_response as priority.
             response_content = []
             final_response_content = OpenAITextMessageContentItem(
-                value= final_response or llm_response.content or 'Failed to generate a response.',
+                value= final_response or initial_response or failure_response,
                 agent_capability_category=AgentCapabilityCategories.FOUNDATIONALLM_KNOWLEDGE_MANAGEMENT
             )
             response_content.append(final_response_content)
