@@ -309,6 +309,9 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
                             HumanMessage(content=f"Produce a non-technical summary of the following error message: {error_message}." +
                                                  "\n\nRemove any references to technology or platform names, code, stack traces, or technical details.")
                         ])
+                        usage = self.__get_canonical_usage(error_llm_response)
+                        input_tokens += usage['input_tokens']
+                        output_tokens += usage['output_tokens']
                         
                         final_response = self.get_text_from_message(error_llm_response)
 
