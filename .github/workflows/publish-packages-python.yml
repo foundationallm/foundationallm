@@ -34,14 +34,14 @@ jobs:
       id: versioning
 
     # Python Build and Publish Steps
-    - name: Build Python PythonSDK Package
+    - name: Build Python FoundationaLLM Package
       run: |
-        cd ./src/python/PythonSDK
+        cd ./src/python/plugins/core/pkg
         python -m pip install --upgrade build
         python -m build
 
-    - name: Publish Python PythonSDK Package to PyPI
-      working-directory: ./src/python/PythonSDK/dist
+    - name: Publish Python FoundationaLLM Package to PyPI
+      working-directory: ./src/python/plugins/core/pkg/dist
       env:
         TWINE_USERNAME: __token__
         TWINE_PASSWORD: ${{ secrets.PYPI_API_KEY }}
