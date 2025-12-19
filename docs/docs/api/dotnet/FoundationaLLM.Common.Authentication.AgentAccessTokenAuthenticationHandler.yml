@@ -1,0 +1,2214 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Common.Authentication.AgentAccessTokenAuthenticationHandler
+  commentId: T:FoundationaLLM.Common.Authentication.AgentAccessTokenAuthenticationHandler
+  id: AgentAccessTokenAuthenticationHandler
+  parent: FoundationaLLM.Common.Authentication
+  children:
+  - FoundationaLLM.Common.Authentication.AgentAccessTokenAuthenticationHandler.#ctor(System.Collections.Generic.IEnumerable{FoundationaLLM.Common.Interfaces.IResourceProviderService},Microsoft.Extensions.Options.IOptionsMonitor{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions},Microsoft.Extensions.Logging.ILoggerFactory,System.Text.Encodings.Web.UrlEncoder)
+  - FoundationaLLM.Common.Authentication.AgentAccessTokenAuthenticationHandler.HandleAuthenticateAsync
+  langs:
+  - csharp
+  - vb
+  name: AgentAccessTokenAuthenticationHandler
+  nameWithType: AgentAccessTokenAuthenticationHandler
+  fullName: FoundationaLLM.Common.Authentication.AgentAccessTokenAuthenticationHandler
+  type: Class
+  source:
+    remote:
+      path: src/dotnet/Common/Authentication/AgentAccessTokenAuthenticationHandler.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: AgentAccessTokenAuthenticationHandler
+    path: ../src/dotnet/Common/Authentication/AgentAccessTokenAuthenticationHandler.cs
+    startLine: 25
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Authentication
+  summary: Handles authentication for agent access tokens.
+  remarks: Initializes a new instance of the <xref href="FoundationaLLM.Common.Authentication.AgentAccessTokenAuthenticationHandler" data-throw-if-not-resolved="false"></xref> class.
+  example: []
+  syntax:
+    content: 'public class AgentAccessTokenAuthenticationHandler : AuthenticationHandler<AgentAccessTokenOptions>, IAuthenticationHandler'
+    content.vb: Public Class AgentAccessTokenAuthenticationHandler Inherits AuthenticationHandler(Of AgentAccessTokenOptions) Implements IAuthenticationHandler
+  inheritance:
+  - System.Object
+  - Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}
+  implements:
+  - Microsoft.AspNetCore.Authentication.IAuthenticationHandler
+  inheritedMembers:
+  - Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}.InitializeAsync(Microsoft.AspNetCore.Authentication.AuthenticationScheme,Microsoft.AspNetCore.Http.HttpContext)
+  - Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}.InitializeEventsAsync
+  - Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}.CreateEventsAsync
+  - Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}.InitializeHandlerAsync
+  - Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}.BuildRedirectUri(System.String)
+  - Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}.ResolveTarget(System.String)
+  - Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}.AuthenticateAsync
+  - Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}.HandleAuthenticateOnceAsync
+  - Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}.HandleAuthenticateOnceSafeAsync
+  - Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}.HandleForbiddenAsync(Microsoft.AspNetCore.Authentication.AuthenticationProperties)
+  - Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}.HandleChallengeAsync(Microsoft.AspNetCore.Authentication.AuthenticationProperties)
+  - Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}.ChallengeAsync(Microsoft.AspNetCore.Authentication.AuthenticationProperties)
+  - Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}.ForbidAsync(Microsoft.AspNetCore.Authentication.AuthenticationProperties)
+  - Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}.Scheme
+  - Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}.Options
+  - Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}.Context
+  - Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}.Request
+  - Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}.Response
+  - Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}.OriginalPath
+  - Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}.OriginalPathBase
+  - Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}.Logger
+  - Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}.UrlEncoder
+  - Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}.Clock
+  - Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}.TimeProvider
+  - Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}.OptionsMonitor
+  - Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}.Events
+  - Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}.ClaimsIssuer
+  - Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}.CurrentUri
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+  extensionMethods:
+  - System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+- uid: FoundationaLLM.Common.Authentication.AgentAccessTokenAuthenticationHandler.#ctor(System.Collections.Generic.IEnumerable{FoundationaLLM.Common.Interfaces.IResourceProviderService},Microsoft.Extensions.Options.IOptionsMonitor{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions},Microsoft.Extensions.Logging.ILoggerFactory,System.Text.Encodings.Web.UrlEncoder)
+  commentId: M:FoundationaLLM.Common.Authentication.AgentAccessTokenAuthenticationHandler.#ctor(System.Collections.Generic.IEnumerable{FoundationaLLM.Common.Interfaces.IResourceProviderService},Microsoft.Extensions.Options.IOptionsMonitor{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions},Microsoft.Extensions.Logging.ILoggerFactory,System.Text.Encodings.Web.UrlEncoder)
+  id: '#ctor(System.Collections.Generic.IEnumerable{FoundationaLLM.Common.Interfaces.IResourceProviderService},Microsoft.Extensions.Options.IOptionsMonitor{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions},Microsoft.Extensions.Logging.ILoggerFactory,System.Text.Encodings.Web.UrlEncoder)'
+  parent: FoundationaLLM.Common.Authentication.AgentAccessTokenAuthenticationHandler
+  langs:
+  - csharp
+  - vb
+  name: AgentAccessTokenAuthenticationHandler(IEnumerable<IResourceProviderService>, IOptionsMonitor<AgentAccessTokenOptions>, ILoggerFactory, UrlEncoder)
+  nameWithType: AgentAccessTokenAuthenticationHandler.AgentAccessTokenAuthenticationHandler(IEnumerable<IResourceProviderService>, IOptionsMonitor<AgentAccessTokenOptions>, ILoggerFactory, UrlEncoder)
+  fullName: FoundationaLLM.Common.Authentication.AgentAccessTokenAuthenticationHandler.AgentAccessTokenAuthenticationHandler(System.Collections.Generic.IEnumerable<FoundationaLLM.Common.Interfaces.IResourceProviderService>, Microsoft.Extensions.Options.IOptionsMonitor<FoundationaLLM.Common.Authentication.AgentAccessTokenOptions>, Microsoft.Extensions.Logging.ILoggerFactory, System.Text.Encodings.Web.UrlEncoder)
+  type: Constructor
+  source:
+    remote:
+      path: src/dotnet/Common/Authentication/AgentAccessTokenAuthenticationHandler.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: .ctor
+    path: ../src/dotnet/Common/Authentication/AgentAccessTokenAuthenticationHandler.cs
+    startLine: 25
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Authentication
+  summary: Handles authentication for agent access tokens.
+  remarks: Initializes a new instance of the <xref href="FoundationaLLM.Common.Authentication.AgentAccessTokenAuthenticationHandler" data-throw-if-not-resolved="false"></xref> class.
+  example: []
+  syntax:
+    content: public AgentAccessTokenAuthenticationHandler(IEnumerable<IResourceProviderService> resourceProviderServices, IOptionsMonitor<AgentAccessTokenOptions> options, ILoggerFactory logger, UrlEncoder encoder)
+    parameters:
+    - id: resourceProviderServices
+      type: System.Collections.Generic.IEnumerable{FoundationaLLM.Common.Interfaces.IResourceProviderService}
+      description: The <xref href="FoundationaLLM.Common.Interfaces.IResourceProviderService" data-throw-if-not-resolved="false"></xref> resource provider services.
+    - id: options
+      type: Microsoft.Extensions.Options.IOptionsMonitor{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}
+      description: The monitor for the options instance.
+    - id: logger
+      type: Microsoft.Extensions.Logging.ILoggerFactory
+      description: The <xref href="Microsoft.Extensions.Logging.ILoggerFactory" data-throw-if-not-resolved="false"></xref> used to create loggers.
+    - id: encoder
+      type: System.Text.Encodings.Web.UrlEncoder
+      description: The <xref href="System.Text.Encodings.Web.UrlEncoder" data-throw-if-not-resolved="false"></xref> used to perform URL character encoding.
+    content.vb: Public Sub New(resourceProviderServices As IEnumerable(Of IResourceProviderService), options As IOptionsMonitor(Of AgentAccessTokenOptions), logger As ILoggerFactory, encoder As UrlEncoder)
+  overload: FoundationaLLM.Common.Authentication.AgentAccessTokenAuthenticationHandler.#ctor*
+  nameWithType.vb: AgentAccessTokenAuthenticationHandler.New(IEnumerable(Of IResourceProviderService), IOptionsMonitor(Of AgentAccessTokenOptions), ILoggerFactory, UrlEncoder)
+  fullName.vb: FoundationaLLM.Common.Authentication.AgentAccessTokenAuthenticationHandler.New(System.Collections.Generic.IEnumerable(Of FoundationaLLM.Common.Interfaces.IResourceProviderService), Microsoft.Extensions.Options.IOptionsMonitor(Of FoundationaLLM.Common.Authentication.AgentAccessTokenOptions), Microsoft.Extensions.Logging.ILoggerFactory, System.Text.Encodings.Web.UrlEncoder)
+  name.vb: New(IEnumerable(Of IResourceProviderService), IOptionsMonitor(Of AgentAccessTokenOptions), ILoggerFactory, UrlEncoder)
+- uid: FoundationaLLM.Common.Authentication.AgentAccessTokenAuthenticationHandler.HandleAuthenticateAsync
+  commentId: M:FoundationaLLM.Common.Authentication.AgentAccessTokenAuthenticationHandler.HandleAuthenticateAsync
+  id: HandleAuthenticateAsync
+  parent: FoundationaLLM.Common.Authentication.AgentAccessTokenAuthenticationHandler
+  langs:
+  - csharp
+  - vb
+  name: HandleAuthenticateAsync()
+  nameWithType: AgentAccessTokenAuthenticationHandler.HandleAuthenticateAsync()
+  fullName: FoundationaLLM.Common.Authentication.AgentAccessTokenAuthenticationHandler.HandleAuthenticateAsync()
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Common/Authentication/AgentAccessTokenAuthenticationHandler.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: HandleAuthenticateAsync
+    path: ../src/dotnet/Common/Authentication/AgentAccessTokenAuthenticationHandler.cs
+    startLine: 43
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Authentication
+  summary: Handles authentication for agent access tokens.
+  example: []
+  syntax:
+    content: protected override Task<AuthenticateResult> HandleAuthenticateAsync()
+    return:
+      type: System.Threading.Tasks.Task{Microsoft.AspNetCore.Authentication.AuthenticateResult}
+      description: ''
+    content.vb: Protected Overrides Function HandleAuthenticateAsync() As Task(Of AuthenticateResult)
+  overridden: Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}.HandleAuthenticateAsync
+  overload: FoundationaLLM.Common.Authentication.AgentAccessTokenAuthenticationHandler.HandleAuthenticateAsync*
+references:
+- uid: FoundationaLLM.Common.Authentication.AgentAccessTokenAuthenticationHandler
+  commentId: T:FoundationaLLM.Common.Authentication.AgentAccessTokenAuthenticationHandler
+  href: FoundationaLLM.Common.Authentication.AgentAccessTokenAuthenticationHandler.html
+  name: AgentAccessTokenAuthenticationHandler
+  nameWithType: AgentAccessTokenAuthenticationHandler
+  fullName: FoundationaLLM.Common.Authentication.AgentAccessTokenAuthenticationHandler
+- uid: FoundationaLLM.Common.Interfaces.IResourceProviderService
+  commentId: T:FoundationaLLM.Common.Interfaces.IResourceProviderService
+  parent: FoundationaLLM.Common.Interfaces
+  href: FoundationaLLM.Common.Interfaces.IResourceProviderService.html
+  name: IResourceProviderService
+  nameWithType: IResourceProviderService
+  fullName: FoundationaLLM.Common.Interfaces.IResourceProviderService
+- uid: Microsoft.Extensions.Logging.ILoggerFactory
+  commentId: T:Microsoft.Extensions.Logging.ILoggerFactory
+  parent: Microsoft.Extensions.Logging
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.iloggerfactory
+  name: ILoggerFactory
+  nameWithType: ILoggerFactory
+  fullName: Microsoft.Extensions.Logging.ILoggerFactory
+- uid: System.Text.Encodings.Web.UrlEncoder
+  commentId: T:System.Text.Encodings.Web.UrlEncoder
+  parent: System.Text.Encodings.Web
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.text.encodings.web.urlencoder
+  name: UrlEncoder
+  nameWithType: UrlEncoder
+  fullName: System.Text.Encodings.Web.UrlEncoder
+- uid: FoundationaLLM.Common.Authentication
+  commentId: N:FoundationaLLM.Common.Authentication
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Authentication
+  nameWithType: FoundationaLLM.Common.Authentication
+  fullName: FoundationaLLM.Common.Authentication
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Authentication
+    name: Authentication
+    href: FoundationaLLM.Common.Authentication.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Authentication
+    name: Authentication
+    href: FoundationaLLM.Common.Authentication.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}
+  commentId: T:Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}
+  parent: Microsoft.AspNetCore.Authentication
+  definition: Microsoft.AspNetCore.Authentication.AuthenticationHandler`1
+  href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationhandler-1
+  name: AuthenticationHandler<AgentAccessTokenOptions>
+  nameWithType: AuthenticationHandler<AgentAccessTokenOptions>
+  fullName: Microsoft.AspNetCore.Authentication.AuthenticationHandler<FoundationaLLM.Common.Authentication.AgentAccessTokenOptions>
+  nameWithType.vb: AuthenticationHandler(Of AgentAccessTokenOptions)
+  fullName.vb: Microsoft.AspNetCore.Authentication.AuthenticationHandler(Of FoundationaLLM.Common.Authentication.AgentAccessTokenOptions)
+  name.vb: AuthenticationHandler(Of AgentAccessTokenOptions)
+  spec.csharp:
+  - uid: Microsoft.AspNetCore.Authentication.AuthenticationHandler`1
+    name: AuthenticationHandler
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationhandler-1
+  - name: <
+  - uid: FoundationaLLM.Common.Authentication.AgentAccessTokenOptions
+    name: AgentAccessTokenOptions
+    href: FoundationaLLM.Common.Authentication.AgentAccessTokenOptions.html
+  - name: '>'
+  spec.vb:
+  - uid: Microsoft.AspNetCore.Authentication.AuthenticationHandler`1
+    name: AuthenticationHandler
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationhandler-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FoundationaLLM.Common.Authentication.AgentAccessTokenOptions
+    name: AgentAccessTokenOptions
+    href: FoundationaLLM.Common.Authentication.AgentAccessTokenOptions.html
+  - name: )
+- uid: Microsoft.AspNetCore.Authentication.IAuthenticationHandler
+  commentId: T:Microsoft.AspNetCore.Authentication.IAuthenticationHandler
+  parent: Microsoft.AspNetCore.Authentication
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.iauthenticationhandler
+  name: IAuthenticationHandler
+  nameWithType: IAuthenticationHandler
+  fullName: Microsoft.AspNetCore.Authentication.IAuthenticationHandler
+- uid: Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}.InitializeAsync(Microsoft.AspNetCore.Authentication.AuthenticationScheme,Microsoft.AspNetCore.Http.HttpContext)
+  commentId: M:Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}.InitializeAsync(Microsoft.AspNetCore.Authentication.AuthenticationScheme,Microsoft.AspNetCore.Http.HttpContext)
+  parent: Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}
+  definition: Microsoft.AspNetCore.Authentication.AuthenticationHandler`1.InitializeAsync(Microsoft.AspNetCore.Authentication.AuthenticationScheme,Microsoft.AspNetCore.Http.HttpContext)
+  href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationhandler-1.initializeasync
+  name: InitializeAsync(AuthenticationScheme, HttpContext)
+  nameWithType: AuthenticationHandler<AgentAccessTokenOptions>.InitializeAsync(AuthenticationScheme, HttpContext)
+  fullName: Microsoft.AspNetCore.Authentication.AuthenticationHandler<FoundationaLLM.Common.Authentication.AgentAccessTokenOptions>.InitializeAsync(Microsoft.AspNetCore.Authentication.AuthenticationScheme, Microsoft.AspNetCore.Http.HttpContext)
+  nameWithType.vb: AuthenticationHandler(Of AgentAccessTokenOptions).InitializeAsync(AuthenticationScheme, HttpContext)
+  fullName.vb: Microsoft.AspNetCore.Authentication.AuthenticationHandler(Of FoundationaLLM.Common.Authentication.AgentAccessTokenOptions).InitializeAsync(Microsoft.AspNetCore.Authentication.AuthenticationScheme, Microsoft.AspNetCore.Http.HttpContext)
+  spec.csharp:
+  - uid: Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}.InitializeAsync(Microsoft.AspNetCore.Authentication.AuthenticationScheme,Microsoft.AspNetCore.Http.HttpContext)
+    name: InitializeAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationhandler-1.initializeasync
+  - name: (
+  - uid: Microsoft.AspNetCore.Authentication.AuthenticationScheme
+    name: AuthenticationScheme
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationscheme
+  - name: ','
+  - name: " "
+  - uid: Microsoft.AspNetCore.Http.HttpContext
+    name: HttpContext
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.http.httpcontext
+  - name: )
+  spec.vb:
+  - uid: Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}.InitializeAsync(Microsoft.AspNetCore.Authentication.AuthenticationScheme,Microsoft.AspNetCore.Http.HttpContext)
+    name: InitializeAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationhandler-1.initializeasync
+  - name: (
+  - uid: Microsoft.AspNetCore.Authentication.AuthenticationScheme
+    name: AuthenticationScheme
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationscheme
+  - name: ','
+  - name: " "
+  - uid: Microsoft.AspNetCore.Http.HttpContext
+    name: HttpContext
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.http.httpcontext
+  - name: )
+- uid: Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}.InitializeEventsAsync
+  commentId: M:Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}.InitializeEventsAsync
+  parent: Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}
+  definition: Microsoft.AspNetCore.Authentication.AuthenticationHandler`1.InitializeEventsAsync
+  href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationhandler-1.initializeeventsasync
+  name: InitializeEventsAsync()
+  nameWithType: AuthenticationHandler<AgentAccessTokenOptions>.InitializeEventsAsync()
+  fullName: Microsoft.AspNetCore.Authentication.AuthenticationHandler<FoundationaLLM.Common.Authentication.AgentAccessTokenOptions>.InitializeEventsAsync()
+  nameWithType.vb: AuthenticationHandler(Of AgentAccessTokenOptions).InitializeEventsAsync()
+  fullName.vb: Microsoft.AspNetCore.Authentication.AuthenticationHandler(Of FoundationaLLM.Common.Authentication.AgentAccessTokenOptions).InitializeEventsAsync()
+  spec.csharp:
+  - uid: Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}.InitializeEventsAsync
+    name: InitializeEventsAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationhandler-1.initializeeventsasync
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}.InitializeEventsAsync
+    name: InitializeEventsAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationhandler-1.initializeeventsasync
+  - name: (
+  - name: )
+- uid: Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}.CreateEventsAsync
+  commentId: M:Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}.CreateEventsAsync
+  parent: Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}
+  definition: Microsoft.AspNetCore.Authentication.AuthenticationHandler`1.CreateEventsAsync
+  href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationhandler-1.createeventsasync
+  name: CreateEventsAsync()
+  nameWithType: AuthenticationHandler<AgentAccessTokenOptions>.CreateEventsAsync()
+  fullName: Microsoft.AspNetCore.Authentication.AuthenticationHandler<FoundationaLLM.Common.Authentication.AgentAccessTokenOptions>.CreateEventsAsync()
+  nameWithType.vb: AuthenticationHandler(Of AgentAccessTokenOptions).CreateEventsAsync()
+  fullName.vb: Microsoft.AspNetCore.Authentication.AuthenticationHandler(Of FoundationaLLM.Common.Authentication.AgentAccessTokenOptions).CreateEventsAsync()
+  spec.csharp:
+  - uid: Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}.CreateEventsAsync
+    name: CreateEventsAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationhandler-1.createeventsasync
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}.CreateEventsAsync
+    name: CreateEventsAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationhandler-1.createeventsasync
+  - name: (
+  - name: )
+- uid: Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}.InitializeHandlerAsync
+  commentId: M:Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}.InitializeHandlerAsync
+  parent: Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}
+  definition: Microsoft.AspNetCore.Authentication.AuthenticationHandler`1.InitializeHandlerAsync
+  href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationhandler-1.initializehandlerasync
+  name: InitializeHandlerAsync()
+  nameWithType: AuthenticationHandler<AgentAccessTokenOptions>.InitializeHandlerAsync()
+  fullName: Microsoft.AspNetCore.Authentication.AuthenticationHandler<FoundationaLLM.Common.Authentication.AgentAccessTokenOptions>.InitializeHandlerAsync()
+  nameWithType.vb: AuthenticationHandler(Of AgentAccessTokenOptions).InitializeHandlerAsync()
+  fullName.vb: Microsoft.AspNetCore.Authentication.AuthenticationHandler(Of FoundationaLLM.Common.Authentication.AgentAccessTokenOptions).InitializeHandlerAsync()
+  spec.csharp:
+  - uid: Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}.InitializeHandlerAsync
+    name: InitializeHandlerAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationhandler-1.initializehandlerasync
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}.InitializeHandlerAsync
+    name: InitializeHandlerAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationhandler-1.initializehandlerasync
+  - name: (
+  - name: )
+- uid: Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}.BuildRedirectUri(System.String)
+  commentId: M:Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}.BuildRedirectUri(System.String)
+  parent: Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}
+  definition: Microsoft.AspNetCore.Authentication.AuthenticationHandler`1.BuildRedirectUri(System.String)
+  href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationhandler-1.buildredirecturi
+  name: BuildRedirectUri(string)
+  nameWithType: AuthenticationHandler<AgentAccessTokenOptions>.BuildRedirectUri(string)
+  fullName: Microsoft.AspNetCore.Authentication.AuthenticationHandler<FoundationaLLM.Common.Authentication.AgentAccessTokenOptions>.BuildRedirectUri(string)
+  nameWithType.vb: AuthenticationHandler(Of AgentAccessTokenOptions).BuildRedirectUri(String)
+  fullName.vb: Microsoft.AspNetCore.Authentication.AuthenticationHandler(Of FoundationaLLM.Common.Authentication.AgentAccessTokenOptions).BuildRedirectUri(String)
+  name.vb: BuildRedirectUri(String)
+  spec.csharp:
+  - uid: Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}.BuildRedirectUri(System.String)
+    name: BuildRedirectUri
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationhandler-1.buildredirecturi
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}.BuildRedirectUri(System.String)
+    name: BuildRedirectUri
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationhandler-1.buildredirecturi
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}.ResolveTarget(System.String)
+  commentId: M:Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}.ResolveTarget(System.String)
+  parent: Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}
+  definition: Microsoft.AspNetCore.Authentication.AuthenticationHandler`1.ResolveTarget(System.String)
+  href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationhandler-1.resolvetarget
+  name: ResolveTarget(string)
+  nameWithType: AuthenticationHandler<AgentAccessTokenOptions>.ResolveTarget(string)
+  fullName: Microsoft.AspNetCore.Authentication.AuthenticationHandler<FoundationaLLM.Common.Authentication.AgentAccessTokenOptions>.ResolveTarget(string)
+  nameWithType.vb: AuthenticationHandler(Of AgentAccessTokenOptions).ResolveTarget(String)
+  fullName.vb: Microsoft.AspNetCore.Authentication.AuthenticationHandler(Of FoundationaLLM.Common.Authentication.AgentAccessTokenOptions).ResolveTarget(String)
+  name.vb: ResolveTarget(String)
+  spec.csharp:
+  - uid: Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}.ResolveTarget(System.String)
+    name: ResolveTarget
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationhandler-1.resolvetarget
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}.ResolveTarget(System.String)
+    name: ResolveTarget
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationhandler-1.resolvetarget
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}.AuthenticateAsync
+  commentId: M:Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}.AuthenticateAsync
+  parent: Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}
+  definition: Microsoft.AspNetCore.Authentication.AuthenticationHandler`1.AuthenticateAsync
+  href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationhandler-1.authenticateasync
+  name: AuthenticateAsync()
+  nameWithType: AuthenticationHandler<AgentAccessTokenOptions>.AuthenticateAsync()
+  fullName: Microsoft.AspNetCore.Authentication.AuthenticationHandler<FoundationaLLM.Common.Authentication.AgentAccessTokenOptions>.AuthenticateAsync()
+  nameWithType.vb: AuthenticationHandler(Of AgentAccessTokenOptions).AuthenticateAsync()
+  fullName.vb: Microsoft.AspNetCore.Authentication.AuthenticationHandler(Of FoundationaLLM.Common.Authentication.AgentAccessTokenOptions).AuthenticateAsync()
+  spec.csharp:
+  - uid: Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}.AuthenticateAsync
+    name: AuthenticateAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationhandler-1.authenticateasync
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}.AuthenticateAsync
+    name: AuthenticateAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationhandler-1.authenticateasync
+  - name: (
+  - name: )
+- uid: Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}.HandleAuthenticateOnceAsync
+  commentId: M:Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}.HandleAuthenticateOnceAsync
+  parent: Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}
+  definition: Microsoft.AspNetCore.Authentication.AuthenticationHandler`1.HandleAuthenticateOnceAsync
+  href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationhandler-1.handleauthenticateonceasync
+  name: HandleAuthenticateOnceAsync()
+  nameWithType: AuthenticationHandler<AgentAccessTokenOptions>.HandleAuthenticateOnceAsync()
+  fullName: Microsoft.AspNetCore.Authentication.AuthenticationHandler<FoundationaLLM.Common.Authentication.AgentAccessTokenOptions>.HandleAuthenticateOnceAsync()
+  nameWithType.vb: AuthenticationHandler(Of AgentAccessTokenOptions).HandleAuthenticateOnceAsync()
+  fullName.vb: Microsoft.AspNetCore.Authentication.AuthenticationHandler(Of FoundationaLLM.Common.Authentication.AgentAccessTokenOptions).HandleAuthenticateOnceAsync()
+  spec.csharp:
+  - uid: Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}.HandleAuthenticateOnceAsync
+    name: HandleAuthenticateOnceAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationhandler-1.handleauthenticateonceasync
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}.HandleAuthenticateOnceAsync
+    name: HandleAuthenticateOnceAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationhandler-1.handleauthenticateonceasync
+  - name: (
+  - name: )
+- uid: Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}.HandleAuthenticateOnceSafeAsync
+  commentId: M:Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}.HandleAuthenticateOnceSafeAsync
+  parent: Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}
+  definition: Microsoft.AspNetCore.Authentication.AuthenticationHandler`1.HandleAuthenticateOnceSafeAsync
+  href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationhandler-1.handleauthenticateoncesafeasync
+  name: HandleAuthenticateOnceSafeAsync()
+  nameWithType: AuthenticationHandler<AgentAccessTokenOptions>.HandleAuthenticateOnceSafeAsync()
+  fullName: Microsoft.AspNetCore.Authentication.AuthenticationHandler<FoundationaLLM.Common.Authentication.AgentAccessTokenOptions>.HandleAuthenticateOnceSafeAsync()
+  nameWithType.vb: AuthenticationHandler(Of AgentAccessTokenOptions).HandleAuthenticateOnceSafeAsync()
+  fullName.vb: Microsoft.AspNetCore.Authentication.AuthenticationHandler(Of FoundationaLLM.Common.Authentication.AgentAccessTokenOptions).HandleAuthenticateOnceSafeAsync()
+  spec.csharp:
+  - uid: Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}.HandleAuthenticateOnceSafeAsync
+    name: HandleAuthenticateOnceSafeAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationhandler-1.handleauthenticateoncesafeasync
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}.HandleAuthenticateOnceSafeAsync
+    name: HandleAuthenticateOnceSafeAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationhandler-1.handleauthenticateoncesafeasync
+  - name: (
+  - name: )
+- uid: Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}.HandleForbiddenAsync(Microsoft.AspNetCore.Authentication.AuthenticationProperties)
+  commentId: M:Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}.HandleForbiddenAsync(Microsoft.AspNetCore.Authentication.AuthenticationProperties)
+  parent: Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}
+  definition: Microsoft.AspNetCore.Authentication.AuthenticationHandler`1.HandleForbiddenAsync(Microsoft.AspNetCore.Authentication.AuthenticationProperties)
+  href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationhandler-1.handleforbiddenasync
+  name: HandleForbiddenAsync(AuthenticationProperties)
+  nameWithType: AuthenticationHandler<AgentAccessTokenOptions>.HandleForbiddenAsync(AuthenticationProperties)
+  fullName: Microsoft.AspNetCore.Authentication.AuthenticationHandler<FoundationaLLM.Common.Authentication.AgentAccessTokenOptions>.HandleForbiddenAsync(Microsoft.AspNetCore.Authentication.AuthenticationProperties)
+  nameWithType.vb: AuthenticationHandler(Of AgentAccessTokenOptions).HandleForbiddenAsync(AuthenticationProperties)
+  fullName.vb: Microsoft.AspNetCore.Authentication.AuthenticationHandler(Of FoundationaLLM.Common.Authentication.AgentAccessTokenOptions).HandleForbiddenAsync(Microsoft.AspNetCore.Authentication.AuthenticationProperties)
+  spec.csharp:
+  - uid: Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}.HandleForbiddenAsync(Microsoft.AspNetCore.Authentication.AuthenticationProperties)
+    name: HandleForbiddenAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationhandler-1.handleforbiddenasync
+  - name: (
+  - uid: Microsoft.AspNetCore.Authentication.AuthenticationProperties
+    name: AuthenticationProperties
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationproperties
+  - name: )
+  spec.vb:
+  - uid: Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}.HandleForbiddenAsync(Microsoft.AspNetCore.Authentication.AuthenticationProperties)
+    name: HandleForbiddenAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationhandler-1.handleforbiddenasync
+  - name: (
+  - uid: Microsoft.AspNetCore.Authentication.AuthenticationProperties
+    name: AuthenticationProperties
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationproperties
+  - name: )
+- uid: Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}.HandleChallengeAsync(Microsoft.AspNetCore.Authentication.AuthenticationProperties)
+  commentId: M:Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}.HandleChallengeAsync(Microsoft.AspNetCore.Authentication.AuthenticationProperties)
+  parent: Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}
+  definition: Microsoft.AspNetCore.Authentication.AuthenticationHandler`1.HandleChallengeAsync(Microsoft.AspNetCore.Authentication.AuthenticationProperties)
+  href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationhandler-1.handlechallengeasync
+  name: HandleChallengeAsync(AuthenticationProperties)
+  nameWithType: AuthenticationHandler<AgentAccessTokenOptions>.HandleChallengeAsync(AuthenticationProperties)
+  fullName: Microsoft.AspNetCore.Authentication.AuthenticationHandler<FoundationaLLM.Common.Authentication.AgentAccessTokenOptions>.HandleChallengeAsync(Microsoft.AspNetCore.Authentication.AuthenticationProperties)
+  nameWithType.vb: AuthenticationHandler(Of AgentAccessTokenOptions).HandleChallengeAsync(AuthenticationProperties)
+  fullName.vb: Microsoft.AspNetCore.Authentication.AuthenticationHandler(Of FoundationaLLM.Common.Authentication.AgentAccessTokenOptions).HandleChallengeAsync(Microsoft.AspNetCore.Authentication.AuthenticationProperties)
+  spec.csharp:
+  - uid: Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}.HandleChallengeAsync(Microsoft.AspNetCore.Authentication.AuthenticationProperties)
+    name: HandleChallengeAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationhandler-1.handlechallengeasync
+  - name: (
+  - uid: Microsoft.AspNetCore.Authentication.AuthenticationProperties
+    name: AuthenticationProperties
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationproperties
+  - name: )
+  spec.vb:
+  - uid: Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}.HandleChallengeAsync(Microsoft.AspNetCore.Authentication.AuthenticationProperties)
+    name: HandleChallengeAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationhandler-1.handlechallengeasync
+  - name: (
+  - uid: Microsoft.AspNetCore.Authentication.AuthenticationProperties
+    name: AuthenticationProperties
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationproperties
+  - name: )
+- uid: Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}.ChallengeAsync(Microsoft.AspNetCore.Authentication.AuthenticationProperties)
+  commentId: M:Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}.ChallengeAsync(Microsoft.AspNetCore.Authentication.AuthenticationProperties)
+  parent: Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}
+  definition: Microsoft.AspNetCore.Authentication.AuthenticationHandler`1.ChallengeAsync(Microsoft.AspNetCore.Authentication.AuthenticationProperties)
+  href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationhandler-1.challengeasync
+  name: ChallengeAsync(AuthenticationProperties)
+  nameWithType: AuthenticationHandler<AgentAccessTokenOptions>.ChallengeAsync(AuthenticationProperties)
+  fullName: Microsoft.AspNetCore.Authentication.AuthenticationHandler<FoundationaLLM.Common.Authentication.AgentAccessTokenOptions>.ChallengeAsync(Microsoft.AspNetCore.Authentication.AuthenticationProperties)
+  nameWithType.vb: AuthenticationHandler(Of AgentAccessTokenOptions).ChallengeAsync(AuthenticationProperties)
+  fullName.vb: Microsoft.AspNetCore.Authentication.AuthenticationHandler(Of FoundationaLLM.Common.Authentication.AgentAccessTokenOptions).ChallengeAsync(Microsoft.AspNetCore.Authentication.AuthenticationProperties)
+  spec.csharp:
+  - uid: Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}.ChallengeAsync(Microsoft.AspNetCore.Authentication.AuthenticationProperties)
+    name: ChallengeAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationhandler-1.challengeasync
+  - name: (
+  - uid: Microsoft.AspNetCore.Authentication.AuthenticationProperties
+    name: AuthenticationProperties
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationproperties
+  - name: )
+  spec.vb:
+  - uid: Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}.ChallengeAsync(Microsoft.AspNetCore.Authentication.AuthenticationProperties)
+    name: ChallengeAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationhandler-1.challengeasync
+  - name: (
+  - uid: Microsoft.AspNetCore.Authentication.AuthenticationProperties
+    name: AuthenticationProperties
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationproperties
+  - name: )
+- uid: Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}.ForbidAsync(Microsoft.AspNetCore.Authentication.AuthenticationProperties)
+  commentId: M:Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}.ForbidAsync(Microsoft.AspNetCore.Authentication.AuthenticationProperties)
+  parent: Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}
+  definition: Microsoft.AspNetCore.Authentication.AuthenticationHandler`1.ForbidAsync(Microsoft.AspNetCore.Authentication.AuthenticationProperties)
+  href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationhandler-1.forbidasync
+  name: ForbidAsync(AuthenticationProperties)
+  nameWithType: AuthenticationHandler<AgentAccessTokenOptions>.ForbidAsync(AuthenticationProperties)
+  fullName: Microsoft.AspNetCore.Authentication.AuthenticationHandler<FoundationaLLM.Common.Authentication.AgentAccessTokenOptions>.ForbidAsync(Microsoft.AspNetCore.Authentication.AuthenticationProperties)
+  nameWithType.vb: AuthenticationHandler(Of AgentAccessTokenOptions).ForbidAsync(AuthenticationProperties)
+  fullName.vb: Microsoft.AspNetCore.Authentication.AuthenticationHandler(Of FoundationaLLM.Common.Authentication.AgentAccessTokenOptions).ForbidAsync(Microsoft.AspNetCore.Authentication.AuthenticationProperties)
+  spec.csharp:
+  - uid: Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}.ForbidAsync(Microsoft.AspNetCore.Authentication.AuthenticationProperties)
+    name: ForbidAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationhandler-1.forbidasync
+  - name: (
+  - uid: Microsoft.AspNetCore.Authentication.AuthenticationProperties
+    name: AuthenticationProperties
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationproperties
+  - name: )
+  spec.vb:
+  - uid: Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}.ForbidAsync(Microsoft.AspNetCore.Authentication.AuthenticationProperties)
+    name: ForbidAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationhandler-1.forbidasync
+  - name: (
+  - uid: Microsoft.AspNetCore.Authentication.AuthenticationProperties
+    name: AuthenticationProperties
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationproperties
+  - name: )
+- uid: Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}.Scheme
+  commentId: P:Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}.Scheme
+  parent: Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}
+  definition: Microsoft.AspNetCore.Authentication.AuthenticationHandler`1.Scheme
+  href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationhandler-1.scheme
+  name: Scheme
+  nameWithType: AuthenticationHandler<AgentAccessTokenOptions>.Scheme
+  fullName: Microsoft.AspNetCore.Authentication.AuthenticationHandler<FoundationaLLM.Common.Authentication.AgentAccessTokenOptions>.Scheme
+  nameWithType.vb: AuthenticationHandler(Of AgentAccessTokenOptions).Scheme
+  fullName.vb: Microsoft.AspNetCore.Authentication.AuthenticationHandler(Of FoundationaLLM.Common.Authentication.AgentAccessTokenOptions).Scheme
+- uid: Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}.Options
+  commentId: P:Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}.Options
+  parent: Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}
+  definition: Microsoft.AspNetCore.Authentication.AuthenticationHandler`1.Options
+  href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationhandler-1.options
+  name: Options
+  nameWithType: AuthenticationHandler<AgentAccessTokenOptions>.Options
+  fullName: Microsoft.AspNetCore.Authentication.AuthenticationHandler<FoundationaLLM.Common.Authentication.AgentAccessTokenOptions>.Options
+  nameWithType.vb: AuthenticationHandler(Of AgentAccessTokenOptions).Options
+  fullName.vb: Microsoft.AspNetCore.Authentication.AuthenticationHandler(Of FoundationaLLM.Common.Authentication.AgentAccessTokenOptions).Options
+- uid: Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}.Context
+  commentId: P:Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}.Context
+  parent: Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}
+  definition: Microsoft.AspNetCore.Authentication.AuthenticationHandler`1.Context
+  href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationhandler-1.context
+  name: Context
+  nameWithType: AuthenticationHandler<AgentAccessTokenOptions>.Context
+  fullName: Microsoft.AspNetCore.Authentication.AuthenticationHandler<FoundationaLLM.Common.Authentication.AgentAccessTokenOptions>.Context
+  nameWithType.vb: AuthenticationHandler(Of AgentAccessTokenOptions).Context
+  fullName.vb: Microsoft.AspNetCore.Authentication.AuthenticationHandler(Of FoundationaLLM.Common.Authentication.AgentAccessTokenOptions).Context
+- uid: Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}.Request
+  commentId: P:Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}.Request
+  parent: Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}
+  definition: Microsoft.AspNetCore.Authentication.AuthenticationHandler`1.Request
+  href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationhandler-1.request
+  name: Request
+  nameWithType: AuthenticationHandler<AgentAccessTokenOptions>.Request
+  fullName: Microsoft.AspNetCore.Authentication.AuthenticationHandler<FoundationaLLM.Common.Authentication.AgentAccessTokenOptions>.Request
+  nameWithType.vb: AuthenticationHandler(Of AgentAccessTokenOptions).Request
+  fullName.vb: Microsoft.AspNetCore.Authentication.AuthenticationHandler(Of FoundationaLLM.Common.Authentication.AgentAccessTokenOptions).Request
+- uid: Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}.Response
+  commentId: P:Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}.Response
+  parent: Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}
+  definition: Microsoft.AspNetCore.Authentication.AuthenticationHandler`1.Response
+  href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationhandler-1.response
+  name: Response
+  nameWithType: AuthenticationHandler<AgentAccessTokenOptions>.Response
+  fullName: Microsoft.AspNetCore.Authentication.AuthenticationHandler<FoundationaLLM.Common.Authentication.AgentAccessTokenOptions>.Response
+  nameWithType.vb: AuthenticationHandler(Of AgentAccessTokenOptions).Response
+  fullName.vb: Microsoft.AspNetCore.Authentication.AuthenticationHandler(Of FoundationaLLM.Common.Authentication.AgentAccessTokenOptions).Response
+- uid: Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}.OriginalPath
+  commentId: P:Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}.OriginalPath
+  parent: Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}
+  definition: Microsoft.AspNetCore.Authentication.AuthenticationHandler`1.OriginalPath
+  href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationhandler-1.originalpath
+  name: OriginalPath
+  nameWithType: AuthenticationHandler<AgentAccessTokenOptions>.OriginalPath
+  fullName: Microsoft.AspNetCore.Authentication.AuthenticationHandler<FoundationaLLM.Common.Authentication.AgentAccessTokenOptions>.OriginalPath
+  nameWithType.vb: AuthenticationHandler(Of AgentAccessTokenOptions).OriginalPath
+  fullName.vb: Microsoft.AspNetCore.Authentication.AuthenticationHandler(Of FoundationaLLM.Common.Authentication.AgentAccessTokenOptions).OriginalPath
+- uid: Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}.OriginalPathBase
+  commentId: P:Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}.OriginalPathBase
+  parent: Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}
+  definition: Microsoft.AspNetCore.Authentication.AuthenticationHandler`1.OriginalPathBase
+  href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationhandler-1.originalpathbase
+  name: OriginalPathBase
+  nameWithType: AuthenticationHandler<AgentAccessTokenOptions>.OriginalPathBase
+  fullName: Microsoft.AspNetCore.Authentication.AuthenticationHandler<FoundationaLLM.Common.Authentication.AgentAccessTokenOptions>.OriginalPathBase
+  nameWithType.vb: AuthenticationHandler(Of AgentAccessTokenOptions).OriginalPathBase
+  fullName.vb: Microsoft.AspNetCore.Authentication.AuthenticationHandler(Of FoundationaLLM.Common.Authentication.AgentAccessTokenOptions).OriginalPathBase
+- uid: Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}.Logger
+  commentId: P:Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}.Logger
+  parent: Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}
+  definition: Microsoft.AspNetCore.Authentication.AuthenticationHandler`1.Logger
+  href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationhandler-1.logger
+  name: Logger
+  nameWithType: AuthenticationHandler<AgentAccessTokenOptions>.Logger
+  fullName: Microsoft.AspNetCore.Authentication.AuthenticationHandler<FoundationaLLM.Common.Authentication.AgentAccessTokenOptions>.Logger
+  nameWithType.vb: AuthenticationHandler(Of AgentAccessTokenOptions).Logger
+  fullName.vb: Microsoft.AspNetCore.Authentication.AuthenticationHandler(Of FoundationaLLM.Common.Authentication.AgentAccessTokenOptions).Logger
+- uid: Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}.UrlEncoder
+  commentId: P:Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}.UrlEncoder
+  parent: Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}
+  definition: Microsoft.AspNetCore.Authentication.AuthenticationHandler`1.UrlEncoder
+  href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationhandler-1.urlencoder
+  name: UrlEncoder
+  nameWithType: AuthenticationHandler<AgentAccessTokenOptions>.UrlEncoder
+  fullName: Microsoft.AspNetCore.Authentication.AuthenticationHandler<FoundationaLLM.Common.Authentication.AgentAccessTokenOptions>.UrlEncoder
+  nameWithType.vb: AuthenticationHandler(Of AgentAccessTokenOptions).UrlEncoder
+  fullName.vb: Microsoft.AspNetCore.Authentication.AuthenticationHandler(Of FoundationaLLM.Common.Authentication.AgentAccessTokenOptions).UrlEncoder
+- uid: Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}.Clock
+  commentId: P:Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}.Clock
+  parent: Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}
+  definition: Microsoft.AspNetCore.Authentication.AuthenticationHandler`1.Clock
+  href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationhandler-1.clock
+  name: Clock
+  nameWithType: AuthenticationHandler<AgentAccessTokenOptions>.Clock
+  fullName: Microsoft.AspNetCore.Authentication.AuthenticationHandler<FoundationaLLM.Common.Authentication.AgentAccessTokenOptions>.Clock
+  nameWithType.vb: AuthenticationHandler(Of AgentAccessTokenOptions).Clock
+  fullName.vb: Microsoft.AspNetCore.Authentication.AuthenticationHandler(Of FoundationaLLM.Common.Authentication.AgentAccessTokenOptions).Clock
+- uid: Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}.TimeProvider
+  commentId: P:Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}.TimeProvider
+  parent: Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}
+  definition: Microsoft.AspNetCore.Authentication.AuthenticationHandler`1.TimeProvider
+  href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationhandler-1.timeprovider
+  name: TimeProvider
+  nameWithType: AuthenticationHandler<AgentAccessTokenOptions>.TimeProvider
+  fullName: Microsoft.AspNetCore.Authentication.AuthenticationHandler<FoundationaLLM.Common.Authentication.AgentAccessTokenOptions>.TimeProvider
+  nameWithType.vb: AuthenticationHandler(Of AgentAccessTokenOptions).TimeProvider
+  fullName.vb: Microsoft.AspNetCore.Authentication.AuthenticationHandler(Of FoundationaLLM.Common.Authentication.AgentAccessTokenOptions).TimeProvider
+- uid: Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}.OptionsMonitor
+  commentId: P:Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}.OptionsMonitor
+  parent: Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}
+  definition: Microsoft.AspNetCore.Authentication.AuthenticationHandler`1.OptionsMonitor
+  href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationhandler-1.optionsmonitor
+  name: OptionsMonitor
+  nameWithType: AuthenticationHandler<AgentAccessTokenOptions>.OptionsMonitor
+  fullName: Microsoft.AspNetCore.Authentication.AuthenticationHandler<FoundationaLLM.Common.Authentication.AgentAccessTokenOptions>.OptionsMonitor
+  nameWithType.vb: AuthenticationHandler(Of AgentAccessTokenOptions).OptionsMonitor
+  fullName.vb: Microsoft.AspNetCore.Authentication.AuthenticationHandler(Of FoundationaLLM.Common.Authentication.AgentAccessTokenOptions).OptionsMonitor
+- uid: Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}.Events
+  commentId: P:Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}.Events
+  parent: Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}
+  definition: Microsoft.AspNetCore.Authentication.AuthenticationHandler`1.Events
+  href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationhandler-1.events
+  name: Events
+  nameWithType: AuthenticationHandler<AgentAccessTokenOptions>.Events
+  fullName: Microsoft.AspNetCore.Authentication.AuthenticationHandler<FoundationaLLM.Common.Authentication.AgentAccessTokenOptions>.Events
+  nameWithType.vb: AuthenticationHandler(Of AgentAccessTokenOptions).Events
+  fullName.vb: Microsoft.AspNetCore.Authentication.AuthenticationHandler(Of FoundationaLLM.Common.Authentication.AgentAccessTokenOptions).Events
+- uid: Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}.ClaimsIssuer
+  commentId: P:Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}.ClaimsIssuer
+  parent: Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}
+  definition: Microsoft.AspNetCore.Authentication.AuthenticationHandler`1.ClaimsIssuer
+  href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationhandler-1.claimsissuer
+  name: ClaimsIssuer
+  nameWithType: AuthenticationHandler<AgentAccessTokenOptions>.ClaimsIssuer
+  fullName: Microsoft.AspNetCore.Authentication.AuthenticationHandler<FoundationaLLM.Common.Authentication.AgentAccessTokenOptions>.ClaimsIssuer
+  nameWithType.vb: AuthenticationHandler(Of AgentAccessTokenOptions).ClaimsIssuer
+  fullName.vb: Microsoft.AspNetCore.Authentication.AuthenticationHandler(Of FoundationaLLM.Common.Authentication.AgentAccessTokenOptions).ClaimsIssuer
+- uid: Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}.CurrentUri
+  commentId: P:Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}.CurrentUri
+  parent: Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}
+  definition: Microsoft.AspNetCore.Authentication.AuthenticationHandler`1.CurrentUri
+  href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationhandler-1.currenturi
+  name: CurrentUri
+  nameWithType: AuthenticationHandler<AgentAccessTokenOptions>.CurrentUri
+  fullName: Microsoft.AspNetCore.Authentication.AuthenticationHandler<FoundationaLLM.Common.Authentication.AgentAccessTokenOptions>.CurrentUri
+  nameWithType.vb: AuthenticationHandler(Of AgentAccessTokenOptions).CurrentUri
+  fullName.vb: Microsoft.AspNetCore.Authentication.AuthenticationHandler(Of FoundationaLLM.Common.Authentication.AgentAccessTokenOptions).CurrentUri
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  parent: FoundationaLLM.Core.Utils.ObjectExtensions
+  definition: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: FoundationaLLM.Common.Interfaces
+  commentId: N:FoundationaLLM.Common.Interfaces
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Interfaces
+  nameWithType: FoundationaLLM.Common.Interfaces
+  fullName: FoundationaLLM.Common.Interfaces
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Interfaces
+    name: Interfaces
+    href: FoundationaLLM.Common.Interfaces.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Interfaces
+    name: Interfaces
+    href: FoundationaLLM.Common.Interfaces.html
+- uid: Microsoft.Extensions.Logging
+  commentId: N:Microsoft.Extensions.Logging
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft
+  name: Microsoft.Extensions.Logging
+  nameWithType: Microsoft.Extensions.Logging
+  fullName: Microsoft.Extensions.Logging
+  spec.csharp:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Logging
+    name: Logging
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging
+  spec.vb:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Logging
+    name: Logging
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging
+- uid: System.Text.Encodings.Web
+  commentId: N:System.Text.Encodings.Web
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Text.Encodings.Web
+  nameWithType: System.Text.Encodings.Web
+  fullName: System.Text.Encodings.Web
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Text
+    name: Text
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.text
+  - name: .
+  - uid: System.Text.Encodings
+    name: Encodings
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.text.encodings
+  - name: .
+  - uid: System.Text.Encodings.Web
+    name: Web
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.text.encodings.web
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Text
+    name: Text
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.text
+  - name: .
+  - uid: System.Text.Encodings
+    name: Encodings
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.text.encodings
+  - name: .
+  - uid: System.Text.Encodings.Web
+    name: Web
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.text.encodings.web
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Microsoft.AspNetCore.Authentication.AuthenticationHandler`1
+  commentId: T:Microsoft.AspNetCore.Authentication.AuthenticationHandler`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationhandler-1
+  name: AuthenticationHandler<TOptions>
+  nameWithType: AuthenticationHandler<TOptions>
+  fullName: Microsoft.AspNetCore.Authentication.AuthenticationHandler<TOptions>
+  nameWithType.vb: AuthenticationHandler(Of TOptions)
+  fullName.vb: Microsoft.AspNetCore.Authentication.AuthenticationHandler(Of TOptions)
+  name.vb: AuthenticationHandler(Of TOptions)
+  spec.csharp:
+  - uid: Microsoft.AspNetCore.Authentication.AuthenticationHandler`1
+    name: AuthenticationHandler
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationhandler-1
+  - name: <
+  - name: TOptions
+  - name: '>'
+  spec.vb:
+  - uid: Microsoft.AspNetCore.Authentication.AuthenticationHandler`1
+    name: AuthenticationHandler
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationhandler-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TOptions
+  - name: )
+- uid: Microsoft.AspNetCore.Authentication
+  commentId: N:Microsoft.AspNetCore.Authentication
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft
+  name: Microsoft.AspNetCore.Authentication
+  nameWithType: Microsoft.AspNetCore.Authentication
+  fullName: Microsoft.AspNetCore.Authentication
+  spec.csharp:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.AspNetCore
+    name: AspNetCore
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore
+  - name: .
+  - uid: Microsoft.AspNetCore.Authentication
+    name: Authentication
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication
+  spec.vb:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.AspNetCore
+    name: AspNetCore
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore
+  - name: .
+  - uid: Microsoft.AspNetCore.Authentication
+    name: Authentication
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication
+- uid: Microsoft.AspNetCore.Authentication.AuthenticationHandler`1.InitializeAsync(Microsoft.AspNetCore.Authentication.AuthenticationScheme,Microsoft.AspNetCore.Http.HttpContext)
+  commentId: M:Microsoft.AspNetCore.Authentication.AuthenticationHandler`1.InitializeAsync(Microsoft.AspNetCore.Authentication.AuthenticationScheme,Microsoft.AspNetCore.Http.HttpContext)
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationhandler-1.initializeasync
+  name: InitializeAsync(AuthenticationScheme, HttpContext)
+  nameWithType: AuthenticationHandler<TOptions>.InitializeAsync(AuthenticationScheme, HttpContext)
+  fullName: Microsoft.AspNetCore.Authentication.AuthenticationHandler<TOptions>.InitializeAsync(Microsoft.AspNetCore.Authentication.AuthenticationScheme, Microsoft.AspNetCore.Http.HttpContext)
+  nameWithType.vb: AuthenticationHandler(Of TOptions).InitializeAsync(AuthenticationScheme, HttpContext)
+  fullName.vb: Microsoft.AspNetCore.Authentication.AuthenticationHandler(Of TOptions).InitializeAsync(Microsoft.AspNetCore.Authentication.AuthenticationScheme, Microsoft.AspNetCore.Http.HttpContext)
+  spec.csharp:
+  - uid: Microsoft.AspNetCore.Authentication.AuthenticationHandler`1.InitializeAsync(Microsoft.AspNetCore.Authentication.AuthenticationScheme,Microsoft.AspNetCore.Http.HttpContext)
+    name: InitializeAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationhandler-1.initializeasync
+  - name: (
+  - uid: Microsoft.AspNetCore.Authentication.AuthenticationScheme
+    name: AuthenticationScheme
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationscheme
+  - name: ','
+  - name: " "
+  - uid: Microsoft.AspNetCore.Http.HttpContext
+    name: HttpContext
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.http.httpcontext
+  - name: )
+  spec.vb:
+  - uid: Microsoft.AspNetCore.Authentication.AuthenticationHandler`1.InitializeAsync(Microsoft.AspNetCore.Authentication.AuthenticationScheme,Microsoft.AspNetCore.Http.HttpContext)
+    name: InitializeAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationhandler-1.initializeasync
+  - name: (
+  - uid: Microsoft.AspNetCore.Authentication.AuthenticationScheme
+    name: AuthenticationScheme
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationscheme
+  - name: ','
+  - name: " "
+  - uid: Microsoft.AspNetCore.Http.HttpContext
+    name: HttpContext
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.http.httpcontext
+  - name: )
+- uid: Microsoft.AspNetCore.Authentication.AuthenticationHandler`1.InitializeEventsAsync
+  commentId: M:Microsoft.AspNetCore.Authentication.AuthenticationHandler`1.InitializeEventsAsync
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationhandler-1.initializeeventsasync
+  name: InitializeEventsAsync()
+  nameWithType: AuthenticationHandler<TOptions>.InitializeEventsAsync()
+  fullName: Microsoft.AspNetCore.Authentication.AuthenticationHandler<TOptions>.InitializeEventsAsync()
+  nameWithType.vb: AuthenticationHandler(Of TOptions).InitializeEventsAsync()
+  fullName.vb: Microsoft.AspNetCore.Authentication.AuthenticationHandler(Of TOptions).InitializeEventsAsync()
+  spec.csharp:
+  - uid: Microsoft.AspNetCore.Authentication.AuthenticationHandler`1.InitializeEventsAsync
+    name: InitializeEventsAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationhandler-1.initializeeventsasync
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: Microsoft.AspNetCore.Authentication.AuthenticationHandler`1.InitializeEventsAsync
+    name: InitializeEventsAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationhandler-1.initializeeventsasync
+  - name: (
+  - name: )
+- uid: Microsoft.AspNetCore.Authentication.AuthenticationHandler`1.CreateEventsAsync
+  commentId: M:Microsoft.AspNetCore.Authentication.AuthenticationHandler`1.CreateEventsAsync
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationhandler-1.createeventsasync
+  name: CreateEventsAsync()
+  nameWithType: AuthenticationHandler<TOptions>.CreateEventsAsync()
+  fullName: Microsoft.AspNetCore.Authentication.AuthenticationHandler<TOptions>.CreateEventsAsync()
+  nameWithType.vb: AuthenticationHandler(Of TOptions).CreateEventsAsync()
+  fullName.vb: Microsoft.AspNetCore.Authentication.AuthenticationHandler(Of TOptions).CreateEventsAsync()
+  spec.csharp:
+  - uid: Microsoft.AspNetCore.Authentication.AuthenticationHandler`1.CreateEventsAsync
+    name: CreateEventsAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationhandler-1.createeventsasync
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: Microsoft.AspNetCore.Authentication.AuthenticationHandler`1.CreateEventsAsync
+    name: CreateEventsAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationhandler-1.createeventsasync
+  - name: (
+  - name: )
+- uid: Microsoft.AspNetCore.Authentication.AuthenticationHandler`1.InitializeHandlerAsync
+  commentId: M:Microsoft.AspNetCore.Authentication.AuthenticationHandler`1.InitializeHandlerAsync
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationhandler-1.initializehandlerasync
+  name: InitializeHandlerAsync()
+  nameWithType: AuthenticationHandler<TOptions>.InitializeHandlerAsync()
+  fullName: Microsoft.AspNetCore.Authentication.AuthenticationHandler<TOptions>.InitializeHandlerAsync()
+  nameWithType.vb: AuthenticationHandler(Of TOptions).InitializeHandlerAsync()
+  fullName.vb: Microsoft.AspNetCore.Authentication.AuthenticationHandler(Of TOptions).InitializeHandlerAsync()
+  spec.csharp:
+  - uid: Microsoft.AspNetCore.Authentication.AuthenticationHandler`1.InitializeHandlerAsync
+    name: InitializeHandlerAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationhandler-1.initializehandlerasync
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: Microsoft.AspNetCore.Authentication.AuthenticationHandler`1.InitializeHandlerAsync
+    name: InitializeHandlerAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationhandler-1.initializehandlerasync
+  - name: (
+  - name: )
+- uid: Microsoft.AspNetCore.Authentication.AuthenticationHandler`1.BuildRedirectUri(System.String)
+  commentId: M:Microsoft.AspNetCore.Authentication.AuthenticationHandler`1.BuildRedirectUri(System.String)
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationhandler-1.buildredirecturi
+  name: BuildRedirectUri(string)
+  nameWithType: AuthenticationHandler<TOptions>.BuildRedirectUri(string)
+  fullName: Microsoft.AspNetCore.Authentication.AuthenticationHandler<TOptions>.BuildRedirectUri(string)
+  nameWithType.vb: AuthenticationHandler(Of TOptions).BuildRedirectUri(String)
+  fullName.vb: Microsoft.AspNetCore.Authentication.AuthenticationHandler(Of TOptions).BuildRedirectUri(String)
+  name.vb: BuildRedirectUri(String)
+  spec.csharp:
+  - uid: Microsoft.AspNetCore.Authentication.AuthenticationHandler`1.BuildRedirectUri(System.String)
+    name: BuildRedirectUri
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationhandler-1.buildredirecturi
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: Microsoft.AspNetCore.Authentication.AuthenticationHandler`1.BuildRedirectUri(System.String)
+    name: BuildRedirectUri
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationhandler-1.buildredirecturi
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: Microsoft.AspNetCore.Authentication.AuthenticationHandler`1.ResolveTarget(System.String)
+  commentId: M:Microsoft.AspNetCore.Authentication.AuthenticationHandler`1.ResolveTarget(System.String)
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationhandler-1.resolvetarget
+  name: ResolveTarget(string)
+  nameWithType: AuthenticationHandler<TOptions>.ResolveTarget(string)
+  fullName: Microsoft.AspNetCore.Authentication.AuthenticationHandler<TOptions>.ResolveTarget(string)
+  nameWithType.vb: AuthenticationHandler(Of TOptions).ResolveTarget(String)
+  fullName.vb: Microsoft.AspNetCore.Authentication.AuthenticationHandler(Of TOptions).ResolveTarget(String)
+  name.vb: ResolveTarget(String)
+  spec.csharp:
+  - uid: Microsoft.AspNetCore.Authentication.AuthenticationHandler`1.ResolveTarget(System.String)
+    name: ResolveTarget
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationhandler-1.resolvetarget
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: Microsoft.AspNetCore.Authentication.AuthenticationHandler`1.ResolveTarget(System.String)
+    name: ResolveTarget
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationhandler-1.resolvetarget
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: Microsoft.AspNetCore.Authentication.AuthenticationHandler`1.AuthenticateAsync
+  commentId: M:Microsoft.AspNetCore.Authentication.AuthenticationHandler`1.AuthenticateAsync
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationhandler-1.authenticateasync
+  name: AuthenticateAsync()
+  nameWithType: AuthenticationHandler<TOptions>.AuthenticateAsync()
+  fullName: Microsoft.AspNetCore.Authentication.AuthenticationHandler<TOptions>.AuthenticateAsync()
+  nameWithType.vb: AuthenticationHandler(Of TOptions).AuthenticateAsync()
+  fullName.vb: Microsoft.AspNetCore.Authentication.AuthenticationHandler(Of TOptions).AuthenticateAsync()
+  spec.csharp:
+  - uid: Microsoft.AspNetCore.Authentication.AuthenticationHandler`1.AuthenticateAsync
+    name: AuthenticateAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationhandler-1.authenticateasync
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: Microsoft.AspNetCore.Authentication.AuthenticationHandler`1.AuthenticateAsync
+    name: AuthenticateAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationhandler-1.authenticateasync
+  - name: (
+  - name: )
+- uid: Microsoft.AspNetCore.Authentication.AuthenticationHandler`1.HandleAuthenticateOnceAsync
+  commentId: M:Microsoft.AspNetCore.Authentication.AuthenticationHandler`1.HandleAuthenticateOnceAsync
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationhandler-1.handleauthenticateonceasync
+  name: HandleAuthenticateOnceAsync()
+  nameWithType: AuthenticationHandler<TOptions>.HandleAuthenticateOnceAsync()
+  fullName: Microsoft.AspNetCore.Authentication.AuthenticationHandler<TOptions>.HandleAuthenticateOnceAsync()
+  nameWithType.vb: AuthenticationHandler(Of TOptions).HandleAuthenticateOnceAsync()
+  fullName.vb: Microsoft.AspNetCore.Authentication.AuthenticationHandler(Of TOptions).HandleAuthenticateOnceAsync()
+  spec.csharp:
+  - uid: Microsoft.AspNetCore.Authentication.AuthenticationHandler`1.HandleAuthenticateOnceAsync
+    name: HandleAuthenticateOnceAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationhandler-1.handleauthenticateonceasync
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: Microsoft.AspNetCore.Authentication.AuthenticationHandler`1.HandleAuthenticateOnceAsync
+    name: HandleAuthenticateOnceAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationhandler-1.handleauthenticateonceasync
+  - name: (
+  - name: )
+- uid: Microsoft.AspNetCore.Authentication.AuthenticationHandler`1.HandleAuthenticateOnceSafeAsync
+  commentId: M:Microsoft.AspNetCore.Authentication.AuthenticationHandler`1.HandleAuthenticateOnceSafeAsync
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationhandler-1.handleauthenticateoncesafeasync
+  name: HandleAuthenticateOnceSafeAsync()
+  nameWithType: AuthenticationHandler<TOptions>.HandleAuthenticateOnceSafeAsync()
+  fullName: Microsoft.AspNetCore.Authentication.AuthenticationHandler<TOptions>.HandleAuthenticateOnceSafeAsync()
+  nameWithType.vb: AuthenticationHandler(Of TOptions).HandleAuthenticateOnceSafeAsync()
+  fullName.vb: Microsoft.AspNetCore.Authentication.AuthenticationHandler(Of TOptions).HandleAuthenticateOnceSafeAsync()
+  spec.csharp:
+  - uid: Microsoft.AspNetCore.Authentication.AuthenticationHandler`1.HandleAuthenticateOnceSafeAsync
+    name: HandleAuthenticateOnceSafeAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationhandler-1.handleauthenticateoncesafeasync
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: Microsoft.AspNetCore.Authentication.AuthenticationHandler`1.HandleAuthenticateOnceSafeAsync
+    name: HandleAuthenticateOnceSafeAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationhandler-1.handleauthenticateoncesafeasync
+  - name: (
+  - name: )
+- uid: Microsoft.AspNetCore.Authentication.AuthenticationHandler`1.HandleForbiddenAsync(Microsoft.AspNetCore.Authentication.AuthenticationProperties)
+  commentId: M:Microsoft.AspNetCore.Authentication.AuthenticationHandler`1.HandleForbiddenAsync(Microsoft.AspNetCore.Authentication.AuthenticationProperties)
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationhandler-1.handleforbiddenasync
+  name: HandleForbiddenAsync(AuthenticationProperties)
+  nameWithType: AuthenticationHandler<TOptions>.HandleForbiddenAsync(AuthenticationProperties)
+  fullName: Microsoft.AspNetCore.Authentication.AuthenticationHandler<TOptions>.HandleForbiddenAsync(Microsoft.AspNetCore.Authentication.AuthenticationProperties)
+  nameWithType.vb: AuthenticationHandler(Of TOptions).HandleForbiddenAsync(AuthenticationProperties)
+  fullName.vb: Microsoft.AspNetCore.Authentication.AuthenticationHandler(Of TOptions).HandleForbiddenAsync(Microsoft.AspNetCore.Authentication.AuthenticationProperties)
+  spec.csharp:
+  - uid: Microsoft.AspNetCore.Authentication.AuthenticationHandler`1.HandleForbiddenAsync(Microsoft.AspNetCore.Authentication.AuthenticationProperties)
+    name: HandleForbiddenAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationhandler-1.handleforbiddenasync
+  - name: (
+  - uid: Microsoft.AspNetCore.Authentication.AuthenticationProperties
+    name: AuthenticationProperties
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationproperties
+  - name: )
+  spec.vb:
+  - uid: Microsoft.AspNetCore.Authentication.AuthenticationHandler`1.HandleForbiddenAsync(Microsoft.AspNetCore.Authentication.AuthenticationProperties)
+    name: HandleForbiddenAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationhandler-1.handleforbiddenasync
+  - name: (
+  - uid: Microsoft.AspNetCore.Authentication.AuthenticationProperties
+    name: AuthenticationProperties
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationproperties
+  - name: )
+- uid: Microsoft.AspNetCore.Authentication.AuthenticationHandler`1.HandleChallengeAsync(Microsoft.AspNetCore.Authentication.AuthenticationProperties)
+  commentId: M:Microsoft.AspNetCore.Authentication.AuthenticationHandler`1.HandleChallengeAsync(Microsoft.AspNetCore.Authentication.AuthenticationProperties)
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationhandler-1.handlechallengeasync
+  name: HandleChallengeAsync(AuthenticationProperties)
+  nameWithType: AuthenticationHandler<TOptions>.HandleChallengeAsync(AuthenticationProperties)
+  fullName: Microsoft.AspNetCore.Authentication.AuthenticationHandler<TOptions>.HandleChallengeAsync(Microsoft.AspNetCore.Authentication.AuthenticationProperties)
+  nameWithType.vb: AuthenticationHandler(Of TOptions).HandleChallengeAsync(AuthenticationProperties)
+  fullName.vb: Microsoft.AspNetCore.Authentication.AuthenticationHandler(Of TOptions).HandleChallengeAsync(Microsoft.AspNetCore.Authentication.AuthenticationProperties)
+  spec.csharp:
+  - uid: Microsoft.AspNetCore.Authentication.AuthenticationHandler`1.HandleChallengeAsync(Microsoft.AspNetCore.Authentication.AuthenticationProperties)
+    name: HandleChallengeAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationhandler-1.handlechallengeasync
+  - name: (
+  - uid: Microsoft.AspNetCore.Authentication.AuthenticationProperties
+    name: AuthenticationProperties
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationproperties
+  - name: )
+  spec.vb:
+  - uid: Microsoft.AspNetCore.Authentication.AuthenticationHandler`1.HandleChallengeAsync(Microsoft.AspNetCore.Authentication.AuthenticationProperties)
+    name: HandleChallengeAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationhandler-1.handlechallengeasync
+  - name: (
+  - uid: Microsoft.AspNetCore.Authentication.AuthenticationProperties
+    name: AuthenticationProperties
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationproperties
+  - name: )
+- uid: Microsoft.AspNetCore.Authentication.AuthenticationHandler`1.ChallengeAsync(Microsoft.AspNetCore.Authentication.AuthenticationProperties)
+  commentId: M:Microsoft.AspNetCore.Authentication.AuthenticationHandler`1.ChallengeAsync(Microsoft.AspNetCore.Authentication.AuthenticationProperties)
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationhandler-1.challengeasync
+  name: ChallengeAsync(AuthenticationProperties)
+  nameWithType: AuthenticationHandler<TOptions>.ChallengeAsync(AuthenticationProperties)
+  fullName: Microsoft.AspNetCore.Authentication.AuthenticationHandler<TOptions>.ChallengeAsync(Microsoft.AspNetCore.Authentication.AuthenticationProperties)
+  nameWithType.vb: AuthenticationHandler(Of TOptions).ChallengeAsync(AuthenticationProperties)
+  fullName.vb: Microsoft.AspNetCore.Authentication.AuthenticationHandler(Of TOptions).ChallengeAsync(Microsoft.AspNetCore.Authentication.AuthenticationProperties)
+  spec.csharp:
+  - uid: Microsoft.AspNetCore.Authentication.AuthenticationHandler`1.ChallengeAsync(Microsoft.AspNetCore.Authentication.AuthenticationProperties)
+    name: ChallengeAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationhandler-1.challengeasync
+  - name: (
+  - uid: Microsoft.AspNetCore.Authentication.AuthenticationProperties
+    name: AuthenticationProperties
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationproperties
+  - name: )
+  spec.vb:
+  - uid: Microsoft.AspNetCore.Authentication.AuthenticationHandler`1.ChallengeAsync(Microsoft.AspNetCore.Authentication.AuthenticationProperties)
+    name: ChallengeAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationhandler-1.challengeasync
+  - name: (
+  - uid: Microsoft.AspNetCore.Authentication.AuthenticationProperties
+    name: AuthenticationProperties
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationproperties
+  - name: )
+- uid: Microsoft.AspNetCore.Authentication.AuthenticationHandler`1.ForbidAsync(Microsoft.AspNetCore.Authentication.AuthenticationProperties)
+  commentId: M:Microsoft.AspNetCore.Authentication.AuthenticationHandler`1.ForbidAsync(Microsoft.AspNetCore.Authentication.AuthenticationProperties)
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationhandler-1.forbidasync
+  name: ForbidAsync(AuthenticationProperties)
+  nameWithType: AuthenticationHandler<TOptions>.ForbidAsync(AuthenticationProperties)
+  fullName: Microsoft.AspNetCore.Authentication.AuthenticationHandler<TOptions>.ForbidAsync(Microsoft.AspNetCore.Authentication.AuthenticationProperties)
+  nameWithType.vb: AuthenticationHandler(Of TOptions).ForbidAsync(AuthenticationProperties)
+  fullName.vb: Microsoft.AspNetCore.Authentication.AuthenticationHandler(Of TOptions).ForbidAsync(Microsoft.AspNetCore.Authentication.AuthenticationProperties)
+  spec.csharp:
+  - uid: Microsoft.AspNetCore.Authentication.AuthenticationHandler`1.ForbidAsync(Microsoft.AspNetCore.Authentication.AuthenticationProperties)
+    name: ForbidAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationhandler-1.forbidasync
+  - name: (
+  - uid: Microsoft.AspNetCore.Authentication.AuthenticationProperties
+    name: AuthenticationProperties
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationproperties
+  - name: )
+  spec.vb:
+  - uid: Microsoft.AspNetCore.Authentication.AuthenticationHandler`1.ForbidAsync(Microsoft.AspNetCore.Authentication.AuthenticationProperties)
+    name: ForbidAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationhandler-1.forbidasync
+  - name: (
+  - uid: Microsoft.AspNetCore.Authentication.AuthenticationProperties
+    name: AuthenticationProperties
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationproperties
+  - name: )
+- uid: Microsoft.AspNetCore.Authentication.AuthenticationHandler`1.Scheme
+  commentId: P:Microsoft.AspNetCore.Authentication.AuthenticationHandler`1.Scheme
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationhandler-1.scheme
+  name: Scheme
+  nameWithType: AuthenticationHandler<TOptions>.Scheme
+  fullName: Microsoft.AspNetCore.Authentication.AuthenticationHandler<TOptions>.Scheme
+  nameWithType.vb: AuthenticationHandler(Of TOptions).Scheme
+  fullName.vb: Microsoft.AspNetCore.Authentication.AuthenticationHandler(Of TOptions).Scheme
+- uid: Microsoft.AspNetCore.Authentication.AuthenticationHandler`1.Options
+  commentId: P:Microsoft.AspNetCore.Authentication.AuthenticationHandler`1.Options
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationhandler-1.options
+  name: Options
+  nameWithType: AuthenticationHandler<TOptions>.Options
+  fullName: Microsoft.AspNetCore.Authentication.AuthenticationHandler<TOptions>.Options
+  nameWithType.vb: AuthenticationHandler(Of TOptions).Options
+  fullName.vb: Microsoft.AspNetCore.Authentication.AuthenticationHandler(Of TOptions).Options
+- uid: Microsoft.AspNetCore.Authentication.AuthenticationHandler`1.Context
+  commentId: P:Microsoft.AspNetCore.Authentication.AuthenticationHandler`1.Context
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationhandler-1.context
+  name: Context
+  nameWithType: AuthenticationHandler<TOptions>.Context
+  fullName: Microsoft.AspNetCore.Authentication.AuthenticationHandler<TOptions>.Context
+  nameWithType.vb: AuthenticationHandler(Of TOptions).Context
+  fullName.vb: Microsoft.AspNetCore.Authentication.AuthenticationHandler(Of TOptions).Context
+- uid: Microsoft.AspNetCore.Authentication.AuthenticationHandler`1.Request
+  commentId: P:Microsoft.AspNetCore.Authentication.AuthenticationHandler`1.Request
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationhandler-1.request
+  name: Request
+  nameWithType: AuthenticationHandler<TOptions>.Request
+  fullName: Microsoft.AspNetCore.Authentication.AuthenticationHandler<TOptions>.Request
+  nameWithType.vb: AuthenticationHandler(Of TOptions).Request
+  fullName.vb: Microsoft.AspNetCore.Authentication.AuthenticationHandler(Of TOptions).Request
+- uid: Microsoft.AspNetCore.Authentication.AuthenticationHandler`1.Response
+  commentId: P:Microsoft.AspNetCore.Authentication.AuthenticationHandler`1.Response
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationhandler-1.response
+  name: Response
+  nameWithType: AuthenticationHandler<TOptions>.Response
+  fullName: Microsoft.AspNetCore.Authentication.AuthenticationHandler<TOptions>.Response
+  nameWithType.vb: AuthenticationHandler(Of TOptions).Response
+  fullName.vb: Microsoft.AspNetCore.Authentication.AuthenticationHandler(Of TOptions).Response
+- uid: Microsoft.AspNetCore.Authentication.AuthenticationHandler`1.OriginalPath
+  commentId: P:Microsoft.AspNetCore.Authentication.AuthenticationHandler`1.OriginalPath
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationhandler-1.originalpath
+  name: OriginalPath
+  nameWithType: AuthenticationHandler<TOptions>.OriginalPath
+  fullName: Microsoft.AspNetCore.Authentication.AuthenticationHandler<TOptions>.OriginalPath
+  nameWithType.vb: AuthenticationHandler(Of TOptions).OriginalPath
+  fullName.vb: Microsoft.AspNetCore.Authentication.AuthenticationHandler(Of TOptions).OriginalPath
+- uid: Microsoft.AspNetCore.Authentication.AuthenticationHandler`1.OriginalPathBase
+  commentId: P:Microsoft.AspNetCore.Authentication.AuthenticationHandler`1.OriginalPathBase
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationhandler-1.originalpathbase
+  name: OriginalPathBase
+  nameWithType: AuthenticationHandler<TOptions>.OriginalPathBase
+  fullName: Microsoft.AspNetCore.Authentication.AuthenticationHandler<TOptions>.OriginalPathBase
+  nameWithType.vb: AuthenticationHandler(Of TOptions).OriginalPathBase
+  fullName.vb: Microsoft.AspNetCore.Authentication.AuthenticationHandler(Of TOptions).OriginalPathBase
+- uid: Microsoft.AspNetCore.Authentication.AuthenticationHandler`1.Logger
+  commentId: P:Microsoft.AspNetCore.Authentication.AuthenticationHandler`1.Logger
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationhandler-1.logger
+  name: Logger
+  nameWithType: AuthenticationHandler<TOptions>.Logger
+  fullName: Microsoft.AspNetCore.Authentication.AuthenticationHandler<TOptions>.Logger
+  nameWithType.vb: AuthenticationHandler(Of TOptions).Logger
+  fullName.vb: Microsoft.AspNetCore.Authentication.AuthenticationHandler(Of TOptions).Logger
+- uid: Microsoft.AspNetCore.Authentication.AuthenticationHandler`1.UrlEncoder
+  commentId: P:Microsoft.AspNetCore.Authentication.AuthenticationHandler`1.UrlEncoder
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationhandler-1.urlencoder
+  name: UrlEncoder
+  nameWithType: AuthenticationHandler<TOptions>.UrlEncoder
+  fullName: Microsoft.AspNetCore.Authentication.AuthenticationHandler<TOptions>.UrlEncoder
+  nameWithType.vb: AuthenticationHandler(Of TOptions).UrlEncoder
+  fullName.vb: Microsoft.AspNetCore.Authentication.AuthenticationHandler(Of TOptions).UrlEncoder
+- uid: Microsoft.AspNetCore.Authentication.AuthenticationHandler`1.Clock
+  commentId: P:Microsoft.AspNetCore.Authentication.AuthenticationHandler`1.Clock
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationhandler-1.clock
+  name: Clock
+  nameWithType: AuthenticationHandler<TOptions>.Clock
+  fullName: Microsoft.AspNetCore.Authentication.AuthenticationHandler<TOptions>.Clock
+  nameWithType.vb: AuthenticationHandler(Of TOptions).Clock
+  fullName.vb: Microsoft.AspNetCore.Authentication.AuthenticationHandler(Of TOptions).Clock
+- uid: Microsoft.AspNetCore.Authentication.AuthenticationHandler`1.TimeProvider
+  commentId: P:Microsoft.AspNetCore.Authentication.AuthenticationHandler`1.TimeProvider
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationhandler-1.timeprovider
+  name: TimeProvider
+  nameWithType: AuthenticationHandler<TOptions>.TimeProvider
+  fullName: Microsoft.AspNetCore.Authentication.AuthenticationHandler<TOptions>.TimeProvider
+  nameWithType.vb: AuthenticationHandler(Of TOptions).TimeProvider
+  fullName.vb: Microsoft.AspNetCore.Authentication.AuthenticationHandler(Of TOptions).TimeProvider
+- uid: Microsoft.AspNetCore.Authentication.AuthenticationHandler`1.OptionsMonitor
+  commentId: P:Microsoft.AspNetCore.Authentication.AuthenticationHandler`1.OptionsMonitor
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationhandler-1.optionsmonitor
+  name: OptionsMonitor
+  nameWithType: AuthenticationHandler<TOptions>.OptionsMonitor
+  fullName: Microsoft.AspNetCore.Authentication.AuthenticationHandler<TOptions>.OptionsMonitor
+  nameWithType.vb: AuthenticationHandler(Of TOptions).OptionsMonitor
+  fullName.vb: Microsoft.AspNetCore.Authentication.AuthenticationHandler(Of TOptions).OptionsMonitor
+- uid: Microsoft.AspNetCore.Authentication.AuthenticationHandler`1.Events
+  commentId: P:Microsoft.AspNetCore.Authentication.AuthenticationHandler`1.Events
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationhandler-1.events
+  name: Events
+  nameWithType: AuthenticationHandler<TOptions>.Events
+  fullName: Microsoft.AspNetCore.Authentication.AuthenticationHandler<TOptions>.Events
+  nameWithType.vb: AuthenticationHandler(Of TOptions).Events
+  fullName.vb: Microsoft.AspNetCore.Authentication.AuthenticationHandler(Of TOptions).Events
+- uid: Microsoft.AspNetCore.Authentication.AuthenticationHandler`1.ClaimsIssuer
+  commentId: P:Microsoft.AspNetCore.Authentication.AuthenticationHandler`1.ClaimsIssuer
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationhandler-1.claimsissuer
+  name: ClaimsIssuer
+  nameWithType: AuthenticationHandler<TOptions>.ClaimsIssuer
+  fullName: Microsoft.AspNetCore.Authentication.AuthenticationHandler<TOptions>.ClaimsIssuer
+  nameWithType.vb: AuthenticationHandler(Of TOptions).ClaimsIssuer
+  fullName.vb: Microsoft.AspNetCore.Authentication.AuthenticationHandler(Of TOptions).ClaimsIssuer
+- uid: Microsoft.AspNetCore.Authentication.AuthenticationHandler`1.CurrentUri
+  commentId: P:Microsoft.AspNetCore.Authentication.AuthenticationHandler`1.CurrentUri
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationhandler-1.currenturi
+  name: CurrentUri
+  nameWithType: AuthenticationHandler<TOptions>.CurrentUri
+  fullName: Microsoft.AspNetCore.Authentication.AuthenticationHandler<TOptions>.CurrentUri
+  nameWithType.vb: AuthenticationHandler(Of TOptions).CurrentUri
+  fullName.vb: Microsoft.AspNetCore.Authentication.AuthenticationHandler(Of TOptions).CurrentUri
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  isExternal: true
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions
+  commentId: T:FoundationaLLM.Core.Utils.ObjectExtensions
+  parent: FoundationaLLM.Core.Utils
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html
+  name: ObjectExtensions
+  nameWithType: ObjectExtensions
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions
+- uid: FoundationaLLM.Core.Utils
+  commentId: N:FoundationaLLM.Core.Utils
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Core.Utils
+  nameWithType: FoundationaLLM.Core.Utils
+  fullName: FoundationaLLM.Core.Utils
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+- uid: FoundationaLLM.Common.Authentication.AgentAccessTokenAuthenticationHandler.#ctor*
+  commentId: Overload:FoundationaLLM.Common.Authentication.AgentAccessTokenAuthenticationHandler.#ctor
+  href: FoundationaLLM.Common.Authentication.AgentAccessTokenAuthenticationHandler.html#FoundationaLLM_Common_Authentication_AgentAccessTokenAuthenticationHandler__ctor_System_Collections_Generic_IEnumerable_FoundationaLLM_Common_Interfaces_IResourceProviderService__Microsoft_Extensions_Options_IOptionsMonitor_FoundationaLLM_Common_Authentication_AgentAccessTokenOptions__Microsoft_Extensions_Logging_ILoggerFactory_System_Text_Encodings_Web_UrlEncoder_
+  name: AgentAccessTokenAuthenticationHandler
+  nameWithType: AgentAccessTokenAuthenticationHandler.AgentAccessTokenAuthenticationHandler
+  fullName: FoundationaLLM.Common.Authentication.AgentAccessTokenAuthenticationHandler.AgentAccessTokenAuthenticationHandler
+  nameWithType.vb: AgentAccessTokenAuthenticationHandler.New
+  fullName.vb: FoundationaLLM.Common.Authentication.AgentAccessTokenAuthenticationHandler.New
+  name.vb: New
+- uid: System.Collections.Generic.IEnumerable{FoundationaLLM.Common.Interfaces.IResourceProviderService}
+  commentId: T:System.Collections.Generic.IEnumerable{FoundationaLLM.Common.Interfaces.IResourceProviderService}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IEnumerable`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<IResourceProviderService>
+  nameWithType: IEnumerable<IResourceProviderService>
+  fullName: System.Collections.Generic.IEnumerable<FoundationaLLM.Common.Interfaces.IResourceProviderService>
+  nameWithType.vb: IEnumerable(Of IResourceProviderService)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of FoundationaLLM.Common.Interfaces.IResourceProviderService)
+  name.vb: IEnumerable(Of IResourceProviderService)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - uid: FoundationaLLM.Common.Interfaces.IResourceProviderService
+    name: IResourceProviderService
+    href: FoundationaLLM.Common.Interfaces.IResourceProviderService.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FoundationaLLM.Common.Interfaces.IResourceProviderService
+    name: IResourceProviderService
+    href: FoundationaLLM.Common.Interfaces.IResourceProviderService.html
+  - name: )
+- uid: Microsoft.Extensions.Options.IOptionsMonitor{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}
+  commentId: T:Microsoft.Extensions.Options.IOptionsMonitor{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}
+  parent: Microsoft.Extensions.Options
+  definition: Microsoft.Extensions.Options.IOptionsMonitor`1
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.options.ioptionsmonitor-1
+  name: IOptionsMonitor<AgentAccessTokenOptions>
+  nameWithType: IOptionsMonitor<AgentAccessTokenOptions>
+  fullName: Microsoft.Extensions.Options.IOptionsMonitor<FoundationaLLM.Common.Authentication.AgentAccessTokenOptions>
+  nameWithType.vb: IOptionsMonitor(Of AgentAccessTokenOptions)
+  fullName.vb: Microsoft.Extensions.Options.IOptionsMonitor(Of FoundationaLLM.Common.Authentication.AgentAccessTokenOptions)
+  name.vb: IOptionsMonitor(Of AgentAccessTokenOptions)
+  spec.csharp:
+  - uid: Microsoft.Extensions.Options.IOptionsMonitor`1
+    name: IOptionsMonitor
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.options.ioptionsmonitor-1
+  - name: <
+  - uid: FoundationaLLM.Common.Authentication.AgentAccessTokenOptions
+    name: AgentAccessTokenOptions
+    href: FoundationaLLM.Common.Authentication.AgentAccessTokenOptions.html
+  - name: '>'
+  spec.vb:
+  - uid: Microsoft.Extensions.Options.IOptionsMonitor`1
+    name: IOptionsMonitor
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.options.ioptionsmonitor-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FoundationaLLM.Common.Authentication.AgentAccessTokenOptions
+    name: AgentAccessTokenOptions
+    href: FoundationaLLM.Common.Authentication.AgentAccessTokenOptions.html
+  - name: )
+- uid: System.Collections.Generic.IEnumerable`1
+  commentId: T:System.Collections.Generic.IEnumerable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<T>
+  nameWithType: IEnumerable<T>
+  fullName: System.Collections.Generic.IEnumerable<T>
+  nameWithType.vb: IEnumerable(Of T)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of T)
+  name.vb: IEnumerable(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: Microsoft.Extensions.Options.IOptionsMonitor`1
+  commentId: T:Microsoft.Extensions.Options.IOptionsMonitor`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.options.ioptionsmonitor-1
+  name: IOptionsMonitor<TOptions>
+  nameWithType: IOptionsMonitor<TOptions>
+  fullName: Microsoft.Extensions.Options.IOptionsMonitor<TOptions>
+  nameWithType.vb: IOptionsMonitor(Of TOptions)
+  fullName.vb: Microsoft.Extensions.Options.IOptionsMonitor(Of TOptions)
+  name.vb: IOptionsMonitor(Of TOptions)
+  spec.csharp:
+  - uid: Microsoft.Extensions.Options.IOptionsMonitor`1
+    name: IOptionsMonitor
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.options.ioptionsmonitor-1
+  - name: <
+  - name: TOptions
+  - name: '>'
+  spec.vb:
+  - uid: Microsoft.Extensions.Options.IOptionsMonitor`1
+    name: IOptionsMonitor
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.options.ioptionsmonitor-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TOptions
+  - name: )
+- uid: Microsoft.Extensions.Options
+  commentId: N:Microsoft.Extensions.Options
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft
+  name: Microsoft.Extensions.Options
+  nameWithType: Microsoft.Extensions.Options
+  fullName: Microsoft.Extensions.Options
+  spec.csharp:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Options
+    name: Options
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.options
+  spec.vb:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Options
+    name: Options
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.options
+- uid: Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}.HandleAuthenticateAsync
+  commentId: M:Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}.HandleAuthenticateAsync
+  parent: Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}
+  definition: Microsoft.AspNetCore.Authentication.AuthenticationHandler`1.HandleAuthenticateAsync
+  href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationhandler-1.handleauthenticateasync
+  name: HandleAuthenticateAsync()
+  nameWithType: AuthenticationHandler<AgentAccessTokenOptions>.HandleAuthenticateAsync()
+  fullName: Microsoft.AspNetCore.Authentication.AuthenticationHandler<FoundationaLLM.Common.Authentication.AgentAccessTokenOptions>.HandleAuthenticateAsync()
+  nameWithType.vb: AuthenticationHandler(Of AgentAccessTokenOptions).HandleAuthenticateAsync()
+  fullName.vb: Microsoft.AspNetCore.Authentication.AuthenticationHandler(Of FoundationaLLM.Common.Authentication.AgentAccessTokenOptions).HandleAuthenticateAsync()
+  spec.csharp:
+  - uid: Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}.HandleAuthenticateAsync
+    name: HandleAuthenticateAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationhandler-1.handleauthenticateasync
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: Microsoft.AspNetCore.Authentication.AuthenticationHandler{FoundationaLLM.Common.Authentication.AgentAccessTokenOptions}.HandleAuthenticateAsync
+    name: HandleAuthenticateAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationhandler-1.handleauthenticateasync
+  - name: (
+  - name: )
+- uid: FoundationaLLM.Common.Authentication.AgentAccessTokenAuthenticationHandler.HandleAuthenticateAsync*
+  commentId: Overload:FoundationaLLM.Common.Authentication.AgentAccessTokenAuthenticationHandler.HandleAuthenticateAsync
+  href: FoundationaLLM.Common.Authentication.AgentAccessTokenAuthenticationHandler.html#FoundationaLLM_Common_Authentication_AgentAccessTokenAuthenticationHandler_HandleAuthenticateAsync
+  name: HandleAuthenticateAsync
+  nameWithType: AgentAccessTokenAuthenticationHandler.HandleAuthenticateAsync
+  fullName: FoundationaLLM.Common.Authentication.AgentAccessTokenAuthenticationHandler.HandleAuthenticateAsync
+- uid: System.Threading.Tasks.Task{Microsoft.AspNetCore.Authentication.AuthenticateResult}
+  commentId: T:System.Threading.Tasks.Task{Microsoft.AspNetCore.Authentication.AuthenticateResult}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<AuthenticateResult>
+  nameWithType: Task<AuthenticateResult>
+  fullName: System.Threading.Tasks.Task<Microsoft.AspNetCore.Authentication.AuthenticateResult>
+  nameWithType.vb: Task(Of AuthenticateResult)
+  fullName.vb: System.Threading.Tasks.Task(Of Microsoft.AspNetCore.Authentication.AuthenticateResult)
+  name.vb: Task(Of AuthenticateResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: Microsoft.AspNetCore.Authentication.AuthenticateResult
+    name: AuthenticateResult
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticateresult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Microsoft.AspNetCore.Authentication.AuthenticateResult
+    name: AuthenticateResult
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticateresult
+  - name: )
+- uid: Microsoft.AspNetCore.Authentication.AuthenticationHandler`1.HandleAuthenticateAsync
+  commentId: M:Microsoft.AspNetCore.Authentication.AuthenticationHandler`1.HandleAuthenticateAsync
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationhandler-1.handleauthenticateasync
+  name: HandleAuthenticateAsync()
+  nameWithType: AuthenticationHandler<TOptions>.HandleAuthenticateAsync()
+  fullName: Microsoft.AspNetCore.Authentication.AuthenticationHandler<TOptions>.HandleAuthenticateAsync()
+  nameWithType.vb: AuthenticationHandler(Of TOptions).HandleAuthenticateAsync()
+  fullName.vb: Microsoft.AspNetCore.Authentication.AuthenticationHandler(Of TOptions).HandleAuthenticateAsync()
+  spec.csharp:
+  - uid: Microsoft.AspNetCore.Authentication.AuthenticationHandler`1.HandleAuthenticateAsync
+    name: HandleAuthenticateAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationhandler-1.handleauthenticateasync
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: Microsoft.AspNetCore.Authentication.AuthenticationHandler`1.HandleAuthenticateAsync
+    name: HandleAuthenticateAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationhandler-1.handleauthenticateasync
+  - name: (
+  - name: )
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks

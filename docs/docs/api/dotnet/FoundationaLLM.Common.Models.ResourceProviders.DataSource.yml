@@ -1,0 +1,111 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Common.Models.ResourceProviders.DataSource
+  commentId: N:FoundationaLLM.Common.Models.ResourceProviders.DataSource
+  id: DataSource
+  parent: FoundationaLLM.Common.Models.ResourceProviders
+  children:
+  - FoundationaLLM.Common.Models.ResourceProviders.DataSource.AzureDataLakeDataSource
+  - FoundationaLLM.Common.Models.ResourceProviders.DataSource.AzureSQLDatabaseDataSource
+  - FoundationaLLM.Common.Models.ResourceProviders.DataSource.DataSourceBase
+  - FoundationaLLM.Common.Models.ResourceProviders.DataSource.OneLakeDataSource
+  - FoundationaLLM.Common.Models.ResourceProviders.DataSource.SharePointOnlineSiteDataSource
+  - FoundationaLLM.Common.Models.ResourceProviders.DataSource.WebSiteDataSource
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM.Common.Models.ResourceProviders.DataSource
+  nameWithType: FoundationaLLM.Common.Models.ResourceProviders.DataSource
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.DataSource
+  type: Namespace
+  assemblies:
+  - FoundationaLLM.Common
+references:
+- uid: FoundationaLLM.Common.Models.ResourceProviders.DataSource.AzureDataLakeDataSource
+  commentId: T:FoundationaLLM.Common.Models.ResourceProviders.DataSource.AzureDataLakeDataSource
+  parent: FoundationaLLM.Common.Models.ResourceProviders.DataSource
+  href: FoundationaLLM.Common.Models.ResourceProviders.DataSource.AzureDataLakeDataSource.html
+  name: AzureDataLakeDataSource
+  nameWithType: AzureDataLakeDataSource
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.DataSource.AzureDataLakeDataSource
+- uid: FoundationaLLM.Common.Models.ResourceProviders.DataSource.AzureSQLDatabaseDataSource
+  commentId: T:FoundationaLLM.Common.Models.ResourceProviders.DataSource.AzureSQLDatabaseDataSource
+  parent: FoundationaLLM.Common.Models.ResourceProviders.DataSource
+  href: FoundationaLLM.Common.Models.ResourceProviders.DataSource.AzureSQLDatabaseDataSource.html
+  name: AzureSQLDatabaseDataSource
+  nameWithType: AzureSQLDatabaseDataSource
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.DataSource.AzureSQLDatabaseDataSource
+- uid: FoundationaLLM.Common.Models.ResourceProviders.DataSource.DataSourceBase
+  commentId: T:FoundationaLLM.Common.Models.ResourceProviders.DataSource.DataSourceBase
+  parent: FoundationaLLM.Common.Models.ResourceProviders.DataSource
+  href: FoundationaLLM.Common.Models.ResourceProviders.DataSource.DataSourceBase.html
+  name: DataSourceBase
+  nameWithType: DataSourceBase
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.DataSource.DataSourceBase
+- uid: FoundationaLLM.Common.Models.ResourceProviders.DataSource.OneLakeDataSource
+  commentId: T:FoundationaLLM.Common.Models.ResourceProviders.DataSource.OneLakeDataSource
+  parent: FoundationaLLM.Common.Models.ResourceProviders.DataSource
+  href: FoundationaLLM.Common.Models.ResourceProviders.DataSource.OneLakeDataSource.html
+  name: OneLakeDataSource
+  nameWithType: OneLakeDataSource
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.DataSource.OneLakeDataSource
+- uid: FoundationaLLM.Common.Models.ResourceProviders.DataSource.SharePointOnlineSiteDataSource
+  commentId: T:FoundationaLLM.Common.Models.ResourceProviders.DataSource.SharePointOnlineSiteDataSource
+  parent: FoundationaLLM.Common.Models.ResourceProviders.DataSource
+  href: FoundationaLLM.Common.Models.ResourceProviders.DataSource.SharePointOnlineSiteDataSource.html
+  name: SharePointOnlineSiteDataSource
+  nameWithType: SharePointOnlineSiteDataSource
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.DataSource.SharePointOnlineSiteDataSource
+- uid: FoundationaLLM.Common.Models.ResourceProviders.DataSource.WebSiteDataSource
+  commentId: T:FoundationaLLM.Common.Models.ResourceProviders.DataSource.WebSiteDataSource
+  parent: FoundationaLLM.Common.Models.ResourceProviders.DataSource
+  href: FoundationaLLM.Common.Models.ResourceProviders.DataSource.WebSiteDataSource.html
+  name: WebSiteDataSource
+  nameWithType: WebSiteDataSource
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.DataSource.WebSiteDataSource
+- uid: FoundationaLLM.Common.Models.ResourceProviders.DataSource
+  commentId: N:FoundationaLLM.Common.Models.ResourceProviders.DataSource
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.ResourceProviders.DataSource
+  nameWithType: FoundationaLLM.Common.Models.ResourceProviders.DataSource
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.DataSource
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders
+    name: ResourceProviders
+    href: FoundationaLLM.Common.Models.ResourceProviders.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.DataSource
+    name: DataSource
+    href: FoundationaLLM.Common.Models.ResourceProviders.DataSource.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders
+    name: ResourceProviders
+    href: FoundationaLLM.Common.Models.ResourceProviders.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.DataSource
+    name: DataSource
+    href: FoundationaLLM.Common.Models.ResourceProviders.DataSource.html

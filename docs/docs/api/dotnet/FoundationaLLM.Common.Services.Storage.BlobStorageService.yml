@@ -1,0 +1,2735 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Common.Services.Storage.BlobStorageService
+  commentId: T:FoundationaLLM.Common.Services.Storage.BlobStorageService
+  id: BlobStorageService
+  parent: FoundationaLLM.Common.Services.Storage
+  children:
+  - FoundationaLLM.Common.Services.Storage.BlobStorageService.#ctor(Microsoft.Extensions.Options.IOptions{FoundationaLLM.Common.Models.Configuration.Storage.BlobStorageServiceSettings},Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Common.Services.Storage.BlobStorageService})
+  - FoundationaLLM.Common.Services.Storage.BlobStorageService.CopyFileAsync(System.String,System.String,System.String,System.Threading.CancellationToken)
+  - FoundationaLLM.Common.Services.Storage.BlobStorageService.CreateClientFromAccountKey(System.String,System.String)
+  - FoundationaLLM.Common.Services.Storage.BlobStorageService.CreateClientFromConnectionString(System.String)
+  - FoundationaLLM.Common.Services.Storage.BlobStorageService.CreateClientFromIdentity(System.String)
+  - FoundationaLLM.Common.Services.Storage.BlobStorageService.DeleteFileAsync(System.String,System.String,System.Threading.CancellationToken)
+  - FoundationaLLM.Common.Services.Storage.BlobStorageService.FileExistsAsync(System.String,System.String,System.Threading.CancellationToken)
+  - FoundationaLLM.Common.Services.Storage.BlobStorageService.GetFilePathsAsync(System.String,System.String,System.Boolean,System.Threading.CancellationToken)
+  - FoundationaLLM.Common.Services.Storage.BlobStorageService.GetMatchingFilePathsAsync(System.String,System.String,System.Threading.CancellationToken)
+  - FoundationaLLM.Common.Services.Storage.BlobStorageService.ReadFile(System.String,System.String)
+  - FoundationaLLM.Common.Services.Storage.BlobStorageService.ReadFileAsync(System.String,System.String,System.Threading.CancellationToken)
+  - FoundationaLLM.Common.Services.Storage.BlobStorageService.UpdateJSONFileAsync``1(System.String,System.String,System.Func{``0,``0},System.Threading.CancellationToken)
+  - FoundationaLLM.Common.Services.Storage.BlobStorageService.WriteFileAsync(System.String,System.String,System.IO.Stream,System.String,System.Threading.CancellationToken)
+  - FoundationaLLM.Common.Services.Storage.BlobStorageService.WriteFileAsync(System.String,System.String,System.String,System.String,System.Threading.CancellationToken)
+  langs:
+  - csharp
+  - vb
+  name: BlobStorageService
+  nameWithType: BlobStorageService
+  fullName: FoundationaLLM.Common.Services.Storage.BlobStorageService
+  type: Class
+  source:
+    remote:
+      path: src/dotnet/Common/Services/Storage/BlobStorageService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: BlobStorageService
+    path: ../src/dotnet/Common/Services/Storage/BlobStorageService.cs
+    startLine: 27
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Services.Storage
+  summary: Provides access to Azure blob storage.
+  remarks: Initializes a new instance of the <xref href="FoundationaLLM.Common.Services.Storage.BlobStorageService" data-throw-if-not-resolved="false"></xref> with the specified options and logger.
+  example: []
+  syntax:
+    content: 'public class BlobStorageService : StorageServiceBase, IStorageService'
+    content.vb: Public Class BlobStorageService Inherits StorageServiceBase Implements IStorageService
+  inheritance:
+  - System.Object
+  - FoundationaLLM.Common.Services.Storage.StorageServiceBase
+  implements:
+  - FoundationaLLM.Common.Interfaces.IStorageService
+  inheritedMembers:
+  - FoundationaLLM.Common.Services.Storage.StorageServiceBase._settings
+  - FoundationaLLM.Common.Services.Storage.StorageServiceBase._logger
+  - FoundationaLLM.Common.Services.Storage.StorageServiceBase.InstanceName
+  - FoundationaLLM.Common.Services.Storage.StorageServiceBase.StorageAccountName
+  - FoundationaLLM.Common.Services.Storage.StorageServiceBase.StorageContainerName
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+  extensionMethods:
+  - System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+- uid: FoundationaLLM.Common.Services.Storage.BlobStorageService.#ctor(Microsoft.Extensions.Options.IOptions{FoundationaLLM.Common.Models.Configuration.Storage.BlobStorageServiceSettings},Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Common.Services.Storage.BlobStorageService})
+  commentId: M:FoundationaLLM.Common.Services.Storage.BlobStorageService.#ctor(Microsoft.Extensions.Options.IOptions{FoundationaLLM.Common.Models.Configuration.Storage.BlobStorageServiceSettings},Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Common.Services.Storage.BlobStorageService})
+  id: '#ctor(Microsoft.Extensions.Options.IOptions{FoundationaLLM.Common.Models.Configuration.Storage.BlobStorageServiceSettings},Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Common.Services.Storage.BlobStorageService})'
+  parent: FoundationaLLM.Common.Services.Storage.BlobStorageService
+  langs:
+  - csharp
+  - vb
+  name: BlobStorageService(IOptions<BlobStorageServiceSettings>, ILogger<BlobStorageService>)
+  nameWithType: BlobStorageService.BlobStorageService(IOptions<BlobStorageServiceSettings>, ILogger<BlobStorageService>)
+  fullName: FoundationaLLM.Common.Services.Storage.BlobStorageService.BlobStorageService(Microsoft.Extensions.Options.IOptions<FoundationaLLM.Common.Models.Configuration.Storage.BlobStorageServiceSettings>, Microsoft.Extensions.Logging.ILogger<FoundationaLLM.Common.Services.Storage.BlobStorageService>)
+  type: Constructor
+  source:
+    remote:
+      path: src/dotnet/Common/Services/Storage/BlobStorageService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: .ctor
+    path: ../src/dotnet/Common/Services/Storage/BlobStorageService.cs
+    startLine: 27
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Services.Storage
+  summary: Provides access to Azure blob storage.
+  remarks: Initializes a new instance of the <xref href="FoundationaLLM.Common.Services.Storage.BlobStorageService" data-throw-if-not-resolved="false"></xref> with the specified options and logger.
+  example: []
+  syntax:
+    content: public BlobStorageService(IOptions<BlobStorageServiceSettings> storageOptions, ILogger<BlobStorageService> logger)
+    parameters:
+    - id: storageOptions
+      type: Microsoft.Extensions.Options.IOptions{FoundationaLLM.Common.Models.Configuration.Storage.BlobStorageServiceSettings}
+      description: The options object containing the <xref href="FoundationaLLM.Common.Models.Configuration.Storage.BlobStorageServiceSettings" data-throw-if-not-resolved="false"></xref> object with the settings.
+    - id: logger
+      type: Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Common.Services.Storage.BlobStorageService}
+      description: The logger used for logging.
+    content.vb: Public Sub New(storageOptions As IOptions(Of BlobStorageServiceSettings), logger As ILogger(Of BlobStorageService))
+  overload: FoundationaLLM.Common.Services.Storage.BlobStorageService.#ctor*
+  nameWithType.vb: BlobStorageService.New(IOptions(Of BlobStorageServiceSettings), ILogger(Of BlobStorageService))
+  fullName.vb: FoundationaLLM.Common.Services.Storage.BlobStorageService.New(Microsoft.Extensions.Options.IOptions(Of FoundationaLLM.Common.Models.Configuration.Storage.BlobStorageServiceSettings), Microsoft.Extensions.Logging.ILogger(Of FoundationaLLM.Common.Services.Storage.BlobStorageService))
+  name.vb: New(IOptions(Of BlobStorageServiceSettings), ILogger(Of BlobStorageService))
+- uid: FoundationaLLM.Common.Services.Storage.BlobStorageService.ReadFileAsync(System.String,System.String,System.Threading.CancellationToken)
+  commentId: M:FoundationaLLM.Common.Services.Storage.BlobStorageService.ReadFileAsync(System.String,System.String,System.Threading.CancellationToken)
+  id: ReadFileAsync(System.String,System.String,System.Threading.CancellationToken)
+  parent: FoundationaLLM.Common.Services.Storage.BlobStorageService
+  langs:
+  - csharp
+  - vb
+  name: ReadFileAsync(string, string, CancellationToken)
+  nameWithType: BlobStorageService.ReadFileAsync(string, string, CancellationToken)
+  fullName: FoundationaLLM.Common.Services.Storage.BlobStorageService.ReadFileAsync(string, string, System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Common/Services/Storage/BlobStorageService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: ReadFileAsync
+    path: ../src/dotnet/Common/Services/Storage/BlobStorageService.cs
+    startLine: 35
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Services.Storage
+  summary: Reads the binary content of a specified file from the storage.
+  example: []
+  syntax:
+    content: public Task<BinaryData> ReadFileAsync(string containerName, string filePath, CancellationToken cancellationToken = default)
+    parameters:
+    - id: containerName
+      type: System.String
+      description: The name of the container where the file is located.
+    - id: filePath
+      type: System.String
+      description: The path of the file to read.
+    - id: cancellationToken
+      type: System.Threading.CancellationToken
+      description: The cancellation token that signals that operations should be cancelled.
+    return:
+      type: System.Threading.Tasks.Task{System.BinaryData}
+      description: The binary content of the file.
+    content.vb: Public Function ReadFileAsync(containerName As String, filePath As String, cancellationToken As CancellationToken = Nothing) As Task(Of BinaryData)
+  overload: FoundationaLLM.Common.Services.Storage.BlobStorageService.ReadFileAsync*
+  implements:
+  - FoundationaLLM.Common.Interfaces.IStorageService.ReadFileAsync(System.String,System.String,System.Threading.CancellationToken)
+  nameWithType.vb: BlobStorageService.ReadFileAsync(String, String, CancellationToken)
+  fullName.vb: FoundationaLLM.Common.Services.Storage.BlobStorageService.ReadFileAsync(String, String, System.Threading.CancellationToken)
+  name.vb: ReadFileAsync(String, String, CancellationToken)
+- uid: FoundationaLLM.Common.Services.Storage.BlobStorageService.ReadFile(System.String,System.String)
+  commentId: M:FoundationaLLM.Common.Services.Storage.BlobStorageService.ReadFile(System.String,System.String)
+  id: ReadFile(System.String,System.String)
+  parent: FoundationaLLM.Common.Services.Storage.BlobStorageService
+  langs:
+  - csharp
+  - vb
+  name: ReadFile(string, string)
+  nameWithType: BlobStorageService.ReadFile(string, string)
+  fullName: FoundationaLLM.Common.Services.Storage.BlobStorageService.ReadFile(string, string)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Common/Services/Storage/BlobStorageService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: ReadFile
+    path: ../src/dotnet/Common/Services/Storage/BlobStorageService.cs
+    startLine: 62
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Services.Storage
+  summary: Reads the binary content of a specified file from the storage.
+  example: []
+  syntax:
+    content: public BinaryData ReadFile(string containerName, string filePath)
+    parameters:
+    - id: containerName
+      type: System.String
+      description: The name of the container where the file is located.
+    - id: filePath
+      type: System.String
+      description: The path of the file to read.
+    return:
+      type: System.BinaryData
+      description: The binary content of the file.
+    content.vb: Public Function ReadFile(containerName As String, filePath As String) As BinaryData
+  overload: FoundationaLLM.Common.Services.Storage.BlobStorageService.ReadFile*
+  implements:
+  - FoundationaLLM.Common.Interfaces.IStorageService.ReadFile(System.String,System.String)
+  nameWithType.vb: BlobStorageService.ReadFile(String, String)
+  fullName.vb: FoundationaLLM.Common.Services.Storage.BlobStorageService.ReadFile(String, String)
+  name.vb: ReadFile(String, String)
+- uid: FoundationaLLM.Common.Services.Storage.BlobStorageService.WriteFileAsync(System.String,System.String,System.IO.Stream,System.String,System.Threading.CancellationToken)
+  commentId: M:FoundationaLLM.Common.Services.Storage.BlobStorageService.WriteFileAsync(System.String,System.String,System.IO.Stream,System.String,System.Threading.CancellationToken)
+  id: WriteFileAsync(System.String,System.String,System.IO.Stream,System.String,System.Threading.CancellationToken)
+  parent: FoundationaLLM.Common.Services.Storage.BlobStorageService
+  langs:
+  - csharp
+  - vb
+  name: WriteFileAsync(string, string, Stream, string?, CancellationToken)
+  nameWithType: BlobStorageService.WriteFileAsync(string, string, Stream, string?, CancellationToken)
+  fullName: FoundationaLLM.Common.Services.Storage.BlobStorageService.WriteFileAsync(string, string, System.IO.Stream, string?, System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Common/Services/Storage/BlobStorageService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: WriteFileAsync
+    path: ../src/dotnet/Common/Services/Storage/BlobStorageService.cs
+    startLine: 88
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Services.Storage
+  summary: Writes the binary content to a specified file from the storage.
+  example: []
+  syntax:
+    content: public Task WriteFileAsync(string containerName, string filePath, Stream fileContent, string? contentType, CancellationToken cancellationToken = default)
+    parameters:
+    - id: containerName
+      type: System.String
+      description: The name of the container where the file is located.
+    - id: filePath
+      type: System.String
+      description: The path of the file to read.
+    - id: fileContent
+      type: System.IO.Stream
+      description: The binary content written to the file.
+    - id: contentType
+      type: System.String
+      description: An optional content type.
+    - id: cancellationToken
+      type: System.Threading.CancellationToken
+      description: The cancellation token that signals that operations should be cancelled.
+    return:
+      type: System.Threading.Tasks.Task
+      description: ''
+    content.vb: Public Function WriteFileAsync(containerName As String, filePath As String, fileContent As Stream, contentType As String, cancellationToken As CancellationToken = Nothing) As Task
+  overload: FoundationaLLM.Common.Services.Storage.BlobStorageService.WriteFileAsync*
+  implements:
+  - FoundationaLLM.Common.Interfaces.IStorageService.WriteFileAsync(System.String,System.String,System.IO.Stream,System.String,System.Threading.CancellationToken)
+  nameWithType.vb: BlobStorageService.WriteFileAsync(String, String, Stream, String, CancellationToken)
+  fullName.vb: FoundationaLLM.Common.Services.Storage.BlobStorageService.WriteFileAsync(String, String, System.IO.Stream, String, System.Threading.CancellationToken)
+  name.vb: WriteFileAsync(String, String, Stream, String, CancellationToken)
+- uid: FoundationaLLM.Common.Services.Storage.BlobStorageService.WriteFileAsync(System.String,System.String,System.String,System.String,System.Threading.CancellationToken)
+  commentId: M:FoundationaLLM.Common.Services.Storage.BlobStorageService.WriteFileAsync(System.String,System.String,System.String,System.String,System.Threading.CancellationToken)
+  id: WriteFileAsync(System.String,System.String,System.String,System.String,System.Threading.CancellationToken)
+  parent: FoundationaLLM.Common.Services.Storage.BlobStorageService
+  langs:
+  - csharp
+  - vb
+  name: WriteFileAsync(string, string, string, string?, CancellationToken)
+  nameWithType: BlobStorageService.WriteFileAsync(string, string, string, string?, CancellationToken)
+  fullName: FoundationaLLM.Common.Services.Storage.BlobStorageService.WriteFileAsync(string, string, string, string?, System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Common/Services/Storage/BlobStorageService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: WriteFileAsync
+    path: ../src/dotnet/Common/Services/Storage/BlobStorageService.cs
+    startLine: 159
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Services.Storage
+  summary: Writes the string content to a specified file from the storage.
+  example: []
+  syntax:
+    content: public Task WriteFileAsync(string containerName, string filePath, string fileContent, string? contentType, CancellationToken cancellationToken = default)
+    parameters:
+    - id: containerName
+      type: System.String
+      description: The name of the container where the file is located.
+    - id: filePath
+      type: System.String
+      description: The path of the file to read.
+    - id: fileContent
+      type: System.String
+      description: The string content written to the file.
+    - id: contentType
+      type: System.String
+      description: An optional content type.
+    - id: cancellationToken
+      type: System.Threading.CancellationToken
+      description: The cancellation token that signals that operations should be cancelled.
+    return:
+      type: System.Threading.Tasks.Task
+      description: ''
+    content.vb: Public Function WriteFileAsync(containerName As String, filePath As String, fileContent As String, contentType As String, cancellationToken As CancellationToken = Nothing) As Task
+  overload: FoundationaLLM.Common.Services.Storage.BlobStorageService.WriteFileAsync*
+  implements:
+  - FoundationaLLM.Common.Interfaces.IStorageService.WriteFileAsync(System.String,System.String,System.String,System.String,System.Threading.CancellationToken)
+  nameWithType.vb: BlobStorageService.WriteFileAsync(String, String, String, String, CancellationToken)
+  fullName.vb: FoundationaLLM.Common.Services.Storage.BlobStorageService.WriteFileAsync(String, String, String, String, System.Threading.CancellationToken)
+  name.vb: WriteFileAsync(String, String, String, String, CancellationToken)
+- uid: FoundationaLLM.Common.Services.Storage.BlobStorageService.UpdateJSONFileAsync``1(System.String,System.String,System.Func{``0,``0},System.Threading.CancellationToken)
+  commentId: M:FoundationaLLM.Common.Services.Storage.BlobStorageService.UpdateJSONFileAsync``1(System.String,System.String,System.Func{``0,``0},System.Threading.CancellationToken)
+  id: UpdateJSONFileAsync``1(System.String,System.String,System.Func{``0,``0},System.Threading.CancellationToken)
+  parent: FoundationaLLM.Common.Services.Storage.BlobStorageService
+  langs:
+  - csharp
+  - vb
+  name: UpdateJSONFileAsync<T>(string, string, Func<T, T>, CancellationToken)
+  nameWithType: BlobStorageService.UpdateJSONFileAsync<T>(string, string, Func<T, T>, CancellationToken)
+  fullName: FoundationaLLM.Common.Services.Storage.BlobStorageService.UpdateJSONFileAsync<T>(string, string, System.Func<T, T>, System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Common/Services/Storage/BlobStorageService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: UpdateJSONFileAsync
+    path: ../src/dotnet/Common/Services/Storage/BlobStorageService.cs
+    startLine: 173
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Services.Storage
+  summary: Updates a specified JSON file in the storage.
+  example: []
+  syntax:
+    content: 'public Task UpdateJSONFileAsync<T>(string containerName, string filePath, Func<T, T> objectTransformer, CancellationToken cancellationToken) where T : class'
+    parameters:
+    - id: containerName
+      type: System.String
+      description: The name of the container where the file is located.
+    - id: filePath
+      type: System.String
+      description: The path of the file to update.
+    - id: objectTransformer
+      type: System.Func{{T},{T}}
+      description: A function that updates the object persisted in the JSON file.
+    - id: cancellationToken
+      type: System.Threading.CancellationToken
+      description: The cancellation token that signals that operations should be cancelled.
+    typeParameters:
+    - id: T
+      description: The type of the object persisted in the JSON file.
+    return:
+      type: System.Threading.Tasks.Task
+      description: ''
+    content.vb: Public Function UpdateJSONFileAsync(Of T As Class)(containerName As String, filePath As String, objectTransformer As Func(Of T, T), cancellationToken As CancellationToken) As Task
+  overload: FoundationaLLM.Common.Services.Storage.BlobStorageService.UpdateJSONFileAsync*
+  implements:
+  - FoundationaLLM.Common.Interfaces.IStorageService.UpdateJSONFileAsync``1(System.String,System.String,System.Func{{T},{T}},System.Threading.CancellationToken)
+  nameWithType.vb: BlobStorageService.UpdateJSONFileAsync(Of T)(String, String, Func(Of T, T), CancellationToken)
+  fullName.vb: FoundationaLLM.Common.Services.Storage.BlobStorageService.UpdateJSONFileAsync(Of T)(String, String, System.Func(Of T, T), System.Threading.CancellationToken)
+  name.vb: UpdateJSONFileAsync(Of T)(String, String, Func(Of T, T), CancellationToken)
+- uid: FoundationaLLM.Common.Services.Storage.BlobStorageService.DeleteFileAsync(System.String,System.String,System.Threading.CancellationToken)
+  commentId: M:FoundationaLLM.Common.Services.Storage.BlobStorageService.DeleteFileAsync(System.String,System.String,System.Threading.CancellationToken)
+  id: DeleteFileAsync(System.String,System.String,System.Threading.CancellationToken)
+  parent: FoundationaLLM.Common.Services.Storage.BlobStorageService
+  langs:
+  - csharp
+  - vb
+  name: DeleteFileAsync(string, string, CancellationToken)
+  nameWithType: BlobStorageService.DeleteFileAsync(string, string, CancellationToken)
+  fullName: FoundationaLLM.Common.Services.Storage.BlobStorageService.DeleteFileAsync(string, string, System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Common/Services/Storage/BlobStorageService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: DeleteFileAsync
+    path: ../src/dotnet/Common/Services/Storage/BlobStorageService.cs
+    startLine: 271
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Services.Storage
+  summary: Deletes a file from storage.
+  example: []
+  syntax:
+    content: public Task DeleteFileAsync(string containerName, string filePath, CancellationToken cancellationToken = default)
+    parameters:
+    - id: containerName
+      type: System.String
+      description: The name of the container where the file is located.
+    - id: filePath
+      type: System.String
+      description: The path of the file to delete.
+    - id: cancellationToken
+      type: System.Threading.CancellationToken
+      description: The cancellation token that signals that operations should be cancelled.
+    return:
+      type: System.Threading.Tasks.Task
+      description: ''
+    content.vb: Public Function DeleteFileAsync(containerName As String, filePath As String, cancellationToken As CancellationToken = Nothing) As Task
+  overload: FoundationaLLM.Common.Services.Storage.BlobStorageService.DeleteFileAsync*
+  implements:
+  - FoundationaLLM.Common.Interfaces.IStorageService.DeleteFileAsync(System.String,System.String,System.Threading.CancellationToken)
+  nameWithType.vb: BlobStorageService.DeleteFileAsync(String, String, CancellationToken)
+  fullName.vb: FoundationaLLM.Common.Services.Storage.BlobStorageService.DeleteFileAsync(String, String, System.Threading.CancellationToken)
+  name.vb: DeleteFileAsync(String, String, CancellationToken)
+- uid: FoundationaLLM.Common.Services.Storage.BlobStorageService.FileExistsAsync(System.String,System.String,System.Threading.CancellationToken)
+  commentId: M:FoundationaLLM.Common.Services.Storage.BlobStorageService.FileExistsAsync(System.String,System.String,System.Threading.CancellationToken)
+  id: FileExistsAsync(System.String,System.String,System.Threading.CancellationToken)
+  parent: FoundationaLLM.Common.Services.Storage.BlobStorageService
+  langs:
+  - csharp
+  - vb
+  name: FileExistsAsync(string, string, CancellationToken)
+  nameWithType: BlobStorageService.FileExistsAsync(string, string, CancellationToken)
+  fullName: FoundationaLLM.Common.Services.Storage.BlobStorageService.FileExistsAsync(string, string, System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Common/Services/Storage/BlobStorageService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: FileExistsAsync
+    path: ../src/dotnet/Common/Services/Storage/BlobStorageService.cs
+    startLine: 289
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Services.Storage
+  summary: Checks if a file exists on the storage.
+  example: []
+  syntax:
+    content: public Task<bool> FileExistsAsync(string containerName, string filePath, CancellationToken cancellationToken = default)
+    parameters:
+    - id: containerName
+      type: System.String
+      description: The name of the container where the file is located.
+    - id: filePath
+      type: System.String
+      description: The path of the file to read.
+    - id: cancellationToken
+      type: System.Threading.CancellationToken
+      description: The cancellation token that signals that operations should be cancelled.
+    return:
+      type: System.Threading.Tasks.Task{System.Boolean}
+      description: ''
+    content.vb: Public Function FileExistsAsync(containerName As String, filePath As String, cancellationToken As CancellationToken = Nothing) As Task(Of Boolean)
+  overload: FoundationaLLM.Common.Services.Storage.BlobStorageService.FileExistsAsync*
+  implements:
+  - FoundationaLLM.Common.Interfaces.IStorageService.FileExistsAsync(System.String,System.String,System.Threading.CancellationToken)
+  nameWithType.vb: BlobStorageService.FileExistsAsync(String, String, CancellationToken)
+  fullName.vb: FoundationaLLM.Common.Services.Storage.BlobStorageService.FileExistsAsync(String, String, System.Threading.CancellationToken)
+  name.vb: FileExistsAsync(String, String, CancellationToken)
+- uid: FoundationaLLM.Common.Services.Storage.BlobStorageService.CreateClientFromAccountKey(System.String,System.String)
+  commentId: M:FoundationaLLM.Common.Services.Storage.BlobStorageService.CreateClientFromAccountKey(System.String,System.String)
+  id: CreateClientFromAccountKey(System.String,System.String)
+  parent: FoundationaLLM.Common.Services.Storage.BlobStorageService
+  langs:
+  - csharp
+  - vb
+  name: CreateClientFromAccountKey(string, string)
+  nameWithType: BlobStorageService.CreateClientFromAccountKey(string, string)
+  fullName: FoundationaLLM.Common.Services.Storage.BlobStorageService.CreateClientFromAccountKey(string, string)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Common/Services/Storage/BlobStorageService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: CreateClientFromAccountKey
+    path: ../src/dotnet/Common/Services/Storage/BlobStorageService.cs
+    startLine: 301
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Services.Storage
+  summary: Creates a storage client from an account name and an account key.
+  example: []
+  syntax:
+    content: protected override void CreateClientFromAccountKey(string accountName, string accountKey)
+    parameters:
+    - id: accountName
+      type: System.String
+      description: The storage account name.
+    - id: accountKey
+      type: System.String
+      description: The storage account key.
+    content.vb: Protected Overrides Sub CreateClientFromAccountKey(accountName As String, accountKey As String)
+  overridden: FoundationaLLM.Common.Services.Storage.StorageServiceBase.CreateClientFromAccountKey(System.String,System.String)
+  overload: FoundationaLLM.Common.Services.Storage.BlobStorageService.CreateClientFromAccountKey*
+  nameWithType.vb: BlobStorageService.CreateClientFromAccountKey(String, String)
+  fullName.vb: FoundationaLLM.Common.Services.Storage.BlobStorageService.CreateClientFromAccountKey(String, String)
+  name.vb: CreateClientFromAccountKey(String, String)
+- uid: FoundationaLLM.Common.Services.Storage.BlobStorageService.CreateClientFromConnectionString(System.String)
+  commentId: M:FoundationaLLM.Common.Services.Storage.BlobStorageService.CreateClientFromConnectionString(System.String)
+  id: CreateClientFromConnectionString(System.String)
+  parent: FoundationaLLM.Common.Services.Storage.BlobStorageService
+  langs:
+  - csharp
+  - vb
+  name: CreateClientFromConnectionString(string)
+  nameWithType: BlobStorageService.CreateClientFromConnectionString(string)
+  fullName: FoundationaLLM.Common.Services.Storage.BlobStorageService.CreateClientFromConnectionString(string)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Common/Services/Storage/BlobStorageService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: CreateClientFromConnectionString
+    path: ../src/dotnet/Common/Services/Storage/BlobStorageService.cs
+    startLine: 307
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Services.Storage
+  summary: Creates a storage client from a connection string.
+  example: []
+  syntax:
+    content: protected override void CreateClientFromConnectionString(string connectionString)
+    parameters:
+    - id: connectionString
+      type: System.String
+      description: The storage connection string.
+    content.vb: Protected Overrides Sub CreateClientFromConnectionString(connectionString As String)
+  overridden: FoundationaLLM.Common.Services.Storage.StorageServiceBase.CreateClientFromConnectionString(System.String)
+  overload: FoundationaLLM.Common.Services.Storage.BlobStorageService.CreateClientFromConnectionString*
+  nameWithType.vb: BlobStorageService.CreateClientFromConnectionString(String)
+  fullName.vb: FoundationaLLM.Common.Services.Storage.BlobStorageService.CreateClientFromConnectionString(String)
+  name.vb: CreateClientFromConnectionString(String)
+- uid: FoundationaLLM.Common.Services.Storage.BlobStorageService.CreateClientFromIdentity(System.String)
+  commentId: M:FoundationaLLM.Common.Services.Storage.BlobStorageService.CreateClientFromIdentity(System.String)
+  id: CreateClientFromIdentity(System.String)
+  parent: FoundationaLLM.Common.Services.Storage.BlobStorageService
+  langs:
+  - csharp
+  - vb
+  name: CreateClientFromIdentity(string)
+  nameWithType: BlobStorageService.CreateClientFromIdentity(string)
+  fullName: FoundationaLLM.Common.Services.Storage.BlobStorageService.CreateClientFromIdentity(string)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Common/Services/Storage/BlobStorageService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: CreateClientFromIdentity
+    path: ../src/dotnet/Common/Services/Storage/BlobStorageService.cs
+    startLine: 311
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Services.Storage
+  summary: Create a storage client from an account name using the default identity for authentication.
+  example: []
+  syntax:
+    content: protected override void CreateClientFromIdentity(string accountName)
+    parameters:
+    - id: accountName
+      type: System.String
+      description: The storage account name.
+    content.vb: Protected Overrides Sub CreateClientFromIdentity(accountName As String)
+  overridden: FoundationaLLM.Common.Services.Storage.StorageServiceBase.CreateClientFromIdentity(System.String)
+  overload: FoundationaLLM.Common.Services.Storage.BlobStorageService.CreateClientFromIdentity*
+  nameWithType.vb: BlobStorageService.CreateClientFromIdentity(String)
+  fullName.vb: FoundationaLLM.Common.Services.Storage.BlobStorageService.CreateClientFromIdentity(String)
+  name.vb: CreateClientFromIdentity(String)
+- uid: FoundationaLLM.Common.Services.Storage.BlobStorageService.GetFilePathsAsync(System.String,System.String,System.Boolean,System.Threading.CancellationToken)
+  commentId: M:FoundationaLLM.Common.Services.Storage.BlobStorageService.GetFilePathsAsync(System.String,System.String,System.Boolean,System.Threading.CancellationToken)
+  id: GetFilePathsAsync(System.String,System.String,System.Boolean,System.Threading.CancellationToken)
+  parent: FoundationaLLM.Common.Services.Storage.BlobStorageService
+  langs:
+  - csharp
+  - vb
+  name: GetFilePathsAsync(string, string?, bool, CancellationToken)
+  nameWithType: BlobStorageService.GetFilePathsAsync(string, string?, bool, CancellationToken)
+  fullName: FoundationaLLM.Common.Services.Storage.BlobStorageService.GetFilePathsAsync(string, string?, bool, System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Common/Services/Storage/BlobStorageService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: GetFilePathsAsync
+    path: ../src/dotnet/Common/Services/Storage/BlobStorageService.cs
+    startLine: 317
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Services.Storage
+  summary: Retrieves a list file paths in the specific directory.
+  example: []
+  syntax:
+    content: public Task<List<string>> GetFilePathsAsync(string containerName, string? directoryPath = null, bool recursive = true, CancellationToken cancellationToken = default)
+    parameters:
+    - id: containerName
+      type: System.String
+      description: Name of the container, file system or Workspace name.
+    - id: directoryPath
+      type: System.String
+      description: Directory to list file contents
+    - id: recursive
+      type: System.Boolean
+      description: Recurse through child folders
+    - id: cancellationToken
+      type: System.Threading.CancellationToken
+      description: Determines if a request should be cancelled.
+    return:
+      type: System.Threading.Tasks.Task{System.Collections.Generic.List{System.String}}
+      description: List of individual file paths located in the container.
+    content.vb: Public Function GetFilePathsAsync(containerName As String, directoryPath As String = Nothing, recursive As Boolean = True, cancellationToken As CancellationToken = Nothing) As Task(Of List(Of String))
+  overload: FoundationaLLM.Common.Services.Storage.BlobStorageService.GetFilePathsAsync*
+  implements:
+  - FoundationaLLM.Common.Interfaces.IStorageService.GetFilePathsAsync(System.String,System.String,System.Boolean,System.Threading.CancellationToken)
+  nameWithType.vb: BlobStorageService.GetFilePathsAsync(String, String, Boolean, CancellationToken)
+  fullName.vb: FoundationaLLM.Common.Services.Storage.BlobStorageService.GetFilePathsAsync(String, String, Boolean, System.Threading.CancellationToken)
+  name.vb: GetFilePathsAsync(String, String, Boolean, CancellationToken)
+- uid: FoundationaLLM.Common.Services.Storage.BlobStorageService.GetMatchingFilePathsAsync(System.String,System.String,System.Threading.CancellationToken)
+  commentId: M:FoundationaLLM.Common.Services.Storage.BlobStorageService.GetMatchingFilePathsAsync(System.String,System.String,System.Threading.CancellationToken)
+  id: GetMatchingFilePathsAsync(System.String,System.String,System.Threading.CancellationToken)
+  parent: FoundationaLLM.Common.Services.Storage.BlobStorageService
+  langs:
+  - csharp
+  - vb
+  name: GetMatchingFilePathsAsync(string, string, CancellationToken)
+  nameWithType: BlobStorageService.GetMatchingFilePathsAsync(string, string, CancellationToken)
+  fullName: FoundationaLLM.Common.Services.Storage.BlobStorageService.GetMatchingFilePathsAsync(string, string, System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Common/Services/Storage/BlobStorageService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: GetMatchingFilePathsAsync
+    path: ../src/dotnet/Common/Services/Storage/BlobStorageService.cs
+    startLine: 359
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Services.Storage
+  summary: Retrieves a list of file paths that match a specific pattern.
+  example: []
+  syntax:
+    content: public Task<List<string>> GetMatchingFilePathsAsync(string containerName, string filePathPattern, CancellationToken cancellationToken = default)
+    parameters:
+    - id: containerName
+      type: System.String
+      description: The name of the container.
+    - id: filePathPattern
+      type: System.String
+      description: The file name pattern to match.
+    - id: cancellationToken
+      type: System.Threading.CancellationToken
+      description: The cancellation token that signals that operations should be cancelled.
+    return:
+      type: System.Threading.Tasks.Task{System.Collections.Generic.List{System.String}}
+      description: ''
+    content.vb: Public Function GetMatchingFilePathsAsync(containerName As String, filePathPattern As String, cancellationToken As CancellationToken = Nothing) As Task(Of List(Of String))
+  overload: FoundationaLLM.Common.Services.Storage.BlobStorageService.GetMatchingFilePathsAsync*
+  implements:
+  - FoundationaLLM.Common.Interfaces.IStorageService.GetMatchingFilePathsAsync(System.String,System.String,System.Threading.CancellationToken)
+  nameWithType.vb: BlobStorageService.GetMatchingFilePathsAsync(String, String, CancellationToken)
+  fullName.vb: FoundationaLLM.Common.Services.Storage.BlobStorageService.GetMatchingFilePathsAsync(String, String, System.Threading.CancellationToken)
+  name.vb: GetMatchingFilePathsAsync(String, String, CancellationToken)
+- uid: FoundationaLLM.Common.Services.Storage.BlobStorageService.CopyFileAsync(System.String,System.String,System.String,System.Threading.CancellationToken)
+  commentId: M:FoundationaLLM.Common.Services.Storage.BlobStorageService.CopyFileAsync(System.String,System.String,System.String,System.Threading.CancellationToken)
+  id: CopyFileAsync(System.String,System.String,System.String,System.Threading.CancellationToken)
+  parent: FoundationaLLM.Common.Services.Storage.BlobStorageService
+  langs:
+  - csharp
+  - vb
+  name: CopyFileAsync(string, string, string, CancellationToken)
+  nameWithType: BlobStorageService.CopyFileAsync(string, string, string, CancellationToken)
+  fullName: FoundationaLLM.Common.Services.Storage.BlobStorageService.CopyFileAsync(string, string, string, System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Common/Services/Storage/BlobStorageService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: CopyFileAsync
+    path: ../src/dotnet/Common/Services/Storage/BlobStorageService.cs
+    startLine: 381
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Services.Storage
+  summary: Copies a file from one location to another within the specified storage container.
+  example: []
+  syntax:
+    content: public Task CopyFileAsync(string containerName, string sourceFilePath, string destinationFilePath, CancellationToken cancellationToken = default)
+    parameters:
+    - id: containerName
+      type: System.String
+      description: The name of the container.
+    - id: sourceFilePath
+      type: System.String
+      description: The path of the file to copy.
+    - id: destinationFilePath
+      type: System.String
+      description: The path of the destination.
+    - id: cancellationToken
+      type: System.Threading.CancellationToken
+      description: The cancellation token that signals that operations should be cancelled.
+    return:
+      type: System.Threading.Tasks.Task
+      description: ''
+    content.vb: Public Function CopyFileAsync(containerName As String, sourceFilePath As String, destinationFilePath As String, cancellationToken As CancellationToken = Nothing) As Task
+  overload: FoundationaLLM.Common.Services.Storage.BlobStorageService.CopyFileAsync*
+  implements:
+  - FoundationaLLM.Common.Interfaces.IStorageService.CopyFileAsync(System.String,System.String,System.String,System.Threading.CancellationToken)
+  nameWithType.vb: BlobStorageService.CopyFileAsync(String, String, String, CancellationToken)
+  fullName.vb: FoundationaLLM.Common.Services.Storage.BlobStorageService.CopyFileAsync(String, String, String, System.Threading.CancellationToken)
+  name.vb: CopyFileAsync(String, String, String, CancellationToken)
+references:
+- uid: FoundationaLLM.Common.Services.Storage.BlobStorageService
+  commentId: T:FoundationaLLM.Common.Services.Storage.BlobStorageService
+  href: FoundationaLLM.Common.Services.Storage.BlobStorageService.html
+  name: BlobStorageService
+  nameWithType: BlobStorageService
+  fullName: FoundationaLLM.Common.Services.Storage.BlobStorageService
+- uid: FoundationaLLM.Common.Models.Configuration.Storage.BlobStorageServiceSettings
+  commentId: T:FoundationaLLM.Common.Models.Configuration.Storage.BlobStorageServiceSettings
+  parent: FoundationaLLM.Common.Models.Configuration.Storage
+  href: FoundationaLLM.Common.Models.Configuration.Storage.BlobStorageServiceSettings.html
+  name: BlobStorageServiceSettings
+  nameWithType: BlobStorageServiceSettings
+  fullName: FoundationaLLM.Common.Models.Configuration.Storage.BlobStorageServiceSettings
+- uid: FoundationaLLM.Common.Services.Storage
+  commentId: N:FoundationaLLM.Common.Services.Storage
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Services.Storage
+  nameWithType: FoundationaLLM.Common.Services.Storage
+  fullName: FoundationaLLM.Common.Services.Storage
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Services
+    name: Services
+    href: FoundationaLLM.Common.Services.html
+  - name: .
+  - uid: FoundationaLLM.Common.Services.Storage
+    name: Storage
+    href: FoundationaLLM.Common.Services.Storage.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Services
+    name: Services
+    href: FoundationaLLM.Common.Services.html
+  - name: .
+  - uid: FoundationaLLM.Common.Services.Storage
+    name: Storage
+    href: FoundationaLLM.Common.Services.Storage.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: FoundationaLLM.Common.Services.Storage.StorageServiceBase
+  commentId: T:FoundationaLLM.Common.Services.Storage.StorageServiceBase
+  parent: FoundationaLLM.Common.Services.Storage
+  href: FoundationaLLM.Common.Services.Storage.StorageServiceBase.html
+  name: StorageServiceBase
+  nameWithType: StorageServiceBase
+  fullName: FoundationaLLM.Common.Services.Storage.StorageServiceBase
+- uid: FoundationaLLM.Common.Interfaces.IStorageService
+  commentId: T:FoundationaLLM.Common.Interfaces.IStorageService
+  parent: FoundationaLLM.Common.Interfaces
+  href: FoundationaLLM.Common.Interfaces.IStorageService.html
+  name: IStorageService
+  nameWithType: IStorageService
+  fullName: FoundationaLLM.Common.Interfaces.IStorageService
+- uid: FoundationaLLM.Common.Services.Storage.StorageServiceBase._settings
+  commentId: F:FoundationaLLM.Common.Services.Storage.StorageServiceBase._settings
+  parent: FoundationaLLM.Common.Services.Storage.StorageServiceBase
+  href: FoundationaLLM.Common.Services.Storage.StorageServiceBase.html#FoundationaLLM_Common_Services_Storage_StorageServiceBase__settings
+  name: _settings
+  nameWithType: StorageServiceBase._settings
+  fullName: FoundationaLLM.Common.Services.Storage.StorageServiceBase._settings
+- uid: FoundationaLLM.Common.Services.Storage.StorageServiceBase._logger
+  commentId: F:FoundationaLLM.Common.Services.Storage.StorageServiceBase._logger
+  parent: FoundationaLLM.Common.Services.Storage.StorageServiceBase
+  href: FoundationaLLM.Common.Services.Storage.StorageServiceBase.html#FoundationaLLM_Common_Services_Storage_StorageServiceBase__logger
+  name: _logger
+  nameWithType: StorageServiceBase._logger
+  fullName: FoundationaLLM.Common.Services.Storage.StorageServiceBase._logger
+- uid: FoundationaLLM.Common.Services.Storage.StorageServiceBase.InstanceName
+  commentId: P:FoundationaLLM.Common.Services.Storage.StorageServiceBase.InstanceName
+  parent: FoundationaLLM.Common.Services.Storage.StorageServiceBase
+  href: FoundationaLLM.Common.Services.Storage.StorageServiceBase.html#FoundationaLLM_Common_Services_Storage_StorageServiceBase_InstanceName
+  name: InstanceName
+  nameWithType: StorageServiceBase.InstanceName
+  fullName: FoundationaLLM.Common.Services.Storage.StorageServiceBase.InstanceName
+- uid: FoundationaLLM.Common.Services.Storage.StorageServiceBase.StorageAccountName
+  commentId: P:FoundationaLLM.Common.Services.Storage.StorageServiceBase.StorageAccountName
+  parent: FoundationaLLM.Common.Services.Storage.StorageServiceBase
+  href: FoundationaLLM.Common.Services.Storage.StorageServiceBase.html#FoundationaLLM_Common_Services_Storage_StorageServiceBase_StorageAccountName
+  name: StorageAccountName
+  nameWithType: StorageServiceBase.StorageAccountName
+  fullName: FoundationaLLM.Common.Services.Storage.StorageServiceBase.StorageAccountName
+- uid: FoundationaLLM.Common.Services.Storage.StorageServiceBase.StorageContainerName
+  commentId: P:FoundationaLLM.Common.Services.Storage.StorageServiceBase.StorageContainerName
+  parent: FoundationaLLM.Common.Services.Storage.StorageServiceBase
+  href: FoundationaLLM.Common.Services.Storage.StorageServiceBase.html#FoundationaLLM_Common_Services_Storage_StorageServiceBase_StorageContainerName
+  name: StorageContainerName
+  nameWithType: StorageServiceBase.StorageContainerName
+  fullName: FoundationaLLM.Common.Services.Storage.StorageServiceBase.StorageContainerName
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  parent: FoundationaLLM.Core.Utils.ObjectExtensions
+  definition: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: FoundationaLLM.Common.Models.Configuration.Storage
+  commentId: N:FoundationaLLM.Common.Models.Configuration.Storage
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.Configuration.Storage
+  nameWithType: FoundationaLLM.Common.Models.Configuration.Storage
+  fullName: FoundationaLLM.Common.Models.Configuration.Storage
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Configuration
+    name: Configuration
+    href: FoundationaLLM.Common.Models.Configuration.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Configuration.Storage
+    name: Storage
+    href: FoundationaLLM.Common.Models.Configuration.Storage.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Configuration
+    name: Configuration
+    href: FoundationaLLM.Common.Models.Configuration.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Configuration.Storage
+    name: Storage
+    href: FoundationaLLM.Common.Models.Configuration.Storage.html
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: FoundationaLLM.Common.Interfaces
+  commentId: N:FoundationaLLM.Common.Interfaces
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Interfaces
+  nameWithType: FoundationaLLM.Common.Interfaces
+  fullName: FoundationaLLM.Common.Interfaces
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Interfaces
+    name: Interfaces
+    href: FoundationaLLM.Common.Interfaces.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Interfaces
+    name: Interfaces
+    href: FoundationaLLM.Common.Interfaces.html
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  isExternal: true
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions
+  commentId: T:FoundationaLLM.Core.Utils.ObjectExtensions
+  parent: FoundationaLLM.Core.Utils
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html
+  name: ObjectExtensions
+  nameWithType: ObjectExtensions
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions
+- uid: FoundationaLLM.Core.Utils
+  commentId: N:FoundationaLLM.Core.Utils
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Core.Utils
+  nameWithType: FoundationaLLM.Core.Utils
+  fullName: FoundationaLLM.Core.Utils
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+- uid: FoundationaLLM.Common.Services.Storage.BlobStorageService.#ctor*
+  commentId: Overload:FoundationaLLM.Common.Services.Storage.BlobStorageService.#ctor
+  href: FoundationaLLM.Common.Services.Storage.BlobStorageService.html#FoundationaLLM_Common_Services_Storage_BlobStorageService__ctor_Microsoft_Extensions_Options_IOptions_FoundationaLLM_Common_Models_Configuration_Storage_BlobStorageServiceSettings__Microsoft_Extensions_Logging_ILogger_FoundationaLLM_Common_Services_Storage_BlobStorageService__
+  name: BlobStorageService
+  nameWithType: BlobStorageService.BlobStorageService
+  fullName: FoundationaLLM.Common.Services.Storage.BlobStorageService.BlobStorageService
+  nameWithType.vb: BlobStorageService.New
+  fullName.vb: FoundationaLLM.Common.Services.Storage.BlobStorageService.New
+  name.vb: New
+- uid: Microsoft.Extensions.Options.IOptions{FoundationaLLM.Common.Models.Configuration.Storage.BlobStorageServiceSettings}
+  commentId: T:Microsoft.Extensions.Options.IOptions{FoundationaLLM.Common.Models.Configuration.Storage.BlobStorageServiceSettings}
+  parent: Microsoft.Extensions.Options
+  definition: Microsoft.Extensions.Options.IOptions`1
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.options.ioptions-1
+  name: IOptions<BlobStorageServiceSettings>
+  nameWithType: IOptions<BlobStorageServiceSettings>
+  fullName: Microsoft.Extensions.Options.IOptions<FoundationaLLM.Common.Models.Configuration.Storage.BlobStorageServiceSettings>
+  nameWithType.vb: IOptions(Of BlobStorageServiceSettings)
+  fullName.vb: Microsoft.Extensions.Options.IOptions(Of FoundationaLLM.Common.Models.Configuration.Storage.BlobStorageServiceSettings)
+  name.vb: IOptions(Of BlobStorageServiceSettings)
+  spec.csharp:
+  - uid: Microsoft.Extensions.Options.IOptions`1
+    name: IOptions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.options.ioptions-1
+  - name: <
+  - uid: FoundationaLLM.Common.Models.Configuration.Storage.BlobStorageServiceSettings
+    name: BlobStorageServiceSettings
+    href: FoundationaLLM.Common.Models.Configuration.Storage.BlobStorageServiceSettings.html
+  - name: '>'
+  spec.vb:
+  - uid: Microsoft.Extensions.Options.IOptions`1
+    name: IOptions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.options.ioptions-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FoundationaLLM.Common.Models.Configuration.Storage.BlobStorageServiceSettings
+    name: BlobStorageServiceSettings
+    href: FoundationaLLM.Common.Models.Configuration.Storage.BlobStorageServiceSettings.html
+  - name: )
+- uid: Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Common.Services.Storage.BlobStorageService}
+  commentId: T:Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Common.Services.Storage.BlobStorageService}
+  parent: Microsoft.Extensions.Logging
+  definition: Microsoft.Extensions.Logging.ILogger`1
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  name: ILogger<BlobStorageService>
+  nameWithType: ILogger<BlobStorageService>
+  fullName: Microsoft.Extensions.Logging.ILogger<FoundationaLLM.Common.Services.Storage.BlobStorageService>
+  nameWithType.vb: ILogger(Of BlobStorageService)
+  fullName.vb: Microsoft.Extensions.Logging.ILogger(Of FoundationaLLM.Common.Services.Storage.BlobStorageService)
+  name.vb: ILogger(Of BlobStorageService)
+  spec.csharp:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: <
+  - uid: FoundationaLLM.Common.Services.Storage.BlobStorageService
+    name: BlobStorageService
+    href: FoundationaLLM.Common.Services.Storage.BlobStorageService.html
+  - name: '>'
+  spec.vb:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FoundationaLLM.Common.Services.Storage.BlobStorageService
+    name: BlobStorageService
+    href: FoundationaLLM.Common.Services.Storage.BlobStorageService.html
+  - name: )
+- uid: Microsoft.Extensions.Options.IOptions`1
+  commentId: T:Microsoft.Extensions.Options.IOptions`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.options.ioptions-1
+  name: IOptions<TOptions>
+  nameWithType: IOptions<TOptions>
+  fullName: Microsoft.Extensions.Options.IOptions<TOptions>
+  nameWithType.vb: IOptions(Of TOptions)
+  fullName.vb: Microsoft.Extensions.Options.IOptions(Of TOptions)
+  name.vb: IOptions(Of TOptions)
+  spec.csharp:
+  - uid: Microsoft.Extensions.Options.IOptions`1
+    name: IOptions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.options.ioptions-1
+  - name: <
+  - name: TOptions
+  - name: '>'
+  spec.vb:
+  - uid: Microsoft.Extensions.Options.IOptions`1
+    name: IOptions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.options.ioptions-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TOptions
+  - name: )
+- uid: Microsoft.Extensions.Options
+  commentId: N:Microsoft.Extensions.Options
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft
+  name: Microsoft.Extensions.Options
+  nameWithType: Microsoft.Extensions.Options
+  fullName: Microsoft.Extensions.Options
+  spec.csharp:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Options
+    name: Options
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.options
+  spec.vb:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Options
+    name: Options
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.options
+- uid: Microsoft.Extensions.Logging.ILogger`1
+  commentId: T:Microsoft.Extensions.Logging.ILogger`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  name: ILogger<TCategoryName>
+  nameWithType: ILogger<TCategoryName>
+  fullName: Microsoft.Extensions.Logging.ILogger<TCategoryName>
+  nameWithType.vb: ILogger(Of TCategoryName)
+  fullName.vb: Microsoft.Extensions.Logging.ILogger(Of TCategoryName)
+  name.vb: ILogger(Of TCategoryName)
+  spec.csharp:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: <
+  - name: TCategoryName
+  - name: '>'
+  spec.vb:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TCategoryName
+  - name: )
+- uid: Microsoft.Extensions.Logging
+  commentId: N:Microsoft.Extensions.Logging
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft
+  name: Microsoft.Extensions.Logging
+  nameWithType: Microsoft.Extensions.Logging
+  fullName: Microsoft.Extensions.Logging
+  spec.csharp:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Logging
+    name: Logging
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging
+  spec.vb:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Logging
+    name: Logging
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging
+- uid: FoundationaLLM.Common.Services.Storage.BlobStorageService.ReadFileAsync*
+  commentId: Overload:FoundationaLLM.Common.Services.Storage.BlobStorageService.ReadFileAsync
+  href: FoundationaLLM.Common.Services.Storage.BlobStorageService.html#FoundationaLLM_Common_Services_Storage_BlobStorageService_ReadFileAsync_System_String_System_String_System_Threading_CancellationToken_
+  name: ReadFileAsync
+  nameWithType: BlobStorageService.ReadFileAsync
+  fullName: FoundationaLLM.Common.Services.Storage.BlobStorageService.ReadFileAsync
+- uid: FoundationaLLM.Common.Interfaces.IStorageService.ReadFileAsync(System.String,System.String,System.Threading.CancellationToken)
+  commentId: M:FoundationaLLM.Common.Interfaces.IStorageService.ReadFileAsync(System.String,System.String,System.Threading.CancellationToken)
+  parent: FoundationaLLM.Common.Interfaces.IStorageService
+  isExternal: true
+  href: FoundationaLLM.Common.Interfaces.IStorageService.html#FoundationaLLM_Common_Interfaces_IStorageService_ReadFileAsync_System_String_System_String_System_Threading_CancellationToken_
+  name: ReadFileAsync(string, string, CancellationToken)
+  nameWithType: IStorageService.ReadFileAsync(string, string, CancellationToken)
+  fullName: FoundationaLLM.Common.Interfaces.IStorageService.ReadFileAsync(string, string, System.Threading.CancellationToken)
+  nameWithType.vb: IStorageService.ReadFileAsync(String, String, CancellationToken)
+  fullName.vb: FoundationaLLM.Common.Interfaces.IStorageService.ReadFileAsync(String, String, System.Threading.CancellationToken)
+  name.vb: ReadFileAsync(String, String, CancellationToken)
+  spec.csharp:
+  - uid: FoundationaLLM.Common.Interfaces.IStorageService.ReadFileAsync(System.String,System.String,System.Threading.CancellationToken)
+    name: ReadFileAsync
+    href: FoundationaLLM.Common.Interfaces.IStorageService.html#FoundationaLLM_Common_Interfaces_IStorageService_ReadFileAsync_System_String_System_String_System_Threading_CancellationToken_
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Common.Interfaces.IStorageService.ReadFileAsync(System.String,System.String,System.Threading.CancellationToken)
+    name: ReadFileAsync
+    href: FoundationaLLM.Common.Interfaces.IStorageService.html#FoundationaLLM_Common_Interfaces_IStorageService_ReadFileAsync_System_String_System_String_System_Threading_CancellationToken_
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System.Threading.CancellationToken
+  commentId: T:System.Threading.CancellationToken
+  parent: System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  name: CancellationToken
+  nameWithType: CancellationToken
+  fullName: System.Threading.CancellationToken
+- uid: System.Threading.Tasks.Task{System.BinaryData}
+  commentId: T:System.Threading.Tasks.Task{System.BinaryData}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<BinaryData>
+  nameWithType: Task<BinaryData>
+  fullName: System.Threading.Tasks.Task<System.BinaryData>
+  nameWithType.vb: Task(Of BinaryData)
+  fullName.vb: System.Threading.Tasks.Task(Of System.BinaryData)
+  name.vb: Task(Of BinaryData)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.BinaryData
+    name: BinaryData
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.binarydata
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.BinaryData
+    name: BinaryData
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.binarydata
+  - name: )
+- uid: System.Threading
+  commentId: N:System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading
+  nameWithType: System.Threading
+  fullName: System.Threading
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: FoundationaLLM.Common.Services.Storage.BlobStorageService.ReadFile*
+  commentId: Overload:FoundationaLLM.Common.Services.Storage.BlobStorageService.ReadFile
+  href: FoundationaLLM.Common.Services.Storage.BlobStorageService.html#FoundationaLLM_Common_Services_Storage_BlobStorageService_ReadFile_System_String_System_String_
+  name: ReadFile
+  nameWithType: BlobStorageService.ReadFile
+  fullName: FoundationaLLM.Common.Services.Storage.BlobStorageService.ReadFile
+- uid: FoundationaLLM.Common.Interfaces.IStorageService.ReadFile(System.String,System.String)
+  commentId: M:FoundationaLLM.Common.Interfaces.IStorageService.ReadFile(System.String,System.String)
+  parent: FoundationaLLM.Common.Interfaces.IStorageService
+  isExternal: true
+  href: FoundationaLLM.Common.Interfaces.IStorageService.html#FoundationaLLM_Common_Interfaces_IStorageService_ReadFile_System_String_System_String_
+  name: ReadFile(string, string)
+  nameWithType: IStorageService.ReadFile(string, string)
+  fullName: FoundationaLLM.Common.Interfaces.IStorageService.ReadFile(string, string)
+  nameWithType.vb: IStorageService.ReadFile(String, String)
+  fullName.vb: FoundationaLLM.Common.Interfaces.IStorageService.ReadFile(String, String)
+  name.vb: ReadFile(String, String)
+  spec.csharp:
+  - uid: FoundationaLLM.Common.Interfaces.IStorageService.ReadFile(System.String,System.String)
+    name: ReadFile
+    href: FoundationaLLM.Common.Interfaces.IStorageService.html#FoundationaLLM_Common_Interfaces_IStorageService_ReadFile_System_String_System_String_
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Common.Interfaces.IStorageService.ReadFile(System.String,System.String)
+    name: ReadFile
+    href: FoundationaLLM.Common.Interfaces.IStorageService.html#FoundationaLLM_Common_Interfaces_IStorageService_ReadFile_System_String_System_String_
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: System.BinaryData
+  commentId: T:System.BinaryData
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.binarydata
+  name: BinaryData
+  nameWithType: BinaryData
+  fullName: System.BinaryData
+- uid: FoundationaLLM.Common.Services.Storage.BlobStorageService.WriteFileAsync*
+  commentId: Overload:FoundationaLLM.Common.Services.Storage.BlobStorageService.WriteFileAsync
+  href: FoundationaLLM.Common.Services.Storage.BlobStorageService.html#FoundationaLLM_Common_Services_Storage_BlobStorageService_WriteFileAsync_System_String_System_String_System_IO_Stream_System_String_System_Threading_CancellationToken_
+  name: WriteFileAsync
+  nameWithType: BlobStorageService.WriteFileAsync
+  fullName: FoundationaLLM.Common.Services.Storage.BlobStorageService.WriteFileAsync
+- uid: FoundationaLLM.Common.Interfaces.IStorageService.WriteFileAsync(System.String,System.String,System.IO.Stream,System.String,System.Threading.CancellationToken)
+  commentId: M:FoundationaLLM.Common.Interfaces.IStorageService.WriteFileAsync(System.String,System.String,System.IO.Stream,System.String,System.Threading.CancellationToken)
+  parent: FoundationaLLM.Common.Interfaces.IStorageService
+  isExternal: true
+  href: FoundationaLLM.Common.Interfaces.IStorageService.html#FoundationaLLM_Common_Interfaces_IStorageService_WriteFileAsync_System_String_System_String_System_IO_Stream_System_String_System_Threading_CancellationToken_
+  name: WriteFileAsync(string, string, Stream, string, CancellationToken)
+  nameWithType: IStorageService.WriteFileAsync(string, string, Stream, string, CancellationToken)
+  fullName: FoundationaLLM.Common.Interfaces.IStorageService.WriteFileAsync(string, string, System.IO.Stream, string, System.Threading.CancellationToken)
+  nameWithType.vb: IStorageService.WriteFileAsync(String, String, Stream, String, CancellationToken)
+  fullName.vb: FoundationaLLM.Common.Interfaces.IStorageService.WriteFileAsync(String, String, System.IO.Stream, String, System.Threading.CancellationToken)
+  name.vb: WriteFileAsync(String, String, Stream, String, CancellationToken)
+  spec.csharp:
+  - uid: FoundationaLLM.Common.Interfaces.IStorageService.WriteFileAsync(System.String,System.String,System.IO.Stream,System.String,System.Threading.CancellationToken)
+    name: WriteFileAsync
+    href: FoundationaLLM.Common.Interfaces.IStorageService.html#FoundationaLLM_Common_Interfaces_IStorageService_WriteFileAsync_System_String_System_String_System_IO_Stream_System_String_System_Threading_CancellationToken_
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.IO.Stream
+    name: Stream
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.io.stream
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Common.Interfaces.IStorageService.WriteFileAsync(System.String,System.String,System.IO.Stream,System.String,System.Threading.CancellationToken)
+    name: WriteFileAsync
+    href: FoundationaLLM.Common.Interfaces.IStorageService.html#FoundationaLLM_Common_Interfaces_IStorageService_WriteFileAsync_System_String_System_String_System_IO_Stream_System_String_System_Threading_CancellationToken_
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.IO.Stream
+    name: Stream
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.io.stream
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: System.IO.Stream
+  commentId: T:System.IO.Stream
+  parent: System.IO
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.io.stream
+  name: Stream
+  nameWithType: Stream
+  fullName: System.IO.Stream
+- uid: System.Threading.Tasks.Task
+  commentId: T:System.Threading.Tasks.Task
+  parent: System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  name: Task
+  nameWithType: Task
+  fullName: System.Threading.Tasks.Task
+- uid: System.IO
+  commentId: N:System.IO
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.IO
+  nameWithType: System.IO
+  fullName: System.IO
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.IO
+    name: IO
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.io
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.IO
+    name: IO
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.io
+- uid: FoundationaLLM.Common.Interfaces.IStorageService.WriteFileAsync(System.String,System.String,System.String,System.String,System.Threading.CancellationToken)
+  commentId: M:FoundationaLLM.Common.Interfaces.IStorageService.WriteFileAsync(System.String,System.String,System.String,System.String,System.Threading.CancellationToken)
+  parent: FoundationaLLM.Common.Interfaces.IStorageService
+  isExternal: true
+  href: FoundationaLLM.Common.Interfaces.IStorageService.html#FoundationaLLM_Common_Interfaces_IStorageService_WriteFileAsync_System_String_System_String_System_String_System_String_System_Threading_CancellationToken_
+  name: WriteFileAsync(string, string, string, string, CancellationToken)
+  nameWithType: IStorageService.WriteFileAsync(string, string, string, string, CancellationToken)
+  fullName: FoundationaLLM.Common.Interfaces.IStorageService.WriteFileAsync(string, string, string, string, System.Threading.CancellationToken)
+  nameWithType.vb: IStorageService.WriteFileAsync(String, String, String, String, CancellationToken)
+  fullName.vb: FoundationaLLM.Common.Interfaces.IStorageService.WriteFileAsync(String, String, String, String, System.Threading.CancellationToken)
+  name.vb: WriteFileAsync(String, String, String, String, CancellationToken)
+  spec.csharp:
+  - uid: FoundationaLLM.Common.Interfaces.IStorageService.WriteFileAsync(System.String,System.String,System.String,System.String,System.Threading.CancellationToken)
+    name: WriteFileAsync
+    href: FoundationaLLM.Common.Interfaces.IStorageService.html#FoundationaLLM_Common_Interfaces_IStorageService_WriteFileAsync_System_String_System_String_System_String_System_String_System_Threading_CancellationToken_
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Common.Interfaces.IStorageService.WriteFileAsync(System.String,System.String,System.String,System.String,System.Threading.CancellationToken)
+    name: WriteFileAsync
+    href: FoundationaLLM.Common.Interfaces.IStorageService.html#FoundationaLLM_Common_Interfaces_IStorageService_WriteFileAsync_System_String_System_String_System_String_System_String_System_Threading_CancellationToken_
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: FoundationaLLM.Common.Services.Storage.BlobStorageService.UpdateJSONFileAsync*
+  commentId: Overload:FoundationaLLM.Common.Services.Storage.BlobStorageService.UpdateJSONFileAsync
+  href: FoundationaLLM.Common.Services.Storage.BlobStorageService.html#FoundationaLLM_Common_Services_Storage_BlobStorageService_UpdateJSONFileAsync__1_System_String_System_String_System_Func___0___0__System_Threading_CancellationToken_
+  name: UpdateJSONFileAsync
+  nameWithType: BlobStorageService.UpdateJSONFileAsync
+  fullName: FoundationaLLM.Common.Services.Storage.BlobStorageService.UpdateJSONFileAsync
+- uid: FoundationaLLM.Common.Interfaces.IStorageService.UpdateJSONFileAsync``1(System.String,System.String,System.Func{{T},{T}},System.Threading.CancellationToken)
+  commentId: M:FoundationaLLM.Common.Interfaces.IStorageService.UpdateJSONFileAsync``1(System.String,System.String,System.Func{``0,``0},System.Threading.CancellationToken)
+  parent: FoundationaLLM.Common.Interfaces.IStorageService
+  definition: FoundationaLLM.Common.Interfaces.IStorageService.UpdateJSONFileAsync``1(System.String,System.String,System.Func{``0,``0},System.Threading.CancellationToken)
+  href: FoundationaLLM.Common.Interfaces.IStorageService.html#FoundationaLLM_Common_Interfaces_IStorageService_UpdateJSONFileAsync__1_System_String_System_String_System_Func___0___0__System_Threading_CancellationToken_
+  name: UpdateJSONFileAsync<T>(string, string, Func<T, T>, CancellationToken)
+  nameWithType: IStorageService.UpdateJSONFileAsync<T>(string, string, Func<T, T>, CancellationToken)
+  fullName: FoundationaLLM.Common.Interfaces.IStorageService.UpdateJSONFileAsync<T>(string, string, System.Func<T, T>, System.Threading.CancellationToken)
+  nameWithType.vb: IStorageService.UpdateJSONFileAsync(Of T)(String, String, Func(Of T, T), CancellationToken)
+  fullName.vb: FoundationaLLM.Common.Interfaces.IStorageService.UpdateJSONFileAsync(Of T)(String, String, System.Func(Of T, T), System.Threading.CancellationToken)
+  name.vb: UpdateJSONFileAsync(Of T)(String, String, Func(Of T, T), CancellationToken)
+  spec.csharp:
+  - uid: FoundationaLLM.Common.Interfaces.IStorageService.UpdateJSONFileAsync``1(System.String,System.String,System.Func{``0,``0},System.Threading.CancellationToken)
+    name: UpdateJSONFileAsync
+    href: FoundationaLLM.Common.Interfaces.IStorageService.html#FoundationaLLM_Common_Interfaces_IStorageService_UpdateJSONFileAsync__1_System_String_System_String_System_Func___0___0__System_Threading_CancellationToken_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - name: T
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Common.Interfaces.IStorageService.UpdateJSONFileAsync``1(System.String,System.String,System.Func{``0,``0},System.Threading.CancellationToken)
+    name: UpdateJSONFileAsync
+    href: FoundationaLLM.Common.Interfaces.IStorageService.html#FoundationaLLM_Common_Interfaces_IStorageService_UpdateJSONFileAsync__1_System_String_System_String_System_Func___0___0__System_Threading_CancellationToken_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - name: T
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: System.Func{{T},{T}}
+  commentId: T:System.Func{``0,``0}
+  parent: System
+  definition: System.Func`2
+  href: https://learn.microsoft.com/dotnet/api/system.func-2
+  name: Func<T, T>
+  nameWithType: Func<T, T>
+  fullName: System.Func<T, T>
+  nameWithType.vb: Func(Of T, T)
+  fullName.vb: System.Func(Of T, T)
+  name.vb: Func(Of T, T)
+  spec.csharp:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - name: T
+  - name: )
+- uid: FoundationaLLM.Common.Interfaces.IStorageService.UpdateJSONFileAsync``1(System.String,System.String,System.Func{``0,``0},System.Threading.CancellationToken)
+  commentId: M:FoundationaLLM.Common.Interfaces.IStorageService.UpdateJSONFileAsync``1(System.String,System.String,System.Func{``0,``0},System.Threading.CancellationToken)
+  isExternal: true
+  href: FoundationaLLM.Common.Interfaces.IStorageService.html#FoundationaLLM_Common_Interfaces_IStorageService_UpdateJSONFileAsync__1_System_String_System_String_System_Func___0___0__System_Threading_CancellationToken_
+  name: UpdateJSONFileAsync<T>(string, string, Func<T, T>, CancellationToken)
+  nameWithType: IStorageService.UpdateJSONFileAsync<T>(string, string, Func<T, T>, CancellationToken)
+  fullName: FoundationaLLM.Common.Interfaces.IStorageService.UpdateJSONFileAsync<T>(string, string, System.Func<T, T>, System.Threading.CancellationToken)
+  nameWithType.vb: IStorageService.UpdateJSONFileAsync(Of T)(String, String, Func(Of T, T), CancellationToken)
+  fullName.vb: FoundationaLLM.Common.Interfaces.IStorageService.UpdateJSONFileAsync(Of T)(String, String, System.Func(Of T, T), System.Threading.CancellationToken)
+  name.vb: UpdateJSONFileAsync(Of T)(String, String, Func(Of T, T), CancellationToken)
+  spec.csharp:
+  - uid: FoundationaLLM.Common.Interfaces.IStorageService.UpdateJSONFileAsync``1(System.String,System.String,System.Func{``0,``0},System.Threading.CancellationToken)
+    name: UpdateJSONFileAsync
+    href: FoundationaLLM.Common.Interfaces.IStorageService.html#FoundationaLLM_Common_Interfaces_IStorageService_UpdateJSONFileAsync__1_System_String_System_String_System_Func___0___0__System_Threading_CancellationToken_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - name: T
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Common.Interfaces.IStorageService.UpdateJSONFileAsync``1(System.String,System.String,System.Func{``0,``0},System.Threading.CancellationToken)
+    name: UpdateJSONFileAsync
+    href: FoundationaLLM.Common.Interfaces.IStorageService.html#FoundationaLLM_Common_Interfaces_IStorageService_UpdateJSONFileAsync__1_System_String_System_String_System_Func___0___0__System_Threading_CancellationToken_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - name: T
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: System.Func`2
+  commentId: T:System.Func`2
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.func-2
+  name: Func<T, TResult>
+  nameWithType: Func<T, TResult>
+  fullName: System.Func<T, TResult>
+  nameWithType.vb: Func(Of T, TResult)
+  fullName.vb: System.Func(Of T, TResult)
+  name.vb: Func(Of T, TResult)
+  spec.csharp:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: FoundationaLLM.Common.Services.Storage.BlobStorageService.DeleteFileAsync*
+  commentId: Overload:FoundationaLLM.Common.Services.Storage.BlobStorageService.DeleteFileAsync
+  href: FoundationaLLM.Common.Services.Storage.BlobStorageService.html#FoundationaLLM_Common_Services_Storage_BlobStorageService_DeleteFileAsync_System_String_System_String_System_Threading_CancellationToken_
+  name: DeleteFileAsync
+  nameWithType: BlobStorageService.DeleteFileAsync
+  fullName: FoundationaLLM.Common.Services.Storage.BlobStorageService.DeleteFileAsync
+- uid: FoundationaLLM.Common.Interfaces.IStorageService.DeleteFileAsync(System.String,System.String,System.Threading.CancellationToken)
+  commentId: M:FoundationaLLM.Common.Interfaces.IStorageService.DeleteFileAsync(System.String,System.String,System.Threading.CancellationToken)
+  parent: FoundationaLLM.Common.Interfaces.IStorageService
+  isExternal: true
+  href: FoundationaLLM.Common.Interfaces.IStorageService.html#FoundationaLLM_Common_Interfaces_IStorageService_DeleteFileAsync_System_String_System_String_System_Threading_CancellationToken_
+  name: DeleteFileAsync(string, string, CancellationToken)
+  nameWithType: IStorageService.DeleteFileAsync(string, string, CancellationToken)
+  fullName: FoundationaLLM.Common.Interfaces.IStorageService.DeleteFileAsync(string, string, System.Threading.CancellationToken)
+  nameWithType.vb: IStorageService.DeleteFileAsync(String, String, CancellationToken)
+  fullName.vb: FoundationaLLM.Common.Interfaces.IStorageService.DeleteFileAsync(String, String, System.Threading.CancellationToken)
+  name.vb: DeleteFileAsync(String, String, CancellationToken)
+  spec.csharp:
+  - uid: FoundationaLLM.Common.Interfaces.IStorageService.DeleteFileAsync(System.String,System.String,System.Threading.CancellationToken)
+    name: DeleteFileAsync
+    href: FoundationaLLM.Common.Interfaces.IStorageService.html#FoundationaLLM_Common_Interfaces_IStorageService_DeleteFileAsync_System_String_System_String_System_Threading_CancellationToken_
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Common.Interfaces.IStorageService.DeleteFileAsync(System.String,System.String,System.Threading.CancellationToken)
+    name: DeleteFileAsync
+    href: FoundationaLLM.Common.Interfaces.IStorageService.html#FoundationaLLM_Common_Interfaces_IStorageService_DeleteFileAsync_System_String_System_String_System_Threading_CancellationToken_
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: FoundationaLLM.Common.Services.Storage.BlobStorageService.FileExistsAsync*
+  commentId: Overload:FoundationaLLM.Common.Services.Storage.BlobStorageService.FileExistsAsync
+  href: FoundationaLLM.Common.Services.Storage.BlobStorageService.html#FoundationaLLM_Common_Services_Storage_BlobStorageService_FileExistsAsync_System_String_System_String_System_Threading_CancellationToken_
+  name: FileExistsAsync
+  nameWithType: BlobStorageService.FileExistsAsync
+  fullName: FoundationaLLM.Common.Services.Storage.BlobStorageService.FileExistsAsync
+- uid: FoundationaLLM.Common.Interfaces.IStorageService.FileExistsAsync(System.String,System.String,System.Threading.CancellationToken)
+  commentId: M:FoundationaLLM.Common.Interfaces.IStorageService.FileExistsAsync(System.String,System.String,System.Threading.CancellationToken)
+  parent: FoundationaLLM.Common.Interfaces.IStorageService
+  isExternal: true
+  href: FoundationaLLM.Common.Interfaces.IStorageService.html#FoundationaLLM_Common_Interfaces_IStorageService_FileExistsAsync_System_String_System_String_System_Threading_CancellationToken_
+  name: FileExistsAsync(string, string, CancellationToken)
+  nameWithType: IStorageService.FileExistsAsync(string, string, CancellationToken)
+  fullName: FoundationaLLM.Common.Interfaces.IStorageService.FileExistsAsync(string, string, System.Threading.CancellationToken)
+  nameWithType.vb: IStorageService.FileExistsAsync(String, String, CancellationToken)
+  fullName.vb: FoundationaLLM.Common.Interfaces.IStorageService.FileExistsAsync(String, String, System.Threading.CancellationToken)
+  name.vb: FileExistsAsync(String, String, CancellationToken)
+  spec.csharp:
+  - uid: FoundationaLLM.Common.Interfaces.IStorageService.FileExistsAsync(System.String,System.String,System.Threading.CancellationToken)
+    name: FileExistsAsync
+    href: FoundationaLLM.Common.Interfaces.IStorageService.html#FoundationaLLM_Common_Interfaces_IStorageService_FileExistsAsync_System_String_System_String_System_Threading_CancellationToken_
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Common.Interfaces.IStorageService.FileExistsAsync(System.String,System.String,System.Threading.CancellationToken)
+    name: FileExistsAsync
+    href: FoundationaLLM.Common.Interfaces.IStorageService.html#FoundationaLLM_Common_Interfaces_IStorageService_FileExistsAsync_System_String_System_String_System_Threading_CancellationToken_
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: System.Threading.Tasks.Task{System.Boolean}
+  commentId: T:System.Threading.Tasks.Task{System.Boolean}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<bool>
+  nameWithType: Task<bool>
+  fullName: System.Threading.Tasks.Task<bool>
+  nameWithType.vb: Task(Of Boolean)
+  fullName.vb: System.Threading.Tasks.Task(Of Boolean)
+  name.vb: Task(Of Boolean)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: FoundationaLLM.Common.Services.Storage.StorageServiceBase.CreateClientFromAccountKey(System.String,System.String)
+  commentId: M:FoundationaLLM.Common.Services.Storage.StorageServiceBase.CreateClientFromAccountKey(System.String,System.String)
+  parent: FoundationaLLM.Common.Services.Storage.StorageServiceBase
+  isExternal: true
+  href: FoundationaLLM.Common.Services.Storage.StorageServiceBase.html#FoundationaLLM_Common_Services_Storage_StorageServiceBase_CreateClientFromAccountKey_System_String_System_String_
+  name: CreateClientFromAccountKey(string, string)
+  nameWithType: StorageServiceBase.CreateClientFromAccountKey(string, string)
+  fullName: FoundationaLLM.Common.Services.Storage.StorageServiceBase.CreateClientFromAccountKey(string, string)
+  nameWithType.vb: StorageServiceBase.CreateClientFromAccountKey(String, String)
+  fullName.vb: FoundationaLLM.Common.Services.Storage.StorageServiceBase.CreateClientFromAccountKey(String, String)
+  name.vb: CreateClientFromAccountKey(String, String)
+  spec.csharp:
+  - uid: FoundationaLLM.Common.Services.Storage.StorageServiceBase.CreateClientFromAccountKey(System.String,System.String)
+    name: CreateClientFromAccountKey
+    href: FoundationaLLM.Common.Services.Storage.StorageServiceBase.html#FoundationaLLM_Common_Services_Storage_StorageServiceBase_CreateClientFromAccountKey_System_String_System_String_
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Common.Services.Storage.StorageServiceBase.CreateClientFromAccountKey(System.String,System.String)
+    name: CreateClientFromAccountKey
+    href: FoundationaLLM.Common.Services.Storage.StorageServiceBase.html#FoundationaLLM_Common_Services_Storage_StorageServiceBase_CreateClientFromAccountKey_System_String_System_String_
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: FoundationaLLM.Common.Services.Storage.BlobStorageService.CreateClientFromAccountKey*
+  commentId: Overload:FoundationaLLM.Common.Services.Storage.BlobStorageService.CreateClientFromAccountKey
+  href: FoundationaLLM.Common.Services.Storage.BlobStorageService.html#FoundationaLLM_Common_Services_Storage_BlobStorageService_CreateClientFromAccountKey_System_String_System_String_
+  name: CreateClientFromAccountKey
+  nameWithType: BlobStorageService.CreateClientFromAccountKey
+  fullName: FoundationaLLM.Common.Services.Storage.BlobStorageService.CreateClientFromAccountKey
+- uid: FoundationaLLM.Common.Services.Storage.StorageServiceBase.CreateClientFromConnectionString(System.String)
+  commentId: M:FoundationaLLM.Common.Services.Storage.StorageServiceBase.CreateClientFromConnectionString(System.String)
+  parent: FoundationaLLM.Common.Services.Storage.StorageServiceBase
+  isExternal: true
+  href: FoundationaLLM.Common.Services.Storage.StorageServiceBase.html#FoundationaLLM_Common_Services_Storage_StorageServiceBase_CreateClientFromConnectionString_System_String_
+  name: CreateClientFromConnectionString(string)
+  nameWithType: StorageServiceBase.CreateClientFromConnectionString(string)
+  fullName: FoundationaLLM.Common.Services.Storage.StorageServiceBase.CreateClientFromConnectionString(string)
+  nameWithType.vb: StorageServiceBase.CreateClientFromConnectionString(String)
+  fullName.vb: FoundationaLLM.Common.Services.Storage.StorageServiceBase.CreateClientFromConnectionString(String)
+  name.vb: CreateClientFromConnectionString(String)
+  spec.csharp:
+  - uid: FoundationaLLM.Common.Services.Storage.StorageServiceBase.CreateClientFromConnectionString(System.String)
+    name: CreateClientFromConnectionString
+    href: FoundationaLLM.Common.Services.Storage.StorageServiceBase.html#FoundationaLLM_Common_Services_Storage_StorageServiceBase_CreateClientFromConnectionString_System_String_
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Common.Services.Storage.StorageServiceBase.CreateClientFromConnectionString(System.String)
+    name: CreateClientFromConnectionString
+    href: FoundationaLLM.Common.Services.Storage.StorageServiceBase.html#FoundationaLLM_Common_Services_Storage_StorageServiceBase_CreateClientFromConnectionString_System_String_
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: FoundationaLLM.Common.Services.Storage.BlobStorageService.CreateClientFromConnectionString*
+  commentId: Overload:FoundationaLLM.Common.Services.Storage.BlobStorageService.CreateClientFromConnectionString
+  href: FoundationaLLM.Common.Services.Storage.BlobStorageService.html#FoundationaLLM_Common_Services_Storage_BlobStorageService_CreateClientFromConnectionString_System_String_
+  name: CreateClientFromConnectionString
+  nameWithType: BlobStorageService.CreateClientFromConnectionString
+  fullName: FoundationaLLM.Common.Services.Storage.BlobStorageService.CreateClientFromConnectionString
+- uid: FoundationaLLM.Common.Services.Storage.StorageServiceBase.CreateClientFromIdentity(System.String)
+  commentId: M:FoundationaLLM.Common.Services.Storage.StorageServiceBase.CreateClientFromIdentity(System.String)
+  parent: FoundationaLLM.Common.Services.Storage.StorageServiceBase
+  isExternal: true
+  href: FoundationaLLM.Common.Services.Storage.StorageServiceBase.html#FoundationaLLM_Common_Services_Storage_StorageServiceBase_CreateClientFromIdentity_System_String_
+  name: CreateClientFromIdentity(string)
+  nameWithType: StorageServiceBase.CreateClientFromIdentity(string)
+  fullName: FoundationaLLM.Common.Services.Storage.StorageServiceBase.CreateClientFromIdentity(string)
+  nameWithType.vb: StorageServiceBase.CreateClientFromIdentity(String)
+  fullName.vb: FoundationaLLM.Common.Services.Storage.StorageServiceBase.CreateClientFromIdentity(String)
+  name.vb: CreateClientFromIdentity(String)
+  spec.csharp:
+  - uid: FoundationaLLM.Common.Services.Storage.StorageServiceBase.CreateClientFromIdentity(System.String)
+    name: CreateClientFromIdentity
+    href: FoundationaLLM.Common.Services.Storage.StorageServiceBase.html#FoundationaLLM_Common_Services_Storage_StorageServiceBase_CreateClientFromIdentity_System_String_
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Common.Services.Storage.StorageServiceBase.CreateClientFromIdentity(System.String)
+    name: CreateClientFromIdentity
+    href: FoundationaLLM.Common.Services.Storage.StorageServiceBase.html#FoundationaLLM_Common_Services_Storage_StorageServiceBase_CreateClientFromIdentity_System_String_
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: FoundationaLLM.Common.Services.Storage.BlobStorageService.CreateClientFromIdentity*
+  commentId: Overload:FoundationaLLM.Common.Services.Storage.BlobStorageService.CreateClientFromIdentity
+  href: FoundationaLLM.Common.Services.Storage.BlobStorageService.html#FoundationaLLM_Common_Services_Storage_BlobStorageService_CreateClientFromIdentity_System_String_
+  name: CreateClientFromIdentity
+  nameWithType: BlobStorageService.CreateClientFromIdentity
+  fullName: FoundationaLLM.Common.Services.Storage.BlobStorageService.CreateClientFromIdentity
+- uid: FoundationaLLM.Common.Services.Storage.BlobStorageService.GetFilePathsAsync*
+  commentId: Overload:FoundationaLLM.Common.Services.Storage.BlobStorageService.GetFilePathsAsync
+  href: FoundationaLLM.Common.Services.Storage.BlobStorageService.html#FoundationaLLM_Common_Services_Storage_BlobStorageService_GetFilePathsAsync_System_String_System_String_System_Boolean_System_Threading_CancellationToken_
+  name: GetFilePathsAsync
+  nameWithType: BlobStorageService.GetFilePathsAsync
+  fullName: FoundationaLLM.Common.Services.Storage.BlobStorageService.GetFilePathsAsync
+- uid: FoundationaLLM.Common.Interfaces.IStorageService.GetFilePathsAsync(System.String,System.String,System.Boolean,System.Threading.CancellationToken)
+  commentId: M:FoundationaLLM.Common.Interfaces.IStorageService.GetFilePathsAsync(System.String,System.String,System.Boolean,System.Threading.CancellationToken)
+  parent: FoundationaLLM.Common.Interfaces.IStorageService
+  isExternal: true
+  href: FoundationaLLM.Common.Interfaces.IStorageService.html#FoundationaLLM_Common_Interfaces_IStorageService_GetFilePathsAsync_System_String_System_String_System_Boolean_System_Threading_CancellationToken_
+  name: GetFilePathsAsync(string, string, bool, CancellationToken)
+  nameWithType: IStorageService.GetFilePathsAsync(string, string, bool, CancellationToken)
+  fullName: FoundationaLLM.Common.Interfaces.IStorageService.GetFilePathsAsync(string, string, bool, System.Threading.CancellationToken)
+  nameWithType.vb: IStorageService.GetFilePathsAsync(String, String, Boolean, CancellationToken)
+  fullName.vb: FoundationaLLM.Common.Interfaces.IStorageService.GetFilePathsAsync(String, String, Boolean, System.Threading.CancellationToken)
+  name.vb: GetFilePathsAsync(String, String, Boolean, CancellationToken)
+  spec.csharp:
+  - uid: FoundationaLLM.Common.Interfaces.IStorageService.GetFilePathsAsync(System.String,System.String,System.Boolean,System.Threading.CancellationToken)
+    name: GetFilePathsAsync
+    href: FoundationaLLM.Common.Interfaces.IStorageService.html#FoundationaLLM_Common_Interfaces_IStorageService_GetFilePathsAsync_System_String_System_String_System_Boolean_System_Threading_CancellationToken_
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Common.Interfaces.IStorageService.GetFilePathsAsync(System.String,System.String,System.Boolean,System.Threading.CancellationToken)
+    name: GetFilePathsAsync
+    href: FoundationaLLM.Common.Interfaces.IStorageService.html#FoundationaLLM_Common_Interfaces_IStorageService_GetFilePathsAsync_System_String_System_String_System_Boolean_System_Threading_CancellationToken_
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: System.Threading.Tasks.Task{System.Collections.Generic.List{System.String}}
+  commentId: T:System.Threading.Tasks.Task{System.Collections.Generic.List{System.String}}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<List<string>>
+  nameWithType: Task<List<string>>
+  fullName: System.Threading.Tasks.Task<System.Collections.Generic.List<string>>
+  nameWithType.vb: Task(Of List(Of String))
+  fullName.vb: System.Threading.Tasks.Task(Of System.Collections.Generic.List(Of String))
+  name.vb: Task(Of List(Of String))
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: FoundationaLLM.Common.Services.Storage.BlobStorageService.GetMatchingFilePathsAsync*
+  commentId: Overload:FoundationaLLM.Common.Services.Storage.BlobStorageService.GetMatchingFilePathsAsync
+  href: FoundationaLLM.Common.Services.Storage.BlobStorageService.html#FoundationaLLM_Common_Services_Storage_BlobStorageService_GetMatchingFilePathsAsync_System_String_System_String_System_Threading_CancellationToken_
+  name: GetMatchingFilePathsAsync
+  nameWithType: BlobStorageService.GetMatchingFilePathsAsync
+  fullName: FoundationaLLM.Common.Services.Storage.BlobStorageService.GetMatchingFilePathsAsync
+- uid: FoundationaLLM.Common.Interfaces.IStorageService.GetMatchingFilePathsAsync(System.String,System.String,System.Threading.CancellationToken)
+  commentId: M:FoundationaLLM.Common.Interfaces.IStorageService.GetMatchingFilePathsAsync(System.String,System.String,System.Threading.CancellationToken)
+  parent: FoundationaLLM.Common.Interfaces.IStorageService
+  isExternal: true
+  href: FoundationaLLM.Common.Interfaces.IStorageService.html#FoundationaLLM_Common_Interfaces_IStorageService_GetMatchingFilePathsAsync_System_String_System_String_System_Threading_CancellationToken_
+  name: GetMatchingFilePathsAsync(string, string, CancellationToken)
+  nameWithType: IStorageService.GetMatchingFilePathsAsync(string, string, CancellationToken)
+  fullName: FoundationaLLM.Common.Interfaces.IStorageService.GetMatchingFilePathsAsync(string, string, System.Threading.CancellationToken)
+  nameWithType.vb: IStorageService.GetMatchingFilePathsAsync(String, String, CancellationToken)
+  fullName.vb: FoundationaLLM.Common.Interfaces.IStorageService.GetMatchingFilePathsAsync(String, String, System.Threading.CancellationToken)
+  name.vb: GetMatchingFilePathsAsync(String, String, CancellationToken)
+  spec.csharp:
+  - uid: FoundationaLLM.Common.Interfaces.IStorageService.GetMatchingFilePathsAsync(System.String,System.String,System.Threading.CancellationToken)
+    name: GetMatchingFilePathsAsync
+    href: FoundationaLLM.Common.Interfaces.IStorageService.html#FoundationaLLM_Common_Interfaces_IStorageService_GetMatchingFilePathsAsync_System_String_System_String_System_Threading_CancellationToken_
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Common.Interfaces.IStorageService.GetMatchingFilePathsAsync(System.String,System.String,System.Threading.CancellationToken)
+    name: GetMatchingFilePathsAsync
+    href: FoundationaLLM.Common.Interfaces.IStorageService.html#FoundationaLLM_Common_Interfaces_IStorageService_GetMatchingFilePathsAsync_System_String_System_String_System_Threading_CancellationToken_
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: FoundationaLLM.Common.Services.Storage.BlobStorageService.CopyFileAsync*
+  commentId: Overload:FoundationaLLM.Common.Services.Storage.BlobStorageService.CopyFileAsync
+  href: FoundationaLLM.Common.Services.Storage.BlobStorageService.html#FoundationaLLM_Common_Services_Storage_BlobStorageService_CopyFileAsync_System_String_System_String_System_String_System_Threading_CancellationToken_
+  name: CopyFileAsync
+  nameWithType: BlobStorageService.CopyFileAsync
+  fullName: FoundationaLLM.Common.Services.Storage.BlobStorageService.CopyFileAsync
+- uid: FoundationaLLM.Common.Interfaces.IStorageService.CopyFileAsync(System.String,System.String,System.String,System.Threading.CancellationToken)
+  commentId: M:FoundationaLLM.Common.Interfaces.IStorageService.CopyFileAsync(System.String,System.String,System.String,System.Threading.CancellationToken)
+  parent: FoundationaLLM.Common.Interfaces.IStorageService
+  isExternal: true
+  href: FoundationaLLM.Common.Interfaces.IStorageService.html#FoundationaLLM_Common_Interfaces_IStorageService_CopyFileAsync_System_String_System_String_System_String_System_Threading_CancellationToken_
+  name: CopyFileAsync(string, string, string, CancellationToken)
+  nameWithType: IStorageService.CopyFileAsync(string, string, string, CancellationToken)
+  fullName: FoundationaLLM.Common.Interfaces.IStorageService.CopyFileAsync(string, string, string, System.Threading.CancellationToken)
+  nameWithType.vb: IStorageService.CopyFileAsync(String, String, String, CancellationToken)
+  fullName.vb: FoundationaLLM.Common.Interfaces.IStorageService.CopyFileAsync(String, String, String, System.Threading.CancellationToken)
+  name.vb: CopyFileAsync(String, String, String, CancellationToken)
+  spec.csharp:
+  - uid: FoundationaLLM.Common.Interfaces.IStorageService.CopyFileAsync(System.String,System.String,System.String,System.Threading.CancellationToken)
+    name: CopyFileAsync
+    href: FoundationaLLM.Common.Interfaces.IStorageService.html#FoundationaLLM_Common_Interfaces_IStorageService_CopyFileAsync_System_String_System_String_System_String_System_Threading_CancellationToken_
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Common.Interfaces.IStorageService.CopyFileAsync(System.String,System.String,System.String,System.Threading.CancellationToken)
+    name: CopyFileAsync
+    href: FoundationaLLM.Common.Interfaces.IStorageService.html#FoundationaLLM_Common_Interfaces_IStorageService_CopyFileAsync_System_String_System_String_System_String_System_Threading_CancellationToken_
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )

@@ -1,0 +1,442 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Client.Core.Interfaces.IAttachmentRESTClient
+  commentId: T:FoundationaLLM.Client.Core.Interfaces.IAttachmentRESTClient
+  id: IAttachmentRESTClient
+  parent: FoundationaLLM.Client.Core.Interfaces
+  children:
+  - FoundationaLLM.Client.Core.Interfaces.IAttachmentRESTClient.UploadAttachmentAsync(System.IO.Stream,System.String,System.String)
+  langs:
+  - csharp
+  - vb
+  name: IAttachmentRESTClient
+  nameWithType: IAttachmentRESTClient
+  fullName: FoundationaLLM.Client.Core.Interfaces.IAttachmentRESTClient
+  type: Interface
+  source:
+    remote:
+      path: src/dotnet/CoreClient/Interfaces/IAttachmentRESTClient.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: IAttachmentRESTClient
+    path: ../src/dotnet/CoreClient/Interfaces/IAttachmentRESTClient.cs
+    startLine: 7
+  assemblies:
+  - FoundationaLLM.Client.Core
+  namespace: FoundationaLLM.Client.Core.Interfaces
+  summary: Provides methods to manage calls to the Core API's Attachments endpoints.
+  example: []
+  syntax:
+    content: public interface IAttachmentRESTClient
+    content.vb: Public Interface IAttachmentRESTClient
+  extensionMethods:
+  - System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+- uid: FoundationaLLM.Client.Core.Interfaces.IAttachmentRESTClient.UploadAttachmentAsync(System.IO.Stream,System.String,System.String)
+  commentId: M:FoundationaLLM.Client.Core.Interfaces.IAttachmentRESTClient.UploadAttachmentAsync(System.IO.Stream,System.String,System.String)
+  id: UploadAttachmentAsync(System.IO.Stream,System.String,System.String)
+  parent: FoundationaLLM.Client.Core.Interfaces.IAttachmentRESTClient
+  langs:
+  - csharp
+  - vb
+  name: UploadAttachmentAsync(Stream, string, string)
+  nameWithType: IAttachmentRESTClient.UploadAttachmentAsync(Stream, string, string)
+  fullName: FoundationaLLM.Client.Core.Interfaces.IAttachmentRESTClient.UploadAttachmentAsync(System.IO.Stream, string, string)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/CoreClient/Interfaces/IAttachmentRESTClient.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: UploadAttachmentAsync
+    path: ../src/dotnet/CoreClient/Interfaces/IAttachmentRESTClient.cs
+    startLine: 18
+  assemblies:
+  - FoundationaLLM.Client.Core
+  namespace: FoundationaLLM.Client.Core.Interfaces
+  summary: Uploads a file attachment to the Core API.
+  example: []
+  syntax:
+    content: Task<string> UploadAttachmentAsync(Stream fileStream, string fileName, string contentType)
+    parameters:
+    - id: fileStream
+      type: System.IO.Stream
+      description: The file contents of the new Attachment resource.
+    - id: fileName
+      type: System.String
+      description: The name of the file.
+    - id: contentType
+      type: System.String
+      description: >-
+        The Content-Type header value of a valid mime type that is used
+            to create a new <xref href="System.Net.Http.Headers.MediaTypeHeaderValue" data-throw-if-not-resolved="false"></xref> as part of the
+            <xref href="System.Net.Http.MultipartFormDataContent" data-throw-if-not-resolved="false"></xref> sent to the API endpoint.
+    return:
+      type: System.Threading.Tasks.Task{System.String}
+      description: The Object ID of the Attachment Resource Provider created from the filestream.
+    content.vb: Function UploadAttachmentAsync(fileStream As Stream, fileName As String, contentType As String) As Task(Of String)
+  overload: FoundationaLLM.Client.Core.Interfaces.IAttachmentRESTClient.UploadAttachmentAsync*
+  nameWithType.vb: IAttachmentRESTClient.UploadAttachmentAsync(Stream, String, String)
+  fullName.vb: FoundationaLLM.Client.Core.Interfaces.IAttachmentRESTClient.UploadAttachmentAsync(System.IO.Stream, String, String)
+  name.vb: UploadAttachmentAsync(Stream, String, String)
+references:
+- uid: FoundationaLLM.Client.Core.Interfaces
+  commentId: N:FoundationaLLM.Client.Core.Interfaces
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Client.Core.Interfaces
+  nameWithType: FoundationaLLM.Client.Core.Interfaces
+  fullName: FoundationaLLM.Client.Core.Interfaces
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Client
+    name: Client
+    href: FoundationaLLM.Client.html
+  - name: .
+  - uid: FoundationaLLM.Client.Core
+    name: Core
+    href: FoundationaLLM.Client.Core.html
+  - name: .
+  - uid: FoundationaLLM.Client.Core.Interfaces
+    name: Interfaces
+    href: FoundationaLLM.Client.Core.Interfaces.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Client
+    name: Client
+    href: FoundationaLLM.Client.html
+  - name: .
+  - uid: FoundationaLLM.Client.Core
+    name: Core
+    href: FoundationaLLM.Client.Core.html
+  - name: .
+  - uid: FoundationaLLM.Client.Core.Interfaces
+    name: Interfaces
+    href: FoundationaLLM.Client.Core.Interfaces.html
+- uid: System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  parent: FoundationaLLM.Core.Utils.ObjectExtensions
+  definition: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  isExternal: true
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions
+  commentId: T:FoundationaLLM.Core.Utils.ObjectExtensions
+  parent: FoundationaLLM.Core.Utils
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html
+  name: ObjectExtensions
+  nameWithType: ObjectExtensions
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions
+- uid: FoundationaLLM.Core.Utils
+  commentId: N:FoundationaLLM.Core.Utils
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Core.Utils
+  nameWithType: FoundationaLLM.Core.Utils
+  fullName: FoundationaLLM.Core.Utils
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+- uid: System.Net.Http.Headers.MediaTypeHeaderValue
+  commentId: T:System.Net.Http.Headers.MediaTypeHeaderValue
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.net.http.headers.mediatypeheadervalue
+  name: MediaTypeHeaderValue
+  nameWithType: MediaTypeHeaderValue
+  fullName: System.Net.Http.Headers.MediaTypeHeaderValue
+- uid: System.Net.Http.MultipartFormDataContent
+  commentId: T:System.Net.Http.MultipartFormDataContent
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.net.http.multipartformdatacontent
+  name: MultipartFormDataContent
+  nameWithType: MultipartFormDataContent
+  fullName: System.Net.Http.MultipartFormDataContent
+- uid: FoundationaLLM.Client.Core.Interfaces.IAttachmentRESTClient.UploadAttachmentAsync*
+  commentId: Overload:FoundationaLLM.Client.Core.Interfaces.IAttachmentRESTClient.UploadAttachmentAsync
+  href: FoundationaLLM.Client.Core.Interfaces.IAttachmentRESTClient.html#FoundationaLLM_Client_Core_Interfaces_IAttachmentRESTClient_UploadAttachmentAsync_System_IO_Stream_System_String_System_String_
+  name: UploadAttachmentAsync
+  nameWithType: IAttachmentRESTClient.UploadAttachmentAsync
+  fullName: FoundationaLLM.Client.Core.Interfaces.IAttachmentRESTClient.UploadAttachmentAsync
+- uid: System.IO.Stream
+  commentId: T:System.IO.Stream
+  parent: System.IO
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.io.stream
+  name: Stream
+  nameWithType: Stream
+  fullName: System.IO.Stream
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System.Threading.Tasks.Task{System.String}
+  commentId: T:System.Threading.Tasks.Task{System.String}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<string>
+  nameWithType: Task<string>
+  fullName: System.Threading.Tasks.Task<string>
+  nameWithType.vb: Task(Of String)
+  fullName.vb: System.Threading.Tasks.Task(Of String)
+  name.vb: Task(Of String)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: System.IO
+  commentId: N:System.IO
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.IO
+  nameWithType: System.IO
+  fullName: System.IO
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.IO
+    name: IO
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.io
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.IO
+    name: IO
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.io
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks

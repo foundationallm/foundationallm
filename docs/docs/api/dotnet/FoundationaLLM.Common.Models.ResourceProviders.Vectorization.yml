@@ -1,0 +1,164 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Vectorization
+  commentId: N:FoundationaLLM.Common.Models.ResourceProviders.Vectorization
+  id: Vectorization
+  parent: FoundationaLLM.Common.Models.ResourceProviders
+  children:
+  - FoundationaLLM.Common.Models.ResourceProviders.Vectorization.IndexerType
+  - FoundationaLLM.Common.Models.ResourceProviders.Vectorization.IndexingProfile
+  - FoundationaLLM.Common.Models.ResourceProviders.Vectorization.TextEmbeddingProfile
+  - FoundationaLLM.Common.Models.ResourceProviders.Vectorization.TextEmbeddingType
+  - FoundationaLLM.Common.Models.ResourceProviders.Vectorization.TextPartitioningProfile
+  - FoundationaLLM.Common.Models.ResourceProviders.Vectorization.TextSplitterType
+  - FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationLongRunningOperation
+  - FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationProcessingState
+  - FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationProcessingType
+  - FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationProfileBase
+  - FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest
+  - FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationResult
+  - FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationStep
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM.Common.Models.ResourceProviders.Vectorization
+  nameWithType: FoundationaLLM.Common.Models.ResourceProviders.Vectorization
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Vectorization
+  type: Namespace
+  assemblies:
+  - FoundationaLLM.Common
+references:
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.IndexerType
+  commentId: T:FoundationaLLM.Common.Models.ResourceProviders.Vectorization.IndexerType
+  parent: FoundationaLLM.Common.Models.ResourceProviders.Vectorization
+  href: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.IndexerType.html
+  name: IndexerType
+  nameWithType: IndexerType
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.IndexerType
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.IndexingProfile
+  commentId: T:FoundationaLLM.Common.Models.ResourceProviders.Vectorization.IndexingProfile
+  parent: FoundationaLLM.Common.Models.ResourceProviders.Vectorization
+  href: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.IndexingProfile.html
+  name: IndexingProfile
+  nameWithType: IndexingProfile
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.IndexingProfile
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.TextEmbeddingProfile
+  commentId: T:FoundationaLLM.Common.Models.ResourceProviders.Vectorization.TextEmbeddingProfile
+  parent: FoundationaLLM.Common.Models.ResourceProviders.Vectorization
+  href: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.TextEmbeddingProfile.html
+  name: TextEmbeddingProfile
+  nameWithType: TextEmbeddingProfile
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.TextEmbeddingProfile
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.TextEmbeddingType
+  commentId: T:FoundationaLLM.Common.Models.ResourceProviders.Vectorization.TextEmbeddingType
+  parent: FoundationaLLM.Common.Models.ResourceProviders.Vectorization
+  href: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.TextEmbeddingType.html
+  name: TextEmbeddingType
+  nameWithType: TextEmbeddingType
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.TextEmbeddingType
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.TextPartitioningProfile
+  commentId: T:FoundationaLLM.Common.Models.ResourceProviders.Vectorization.TextPartitioningProfile
+  parent: FoundationaLLM.Common.Models.ResourceProviders.Vectorization
+  href: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.TextPartitioningProfile.html
+  name: TextPartitioningProfile
+  nameWithType: TextPartitioningProfile
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.TextPartitioningProfile
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.TextSplitterType
+  commentId: T:FoundationaLLM.Common.Models.ResourceProviders.Vectorization.TextSplitterType
+  parent: FoundationaLLM.Common.Models.ResourceProviders.Vectorization
+  href: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.TextSplitterType.html
+  name: TextSplitterType
+  nameWithType: TextSplitterType
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.TextSplitterType
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationLongRunningOperation
+  commentId: T:FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationLongRunningOperation
+  href: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationLongRunningOperation.html
+  name: VectorizationLongRunningOperation
+  nameWithType: VectorizationLongRunningOperation
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationLongRunningOperation
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationProcessingState
+  commentId: T:FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationProcessingState
+  parent: FoundationaLLM.Common.Models.ResourceProviders.Vectorization
+  href: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationProcessingState.html
+  name: VectorizationProcessingState
+  nameWithType: VectorizationProcessingState
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationProcessingState
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationProcessingType
+  commentId: T:FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationProcessingType
+  parent: FoundationaLLM.Common.Models.ResourceProviders.Vectorization
+  href: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationProcessingType.html
+  name: VectorizationProcessingType
+  nameWithType: VectorizationProcessingType
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationProcessingType
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationProfileBase
+  commentId: T:FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationProfileBase
+  parent: FoundationaLLM.Common.Models.ResourceProviders.Vectorization
+  href: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationProfileBase.html
+  name: VectorizationProfileBase
+  nameWithType: VectorizationProfileBase
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationProfileBase
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest
+  commentId: T:FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest
+  href: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.html
+  name: VectorizationRequest
+  nameWithType: VectorizationRequest
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationResult
+  commentId: T:FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationResult
+  href: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationResult.html
+  name: VectorizationResult
+  nameWithType: VectorizationResult
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationResult
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationStep
+  commentId: T:FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationStep
+  parent: FoundationaLLM.Common.Models.ResourceProviders.Vectorization
+  href: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationStep.html
+  name: VectorizationStep
+  nameWithType: VectorizationStep
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationStep
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Vectorization
+  commentId: N:FoundationaLLM.Common.Models.ResourceProviders.Vectorization
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.ResourceProviders.Vectorization
+  nameWithType: FoundationaLLM.Common.Models.ResourceProviders.Vectorization
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Vectorization
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders
+    name: ResourceProviders
+    href: FoundationaLLM.Common.Models.ResourceProviders.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.Vectorization
+    name: Vectorization
+    href: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders
+    name: ResourceProviders
+    href: FoundationaLLM.Common.Models.ResourceProviders.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.Vectorization
+    name: Vectorization
+    href: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.html

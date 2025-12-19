@@ -1,0 +1,55 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.DataPipeline.Interfaces
+  commentId: N:FoundationaLLM.DataPipeline.Interfaces
+  id: Interfaces
+  parent: FoundationaLLM.DataPipeline
+  children:
+  - FoundationaLLM.DataPipeline.Interfaces.IDataPipelineServiceClient
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM.DataPipeline.Interfaces
+  nameWithType: FoundationaLLM.DataPipeline.Interfaces
+  fullName: FoundationaLLM.DataPipeline.Interfaces
+  type: Namespace
+  assemblies:
+  - FoundationaLLM.DataPipeline
+references:
+- uid: FoundationaLLM.DataPipeline.Interfaces.IDataPipelineServiceClient
+  commentId: T:FoundationaLLM.DataPipeline.Interfaces.IDataPipelineServiceClient
+  parent: FoundationaLLM.DataPipeline.Interfaces
+  href: FoundationaLLM.DataPipeline.Interfaces.IDataPipelineServiceClient.html
+  name: IDataPipelineServiceClient
+  nameWithType: IDataPipelineServiceClient
+  fullName: FoundationaLLM.DataPipeline.Interfaces.IDataPipelineServiceClient
+- uid: FoundationaLLM.DataPipeline.Interfaces
+  commentId: N:FoundationaLLM.DataPipeline.Interfaces
+  href: FoundationaLLM.html
+  name: FoundationaLLM.DataPipeline.Interfaces
+  nameWithType: FoundationaLLM.DataPipeline.Interfaces
+  fullName: FoundationaLLM.DataPipeline.Interfaces
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.DataPipeline
+    name: DataPipeline
+    href: FoundationaLLM.DataPipeline.html
+  - name: .
+  - uid: FoundationaLLM.DataPipeline.Interfaces
+    name: Interfaces
+    href: FoundationaLLM.DataPipeline.Interfaces.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.DataPipeline
+    name: DataPipeline
+    href: FoundationaLLM.DataPipeline.html
+  - name: .
+  - uid: FoundationaLLM.DataPipeline.Interfaces
+    name: Interfaces
+    href: FoundationaLLM.DataPipeline.Interfaces.html

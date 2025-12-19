@@ -1,0 +1,74 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Prompt
+  id: Prompt
+  parent: FoundationaLLM
+  children:
+  - FoundationaLLM.Prompt.Models
+  - FoundationaLLM.Prompt.ResourceProviders
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM.Prompt
+  type: Namespace
+references:
+- uid: FoundationaLLM.Prompt.Models
+  commentId: N:FoundationaLLM.Prompt.Models
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Prompt.Models
+  nameWithType: FoundationaLLM.Prompt.Models
+  fullName: FoundationaLLM.Prompt.Models
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Prompt
+    name: Prompt
+    href: FoundationaLLM.Prompt.html
+  - name: .
+  - uid: FoundationaLLM.Prompt.Models
+    name: Models
+    href: FoundationaLLM.Prompt.Models.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Prompt
+    name: Prompt
+    href: FoundationaLLM.Prompt.html
+  - name: .
+  - uid: FoundationaLLM.Prompt.Models
+    name: Models
+    href: FoundationaLLM.Prompt.Models.html
+- uid: FoundationaLLM.Prompt.ResourceProviders
+  commentId: N:FoundationaLLM.Prompt.ResourceProviders
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Prompt.ResourceProviders
+  nameWithType: FoundationaLLM.Prompt.ResourceProviders
+  fullName: FoundationaLLM.Prompt.ResourceProviders
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Prompt
+    name: Prompt
+    href: FoundationaLLM.Prompt.html
+  - name: .
+  - uid: FoundationaLLM.Prompt.ResourceProviders
+    name: ResourceProviders
+    href: FoundationaLLM.Prompt.ResourceProviders.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Prompt
+    name: Prompt
+    href: FoundationaLLM.Prompt.html
+  - name: .
+  - uid: FoundationaLLM.Prompt.ResourceProviders
+    name: ResourceProviders
+    href: FoundationaLLM.Prompt.ResourceProviders.html

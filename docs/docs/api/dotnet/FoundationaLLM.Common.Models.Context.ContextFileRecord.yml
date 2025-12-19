@@ -1,0 +1,1391 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Common.Models.Context.ContextFileRecord
+  commentId: T:FoundationaLLM.Common.Models.Context.ContextFileRecord
+  id: ContextFileRecord
+  parent: FoundationaLLM.Common.Models.Context
+  children:
+  - FoundationaLLM.Common.Models.Context.ContextFileRecord.#ctor
+  - FoundationaLLM.Common.Models.Context.ContextFileRecord.#ctor(System.String,System.String,System.String,System.String,System.String,System.String,System.Int64,System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity,System.Collections.Generic.Dictionary{System.String,System.String})
+  - FoundationaLLM.Common.Models.Context.ContextFileRecord.AgentName
+  - FoundationaLLM.Common.Models.Context.ContextFileRecord.ContentType
+  - FoundationaLLM.Common.Models.Context.ContextFileRecord.ConversationId
+  - FoundationaLLM.Common.Models.Context.ContextFileRecord.FileName
+  - FoundationaLLM.Common.Models.Context.ContextFileRecord.FileObjectId
+  - FoundationaLLM.Common.Models.Context.ContextFileRecord.FilePath
+  - FoundationaLLM.Common.Models.Context.ContextFileRecord.FileProcessingType
+  - FoundationaLLM.Common.Models.Context.ContextFileRecord.FileSizeBytes
+  - FoundationaLLM.Common.Models.Context.ContextFileRecord.Type
+  langs:
+  - csharp
+  - vb
+  name: ContextFileRecord
+  nameWithType: ContextFileRecord
+  fullName: FoundationaLLM.Common.Models.Context.ContextFileRecord
+  type: Class
+  source:
+    remote:
+      path: src/dotnet/Common/Models/Context/ContextFileRecord.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: ContextFileRecord
+    path: ../src/dotnet/Common/Models/Context/ContextFileRecord.cs
+    startLine: 11
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.Context
+  summary: Represents a file record.
+  example: []
+  syntax:
+    content: 'public class ContextFileRecord : ContextRecord'
+    content.vb: Public Class ContextFileRecord Inherits ContextRecord
+  inheritance:
+  - System.Object
+  - FoundationaLLM.Common.Models.Context.ContextRecord
+  inheritedMembers:
+  - FoundationaLLM.Common.Models.Context.ContextRecord.Id
+  - FoundationaLLM.Common.Models.Context.ContextRecord.InstanceId
+  - FoundationaLLM.Common.Models.Context.ContextRecord.UPN
+  - FoundationaLLM.Common.Models.Context.ContextRecord.Origin
+  - FoundationaLLM.Common.Models.Context.ContextRecord.CreatedAt
+  - FoundationaLLM.Common.Models.Context.ContextRecord.CreatedBy
+  - FoundationaLLM.Common.Models.Context.ContextRecord.UpdatedAt
+  - FoundationaLLM.Common.Models.Context.ContextRecord.UpdatedBy
+  - FoundationaLLM.Common.Models.Context.ContextRecord.Deleted
+  - FoundationaLLM.Common.Models.Context.ContextRecord.Metadata
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+  extensionMethods:
+  - System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+- uid: FoundationaLLM.Common.Models.Context.ContextFileRecord.Type
+  commentId: P:FoundationaLLM.Common.Models.Context.ContextFileRecord.Type
+  id: Type
+  parent: FoundationaLLM.Common.Models.Context.ContextFileRecord
+  langs:
+  - csharp
+  - vb
+  name: Type
+  nameWithType: ContextFileRecord.Type
+  fullName: FoundationaLLM.Common.Models.Context.ContextFileRecord.Type
+  type: Property
+  source:
+    remote:
+      path: src/dotnet/Common/Models/Context/ContextFileRecord.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: Type
+    path: ../src/dotnet/Common/Models/Context/ContextFileRecord.cs
+    startLine: 16
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.Context
+  summary: Gets or sets the type of the context record.
+  example: []
+  syntax:
+    content: >-
+      [JsonPropertyName("type")]
+
+      [JsonPropertyOrder(-99)]
+
+      public override string Type { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: >-
+      <JsonPropertyName("type")>
+
+      <JsonPropertyOrder(-99)>
+
+      Public Overrides Property Type As String
+  overridden: FoundationaLLM.Common.Models.Context.ContextRecord.Type
+  overload: FoundationaLLM.Common.Models.Context.ContextFileRecord.Type*
+  attributes:
+  - type: System.Text.Json.Serialization.JsonPropertyNameAttribute
+    ctor: System.Text.Json.Serialization.JsonPropertyNameAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: type
+  - type: System.Text.Json.Serialization.JsonPropertyOrderAttribute
+    ctor: System.Text.Json.Serialization.JsonPropertyOrderAttribute.#ctor(System.Int32)
+    arguments:
+    - type: System.Int32
+      value: -99
+- uid: FoundationaLLM.Common.Models.Context.ContextFileRecord.ConversationId
+  commentId: P:FoundationaLLM.Common.Models.Context.ContextFileRecord.ConversationId
+  id: ConversationId
+  parent: FoundationaLLM.Common.Models.Context.ContextFileRecord
+  langs:
+  - csharp
+  - vb
+  name: ConversationId
+  nameWithType: ContextFileRecord.ConversationId
+  fullName: FoundationaLLM.Common.Models.Context.ContextFileRecord.ConversationId
+  type: Property
+  source:
+    remote:
+      path: src/dotnet/Common/Models/Context/ContextFileRecord.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: ConversationId
+    path: ../src/dotnet/Common/Models/Context/ContextFileRecord.cs
+    startLine: 24
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.Context
+  summary: Gets or sets the conversation identifier.
+  example: []
+  syntax:
+    content: >-
+      [JsonPropertyName("conversation_id")]
+
+      [JsonPropertyOrder(0)]
+
+      public string ConversationId { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: >-
+      <JsonPropertyName("conversation_id")>
+
+      <JsonPropertyOrder(0)>
+
+      Public Property ConversationId As String
+  overload: FoundationaLLM.Common.Models.Context.ContextFileRecord.ConversationId*
+  attributes:
+  - type: System.Text.Json.Serialization.JsonPropertyNameAttribute
+    ctor: System.Text.Json.Serialization.JsonPropertyNameAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: conversation_id
+  - type: System.Text.Json.Serialization.JsonPropertyOrderAttribute
+    ctor: System.Text.Json.Serialization.JsonPropertyOrderAttribute.#ctor(System.Int32)
+    arguments:
+    - type: System.Int32
+      value: 0
+- uid: FoundationaLLM.Common.Models.Context.ContextFileRecord.AgentName
+  commentId: P:FoundationaLLM.Common.Models.Context.ContextFileRecord.AgentName
+  id: AgentName
+  parent: FoundationaLLM.Common.Models.Context.ContextFileRecord
+  langs:
+  - csharp
+  - vb
+  name: AgentName
+  nameWithType: ContextFileRecord.AgentName
+  fullName: FoundationaLLM.Common.Models.Context.ContextFileRecord.AgentName
+  type: Property
+  source:
+    remote:
+      path: src/dotnet/Common/Models/Context/ContextFileRecord.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: AgentName
+    path: ../src/dotnet/Common/Models/Context/ContextFileRecord.cs
+    startLine: 31
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.Context
+  summary: Gets or sets the agent name.
+  example: []
+  syntax:
+    content: >-
+      [JsonPropertyName("agent_name")]
+
+      [JsonPropertyOrder(1)]
+
+      public string AgentName { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: >-
+      <JsonPropertyName("agent_name")>
+
+      <JsonPropertyOrder(1)>
+
+      Public Property AgentName As String
+  overload: FoundationaLLM.Common.Models.Context.ContextFileRecord.AgentName*
+  attributes:
+  - type: System.Text.Json.Serialization.JsonPropertyNameAttribute
+    ctor: System.Text.Json.Serialization.JsonPropertyNameAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: agent_name
+  - type: System.Text.Json.Serialization.JsonPropertyOrderAttribute
+    ctor: System.Text.Json.Serialization.JsonPropertyOrderAttribute.#ctor(System.Int32)
+    arguments:
+    - type: System.Int32
+      value: 1
+- uid: FoundationaLLM.Common.Models.Context.ContextFileRecord.FileObjectId
+  commentId: P:FoundationaLLM.Common.Models.Context.ContextFileRecord.FileObjectId
+  id: FileObjectId
+  parent: FoundationaLLM.Common.Models.Context.ContextFileRecord
+  langs:
+  - csharp
+  - vb
+  name: FileObjectId
+  nameWithType: ContextFileRecord.FileObjectId
+  fullName: FoundationaLLM.Common.Models.Context.ContextFileRecord.FileObjectId
+  type: Property
+  source:
+    remote:
+      path: src/dotnet/Common/Models/Context/ContextFileRecord.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: FileObjectId
+    path: ../src/dotnet/Common/Models/Context/ContextFileRecord.cs
+    startLine: 38
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.Context
+  summary: Gets or sets the FoundationaLLM object identifier of the file
+  example: []
+  syntax:
+    content: >-
+      [JsonPropertyName("file_object_id")]
+
+      [JsonPropertyOrder(2)]
+
+      public string FileObjectId { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: >-
+      <JsonPropertyName("file_object_id")>
+
+      <JsonPropertyOrder(2)>
+
+      Public Property FileObjectId As String
+  overload: FoundationaLLM.Common.Models.Context.ContextFileRecord.FileObjectId*
+  attributes:
+  - type: System.Text.Json.Serialization.JsonPropertyNameAttribute
+    ctor: System.Text.Json.Serialization.JsonPropertyNameAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: file_object_id
+  - type: System.Text.Json.Serialization.JsonPropertyOrderAttribute
+    ctor: System.Text.Json.Serialization.JsonPropertyOrderAttribute.#ctor(System.Int32)
+    arguments:
+    - type: System.Int32
+      value: 2
+- uid: FoundationaLLM.Common.Models.Context.ContextFileRecord.FileName
+  commentId: P:FoundationaLLM.Common.Models.Context.ContextFileRecord.FileName
+  id: FileName
+  parent: FoundationaLLM.Common.Models.Context.ContextFileRecord
+  langs:
+  - csharp
+  - vb
+  name: FileName
+  nameWithType: ContextFileRecord.FileName
+  fullName: FoundationaLLM.Common.Models.Context.ContextFileRecord.FileName
+  type: Property
+  source:
+    remote:
+      path: src/dotnet/Common/Models/Context/ContextFileRecord.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: FileName
+    path: ../src/dotnet/Common/Models/Context/ContextFileRecord.cs
+    startLine: 45
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.Context
+  summary: Gets or sets the file name.
+  example: []
+  syntax:
+    content: >-
+      [JsonPropertyName("file_name")]
+
+      [JsonPropertyOrder(3)]
+
+      public string FileName { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: >-
+      <JsonPropertyName("file_name")>
+
+      <JsonPropertyOrder(3)>
+
+      Public Property FileName As String
+  overload: FoundationaLLM.Common.Models.Context.ContextFileRecord.FileName*
+  attributes:
+  - type: System.Text.Json.Serialization.JsonPropertyNameAttribute
+    ctor: System.Text.Json.Serialization.JsonPropertyNameAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: file_name
+  - type: System.Text.Json.Serialization.JsonPropertyOrderAttribute
+    ctor: System.Text.Json.Serialization.JsonPropertyOrderAttribute.#ctor(System.Int32)
+    arguments:
+    - type: System.Int32
+      value: 3
+- uid: FoundationaLLM.Common.Models.Context.ContextFileRecord.ContentType
+  commentId: P:FoundationaLLM.Common.Models.Context.ContextFileRecord.ContentType
+  id: ContentType
+  parent: FoundationaLLM.Common.Models.Context.ContextFileRecord
+  langs:
+  - csharp
+  - vb
+  name: ContentType
+  nameWithType: ContextFileRecord.ContentType
+  fullName: FoundationaLLM.Common.Models.Context.ContextFileRecord.ContentType
+  type: Property
+  source:
+    remote:
+      path: src/dotnet/Common/Models/Context/ContextFileRecord.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: ContentType
+    path: ../src/dotnet/Common/Models/Context/ContextFileRecord.cs
+    startLine: 52
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.Context
+  summary: Gets or sets the content type.
+  example: []
+  syntax:
+    content: >-
+      [JsonPropertyName("content_type")]
+
+      [JsonPropertyOrder(4)]
+
+      public string ContentType { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: >-
+      <JsonPropertyName("content_type")>
+
+      <JsonPropertyOrder(4)>
+
+      Public Property ContentType As String
+  overload: FoundationaLLM.Common.Models.Context.ContextFileRecord.ContentType*
+  attributes:
+  - type: System.Text.Json.Serialization.JsonPropertyNameAttribute
+    ctor: System.Text.Json.Serialization.JsonPropertyNameAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: content_type
+  - type: System.Text.Json.Serialization.JsonPropertyOrderAttribute
+    ctor: System.Text.Json.Serialization.JsonPropertyOrderAttribute.#ctor(System.Int32)
+    arguments:
+    - type: System.Int32
+      value: 4
+- uid: FoundationaLLM.Common.Models.Context.ContextFileRecord.FilePath
+  commentId: P:FoundationaLLM.Common.Models.Context.ContextFileRecord.FilePath
+  id: FilePath
+  parent: FoundationaLLM.Common.Models.Context.ContextFileRecord
+  langs:
+  - csharp
+  - vb
+  name: FilePath
+  nameWithType: ContextFileRecord.FilePath
+  fullName: FoundationaLLM.Common.Models.Context.ContextFileRecord.FilePath
+  type: Property
+  source:
+    remote:
+      path: src/dotnet/Common/Models/Context/ContextFileRecord.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: FilePath
+    path: ../src/dotnet/Common/Models/Context/ContextFileRecord.cs
+    startLine: 59
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.Context
+  summary: Gets or sets the file path on the storage account.
+  example: []
+  syntax:
+    content: >-
+      [JsonPropertyName("file_path")]
+
+      [JsonPropertyOrder(5)]
+
+      public string FilePath { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: >-
+      <JsonPropertyName("file_path")>
+
+      <JsonPropertyOrder(5)>
+
+      Public Property FilePath As String
+  overload: FoundationaLLM.Common.Models.Context.ContextFileRecord.FilePath*
+  attributes:
+  - type: System.Text.Json.Serialization.JsonPropertyNameAttribute
+    ctor: System.Text.Json.Serialization.JsonPropertyNameAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: file_path
+  - type: System.Text.Json.Serialization.JsonPropertyOrderAttribute
+    ctor: System.Text.Json.Serialization.JsonPropertyOrderAttribute.#ctor(System.Int32)
+    arguments:
+    - type: System.Int32
+      value: 5
+- uid: FoundationaLLM.Common.Models.Context.ContextFileRecord.FileSizeBytes
+  commentId: P:FoundationaLLM.Common.Models.Context.ContextFileRecord.FileSizeBytes
+  id: FileSizeBytes
+  parent: FoundationaLLM.Common.Models.Context.ContextFileRecord
+  langs:
+  - csharp
+  - vb
+  name: FileSizeBytes
+  nameWithType: ContextFileRecord.FileSizeBytes
+  fullName: FoundationaLLM.Common.Models.Context.ContextFileRecord.FileSizeBytes
+  type: Property
+  source:
+    remote:
+      path: src/dotnet/Common/Models/Context/ContextFileRecord.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: FileSizeBytes
+    path: ../src/dotnet/Common/Models/Context/ContextFileRecord.cs
+    startLine: 66
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.Context
+  summary: Gets or sets the file size in bytes.
+  example: []
+  syntax:
+    content: >-
+      [JsonPropertyName("file_size_bytes")]
+
+      [JsonPropertyOrder(6)]
+
+      public long FileSizeBytes { get; set; }
+    parameters: []
+    return:
+      type: System.Int64
+    content.vb: >-
+      <JsonPropertyName("file_size_bytes")>
+
+      <JsonPropertyOrder(6)>
+
+      Public Property FileSizeBytes As Long
+  overload: FoundationaLLM.Common.Models.Context.ContextFileRecord.FileSizeBytes*
+  attributes:
+  - type: System.Text.Json.Serialization.JsonPropertyNameAttribute
+    ctor: System.Text.Json.Serialization.JsonPropertyNameAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: file_size_bytes
+  - type: System.Text.Json.Serialization.JsonPropertyOrderAttribute
+    ctor: System.Text.Json.Serialization.JsonPropertyOrderAttribute.#ctor(System.Int32)
+    arguments:
+    - type: System.Int32
+      value: 6
+- uid: FoundationaLLM.Common.Models.Context.ContextFileRecord.FileProcessingType
+  commentId: P:FoundationaLLM.Common.Models.Context.ContextFileRecord.FileProcessingType
+  id: FileProcessingType
+  parent: FoundationaLLM.Common.Models.Context.ContextFileRecord
+  langs:
+  - csharp
+  - vb
+  name: FileProcessingType
+  nameWithType: ContextFileRecord.FileProcessingType
+  fullName: FoundationaLLM.Common.Models.Context.ContextFileRecord.FileProcessingType
+  type: Property
+  source:
+    remote:
+      path: src/dotnet/Common/Models/Context/ContextFileRecord.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: FileProcessingType
+    path: ../src/dotnet/Common/Models/Context/ContextFileRecord.cs
+    startLine: 73
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.Context
+  summary: Gets or sets a value indicating the type of processing that is required for the file.
+  example: []
+  syntax:
+    content: >-
+      [JsonPropertyName("file_processing_type")]
+
+      [JsonPropertyOrder(7)]
+
+      public string FileProcessingType { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: >-
+      <JsonPropertyName("file_processing_type")>
+
+      <JsonPropertyOrder(7)>
+
+      Public Property FileProcessingType As String
+  overload: FoundationaLLM.Common.Models.Context.ContextFileRecord.FileProcessingType*
+  attributes:
+  - type: System.Text.Json.Serialization.JsonPropertyNameAttribute
+    ctor: System.Text.Json.Serialization.JsonPropertyNameAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: file_processing_type
+  - type: System.Text.Json.Serialization.JsonPropertyOrderAttribute
+    ctor: System.Text.Json.Serialization.JsonPropertyOrderAttribute.#ctor(System.Int32)
+    arguments:
+    - type: System.Int32
+      value: 7
+- uid: FoundationaLLM.Common.Models.Context.ContextFileRecord.#ctor
+  commentId: M:FoundationaLLM.Common.Models.Context.ContextFileRecord.#ctor
+  id: '#ctor'
+  parent: FoundationaLLM.Common.Models.Context.ContextFileRecord
+  langs:
+  - csharp
+  - vb
+  name: ContextFileRecord()
+  nameWithType: ContextFileRecord.ContextFileRecord()
+  fullName: FoundationaLLM.Common.Models.Context.ContextFileRecord.ContextFileRecord()
+  type: Constructor
+  source:
+    remote:
+      path: src/dotnet/Common/Models/Context/ContextFileRecord.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: .ctor
+    path: ../src/dotnet/Common/Models/Context/ContextFileRecord.cs
+    startLine: 81
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.Context
+  summary: Initializes a new instance of the <xref href="FoundationaLLM.Common.Models.Context.ContextFileRecord" data-throw-if-not-resolved="false"></xref> class.
+  example: []
+  syntax:
+    content: public ContextFileRecord()
+    content.vb: Public Sub New()
+  overload: FoundationaLLM.Common.Models.Context.ContextFileRecord.#ctor*
+  nameWithType.vb: ContextFileRecord.New()
+  fullName.vb: FoundationaLLM.Common.Models.Context.ContextFileRecord.New()
+  name.vb: New()
+- uid: FoundationaLLM.Common.Models.Context.ContextFileRecord.#ctor(System.String,System.String,System.String,System.String,System.String,System.String,System.Int64,System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity,System.Collections.Generic.Dictionary{System.String,System.String})
+  commentId: M:FoundationaLLM.Common.Models.Context.ContextFileRecord.#ctor(System.String,System.String,System.String,System.String,System.String,System.String,System.Int64,System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity,System.Collections.Generic.Dictionary{System.String,System.String})
+  id: '#ctor(System.String,System.String,System.String,System.String,System.String,System.String,System.Int64,System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity,System.Collections.Generic.Dictionary{System.String,System.String})'
+  parent: FoundationaLLM.Common.Models.Context.ContextFileRecord
+  langs:
+  - csharp
+  - vb
+  name: ContextFileRecord(string, string, string?, string?, string, string, long, string, UnifiedUserIdentity, Dictionary<string, string>?)
+  nameWithType: ContextFileRecord.ContextFileRecord(string, string, string?, string?, string, string, long, string, UnifiedUserIdentity, Dictionary<string, string>?)
+  fullName: FoundationaLLM.Common.Models.Context.ContextFileRecord.ContextFileRecord(string, string, string?, string?, string, string, long, string, FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity, System.Collections.Generic.Dictionary<string, string>?)
+  type: Constructor
+  source:
+    remote:
+      path: src/dotnet/Common/Models/Context/ContextFileRecord.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: .ctor
+    path: ../src/dotnet/Common/Models/Context/ContextFileRecord.cs
+    startLine: 100
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.Context
+  summary: Initializes a new instance of the <xref href="FoundationaLLM.Common.Models.Context.ContextFileRecord" data-throw-if-not-resolved="false"></xref> class.
+  example: []
+  syntax:
+    content: public ContextFileRecord(string instanceId, string origin, string? conversationId, string? agentName, string fileName, string contentType, long fileSizeBytes, string fileProcessingType, UnifiedUserIdentity userIdentity, Dictionary<string, string>? metadata = null)
+    parameters:
+    - id: instanceId
+      type: System.String
+      description: The FoundationaLLM instance identifier.
+    - id: origin
+      type: System.String
+      description: The origin of the record.
+    - id: conversationId
+      type: System.String
+      description: The conversation identifier.
+    - id: agentName
+      type: System.String
+      description: The name of the agent.
+    - id: fileName
+      type: System.String
+      description: The original name of the file.
+    - id: contentType
+      type: System.String
+      description: The content type of the file.
+    - id: fileSizeBytes
+      type: System.Int64
+      description: The size of the file in bytes.
+    - id: fileProcessingType
+      type: System.String
+      description: The type of processing that is required for the file.
+    - id: userIdentity
+      type: FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity
+      description: The <xref href="FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity" data-throw-if-not-resolved="false"></xref> providing details about the user identity.
+    - id: metadata
+      type: System.Collections.Generic.Dictionary{System.String,System.String}
+      description: Optional metadata dictionary associated with the context file record.
+    content.vb: Public Sub New(instanceId As String, origin As String, conversationId As String, agentName As String, fileName As String, contentType As String, fileSizeBytes As Long, fileProcessingType As String, userIdentity As UnifiedUserIdentity, metadata As Dictionary(Of String, String) = Nothing)
+  overload: FoundationaLLM.Common.Models.Context.ContextFileRecord.#ctor*
+  nameWithType.vb: ContextFileRecord.New(String, String, String, String, String, String, Long, String, UnifiedUserIdentity, Dictionary(Of String, String))
+  fullName.vb: FoundationaLLM.Common.Models.Context.ContextFileRecord.New(String, String, String, String, String, String, Long, String, FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity, System.Collections.Generic.Dictionary(Of String, String))
+  name.vb: New(String, String, String, String, String, String, Long, String, UnifiedUserIdentity, Dictionary(Of String, String))
+references:
+- uid: FoundationaLLM.Common.Models.Context
+  commentId: N:FoundationaLLM.Common.Models.Context
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.Context
+  nameWithType: FoundationaLLM.Common.Models.Context
+  fullName: FoundationaLLM.Common.Models.Context
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Context
+    name: Context
+    href: FoundationaLLM.Common.Models.Context.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Context
+    name: Context
+    href: FoundationaLLM.Common.Models.Context.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: FoundationaLLM.Common.Models.Context.ContextRecord
+  commentId: T:FoundationaLLM.Common.Models.Context.ContextRecord
+  parent: FoundationaLLM.Common.Models.Context
+  href: FoundationaLLM.Common.Models.Context.ContextRecord.html
+  name: ContextRecord
+  nameWithType: ContextRecord
+  fullName: FoundationaLLM.Common.Models.Context.ContextRecord
+- uid: FoundationaLLM.Common.Models.Context.ContextRecord.Id
+  commentId: P:FoundationaLLM.Common.Models.Context.ContextRecord.Id
+  parent: FoundationaLLM.Common.Models.Context.ContextRecord
+  href: FoundationaLLM.Common.Models.Context.ContextRecord.html#FoundationaLLM_Common_Models_Context_ContextRecord_Id
+  name: Id
+  nameWithType: ContextRecord.Id
+  fullName: FoundationaLLM.Common.Models.Context.ContextRecord.Id
+- uid: FoundationaLLM.Common.Models.Context.ContextRecord.InstanceId
+  commentId: P:FoundationaLLM.Common.Models.Context.ContextRecord.InstanceId
+  parent: FoundationaLLM.Common.Models.Context.ContextRecord
+  href: FoundationaLLM.Common.Models.Context.ContextRecord.html#FoundationaLLM_Common_Models_Context_ContextRecord_InstanceId
+  name: InstanceId
+  nameWithType: ContextRecord.InstanceId
+  fullName: FoundationaLLM.Common.Models.Context.ContextRecord.InstanceId
+- uid: FoundationaLLM.Common.Models.Context.ContextRecord.UPN
+  commentId: P:FoundationaLLM.Common.Models.Context.ContextRecord.UPN
+  parent: FoundationaLLM.Common.Models.Context.ContextRecord
+  href: FoundationaLLM.Common.Models.Context.ContextRecord.html#FoundationaLLM_Common_Models_Context_ContextRecord_UPN
+  name: UPN
+  nameWithType: ContextRecord.UPN
+  fullName: FoundationaLLM.Common.Models.Context.ContextRecord.UPN
+- uid: FoundationaLLM.Common.Models.Context.ContextRecord.Origin
+  commentId: P:FoundationaLLM.Common.Models.Context.ContextRecord.Origin
+  parent: FoundationaLLM.Common.Models.Context.ContextRecord
+  href: FoundationaLLM.Common.Models.Context.ContextRecord.html#FoundationaLLM_Common_Models_Context_ContextRecord_Origin
+  name: Origin
+  nameWithType: ContextRecord.Origin
+  fullName: FoundationaLLM.Common.Models.Context.ContextRecord.Origin
+- uid: FoundationaLLM.Common.Models.Context.ContextRecord.CreatedAt
+  commentId: P:FoundationaLLM.Common.Models.Context.ContextRecord.CreatedAt
+  parent: FoundationaLLM.Common.Models.Context.ContextRecord
+  href: FoundationaLLM.Common.Models.Context.ContextRecord.html#FoundationaLLM_Common_Models_Context_ContextRecord_CreatedAt
+  name: CreatedAt
+  nameWithType: ContextRecord.CreatedAt
+  fullName: FoundationaLLM.Common.Models.Context.ContextRecord.CreatedAt
+- uid: FoundationaLLM.Common.Models.Context.ContextRecord.CreatedBy
+  commentId: P:FoundationaLLM.Common.Models.Context.ContextRecord.CreatedBy
+  parent: FoundationaLLM.Common.Models.Context.ContextRecord
+  href: FoundationaLLM.Common.Models.Context.ContextRecord.html#FoundationaLLM_Common_Models_Context_ContextRecord_CreatedBy
+  name: CreatedBy
+  nameWithType: ContextRecord.CreatedBy
+  fullName: FoundationaLLM.Common.Models.Context.ContextRecord.CreatedBy
+- uid: FoundationaLLM.Common.Models.Context.ContextRecord.UpdatedAt
+  commentId: P:FoundationaLLM.Common.Models.Context.ContextRecord.UpdatedAt
+  parent: FoundationaLLM.Common.Models.Context.ContextRecord
+  href: FoundationaLLM.Common.Models.Context.ContextRecord.html#FoundationaLLM_Common_Models_Context_ContextRecord_UpdatedAt
+  name: UpdatedAt
+  nameWithType: ContextRecord.UpdatedAt
+  fullName: FoundationaLLM.Common.Models.Context.ContextRecord.UpdatedAt
+- uid: FoundationaLLM.Common.Models.Context.ContextRecord.UpdatedBy
+  commentId: P:FoundationaLLM.Common.Models.Context.ContextRecord.UpdatedBy
+  parent: FoundationaLLM.Common.Models.Context.ContextRecord
+  href: FoundationaLLM.Common.Models.Context.ContextRecord.html#FoundationaLLM_Common_Models_Context_ContextRecord_UpdatedBy
+  name: UpdatedBy
+  nameWithType: ContextRecord.UpdatedBy
+  fullName: FoundationaLLM.Common.Models.Context.ContextRecord.UpdatedBy
+- uid: FoundationaLLM.Common.Models.Context.ContextRecord.Deleted
+  commentId: P:FoundationaLLM.Common.Models.Context.ContextRecord.Deleted
+  parent: FoundationaLLM.Common.Models.Context.ContextRecord
+  href: FoundationaLLM.Common.Models.Context.ContextRecord.html#FoundationaLLM_Common_Models_Context_ContextRecord_Deleted
+  name: Deleted
+  nameWithType: ContextRecord.Deleted
+  fullName: FoundationaLLM.Common.Models.Context.ContextRecord.Deleted
+- uid: FoundationaLLM.Common.Models.Context.ContextRecord.Metadata
+  commentId: P:FoundationaLLM.Common.Models.Context.ContextRecord.Metadata
+  parent: FoundationaLLM.Common.Models.Context.ContextRecord
+  href: FoundationaLLM.Common.Models.Context.ContextRecord.html#FoundationaLLM_Common_Models_Context_ContextRecord_Metadata
+  name: Metadata
+  nameWithType: ContextRecord.Metadata
+  fullName: FoundationaLLM.Common.Models.Context.ContextRecord.Metadata
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  parent: FoundationaLLM.Core.Utils.ObjectExtensions
+  definition: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  isExternal: true
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions
+  commentId: T:FoundationaLLM.Core.Utils.ObjectExtensions
+  parent: FoundationaLLM.Core.Utils
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html
+  name: ObjectExtensions
+  nameWithType: ObjectExtensions
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions
+- uid: FoundationaLLM.Core.Utils
+  commentId: N:FoundationaLLM.Core.Utils
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Core.Utils
+  nameWithType: FoundationaLLM.Core.Utils
+  fullName: FoundationaLLM.Core.Utils
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+- uid: FoundationaLLM.Common.Models.Context.ContextRecord.Type
+  commentId: P:FoundationaLLM.Common.Models.Context.ContextRecord.Type
+  parent: FoundationaLLM.Common.Models.Context.ContextRecord
+  href: FoundationaLLM.Common.Models.Context.ContextRecord.html#FoundationaLLM_Common_Models_Context_ContextRecord_Type
+  name: Type
+  nameWithType: ContextRecord.Type
+  fullName: FoundationaLLM.Common.Models.Context.ContextRecord.Type
+- uid: FoundationaLLM.Common.Models.Context.ContextFileRecord.Type*
+  commentId: Overload:FoundationaLLM.Common.Models.Context.ContextFileRecord.Type
+  href: FoundationaLLM.Common.Models.Context.ContextFileRecord.html#FoundationaLLM_Common_Models_Context_ContextFileRecord_Type
+  name: Type
+  nameWithType: ContextFileRecord.Type
+  fullName: FoundationaLLM.Common.Models.Context.ContextFileRecord.Type
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: FoundationaLLM.Common.Models.Context.ContextFileRecord.ConversationId*
+  commentId: Overload:FoundationaLLM.Common.Models.Context.ContextFileRecord.ConversationId
+  href: FoundationaLLM.Common.Models.Context.ContextFileRecord.html#FoundationaLLM_Common_Models_Context_ContextFileRecord_ConversationId
+  name: ConversationId
+  nameWithType: ContextFileRecord.ConversationId
+  fullName: FoundationaLLM.Common.Models.Context.ContextFileRecord.ConversationId
+- uid: FoundationaLLM.Common.Models.Context.ContextFileRecord.AgentName*
+  commentId: Overload:FoundationaLLM.Common.Models.Context.ContextFileRecord.AgentName
+  href: FoundationaLLM.Common.Models.Context.ContextFileRecord.html#FoundationaLLM_Common_Models_Context_ContextFileRecord_AgentName
+  name: AgentName
+  nameWithType: ContextFileRecord.AgentName
+  fullName: FoundationaLLM.Common.Models.Context.ContextFileRecord.AgentName
+- uid: FoundationaLLM.Common.Models.Context.ContextFileRecord.FileObjectId*
+  commentId: Overload:FoundationaLLM.Common.Models.Context.ContextFileRecord.FileObjectId
+  href: FoundationaLLM.Common.Models.Context.ContextFileRecord.html#FoundationaLLM_Common_Models_Context_ContextFileRecord_FileObjectId
+  name: FileObjectId
+  nameWithType: ContextFileRecord.FileObjectId
+  fullName: FoundationaLLM.Common.Models.Context.ContextFileRecord.FileObjectId
+- uid: FoundationaLLM.Common.Models.Context.ContextFileRecord.FileName*
+  commentId: Overload:FoundationaLLM.Common.Models.Context.ContextFileRecord.FileName
+  href: FoundationaLLM.Common.Models.Context.ContextFileRecord.html#FoundationaLLM_Common_Models_Context_ContextFileRecord_FileName
+  name: FileName
+  nameWithType: ContextFileRecord.FileName
+  fullName: FoundationaLLM.Common.Models.Context.ContextFileRecord.FileName
+- uid: FoundationaLLM.Common.Models.Context.ContextFileRecord.ContentType*
+  commentId: Overload:FoundationaLLM.Common.Models.Context.ContextFileRecord.ContentType
+  href: FoundationaLLM.Common.Models.Context.ContextFileRecord.html#FoundationaLLM_Common_Models_Context_ContextFileRecord_ContentType
+  name: ContentType
+  nameWithType: ContextFileRecord.ContentType
+  fullName: FoundationaLLM.Common.Models.Context.ContextFileRecord.ContentType
+- uid: FoundationaLLM.Common.Models.Context.ContextFileRecord.FilePath*
+  commentId: Overload:FoundationaLLM.Common.Models.Context.ContextFileRecord.FilePath
+  href: FoundationaLLM.Common.Models.Context.ContextFileRecord.html#FoundationaLLM_Common_Models_Context_ContextFileRecord_FilePath
+  name: FilePath
+  nameWithType: ContextFileRecord.FilePath
+  fullName: FoundationaLLM.Common.Models.Context.ContextFileRecord.FilePath
+- uid: FoundationaLLM.Common.Models.Context.ContextFileRecord.FileSizeBytes*
+  commentId: Overload:FoundationaLLM.Common.Models.Context.ContextFileRecord.FileSizeBytes
+  href: FoundationaLLM.Common.Models.Context.ContextFileRecord.html#FoundationaLLM_Common_Models_Context_ContextFileRecord_FileSizeBytes
+  name: FileSizeBytes
+  nameWithType: ContextFileRecord.FileSizeBytes
+  fullName: FoundationaLLM.Common.Models.Context.ContextFileRecord.FileSizeBytes
+- uid: System.Int64
+  commentId: T:System.Int64
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int64
+  name: long
+  nameWithType: long
+  fullName: long
+  nameWithType.vb: Long
+  fullName.vb: Long
+  name.vb: Long
+- uid: FoundationaLLM.Common.Models.Context.ContextFileRecord.FileProcessingType*
+  commentId: Overload:FoundationaLLM.Common.Models.Context.ContextFileRecord.FileProcessingType
+  href: FoundationaLLM.Common.Models.Context.ContextFileRecord.html#FoundationaLLM_Common_Models_Context_ContextFileRecord_FileProcessingType
+  name: FileProcessingType
+  nameWithType: ContextFileRecord.FileProcessingType
+  fullName: FoundationaLLM.Common.Models.Context.ContextFileRecord.FileProcessingType
+- uid: FoundationaLLM.Common.Models.Context.ContextFileRecord
+  commentId: T:FoundationaLLM.Common.Models.Context.ContextFileRecord
+  parent: FoundationaLLM.Common.Models.Context
+  href: FoundationaLLM.Common.Models.Context.ContextFileRecord.html
+  name: ContextFileRecord
+  nameWithType: ContextFileRecord
+  fullName: FoundationaLLM.Common.Models.Context.ContextFileRecord
+- uid: FoundationaLLM.Common.Models.Context.ContextFileRecord.#ctor*
+  commentId: Overload:FoundationaLLM.Common.Models.Context.ContextFileRecord.#ctor
+  href: FoundationaLLM.Common.Models.Context.ContextFileRecord.html#FoundationaLLM_Common_Models_Context_ContextFileRecord__ctor
+  name: ContextFileRecord
+  nameWithType: ContextFileRecord.ContextFileRecord
+  fullName: FoundationaLLM.Common.Models.Context.ContextFileRecord.ContextFileRecord
+  nameWithType.vb: ContextFileRecord.New
+  fullName.vb: FoundationaLLM.Common.Models.Context.ContextFileRecord.New
+  name.vb: New
+- uid: FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity
+  commentId: T:FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity
+  parent: FoundationaLLM.Common.Models.Authentication
+  href: FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity.html
+  name: UnifiedUserIdentity
+  nameWithType: UnifiedUserIdentity
+  fullName: FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity
+- uid: System.Collections.Generic.Dictionary{System.String,System.String}
+  commentId: T:System.Collections.Generic.Dictionary{System.String,System.String}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.Dictionary`2
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  name: Dictionary<string, string>
+  nameWithType: Dictionary<string, string>
+  fullName: System.Collections.Generic.Dictionary<string, string>
+  nameWithType.vb: Dictionary(Of String, String)
+  fullName.vb: System.Collections.Generic.Dictionary(Of String, String)
+  name.vb: Dictionary(Of String, String)
+  spec.csharp:
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: FoundationaLLM.Common.Models.Authentication
+  commentId: N:FoundationaLLM.Common.Models.Authentication
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.Authentication
+  nameWithType: FoundationaLLM.Common.Models.Authentication
+  fullName: FoundationaLLM.Common.Models.Authentication
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Authentication
+    name: Authentication
+    href: FoundationaLLM.Common.Models.Authentication.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Authentication
+    name: Authentication
+    href: FoundationaLLM.Common.Models.Authentication.html
+- uid: System.Collections.Generic.Dictionary`2
+  commentId: T:System.Collections.Generic.Dictionary`2
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  name: Dictionary<TKey, TValue>
+  nameWithType: Dictionary<TKey, TValue>
+  fullName: System.Collections.Generic.Dictionary<TKey, TValue>
+  nameWithType.vb: Dictionary(Of TKey, TValue)
+  fullName.vb: System.Collections.Generic.Dictionary(Of TKey, TValue)
+  name.vb: Dictionary(Of TKey, TValue)
+  spec.csharp:
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  - name: <
+  - name: TKey
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TKey
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic

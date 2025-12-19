@@ -1,0 +1,315 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Common.Models.Vectorization.VectorizationPipelineTriggerType
+  commentId: T:FoundationaLLM.Common.Models.Vectorization.VectorizationPipelineTriggerType
+  id: VectorizationPipelineTriggerType
+  parent: FoundationaLLM.Common.Models.Vectorization
+  children:
+  - FoundationaLLM.Common.Models.Vectorization.VectorizationPipelineTriggerType.Event
+  - FoundationaLLM.Common.Models.Vectorization.VectorizationPipelineTriggerType.Manual
+  - FoundationaLLM.Common.Models.Vectorization.VectorizationPipelineTriggerType.Schedule
+  langs:
+  - csharp
+  - vb
+  name: VectorizationPipelineTriggerType
+  nameWithType: VectorizationPipelineTriggerType
+  fullName: FoundationaLLM.Common.Models.Vectorization.VectorizationPipelineTriggerType
+  type: Enum
+  source:
+    remote:
+      path: src/dotnet/Common/Models/Vectorization/VectorizationPipelineTriggerType.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: VectorizationPipelineTriggerType
+    path: ../src/dotnet/Common/Models/Vectorization/VectorizationPipelineTriggerType.cs
+    startLine: 5
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.Vectorization
+  summary: Types of vectorization pipeline triggers.
+  example: []
+  syntax:
+    content: public enum VectorizationPipelineTriggerType
+    content.vb: Public Enum VectorizationPipelineTriggerType
+  extensionMethods:
+  - System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+- uid: FoundationaLLM.Common.Models.Vectorization.VectorizationPipelineTriggerType.Manual
+  commentId: F:FoundationaLLM.Common.Models.Vectorization.VectorizationPipelineTriggerType.Manual
+  id: Manual
+  parent: FoundationaLLM.Common.Models.Vectorization.VectorizationPipelineTriggerType
+  langs:
+  - csharp
+  - vb
+  name: Manual
+  nameWithType: VectorizationPipelineTriggerType.Manual
+  fullName: FoundationaLLM.Common.Models.Vectorization.VectorizationPipelineTriggerType.Manual
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Models/Vectorization/VectorizationPipelineTriggerType.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: Manual
+    path: ../src/dotnet/Common/Models/Vectorization/VectorizationPipelineTriggerType.cs
+    startLine: 10
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.Vectorization
+  summary: The vectorization pipeline is triggered manually.
+  example: []
+  syntax:
+    content: Manual = 0
+    return:
+      type: FoundationaLLM.Common.Models.Vectorization.VectorizationPipelineTriggerType
+- uid: FoundationaLLM.Common.Models.Vectorization.VectorizationPipelineTriggerType.Schedule
+  commentId: F:FoundationaLLM.Common.Models.Vectorization.VectorizationPipelineTriggerType.Schedule
+  id: Schedule
+  parent: FoundationaLLM.Common.Models.Vectorization.VectorizationPipelineTriggerType
+  langs:
+  - csharp
+  - vb
+  name: Schedule
+  nameWithType: VectorizationPipelineTriggerType.Schedule
+  fullName: FoundationaLLM.Common.Models.Vectorization.VectorizationPipelineTriggerType.Schedule
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Models/Vectorization/VectorizationPipelineTriggerType.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: Schedule
+    path: ../src/dotnet/Common/Models/Vectorization/VectorizationPipelineTriggerType.cs
+    startLine: 15
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.Vectorization
+  summary: The vectorization pipeline is triggered based on a regular schedule.
+  example: []
+  syntax:
+    content: Schedule = 1
+    return:
+      type: FoundationaLLM.Common.Models.Vectorization.VectorizationPipelineTriggerType
+- uid: FoundationaLLM.Common.Models.Vectorization.VectorizationPipelineTriggerType.Event
+  commentId: F:FoundationaLLM.Common.Models.Vectorization.VectorizationPipelineTriggerType.Event
+  id: Event
+  parent: FoundationaLLM.Common.Models.Vectorization.VectorizationPipelineTriggerType
+  langs:
+  - csharp
+  - vb
+  name: Event
+  nameWithType: VectorizationPipelineTriggerType.Event
+  fullName: FoundationaLLM.Common.Models.Vectorization.VectorizationPipelineTriggerType.Event
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Models/Vectorization/VectorizationPipelineTriggerType.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: Event
+    path: ../src/dotnet/Common/Models/Vectorization/VectorizationPipelineTriggerType.cs
+    startLine: 20
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.Vectorization
+  summary: The vectorization pipeline is triggered based on content change events (e.g., an existing file is updated or a new file is added).
+  example: []
+  syntax:
+    content: Event = 2
+    return:
+      type: FoundationaLLM.Common.Models.Vectorization.VectorizationPipelineTriggerType
+references:
+- uid: FoundationaLLM.Common.Models.Vectorization
+  commentId: N:FoundationaLLM.Common.Models.Vectorization
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.Vectorization
+  nameWithType: FoundationaLLM.Common.Models.Vectorization
+  fullName: FoundationaLLM.Common.Models.Vectorization
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Vectorization
+    name: Vectorization
+    href: FoundationaLLM.Common.Models.Vectorization.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Vectorization
+    name: Vectorization
+    href: FoundationaLLM.Common.Models.Vectorization.html
+- uid: System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  parent: FoundationaLLM.Core.Utils.ObjectExtensions
+  definition: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  isExternal: true
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions
+  commentId: T:FoundationaLLM.Core.Utils.ObjectExtensions
+  parent: FoundationaLLM.Core.Utils
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html
+  name: ObjectExtensions
+  nameWithType: ObjectExtensions
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions
+- uid: FoundationaLLM.Core.Utils
+  commentId: N:FoundationaLLM.Core.Utils
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Core.Utils
+  nameWithType: FoundationaLLM.Core.Utils
+  fullName: FoundationaLLM.Core.Utils
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+- uid: FoundationaLLM.Common.Models.Vectorization.VectorizationPipelineTriggerType
+  commentId: T:FoundationaLLM.Common.Models.Vectorization.VectorizationPipelineTriggerType
+  parent: FoundationaLLM.Common.Models.Vectorization
+  href: FoundationaLLM.Common.Models.Vectorization.VectorizationPipelineTriggerType.html
+  name: VectorizationPipelineTriggerType
+  nameWithType: VectorizationPipelineTriggerType
+  fullName: FoundationaLLM.Common.Models.Vectorization.VectorizationPipelineTriggerType

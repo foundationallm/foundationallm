@@ -1,0 +1,172 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Common.Models.Vectorization
+  commentId: N:FoundationaLLM.Common.Models.Vectorization
+  id: Vectorization
+  parent: FoundationaLLM.Common.Models
+  children:
+  - FoundationaLLM.Common.Models.Vectorization.ContentIdentifier
+  - FoundationaLLM.Common.Models.Vectorization.EmbeddedContent
+  - FoundationaLLM.Common.Models.Vectorization.EmbeddedContentPart
+  - FoundationaLLM.Common.Models.Vectorization.Embedding
+  - FoundationaLLM.Common.Models.Vectorization.Embedding.JsonConverter
+  - FoundationaLLM.Common.Models.Vectorization.TextChunk
+  - FoundationaLLM.Common.Models.Vectorization.TextCompletionRequest
+  - FoundationaLLM.Common.Models.Vectorization.TextEmbeddingRequest
+  - FoundationaLLM.Common.Models.Vectorization.TextOperationResult
+  - FoundationaLLM.Common.Models.Vectorization.VectorizationPipeline
+  - FoundationaLLM.Common.Models.Vectorization.VectorizationPipelineExecution
+  - FoundationaLLM.Common.Models.Vectorization.VectorizationPipelineExecutionDetail
+  - FoundationaLLM.Common.Models.Vectorization.VectorizationPipelineTriggerType
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM.Common.Models.Vectorization
+  nameWithType: FoundationaLLM.Common.Models.Vectorization
+  fullName: FoundationaLLM.Common.Models.Vectorization
+  type: Namespace
+  assemblies:
+  - FoundationaLLM.Common
+references:
+- uid: FoundationaLLM.Common.Models.Vectorization.ContentIdentifier
+  commentId: T:FoundationaLLM.Common.Models.Vectorization.ContentIdentifier
+  parent: FoundationaLLM.Common.Models.Vectorization
+  href: FoundationaLLM.Common.Models.Vectorization.ContentIdentifier.html
+  name: ContentIdentifier
+  nameWithType: ContentIdentifier
+  fullName: FoundationaLLM.Common.Models.Vectorization.ContentIdentifier
+- uid: FoundationaLLM.Common.Models.Vectorization.EmbeddedContent
+  commentId: T:FoundationaLLM.Common.Models.Vectorization.EmbeddedContent
+  parent: FoundationaLLM.Common.Models.Vectorization
+  href: FoundationaLLM.Common.Models.Vectorization.EmbeddedContent.html
+  name: EmbeddedContent
+  nameWithType: EmbeddedContent
+  fullName: FoundationaLLM.Common.Models.Vectorization.EmbeddedContent
+- uid: FoundationaLLM.Common.Models.Vectorization.EmbeddedContentPart
+  commentId: T:FoundationaLLM.Common.Models.Vectorization.EmbeddedContentPart
+  href: FoundationaLLM.Common.Models.Vectorization.EmbeddedContentPart.html
+  name: EmbeddedContentPart
+  nameWithType: EmbeddedContentPart
+  fullName: FoundationaLLM.Common.Models.Vectorization.EmbeddedContentPart
+- uid: FoundationaLLM.Common.Models.Vectorization.Embedding
+  commentId: T:FoundationaLLM.Common.Models.Vectorization.Embedding
+  parent: FoundationaLLM.Common.Models.Vectorization
+  href: FoundationaLLM.Common.Models.Vectorization.Embedding.html
+  name: Embedding
+  nameWithType: Embedding
+  fullName: FoundationaLLM.Common.Models.Vectorization.Embedding
+- uid: FoundationaLLM.Common.Models.Vectorization.Embedding.JsonConverter
+  commentId: T:FoundationaLLM.Common.Models.Vectorization.Embedding.JsonConverter
+  parent: FoundationaLLM.Common.Models.Vectorization
+  href: FoundationaLLM.Common.Models.Vectorization.Embedding.html
+  name: Embedding.JsonConverter
+  nameWithType: Embedding.JsonConverter
+  fullName: FoundationaLLM.Common.Models.Vectorization.Embedding.JsonConverter
+  spec.csharp:
+  - uid: FoundationaLLM.Common.Models.Vectorization.Embedding
+    name: Embedding
+    href: FoundationaLLM.Common.Models.Vectorization.Embedding.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Vectorization.Embedding.JsonConverter
+    name: JsonConverter
+    href: FoundationaLLM.Common.Models.Vectorization.Embedding.JsonConverter.html
+  spec.vb:
+  - uid: FoundationaLLM.Common.Models.Vectorization.Embedding
+    name: Embedding
+    href: FoundationaLLM.Common.Models.Vectorization.Embedding.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Vectorization.Embedding.JsonConverter
+    name: JsonConverter
+    href: FoundationaLLM.Common.Models.Vectorization.Embedding.JsonConverter.html
+- uid: FoundationaLLM.Common.Models.Vectorization.TextChunk
+  commentId: T:FoundationaLLM.Common.Models.Vectorization.TextChunk
+  parent: FoundationaLLM.Common.Models.Vectorization
+  href: FoundationaLLM.Common.Models.Vectorization.TextChunk.html
+  name: TextChunk
+  nameWithType: TextChunk
+  fullName: FoundationaLLM.Common.Models.Vectorization.TextChunk
+- uid: FoundationaLLM.Common.Models.Vectorization.TextCompletionRequest
+  commentId: T:FoundationaLLM.Common.Models.Vectorization.TextCompletionRequest
+  parent: FoundationaLLM.Common.Models.Vectorization
+  href: FoundationaLLM.Common.Models.Vectorization.TextCompletionRequest.html
+  name: TextCompletionRequest
+  nameWithType: TextCompletionRequest
+  fullName: FoundationaLLM.Common.Models.Vectorization.TextCompletionRequest
+- uid: FoundationaLLM.Common.Models.Vectorization.TextEmbeddingRequest
+  commentId: T:FoundationaLLM.Common.Models.Vectorization.TextEmbeddingRequest
+  parent: FoundationaLLM.Common.Models.Vectorization
+  href: FoundationaLLM.Common.Models.Vectorization.TextEmbeddingRequest.html
+  name: TextEmbeddingRequest
+  nameWithType: TextEmbeddingRequest
+  fullName: FoundationaLLM.Common.Models.Vectorization.TextEmbeddingRequest
+- uid: FoundationaLLM.Common.Models.Vectorization.TextOperationResult
+  commentId: T:FoundationaLLM.Common.Models.Vectorization.TextOperationResult
+  parent: FoundationaLLM.Common.Models.Vectorization
+  href: FoundationaLLM.Common.Models.Vectorization.TextOperationResult.html
+  name: TextOperationResult
+  nameWithType: TextOperationResult
+  fullName: FoundationaLLM.Common.Models.Vectorization.TextOperationResult
+- uid: FoundationaLLM.Common.Models.Vectorization.VectorizationPipeline
+  commentId: T:FoundationaLLM.Common.Models.Vectorization.VectorizationPipeline
+  parent: FoundationaLLM.Common.Models.Vectorization
+  href: FoundationaLLM.Common.Models.Vectorization.VectorizationPipeline.html
+  name: VectorizationPipeline
+  nameWithType: VectorizationPipeline
+  fullName: FoundationaLLM.Common.Models.Vectorization.VectorizationPipeline
+- uid: FoundationaLLM.Common.Models.Vectorization.VectorizationPipelineExecution
+  commentId: T:FoundationaLLM.Common.Models.Vectorization.VectorizationPipelineExecution
+  href: FoundationaLLM.Common.Models.Vectorization.VectorizationPipelineExecution.html
+  name: VectorizationPipelineExecution
+  nameWithType: VectorizationPipelineExecution
+  fullName: FoundationaLLM.Common.Models.Vectorization.VectorizationPipelineExecution
+- uid: FoundationaLLM.Common.Models.Vectorization.VectorizationPipelineExecutionDetail
+  commentId: T:FoundationaLLM.Common.Models.Vectorization.VectorizationPipelineExecutionDetail
+  href: FoundationaLLM.Common.Models.Vectorization.VectorizationPipelineExecutionDetail.html
+  name: VectorizationPipelineExecutionDetail
+  nameWithType: VectorizationPipelineExecutionDetail
+  fullName: FoundationaLLM.Common.Models.Vectorization.VectorizationPipelineExecutionDetail
+- uid: FoundationaLLM.Common.Models.Vectorization.VectorizationPipelineTriggerType
+  commentId: T:FoundationaLLM.Common.Models.Vectorization.VectorizationPipelineTriggerType
+  parent: FoundationaLLM.Common.Models.Vectorization
+  href: FoundationaLLM.Common.Models.Vectorization.VectorizationPipelineTriggerType.html
+  name: VectorizationPipelineTriggerType
+  nameWithType: VectorizationPipelineTriggerType
+  fullName: FoundationaLLM.Common.Models.Vectorization.VectorizationPipelineTriggerType
+- uid: FoundationaLLM.Common.Models.Vectorization
+  commentId: N:FoundationaLLM.Common.Models.Vectorization
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.Vectorization
+  nameWithType: FoundationaLLM.Common.Models.Vectorization
+  fullName: FoundationaLLM.Common.Models.Vectorization
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Vectorization
+    name: Vectorization
+    href: FoundationaLLM.Common.Models.Vectorization.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Vectorization
+    name: Vectorization
+    href: FoundationaLLM.Common.Models.Vectorization.html

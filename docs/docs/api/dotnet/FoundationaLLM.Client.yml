@@ -1,0 +1,74 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Client
+  id: Client
+  parent: FoundationaLLM
+  children:
+  - FoundationaLLM.Client.Core
+  - FoundationaLLM.Client.Management
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM.Client
+  type: Namespace
+references:
+- uid: FoundationaLLM.Client.Core
+  commentId: N:FoundationaLLM.Client.Core
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Client.Core
+  nameWithType: FoundationaLLM.Client.Core
+  fullName: FoundationaLLM.Client.Core
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Client
+    name: Client
+    href: FoundationaLLM.Client.html
+  - name: .
+  - uid: FoundationaLLM.Client.Core
+    name: Core
+    href: FoundationaLLM.Client.Core.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Client
+    name: Client
+    href: FoundationaLLM.Client.html
+  - name: .
+  - uid: FoundationaLLM.Client.Core
+    name: Core
+    href: FoundationaLLM.Client.Core.html
+- uid: FoundationaLLM.Client.Management
+  commentId: N:FoundationaLLM.Client.Management
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Client.Management
+  nameWithType: FoundationaLLM.Client.Management
+  fullName: FoundationaLLM.Client.Management
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Client
+    name: Client
+    href: FoundationaLLM.Client.html
+  - name: .
+  - uid: FoundationaLLM.Client.Management
+    name: Management
+    href: FoundationaLLM.Client.Management.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Client
+    name: Client
+    href: FoundationaLLM.Client.html
+  - name: .
+  - uid: FoundationaLLM.Client.Management
+    name: Management
+    href: FoundationaLLM.Client.Management.html

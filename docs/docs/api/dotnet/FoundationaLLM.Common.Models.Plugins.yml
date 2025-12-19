@@ -1,0 +1,174 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Common.Models.Plugins
+  commentId: N:FoundationaLLM.Common.Models.Plugins
+  id: Plugins
+  parent: FoundationaLLM.Common.Models
+  children:
+  - FoundationaLLM.Common.Models.Plugins.ContentItemRawContent
+  - FoundationaLLM.Common.Models.Plugins.Metadata
+  - FoundationaLLM.Common.Models.Plugins.PluginComponent
+  - FoundationaLLM.Common.Models.Plugins.PluginConfiguration
+  - FoundationaLLM.Common.Models.Plugins.PluginConfigurationParameter
+  - FoundationaLLM.Common.Models.Plugins.PluginParameterMetadata
+  - FoundationaLLM.Common.Models.Plugins.PluginResult
+  - FoundationaLLM.Common.Models.Plugins.PluginResult`1
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM.Common.Models.Plugins
+  nameWithType: FoundationaLLM.Common.Models.Plugins
+  fullName: FoundationaLLM.Common.Models.Plugins
+  type: Namespace
+  assemblies:
+  - FoundationaLLM.Common
+references:
+- uid: FoundationaLLM.Common.Models.Plugins.Metadata
+  commentId: N:FoundationaLLM.Common.Models.Plugins.Metadata
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.Plugins.Metadata
+  nameWithType: FoundationaLLM.Common.Models.Plugins.Metadata
+  fullName: FoundationaLLM.Common.Models.Plugins.Metadata
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Plugins
+    name: Plugins
+    href: FoundationaLLM.Common.Models.Plugins.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Plugins.Metadata
+    name: Metadata
+    href: FoundationaLLM.Common.Models.Plugins.Metadata.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Plugins
+    name: Plugins
+    href: FoundationaLLM.Common.Models.Plugins.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Plugins.Metadata
+    name: Metadata
+    href: FoundationaLLM.Common.Models.Plugins.Metadata.html
+- uid: FoundationaLLM.Common.Models.Plugins.ContentItemRawContent
+  commentId: T:FoundationaLLM.Common.Models.Plugins.ContentItemRawContent
+  href: FoundationaLLM.Common.Models.Plugins.ContentItemRawContent.html
+  name: ContentItemRawContent
+  nameWithType: ContentItemRawContent
+  fullName: FoundationaLLM.Common.Models.Plugins.ContentItemRawContent
+- uid: FoundationaLLM.Common.Models.Plugins.PluginComponent
+  commentId: T:FoundationaLLM.Common.Models.Plugins.PluginComponent
+  parent: FoundationaLLM.Common.Models.Plugins
+  href: FoundationaLLM.Common.Models.Plugins.PluginComponent.html
+  name: PluginComponent
+  nameWithType: PluginComponent
+  fullName: FoundationaLLM.Common.Models.Plugins.PluginComponent
+- uid: FoundationaLLM.Common.Models.Plugins.PluginConfiguration
+  commentId: T:FoundationaLLM.Common.Models.Plugins.PluginConfiguration
+  parent: FoundationaLLM.Common.Models.Plugins
+  href: FoundationaLLM.Common.Models.Plugins.PluginConfiguration.html
+  name: PluginConfiguration
+  nameWithType: PluginConfiguration
+  fullName: FoundationaLLM.Common.Models.Plugins.PluginConfiguration
+- uid: FoundationaLLM.Common.Models.Plugins.PluginConfigurationParameter
+  commentId: T:FoundationaLLM.Common.Models.Plugins.PluginConfigurationParameter
+  href: FoundationaLLM.Common.Models.Plugins.PluginConfigurationParameter.html
+  name: PluginConfigurationParameter
+  nameWithType: PluginConfigurationParameter
+  fullName: FoundationaLLM.Common.Models.Plugins.PluginConfigurationParameter
+- uid: FoundationaLLM.Common.Models.Plugins.PluginParameterMetadata
+  commentId: T:FoundationaLLM.Common.Models.Plugins.PluginParameterMetadata
+  parent: FoundationaLLM.Common.Models.Plugins
+  href: FoundationaLLM.Common.Models.Plugins.PluginParameterMetadata.html
+  name: PluginParameterMetadata
+  nameWithType: PluginParameterMetadata
+  fullName: FoundationaLLM.Common.Models.Plugins.PluginParameterMetadata
+- uid: FoundationaLLM.Common.Models.Plugins.PluginResult
+  commentId: T:FoundationaLLM.Common.Models.Plugins.PluginResult
+  parent: FoundationaLLM.Common.Models.Plugins
+  href: FoundationaLLM.Common.Models.Plugins.PluginResult.html
+  name: PluginResult
+  nameWithType: PluginResult
+  fullName: FoundationaLLM.Common.Models.Plugins.PluginResult
+- uid: FoundationaLLM.Common.Models.Plugins.PluginResult`1
+  commentId: T:FoundationaLLM.Common.Models.Plugins.PluginResult`1
+  href: FoundationaLLM.Common.Models.Plugins.PluginResult-1.html
+  name: PluginResult<T>
+  nameWithType: PluginResult<T>
+  fullName: FoundationaLLM.Common.Models.Plugins.PluginResult<T>
+  nameWithType.vb: PluginResult(Of T)
+  fullName.vb: FoundationaLLM.Common.Models.Plugins.PluginResult(Of T)
+  name.vb: PluginResult(Of T)
+  spec.csharp:
+  - uid: FoundationaLLM.Common.Models.Plugins.PluginResult`1
+    name: PluginResult
+    href: FoundationaLLM.Common.Models.Plugins.PluginResult-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: FoundationaLLM.Common.Models.Plugins.PluginResult`1
+    name: PluginResult
+    href: FoundationaLLM.Common.Models.Plugins.PluginResult-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: FoundationaLLM.Common.Models.Plugins
+  commentId: N:FoundationaLLM.Common.Models.Plugins
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.Plugins
+  nameWithType: FoundationaLLM.Common.Models.Plugins
+  fullName: FoundationaLLM.Common.Models.Plugins
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Plugins
+    name: Plugins
+    href: FoundationaLLM.Common.Models.Plugins.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Plugins
+    name: Plugins
+    href: FoundationaLLM.Common.Models.Plugins.html

@@ -1,0 +1,1030 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.SemanticKernel.Core.Services.Indexing.PostgresIndexingService
+  commentId: T:FoundationaLLM.SemanticKernel.Core.Services.Indexing.PostgresIndexingService
+  id: PostgresIndexingService
+  parent: FoundationaLLM.SemanticKernel.Core.Services.Indexing
+  children:
+  - FoundationaLLM.SemanticKernel.Core.Services.Indexing.PostgresIndexingService.#ctor(Microsoft.Extensions.Options.IOptions{FoundationaLLM.SemanticKernel.Core.Models.Configuration.PostgresIndexingServiceSettings},Microsoft.Extensions.Logging.ILogger{FoundationaLLM.SemanticKernel.Core.Services.Indexing.PostgresIndexingService})
+  - FoundationaLLM.SemanticKernel.Core.Services.Indexing.PostgresIndexingService.IndexEmbeddingsAsync(FoundationaLLM.Common.Models.Vectorization.EmbeddedContent,System.String)
+  langs:
+  - csharp
+  - vb
+  name: PostgresIndexingService
+  nameWithType: PostgresIndexingService
+  fullName: FoundationaLLM.SemanticKernel.Core.Services.Indexing.PostgresIndexingService
+  type: Class
+  source:
+    remote:
+      path: src/dotnet/SemanticKernel/Services/Indexing/PostgresIndexingService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: PostgresIndexingService
+    path: ../src/dotnet/SemanticKernel/Services/Indexing/PostgresIndexingService.cs
+    startLine: 17
+  assemblies:
+  - FoundationaLLM.SemanticKernel.Core
+  namespace: FoundationaLLM.SemanticKernel.Core.Services.Indexing
+  summary: Provides vector embedding indexing based on PostgreSQL.
+  example: []
+  syntax:
+    content: 'public class PostgresIndexingService : IIndexingService'
+    content.vb: Public Class PostgresIndexingService Implements IIndexingService
+  inheritance:
+  - System.Object
+  implements:
+  - FoundationaLLM.Common.Interfaces.IIndexingService
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+  extensionMethods:
+  - System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+- uid: FoundationaLLM.SemanticKernel.Core.Services.Indexing.PostgresIndexingService.#ctor(Microsoft.Extensions.Options.IOptions{FoundationaLLM.SemanticKernel.Core.Models.Configuration.PostgresIndexingServiceSettings},Microsoft.Extensions.Logging.ILogger{FoundationaLLM.SemanticKernel.Core.Services.Indexing.PostgresIndexingService})
+  commentId: M:FoundationaLLM.SemanticKernel.Core.Services.Indexing.PostgresIndexingService.#ctor(Microsoft.Extensions.Options.IOptions{FoundationaLLM.SemanticKernel.Core.Models.Configuration.PostgresIndexingServiceSettings},Microsoft.Extensions.Logging.ILogger{FoundationaLLM.SemanticKernel.Core.Services.Indexing.PostgresIndexingService})
+  id: '#ctor(Microsoft.Extensions.Options.IOptions{FoundationaLLM.SemanticKernel.Core.Models.Configuration.PostgresIndexingServiceSettings},Microsoft.Extensions.Logging.ILogger{FoundationaLLM.SemanticKernel.Core.Services.Indexing.PostgresIndexingService})'
+  parent: FoundationaLLM.SemanticKernel.Core.Services.Indexing.PostgresIndexingService
+  langs:
+  - csharp
+  - vb
+  name: PostgresIndexingService(IOptions<PostgresIndexingServiceSettings>, ILogger<PostgresIndexingService>)
+  nameWithType: PostgresIndexingService.PostgresIndexingService(IOptions<PostgresIndexingServiceSettings>, ILogger<PostgresIndexingService>)
+  fullName: FoundationaLLM.SemanticKernel.Core.Services.Indexing.PostgresIndexingService.PostgresIndexingService(Microsoft.Extensions.Options.IOptions<FoundationaLLM.SemanticKernel.Core.Models.Configuration.PostgresIndexingServiceSettings>, Microsoft.Extensions.Logging.ILogger<FoundationaLLM.SemanticKernel.Core.Services.Indexing.PostgresIndexingService>)
+  type: Constructor
+  source:
+    remote:
+      path: src/dotnet/SemanticKernel/Services/Indexing/PostgresIndexingService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: .ctor
+    path: ../src/dotnet/SemanticKernel/Services/Indexing/PostgresIndexingService.cs
+    startLine: 28
+  assemblies:
+  - FoundationaLLM.SemanticKernel.Core
+  namespace: FoundationaLLM.SemanticKernel.Core.Services.Indexing
+  summary: Creates a new <xref href="FoundationaLLM.SemanticKernel.Core.Services.Indexing.PostgresIndexingService" data-throw-if-not-resolved="false"></xref> instance.
+  example: []
+  syntax:
+    content: public PostgresIndexingService(IOptions<PostgresIndexingServiceSettings> options, ILogger<PostgresIndexingService> logger)
+    parameters:
+    - id: options
+      type: Microsoft.Extensions.Options.IOptions{FoundationaLLM.SemanticKernel.Core.Models.Configuration.PostgresIndexingServiceSettings}
+      description: The <xref href="Microsoft.Extensions.Options.IOptions%601" data-throw-if-not-resolved="false"></xref> providing configuration settings.
+    - id: logger
+      type: Microsoft.Extensions.Logging.ILogger{FoundationaLLM.SemanticKernel.Core.Services.Indexing.PostgresIndexingService}
+      description: The <xref href="Microsoft.Extensions.Logging.ILogger" data-throw-if-not-resolved="false"></xref> used for logging.
+    content.vb: Public Sub New(options As IOptions(Of PostgresIndexingServiceSettings), logger As ILogger(Of PostgresIndexingService))
+  overload: FoundationaLLM.SemanticKernel.Core.Services.Indexing.PostgresIndexingService.#ctor*
+  nameWithType.vb: PostgresIndexingService.New(IOptions(Of PostgresIndexingServiceSettings), ILogger(Of PostgresIndexingService))
+  fullName.vb: FoundationaLLM.SemanticKernel.Core.Services.Indexing.PostgresIndexingService.New(Microsoft.Extensions.Options.IOptions(Of FoundationaLLM.SemanticKernel.Core.Models.Configuration.PostgresIndexingServiceSettings), Microsoft.Extensions.Logging.ILogger(Of FoundationaLLM.SemanticKernel.Core.Services.Indexing.PostgresIndexingService))
+  name.vb: New(IOptions(Of PostgresIndexingServiceSettings), ILogger(Of PostgresIndexingService))
+- uid: FoundationaLLM.SemanticKernel.Core.Services.Indexing.PostgresIndexingService.IndexEmbeddingsAsync(FoundationaLLM.Common.Models.Vectorization.EmbeddedContent,System.String)
+  commentId: M:FoundationaLLM.SemanticKernel.Core.Services.Indexing.PostgresIndexingService.IndexEmbeddingsAsync(FoundationaLLM.Common.Models.Vectorization.EmbeddedContent,System.String)
+  id: IndexEmbeddingsAsync(FoundationaLLM.Common.Models.Vectorization.EmbeddedContent,System.String)
+  parent: FoundationaLLM.SemanticKernel.Core.Services.Indexing.PostgresIndexingService
+  langs:
+  - csharp
+  - vb
+  name: IndexEmbeddingsAsync(EmbeddedContent, string)
+  nameWithType: PostgresIndexingService.IndexEmbeddingsAsync(EmbeddedContent, string)
+  fullName: FoundationaLLM.SemanticKernel.Core.Services.Indexing.PostgresIndexingService.IndexEmbeddingsAsync(FoundationaLLM.Common.Models.Vectorization.EmbeddedContent, string)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/SemanticKernel/Services/Indexing/PostgresIndexingService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: IndexEmbeddingsAsync
+    path: ../src/dotnet/SemanticKernel/Services/Indexing/PostgresIndexingService.cs
+    startLine: 38
+  assemblies:
+  - FoundationaLLM.SemanticKernel.Core
+  namespace: FoundationaLLM.SemanticKernel.Core.Services.Indexing
+  summary: Adds to a specified index the list of embeddings associated with a content.
+  example: []
+  syntax:
+    content: public Task<List<string>> IndexEmbeddingsAsync(EmbeddedContent embeddedContent, string indexName)
+    parameters:
+    - id: embeddedContent
+      type: FoundationaLLM.Common.Models.Vectorization.EmbeddedContent
+      description: The <xref href="FoundationaLLM.Common.Models.Vectorization.EmbeddedContent" data-throw-if-not-resolved="false"></xref> containind the embeddings to index.
+    - id: indexName
+      type: System.String
+      description: The name of the index.
+    return:
+      type: System.Threading.Tasks.Task{System.Collections.Generic.List{System.String}}
+      description: ''
+    content.vb: Public Function IndexEmbeddingsAsync(embeddedContent As EmbeddedContent, indexName As String) As Task(Of List(Of String))
+  overload: FoundationaLLM.SemanticKernel.Core.Services.Indexing.PostgresIndexingService.IndexEmbeddingsAsync*
+  implements:
+  - FoundationaLLM.Common.Interfaces.IIndexingService.IndexEmbeddingsAsync(FoundationaLLM.Common.Models.Vectorization.EmbeddedContent,System.String)
+  nameWithType.vb: PostgresIndexingService.IndexEmbeddingsAsync(EmbeddedContent, String)
+  fullName.vb: FoundationaLLM.SemanticKernel.Core.Services.Indexing.PostgresIndexingService.IndexEmbeddingsAsync(FoundationaLLM.Common.Models.Vectorization.EmbeddedContent, String)
+  name.vb: IndexEmbeddingsAsync(EmbeddedContent, String)
+references:
+- uid: FoundationaLLM.SemanticKernel.Core.Services.Indexing
+  commentId: N:FoundationaLLM.SemanticKernel.Core.Services.Indexing
+  href: FoundationaLLM.html
+  name: FoundationaLLM.SemanticKernel.Core.Services.Indexing
+  nameWithType: FoundationaLLM.SemanticKernel.Core.Services.Indexing
+  fullName: FoundationaLLM.SemanticKernel.Core.Services.Indexing
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.SemanticKernel
+    name: SemanticKernel
+    href: FoundationaLLM.SemanticKernel.html
+  - name: .
+  - uid: FoundationaLLM.SemanticKernel.Core
+    name: Core
+    href: FoundationaLLM.SemanticKernel.Core.html
+  - name: .
+  - uid: FoundationaLLM.SemanticKernel.Core.Services
+    name: Services
+    href: FoundationaLLM.SemanticKernel.Core.Services.html
+  - name: .
+  - uid: FoundationaLLM.SemanticKernel.Core.Services.Indexing
+    name: Indexing
+    href: FoundationaLLM.SemanticKernel.Core.Services.Indexing.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.SemanticKernel
+    name: SemanticKernel
+    href: FoundationaLLM.SemanticKernel.html
+  - name: .
+  - uid: FoundationaLLM.SemanticKernel.Core
+    name: Core
+    href: FoundationaLLM.SemanticKernel.Core.html
+  - name: .
+  - uid: FoundationaLLM.SemanticKernel.Core.Services
+    name: Services
+    href: FoundationaLLM.SemanticKernel.Core.Services.html
+  - name: .
+  - uid: FoundationaLLM.SemanticKernel.Core.Services.Indexing
+    name: Indexing
+    href: FoundationaLLM.SemanticKernel.Core.Services.Indexing.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: FoundationaLLM.Common.Interfaces.IIndexingService
+  commentId: T:FoundationaLLM.Common.Interfaces.IIndexingService
+  parent: FoundationaLLM.Common.Interfaces
+  href: FoundationaLLM.Common.Interfaces.IIndexingService.html
+  name: IIndexingService
+  nameWithType: IIndexingService
+  fullName: FoundationaLLM.Common.Interfaces.IIndexingService
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  parent: FoundationaLLM.Core.Utils.ObjectExtensions
+  definition: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: FoundationaLLM.Common.Interfaces
+  commentId: N:FoundationaLLM.Common.Interfaces
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Interfaces
+  nameWithType: FoundationaLLM.Common.Interfaces
+  fullName: FoundationaLLM.Common.Interfaces
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Interfaces
+    name: Interfaces
+    href: FoundationaLLM.Common.Interfaces.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Interfaces
+    name: Interfaces
+    href: FoundationaLLM.Common.Interfaces.html
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  isExternal: true
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions
+  commentId: T:FoundationaLLM.Core.Utils.ObjectExtensions
+  parent: FoundationaLLM.Core.Utils
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html
+  name: ObjectExtensions
+  nameWithType: ObjectExtensions
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions
+- uid: FoundationaLLM.Core.Utils
+  commentId: N:FoundationaLLM.Core.Utils
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Core.Utils
+  nameWithType: FoundationaLLM.Core.Utils
+  fullName: FoundationaLLM.Core.Utils
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+- uid: FoundationaLLM.SemanticKernel.Core.Services.Indexing.PostgresIndexingService
+  commentId: T:FoundationaLLM.SemanticKernel.Core.Services.Indexing.PostgresIndexingService
+  href: FoundationaLLM.SemanticKernel.Core.Services.Indexing.PostgresIndexingService.html
+  name: PostgresIndexingService
+  nameWithType: PostgresIndexingService
+  fullName: FoundationaLLM.SemanticKernel.Core.Services.Indexing.PostgresIndexingService
+- uid: Microsoft.Extensions.Options.IOptions`1
+  commentId: T:Microsoft.Extensions.Options.IOptions`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.options.ioptions-1
+  name: IOptions<TOptions>
+  nameWithType: IOptions<TOptions>
+  fullName: Microsoft.Extensions.Options.IOptions<TOptions>
+  nameWithType.vb: IOptions(Of TOptions)
+  fullName.vb: Microsoft.Extensions.Options.IOptions(Of TOptions)
+  name.vb: IOptions(Of TOptions)
+  spec.csharp:
+  - uid: Microsoft.Extensions.Options.IOptions`1
+    name: IOptions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.options.ioptions-1
+  - name: <
+  - name: TOptions
+  - name: '>'
+  spec.vb:
+  - uid: Microsoft.Extensions.Options.IOptions`1
+    name: IOptions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.options.ioptions-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TOptions
+  - name: )
+- uid: Microsoft.Extensions.Logging.ILogger
+  commentId: T:Microsoft.Extensions.Logging.ILogger
+  parent: Microsoft.Extensions.Logging
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger
+  name: ILogger
+  nameWithType: ILogger
+  fullName: Microsoft.Extensions.Logging.ILogger
+- uid: FoundationaLLM.SemanticKernel.Core.Services.Indexing.PostgresIndexingService.#ctor*
+  commentId: Overload:FoundationaLLM.SemanticKernel.Core.Services.Indexing.PostgresIndexingService.#ctor
+  href: FoundationaLLM.SemanticKernel.Core.Services.Indexing.PostgresIndexingService.html#FoundationaLLM_SemanticKernel_Core_Services_Indexing_PostgresIndexingService__ctor_Microsoft_Extensions_Options_IOptions_FoundationaLLM_SemanticKernel_Core_Models_Configuration_PostgresIndexingServiceSettings__Microsoft_Extensions_Logging_ILogger_FoundationaLLM_SemanticKernel_Core_Services_Indexing_PostgresIndexingService__
+  name: PostgresIndexingService
+  nameWithType: PostgresIndexingService.PostgresIndexingService
+  fullName: FoundationaLLM.SemanticKernel.Core.Services.Indexing.PostgresIndexingService.PostgresIndexingService
+  nameWithType.vb: PostgresIndexingService.New
+  fullName.vb: FoundationaLLM.SemanticKernel.Core.Services.Indexing.PostgresIndexingService.New
+  name.vb: New
+- uid: Microsoft.Extensions.Options.IOptions{FoundationaLLM.SemanticKernel.Core.Models.Configuration.PostgresIndexingServiceSettings}
+  commentId: T:Microsoft.Extensions.Options.IOptions{FoundationaLLM.SemanticKernel.Core.Models.Configuration.PostgresIndexingServiceSettings}
+  parent: Microsoft.Extensions.Options
+  definition: Microsoft.Extensions.Options.IOptions`1
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.options.ioptions-1
+  name: IOptions<PostgresIndexingServiceSettings>
+  nameWithType: IOptions<PostgresIndexingServiceSettings>
+  fullName: Microsoft.Extensions.Options.IOptions<FoundationaLLM.SemanticKernel.Core.Models.Configuration.PostgresIndexingServiceSettings>
+  nameWithType.vb: IOptions(Of PostgresIndexingServiceSettings)
+  fullName.vb: Microsoft.Extensions.Options.IOptions(Of FoundationaLLM.SemanticKernel.Core.Models.Configuration.PostgresIndexingServiceSettings)
+  name.vb: IOptions(Of PostgresIndexingServiceSettings)
+  spec.csharp:
+  - uid: Microsoft.Extensions.Options.IOptions`1
+    name: IOptions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.options.ioptions-1
+  - name: <
+  - uid: FoundationaLLM.SemanticKernel.Core.Models.Configuration.PostgresIndexingServiceSettings
+    name: PostgresIndexingServiceSettings
+    href: FoundationaLLM.SemanticKernel.Core.Models.Configuration.PostgresIndexingServiceSettings.html
+  - name: '>'
+  spec.vb:
+  - uid: Microsoft.Extensions.Options.IOptions`1
+    name: IOptions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.options.ioptions-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FoundationaLLM.SemanticKernel.Core.Models.Configuration.PostgresIndexingServiceSettings
+    name: PostgresIndexingServiceSettings
+    href: FoundationaLLM.SemanticKernel.Core.Models.Configuration.PostgresIndexingServiceSettings.html
+  - name: )
+- uid: Microsoft.Extensions.Logging.ILogger{FoundationaLLM.SemanticKernel.Core.Services.Indexing.PostgresIndexingService}
+  commentId: T:Microsoft.Extensions.Logging.ILogger{FoundationaLLM.SemanticKernel.Core.Services.Indexing.PostgresIndexingService}
+  parent: Microsoft.Extensions.Logging
+  definition: Microsoft.Extensions.Logging.ILogger`1
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  name: ILogger<PostgresIndexingService>
+  nameWithType: ILogger<PostgresIndexingService>
+  fullName: Microsoft.Extensions.Logging.ILogger<FoundationaLLM.SemanticKernel.Core.Services.Indexing.PostgresIndexingService>
+  nameWithType.vb: ILogger(Of PostgresIndexingService)
+  fullName.vb: Microsoft.Extensions.Logging.ILogger(Of FoundationaLLM.SemanticKernel.Core.Services.Indexing.PostgresIndexingService)
+  name.vb: ILogger(Of PostgresIndexingService)
+  spec.csharp:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: <
+  - uid: FoundationaLLM.SemanticKernel.Core.Services.Indexing.PostgresIndexingService
+    name: PostgresIndexingService
+    href: FoundationaLLM.SemanticKernel.Core.Services.Indexing.PostgresIndexingService.html
+  - name: '>'
+  spec.vb:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FoundationaLLM.SemanticKernel.Core.Services.Indexing.PostgresIndexingService
+    name: PostgresIndexingService
+    href: FoundationaLLM.SemanticKernel.Core.Services.Indexing.PostgresIndexingService.html
+  - name: )
+- uid: Microsoft.Extensions.Logging
+  commentId: N:Microsoft.Extensions.Logging
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft
+  name: Microsoft.Extensions.Logging
+  nameWithType: Microsoft.Extensions.Logging
+  fullName: Microsoft.Extensions.Logging
+  spec.csharp:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Logging
+    name: Logging
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging
+  spec.vb:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Logging
+    name: Logging
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging
+- uid: Microsoft.Extensions.Options
+  commentId: N:Microsoft.Extensions.Options
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft
+  name: Microsoft.Extensions.Options
+  nameWithType: Microsoft.Extensions.Options
+  fullName: Microsoft.Extensions.Options
+  spec.csharp:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Options
+    name: Options
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.options
+  spec.vb:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Options
+    name: Options
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.options
+- uid: Microsoft.Extensions.Logging.ILogger`1
+  commentId: T:Microsoft.Extensions.Logging.ILogger`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  name: ILogger<TCategoryName>
+  nameWithType: ILogger<TCategoryName>
+  fullName: Microsoft.Extensions.Logging.ILogger<TCategoryName>
+  nameWithType.vb: ILogger(Of TCategoryName)
+  fullName.vb: Microsoft.Extensions.Logging.ILogger(Of TCategoryName)
+  name.vb: ILogger(Of TCategoryName)
+  spec.csharp:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: <
+  - name: TCategoryName
+  - name: '>'
+  spec.vb:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TCategoryName
+  - name: )
+- uid: FoundationaLLM.Common.Models.Vectorization.EmbeddedContent
+  commentId: T:FoundationaLLM.Common.Models.Vectorization.EmbeddedContent
+  parent: FoundationaLLM.Common.Models.Vectorization
+  href: FoundationaLLM.Common.Models.Vectorization.EmbeddedContent.html
+  name: EmbeddedContent
+  nameWithType: EmbeddedContent
+  fullName: FoundationaLLM.Common.Models.Vectorization.EmbeddedContent
+- uid: FoundationaLLM.SemanticKernel.Core.Services.Indexing.PostgresIndexingService.IndexEmbeddingsAsync*
+  commentId: Overload:FoundationaLLM.SemanticKernel.Core.Services.Indexing.PostgresIndexingService.IndexEmbeddingsAsync
+  href: FoundationaLLM.SemanticKernel.Core.Services.Indexing.PostgresIndexingService.html#FoundationaLLM_SemanticKernel_Core_Services_Indexing_PostgresIndexingService_IndexEmbeddingsAsync_FoundationaLLM_Common_Models_Vectorization_EmbeddedContent_System_String_
+  name: IndexEmbeddingsAsync
+  nameWithType: PostgresIndexingService.IndexEmbeddingsAsync
+  fullName: FoundationaLLM.SemanticKernel.Core.Services.Indexing.PostgresIndexingService.IndexEmbeddingsAsync
+- uid: FoundationaLLM.Common.Interfaces.IIndexingService.IndexEmbeddingsAsync(FoundationaLLM.Common.Models.Vectorization.EmbeddedContent,System.String)
+  commentId: M:FoundationaLLM.Common.Interfaces.IIndexingService.IndexEmbeddingsAsync(FoundationaLLM.Common.Models.Vectorization.EmbeddedContent,System.String)
+  parent: FoundationaLLM.Common.Interfaces.IIndexingService
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: IndexEmbeddingsAsync(EmbeddedContent, string)
+  nameWithType: IIndexingService.IndexEmbeddingsAsync(EmbeddedContent, string)
+  fullName: FoundationaLLM.Common.Interfaces.IIndexingService.IndexEmbeddingsAsync(FoundationaLLM.Common.Models.Vectorization.EmbeddedContent, string)
+  nameWithType.vb: IIndexingService.IndexEmbeddingsAsync(EmbeddedContent, String)
+  fullName.vb: FoundationaLLM.Common.Interfaces.IIndexingService.IndexEmbeddingsAsync(FoundationaLLM.Common.Models.Vectorization.EmbeddedContent, String)
+  name.vb: IndexEmbeddingsAsync(EmbeddedContent, String)
+  spec.csharp:
+  - uid: FoundationaLLM.Common.Interfaces.IIndexingService.IndexEmbeddingsAsync(FoundationaLLM.Common.Models.Vectorization.EmbeddedContent,System.String)
+    name: IndexEmbeddingsAsync
+  - name: (
+  - uid: FoundationaLLM.Common.Models.Vectorization.EmbeddedContent
+    name: EmbeddedContent
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Common.Interfaces.IIndexingService.IndexEmbeddingsAsync(FoundationaLLM.Common.Models.Vectorization.EmbeddedContent,System.String)
+    name: IndexEmbeddingsAsync
+  - name: (
+  - uid: FoundationaLLM.Common.Models.Vectorization.EmbeddedContent
+    name: EmbeddedContent
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System.Threading.Tasks.Task{System.Collections.Generic.List{System.String}}
+  commentId: T:System.Threading.Tasks.Task{System.Collections.Generic.List{System.String}}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<List<string>>
+  nameWithType: Task<List<string>>
+  fullName: System.Threading.Tasks.Task<System.Collections.Generic.List<string>>
+  nameWithType.vb: Task(Of List(Of String))
+  fullName.vb: System.Threading.Tasks.Task(Of System.Collections.Generic.List(Of String))
+  name.vb: Task(Of List(Of String))
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: FoundationaLLM.Common.Models.Vectorization
+  commentId: N:FoundationaLLM.Common.Models.Vectorization
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.Vectorization
+  nameWithType: FoundationaLLM.Common.Models.Vectorization
+  fullName: FoundationaLLM.Common.Models.Vectorization
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Vectorization
+    name: Vectorization
+    href: FoundationaLLM.Common.Models.Vectorization.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Vectorization
+    name: Vectorization
+    href: FoundationaLLM.Common.Models.Vectorization.html
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks

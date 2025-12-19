@@ -1,0 +1,390 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Gateway.Interfaces.ITextOperationService
+  commentId: T:FoundationaLLM.Gateway.Interfaces.ITextOperationService
+  id: ITextOperationService
+  parent: FoundationaLLM.Gateway.Interfaces
+  children:
+  - FoundationaLLM.Gateway.Interfaces.ITextOperationService.ExecuteTextOperation(FoundationaLLM.Gateway.Models.InternalTextOperationRequest)
+  langs:
+  - csharp
+  - vb
+  name: ITextOperationService
+  nameWithType: ITextOperationService
+  fullName: FoundationaLLM.Gateway.Interfaces.ITextOperationService
+  type: Interface
+  source:
+    remote:
+      path: src/dotnet/Gateway/Interfaces/ITextOperationService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: ITextOperationService
+    path: ../src/dotnet/Gateway/Interfaces/ITextOperationService.cs
+    startLine: 7
+  assemblies:
+  - FoundationaLLM.Gateway
+  namespace: FoundationaLLM.Gateway.Interfaces
+  summary: Defines the interface for text operation services, such as text embedding or completion services.
+  example: []
+  syntax:
+    content: public interface ITextOperationService
+    content.vb: Public Interface ITextOperationService
+  extensionMethods:
+  - System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+- uid: FoundationaLLM.Gateway.Interfaces.ITextOperationService.ExecuteTextOperation(FoundationaLLM.Gateway.Models.InternalTextOperationRequest)
+  commentId: M:FoundationaLLM.Gateway.Interfaces.ITextOperationService.ExecuteTextOperation(FoundationaLLM.Gateway.Models.InternalTextOperationRequest)
+  id: ExecuteTextOperation(FoundationaLLM.Gateway.Models.InternalTextOperationRequest)
+  parent: FoundationaLLM.Gateway.Interfaces.ITextOperationService
+  langs:
+  - csharp
+  - vb
+  name: ExecuteTextOperation(InternalTextOperationRequest)
+  nameWithType: ITextOperationService.ExecuteTextOperation(InternalTextOperationRequest)
+  fullName: FoundationaLLM.Gateway.Interfaces.ITextOperationService.ExecuteTextOperation(FoundationaLLM.Gateway.Models.InternalTextOperationRequest)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Gateway/Interfaces/ITextOperationService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: ExecuteTextOperation
+    path: ../src/dotnet/Gateway/Interfaces/ITextOperationService.cs
+    startLine: 14
+  assemblies:
+  - FoundationaLLM.Gateway
+  namespace: FoundationaLLM.Gateway.Interfaces
+  summary: Executes a text operation (e.g., embedding or completion) on the provided text chunks.
+  example: []
+  syntax:
+    content: Task<InternalTextOperationResult> ExecuteTextOperation(InternalTextOperationRequest textOperationRequest)
+    parameters:
+    - id: textOperationRequest
+      type: FoundationaLLM.Gateway.Models.InternalTextOperationRequest
+      description: The text operation request to execute.
+    return:
+      type: System.Threading.Tasks.Task{FoundationaLLM.Gateway.Models.InternalTextOperationResult}
+      description: The result of the operation.
+    content.vb: Function ExecuteTextOperation(textOperationRequest As InternalTextOperationRequest) As Task(Of InternalTextOperationResult)
+  overload: FoundationaLLM.Gateway.Interfaces.ITextOperationService.ExecuteTextOperation*
+references:
+- uid: FoundationaLLM.Gateway.Interfaces
+  commentId: N:FoundationaLLM.Gateway.Interfaces
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Gateway.Interfaces
+  nameWithType: FoundationaLLM.Gateway.Interfaces
+  fullName: FoundationaLLM.Gateway.Interfaces
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Gateway
+    name: Gateway
+    href: FoundationaLLM.Gateway.html
+  - name: .
+  - uid: FoundationaLLM.Gateway.Interfaces
+    name: Interfaces
+    href: FoundationaLLM.Gateway.Interfaces.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Gateway
+    name: Gateway
+    href: FoundationaLLM.Gateway.html
+  - name: .
+  - uid: FoundationaLLM.Gateway.Interfaces
+    name: Interfaces
+    href: FoundationaLLM.Gateway.Interfaces.html
+- uid: System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  parent: FoundationaLLM.Core.Utils.ObjectExtensions
+  definition: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  isExternal: true
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions
+  commentId: T:FoundationaLLM.Core.Utils.ObjectExtensions
+  parent: FoundationaLLM.Core.Utils
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html
+  name: ObjectExtensions
+  nameWithType: ObjectExtensions
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions
+- uid: FoundationaLLM.Core.Utils
+  commentId: N:FoundationaLLM.Core.Utils
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Core.Utils
+  nameWithType: FoundationaLLM.Core.Utils
+  fullName: FoundationaLLM.Core.Utils
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+- uid: FoundationaLLM.Gateway.Interfaces.ITextOperationService.ExecuteTextOperation*
+  commentId: Overload:FoundationaLLM.Gateway.Interfaces.ITextOperationService.ExecuteTextOperation
+  href: FoundationaLLM.Gateway.Interfaces.ITextOperationService.html#FoundationaLLM_Gateway_Interfaces_ITextOperationService_ExecuteTextOperation_FoundationaLLM_Gateway_Models_InternalTextOperationRequest_
+  name: ExecuteTextOperation
+  nameWithType: ITextOperationService.ExecuteTextOperation
+  fullName: FoundationaLLM.Gateway.Interfaces.ITextOperationService.ExecuteTextOperation
+- uid: FoundationaLLM.Gateway.Models.InternalTextOperationRequest
+  commentId: T:FoundationaLLM.Gateway.Models.InternalTextOperationRequest
+  parent: FoundationaLLM.Gateway.Models
+  href: FoundationaLLM.Gateway.Models.InternalTextOperationRequest.html
+  name: InternalTextOperationRequest
+  nameWithType: InternalTextOperationRequest
+  fullName: FoundationaLLM.Gateway.Models.InternalTextOperationRequest
+- uid: System.Threading.Tasks.Task{FoundationaLLM.Gateway.Models.InternalTextOperationResult}
+  commentId: T:System.Threading.Tasks.Task{FoundationaLLM.Gateway.Models.InternalTextOperationResult}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<InternalTextOperationResult>
+  nameWithType: Task<InternalTextOperationResult>
+  fullName: System.Threading.Tasks.Task<FoundationaLLM.Gateway.Models.InternalTextOperationResult>
+  nameWithType.vb: Task(Of InternalTextOperationResult)
+  fullName.vb: System.Threading.Tasks.Task(Of FoundationaLLM.Gateway.Models.InternalTextOperationResult)
+  name.vb: Task(Of InternalTextOperationResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: FoundationaLLM.Gateway.Models.InternalTextOperationResult
+    name: InternalTextOperationResult
+    href: FoundationaLLM.Gateway.Models.InternalTextOperationResult.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FoundationaLLM.Gateway.Models.InternalTextOperationResult
+    name: InternalTextOperationResult
+    href: FoundationaLLM.Gateway.Models.InternalTextOperationResult.html
+  - name: )
+- uid: FoundationaLLM.Gateway.Models
+  commentId: N:FoundationaLLM.Gateway.Models
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Gateway.Models
+  nameWithType: FoundationaLLM.Gateway.Models
+  fullName: FoundationaLLM.Gateway.Models
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Gateway
+    name: Gateway
+    href: FoundationaLLM.Gateway.html
+  - name: .
+  - uid: FoundationaLLM.Gateway.Models
+    name: Models
+    href: FoundationaLLM.Gateway.Models.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Gateway
+    name: Gateway
+    href: FoundationaLLM.Gateway.html
+  - name: .
+  - uid: FoundationaLLM.Gateway.Models
+    name: Models
+    href: FoundationaLLM.Gateway.Models.html
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks

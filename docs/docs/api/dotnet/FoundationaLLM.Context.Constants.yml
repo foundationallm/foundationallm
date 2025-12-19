@@ -1,0 +1,24 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Context.Constants
+  commentId: N:FoundationaLLM.Context.Constants
+  id: Constants
+  parent: FoundationaLLM.Context
+  children:
+  - FoundationaLLM.Context.Constants.CodeSessionProviderNames
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM.Context.Constants
+  nameWithType: FoundationaLLM.Context.Constants
+  fullName: FoundationaLLM.Context.Constants
+  type: Namespace
+  assemblies:
+  - FoundationaLLM.ContextEngine
+references:
+- uid: FoundationaLLM.Context.Constants.CodeSessionProviderNames
+  commentId: T:FoundationaLLM.Context.Constants.CodeSessionProviderNames
+  href: FoundationaLLM.Context.Constants.CodeSessionProviderNames.html
+  name: CodeSessionProviderNames
+  nameWithType: CodeSessionProviderNames
+  fullName: FoundationaLLM.Context.Constants.CodeSessionProviderNames

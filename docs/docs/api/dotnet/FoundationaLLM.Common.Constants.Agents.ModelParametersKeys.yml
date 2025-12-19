@@ -1,0 +1,616 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Common.Constants.Agents.ModelParametersKeys
+  commentId: T:FoundationaLLM.Common.Constants.Agents.ModelParametersKeys
+  id: ModelParametersKeys
+  parent: FoundationaLLM.Common.Constants.Agents
+  children:
+  - FoundationaLLM.Common.Constants.Agents.ModelParametersKeys.All
+  - FoundationaLLM.Common.Constants.Agents.ModelParametersKeys.DoSample
+  - FoundationaLLM.Common.Constants.Agents.ModelParametersKeys.IgnoreEOS
+  - FoundationaLLM.Common.Constants.Agents.ModelParametersKeys.MaxNewTokens
+  - FoundationaLLM.Common.Constants.Agents.ModelParametersKeys.ReturnFullText
+  - FoundationaLLM.Common.Constants.Agents.ModelParametersKeys.Temperature
+  - FoundationaLLM.Common.Constants.Agents.ModelParametersKeys.TopK
+  - FoundationaLLM.Common.Constants.Agents.ModelParametersKeys.TopP
+  langs:
+  - csharp
+  - vb
+  name: ModelParametersKeys
+  nameWithType: ModelParametersKeys
+  fullName: FoundationaLLM.Common.Constants.Agents.ModelParametersKeys
+  type: Class
+  source:
+    remote:
+      path: src/dotnet/Common/Constants/Agents/ModelParametersKeys.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: ModelParametersKeys
+    path: ../src/dotnet/Common/Constants/Agents/ModelParametersKeys.cs
+    startLine: 5
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.Agents
+  summary: Contains constants of the keys for all overridable model settings.
+  example: []
+  syntax:
+    content: public static class ModelParametersKeys
+    content.vb: Public Module ModelParametersKeys
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: FoundationaLLM.Common.Constants.Agents.ModelParametersKeys.Temperature
+  commentId: F:FoundationaLLM.Common.Constants.Agents.ModelParametersKeys.Temperature
+  id: Temperature
+  parent: FoundationaLLM.Common.Constants.Agents.ModelParametersKeys
+  langs:
+  - csharp
+  - vb
+  name: Temperature
+  nameWithType: ModelParametersKeys.Temperature
+  fullName: FoundationaLLM.Common.Constants.Agents.ModelParametersKeys.Temperature
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Constants/Agents/ModelParametersKeys.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: Temperature
+    path: ../src/dotnet/Common/Constants/Agents/ModelParametersKeys.cs
+    startLine: 12
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.Agents
+  summary: >-
+    Controls randomness. Lowering the temperature means that the model will produce more repetitive and
+
+    deterministic responses. Increasing the temperature will result in more unexpected or creative responses.
+
+    Try adjusting temperature or Top P but not both. This value should be a float between 0.0 and 1.0.
+  example: []
+  syntax:
+    content: public const string Temperature = "temperature"
+    return:
+      type: System.String
+    content.vb: Public Const Temperature As String = "temperature"
+- uid: FoundationaLLM.Common.Constants.Agents.ModelParametersKeys.TopK
+  commentId: F:FoundationaLLM.Common.Constants.Agents.ModelParametersKeys.TopK
+  id: TopK
+  parent: FoundationaLLM.Common.Constants.Agents.ModelParametersKeys
+  langs:
+  - csharp
+  - vb
+  name: TopK
+  nameWithType: ModelParametersKeys.TopK
+  fullName: FoundationaLLM.Common.Constants.Agents.ModelParametersKeys.TopK
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Constants/Agents/ModelParametersKeys.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: TopK
+    path: ../src/dotnet/Common/Constants/Agents/ModelParametersKeys.cs
+    startLine: 18
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.Agents
+  summary: >-
+    The number of highest probability vocabulary tokens to keep for top-k-filtering.
+
+    Default value is null, which disables top-k-filtering.
+  example: []
+  syntax:
+    content: public const string TopK = "top_k"
+    return:
+      type: System.String
+    content.vb: Public Const TopK As String = "top_k"
+- uid: FoundationaLLM.Common.Constants.Agents.ModelParametersKeys.TopP
+  commentId: F:FoundationaLLM.Common.Constants.Agents.ModelParametersKeys.TopP
+  id: TopP
+  parent: FoundationaLLM.Common.Constants.Agents.ModelParametersKeys
+  langs:
+  - csharp
+  - vb
+  name: TopP
+  nameWithType: ModelParametersKeys.TopP
+  fullName: FoundationaLLM.Common.Constants.Agents.ModelParametersKeys.TopP
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Constants/Agents/ModelParametersKeys.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: TopP
+    path: ../src/dotnet/Common/Constants/Agents/ModelParametersKeys.cs
+    startLine: 26
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.Agents
+  summary: >-
+    The cumulative probability of parameter highest probability vocabulary tokens to keep for nucleus sampling.
+
+    Top P (or Top Probabilities) is imilar to temperature, this controls randomness but uses a different method.
+
+    Lowering Top P will narrow the model’s token selection to likelier tokens. Increasing Top P will let the model
+
+    choose from tokens with both high and low likelihood. Try adjusting temperature or Top P but not both.
+  example: []
+  syntax:
+    content: public const string TopP = "top_p"
+    return:
+      type: System.String
+    content.vb: Public Const TopP As String = "top_p"
+- uid: FoundationaLLM.Common.Constants.Agents.ModelParametersKeys.DoSample
+  commentId: F:FoundationaLLM.Common.Constants.Agents.ModelParametersKeys.DoSample
+  id: DoSample
+  parent: FoundationaLLM.Common.Constants.Agents.ModelParametersKeys
+  langs:
+  - csharp
+  - vb
+  name: DoSample
+  nameWithType: ModelParametersKeys.DoSample
+  fullName: FoundationaLLM.Common.Constants.Agents.ModelParametersKeys.DoSample
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Constants/Agents/ModelParametersKeys.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: DoSample
+    path: ../src/dotnet/Common/Constants/Agents/ModelParametersKeys.cs
+    startLine: 31
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.Agents
+  summary: Whether or not to use sampling; use greedy decoding otherwise.
+  example: []
+  syntax:
+    content: public const string DoSample = "do_sample"
+    return:
+      type: System.String
+    content.vb: Public Const DoSample As String = "do_sample"
+- uid: FoundationaLLM.Common.Constants.Agents.ModelParametersKeys.MaxNewTokens
+  commentId: F:FoundationaLLM.Common.Constants.Agents.ModelParametersKeys.MaxNewTokens
+  id: MaxNewTokens
+  parent: FoundationaLLM.Common.Constants.Agents.ModelParametersKeys
+  langs:
+  - csharp
+  - vb
+  name: MaxNewTokens
+  nameWithType: ModelParametersKeys.MaxNewTokens
+  fullName: FoundationaLLM.Common.Constants.Agents.ModelParametersKeys.MaxNewTokens
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Constants/Agents/ModelParametersKeys.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: MaxNewTokens
+    path: ../src/dotnet/Common/Constants/Agents/ModelParametersKeys.cs
+    startLine: 38
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.Agents
+  summary: >-
+    Sets a limit on the number of tokens per model response. The API supports a maximum of 4000 tokens shared
+
+    between the prompt (including system message, examples, message history, and user query) and the model's
+
+    response. One token is roughly 4 characters for typical English text.
+  example: []
+  syntax:
+    content: public const string MaxNewTokens = "max_new_tokens"
+    return:
+      type: System.String
+    content.vb: Public Const MaxNewTokens As String = "max_new_tokens"
+- uid: FoundationaLLM.Common.Constants.Agents.ModelParametersKeys.ReturnFullText
+  commentId: F:FoundationaLLM.Common.Constants.Agents.ModelParametersKeys.ReturnFullText
+  id: ReturnFullText
+  parent: FoundationaLLM.Common.Constants.Agents.ModelParametersKeys
+  langs:
+  - csharp
+  - vb
+  name: ReturnFullText
+  nameWithType: ModelParametersKeys.ReturnFullText
+  fullName: FoundationaLLM.Common.Constants.Agents.ModelParametersKeys.ReturnFullText
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Constants/Agents/ModelParametersKeys.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: ReturnFullText
+    path: ../src/dotnet/Common/Constants/Agents/ModelParametersKeys.cs
+    startLine: 44
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.Agents
+  summary: >-
+    Whether or not to return the full text (prompt + response) or only the generated part (response).
+
+    Default value is false.
+  example: []
+  syntax:
+    content: public const string ReturnFullText = "return_full_text"
+    return:
+      type: System.String
+    content.vb: Public Const ReturnFullText As String = "return_full_text"
+- uid: FoundationaLLM.Common.Constants.Agents.ModelParametersKeys.IgnoreEOS
+  commentId: F:FoundationaLLM.Common.Constants.Agents.ModelParametersKeys.IgnoreEOS
+  id: IgnoreEOS
+  parent: FoundationaLLM.Common.Constants.Agents.ModelParametersKeys
+  langs:
+  - csharp
+  - vb
+  name: IgnoreEOS
+  nameWithType: ModelParametersKeys.IgnoreEOS
+  fullName: FoundationaLLM.Common.Constants.Agents.ModelParametersKeys.IgnoreEOS
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Constants/Agents/ModelParametersKeys.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: IgnoreEOS
+    path: ../src/dotnet/Common/Constants/Agents/ModelParametersKeys.cs
+    startLine: 50
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.Agents
+  summary: >-
+    Whether to ignore the EOS token and continue generating tokens after the EOS token is generated.
+
+    Defaults to False.
+  example: []
+  syntax:
+    content: public const string IgnoreEOS = "ignore_eos"
+    return:
+      type: System.String
+    content.vb: Public Const IgnoreEOS As String = "ignore_eos"
+- uid: FoundationaLLM.Common.Constants.Agents.ModelParametersKeys.All
+  commentId: F:FoundationaLLM.Common.Constants.Agents.ModelParametersKeys.All
+  id: All
+  parent: FoundationaLLM.Common.Constants.Agents.ModelParametersKeys
+  langs:
+  - csharp
+  - vb
+  name: All
+  nameWithType: ModelParametersKeys.All
+  fullName: FoundationaLLM.Common.Constants.Agents.ModelParametersKeys.All
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Constants/Agents/ModelParametersKeys.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: All
+    path: ../src/dotnet/Common/Constants/Agents/ModelParametersKeys.cs
+    startLine: 55
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.Agents
+  summary: All model parameter keys.
+  example: []
+  syntax:
+    content: public static readonly string[] All
+    return:
+      type: System.String[]
+    content.vb: Public Shared ReadOnly All As String()
+references:
+- uid: FoundationaLLM.Common.Constants.Agents
+  commentId: N:FoundationaLLM.Common.Constants.Agents
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Constants.Agents
+  nameWithType: FoundationaLLM.Common.Constants.Agents
+  fullName: FoundationaLLM.Common.Constants.Agents
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Constants
+    name: Constants
+    href: FoundationaLLM.Common.Constants.html
+  - name: .
+  - uid: FoundationaLLM.Common.Constants.Agents
+    name: Agents
+    href: FoundationaLLM.Common.Constants.Agents.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Constants
+    name: Constants
+    href: FoundationaLLM.Common.Constants.html
+  - name: .
+  - uid: FoundationaLLM.Common.Constants.Agents
+    name: Agents
+    href: FoundationaLLM.Common.Constants.Agents.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System.String[]
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string[]
+  nameWithType: string[]
+  fullName: string[]
+  nameWithType.vb: String()
+  fullName.vb: String()
+  name.vb: String()
+  spec.csharp:
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '['
+  - name: ']'
+  spec.vb:
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: (
+  - name: )

@@ -1,0 +1,804 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Orchestration.Core.Orchestration.ExplodedObjectsManager
+  commentId: T:FoundationaLLM.Orchestration.Core.Orchestration.ExplodedObjectsManager
+  id: ExplodedObjectsManager
+  parent: FoundationaLLM.Orchestration.Core.Orchestration
+  children:
+  - FoundationaLLM.Orchestration.Core.Orchestration.ExplodedObjectsManager.GetExplodedObjects
+  - FoundationaLLM.Orchestration.Core.Orchestration.ExplodedObjectsManager.HasKey(System.String)
+  - FoundationaLLM.Orchestration.Core.Orchestration.ExplodedObjectsManager.TryAdd(System.String,System.Object)
+  - FoundationaLLM.Orchestration.Core.Orchestration.ExplodedObjectsManager.TryGet``1(System.String,``0@)
+  langs:
+  - csharp
+  - vb
+  name: ExplodedObjectsManager
+  nameWithType: ExplodedObjectsManager
+  fullName: FoundationaLLM.Orchestration.Core.Orchestration.ExplodedObjectsManager
+  type: Class
+  source:
+    remote:
+      path: src/dotnet/Orchestration/Orchestration/ExplodedObjectsManager.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: ExplodedObjectsManager
+    path: ../src/dotnet/Orchestration/Orchestration/ExplodedObjectsManager.cs
+    startLine: 5
+  assemblies:
+  - FoundationaLLM.Orchestration.Core
+  namespace: FoundationaLLM.Orchestration.Core.Orchestration
+  summary: Manages the exploded objects dictionary ensuring consistency and integrity.
+  example: []
+  syntax:
+    content: public class ExplodedObjectsManager
+    content.vb: Public Class ExplodedObjectsManager
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+  extensionMethods:
+  - System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+- uid: FoundationaLLM.Orchestration.Core.Orchestration.ExplodedObjectsManager.TryAdd(System.String,System.Object)
+  commentId: M:FoundationaLLM.Orchestration.Core.Orchestration.ExplodedObjectsManager.TryAdd(System.String,System.Object)
+  id: TryAdd(System.String,System.Object)
+  parent: FoundationaLLM.Orchestration.Core.Orchestration.ExplodedObjectsManager
+  langs:
+  - csharp
+  - vb
+  name: TryAdd(string, object)
+  nameWithType: ExplodedObjectsManager.TryAdd(string, object)
+  fullName: FoundationaLLM.Orchestration.Core.Orchestration.ExplodedObjectsManager.TryAdd(string, object)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Orchestration/Orchestration/ExplodedObjectsManager.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: TryAdd
+    path: ../src/dotnet/Orchestration/Orchestration/ExplodedObjectsManager.cs
+    startLine: 19
+  assemblies:
+  - FoundationaLLM.Orchestration.Core
+  namespace: FoundationaLLM.Orchestration.Core.Orchestration
+  summary: Adds a new key value pair to the exploded objects dictionary.
+  remarks: >-
+    The first attempt to add an object always wins.
+
+    This means that if the key already exists in the dictionary, the add operation will have no effect and it will not generate an exception either.
+  example: []
+  syntax:
+    content: public bool TryAdd(string key, object value)
+    parameters:
+    - id: key
+      type: System.String
+      description: The key of the object to add to the dictionary.
+    - id: value
+      type: System.Object
+      description: The object to add to the dictionary.
+    return:
+      type: System.Boolean
+      description: <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if the value was added successfully, <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a> otherwise.
+    content.vb: Public Function TryAdd(key As String, value As Object) As Boolean
+  overload: FoundationaLLM.Orchestration.Core.Orchestration.ExplodedObjectsManager.TryAdd*
+  nameWithType.vb: ExplodedObjectsManager.TryAdd(String, Object)
+  fullName.vb: FoundationaLLM.Orchestration.Core.Orchestration.ExplodedObjectsManager.TryAdd(String, Object)
+  name.vb: TryAdd(String, Object)
+- uid: FoundationaLLM.Orchestration.Core.Orchestration.ExplodedObjectsManager.HasKey(System.String)
+  commentId: M:FoundationaLLM.Orchestration.Core.Orchestration.ExplodedObjectsManager.HasKey(System.String)
+  id: HasKey(System.String)
+  parent: FoundationaLLM.Orchestration.Core.Orchestration.ExplodedObjectsManager
+  langs:
+  - csharp
+  - vb
+  name: HasKey(string)
+  nameWithType: ExplodedObjectsManager.HasKey(string)
+  fullName: FoundationaLLM.Orchestration.Core.Orchestration.ExplodedObjectsManager.HasKey(string)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Orchestration/Orchestration/ExplodedObjectsManager.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: HasKey
+    path: ../src/dotnet/Orchestration/Orchestration/ExplodedObjectsManager.cs
+    startLine: 33
+  assemblies:
+  - FoundationaLLM.Orchestration.Core
+  namespace: FoundationaLLM.Orchestration.Core.Orchestration
+  summary: Indicates whether the exploded objects dictionary contains the specified key.
+  example: []
+  syntax:
+    content: public bool HasKey(string key)
+    parameters:
+    - id: key
+      type: System.String
+      description: The key being searched for.
+    return:
+      type: System.Boolean
+      description: <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if the key is present in the dictionary (even if the associated value is null), <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a> otherwise.
+    content.vb: Public Function HasKey(key As String) As Boolean
+  overload: FoundationaLLM.Orchestration.Core.Orchestration.ExplodedObjectsManager.HasKey*
+  nameWithType.vb: ExplodedObjectsManager.HasKey(String)
+  fullName.vb: FoundationaLLM.Orchestration.Core.Orchestration.ExplodedObjectsManager.HasKey(String)
+  name.vb: HasKey(String)
+- uid: FoundationaLLM.Orchestration.Core.Orchestration.ExplodedObjectsManager.TryGet``1(System.String,``0@)
+  commentId: M:FoundationaLLM.Orchestration.Core.Orchestration.ExplodedObjectsManager.TryGet``1(System.String,``0@)
+  id: TryGet``1(System.String,``0@)
+  parent: FoundationaLLM.Orchestration.Core.Orchestration.ExplodedObjectsManager
+  langs:
+  - csharp
+  - vb
+  name: TryGet<T>(string, out T?)
+  nameWithType: ExplodedObjectsManager.TryGet<T>(string, out T?)
+  fullName: FoundationaLLM.Orchestration.Core.Orchestration.ExplodedObjectsManager.TryGet<T>(string, out T?)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Orchestration/Orchestration/ExplodedObjectsManager.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: TryGet
+    path: ../src/dotnet/Orchestration/Orchestration/ExplodedObjectsManager.cs
+    startLine: 43
+  assemblies:
+  - FoundationaLLM.Orchestration.Core
+  namespace: FoundationaLLM.Orchestration.Core.Orchestration
+  summary: Tries to get the value associated with the specified key.
+  example: []
+  syntax:
+    content: 'public bool TryGet<T>(string key, out T? value) where T : class'
+    parameters:
+    - id: key
+      type: System.String
+      description: The key being searched for.
+    - id: value
+      type: '{T}'
+      description: The value being searched for.
+    typeParameters:
+    - id: T
+      description: The type of the value associated with the key.
+    return:
+      type: System.Boolean
+      description: The typed object associated with the specified key.
+    content.vb: Public Function TryGet(Of T As Class)(key As String, value As T) As Boolean
+  overload: FoundationaLLM.Orchestration.Core.Orchestration.ExplodedObjectsManager.TryGet*
+  nameWithType.vb: ExplodedObjectsManager.TryGet(Of T)(String, T)
+  fullName.vb: FoundationaLLM.Orchestration.Core.Orchestration.ExplodedObjectsManager.TryGet(Of T)(String, T)
+  name.vb: TryGet(Of T)(String, T)
+- uid: FoundationaLLM.Orchestration.Core.Orchestration.ExplodedObjectsManager.GetExplodedObjects
+  commentId: M:FoundationaLLM.Orchestration.Core.Orchestration.ExplodedObjectsManager.GetExplodedObjects
+  id: GetExplodedObjects
+  parent: FoundationaLLM.Orchestration.Core.Orchestration.ExplodedObjectsManager
+  langs:
+  - csharp
+  - vb
+  name: GetExplodedObjects()
+  nameWithType: ExplodedObjectsManager.GetExplodedObjects()
+  fullName: FoundationaLLM.Orchestration.Core.Orchestration.ExplodedObjectsManager.GetExplodedObjects()
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Orchestration/Orchestration/ExplodedObjectsManager.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: GetExplodedObjects
+    path: ../src/dotnet/Orchestration/Orchestration/ExplodedObjectsManager.cs
+    startLine: 60
+  assemblies:
+  - FoundationaLLM.Orchestration.Core
+  namespace: FoundationaLLM.Orchestration.Core.Orchestration
+  summary: Gets the exploded objects dictionary.
+  example: []
+  syntax:
+    content: public Dictionary<string, object> GetExplodedObjects()
+    return:
+      type: System.Collections.Generic.Dictionary{System.String,System.Object}
+      description: A shallow copy of the internal exploded objects dictionary. This only prevents unguarded changes to the key-value pairs but not to the values themselves.
+    content.vb: Public Function GetExplodedObjects() As Dictionary(Of String, Object)
+  overload: FoundationaLLM.Orchestration.Core.Orchestration.ExplodedObjectsManager.GetExplodedObjects*
+references:
+- uid: FoundationaLLM.Orchestration.Core.Orchestration
+  commentId: N:FoundationaLLM.Orchestration.Core.Orchestration
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Orchestration.Core.Orchestration
+  nameWithType: FoundationaLLM.Orchestration.Core.Orchestration
+  fullName: FoundationaLLM.Orchestration.Core.Orchestration
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Orchestration
+    name: Orchestration
+    href: FoundationaLLM.Orchestration.html
+  - name: .
+  - uid: FoundationaLLM.Orchestration.Core
+    name: Core
+    href: FoundationaLLM.Orchestration.Core.html
+  - name: .
+  - uid: FoundationaLLM.Orchestration.Core.Orchestration
+    name: Orchestration
+    href: FoundationaLLM.Orchestration.Core.Orchestration.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Orchestration
+    name: Orchestration
+    href: FoundationaLLM.Orchestration.html
+  - name: .
+  - uid: FoundationaLLM.Orchestration.Core
+    name: Core
+    href: FoundationaLLM.Orchestration.Core.html
+  - name: .
+  - uid: FoundationaLLM.Orchestration.Core.Orchestration
+    name: Orchestration
+    href: FoundationaLLM.Orchestration.Core.Orchestration.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  parent: FoundationaLLM.Core.Utils.ObjectExtensions
+  definition: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  isExternal: true
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions
+  commentId: T:FoundationaLLM.Core.Utils.ObjectExtensions
+  parent: FoundationaLLM.Core.Utils
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html
+  name: ObjectExtensions
+  nameWithType: ObjectExtensions
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions
+- uid: FoundationaLLM.Core.Utils
+  commentId: N:FoundationaLLM.Core.Utils
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Core.Utils
+  nameWithType: FoundationaLLM.Core.Utils
+  fullName: FoundationaLLM.Core.Utils
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+- uid: FoundationaLLM.Orchestration.Core.Orchestration.ExplodedObjectsManager.TryAdd*
+  commentId: Overload:FoundationaLLM.Orchestration.Core.Orchestration.ExplodedObjectsManager.TryAdd
+  href: FoundationaLLM.Orchestration.Core.Orchestration.ExplodedObjectsManager.html#FoundationaLLM_Orchestration_Core_Orchestration_ExplodedObjectsManager_TryAdd_System_String_System_Object_
+  name: TryAdd
+  nameWithType: ExplodedObjectsManager.TryAdd
+  fullName: FoundationaLLM.Orchestration.Core.Orchestration.ExplodedObjectsManager.TryAdd
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: FoundationaLLM.Orchestration.Core.Orchestration.ExplodedObjectsManager.HasKey*
+  commentId: Overload:FoundationaLLM.Orchestration.Core.Orchestration.ExplodedObjectsManager.HasKey
+  href: FoundationaLLM.Orchestration.Core.Orchestration.ExplodedObjectsManager.html#FoundationaLLM_Orchestration_Core_Orchestration_ExplodedObjectsManager_HasKey_System_String_
+  name: HasKey
+  nameWithType: ExplodedObjectsManager.HasKey
+  fullName: FoundationaLLM.Orchestration.Core.Orchestration.ExplodedObjectsManager.HasKey
+- uid: FoundationaLLM.Orchestration.Core.Orchestration.ExplodedObjectsManager.TryGet*
+  commentId: Overload:FoundationaLLM.Orchestration.Core.Orchestration.ExplodedObjectsManager.TryGet
+  href: FoundationaLLM.Orchestration.Core.Orchestration.ExplodedObjectsManager.html#FoundationaLLM_Orchestration_Core_Orchestration_ExplodedObjectsManager_TryGet__1_System_String___0__
+  name: TryGet
+  nameWithType: ExplodedObjectsManager.TryGet
+  fullName: FoundationaLLM.Orchestration.Core.Orchestration.ExplodedObjectsManager.TryGet
+- uid: '{T}'
+  commentId: '!:T'
+  definition: T
+  name: T
+  nameWithType: T
+  fullName: T
+- uid: T
+  name: T
+  nameWithType: T
+  fullName: T
+- uid: FoundationaLLM.Orchestration.Core.Orchestration.ExplodedObjectsManager.GetExplodedObjects*
+  commentId: Overload:FoundationaLLM.Orchestration.Core.Orchestration.ExplodedObjectsManager.GetExplodedObjects
+  href: FoundationaLLM.Orchestration.Core.Orchestration.ExplodedObjectsManager.html#FoundationaLLM_Orchestration_Core_Orchestration_ExplodedObjectsManager_GetExplodedObjects
+  name: GetExplodedObjects
+  nameWithType: ExplodedObjectsManager.GetExplodedObjects
+  fullName: FoundationaLLM.Orchestration.Core.Orchestration.ExplodedObjectsManager.GetExplodedObjects
+- uid: System.Collections.Generic.Dictionary{System.String,System.Object}
+  commentId: T:System.Collections.Generic.Dictionary{System.String,System.Object}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.Dictionary`2
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  name: Dictionary<string, object>
+  nameWithType: Dictionary<string, object>
+  fullName: System.Collections.Generic.Dictionary<string, object>
+  nameWithType.vb: Dictionary(Of String, Object)
+  fullName.vb: System.Collections.Generic.Dictionary(Of String, Object)
+  name.vb: Dictionary(Of String, Object)
+  spec.csharp:
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Collections.Generic.Dictionary`2
+  commentId: T:System.Collections.Generic.Dictionary`2
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  name: Dictionary<TKey, TValue>
+  nameWithType: Dictionary<TKey, TValue>
+  fullName: System.Collections.Generic.Dictionary<TKey, TValue>
+  nameWithType.vb: Dictionary(Of TKey, TValue)
+  fullName.vb: System.Collections.Generic.Dictionary(Of TKey, TValue)
+  name.vb: Dictionary(Of TKey, TValue)
+  spec.csharp:
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  - name: <
+  - name: TKey
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TKey
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic

@@ -1,0 +1,79 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Attachment
+  commentId: N:FoundationaLLM.Common.Models.ResourceProviders.Attachment
+  id: Attachment
+  parent: FoundationaLLM.Common.Models.ResourceProviders
+  children:
+  - FoundationaLLM.Common.Models.ResourceProviders.Attachment.AttachmentFile
+  - FoundationaLLM.Common.Models.ResourceProviders.Attachment.AttachmentReference
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM.Common.Models.ResourceProviders.Attachment
+  nameWithType: FoundationaLLM.Common.Models.ResourceProviders.Attachment
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Attachment
+  type: Namespace
+  assemblies:
+  - FoundationaLLM.Common
+references:
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Attachment.AttachmentFile
+  commentId: T:FoundationaLLM.Common.Models.ResourceProviders.Attachment.AttachmentFile
+  parent: FoundationaLLM.Common.Models.ResourceProviders.Attachment
+  href: FoundationaLLM.Common.Models.ResourceProviders.Attachment.AttachmentFile.html
+  name: AttachmentFile
+  nameWithType: AttachmentFile
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Attachment.AttachmentFile
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Attachment.AttachmentReference
+  commentId: T:FoundationaLLM.Common.Models.ResourceProviders.Attachment.AttachmentReference
+  parent: FoundationaLLM.Common.Models.ResourceProviders.Attachment
+  href: FoundationaLLM.Common.Models.ResourceProviders.Attachment.AttachmentReference.html
+  name: AttachmentReference
+  nameWithType: AttachmentReference
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Attachment.AttachmentReference
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Attachment
+  commentId: N:FoundationaLLM.Common.Models.ResourceProviders.Attachment
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.ResourceProviders.Attachment
+  nameWithType: FoundationaLLM.Common.Models.ResourceProviders.Attachment
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Attachment
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders
+    name: ResourceProviders
+    href: FoundationaLLM.Common.Models.ResourceProviders.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.Attachment
+    name: Attachment
+    href: FoundationaLLM.Common.Models.ResourceProviders.Attachment.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders
+    name: ResourceProviders
+    href: FoundationaLLM.Common.Models.ResourceProviders.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.Attachment
+    name: Attachment
+    href: FoundationaLLM.Common.Models.ResourceProviders.Attachment.html

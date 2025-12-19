@@ -1,0 +1,24 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.DataPipelineEngine.Services.CosmosDB
+  commentId: N:FoundationaLLM.DataPipelineEngine.Services.CosmosDB
+  id: CosmosDB
+  parent: FoundationaLLM.DataPipelineEngine.Services
+  children:
+  - FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM.DataPipelineEngine.Services.CosmosDB
+  nameWithType: FoundationaLLM.DataPipelineEngine.Services.CosmosDB
+  fullName: FoundationaLLM.DataPipelineEngine.Services.CosmosDB
+  type: Namespace
+  assemblies:
+  - FoundationaLLM.DataPipelineEngine
+references:
+- uid: FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService
+  commentId: T:FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService
+  href: FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService.html
+  name: AzureCosmosDBDataPipelineService
+  nameWithType: AzureCosmosDBDataPipelineService
+  fullName: FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService

@@ -1,0 +1,1289 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Common.Models.Vectorization.Embedding.JsonConverter
+  commentId: T:FoundationaLLM.Common.Models.Vectorization.Embedding.JsonConverter
+  id: Embedding.JsonConverter
+  parent: FoundationaLLM.Common.Models.Vectorization
+  children:
+  - FoundationaLLM.Common.Models.Vectorization.Embedding.JsonConverter.Read(System.Text.Json.Utf8JsonReader@,System.Type,System.Text.Json.JsonSerializerOptions)
+  - FoundationaLLM.Common.Models.Vectorization.Embedding.JsonConverter.Write(System.Text.Json.Utf8JsonWriter,FoundationaLLM.Common.Models.Vectorization.Embedding,System.Text.Json.JsonSerializerOptions)
+  langs:
+  - csharp
+  - vb
+  name: Embedding.JsonConverter
+  nameWithType: Embedding.JsonConverter
+  fullName: FoundationaLLM.Common.Models.Vectorization.Embedding.JsonConverter
+  type: Class
+  source:
+    remote:
+      path: src/dotnet/Common/Models/Vectorization/Embedding.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: JsonConverter
+    path: ../src/dotnet/Common/Models/Vectorization/Embedding.cs
+    startLine: 84
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.Vectorization
+  summary: >-
+    Serializes the content of an <xref href="FoundationaLLM.Common.Models.Vectorization.Embedding" data-throw-if-not-resolved="false"></xref> value.
+
+    Note: use Embedding.JsonConverter to serialize objects using
+
+    the Embedding type, for example:
+        [JsonPropertyName("vector")]
+        [JsonConverter(typeof(Embedding.JsonConverter))]
+        public Embedding Vector { get; set; }
+  example: []
+  syntax:
+    content: 'public sealed class Embedding.JsonConverter : JsonConverter<Embedding>'
+    content.vb: Public NotInheritable Class Embedding.JsonConverter Inherits JsonConverter(Of Embedding)
+  inheritance:
+  - System.Object
+  - System.Text.Json.Serialization.JsonConverter
+  - System.Text.Json.Serialization.JsonConverter{FoundationaLLM.Common.Models.Vectorization.Embedding}
+  inheritedMembers:
+  - System.Text.Json.Serialization.JsonConverter{FoundationaLLM.Common.Models.Vectorization.Embedding}.CanConvert(System.Type)
+  - System.Text.Json.Serialization.JsonConverter{FoundationaLLM.Common.Models.Vectorization.Embedding}.ReadAsPropertyName(System.Text.Json.Utf8JsonReader@,System.Type,System.Text.Json.JsonSerializerOptions)
+  - System.Text.Json.Serialization.JsonConverter{FoundationaLLM.Common.Models.Vectorization.Embedding}.WriteAsPropertyName(System.Text.Json.Utf8JsonWriter,FoundationaLLM.Common.Models.Vectorization.Embedding,System.Text.Json.JsonSerializerOptions)
+  - System.Text.Json.Serialization.JsonConverter{FoundationaLLM.Common.Models.Vectorization.Embedding}.HandleNull
+  - System.Text.Json.Serialization.JsonConverter{FoundationaLLM.Common.Models.Vectorization.Embedding}.Type
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+  extensionMethods:
+  - System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+- uid: FoundationaLLM.Common.Models.Vectorization.Embedding.JsonConverter.Read(System.Text.Json.Utf8JsonReader@,System.Type,System.Text.Json.JsonSerializerOptions)
+  commentId: M:FoundationaLLM.Common.Models.Vectorization.Embedding.JsonConverter.Read(System.Text.Json.Utf8JsonReader@,System.Type,System.Text.Json.JsonSerializerOptions)
+  id: Read(System.Text.Json.Utf8JsonReader@,System.Type,System.Text.Json.JsonSerializerOptions)
+  parent: FoundationaLLM.Common.Models.Vectorization.Embedding.JsonConverter
+  langs:
+  - csharp
+  - vb
+  name: Read(ref Utf8JsonReader, Type, JsonSerializerOptions)
+  nameWithType: Embedding.JsonConverter.Read(ref Utf8JsonReader, Type, JsonSerializerOptions)
+  fullName: FoundationaLLM.Common.Models.Vectorization.Embedding.JsonConverter.Read(ref System.Text.Json.Utf8JsonReader, System.Type, System.Text.Json.JsonSerializerOptions)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Common/Models/Vectorization/Embedding.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: Read
+    path: ../src/dotnet/Common/Models/Vectorization/Embedding.cs
+    startLine: 91
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.Vectorization
+  summary: Reads and converts the JSON to type <xref href="FoundationaLLM.Common.Models.Vectorization.Embedding" data-throw-if-not-resolved="false"></xref>.
+  example: []
+  syntax:
+    content: public override Embedding Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+    parameters:
+    - id: reader
+      type: System.Text.Json.Utf8JsonReader
+      description: The reader.
+    - id: typeToConvert
+      type: System.Type
+      description: The type to convert.
+    - id: options
+      type: System.Text.Json.JsonSerializerOptions
+      description: An object that specifies serialization options to use.
+    return:
+      type: FoundationaLLM.Common.Models.Vectorization.Embedding
+      description: The converted value.
+    content.vb: Public Overrides Function Read(reader As Utf8JsonReader, typeToConvert As Type, options As JsonSerializerOptions) As Embedding
+  overridden: System.Text.Json.Serialization.JsonConverter{FoundationaLLM.Common.Models.Vectorization.Embedding}.Read(System.Text.Json.Utf8JsonReader@,System.Type,System.Text.Json.JsonSerializerOptions)
+  overload: FoundationaLLM.Common.Models.Vectorization.Embedding.JsonConverter.Read*
+  nameWithType.vb: Embedding.JsonConverter.Read(Utf8JsonReader, Type, JsonSerializerOptions)
+  fullName.vb: FoundationaLLM.Common.Models.Vectorization.Embedding.JsonConverter.Read(System.Text.Json.Utf8JsonReader, System.Type, System.Text.Json.JsonSerializerOptions)
+  name.vb: Read(Utf8JsonReader, Type, JsonSerializerOptions)
+- uid: FoundationaLLM.Common.Models.Vectorization.Embedding.JsonConverter.Write(System.Text.Json.Utf8JsonWriter,FoundationaLLM.Common.Models.Vectorization.Embedding,System.Text.Json.JsonSerializerOptions)
+  commentId: M:FoundationaLLM.Common.Models.Vectorization.Embedding.JsonConverter.Write(System.Text.Json.Utf8JsonWriter,FoundationaLLM.Common.Models.Vectorization.Embedding,System.Text.Json.JsonSerializerOptions)
+  id: Write(System.Text.Json.Utf8JsonWriter,FoundationaLLM.Common.Models.Vectorization.Embedding,System.Text.Json.JsonSerializerOptions)
+  parent: FoundationaLLM.Common.Models.Vectorization.Embedding.JsonConverter
+  langs:
+  - csharp
+  - vb
+  name: Write(Utf8JsonWriter, Embedding, JsonSerializerOptions)
+  nameWithType: Embedding.JsonConverter.Write(Utf8JsonWriter, Embedding, JsonSerializerOptions)
+  fullName: FoundationaLLM.Common.Models.Vectorization.Embedding.JsonConverter.Write(System.Text.Json.Utf8JsonWriter, FoundationaLLM.Common.Models.Vectorization.Embedding, System.Text.Json.JsonSerializerOptions)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Common/Models/Vectorization/Embedding.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: Write
+    path: ../src/dotnet/Common/Models/Vectorization/Embedding.cs
+    startLine: 95
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.Vectorization
+  summary: Writes a specified value as JSON.
+  example: []
+  syntax:
+    content: public override void Write(Utf8JsonWriter writer, Embedding value, JsonSerializerOptions options)
+    parameters:
+    - id: writer
+      type: System.Text.Json.Utf8JsonWriter
+      description: The writer to write to.
+    - id: value
+      type: FoundationaLLM.Common.Models.Vectorization.Embedding
+      description: The value to convert to JSON.
+    - id: options
+      type: System.Text.Json.JsonSerializerOptions
+      description: An object that specifies serialization options to use.
+    content.vb: Public Overrides Sub Write(writer As Utf8JsonWriter, value As Embedding, options As JsonSerializerOptions)
+  overridden: System.Text.Json.Serialization.JsonConverter{FoundationaLLM.Common.Models.Vectorization.Embedding}.Write(System.Text.Json.Utf8JsonWriter,FoundationaLLM.Common.Models.Vectorization.Embedding,System.Text.Json.JsonSerializerOptions)
+  overload: FoundationaLLM.Common.Models.Vectorization.Embedding.JsonConverter.Write*
+references:
+- uid: FoundationaLLM.Common.Models.Vectorization.Embedding
+  commentId: T:FoundationaLLM.Common.Models.Vectorization.Embedding
+  parent: FoundationaLLM.Common.Models.Vectorization
+  href: FoundationaLLM.Common.Models.Vectorization.Embedding.html
+  name: Embedding
+  nameWithType: Embedding
+  fullName: FoundationaLLM.Common.Models.Vectorization.Embedding
+- uid: FoundationaLLM.Common.Models.Vectorization
+  commentId: N:FoundationaLLM.Common.Models.Vectorization
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.Vectorization
+  nameWithType: FoundationaLLM.Common.Models.Vectorization
+  fullName: FoundationaLLM.Common.Models.Vectorization
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Vectorization
+    name: Vectorization
+    href: FoundationaLLM.Common.Models.Vectorization.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Vectorization
+    name: Vectorization
+    href: FoundationaLLM.Common.Models.Vectorization.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Text.Json.Serialization.JsonConverter
+  commentId: T:System.Text.Json.Serialization.JsonConverter
+  parent: System.Text.Json.Serialization
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.text.json.serialization.jsonconverter
+  name: JsonConverter
+  nameWithType: JsonConverter
+  fullName: System.Text.Json.Serialization.JsonConverter
+- uid: System.Text.Json.Serialization.JsonConverter{FoundationaLLM.Common.Models.Vectorization.Embedding}
+  commentId: T:System.Text.Json.Serialization.JsonConverter{FoundationaLLM.Common.Models.Vectorization.Embedding}
+  parent: System.Text.Json.Serialization
+  definition: System.Text.Json.Serialization.JsonConverter`1
+  href: https://learn.microsoft.com/dotnet/api/system.text.json.serialization.jsonconverter-1
+  name: JsonConverter<Embedding>
+  nameWithType: JsonConverter<Embedding>
+  fullName: System.Text.Json.Serialization.JsonConverter<FoundationaLLM.Common.Models.Vectorization.Embedding>
+  nameWithType.vb: JsonConverter(Of Embedding)
+  fullName.vb: System.Text.Json.Serialization.JsonConverter(Of FoundationaLLM.Common.Models.Vectorization.Embedding)
+  name.vb: JsonConverter(Of Embedding)
+  spec.csharp:
+  - uid: System.Text.Json.Serialization.JsonConverter`1
+    name: JsonConverter
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.text.json.serialization.jsonconverter-1
+  - name: <
+  - uid: FoundationaLLM.Common.Models.Vectorization.Embedding
+    name: Embedding
+    href: FoundationaLLM.Common.Models.Vectorization.Embedding.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Text.Json.Serialization.JsonConverter`1
+    name: JsonConverter
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.text.json.serialization.jsonconverter-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FoundationaLLM.Common.Models.Vectorization.Embedding
+    name: Embedding
+    href: FoundationaLLM.Common.Models.Vectorization.Embedding.html
+  - name: )
+- uid: System.Text.Json.Serialization.JsonConverter{FoundationaLLM.Common.Models.Vectorization.Embedding}.CanConvert(System.Type)
+  commentId: M:System.Text.Json.Serialization.JsonConverter{FoundationaLLM.Common.Models.Vectorization.Embedding}.CanConvert(System.Type)
+  parent: System.Text.Json.Serialization.JsonConverter{FoundationaLLM.Common.Models.Vectorization.Embedding}
+  definition: System.Text.Json.Serialization.JsonConverter`1.CanConvert(System.Type)
+  href: https://learn.microsoft.com/dotnet/api/system.text.json.serialization.jsonconverter-1.canconvert
+  name: CanConvert(Type)
+  nameWithType: JsonConverter<Embedding>.CanConvert(Type)
+  fullName: System.Text.Json.Serialization.JsonConverter<FoundationaLLM.Common.Models.Vectorization.Embedding>.CanConvert(System.Type)
+  nameWithType.vb: JsonConverter(Of Embedding).CanConvert(Type)
+  fullName.vb: System.Text.Json.Serialization.JsonConverter(Of FoundationaLLM.Common.Models.Vectorization.Embedding).CanConvert(System.Type)
+  spec.csharp:
+  - uid: System.Text.Json.Serialization.JsonConverter{FoundationaLLM.Common.Models.Vectorization.Embedding}.CanConvert(System.Type)
+    name: CanConvert
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.text.json.serialization.jsonconverter-1.canconvert
+  - name: (
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: )
+  spec.vb:
+  - uid: System.Text.Json.Serialization.JsonConverter{FoundationaLLM.Common.Models.Vectorization.Embedding}.CanConvert(System.Type)
+    name: CanConvert
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.text.json.serialization.jsonconverter-1.canconvert
+  - name: (
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: )
+- uid: System.Text.Json.Serialization.JsonConverter{FoundationaLLM.Common.Models.Vectorization.Embedding}.ReadAsPropertyName(System.Text.Json.Utf8JsonReader@,System.Type,System.Text.Json.JsonSerializerOptions)
+  commentId: M:System.Text.Json.Serialization.JsonConverter{FoundationaLLM.Common.Models.Vectorization.Embedding}.ReadAsPropertyName(System.Text.Json.Utf8JsonReader@,System.Type,System.Text.Json.JsonSerializerOptions)
+  parent: System.Text.Json.Serialization.JsonConverter{FoundationaLLM.Common.Models.Vectorization.Embedding}
+  definition: System.Text.Json.Serialization.JsonConverter`1.ReadAsPropertyName(System.Text.Json.Utf8JsonReader@,System.Type,System.Text.Json.JsonSerializerOptions)
+  href: https://learn.microsoft.com/dotnet/api/system.text.json.serialization.jsonconverter-1.readaspropertyname
+  name: ReadAsPropertyName(ref Utf8JsonReader, Type, JsonSerializerOptions)
+  nameWithType: JsonConverter<Embedding>.ReadAsPropertyName(ref Utf8JsonReader, Type, JsonSerializerOptions)
+  fullName: System.Text.Json.Serialization.JsonConverter<FoundationaLLM.Common.Models.Vectorization.Embedding>.ReadAsPropertyName(ref System.Text.Json.Utf8JsonReader, System.Type, System.Text.Json.JsonSerializerOptions)
+  nameWithType.vb: JsonConverter(Of Embedding).ReadAsPropertyName(Utf8JsonReader, Type, JsonSerializerOptions)
+  fullName.vb: System.Text.Json.Serialization.JsonConverter(Of FoundationaLLM.Common.Models.Vectorization.Embedding).ReadAsPropertyName(System.Text.Json.Utf8JsonReader, System.Type, System.Text.Json.JsonSerializerOptions)
+  name.vb: ReadAsPropertyName(Utf8JsonReader, Type, JsonSerializerOptions)
+  spec.csharp:
+  - uid: System.Text.Json.Serialization.JsonConverter{FoundationaLLM.Common.Models.Vectorization.Embedding}.ReadAsPropertyName(System.Text.Json.Utf8JsonReader@,System.Type,System.Text.Json.JsonSerializerOptions)
+    name: ReadAsPropertyName
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.text.json.serialization.jsonconverter-1.readaspropertyname
+  - name: (
+  - name: ref
+  - name: " "
+  - uid: System.Text.Json.Utf8JsonReader
+    name: Utf8JsonReader
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.text.json.utf8jsonreader
+  - name: ','
+  - name: " "
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: ','
+  - name: " "
+  - uid: System.Text.Json.JsonSerializerOptions
+    name: JsonSerializerOptions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.text.json.jsonserializeroptions
+  - name: )
+  spec.vb:
+  - uid: System.Text.Json.Serialization.JsonConverter{FoundationaLLM.Common.Models.Vectorization.Embedding}.ReadAsPropertyName(System.Text.Json.Utf8JsonReader@,System.Type,System.Text.Json.JsonSerializerOptions)
+    name: ReadAsPropertyName
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.text.json.serialization.jsonconverter-1.readaspropertyname
+  - name: (
+  - uid: System.Text.Json.Utf8JsonReader
+    name: Utf8JsonReader
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.text.json.utf8jsonreader
+  - name: ','
+  - name: " "
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: ','
+  - name: " "
+  - uid: System.Text.Json.JsonSerializerOptions
+    name: JsonSerializerOptions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.text.json.jsonserializeroptions
+  - name: )
+- uid: System.Text.Json.Serialization.JsonConverter{FoundationaLLM.Common.Models.Vectorization.Embedding}.WriteAsPropertyName(System.Text.Json.Utf8JsonWriter,FoundationaLLM.Common.Models.Vectorization.Embedding,System.Text.Json.JsonSerializerOptions)
+  commentId: M:System.Text.Json.Serialization.JsonConverter{FoundationaLLM.Common.Models.Vectorization.Embedding}.WriteAsPropertyName(System.Text.Json.Utf8JsonWriter,FoundationaLLM.Common.Models.Vectorization.Embedding,System.Text.Json.JsonSerializerOptions)
+  parent: System.Text.Json.Serialization.JsonConverter{FoundationaLLM.Common.Models.Vectorization.Embedding}
+  definition: System.Text.Json.Serialization.JsonConverter`1.WriteAsPropertyName(System.Text.Json.Utf8JsonWriter,`0,System.Text.Json.JsonSerializerOptions)
+  href: https://learn.microsoft.com/dotnet/api/system.text.json.serialization.jsonconverter-1.writeaspropertyname
+  name: WriteAsPropertyName(Utf8JsonWriter, Embedding, JsonSerializerOptions)
+  nameWithType: JsonConverter<Embedding>.WriteAsPropertyName(Utf8JsonWriter, Embedding, JsonSerializerOptions)
+  fullName: System.Text.Json.Serialization.JsonConverter<FoundationaLLM.Common.Models.Vectorization.Embedding>.WriteAsPropertyName(System.Text.Json.Utf8JsonWriter, FoundationaLLM.Common.Models.Vectorization.Embedding, System.Text.Json.JsonSerializerOptions)
+  nameWithType.vb: JsonConverter(Of Embedding).WriteAsPropertyName(Utf8JsonWriter, Embedding, JsonSerializerOptions)
+  fullName.vb: System.Text.Json.Serialization.JsonConverter(Of FoundationaLLM.Common.Models.Vectorization.Embedding).WriteAsPropertyName(System.Text.Json.Utf8JsonWriter, FoundationaLLM.Common.Models.Vectorization.Embedding, System.Text.Json.JsonSerializerOptions)
+  spec.csharp:
+  - uid: System.Text.Json.Serialization.JsonConverter{FoundationaLLM.Common.Models.Vectorization.Embedding}.WriteAsPropertyName(System.Text.Json.Utf8JsonWriter,FoundationaLLM.Common.Models.Vectorization.Embedding,System.Text.Json.JsonSerializerOptions)
+    name: WriteAsPropertyName
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.text.json.serialization.jsonconverter-1.writeaspropertyname
+  - name: (
+  - uid: System.Text.Json.Utf8JsonWriter
+    name: Utf8JsonWriter
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.text.json.utf8jsonwriter
+  - name: ','
+  - name: " "
+  - uid: FoundationaLLM.Common.Models.Vectorization.Embedding
+    name: Embedding
+    href: FoundationaLLM.Common.Models.Vectorization.Embedding.html
+  - name: ','
+  - name: " "
+  - uid: System.Text.Json.JsonSerializerOptions
+    name: JsonSerializerOptions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.text.json.jsonserializeroptions
+  - name: )
+  spec.vb:
+  - uid: System.Text.Json.Serialization.JsonConverter{FoundationaLLM.Common.Models.Vectorization.Embedding}.WriteAsPropertyName(System.Text.Json.Utf8JsonWriter,FoundationaLLM.Common.Models.Vectorization.Embedding,System.Text.Json.JsonSerializerOptions)
+    name: WriteAsPropertyName
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.text.json.serialization.jsonconverter-1.writeaspropertyname
+  - name: (
+  - uid: System.Text.Json.Utf8JsonWriter
+    name: Utf8JsonWriter
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.text.json.utf8jsonwriter
+  - name: ','
+  - name: " "
+  - uid: FoundationaLLM.Common.Models.Vectorization.Embedding
+    name: Embedding
+    href: FoundationaLLM.Common.Models.Vectorization.Embedding.html
+  - name: ','
+  - name: " "
+  - uid: System.Text.Json.JsonSerializerOptions
+    name: JsonSerializerOptions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.text.json.jsonserializeroptions
+  - name: )
+- uid: System.Text.Json.Serialization.JsonConverter{FoundationaLLM.Common.Models.Vectorization.Embedding}.HandleNull
+  commentId: P:System.Text.Json.Serialization.JsonConverter{FoundationaLLM.Common.Models.Vectorization.Embedding}.HandleNull
+  parent: System.Text.Json.Serialization.JsonConverter{FoundationaLLM.Common.Models.Vectorization.Embedding}
+  definition: System.Text.Json.Serialization.JsonConverter`1.HandleNull
+  href: https://learn.microsoft.com/dotnet/api/system.text.json.serialization.jsonconverter-1.handlenull
+  name: HandleNull
+  nameWithType: JsonConverter<Embedding>.HandleNull
+  fullName: System.Text.Json.Serialization.JsonConverter<FoundationaLLM.Common.Models.Vectorization.Embedding>.HandleNull
+  nameWithType.vb: JsonConverter(Of Embedding).HandleNull
+  fullName.vb: System.Text.Json.Serialization.JsonConverter(Of FoundationaLLM.Common.Models.Vectorization.Embedding).HandleNull
+- uid: System.Text.Json.Serialization.JsonConverter{FoundationaLLM.Common.Models.Vectorization.Embedding}.Type
+  commentId: P:System.Text.Json.Serialization.JsonConverter{FoundationaLLM.Common.Models.Vectorization.Embedding}.Type
+  parent: System.Text.Json.Serialization.JsonConverter{FoundationaLLM.Common.Models.Vectorization.Embedding}
+  definition: System.Text.Json.Serialization.JsonConverter`1.Type
+  href: https://learn.microsoft.com/dotnet/api/system.text.json.serialization.jsonconverter-1.type
+  name: Type
+  nameWithType: JsonConverter<Embedding>.Type
+  fullName: System.Text.Json.Serialization.JsonConverter<FoundationaLLM.Common.Models.Vectorization.Embedding>.Type
+  nameWithType.vb: JsonConverter(Of Embedding).Type
+  fullName.vb: System.Text.Json.Serialization.JsonConverter(Of FoundationaLLM.Common.Models.Vectorization.Embedding).Type
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  parent: FoundationaLLM.Core.Utils.ObjectExtensions
+  definition: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.Text.Json.Serialization
+  commentId: N:System.Text.Json.Serialization
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Text.Json.Serialization
+  nameWithType: System.Text.Json.Serialization
+  fullName: System.Text.Json.Serialization
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Text
+    name: Text
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.text
+  - name: .
+  - uid: System.Text.Json
+    name: Json
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.text.json
+  - name: .
+  - uid: System.Text.Json.Serialization
+    name: Serialization
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.text.json.serialization
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Text
+    name: Text
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.text
+  - name: .
+  - uid: System.Text.Json
+    name: Json
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.text.json
+  - name: .
+  - uid: System.Text.Json.Serialization
+    name: Serialization
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.text.json.serialization
+- uid: System.Text.Json.Serialization.JsonConverter`1
+  commentId: T:System.Text.Json.Serialization.JsonConverter`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.text.json.serialization.jsonconverter-1
+  name: JsonConverter<T>
+  nameWithType: JsonConverter<T>
+  fullName: System.Text.Json.Serialization.JsonConverter<T>
+  nameWithType.vb: JsonConverter(Of T)
+  fullName.vb: System.Text.Json.Serialization.JsonConverter(Of T)
+  name.vb: JsonConverter(Of T)
+  spec.csharp:
+  - uid: System.Text.Json.Serialization.JsonConverter`1
+    name: JsonConverter
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.text.json.serialization.jsonconverter-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Text.Json.Serialization.JsonConverter`1
+    name: JsonConverter
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.text.json.serialization.jsonconverter-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Text.Json.Serialization.JsonConverter`1.CanConvert(System.Type)
+  commentId: M:System.Text.Json.Serialization.JsonConverter`1.CanConvert(System.Type)
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.text.json.serialization.jsonconverter-1.canconvert
+  name: CanConvert(Type)
+  nameWithType: JsonConverter<T>.CanConvert(Type)
+  fullName: System.Text.Json.Serialization.JsonConverter<T>.CanConvert(System.Type)
+  nameWithType.vb: JsonConverter(Of T).CanConvert(Type)
+  fullName.vb: System.Text.Json.Serialization.JsonConverter(Of T).CanConvert(System.Type)
+  spec.csharp:
+  - uid: System.Text.Json.Serialization.JsonConverter`1.CanConvert(System.Type)
+    name: CanConvert
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.text.json.serialization.jsonconverter-1.canconvert
+  - name: (
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: )
+  spec.vb:
+  - uid: System.Text.Json.Serialization.JsonConverter`1.CanConvert(System.Type)
+    name: CanConvert
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.text.json.serialization.jsonconverter-1.canconvert
+  - name: (
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: )
+- uid: System.Text.Json.Serialization.JsonConverter`1.ReadAsPropertyName(System.Text.Json.Utf8JsonReader@,System.Type,System.Text.Json.JsonSerializerOptions)
+  commentId: M:System.Text.Json.Serialization.JsonConverter`1.ReadAsPropertyName(System.Text.Json.Utf8JsonReader@,System.Type,System.Text.Json.JsonSerializerOptions)
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.text.json.serialization.jsonconverter-1.readaspropertyname
+  name: ReadAsPropertyName(ref Utf8JsonReader, Type, JsonSerializerOptions)
+  nameWithType: JsonConverter<T>.ReadAsPropertyName(ref Utf8JsonReader, Type, JsonSerializerOptions)
+  fullName: System.Text.Json.Serialization.JsonConverter<T>.ReadAsPropertyName(ref System.Text.Json.Utf8JsonReader, System.Type, System.Text.Json.JsonSerializerOptions)
+  nameWithType.vb: JsonConverter(Of T).ReadAsPropertyName(Utf8JsonReader, Type, JsonSerializerOptions)
+  fullName.vb: System.Text.Json.Serialization.JsonConverter(Of T).ReadAsPropertyName(System.Text.Json.Utf8JsonReader, System.Type, System.Text.Json.JsonSerializerOptions)
+  name.vb: ReadAsPropertyName(Utf8JsonReader, Type, JsonSerializerOptions)
+  spec.csharp:
+  - uid: System.Text.Json.Serialization.JsonConverter`1.ReadAsPropertyName(System.Text.Json.Utf8JsonReader@,System.Type,System.Text.Json.JsonSerializerOptions)
+    name: ReadAsPropertyName
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.text.json.serialization.jsonconverter-1.readaspropertyname
+  - name: (
+  - name: ref
+  - name: " "
+  - uid: System.Text.Json.Utf8JsonReader
+    name: Utf8JsonReader
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.text.json.utf8jsonreader
+  - name: ','
+  - name: " "
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: ','
+  - name: " "
+  - uid: System.Text.Json.JsonSerializerOptions
+    name: JsonSerializerOptions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.text.json.jsonserializeroptions
+  - name: )
+  spec.vb:
+  - uid: System.Text.Json.Serialization.JsonConverter`1.ReadAsPropertyName(System.Text.Json.Utf8JsonReader@,System.Type,System.Text.Json.JsonSerializerOptions)
+    name: ReadAsPropertyName
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.text.json.serialization.jsonconverter-1.readaspropertyname
+  - name: (
+  - uid: System.Text.Json.Utf8JsonReader
+    name: Utf8JsonReader
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.text.json.utf8jsonreader
+  - name: ','
+  - name: " "
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: ','
+  - name: " "
+  - uid: System.Text.Json.JsonSerializerOptions
+    name: JsonSerializerOptions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.text.json.jsonserializeroptions
+  - name: )
+- uid: System.Text.Json.Serialization.JsonConverter`1.WriteAsPropertyName(System.Text.Json.Utf8JsonWriter,`0,System.Text.Json.JsonSerializerOptions)
+  commentId: M:System.Text.Json.Serialization.JsonConverter`1.WriteAsPropertyName(System.Text.Json.Utf8JsonWriter,`0,System.Text.Json.JsonSerializerOptions)
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.text.json.serialization.jsonconverter-1.writeaspropertyname
+  name: WriteAsPropertyName(Utf8JsonWriter, T, JsonSerializerOptions)
+  nameWithType: JsonConverter<T>.WriteAsPropertyName(Utf8JsonWriter, T, JsonSerializerOptions)
+  fullName: System.Text.Json.Serialization.JsonConverter<T>.WriteAsPropertyName(System.Text.Json.Utf8JsonWriter, T, System.Text.Json.JsonSerializerOptions)
+  nameWithType.vb: JsonConverter(Of T).WriteAsPropertyName(Utf8JsonWriter, T, JsonSerializerOptions)
+  fullName.vb: System.Text.Json.Serialization.JsonConverter(Of T).WriteAsPropertyName(System.Text.Json.Utf8JsonWriter, T, System.Text.Json.JsonSerializerOptions)
+  spec.csharp:
+  - uid: System.Text.Json.Serialization.JsonConverter`1.WriteAsPropertyName(System.Text.Json.Utf8JsonWriter,`0,System.Text.Json.JsonSerializerOptions)
+    name: WriteAsPropertyName
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.text.json.serialization.jsonconverter-1.writeaspropertyname
+  - name: (
+  - uid: System.Text.Json.Utf8JsonWriter
+    name: Utf8JsonWriter
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.text.json.utf8jsonwriter
+  - name: ','
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Text.Json.JsonSerializerOptions
+    name: JsonSerializerOptions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.text.json.jsonserializeroptions
+  - name: )
+  spec.vb:
+  - uid: System.Text.Json.Serialization.JsonConverter`1.WriteAsPropertyName(System.Text.Json.Utf8JsonWriter,`0,System.Text.Json.JsonSerializerOptions)
+    name: WriteAsPropertyName
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.text.json.serialization.jsonconverter-1.writeaspropertyname
+  - name: (
+  - uid: System.Text.Json.Utf8JsonWriter
+    name: Utf8JsonWriter
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.text.json.utf8jsonwriter
+  - name: ','
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Text.Json.JsonSerializerOptions
+    name: JsonSerializerOptions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.text.json.jsonserializeroptions
+  - name: )
+- uid: System.Text.Json.Serialization.JsonConverter`1.HandleNull
+  commentId: P:System.Text.Json.Serialization.JsonConverter`1.HandleNull
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.text.json.serialization.jsonconverter-1.handlenull
+  name: HandleNull
+  nameWithType: JsonConverter<T>.HandleNull
+  fullName: System.Text.Json.Serialization.JsonConverter<T>.HandleNull
+  nameWithType.vb: JsonConverter(Of T).HandleNull
+  fullName.vb: System.Text.Json.Serialization.JsonConverter(Of T).HandleNull
+- uid: System.Text.Json.Serialization.JsonConverter`1.Type
+  commentId: P:System.Text.Json.Serialization.JsonConverter`1.Type
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.text.json.serialization.jsonconverter-1.type
+  name: Type
+  nameWithType: JsonConverter<T>.Type
+  fullName: System.Text.Json.Serialization.JsonConverter<T>.Type
+  nameWithType.vb: JsonConverter(Of T).Type
+  fullName.vb: System.Text.Json.Serialization.JsonConverter(Of T).Type
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  isExternal: true
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions
+  commentId: T:FoundationaLLM.Core.Utils.ObjectExtensions
+  parent: FoundationaLLM.Core.Utils
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html
+  name: ObjectExtensions
+  nameWithType: ObjectExtensions
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions
+- uid: FoundationaLLM.Core.Utils
+  commentId: N:FoundationaLLM.Core.Utils
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Core.Utils
+  nameWithType: FoundationaLLM.Core.Utils
+  fullName: FoundationaLLM.Core.Utils
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+- uid: System.Text.Json.Serialization.JsonConverter{FoundationaLLM.Common.Models.Vectorization.Embedding}.Read(System.Text.Json.Utf8JsonReader@,System.Type,System.Text.Json.JsonSerializerOptions)
+  commentId: M:System.Text.Json.Serialization.JsonConverter{FoundationaLLM.Common.Models.Vectorization.Embedding}.Read(System.Text.Json.Utf8JsonReader@,System.Type,System.Text.Json.JsonSerializerOptions)
+  parent: System.Text.Json.Serialization.JsonConverter{FoundationaLLM.Common.Models.Vectorization.Embedding}
+  definition: System.Text.Json.Serialization.JsonConverter`1.Read(System.Text.Json.Utf8JsonReader@,System.Type,System.Text.Json.JsonSerializerOptions)
+  href: https://learn.microsoft.com/dotnet/api/system.text.json.serialization.jsonconverter-1.read
+  name: Read(ref Utf8JsonReader, Type, JsonSerializerOptions)
+  nameWithType: JsonConverter<Embedding>.Read(ref Utf8JsonReader, Type, JsonSerializerOptions)
+  fullName: System.Text.Json.Serialization.JsonConverter<FoundationaLLM.Common.Models.Vectorization.Embedding>.Read(ref System.Text.Json.Utf8JsonReader, System.Type, System.Text.Json.JsonSerializerOptions)
+  nameWithType.vb: JsonConverter(Of Embedding).Read(Utf8JsonReader, Type, JsonSerializerOptions)
+  fullName.vb: System.Text.Json.Serialization.JsonConverter(Of FoundationaLLM.Common.Models.Vectorization.Embedding).Read(System.Text.Json.Utf8JsonReader, System.Type, System.Text.Json.JsonSerializerOptions)
+  name.vb: Read(Utf8JsonReader, Type, JsonSerializerOptions)
+  spec.csharp:
+  - uid: System.Text.Json.Serialization.JsonConverter{FoundationaLLM.Common.Models.Vectorization.Embedding}.Read(System.Text.Json.Utf8JsonReader@,System.Type,System.Text.Json.JsonSerializerOptions)
+    name: Read
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.text.json.serialization.jsonconverter-1.read
+  - name: (
+  - name: ref
+  - name: " "
+  - uid: System.Text.Json.Utf8JsonReader
+    name: Utf8JsonReader
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.text.json.utf8jsonreader
+  - name: ','
+  - name: " "
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: ','
+  - name: " "
+  - uid: System.Text.Json.JsonSerializerOptions
+    name: JsonSerializerOptions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.text.json.jsonserializeroptions
+  - name: )
+  spec.vb:
+  - uid: System.Text.Json.Serialization.JsonConverter{FoundationaLLM.Common.Models.Vectorization.Embedding}.Read(System.Text.Json.Utf8JsonReader@,System.Type,System.Text.Json.JsonSerializerOptions)
+    name: Read
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.text.json.serialization.jsonconverter-1.read
+  - name: (
+  - uid: System.Text.Json.Utf8JsonReader
+    name: Utf8JsonReader
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.text.json.utf8jsonreader
+  - name: ','
+  - name: " "
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: ','
+  - name: " "
+  - uid: System.Text.Json.JsonSerializerOptions
+    name: JsonSerializerOptions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.text.json.jsonserializeroptions
+  - name: )
+- uid: FoundationaLLM.Common.Models.Vectorization.Embedding.JsonConverter.Read*
+  commentId: Overload:FoundationaLLM.Common.Models.Vectorization.Embedding.JsonConverter.Read
+  href: FoundationaLLM.Common.Models.Vectorization.Embedding.JsonConverter.html#FoundationaLLM_Common_Models_Vectorization_Embedding_JsonConverter_Read_System_Text_Json_Utf8JsonReader__System_Type_System_Text_Json_JsonSerializerOptions_
+  name: Read
+  nameWithType: Embedding.JsonConverter.Read
+  fullName: FoundationaLLM.Common.Models.Vectorization.Embedding.JsonConverter.Read
+- uid: System.Text.Json.Utf8JsonReader
+  commentId: T:System.Text.Json.Utf8JsonReader
+  parent: System.Text.Json
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.text.json.utf8jsonreader
+  name: Utf8JsonReader
+  nameWithType: Utf8JsonReader
+  fullName: System.Text.Json.Utf8JsonReader
+- uid: System.Type
+  commentId: T:System.Type
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.type
+  name: Type
+  nameWithType: Type
+  fullName: System.Type
+- uid: System.Text.Json.JsonSerializerOptions
+  commentId: T:System.Text.Json.JsonSerializerOptions
+  parent: System.Text.Json
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.text.json.jsonserializeroptions
+  name: JsonSerializerOptions
+  nameWithType: JsonSerializerOptions
+  fullName: System.Text.Json.JsonSerializerOptions
+- uid: System.Text.Json.Serialization.JsonConverter`1.Read(System.Text.Json.Utf8JsonReader@,System.Type,System.Text.Json.JsonSerializerOptions)
+  commentId: M:System.Text.Json.Serialization.JsonConverter`1.Read(System.Text.Json.Utf8JsonReader@,System.Type,System.Text.Json.JsonSerializerOptions)
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.text.json.serialization.jsonconverter-1.read
+  name: Read(ref Utf8JsonReader, Type, JsonSerializerOptions)
+  nameWithType: JsonConverter<T>.Read(ref Utf8JsonReader, Type, JsonSerializerOptions)
+  fullName: System.Text.Json.Serialization.JsonConverter<T>.Read(ref System.Text.Json.Utf8JsonReader, System.Type, System.Text.Json.JsonSerializerOptions)
+  nameWithType.vb: JsonConverter(Of T).Read(Utf8JsonReader, Type, JsonSerializerOptions)
+  fullName.vb: System.Text.Json.Serialization.JsonConverter(Of T).Read(System.Text.Json.Utf8JsonReader, System.Type, System.Text.Json.JsonSerializerOptions)
+  name.vb: Read(Utf8JsonReader, Type, JsonSerializerOptions)
+  spec.csharp:
+  - uid: System.Text.Json.Serialization.JsonConverter`1.Read(System.Text.Json.Utf8JsonReader@,System.Type,System.Text.Json.JsonSerializerOptions)
+    name: Read
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.text.json.serialization.jsonconverter-1.read
+  - name: (
+  - name: ref
+  - name: " "
+  - uid: System.Text.Json.Utf8JsonReader
+    name: Utf8JsonReader
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.text.json.utf8jsonreader
+  - name: ','
+  - name: " "
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: ','
+  - name: " "
+  - uid: System.Text.Json.JsonSerializerOptions
+    name: JsonSerializerOptions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.text.json.jsonserializeroptions
+  - name: )
+  spec.vb:
+  - uid: System.Text.Json.Serialization.JsonConverter`1.Read(System.Text.Json.Utf8JsonReader@,System.Type,System.Text.Json.JsonSerializerOptions)
+    name: Read
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.text.json.serialization.jsonconverter-1.read
+  - name: (
+  - uid: System.Text.Json.Utf8JsonReader
+    name: Utf8JsonReader
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.text.json.utf8jsonreader
+  - name: ','
+  - name: " "
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: ','
+  - name: " "
+  - uid: System.Text.Json.JsonSerializerOptions
+    name: JsonSerializerOptions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.text.json.jsonserializeroptions
+  - name: )
+- uid: System.Text.Json
+  commentId: N:System.Text.Json
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Text.Json
+  nameWithType: System.Text.Json
+  fullName: System.Text.Json
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Text
+    name: Text
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.text
+  - name: .
+  - uid: System.Text.Json
+    name: Json
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.text.json
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Text
+    name: Text
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.text
+  - name: .
+  - uid: System.Text.Json
+    name: Json
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.text.json
+- uid: System.Text.Json.Serialization.JsonConverter{FoundationaLLM.Common.Models.Vectorization.Embedding}.Write(System.Text.Json.Utf8JsonWriter,FoundationaLLM.Common.Models.Vectorization.Embedding,System.Text.Json.JsonSerializerOptions)
+  commentId: M:System.Text.Json.Serialization.JsonConverter{FoundationaLLM.Common.Models.Vectorization.Embedding}.Write(System.Text.Json.Utf8JsonWriter,FoundationaLLM.Common.Models.Vectorization.Embedding,System.Text.Json.JsonSerializerOptions)
+  parent: System.Text.Json.Serialization.JsonConverter{FoundationaLLM.Common.Models.Vectorization.Embedding}
+  definition: System.Text.Json.Serialization.JsonConverter`1.Write(System.Text.Json.Utf8JsonWriter,`0,System.Text.Json.JsonSerializerOptions)
+  href: https://learn.microsoft.com/dotnet/api/system.text.json.serialization.jsonconverter-1.write
+  name: Write(Utf8JsonWriter, Embedding, JsonSerializerOptions)
+  nameWithType: JsonConverter<Embedding>.Write(Utf8JsonWriter, Embedding, JsonSerializerOptions)
+  fullName: System.Text.Json.Serialization.JsonConverter<FoundationaLLM.Common.Models.Vectorization.Embedding>.Write(System.Text.Json.Utf8JsonWriter, FoundationaLLM.Common.Models.Vectorization.Embedding, System.Text.Json.JsonSerializerOptions)
+  nameWithType.vb: JsonConverter(Of Embedding).Write(Utf8JsonWriter, Embedding, JsonSerializerOptions)
+  fullName.vb: System.Text.Json.Serialization.JsonConverter(Of FoundationaLLM.Common.Models.Vectorization.Embedding).Write(System.Text.Json.Utf8JsonWriter, FoundationaLLM.Common.Models.Vectorization.Embedding, System.Text.Json.JsonSerializerOptions)
+  spec.csharp:
+  - uid: System.Text.Json.Serialization.JsonConverter{FoundationaLLM.Common.Models.Vectorization.Embedding}.Write(System.Text.Json.Utf8JsonWriter,FoundationaLLM.Common.Models.Vectorization.Embedding,System.Text.Json.JsonSerializerOptions)
+    name: Write
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.text.json.serialization.jsonconverter-1.write
+  - name: (
+  - uid: System.Text.Json.Utf8JsonWriter
+    name: Utf8JsonWriter
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.text.json.utf8jsonwriter
+  - name: ','
+  - name: " "
+  - uid: FoundationaLLM.Common.Models.Vectorization.Embedding
+    name: Embedding
+    href: FoundationaLLM.Common.Models.Vectorization.Embedding.html
+  - name: ','
+  - name: " "
+  - uid: System.Text.Json.JsonSerializerOptions
+    name: JsonSerializerOptions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.text.json.jsonserializeroptions
+  - name: )
+  spec.vb:
+  - uid: System.Text.Json.Serialization.JsonConverter{FoundationaLLM.Common.Models.Vectorization.Embedding}.Write(System.Text.Json.Utf8JsonWriter,FoundationaLLM.Common.Models.Vectorization.Embedding,System.Text.Json.JsonSerializerOptions)
+    name: Write
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.text.json.serialization.jsonconverter-1.write
+  - name: (
+  - uid: System.Text.Json.Utf8JsonWriter
+    name: Utf8JsonWriter
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.text.json.utf8jsonwriter
+  - name: ','
+  - name: " "
+  - uid: FoundationaLLM.Common.Models.Vectorization.Embedding
+    name: Embedding
+    href: FoundationaLLM.Common.Models.Vectorization.Embedding.html
+  - name: ','
+  - name: " "
+  - uid: System.Text.Json.JsonSerializerOptions
+    name: JsonSerializerOptions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.text.json.jsonserializeroptions
+  - name: )
+- uid: FoundationaLLM.Common.Models.Vectorization.Embedding.JsonConverter.Write*
+  commentId: Overload:FoundationaLLM.Common.Models.Vectorization.Embedding.JsonConverter.Write
+  href: FoundationaLLM.Common.Models.Vectorization.Embedding.JsonConverter.html#FoundationaLLM_Common_Models_Vectorization_Embedding_JsonConverter_Write_System_Text_Json_Utf8JsonWriter_FoundationaLLM_Common_Models_Vectorization_Embedding_System_Text_Json_JsonSerializerOptions_
+  name: Write
+  nameWithType: Embedding.JsonConverter.Write
+  fullName: FoundationaLLM.Common.Models.Vectorization.Embedding.JsonConverter.Write
+- uid: System.Text.Json.Utf8JsonWriter
+  commentId: T:System.Text.Json.Utf8JsonWriter
+  parent: System.Text.Json
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.text.json.utf8jsonwriter
+  name: Utf8JsonWriter
+  nameWithType: Utf8JsonWriter
+  fullName: System.Text.Json.Utf8JsonWriter
+- uid: System.Text.Json.Serialization.JsonConverter`1.Write(System.Text.Json.Utf8JsonWriter,`0,System.Text.Json.JsonSerializerOptions)
+  commentId: M:System.Text.Json.Serialization.JsonConverter`1.Write(System.Text.Json.Utf8JsonWriter,`0,System.Text.Json.JsonSerializerOptions)
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.text.json.serialization.jsonconverter-1.write
+  name: Write(Utf8JsonWriter, T, JsonSerializerOptions)
+  nameWithType: JsonConverter<T>.Write(Utf8JsonWriter, T, JsonSerializerOptions)
+  fullName: System.Text.Json.Serialization.JsonConverter<T>.Write(System.Text.Json.Utf8JsonWriter, T, System.Text.Json.JsonSerializerOptions)
+  nameWithType.vb: JsonConverter(Of T).Write(Utf8JsonWriter, T, JsonSerializerOptions)
+  fullName.vb: System.Text.Json.Serialization.JsonConverter(Of T).Write(System.Text.Json.Utf8JsonWriter, T, System.Text.Json.JsonSerializerOptions)
+  spec.csharp:
+  - uid: System.Text.Json.Serialization.JsonConverter`1.Write(System.Text.Json.Utf8JsonWriter,`0,System.Text.Json.JsonSerializerOptions)
+    name: Write
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.text.json.serialization.jsonconverter-1.write
+  - name: (
+  - uid: System.Text.Json.Utf8JsonWriter
+    name: Utf8JsonWriter
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.text.json.utf8jsonwriter
+  - name: ','
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Text.Json.JsonSerializerOptions
+    name: JsonSerializerOptions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.text.json.jsonserializeroptions
+  - name: )
+  spec.vb:
+  - uid: System.Text.Json.Serialization.JsonConverter`1.Write(System.Text.Json.Utf8JsonWriter,`0,System.Text.Json.JsonSerializerOptions)
+    name: Write
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.text.json.serialization.jsonconverter-1.write
+  - name: (
+  - uid: System.Text.Json.Utf8JsonWriter
+    name: Utf8JsonWriter
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.text.json.utf8jsonwriter
+  - name: ','
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Text.Json.JsonSerializerOptions
+    name: JsonSerializerOptions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.text.json.jsonserializeroptions
+  - name: )

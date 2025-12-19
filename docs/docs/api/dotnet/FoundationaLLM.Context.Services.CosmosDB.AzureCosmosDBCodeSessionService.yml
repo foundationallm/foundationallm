@@ -1,0 +1,1237 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBCodeSessionService
+  commentId: T:FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBCodeSessionService
+  id: AzureCosmosDBCodeSessionService
+  parent: FoundationaLLM.Context.Services.CosmosDB
+  children:
+  - FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBCodeSessionService.#ctor(FoundationaLLM.Context.Interfaces.IAzureCosmosDBServiceBase,Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBCodeSessionService})
+  - FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBCodeSessionService.GetCodeSessionFileUploadRecord(System.String,System.String,System.String,System.String)
+  - FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBCodeSessionService.GetCodeSessionRecord(System.String,System.String,System.String)
+  - FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBCodeSessionService.UpsertCodeSessionFileUploadRecord(FoundationaLLM.Common.Models.Context.ContextCodeSessionFileUploadRecord)
+  - FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBCodeSessionService.UpsertCodeSessionRecord(FoundationaLLM.Common.Models.Context.ContextCodeSessionRecord)
+  langs:
+  - csharp
+  - vb
+  name: AzureCosmosDBCodeSessionService
+  nameWithType: AzureCosmosDBCodeSessionService
+  fullName: FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBCodeSessionService
+  type: Class
+  source:
+    remote:
+      path: src/dotnet/ContextEngine/Services/CosmosDB/AzureCosmosDBCodeSessionService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: AzureCosmosDBCodeSessionService
+    path: ../src/dotnet/ContextEngine/Services/CosmosDB/AzureCosmosDBCodeSessionService.cs
+    startLine: 14
+  assemblies:
+  - FoundationaLLM.ContextEngine
+  namespace: FoundationaLLM.Context.Services.CosmosDB
+  summary: Provides the implementation for the Azure Cosmos DB code session service.
+  example: []
+  syntax:
+    content: 'public class AzureCosmosDBCodeSessionService : IAzureCosmosDBCodeSessionService'
+    content.vb: Public Class AzureCosmosDBCodeSessionService Implements IAzureCosmosDBCodeSessionService
+  inheritance:
+  - System.Object
+  implements:
+  - FoundationaLLM.Context.Interfaces.IAzureCosmosDBCodeSessionService
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+  extensionMethods:
+  - System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+- uid: FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBCodeSessionService.#ctor(FoundationaLLM.Context.Interfaces.IAzureCosmosDBServiceBase,Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBCodeSessionService})
+  commentId: M:FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBCodeSessionService.#ctor(FoundationaLLM.Context.Interfaces.IAzureCosmosDBServiceBase,Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBCodeSessionService})
+  id: '#ctor(FoundationaLLM.Context.Interfaces.IAzureCosmosDBServiceBase,Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBCodeSessionService})'
+  parent: FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBCodeSessionService
+  langs:
+  - csharp
+  - vb
+  name: AzureCosmosDBCodeSessionService(IAzureCosmosDBServiceBase, ILogger<AzureCosmosDBCodeSessionService>)
+  nameWithType: AzureCosmosDBCodeSessionService.AzureCosmosDBCodeSessionService(IAzureCosmosDBServiceBase, ILogger<AzureCosmosDBCodeSessionService>)
+  fullName: FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBCodeSessionService.AzureCosmosDBCodeSessionService(FoundationaLLM.Context.Interfaces.IAzureCosmosDBServiceBase, Microsoft.Extensions.Logging.ILogger<FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBCodeSessionService>)
+  type: Constructor
+  source:
+    remote:
+      path: src/dotnet/ContextEngine/Services/CosmosDB/AzureCosmosDBCodeSessionService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: .ctor
+    path: ../src/dotnet/ContextEngine/Services/CosmosDB/AzureCosmosDBCodeSessionService.cs
+    startLine: 14
+  assemblies:
+  - FoundationaLLM.ContextEngine
+  namespace: FoundationaLLM.Context.Services.CosmosDB
+  summary: Provides the implementation for the Azure Cosmos DB code session service.
+  example: []
+  syntax:
+    content: public AzureCosmosDBCodeSessionService(IAzureCosmosDBServiceBase azureCosmosDBServiceBase, ILogger<AzureCosmosDBCodeSessionService> logger)
+    parameters:
+    - id: azureCosmosDBServiceBase
+      type: FoundationaLLM.Context.Interfaces.IAzureCosmosDBServiceBase
+      description: The Azure Cosmos DB service that provides core database services.
+    - id: logger
+      type: Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBCodeSessionService}
+      description: The <xref href="Microsoft.Extensions.Logging.ILogger" data-throw-if-not-resolved="false"></xref> used for logging.
+    content.vb: Public Sub New(azureCosmosDBServiceBase As IAzureCosmosDBServiceBase, logger As ILogger(Of AzureCosmosDBCodeSessionService))
+  overload: FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBCodeSessionService.#ctor*
+  nameWithType.vb: AzureCosmosDBCodeSessionService.New(IAzureCosmosDBServiceBase, ILogger(Of AzureCosmosDBCodeSessionService))
+  fullName.vb: FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBCodeSessionService.New(FoundationaLLM.Context.Interfaces.IAzureCosmosDBServiceBase, Microsoft.Extensions.Logging.ILogger(Of FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBCodeSessionService))
+  name.vb: New(IAzureCosmosDBServiceBase, ILogger(Of AzureCosmosDBCodeSessionService))
+- uid: FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBCodeSessionService.UpsertCodeSessionRecord(FoundationaLLM.Common.Models.Context.ContextCodeSessionRecord)
+  commentId: M:FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBCodeSessionService.UpsertCodeSessionRecord(FoundationaLLM.Common.Models.Context.ContextCodeSessionRecord)
+  id: UpsertCodeSessionRecord(FoundationaLLM.Common.Models.Context.ContextCodeSessionRecord)
+  parent: FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBCodeSessionService
+  langs:
+  - csharp
+  - vb
+  name: UpsertCodeSessionRecord(ContextCodeSessionRecord)
+  nameWithType: AzureCosmosDBCodeSessionService.UpsertCodeSessionRecord(ContextCodeSessionRecord)
+  fullName: FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBCodeSessionService.UpsertCodeSessionRecord(FoundationaLLM.Common.Models.Context.ContextCodeSessionRecord)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/ContextEngine/Services/CosmosDB/AzureCosmosDBCodeSessionService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: UpsertCodeSessionRecord
+    path: ../src/dotnet/ContextEngine/Services/CosmosDB/AzureCosmosDBCodeSessionService.cs
+    startLine: 24
+  assemblies:
+  - FoundationaLLM.ContextEngine
+  namespace: FoundationaLLM.Context.Services.CosmosDB
+  summary: Upserts a code session record in the Azure Cosmos DB.
+  example: []
+  syntax:
+    content: public Task UpsertCodeSessionRecord(ContextCodeSessionRecord codeSessionRecord)
+    parameters:
+    - id: codeSessionRecord
+      type: FoundationaLLM.Common.Models.Context.ContextCodeSessionRecord
+      description: The code session record to be upserted.
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Public Function UpsertCodeSessionRecord(codeSessionRecord As ContextCodeSessionRecord) As Task
+  overload: FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBCodeSessionService.UpsertCodeSessionRecord*
+  implements:
+  - FoundationaLLM.Context.Interfaces.IAzureCosmosDBCodeSessionService.UpsertCodeSessionRecord(FoundationaLLM.Common.Models.Context.ContextCodeSessionRecord)
+- uid: FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBCodeSessionService.UpsertCodeSessionFileUploadRecord(FoundationaLLM.Common.Models.Context.ContextCodeSessionFileUploadRecord)
+  commentId: M:FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBCodeSessionService.UpsertCodeSessionFileUploadRecord(FoundationaLLM.Common.Models.Context.ContextCodeSessionFileUploadRecord)
+  id: UpsertCodeSessionFileUploadRecord(FoundationaLLM.Common.Models.Context.ContextCodeSessionFileUploadRecord)
+  parent: FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBCodeSessionService
+  langs:
+  - csharp
+  - vb
+  name: UpsertCodeSessionFileUploadRecord(ContextCodeSessionFileUploadRecord)
+  nameWithType: AzureCosmosDBCodeSessionService.UpsertCodeSessionFileUploadRecord(ContextCodeSessionFileUploadRecord)
+  fullName: FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBCodeSessionService.UpsertCodeSessionFileUploadRecord(FoundationaLLM.Common.Models.Context.ContextCodeSessionFileUploadRecord)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/ContextEngine/Services/CosmosDB/AzureCosmosDBCodeSessionService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: UpsertCodeSessionFileUploadRecord
+    path: ../src/dotnet/ContextEngine/Services/CosmosDB/AzureCosmosDBCodeSessionService.cs
+    startLine: 30
+  assemblies:
+  - FoundationaLLM.ContextEngine
+  namespace: FoundationaLLM.Context.Services.CosmosDB
+  summary: Upserts a code session file upload record in the Azure Cosmos DB.
+  example: []
+  syntax:
+    content: public Task UpsertCodeSessionFileUploadRecord(ContextCodeSessionFileUploadRecord codeSessionFileUploadRecord)
+    parameters:
+    - id: codeSessionFileUploadRecord
+      type: FoundationaLLM.Common.Models.Context.ContextCodeSessionFileUploadRecord
+      description: The code session file upload record to be upserted.
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Public Function UpsertCodeSessionFileUploadRecord(codeSessionFileUploadRecord As ContextCodeSessionFileUploadRecord) As Task
+  overload: FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBCodeSessionService.UpsertCodeSessionFileUploadRecord*
+  implements:
+  - FoundationaLLM.Context.Interfaces.IAzureCosmosDBCodeSessionService.UpsertCodeSessionFileUploadRecord(FoundationaLLM.Common.Models.Context.ContextCodeSessionFileUploadRecord)
+- uid: FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBCodeSessionService.GetCodeSessionRecord(System.String,System.String,System.String)
+  commentId: M:FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBCodeSessionService.GetCodeSessionRecord(System.String,System.String,System.String)
+  id: GetCodeSessionRecord(System.String,System.String,System.String)
+  parent: FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBCodeSessionService
+  langs:
+  - csharp
+  - vb
+  name: GetCodeSessionRecord(string, string, string)
+  nameWithType: AzureCosmosDBCodeSessionService.GetCodeSessionRecord(string, string, string)
+  fullName: FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBCodeSessionService.GetCodeSessionRecord(string, string, string)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/ContextEngine/Services/CosmosDB/AzureCosmosDBCodeSessionService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: GetCodeSessionRecord
+    path: ../src/dotnet/ContextEngine/Services/CosmosDB/AzureCosmosDBCodeSessionService.cs
+    startLine: 36
+  assemblies:
+  - FoundationaLLM.ContextEngine
+  namespace: FoundationaLLM.Context.Services.CosmosDB
+  summary: Gets a code session record from the Azure Cosmos DB.
+  example: []
+  syntax:
+    content: public Task<ContextCodeSessionRecord?> GetCodeSessionRecord(string instanceId, string sessionId, string userPrincipalName)
+    parameters:
+    - id: instanceId
+      type: System.String
+      description: The FoundationaLLM instance identifier.
+    - id: sessionId
+      type: System.String
+      description: The identifier of the code session.
+    - id: userPrincipalName
+      type: System.String
+      description: The user principal name of the user associated with the code session.
+    return:
+      type: System.Threading.Tasks.Task{FoundationaLLM.Common.Models.Context.ContextCodeSessionRecord}
+      description: The requests code session record.
+    content.vb: Public Function GetCodeSessionRecord(instanceId As String, sessionId As String, userPrincipalName As String) As Task(Of ContextCodeSessionRecord)
+  overload: FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBCodeSessionService.GetCodeSessionRecord*
+  implements:
+  - FoundationaLLM.Context.Interfaces.IAzureCosmosDBCodeSessionService.GetCodeSessionRecord(System.String,System.String,System.String)
+  nameWithType.vb: AzureCosmosDBCodeSessionService.GetCodeSessionRecord(String, String, String)
+  fullName.vb: FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBCodeSessionService.GetCodeSessionRecord(String, String, String)
+  name.vb: GetCodeSessionRecord(String, String, String)
+- uid: FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBCodeSessionService.GetCodeSessionFileUploadRecord(System.String,System.String,System.String,System.String)
+  commentId: M:FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBCodeSessionService.GetCodeSessionFileUploadRecord(System.String,System.String,System.String,System.String)
+  id: GetCodeSessionFileUploadRecord(System.String,System.String,System.String,System.String)
+  parent: FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBCodeSessionService
+  langs:
+  - csharp
+  - vb
+  name: GetCodeSessionFileUploadRecord(string, string, string, string)
+  nameWithType: AzureCosmosDBCodeSessionService.GetCodeSessionFileUploadRecord(string, string, string, string)
+  fullName: FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBCodeSessionService.GetCodeSessionFileUploadRecord(string, string, string, string)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/ContextEngine/Services/CosmosDB/AzureCosmosDBCodeSessionService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: GetCodeSessionFileUploadRecord
+    path: ../src/dotnet/ContextEngine/Services/CosmosDB/AzureCosmosDBCodeSessionService.cs
+    startLine: 55
+  assemblies:
+  - FoundationaLLM.ContextEngine
+  namespace: FoundationaLLM.Context.Services.CosmosDB
+  summary: Gets a code session file upload record from the Azure Cosmos DB.
+  example: []
+  syntax:
+    content: public Task<ContextCodeSessionFileUploadRecord?> GetCodeSessionFileUploadRecord(string instanceId, string sessionId, string operationId, string userPrincipalName)
+    parameters:
+    - id: instanceId
+      type: System.String
+      description: The FoundationaLLM instance identifier.
+    - id: sessionId
+      type: System.String
+      description: The identifier of the code session.
+    - id: operationId
+      type: System.String
+      description: The identifier of the code session file upload record.
+    - id: userPrincipalName
+      type: System.String
+      description: The user principal name of the user associated with the code session file upload.
+    return:
+      type: System.Threading.Tasks.Task{FoundationaLLM.Common.Models.Context.ContextCodeSessionFileUploadRecord}
+      description: The requested code session file upload record.
+    content.vb: Public Function GetCodeSessionFileUploadRecord(instanceId As String, sessionId As String, operationId As String, userPrincipalName As String) As Task(Of ContextCodeSessionFileUploadRecord)
+  overload: FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBCodeSessionService.GetCodeSessionFileUploadRecord*
+  implements:
+  - FoundationaLLM.Context.Interfaces.IAzureCosmosDBCodeSessionService.GetCodeSessionFileUploadRecord(System.String,System.String,System.String,System.String)
+  nameWithType.vb: AzureCosmosDBCodeSessionService.GetCodeSessionFileUploadRecord(String, String, String, String)
+  fullName.vb: FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBCodeSessionService.GetCodeSessionFileUploadRecord(String, String, String, String)
+  name.vb: GetCodeSessionFileUploadRecord(String, String, String, String)
+references:
+- uid: Microsoft.Extensions.Logging.ILogger
+  commentId: T:Microsoft.Extensions.Logging.ILogger
+  parent: Microsoft.Extensions.Logging
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger
+  name: ILogger
+  nameWithType: ILogger
+  fullName: Microsoft.Extensions.Logging.ILogger
+- uid: FoundationaLLM.Context.Services.CosmosDB
+  commentId: N:FoundationaLLM.Context.Services.CosmosDB
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Context.Services.CosmosDB
+  nameWithType: FoundationaLLM.Context.Services.CosmosDB
+  fullName: FoundationaLLM.Context.Services.CosmosDB
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Context
+    name: Context
+    href: FoundationaLLM.Context.html
+  - name: .
+  - uid: FoundationaLLM.Context.Services
+    name: Services
+    href: FoundationaLLM.Context.Services.html
+  - name: .
+  - uid: FoundationaLLM.Context.Services.CosmosDB
+    name: CosmosDB
+    href: FoundationaLLM.Context.Services.CosmosDB.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Context
+    name: Context
+    href: FoundationaLLM.Context.html
+  - name: .
+  - uid: FoundationaLLM.Context.Services
+    name: Services
+    href: FoundationaLLM.Context.Services.html
+  - name: .
+  - uid: FoundationaLLM.Context.Services.CosmosDB
+    name: CosmosDB
+    href: FoundationaLLM.Context.Services.CosmosDB.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: FoundationaLLM.Context.Interfaces.IAzureCosmosDBCodeSessionService
+  commentId: T:FoundationaLLM.Context.Interfaces.IAzureCosmosDBCodeSessionService
+  parent: FoundationaLLM.Context.Interfaces
+  href: FoundationaLLM.Context.Interfaces.IAzureCosmosDBCodeSessionService.html
+  name: IAzureCosmosDBCodeSessionService
+  nameWithType: IAzureCosmosDBCodeSessionService
+  fullName: FoundationaLLM.Context.Interfaces.IAzureCosmosDBCodeSessionService
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  parent: FoundationaLLM.Core.Utils.ObjectExtensions
+  definition: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: Microsoft.Extensions.Logging
+  commentId: N:Microsoft.Extensions.Logging
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft
+  name: Microsoft.Extensions.Logging
+  nameWithType: Microsoft.Extensions.Logging
+  fullName: Microsoft.Extensions.Logging
+  spec.csharp:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Logging
+    name: Logging
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging
+  spec.vb:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Logging
+    name: Logging
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: FoundationaLLM.Context.Interfaces
+  commentId: N:FoundationaLLM.Context.Interfaces
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Context.Interfaces
+  nameWithType: FoundationaLLM.Context.Interfaces
+  fullName: FoundationaLLM.Context.Interfaces
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Context
+    name: Context
+    href: FoundationaLLM.Context.html
+  - name: .
+  - uid: FoundationaLLM.Context.Interfaces
+    name: Interfaces
+    href: FoundationaLLM.Context.Interfaces.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Context
+    name: Context
+    href: FoundationaLLM.Context.html
+  - name: .
+  - uid: FoundationaLLM.Context.Interfaces
+    name: Interfaces
+    href: FoundationaLLM.Context.Interfaces.html
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  isExternal: true
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions
+  commentId: T:FoundationaLLM.Core.Utils.ObjectExtensions
+  parent: FoundationaLLM.Core.Utils
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html
+  name: ObjectExtensions
+  nameWithType: ObjectExtensions
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions
+- uid: FoundationaLLM.Core.Utils
+  commentId: N:FoundationaLLM.Core.Utils
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Core.Utils
+  nameWithType: FoundationaLLM.Core.Utils
+  fullName: FoundationaLLM.Core.Utils
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+- uid: FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBCodeSessionService.#ctor*
+  commentId: Overload:FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBCodeSessionService.#ctor
+  href: FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBCodeSessionService.html#FoundationaLLM_Context_Services_CosmosDB_AzureCosmosDBCodeSessionService__ctor_FoundationaLLM_Context_Interfaces_IAzureCosmosDBServiceBase_Microsoft_Extensions_Logging_ILogger_FoundationaLLM_Context_Services_CosmosDB_AzureCosmosDBCodeSessionService__
+  name: AzureCosmosDBCodeSessionService
+  nameWithType: AzureCosmosDBCodeSessionService.AzureCosmosDBCodeSessionService
+  fullName: FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBCodeSessionService.AzureCosmosDBCodeSessionService
+  nameWithType.vb: AzureCosmosDBCodeSessionService.New
+  fullName.vb: FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBCodeSessionService.New
+  name.vb: New
+- uid: FoundationaLLM.Context.Interfaces.IAzureCosmosDBServiceBase
+  commentId: T:FoundationaLLM.Context.Interfaces.IAzureCosmosDBServiceBase
+  parent: FoundationaLLM.Context.Interfaces
+  href: FoundationaLLM.Context.Interfaces.IAzureCosmosDBServiceBase.html
+  name: IAzureCosmosDBServiceBase
+  nameWithType: IAzureCosmosDBServiceBase
+  fullName: FoundationaLLM.Context.Interfaces.IAzureCosmosDBServiceBase
+- uid: Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBCodeSessionService}
+  commentId: T:Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBCodeSessionService}
+  parent: Microsoft.Extensions.Logging
+  definition: Microsoft.Extensions.Logging.ILogger`1
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  name: ILogger<AzureCosmosDBCodeSessionService>
+  nameWithType: ILogger<AzureCosmosDBCodeSessionService>
+  fullName: Microsoft.Extensions.Logging.ILogger<FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBCodeSessionService>
+  nameWithType.vb: ILogger(Of AzureCosmosDBCodeSessionService)
+  fullName.vb: Microsoft.Extensions.Logging.ILogger(Of FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBCodeSessionService)
+  name.vb: ILogger(Of AzureCosmosDBCodeSessionService)
+  spec.csharp:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: <
+  - uid: FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBCodeSessionService
+    name: AzureCosmosDBCodeSessionService
+    href: FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBCodeSessionService.html
+  - name: '>'
+  spec.vb:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBCodeSessionService
+    name: AzureCosmosDBCodeSessionService
+    href: FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBCodeSessionService.html
+  - name: )
+- uid: Microsoft.Extensions.Logging.ILogger`1
+  commentId: T:Microsoft.Extensions.Logging.ILogger`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  name: ILogger<TCategoryName>
+  nameWithType: ILogger<TCategoryName>
+  fullName: Microsoft.Extensions.Logging.ILogger<TCategoryName>
+  nameWithType.vb: ILogger(Of TCategoryName)
+  fullName.vb: Microsoft.Extensions.Logging.ILogger(Of TCategoryName)
+  name.vb: ILogger(Of TCategoryName)
+  spec.csharp:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: <
+  - name: TCategoryName
+  - name: '>'
+  spec.vb:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TCategoryName
+  - name: )
+- uid: FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBCodeSessionService.UpsertCodeSessionRecord*
+  commentId: Overload:FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBCodeSessionService.UpsertCodeSessionRecord
+  href: FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBCodeSessionService.html#FoundationaLLM_Context_Services_CosmosDB_AzureCosmosDBCodeSessionService_UpsertCodeSessionRecord_FoundationaLLM_Common_Models_Context_ContextCodeSessionRecord_
+  name: UpsertCodeSessionRecord
+  nameWithType: AzureCosmosDBCodeSessionService.UpsertCodeSessionRecord
+  fullName: FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBCodeSessionService.UpsertCodeSessionRecord
+- uid: FoundationaLLM.Context.Interfaces.IAzureCosmosDBCodeSessionService.UpsertCodeSessionRecord(FoundationaLLM.Common.Models.Context.ContextCodeSessionRecord)
+  commentId: M:FoundationaLLM.Context.Interfaces.IAzureCosmosDBCodeSessionService.UpsertCodeSessionRecord(FoundationaLLM.Common.Models.Context.ContextCodeSessionRecord)
+  parent: FoundationaLLM.Context.Interfaces.IAzureCosmosDBCodeSessionService
+  href: FoundationaLLM.Context.Interfaces.IAzureCosmosDBCodeSessionService.html#FoundationaLLM_Context_Interfaces_IAzureCosmosDBCodeSessionService_UpsertCodeSessionRecord_FoundationaLLM_Common_Models_Context_ContextCodeSessionRecord_
+  name: UpsertCodeSessionRecord(ContextCodeSessionRecord)
+  nameWithType: IAzureCosmosDBCodeSessionService.UpsertCodeSessionRecord(ContextCodeSessionRecord)
+  fullName: FoundationaLLM.Context.Interfaces.IAzureCosmosDBCodeSessionService.UpsertCodeSessionRecord(FoundationaLLM.Common.Models.Context.ContextCodeSessionRecord)
+  spec.csharp:
+  - uid: FoundationaLLM.Context.Interfaces.IAzureCosmosDBCodeSessionService.UpsertCodeSessionRecord(FoundationaLLM.Common.Models.Context.ContextCodeSessionRecord)
+    name: UpsertCodeSessionRecord
+    href: FoundationaLLM.Context.Interfaces.IAzureCosmosDBCodeSessionService.html#FoundationaLLM_Context_Interfaces_IAzureCosmosDBCodeSessionService_UpsertCodeSessionRecord_FoundationaLLM_Common_Models_Context_ContextCodeSessionRecord_
+  - name: (
+  - uid: FoundationaLLM.Common.Models.Context.ContextCodeSessionRecord
+    name: ContextCodeSessionRecord
+    href: FoundationaLLM.Common.Models.Context.ContextCodeSessionRecord.html
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Context.Interfaces.IAzureCosmosDBCodeSessionService.UpsertCodeSessionRecord(FoundationaLLM.Common.Models.Context.ContextCodeSessionRecord)
+    name: UpsertCodeSessionRecord
+    href: FoundationaLLM.Context.Interfaces.IAzureCosmosDBCodeSessionService.html#FoundationaLLM_Context_Interfaces_IAzureCosmosDBCodeSessionService_UpsertCodeSessionRecord_FoundationaLLM_Common_Models_Context_ContextCodeSessionRecord_
+  - name: (
+  - uid: FoundationaLLM.Common.Models.Context.ContextCodeSessionRecord
+    name: ContextCodeSessionRecord
+    href: FoundationaLLM.Common.Models.Context.ContextCodeSessionRecord.html
+  - name: )
+- uid: FoundationaLLM.Common.Models.Context.ContextCodeSessionRecord
+  commentId: T:FoundationaLLM.Common.Models.Context.ContextCodeSessionRecord
+  parent: FoundationaLLM.Common.Models.Context
+  href: FoundationaLLM.Common.Models.Context.ContextCodeSessionRecord.html
+  name: ContextCodeSessionRecord
+  nameWithType: ContextCodeSessionRecord
+  fullName: FoundationaLLM.Common.Models.Context.ContextCodeSessionRecord
+- uid: System.Threading.Tasks.Task
+  commentId: T:System.Threading.Tasks.Task
+  parent: System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  name: Task
+  nameWithType: Task
+  fullName: System.Threading.Tasks.Task
+- uid: FoundationaLLM.Common.Models.Context
+  commentId: N:FoundationaLLM.Common.Models.Context
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.Context
+  nameWithType: FoundationaLLM.Common.Models.Context
+  fullName: FoundationaLLM.Common.Models.Context
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Context
+    name: Context
+    href: FoundationaLLM.Common.Models.Context.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Context
+    name: Context
+    href: FoundationaLLM.Common.Models.Context.html
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBCodeSessionService.UpsertCodeSessionFileUploadRecord*
+  commentId: Overload:FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBCodeSessionService.UpsertCodeSessionFileUploadRecord
+  href: FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBCodeSessionService.html#FoundationaLLM_Context_Services_CosmosDB_AzureCosmosDBCodeSessionService_UpsertCodeSessionFileUploadRecord_FoundationaLLM_Common_Models_Context_ContextCodeSessionFileUploadRecord_
+  name: UpsertCodeSessionFileUploadRecord
+  nameWithType: AzureCosmosDBCodeSessionService.UpsertCodeSessionFileUploadRecord
+  fullName: FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBCodeSessionService.UpsertCodeSessionFileUploadRecord
+- uid: FoundationaLLM.Context.Interfaces.IAzureCosmosDBCodeSessionService.UpsertCodeSessionFileUploadRecord(FoundationaLLM.Common.Models.Context.ContextCodeSessionFileUploadRecord)
+  commentId: M:FoundationaLLM.Context.Interfaces.IAzureCosmosDBCodeSessionService.UpsertCodeSessionFileUploadRecord(FoundationaLLM.Common.Models.Context.ContextCodeSessionFileUploadRecord)
+  parent: FoundationaLLM.Context.Interfaces.IAzureCosmosDBCodeSessionService
+  href: FoundationaLLM.Context.Interfaces.IAzureCosmosDBCodeSessionService.html#FoundationaLLM_Context_Interfaces_IAzureCosmosDBCodeSessionService_UpsertCodeSessionFileUploadRecord_FoundationaLLM_Common_Models_Context_ContextCodeSessionFileUploadRecord_
+  name: UpsertCodeSessionFileUploadRecord(ContextCodeSessionFileUploadRecord)
+  nameWithType: IAzureCosmosDBCodeSessionService.UpsertCodeSessionFileUploadRecord(ContextCodeSessionFileUploadRecord)
+  fullName: FoundationaLLM.Context.Interfaces.IAzureCosmosDBCodeSessionService.UpsertCodeSessionFileUploadRecord(FoundationaLLM.Common.Models.Context.ContextCodeSessionFileUploadRecord)
+  spec.csharp:
+  - uid: FoundationaLLM.Context.Interfaces.IAzureCosmosDBCodeSessionService.UpsertCodeSessionFileUploadRecord(FoundationaLLM.Common.Models.Context.ContextCodeSessionFileUploadRecord)
+    name: UpsertCodeSessionFileUploadRecord
+    href: FoundationaLLM.Context.Interfaces.IAzureCosmosDBCodeSessionService.html#FoundationaLLM_Context_Interfaces_IAzureCosmosDBCodeSessionService_UpsertCodeSessionFileUploadRecord_FoundationaLLM_Common_Models_Context_ContextCodeSessionFileUploadRecord_
+  - name: (
+  - uid: FoundationaLLM.Common.Models.Context.ContextCodeSessionFileUploadRecord
+    name: ContextCodeSessionFileUploadRecord
+    href: FoundationaLLM.Common.Models.Context.ContextCodeSessionFileUploadRecord.html
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Context.Interfaces.IAzureCosmosDBCodeSessionService.UpsertCodeSessionFileUploadRecord(FoundationaLLM.Common.Models.Context.ContextCodeSessionFileUploadRecord)
+    name: UpsertCodeSessionFileUploadRecord
+    href: FoundationaLLM.Context.Interfaces.IAzureCosmosDBCodeSessionService.html#FoundationaLLM_Context_Interfaces_IAzureCosmosDBCodeSessionService_UpsertCodeSessionFileUploadRecord_FoundationaLLM_Common_Models_Context_ContextCodeSessionFileUploadRecord_
+  - name: (
+  - uid: FoundationaLLM.Common.Models.Context.ContextCodeSessionFileUploadRecord
+    name: ContextCodeSessionFileUploadRecord
+    href: FoundationaLLM.Common.Models.Context.ContextCodeSessionFileUploadRecord.html
+  - name: )
+- uid: FoundationaLLM.Common.Models.Context.ContextCodeSessionFileUploadRecord
+  commentId: T:FoundationaLLM.Common.Models.Context.ContextCodeSessionFileUploadRecord
+  parent: FoundationaLLM.Common.Models.Context
+  href: FoundationaLLM.Common.Models.Context.ContextCodeSessionFileUploadRecord.html
+  name: ContextCodeSessionFileUploadRecord
+  nameWithType: ContextCodeSessionFileUploadRecord
+  fullName: FoundationaLLM.Common.Models.Context.ContextCodeSessionFileUploadRecord
+- uid: FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBCodeSessionService.GetCodeSessionRecord*
+  commentId: Overload:FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBCodeSessionService.GetCodeSessionRecord
+  href: FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBCodeSessionService.html#FoundationaLLM_Context_Services_CosmosDB_AzureCosmosDBCodeSessionService_GetCodeSessionRecord_System_String_System_String_System_String_
+  name: GetCodeSessionRecord
+  nameWithType: AzureCosmosDBCodeSessionService.GetCodeSessionRecord
+  fullName: FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBCodeSessionService.GetCodeSessionRecord
+- uid: FoundationaLLM.Context.Interfaces.IAzureCosmosDBCodeSessionService.GetCodeSessionRecord(System.String,System.String,System.String)
+  commentId: M:FoundationaLLM.Context.Interfaces.IAzureCosmosDBCodeSessionService.GetCodeSessionRecord(System.String,System.String,System.String)
+  parent: FoundationaLLM.Context.Interfaces.IAzureCosmosDBCodeSessionService
+  isExternal: true
+  href: FoundationaLLM.Context.Interfaces.IAzureCosmosDBCodeSessionService.html#FoundationaLLM_Context_Interfaces_IAzureCosmosDBCodeSessionService_GetCodeSessionRecord_System_String_System_String_System_String_
+  name: GetCodeSessionRecord(string, string, string)
+  nameWithType: IAzureCosmosDBCodeSessionService.GetCodeSessionRecord(string, string, string)
+  fullName: FoundationaLLM.Context.Interfaces.IAzureCosmosDBCodeSessionService.GetCodeSessionRecord(string, string, string)
+  nameWithType.vb: IAzureCosmosDBCodeSessionService.GetCodeSessionRecord(String, String, String)
+  fullName.vb: FoundationaLLM.Context.Interfaces.IAzureCosmosDBCodeSessionService.GetCodeSessionRecord(String, String, String)
+  name.vb: GetCodeSessionRecord(String, String, String)
+  spec.csharp:
+  - uid: FoundationaLLM.Context.Interfaces.IAzureCosmosDBCodeSessionService.GetCodeSessionRecord(System.String,System.String,System.String)
+    name: GetCodeSessionRecord
+    href: FoundationaLLM.Context.Interfaces.IAzureCosmosDBCodeSessionService.html#FoundationaLLM_Context_Interfaces_IAzureCosmosDBCodeSessionService_GetCodeSessionRecord_System_String_System_String_System_String_
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Context.Interfaces.IAzureCosmosDBCodeSessionService.GetCodeSessionRecord(System.String,System.String,System.String)
+    name: GetCodeSessionRecord
+    href: FoundationaLLM.Context.Interfaces.IAzureCosmosDBCodeSessionService.html#FoundationaLLM_Context_Interfaces_IAzureCosmosDBCodeSessionService_GetCodeSessionRecord_System_String_System_String_System_String_
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System.Threading.Tasks.Task{FoundationaLLM.Common.Models.Context.ContextCodeSessionRecord}
+  commentId: T:System.Threading.Tasks.Task{FoundationaLLM.Common.Models.Context.ContextCodeSessionRecord}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<ContextCodeSessionRecord>
+  nameWithType: Task<ContextCodeSessionRecord>
+  fullName: System.Threading.Tasks.Task<FoundationaLLM.Common.Models.Context.ContextCodeSessionRecord>
+  nameWithType.vb: Task(Of ContextCodeSessionRecord)
+  fullName.vb: System.Threading.Tasks.Task(Of FoundationaLLM.Common.Models.Context.ContextCodeSessionRecord)
+  name.vb: Task(Of ContextCodeSessionRecord)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: FoundationaLLM.Common.Models.Context.ContextCodeSessionRecord
+    name: ContextCodeSessionRecord
+    href: FoundationaLLM.Common.Models.Context.ContextCodeSessionRecord.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FoundationaLLM.Common.Models.Context.ContextCodeSessionRecord
+    name: ContextCodeSessionRecord
+    href: FoundationaLLM.Common.Models.Context.ContextCodeSessionRecord.html
+  - name: )
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBCodeSessionService.GetCodeSessionFileUploadRecord*
+  commentId: Overload:FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBCodeSessionService.GetCodeSessionFileUploadRecord
+  href: FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBCodeSessionService.html#FoundationaLLM_Context_Services_CosmosDB_AzureCosmosDBCodeSessionService_GetCodeSessionFileUploadRecord_System_String_System_String_System_String_System_String_
+  name: GetCodeSessionFileUploadRecord
+  nameWithType: AzureCosmosDBCodeSessionService.GetCodeSessionFileUploadRecord
+  fullName: FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBCodeSessionService.GetCodeSessionFileUploadRecord
+- uid: FoundationaLLM.Context.Interfaces.IAzureCosmosDBCodeSessionService.GetCodeSessionFileUploadRecord(System.String,System.String,System.String,System.String)
+  commentId: M:FoundationaLLM.Context.Interfaces.IAzureCosmosDBCodeSessionService.GetCodeSessionFileUploadRecord(System.String,System.String,System.String,System.String)
+  parent: FoundationaLLM.Context.Interfaces.IAzureCosmosDBCodeSessionService
+  isExternal: true
+  href: FoundationaLLM.Context.Interfaces.IAzureCosmosDBCodeSessionService.html#FoundationaLLM_Context_Interfaces_IAzureCosmosDBCodeSessionService_GetCodeSessionFileUploadRecord_System_String_System_String_System_String_System_String_
+  name: GetCodeSessionFileUploadRecord(string, string, string, string)
+  nameWithType: IAzureCosmosDBCodeSessionService.GetCodeSessionFileUploadRecord(string, string, string, string)
+  fullName: FoundationaLLM.Context.Interfaces.IAzureCosmosDBCodeSessionService.GetCodeSessionFileUploadRecord(string, string, string, string)
+  nameWithType.vb: IAzureCosmosDBCodeSessionService.GetCodeSessionFileUploadRecord(String, String, String, String)
+  fullName.vb: FoundationaLLM.Context.Interfaces.IAzureCosmosDBCodeSessionService.GetCodeSessionFileUploadRecord(String, String, String, String)
+  name.vb: GetCodeSessionFileUploadRecord(String, String, String, String)
+  spec.csharp:
+  - uid: FoundationaLLM.Context.Interfaces.IAzureCosmosDBCodeSessionService.GetCodeSessionFileUploadRecord(System.String,System.String,System.String,System.String)
+    name: GetCodeSessionFileUploadRecord
+    href: FoundationaLLM.Context.Interfaces.IAzureCosmosDBCodeSessionService.html#FoundationaLLM_Context_Interfaces_IAzureCosmosDBCodeSessionService_GetCodeSessionFileUploadRecord_System_String_System_String_System_String_System_String_
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Context.Interfaces.IAzureCosmosDBCodeSessionService.GetCodeSessionFileUploadRecord(System.String,System.String,System.String,System.String)
+    name: GetCodeSessionFileUploadRecord
+    href: FoundationaLLM.Context.Interfaces.IAzureCosmosDBCodeSessionService.html#FoundationaLLM_Context_Interfaces_IAzureCosmosDBCodeSessionService_GetCodeSessionFileUploadRecord_System_String_System_String_System_String_System_String_
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: System.Threading.Tasks.Task{FoundationaLLM.Common.Models.Context.ContextCodeSessionFileUploadRecord}
+  commentId: T:System.Threading.Tasks.Task{FoundationaLLM.Common.Models.Context.ContextCodeSessionFileUploadRecord}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<ContextCodeSessionFileUploadRecord>
+  nameWithType: Task<ContextCodeSessionFileUploadRecord>
+  fullName: System.Threading.Tasks.Task<FoundationaLLM.Common.Models.Context.ContextCodeSessionFileUploadRecord>
+  nameWithType.vb: Task(Of ContextCodeSessionFileUploadRecord)
+  fullName.vb: System.Threading.Tasks.Task(Of FoundationaLLM.Common.Models.Context.ContextCodeSessionFileUploadRecord)
+  name.vb: Task(Of ContextCodeSessionFileUploadRecord)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: FoundationaLLM.Common.Models.Context.ContextCodeSessionFileUploadRecord
+    name: ContextCodeSessionFileUploadRecord
+    href: FoundationaLLM.Common.Models.Context.ContextCodeSessionFileUploadRecord.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FoundationaLLM.Common.Models.Context.ContextCodeSessionFileUploadRecord
+    name: ContextCodeSessionFileUploadRecord
+    href: FoundationaLLM.Common.Models.Context.ContextCodeSessionFileUploadRecord.html
+  - name: )

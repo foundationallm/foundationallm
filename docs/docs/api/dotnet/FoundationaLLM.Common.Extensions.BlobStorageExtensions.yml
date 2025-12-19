@@ -1,0 +1,582 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Common.Extensions.BlobStorageExtensions
+  commentId: T:FoundationaLLM.Common.Extensions.BlobStorageExtensions
+  id: BlobStorageExtensions
+  parent: FoundationaLLM.Common.Extensions
+  children:
+  - FoundationaLLM.Common.Extensions.BlobStorageExtensions.AcquireAsyncWithWait(Azure.Storage.Blobs.Specialized.BlobLeaseClient,System.TimeSpan,System.Int32,System.Int32,System.Threading.CancellationToken)
+  langs:
+  - csharp
+  - vb
+  name: BlobStorageExtensions
+  nameWithType: BlobStorageExtensions
+  fullName: FoundationaLLM.Common.Extensions.BlobStorageExtensions
+  type: Class
+  source:
+    remote:
+      path: src/dotnet/Common/Extensions/BlobStorageExtensions.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: BlobStorageExtensions
+    path: ../src/dotnet/Common/Extensions/BlobStorageExtensions.cs
+    startLine: 10
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Extensions
+  summary: Extends Azure Blob Storage classes with helper methods.
+  example: []
+  syntax:
+    content: public static class BlobStorageExtensions
+    content.vb: Public Module BlobStorageExtensions
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: FoundationaLLM.Common.Extensions.BlobStorageExtensions.AcquireAsyncWithWait(Azure.Storage.Blobs.Specialized.BlobLeaseClient,System.TimeSpan,System.Int32,System.Int32,System.Threading.CancellationToken)
+  commentId: M:FoundationaLLM.Common.Extensions.BlobStorageExtensions.AcquireAsyncWithWait(Azure.Storage.Blobs.Specialized.BlobLeaseClient,System.TimeSpan,System.Int32,System.Int32,System.Threading.CancellationToken)
+  id: AcquireAsyncWithWait(Azure.Storage.Blobs.Specialized.BlobLeaseClient,System.TimeSpan,System.Int32,System.Int32,System.Threading.CancellationToken)
+  isExtensionMethod: true
+  parent: FoundationaLLM.Common.Extensions.BlobStorageExtensions
+  langs:
+  - csharp
+  - vb
+  name: AcquireAsyncWithWait(BlobLeaseClient, TimeSpan, int, int, CancellationToken)
+  nameWithType: BlobStorageExtensions.AcquireAsyncWithWait(BlobLeaseClient, TimeSpan, int, int, CancellationToken)
+  fullName: FoundationaLLM.Common.Extensions.BlobStorageExtensions.AcquireAsyncWithWait(Azure.Storage.Blobs.Specialized.BlobLeaseClient, System.TimeSpan, int, int, System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Common/Extensions/BlobStorageExtensions.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: AcquireAsyncWithWait
+    path: ../src/dotnet/Common/Extensions/BlobStorageExtensions.cs
+    startLine: 21
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Extensions
+  summary: Attempts to acquire a lease on a blob item using a retry pattern.
+  example: []
+  syntax:
+    content: public static Task<BlobLease?> AcquireAsyncWithWait(this BlobLeaseClient blobLeaseClient, TimeSpan duration, int maxRetryCount = 5, int retryWaitSeconds = 5, CancellationToken cancellationToken = default)
+    parameters:
+    - id: blobLeaseClient
+      type: Azure.Storage.Blobs.Specialized.BlobLeaseClient
+      description: The <xref href="Azure.Storage.Blobs.Specialized.BlobLeaseClient" data-throw-if-not-resolved="false"></xref> client used to acquire the lease.
+    - id: duration
+      type: System.TimeSpan
+      description: The <xref href="System.TimeSpan" data-throw-if-not-resolved="false"></xref> specifying the intended duration of the lease.
+    - id: maxRetryCount
+      type: System.Int32
+      description: The maximum number of attempts to acquire the lease.
+    - id: retryWaitSeconds
+      type: System.Int32
+      description: The number of seconds to wait between subsequent attempts to acquire the lease.
+    - id: cancellationToken
+      type: System.Threading.CancellationToken
+      description: The <xref href="System.Threading.CancellationToken" data-throw-if-not-resolved="false"></xref> that signals the cancellation of the procedure.
+    return:
+      type: System.Threading.Tasks.Task{Azure.Storage.Blobs.Models.BlobLease}
+      description: The <xref href="Azure.Storage.Blobs.Models.BlobLease" data-throw-if-not-resolved="false"></xref> acquired or null if the acquire operation was not completed.
+    content.vb: Public Shared Function AcquireAsyncWithWait(blobLeaseClient As BlobLeaseClient, duration As TimeSpan, maxRetryCount As Integer = 5, retryWaitSeconds As Integer = 5, cancellationToken As CancellationToken = Nothing) As Task(Of BlobLease)
+  overload: FoundationaLLM.Common.Extensions.BlobStorageExtensions.AcquireAsyncWithWait*
+  nameWithType.vb: BlobStorageExtensions.AcquireAsyncWithWait(BlobLeaseClient, TimeSpan, Integer, Integer, CancellationToken)
+  fullName.vb: FoundationaLLM.Common.Extensions.BlobStorageExtensions.AcquireAsyncWithWait(Azure.Storage.Blobs.Specialized.BlobLeaseClient, System.TimeSpan, Integer, Integer, System.Threading.CancellationToken)
+  name.vb: AcquireAsyncWithWait(BlobLeaseClient, TimeSpan, Integer, Integer, CancellationToken)
+references:
+- uid: FoundationaLLM.Common.Extensions
+  commentId: N:FoundationaLLM.Common.Extensions
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Extensions
+  nameWithType: FoundationaLLM.Common.Extensions
+  fullName: FoundationaLLM.Common.Extensions
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Extensions
+    name: Extensions
+    href: FoundationaLLM.Common.Extensions.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Extensions
+    name: Extensions
+    href: FoundationaLLM.Common.Extensions.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Azure.Storage.Blobs.Specialized.BlobLeaseClient
+  commentId: T:Azure.Storage.Blobs.Specialized.BlobLeaseClient
+  parent: Azure.Storage.Blobs.Specialized
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/azure.storage.blobs.specialized.blobleaseclient
+  name: BlobLeaseClient
+  nameWithType: BlobLeaseClient
+  fullName: Azure.Storage.Blobs.Specialized.BlobLeaseClient
+- uid: System.TimeSpan
+  commentId: T:System.TimeSpan
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.timespan
+  name: TimeSpan
+  nameWithType: TimeSpan
+  fullName: System.TimeSpan
+- uid: System.Threading.CancellationToken
+  commentId: T:System.Threading.CancellationToken
+  parent: System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  name: CancellationToken
+  nameWithType: CancellationToken
+  fullName: System.Threading.CancellationToken
+- uid: Azure.Storage.Blobs.Models.BlobLease
+  commentId: T:Azure.Storage.Blobs.Models.BlobLease
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/azure.storage.blobs.models.bloblease
+  name: BlobLease
+  nameWithType: BlobLease
+  fullName: Azure.Storage.Blobs.Models.BlobLease
+- uid: FoundationaLLM.Common.Extensions.BlobStorageExtensions.AcquireAsyncWithWait*
+  commentId: Overload:FoundationaLLM.Common.Extensions.BlobStorageExtensions.AcquireAsyncWithWait
+  href: FoundationaLLM.Common.Extensions.BlobStorageExtensions.html#FoundationaLLM_Common_Extensions_BlobStorageExtensions_AcquireAsyncWithWait_Azure_Storage_Blobs_Specialized_BlobLeaseClient_System_TimeSpan_System_Int32_System_Int32_System_Threading_CancellationToken_
+  name: AcquireAsyncWithWait
+  nameWithType: BlobStorageExtensions.AcquireAsyncWithWait
+  fullName: FoundationaLLM.Common.Extensions.BlobStorageExtensions.AcquireAsyncWithWait
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: System.Threading.Tasks.Task{Azure.Storage.Blobs.Models.BlobLease}
+  commentId: T:System.Threading.Tasks.Task{Azure.Storage.Blobs.Models.BlobLease}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<BlobLease>
+  nameWithType: Task<BlobLease>
+  fullName: System.Threading.Tasks.Task<Azure.Storage.Blobs.Models.BlobLease>
+  nameWithType.vb: Task(Of BlobLease)
+  fullName.vb: System.Threading.Tasks.Task(Of Azure.Storage.Blobs.Models.BlobLease)
+  name.vb: Task(Of BlobLease)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: Azure.Storage.Blobs.Models.BlobLease
+    name: BlobLease
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/azure.storage.blobs.models.bloblease
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Azure.Storage.Blobs.Models.BlobLease
+    name: BlobLease
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/azure.storage.blobs.models.bloblease
+  - name: )
+- uid: Azure.Storage.Blobs.Specialized
+  commentId: N:Azure.Storage.Blobs.Specialized
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/azure
+  name: Azure.Storage.Blobs.Specialized
+  nameWithType: Azure.Storage.Blobs.Specialized
+  fullName: Azure.Storage.Blobs.Specialized
+  spec.csharp:
+  - uid: Azure
+    name: Azure
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/azure
+  - name: .
+  - uid: Azure.Storage
+    name: Storage
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/azure.storage
+  - name: .
+  - uid: Azure.Storage.Blobs
+    name: Blobs
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/azure.storage.blobs
+  - name: .
+  - uid: Azure.Storage.Blobs.Specialized
+    name: Specialized
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/azure.storage.blobs.specialized
+  spec.vb:
+  - uid: Azure
+    name: Azure
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/azure
+  - name: .
+  - uid: Azure.Storage
+    name: Storage
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/azure.storage
+  - name: .
+  - uid: Azure.Storage.Blobs
+    name: Blobs
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/azure.storage.blobs
+  - name: .
+  - uid: Azure.Storage.Blobs.Specialized
+    name: Specialized
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/azure.storage.blobs.specialized
+- uid: System.Threading
+  commentId: N:System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading
+  nameWithType: System.Threading
+  fullName: System.Threading
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks

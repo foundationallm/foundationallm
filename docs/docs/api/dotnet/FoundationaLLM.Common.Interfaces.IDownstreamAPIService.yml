@@ -1,0 +1,642 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Common.Interfaces.IDownstreamAPIService
+  commentId: T:FoundationaLLM.Common.Interfaces.IDownstreamAPIService
+  id: IDownstreamAPIService
+  parent: FoundationaLLM.Common.Interfaces
+  children:
+  - FoundationaLLM.Common.Interfaces.IDownstreamAPIService.APIName
+  - FoundationaLLM.Common.Interfaces.IDownstreamAPIService.GetCompletion(System.String,FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequest)
+  - FoundationaLLM.Common.Interfaces.IDownstreamAPIService.GetCompletionOperationStatus(System.String,System.String)
+  - FoundationaLLM.Common.Interfaces.IDownstreamAPIService.StartCompletionOperation(System.String,FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequest)
+  langs:
+  - csharp
+  - vb
+  name: IDownstreamAPIService
+  nameWithType: IDownstreamAPIService
+  fullName: FoundationaLLM.Common.Interfaces.IDownstreamAPIService
+  type: Interface
+  source:
+    remote:
+      path: src/dotnet/Common/Interfaces/IDownstreamAPIService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: IDownstreamAPIService
+    path: ../src/dotnet/Common/Interfaces/IDownstreamAPIService.cs
+    startLine: 9
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Interfaces
+  summary: Interface for calling a downstream API.
+  example: []
+  syntax:
+    content: public interface IDownstreamAPIService
+    content.vb: Public Interface IDownstreamAPIService
+  extensionMethods:
+  - System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+- uid: FoundationaLLM.Common.Interfaces.IDownstreamAPIService.APIName
+  commentId: P:FoundationaLLM.Common.Interfaces.IDownstreamAPIService.APIName
+  id: APIName
+  parent: FoundationaLLM.Common.Interfaces.IDownstreamAPIService
+  langs:
+  - csharp
+  - vb
+  name: APIName
+  nameWithType: IDownstreamAPIService.APIName
+  fullName: FoundationaLLM.Common.Interfaces.IDownstreamAPIService.APIName
+  type: Property
+  source:
+    remote:
+      path: src/dotnet/Common/Interfaces/IDownstreamAPIService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: APIName
+    path: ../src/dotnet/Common/Interfaces/IDownstreamAPIService.cs
+    startLine: 14
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Interfaces
+  summary: The name of the downstream API.
+  example: []
+  syntax:
+    content: string APIName { get; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: ReadOnly Property APIName As String
+  overload: FoundationaLLM.Common.Interfaces.IDownstreamAPIService.APIName*
+- uid: FoundationaLLM.Common.Interfaces.IDownstreamAPIService.GetCompletion(System.String,FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequest)
+  commentId: M:FoundationaLLM.Common.Interfaces.IDownstreamAPIService.GetCompletion(System.String,FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequest)
+  id: GetCompletion(System.String,FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequest)
+  parent: FoundationaLLM.Common.Interfaces.IDownstreamAPIService
+  langs:
+  - csharp
+  - vb
+  name: GetCompletion(string, CompletionRequest)
+  nameWithType: IDownstreamAPIService.GetCompletion(string, CompletionRequest)
+  fullName: FoundationaLLM.Common.Interfaces.IDownstreamAPIService.GetCompletion(string, FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequest)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Common/Interfaces/IDownstreamAPIService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: GetCompletion
+    path: ../src/dotnet/Common/Interfaces/IDownstreamAPIService.cs
+    startLine: 22
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Interfaces
+  summary: Gets a completion from the downstream API.
+  example: []
+  syntax:
+    content: Task<CompletionResponse> GetCompletion(string instanceId, CompletionRequest completionRequest)
+    parameters:
+    - id: instanceId
+      type: System.String
+      description: The FoundationaLLM instance id.
+    - id: completionRequest
+      type: FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequest
+      description: The completion request containing the user prompt and message history.
+    return:
+      type: System.Threading.Tasks.Task{FoundationaLLM.Common.Models.Orchestration.Response.CompletionResponse}
+      description: The completion response.
+    content.vb: Function GetCompletion(instanceId As String, completionRequest As CompletionRequest) As Task(Of CompletionResponse)
+  overload: FoundationaLLM.Common.Interfaces.IDownstreamAPIService.GetCompletion*
+  nameWithType.vb: IDownstreamAPIService.GetCompletion(String, CompletionRequest)
+  fullName.vb: FoundationaLLM.Common.Interfaces.IDownstreamAPIService.GetCompletion(String, FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequest)
+  name.vb: GetCompletion(String, CompletionRequest)
+- uid: FoundationaLLM.Common.Interfaces.IDownstreamAPIService.StartCompletionOperation(System.String,FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequest)
+  commentId: M:FoundationaLLM.Common.Interfaces.IDownstreamAPIService.StartCompletionOperation(System.String,FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequest)
+  id: StartCompletionOperation(System.String,FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequest)
+  parent: FoundationaLLM.Common.Interfaces.IDownstreamAPIService
+  langs:
+  - csharp
+  - vb
+  name: StartCompletionOperation(string, CompletionRequest)
+  nameWithType: IDownstreamAPIService.StartCompletionOperation(string, CompletionRequest)
+  fullName: FoundationaLLM.Common.Interfaces.IDownstreamAPIService.StartCompletionOperation(string, FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequest)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Common/Interfaces/IDownstreamAPIService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: StartCompletionOperation
+    path: ../src/dotnet/Common/Interfaces/IDownstreamAPIService.cs
+    startLine: 30
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Interfaces
+  summary: Begins a completion operation.
+  example: []
+  syntax:
+    content: Task<LongRunningOperation> StartCompletionOperation(string instanceId, CompletionRequest completionRequest)
+    parameters:
+    - id: instanceId
+      type: System.String
+      description: The FoundationaLLM instance id.
+    - id: completionRequest
+      type: FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequest
+      description: The completion request containing the user prompt and message history.
+    return:
+      type: System.Threading.Tasks.Task{FoundationaLLM.Common.Models.Orchestration.LongRunningOperation}
+      description: Returns an <xref href="FoundationaLLM.Common.Models.Orchestration.LongRunningOperation" data-throw-if-not-resolved="false"></xref> object containing the OperationId and Status.
+    content.vb: Function StartCompletionOperation(instanceId As String, completionRequest As CompletionRequest) As Task(Of LongRunningOperation)
+  overload: FoundationaLLM.Common.Interfaces.IDownstreamAPIService.StartCompletionOperation*
+  nameWithType.vb: IDownstreamAPIService.StartCompletionOperation(String, CompletionRequest)
+  fullName.vb: FoundationaLLM.Common.Interfaces.IDownstreamAPIService.StartCompletionOperation(String, FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequest)
+  name.vb: StartCompletionOperation(String, CompletionRequest)
+- uid: FoundationaLLM.Common.Interfaces.IDownstreamAPIService.GetCompletionOperationStatus(System.String,System.String)
+  commentId: M:FoundationaLLM.Common.Interfaces.IDownstreamAPIService.GetCompletionOperationStatus(System.String,System.String)
+  id: GetCompletionOperationStatus(System.String,System.String)
+  parent: FoundationaLLM.Common.Interfaces.IDownstreamAPIService
+  langs:
+  - csharp
+  - vb
+  name: GetCompletionOperationStatus(string, string)
+  nameWithType: IDownstreamAPIService.GetCompletionOperationStatus(string, string)
+  fullName: FoundationaLLM.Common.Interfaces.IDownstreamAPIService.GetCompletionOperationStatus(string, string)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Common/Interfaces/IDownstreamAPIService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: GetCompletionOperationStatus
+    path: ../src/dotnet/Common/Interfaces/IDownstreamAPIService.cs
+    startLine: 38
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Interfaces
+  summary: Gets the status of a completion operation.
+  example: []
+  syntax:
+    content: Task<LongRunningOperation> GetCompletionOperationStatus(string instanceId, string operationId)
+    parameters:
+    - id: instanceId
+      type: System.String
+      description: The FoundationaLLM instance id.
+    - id: operationId
+      type: System.String
+      description: The OperationId for which to retrieve the status.
+    return:
+      type: System.Threading.Tasks.Task{FoundationaLLM.Common.Models.Orchestration.LongRunningOperation}
+      description: Returns an <xref href="FoundationaLLM.Common.Models.Orchestration.LongRunningOperation" data-throw-if-not-resolved="false"></xref> object containing the OperationId and Status.
+    content.vb: Function GetCompletionOperationStatus(instanceId As String, operationId As String) As Task(Of LongRunningOperation)
+  overload: FoundationaLLM.Common.Interfaces.IDownstreamAPIService.GetCompletionOperationStatus*
+  nameWithType.vb: IDownstreamAPIService.GetCompletionOperationStatus(String, String)
+  fullName.vb: FoundationaLLM.Common.Interfaces.IDownstreamAPIService.GetCompletionOperationStatus(String, String)
+  name.vb: GetCompletionOperationStatus(String, String)
+references:
+- uid: FoundationaLLM.Common.Interfaces
+  commentId: N:FoundationaLLM.Common.Interfaces
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Interfaces
+  nameWithType: FoundationaLLM.Common.Interfaces
+  fullName: FoundationaLLM.Common.Interfaces
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Interfaces
+    name: Interfaces
+    href: FoundationaLLM.Common.Interfaces.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Interfaces
+    name: Interfaces
+    href: FoundationaLLM.Common.Interfaces.html
+- uid: System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  parent: FoundationaLLM.Core.Utils.ObjectExtensions
+  definition: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  isExternal: true
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions
+  commentId: T:FoundationaLLM.Core.Utils.ObjectExtensions
+  parent: FoundationaLLM.Core.Utils
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html
+  name: ObjectExtensions
+  nameWithType: ObjectExtensions
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions
+- uid: FoundationaLLM.Core.Utils
+  commentId: N:FoundationaLLM.Core.Utils
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Core.Utils
+  nameWithType: FoundationaLLM.Core.Utils
+  fullName: FoundationaLLM.Core.Utils
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+- uid: FoundationaLLM.Common.Interfaces.IDownstreamAPIService.APIName*
+  commentId: Overload:FoundationaLLM.Common.Interfaces.IDownstreamAPIService.APIName
+  href: FoundationaLLM.Common.Interfaces.IDownstreamAPIService.html#FoundationaLLM_Common_Interfaces_IDownstreamAPIService_APIName
+  name: APIName
+  nameWithType: IDownstreamAPIService.APIName
+  fullName: FoundationaLLM.Common.Interfaces.IDownstreamAPIService.APIName
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: FoundationaLLM.Common.Interfaces.IDownstreamAPIService.GetCompletion*
+  commentId: Overload:FoundationaLLM.Common.Interfaces.IDownstreamAPIService.GetCompletion
+  href: FoundationaLLM.Common.Interfaces.IDownstreamAPIService.html#FoundationaLLM_Common_Interfaces_IDownstreamAPIService_GetCompletion_System_String_FoundationaLLM_Common_Models_Orchestration_Request_CompletionRequest_
+  name: GetCompletion
+  nameWithType: IDownstreamAPIService.GetCompletion
+  fullName: FoundationaLLM.Common.Interfaces.IDownstreamAPIService.GetCompletion
+- uid: FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequest
+  commentId: T:FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequest
+  parent: FoundationaLLM.Common.Models.Orchestration.Request
+  href: FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequest.html
+  name: CompletionRequest
+  nameWithType: CompletionRequest
+  fullName: FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequest
+- uid: System.Threading.Tasks.Task{FoundationaLLM.Common.Models.Orchestration.Response.CompletionResponse}
+  commentId: T:System.Threading.Tasks.Task{FoundationaLLM.Common.Models.Orchestration.Response.CompletionResponse}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<CompletionResponse>
+  nameWithType: Task<CompletionResponse>
+  fullName: System.Threading.Tasks.Task<FoundationaLLM.Common.Models.Orchestration.Response.CompletionResponse>
+  nameWithType.vb: Task(Of CompletionResponse)
+  fullName.vb: System.Threading.Tasks.Task(Of FoundationaLLM.Common.Models.Orchestration.Response.CompletionResponse)
+  name.vb: Task(Of CompletionResponse)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: FoundationaLLM.Common.Models.Orchestration.Response.CompletionResponse
+    name: CompletionResponse
+    href: FoundationaLLM.Common.Models.Orchestration.Response.CompletionResponse.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FoundationaLLM.Common.Models.Orchestration.Response.CompletionResponse
+    name: CompletionResponse
+    href: FoundationaLLM.Common.Models.Orchestration.Response.CompletionResponse.html
+  - name: )
+- uid: FoundationaLLM.Common.Models.Orchestration.Request
+  commentId: N:FoundationaLLM.Common.Models.Orchestration.Request
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.Orchestration.Request
+  nameWithType: FoundationaLLM.Common.Models.Orchestration.Request
+  fullName: FoundationaLLM.Common.Models.Orchestration.Request
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Orchestration
+    name: Orchestration
+    href: FoundationaLLM.Common.Models.Orchestration.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Orchestration.Request
+    name: Request
+    href: FoundationaLLM.Common.Models.Orchestration.Request.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Orchestration
+    name: Orchestration
+    href: FoundationaLLM.Common.Models.Orchestration.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Orchestration.Request
+    name: Request
+    href: FoundationaLLM.Common.Models.Orchestration.Request.html
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: FoundationaLLM.Common.Models.Orchestration.LongRunningOperation
+  commentId: T:FoundationaLLM.Common.Models.Orchestration.LongRunningOperation
+  parent: FoundationaLLM.Common.Models.Orchestration
+  href: FoundationaLLM.Common.Models.Orchestration.LongRunningOperation.html
+  name: LongRunningOperation
+  nameWithType: LongRunningOperation
+  fullName: FoundationaLLM.Common.Models.Orchestration.LongRunningOperation
+- uid: FoundationaLLM.Common.Interfaces.IDownstreamAPIService.StartCompletionOperation*
+  commentId: Overload:FoundationaLLM.Common.Interfaces.IDownstreamAPIService.StartCompletionOperation
+  href: FoundationaLLM.Common.Interfaces.IDownstreamAPIService.html#FoundationaLLM_Common_Interfaces_IDownstreamAPIService_StartCompletionOperation_System_String_FoundationaLLM_Common_Models_Orchestration_Request_CompletionRequest_
+  name: StartCompletionOperation
+  nameWithType: IDownstreamAPIService.StartCompletionOperation
+  fullName: FoundationaLLM.Common.Interfaces.IDownstreamAPIService.StartCompletionOperation
+- uid: System.Threading.Tasks.Task{FoundationaLLM.Common.Models.Orchestration.LongRunningOperation}
+  commentId: T:System.Threading.Tasks.Task{FoundationaLLM.Common.Models.Orchestration.LongRunningOperation}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<LongRunningOperation>
+  nameWithType: Task<LongRunningOperation>
+  fullName: System.Threading.Tasks.Task<FoundationaLLM.Common.Models.Orchestration.LongRunningOperation>
+  nameWithType.vb: Task(Of LongRunningOperation)
+  fullName.vb: System.Threading.Tasks.Task(Of FoundationaLLM.Common.Models.Orchestration.LongRunningOperation)
+  name.vb: Task(Of LongRunningOperation)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: FoundationaLLM.Common.Models.Orchestration.LongRunningOperation
+    name: LongRunningOperation
+    href: FoundationaLLM.Common.Models.Orchestration.LongRunningOperation.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FoundationaLLM.Common.Models.Orchestration.LongRunningOperation
+    name: LongRunningOperation
+    href: FoundationaLLM.Common.Models.Orchestration.LongRunningOperation.html
+  - name: )
+- uid: FoundationaLLM.Common.Models.Orchestration
+  commentId: N:FoundationaLLM.Common.Models.Orchestration
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.Orchestration
+  nameWithType: FoundationaLLM.Common.Models.Orchestration
+  fullName: FoundationaLLM.Common.Models.Orchestration
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Orchestration
+    name: Orchestration
+    href: FoundationaLLM.Common.Models.Orchestration.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Orchestration
+    name: Orchestration
+    href: FoundationaLLM.Common.Models.Orchestration.html
+- uid: FoundationaLLM.Common.Interfaces.IDownstreamAPIService.GetCompletionOperationStatus*
+  commentId: Overload:FoundationaLLM.Common.Interfaces.IDownstreamAPIService.GetCompletionOperationStatus
+  href: FoundationaLLM.Common.Interfaces.IDownstreamAPIService.html#FoundationaLLM_Common_Interfaces_IDownstreamAPIService_GetCompletionOperationStatus_System_String_System_String_
+  name: GetCompletionOperationStatus
+  nameWithType: IDownstreamAPIService.GetCompletionOperationStatus
+  fullName: FoundationaLLM.Common.Interfaces.IDownstreamAPIService.GetCompletionOperationStatus

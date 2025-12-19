@@ -1,0 +1,722 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Client.Management.Interfaces.IAttachmentManagementClient
+  commentId: T:FoundationaLLM.Client.Management.Interfaces.IAttachmentManagementClient
+  id: IAttachmentManagementClient
+  parent: FoundationaLLM.Client.Management.Interfaces
+  children:
+  - FoundationaLLM.Client.Management.Interfaces.IAttachmentManagementClient.DeleteAttachmentAsync(System.String)
+  - FoundationaLLM.Client.Management.Interfaces.IAttachmentManagementClient.GetAttachmentAsync(System.String)
+  - FoundationaLLM.Client.Management.Interfaces.IAttachmentManagementClient.GetAttachmentsAsync
+  - FoundationaLLM.Client.Management.Interfaces.IAttachmentManagementClient.UpsertAttachmentAsync(FoundationaLLM.Common.Models.ResourceProviders.Attachment.AttachmentFile)
+  langs:
+  - csharp
+  - vb
+  name: IAttachmentManagementClient
+  nameWithType: IAttachmentManagementClient
+  fullName: FoundationaLLM.Client.Management.Interfaces.IAttachmentManagementClient
+  type: Interface
+  source:
+    remote:
+      path: src/dotnet/ManagementClient/Interfaces/IAttachmentManagementClient.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: IAttachmentManagementClient
+    path: ../src/dotnet/ManagementClient/Interfaces/IAttachmentManagementClient.cs
+    startLine: 8
+  assemblies:
+  - FoundationaLLM.Client.Management
+  namespace: FoundationaLLM.Client.Management.Interfaces
+  summary: Provides methods to manage attachment resources.
+  example: []
+  syntax:
+    content: public interface IAttachmentManagementClient
+    content.vb: Public Interface IAttachmentManagementClient
+  extensionMethods:
+  - System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+- uid: FoundationaLLM.Client.Management.Interfaces.IAttachmentManagementClient.GetAttachmentsAsync
+  commentId: M:FoundationaLLM.Client.Management.Interfaces.IAttachmentManagementClient.GetAttachmentsAsync
+  id: GetAttachmentsAsync
+  parent: FoundationaLLM.Client.Management.Interfaces.IAttachmentManagementClient
+  langs:
+  - csharp
+  - vb
+  name: GetAttachmentsAsync()
+  nameWithType: IAttachmentManagementClient.GetAttachmentsAsync()
+  fullName: FoundationaLLM.Client.Management.Interfaces.IAttachmentManagementClient.GetAttachmentsAsync()
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/ManagementClient/Interfaces/IAttachmentManagementClient.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: GetAttachmentsAsync
+    path: ../src/dotnet/ManagementClient/Interfaces/IAttachmentManagementClient.cs
+    startLine: 14
+  assemblies:
+  - FoundationaLLM.Client.Management
+  namespace: FoundationaLLM.Client.Management.Interfaces
+  summary: Retrieves all attachment resources.
+  example: []
+  syntax:
+    content: Task<List<ResourceProviderGetResult<AttachmentFile>>> GetAttachmentsAsync()
+    return:
+      type: System.Threading.Tasks.Task{System.Collections.Generic.List{FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderGetResult{FoundationaLLM.Common.Models.ResourceProviders.Attachment.AttachmentFile}}}
+      description: All attachment resources to which the caller has access.
+    content.vb: Function GetAttachmentsAsync() As Task(Of List(Of ResourceProviderGetResult(Of AttachmentFile)))
+  overload: FoundationaLLM.Client.Management.Interfaces.IAttachmentManagementClient.GetAttachmentsAsync*
+- uid: FoundationaLLM.Client.Management.Interfaces.IAttachmentManagementClient.GetAttachmentAsync(System.String)
+  commentId: M:FoundationaLLM.Client.Management.Interfaces.IAttachmentManagementClient.GetAttachmentAsync(System.String)
+  id: GetAttachmentAsync(System.String)
+  parent: FoundationaLLM.Client.Management.Interfaces.IAttachmentManagementClient
+  langs:
+  - csharp
+  - vb
+  name: GetAttachmentAsync(string)
+  nameWithType: IAttachmentManagementClient.GetAttachmentAsync(string)
+  fullName: FoundationaLLM.Client.Management.Interfaces.IAttachmentManagementClient.GetAttachmentAsync(string)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/ManagementClient/Interfaces/IAttachmentManagementClient.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: GetAttachmentAsync
+    path: ../src/dotnet/ManagementClient/Interfaces/IAttachmentManagementClient.cs
+    startLine: 21
+  assemblies:
+  - FoundationaLLM.Client.Management
+  namespace: FoundationaLLM.Client.Management.Interfaces
+  summary: Retrieves a specific attachment by name.
+  example: []
+  syntax:
+    content: Task<ResourceProviderGetResult<AttachmentFile>> GetAttachmentAsync(string attachmentName)
+    parameters:
+    - id: attachmentName
+      type: System.String
+      description: The name of the attachment resource to retrieve.
+    return:
+      type: System.Threading.Tasks.Task{FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderGetResult{FoundationaLLM.Common.Models.ResourceProviders.Attachment.AttachmentFile}}
+      description: ''
+    content.vb: Function GetAttachmentAsync(attachmentName As String) As Task(Of ResourceProviderGetResult(Of AttachmentFile))
+  overload: FoundationaLLM.Client.Management.Interfaces.IAttachmentManagementClient.GetAttachmentAsync*
+  nameWithType.vb: IAttachmentManagementClient.GetAttachmentAsync(String)
+  fullName.vb: FoundationaLLM.Client.Management.Interfaces.IAttachmentManagementClient.GetAttachmentAsync(String)
+  name.vb: GetAttachmentAsync(String)
+- uid: FoundationaLLM.Client.Management.Interfaces.IAttachmentManagementClient.UpsertAttachmentAsync(FoundationaLLM.Common.Models.ResourceProviders.Attachment.AttachmentFile)
+  commentId: M:FoundationaLLM.Client.Management.Interfaces.IAttachmentManagementClient.UpsertAttachmentAsync(FoundationaLLM.Common.Models.ResourceProviders.Attachment.AttachmentFile)
+  id: UpsertAttachmentAsync(FoundationaLLM.Common.Models.ResourceProviders.Attachment.AttachmentFile)
+  parent: FoundationaLLM.Client.Management.Interfaces.IAttachmentManagementClient
+  langs:
+  - csharp
+  - vb
+  name: UpsertAttachmentAsync(AttachmentFile)
+  nameWithType: IAttachmentManagementClient.UpsertAttachmentAsync(AttachmentFile)
+  fullName: FoundationaLLM.Client.Management.Interfaces.IAttachmentManagementClient.UpsertAttachmentAsync(FoundationaLLM.Common.Models.ResourceProviders.Attachment.AttachmentFile)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/ManagementClient/Interfaces/IAttachmentManagementClient.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: UpsertAttachmentAsync
+    path: ../src/dotnet/ManagementClient/Interfaces/IAttachmentManagementClient.cs
+    startLine: 30
+  assemblies:
+  - FoundationaLLM.Client.Management
+  namespace: FoundationaLLM.Client.Management.Interfaces
+  summary: >-
+    Upserts an attachment resource. If an attachment does not exist, it will be created. If an attachment
+
+    does exist, it will be updated.
+  example: []
+  syntax:
+    content: Task<ResourceProviderUpsertResult> UpsertAttachmentAsync(AttachmentFile attachment)
+    parameters:
+    - id: attachment
+      type: FoundationaLLM.Common.Models.ResourceProviders.Attachment.AttachmentFile
+      description: The attachment resource to create or update.
+    return:
+      type: System.Threading.Tasks.Task{FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderUpsertResult}
+      description: >-
+        Returns a <xref href="FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderUpsertResult" data-throw-if-not-resolved="false"></xref>, which contains the
+            Object ID of the resource.
+    content.vb: Function UpsertAttachmentAsync(attachment As AttachmentFile) As Task(Of ResourceProviderUpsertResult)
+  overload: FoundationaLLM.Client.Management.Interfaces.IAttachmentManagementClient.UpsertAttachmentAsync*
+- uid: FoundationaLLM.Client.Management.Interfaces.IAttachmentManagementClient.DeleteAttachmentAsync(System.String)
+  commentId: M:FoundationaLLM.Client.Management.Interfaces.IAttachmentManagementClient.DeleteAttachmentAsync(System.String)
+  id: DeleteAttachmentAsync(System.String)
+  parent: FoundationaLLM.Client.Management.Interfaces.IAttachmentManagementClient
+  langs:
+  - csharp
+  - vb
+  name: DeleteAttachmentAsync(string)
+  nameWithType: IAttachmentManagementClient.DeleteAttachmentAsync(string)
+  fullName: FoundationaLLM.Client.Management.Interfaces.IAttachmentManagementClient.DeleteAttachmentAsync(string)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/ManagementClient/Interfaces/IAttachmentManagementClient.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: DeleteAttachmentAsync
+    path: ../src/dotnet/ManagementClient/Interfaces/IAttachmentManagementClient.cs
+    startLine: 37
+  assemblies:
+  - FoundationaLLM.Client.Management
+  namespace: FoundationaLLM.Client.Management.Interfaces
+  summary: Deletes an attachment resource by name.
+  example: []
+  syntax:
+    content: Task DeleteAttachmentAsync(string attachmentName)
+    parameters:
+    - id: attachmentName
+      type: System.String
+      description: The name of the attachment resource to delete.
+    return:
+      type: System.Threading.Tasks.Task
+      description: ''
+    content.vb: Function DeleteAttachmentAsync(attachmentName As String) As Task
+  overload: FoundationaLLM.Client.Management.Interfaces.IAttachmentManagementClient.DeleteAttachmentAsync*
+  nameWithType.vb: IAttachmentManagementClient.DeleteAttachmentAsync(String)
+  fullName.vb: FoundationaLLM.Client.Management.Interfaces.IAttachmentManagementClient.DeleteAttachmentAsync(String)
+  name.vb: DeleteAttachmentAsync(String)
+references:
+- uid: FoundationaLLM.Client.Management.Interfaces
+  commentId: N:FoundationaLLM.Client.Management.Interfaces
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Client.Management.Interfaces
+  nameWithType: FoundationaLLM.Client.Management.Interfaces
+  fullName: FoundationaLLM.Client.Management.Interfaces
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Client
+    name: Client
+    href: FoundationaLLM.Client.html
+  - name: .
+  - uid: FoundationaLLM.Client.Management
+    name: Management
+    href: FoundationaLLM.Client.Management.html
+  - name: .
+  - uid: FoundationaLLM.Client.Management.Interfaces
+    name: Interfaces
+    href: FoundationaLLM.Client.Management.Interfaces.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Client
+    name: Client
+    href: FoundationaLLM.Client.html
+  - name: .
+  - uid: FoundationaLLM.Client.Management
+    name: Management
+    href: FoundationaLLM.Client.Management.html
+  - name: .
+  - uid: FoundationaLLM.Client.Management.Interfaces
+    name: Interfaces
+    href: FoundationaLLM.Client.Management.Interfaces.html
+- uid: System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  parent: FoundationaLLM.Core.Utils.ObjectExtensions
+  definition: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  isExternal: true
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions
+  commentId: T:FoundationaLLM.Core.Utils.ObjectExtensions
+  parent: FoundationaLLM.Core.Utils
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html
+  name: ObjectExtensions
+  nameWithType: ObjectExtensions
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions
+- uid: FoundationaLLM.Core.Utils
+  commentId: N:FoundationaLLM.Core.Utils
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Core.Utils
+  nameWithType: FoundationaLLM.Core.Utils
+  fullName: FoundationaLLM.Core.Utils
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+- uid: FoundationaLLM.Client.Management.Interfaces.IAttachmentManagementClient.GetAttachmentsAsync*
+  commentId: Overload:FoundationaLLM.Client.Management.Interfaces.IAttachmentManagementClient.GetAttachmentsAsync
+  href: FoundationaLLM.Client.Management.Interfaces.IAttachmentManagementClient.html#FoundationaLLM_Client_Management_Interfaces_IAttachmentManagementClient_GetAttachmentsAsync
+  name: GetAttachmentsAsync
+  nameWithType: IAttachmentManagementClient.GetAttachmentsAsync
+  fullName: FoundationaLLM.Client.Management.Interfaces.IAttachmentManagementClient.GetAttachmentsAsync
+- uid: System.Threading.Tasks.Task{System.Collections.Generic.List{FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderGetResult{FoundationaLLM.Common.Models.ResourceProviders.Attachment.AttachmentFile}}}
+  commentId: T:System.Threading.Tasks.Task{System.Collections.Generic.List{FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderGetResult{FoundationaLLM.Common.Models.ResourceProviders.Attachment.AttachmentFile}}}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<List<ResourceProviderGetResult<AttachmentFile>>>
+  nameWithType: Task<List<ResourceProviderGetResult<AttachmentFile>>>
+  fullName: System.Threading.Tasks.Task<System.Collections.Generic.List<FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderGetResult<FoundationaLLM.Common.Models.ResourceProviders.Attachment.AttachmentFile>>>
+  nameWithType.vb: Task(Of List(Of ResourceProviderGetResult(Of AttachmentFile)))
+  fullName.vb: System.Threading.Tasks.Task(Of System.Collections.Generic.List(Of FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderGetResult(Of FoundationaLLM.Common.Models.ResourceProviders.Attachment.AttachmentFile)))
+  name.vb: Task(Of List(Of ResourceProviderGetResult(Of AttachmentFile)))
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderGetResult`1
+    name: ResourceProviderGetResult
+    href: FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderGetResult-1.html
+  - name: <
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.Attachment.AttachmentFile
+    name: AttachmentFile
+    href: FoundationaLLM.Common.Models.ResourceProviders.Attachment.AttachmentFile.html
+  - name: '>'
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderGetResult`1
+    name: ResourceProviderGetResult
+    href: FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderGetResult-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.Attachment.AttachmentFile
+    name: AttachmentFile
+    href: FoundationaLLM.Common.Models.ResourceProviders.Attachment.AttachmentFile.html
+  - name: )
+  - name: )
+  - name: )
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: FoundationaLLM.Client.Management.Interfaces.IAttachmentManagementClient.GetAttachmentAsync*
+  commentId: Overload:FoundationaLLM.Client.Management.Interfaces.IAttachmentManagementClient.GetAttachmentAsync
+  href: FoundationaLLM.Client.Management.Interfaces.IAttachmentManagementClient.html#FoundationaLLM_Client_Management_Interfaces_IAttachmentManagementClient_GetAttachmentAsync_System_String_
+  name: GetAttachmentAsync
+  nameWithType: IAttachmentManagementClient.GetAttachmentAsync
+  fullName: FoundationaLLM.Client.Management.Interfaces.IAttachmentManagementClient.GetAttachmentAsync
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System.Threading.Tasks.Task{FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderGetResult{FoundationaLLM.Common.Models.ResourceProviders.Attachment.AttachmentFile}}
+  commentId: T:System.Threading.Tasks.Task{FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderGetResult{FoundationaLLM.Common.Models.ResourceProviders.Attachment.AttachmentFile}}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<ResourceProviderGetResult<AttachmentFile>>
+  nameWithType: Task<ResourceProviderGetResult<AttachmentFile>>
+  fullName: System.Threading.Tasks.Task<FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderGetResult<FoundationaLLM.Common.Models.ResourceProviders.Attachment.AttachmentFile>>
+  nameWithType.vb: Task(Of ResourceProviderGetResult(Of AttachmentFile))
+  fullName.vb: System.Threading.Tasks.Task(Of FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderGetResult(Of FoundationaLLM.Common.Models.ResourceProviders.Attachment.AttachmentFile))
+  name.vb: Task(Of ResourceProviderGetResult(Of AttachmentFile))
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderGetResult`1
+    name: ResourceProviderGetResult
+    href: FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderGetResult-1.html
+  - name: <
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.Attachment.AttachmentFile
+    name: AttachmentFile
+    href: FoundationaLLM.Common.Models.ResourceProviders.Attachment.AttachmentFile.html
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderGetResult`1
+    name: ResourceProviderGetResult
+    href: FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderGetResult-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.Attachment.AttachmentFile
+    name: AttachmentFile
+    href: FoundationaLLM.Common.Models.ResourceProviders.Attachment.AttachmentFile.html
+  - name: )
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderUpsertResult
+  commentId: T:FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderUpsertResult
+  parent: FoundationaLLM.Common.Models.ResourceProviders
+  href: FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderUpsertResult.html
+  name: ResourceProviderUpsertResult
+  nameWithType: ResourceProviderUpsertResult
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderUpsertResult
+- uid: FoundationaLLM.Client.Management.Interfaces.IAttachmentManagementClient.UpsertAttachmentAsync*
+  commentId: Overload:FoundationaLLM.Client.Management.Interfaces.IAttachmentManagementClient.UpsertAttachmentAsync
+  href: FoundationaLLM.Client.Management.Interfaces.IAttachmentManagementClient.html#FoundationaLLM_Client_Management_Interfaces_IAttachmentManagementClient_UpsertAttachmentAsync_FoundationaLLM_Common_Models_ResourceProviders_Attachment_AttachmentFile_
+  name: UpsertAttachmentAsync
+  nameWithType: IAttachmentManagementClient.UpsertAttachmentAsync
+  fullName: FoundationaLLM.Client.Management.Interfaces.IAttachmentManagementClient.UpsertAttachmentAsync
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Attachment.AttachmentFile
+  commentId: T:FoundationaLLM.Common.Models.ResourceProviders.Attachment.AttachmentFile
+  parent: FoundationaLLM.Common.Models.ResourceProviders.Attachment
+  href: FoundationaLLM.Common.Models.ResourceProviders.Attachment.AttachmentFile.html
+  name: AttachmentFile
+  nameWithType: AttachmentFile
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Attachment.AttachmentFile
+- uid: System.Threading.Tasks.Task{FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderUpsertResult}
+  commentId: T:System.Threading.Tasks.Task{FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderUpsertResult}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<ResourceProviderUpsertResult>
+  nameWithType: Task<ResourceProviderUpsertResult>
+  fullName: System.Threading.Tasks.Task<FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderUpsertResult>
+  nameWithType.vb: Task(Of ResourceProviderUpsertResult)
+  fullName.vb: System.Threading.Tasks.Task(Of FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderUpsertResult)
+  name.vb: Task(Of ResourceProviderUpsertResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderUpsertResult
+    name: ResourceProviderUpsertResult
+    href: FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderUpsertResult.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderUpsertResult
+    name: ResourceProviderUpsertResult
+    href: FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderUpsertResult.html
+  - name: )
+- uid: FoundationaLLM.Common.Models.ResourceProviders
+  commentId: N:FoundationaLLM.Common.Models.ResourceProviders
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.ResourceProviders
+  nameWithType: FoundationaLLM.Common.Models.ResourceProviders
+  fullName: FoundationaLLM.Common.Models.ResourceProviders
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders
+    name: ResourceProviders
+    href: FoundationaLLM.Common.Models.ResourceProviders.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders
+    name: ResourceProviders
+    href: FoundationaLLM.Common.Models.ResourceProviders.html
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Attachment
+  commentId: N:FoundationaLLM.Common.Models.ResourceProviders.Attachment
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.ResourceProviders.Attachment
+  nameWithType: FoundationaLLM.Common.Models.ResourceProviders.Attachment
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Attachment
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders
+    name: ResourceProviders
+    href: FoundationaLLM.Common.Models.ResourceProviders.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.Attachment
+    name: Attachment
+    href: FoundationaLLM.Common.Models.ResourceProviders.Attachment.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders
+    name: ResourceProviders
+    href: FoundationaLLM.Common.Models.ResourceProviders.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.Attachment
+    name: Attachment
+    href: FoundationaLLM.Common.Models.ResourceProviders.Attachment.html
+- uid: FoundationaLLM.Client.Management.Interfaces.IAttachmentManagementClient.DeleteAttachmentAsync*
+  commentId: Overload:FoundationaLLM.Client.Management.Interfaces.IAttachmentManagementClient.DeleteAttachmentAsync
+  href: FoundationaLLM.Client.Management.Interfaces.IAttachmentManagementClient.html#FoundationaLLM_Client_Management_Interfaces_IAttachmentManagementClient_DeleteAttachmentAsync_System_String_
+  name: DeleteAttachmentAsync
+  nameWithType: IAttachmentManagementClient.DeleteAttachmentAsync
+  fullName: FoundationaLLM.Client.Management.Interfaces.IAttachmentManagementClient.DeleteAttachmentAsync
+- uid: System.Threading.Tasks.Task
+  commentId: T:System.Threading.Tasks.Task
+  parent: System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  name: Task
+  nameWithType: Task
+  fullName: System.Threading.Tasks.Task

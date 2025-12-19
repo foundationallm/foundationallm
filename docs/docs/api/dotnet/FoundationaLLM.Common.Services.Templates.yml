@@ -1,0 +1,24 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Common.Services.Templates
+  commentId: N:FoundationaLLM.Common.Services.Templates
+  id: Templates
+  parent: FoundationaLLM.Common.Services
+  children:
+  - FoundationaLLM.Common.Services.Templates.RegexTemplatingService
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM.Common.Services.Templates
+  nameWithType: FoundationaLLM.Common.Services.Templates
+  fullName: FoundationaLLM.Common.Services.Templates
+  type: Namespace
+  assemblies:
+  - FoundationaLLM.Common
+references:
+- uid: FoundationaLLM.Common.Services.Templates.RegexTemplatingService
+  commentId: T:FoundationaLLM.Common.Services.Templates.RegexTemplatingService
+  href: FoundationaLLM.Common.Services.Templates.RegexTemplatingService.html
+  name: RegexTemplatingService
+  nameWithType: RegexTemplatingService
+  fullName: FoundationaLLM.Common.Services.Templates.RegexTemplatingService

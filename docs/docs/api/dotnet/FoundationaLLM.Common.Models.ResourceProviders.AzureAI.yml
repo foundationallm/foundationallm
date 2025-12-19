@@ -1,0 +1,101 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Common.Models.ResourceProviders.AzureAI
+  commentId: N:FoundationaLLM.Common.Models.ResourceProviders.AzureAI
+  id: AzureAI
+  parent: FoundationaLLM.Common.Models.ResourceProviders
+  children:
+  - FoundationaLLM.Common.Models.ResourceProviders.AzureAI.AzureAIAgentConversationMapping
+  - FoundationaLLM.Common.Models.ResourceProviders.AzureAI.AzureAIAgentConversationMappingUpsertResult
+  - FoundationaLLM.Common.Models.ResourceProviders.AzureAI.AzureAIAgentFileMapping
+  - FoundationaLLM.Common.Models.ResourceProviders.AzureAI.AzureAIAgentResourceBase
+  - FoundationaLLM.Common.Models.ResourceProviders.AzureAI.AzureAIProject
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM.Common.Models.ResourceProviders.AzureAI
+  nameWithType: FoundationaLLM.Common.Models.ResourceProviders.AzureAI
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.AzureAI
+  type: Namespace
+  assemblies:
+  - FoundationaLLM.Common
+references:
+- uid: FoundationaLLM.Common.Models.ResourceProviders.AzureAI.AzureAIAgentConversationMapping
+  commentId: T:FoundationaLLM.Common.Models.ResourceProviders.AzureAI.AzureAIAgentConversationMapping
+  parent: FoundationaLLM.Common.Models.ResourceProviders.AzureAI
+  href: FoundationaLLM.Common.Models.ResourceProviders.AzureAI.AzureAIAgentConversationMapping.html
+  name: AzureAIAgentConversationMapping
+  nameWithType: AzureAIAgentConversationMapping
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.AzureAI.AzureAIAgentConversationMapping
+- uid: FoundationaLLM.Common.Models.ResourceProviders.AzureAI.AzureAIAgentConversationMappingUpsertResult
+  commentId: T:FoundationaLLM.Common.Models.ResourceProviders.AzureAI.AzureAIAgentConversationMappingUpsertResult
+  href: FoundationaLLM.Common.Models.ResourceProviders.AzureAI.AzureAIAgentConversationMappingUpsertResult.html
+  name: AzureAIAgentConversationMappingUpsertResult
+  nameWithType: AzureAIAgentConversationMappingUpsertResult
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.AzureAI.AzureAIAgentConversationMappingUpsertResult
+- uid: FoundationaLLM.Common.Models.ResourceProviders.AzureAI.AzureAIAgentFileMapping
+  commentId: T:FoundationaLLM.Common.Models.ResourceProviders.AzureAI.AzureAIAgentFileMapping
+  parent: FoundationaLLM.Common.Models.ResourceProviders.AzureAI
+  href: FoundationaLLM.Common.Models.ResourceProviders.AzureAI.AzureAIAgentFileMapping.html
+  name: AzureAIAgentFileMapping
+  nameWithType: AzureAIAgentFileMapping
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.AzureAI.AzureAIAgentFileMapping
+- uid: FoundationaLLM.Common.Models.ResourceProviders.AzureAI.AzureAIAgentResourceBase
+  commentId: T:FoundationaLLM.Common.Models.ResourceProviders.AzureAI.AzureAIAgentResourceBase
+  parent: FoundationaLLM.Common.Models.ResourceProviders.AzureAI
+  href: FoundationaLLM.Common.Models.ResourceProviders.AzureAI.AzureAIAgentResourceBase.html
+  name: AzureAIAgentResourceBase
+  nameWithType: AzureAIAgentResourceBase
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.AzureAI.AzureAIAgentResourceBase
+- uid: FoundationaLLM.Common.Models.ResourceProviders.AzureAI.AzureAIProject
+  commentId: T:FoundationaLLM.Common.Models.ResourceProviders.AzureAI.AzureAIProject
+  href: FoundationaLLM.Common.Models.ResourceProviders.AzureAI.AzureAIProject.html
+  name: AzureAIProject
+  nameWithType: AzureAIProject
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.AzureAI.AzureAIProject
+- uid: FoundationaLLM.Common.Models.ResourceProviders.AzureAI
+  commentId: N:FoundationaLLM.Common.Models.ResourceProviders.AzureAI
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.ResourceProviders.AzureAI
+  nameWithType: FoundationaLLM.Common.Models.ResourceProviders.AzureAI
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.AzureAI
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders
+    name: ResourceProviders
+    href: FoundationaLLM.Common.Models.ResourceProviders.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.AzureAI
+    name: AzureAI
+    href: FoundationaLLM.Common.Models.ResourceProviders.AzureAI.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders
+    name: ResourceProviders
+    href: FoundationaLLM.Common.Models.ResourceProviders.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.AzureAI
+    name: AzureAI
+    href: FoundationaLLM.Common.Models.ResourceProviders.AzureAI.html

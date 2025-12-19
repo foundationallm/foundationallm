@@ -1,0 +1,86 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Vector
+  commentId: N:FoundationaLLM.Common.Models.ResourceProviders.Vector
+  id: Vector
+  parent: FoundationaLLM.Common.Models.ResourceProviders
+  children:
+  - FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase
+  - FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabaseType
+  - FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorStore
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM.Common.Models.ResourceProviders.Vector
+  nameWithType: FoundationaLLM.Common.Models.ResourceProviders.Vector
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Vector
+  type: Namespace
+  assemblies:
+  - FoundationaLLM.Common
+references:
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase
+  commentId: T:FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase
+  parent: FoundationaLLM.Common.Models.ResourceProviders.Vector
+  href: FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase.html
+  name: VectorDatabase
+  nameWithType: VectorDatabase
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabaseType
+  commentId: T:FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabaseType
+  parent: FoundationaLLM.Common.Models.ResourceProviders.Vector
+  href: FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabaseType.html
+  name: VectorDatabaseType
+  nameWithType: VectorDatabaseType
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabaseType
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorStore
+  commentId: T:FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorStore
+  href: FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorStore.html
+  name: VectorStore
+  nameWithType: VectorStore
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorStore
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Vector
+  commentId: N:FoundationaLLM.Common.Models.ResourceProviders.Vector
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.ResourceProviders.Vector
+  nameWithType: FoundationaLLM.Common.Models.ResourceProviders.Vector
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Vector
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders
+    name: ResourceProviders
+    href: FoundationaLLM.Common.Models.ResourceProviders.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.Vector
+    name: Vector
+    href: FoundationaLLM.Common.Models.ResourceProviders.Vector.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders
+    name: ResourceProviders
+    href: FoundationaLLM.Common.Models.ResourceProviders.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.Vector
+    name: Vector
+    href: FoundationaLLM.Common.Models.ResourceProviders.Vector.html

@@ -1,0 +1,1534 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.DataPipelineEngine.Services.DataPipelineBackgroundService
+  commentId: T:FoundationaLLM.DataPipelineEngine.Services.DataPipelineBackgroundService
+  id: DataPipelineBackgroundService
+  parent: FoundationaLLM.DataPipelineEngine.Services
+  children:
+  - FoundationaLLM.DataPipelineEngine.Services.DataPipelineBackgroundService.#ctor(System.TimeSpan,System.IServiceProvider,Microsoft.Extensions.Logging.ILogger)
+  - FoundationaLLM.DataPipelineEngine.Services.DataPipelineBackgroundService.ExecuteAsync(System.Threading.CancellationToken)
+  - FoundationaLLM.DataPipelineEngine.Services.DataPipelineBackgroundService.ExecuteAsyncInternal(System.Threading.CancellationToken)
+  - FoundationaLLM.DataPipelineEngine.Services.DataPipelineBackgroundService.InitializeAsyncInternal(System.Threading.CancellationToken)
+  - FoundationaLLM.DataPipelineEngine.Services.DataPipelineBackgroundService.ResourceProviders
+  - FoundationaLLM.DataPipelineEngine.Services.DataPipelineBackgroundService.ServiceName
+  - FoundationaLLM.DataPipelineEngine.Services.DataPipelineBackgroundService.SetResourceProviders(System.Collections.Generic.IEnumerable{FoundationaLLM.Common.Interfaces.IResourceProviderService})
+  - FoundationaLLM.DataPipelineEngine.Services.DataPipelineBackgroundService._dataPipelineResourceProvider
+  - FoundationaLLM.DataPipelineEngine.Services.DataPipelineBackgroundService._initializationTask
+  - FoundationaLLM.DataPipelineEngine.Services.DataPipelineBackgroundService._logger
+  - FoundationaLLM.DataPipelineEngine.Services.DataPipelineBackgroundService._pluginService
+  - FoundationaLLM.DataPipelineEngine.Services.DataPipelineBackgroundService._serviceProvider
+  langs:
+  - csharp
+  - vb
+  name: DataPipelineBackgroundService
+  nameWithType: DataPipelineBackgroundService
+  fullName: FoundationaLLM.DataPipelineEngine.Services.DataPipelineBackgroundService
+  type: Class
+  source:
+    remote:
+      path: src/dotnet/DataPipelineEngine/Services/DataPipelineBackgroundService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: DataPipelineBackgroundService
+    path: ../src/dotnet/DataPipelineEngine/Services/DataPipelineBackgroundService.cs
+    startLine: 16
+  assemblies:
+  - FoundationaLLM.DataPipelineEngine
+  namespace: FoundationaLLM.DataPipelineEngine.Services
+  summary: Provides capabilities for data pipeline services that run in the background.
+  example: []
+  syntax:
+    content: 'public class DataPipelineBackgroundService : BackgroundService, IHostedService, IDisposable, IResourceProviderClient'
+    content.vb: Public Class DataPipelineBackgroundService Inherits BackgroundService Implements IHostedService, IDisposable, IResourceProviderClient
+  inheritance:
+  - System.Object
+  - Microsoft.Extensions.Hosting.BackgroundService
+  derivedClasses:
+  - FoundationaLLM.DataPipelineEngine.Services.DataPipelineRunnerService
+  - FoundationaLLM.DataPipelineEngine.Services.DataPipelineTriggerService
+  implements:
+  - Microsoft.Extensions.Hosting.IHostedService
+  - System.IDisposable
+  - FoundationaLLM.Common.Interfaces.IResourceProviderClient
+  inheritedMembers:
+  - Microsoft.Extensions.Hosting.BackgroundService.Dispose
+  - Microsoft.Extensions.Hosting.BackgroundService.StartAsync(System.Threading.CancellationToken)
+  - Microsoft.Extensions.Hosting.BackgroundService.StopAsync(System.Threading.CancellationToken)
+  - Microsoft.Extensions.Hosting.BackgroundService.ExecuteTask
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+  extensionMethods:
+  - System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+- uid: FoundationaLLM.DataPipelineEngine.Services.DataPipelineBackgroundService.#ctor(System.TimeSpan,System.IServiceProvider,Microsoft.Extensions.Logging.ILogger)
+  commentId: M:FoundationaLLM.DataPipelineEngine.Services.DataPipelineBackgroundService.#ctor(System.TimeSpan,System.IServiceProvider,Microsoft.Extensions.Logging.ILogger)
+  id: '#ctor(System.TimeSpan,System.IServiceProvider,Microsoft.Extensions.Logging.ILogger)'
+  parent: FoundationaLLM.DataPipelineEngine.Services.DataPipelineBackgroundService
+  langs:
+  - csharp
+  - vb
+  name: DataPipelineBackgroundService(TimeSpan, IServiceProvider, ILogger)
+  nameWithType: DataPipelineBackgroundService.DataPipelineBackgroundService(TimeSpan, IServiceProvider, ILogger)
+  fullName: FoundationaLLM.DataPipelineEngine.Services.DataPipelineBackgroundService.DataPipelineBackgroundService(System.TimeSpan, System.IServiceProvider, Microsoft.Extensions.Logging.ILogger)
+  type: Constructor
+  source:
+    remote:
+      path: src/dotnet/DataPipelineEngine/Services/DataPipelineBackgroundService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: .ctor
+    path: ../src/dotnet/DataPipelineEngine/Services/DataPipelineBackgroundService.cs
+    startLine: 16
+  assemblies:
+  - FoundationaLLM.DataPipelineEngine
+  namespace: FoundationaLLM.DataPipelineEngine.Services
+  summary: Provides capabilities for data pipeline services that run in the background.
+  example: []
+  syntax:
+    content: public DataPipelineBackgroundService(TimeSpan executionCycleInterval, IServiceProvider serviceProvider, ILogger logger)
+    parameters:
+    - id: executionCycleInterval
+      type: System.TimeSpan
+      description: The time interval between two successive execution cycles.
+    - id: serviceProvider
+      type: System.IServiceProvider
+      description: The service collection provided by the dependency injection container.
+    - id: logger
+      type: Microsoft.Extensions.Logging.ILogger
+      description: The logger used for logging.
+    content.vb: Public Sub New(executionCycleInterval As TimeSpan, serviceProvider As IServiceProvider, logger As ILogger)
+  overload: FoundationaLLM.DataPipelineEngine.Services.DataPipelineBackgroundService.#ctor*
+  nameWithType.vb: DataPipelineBackgroundService.New(TimeSpan, IServiceProvider, ILogger)
+  fullName.vb: FoundationaLLM.DataPipelineEngine.Services.DataPipelineBackgroundService.New(System.TimeSpan, System.IServiceProvider, Microsoft.Extensions.Logging.ILogger)
+  name.vb: New(TimeSpan, IServiceProvider, ILogger)
+- uid: FoundationaLLM.DataPipelineEngine.Services.DataPipelineBackgroundService._serviceProvider
+  commentId: F:FoundationaLLM.DataPipelineEngine.Services.DataPipelineBackgroundService._serviceProvider
+  id: _serviceProvider
+  parent: FoundationaLLM.DataPipelineEngine.Services.DataPipelineBackgroundService
+  langs:
+  - csharp
+  - vb
+  name: _serviceProvider
+  nameWithType: DataPipelineBackgroundService._serviceProvider
+  fullName: FoundationaLLM.DataPipelineEngine.Services.DataPipelineBackgroundService._serviceProvider
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/DataPipelineEngine/Services/DataPipelineBackgroundService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: _serviceProvider
+    path: ../src/dotnet/DataPipelineEngine/Services/DataPipelineBackgroundService.cs
+    startLine: 23
+  assemblies:
+  - FoundationaLLM.DataPipelineEngine
+  namespace: FoundationaLLM.DataPipelineEngine.Services
+  syntax:
+    content: protected readonly IServiceProvider _serviceProvider
+    return:
+      type: System.IServiceProvider
+    content.vb: Protected ReadOnly _serviceProvider As IServiceProvider
+- uid: FoundationaLLM.DataPipelineEngine.Services.DataPipelineBackgroundService._logger
+  commentId: F:FoundationaLLM.DataPipelineEngine.Services.DataPipelineBackgroundService._logger
+  id: _logger
+  parent: FoundationaLLM.DataPipelineEngine.Services.DataPipelineBackgroundService
+  langs:
+  - csharp
+  - vb
+  name: _logger
+  nameWithType: DataPipelineBackgroundService._logger
+  fullName: FoundationaLLM.DataPipelineEngine.Services.DataPipelineBackgroundService._logger
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/DataPipelineEngine/Services/DataPipelineBackgroundService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: _logger
+    path: ../src/dotnet/DataPipelineEngine/Services/DataPipelineBackgroundService.cs
+    startLine: 24
+  assemblies:
+  - FoundationaLLM.DataPipelineEngine
+  namespace: FoundationaLLM.DataPipelineEngine.Services
+  syntax:
+    content: protected readonly ILogger _logger
+    return:
+      type: Microsoft.Extensions.Logging.ILogger
+    content.vb: Protected ReadOnly _logger As ILogger
+- uid: FoundationaLLM.DataPipelineEngine.Services.DataPipelineBackgroundService._initializationTask
+  commentId: F:FoundationaLLM.DataPipelineEngine.Services.DataPipelineBackgroundService._initializationTask
+  id: _initializationTask
+  parent: FoundationaLLM.DataPipelineEngine.Services.DataPipelineBackgroundService
+  langs:
+  - csharp
+  - vb
+  name: _initializationTask
+  nameWithType: DataPipelineBackgroundService._initializationTask
+  fullName: FoundationaLLM.DataPipelineEngine.Services.DataPipelineBackgroundService._initializationTask
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/DataPipelineEngine/Services/DataPipelineBackgroundService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: _initializationTask
+    path: ../src/dotnet/DataPipelineEngine/Services/DataPipelineBackgroundService.cs
+    startLine: 26
+  assemblies:
+  - FoundationaLLM.DataPipelineEngine
+  namespace: FoundationaLLM.DataPipelineEngine.Services
+  syntax:
+    content: protected Task<bool> _initializationTask
+    return:
+      type: System.Threading.Tasks.Task{System.Boolean}
+    content.vb: Protected _initializationTask As Task(Of Boolean)
+- uid: FoundationaLLM.DataPipelineEngine.Services.DataPipelineBackgroundService._pluginService
+  commentId: F:FoundationaLLM.DataPipelineEngine.Services.DataPipelineBackgroundService._pluginService
+  id: _pluginService
+  parent: FoundationaLLM.DataPipelineEngine.Services.DataPipelineBackgroundService
+  langs:
+  - csharp
+  - vb
+  name: _pluginService
+  nameWithType: DataPipelineBackgroundService._pluginService
+  fullName: FoundationaLLM.DataPipelineEngine.Services.DataPipelineBackgroundService._pluginService
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/DataPipelineEngine/Services/DataPipelineBackgroundService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: _pluginService
+    path: ../src/dotnet/DataPipelineEngine/Services/DataPipelineBackgroundService.cs
+    startLine: 28
+  assemblies:
+  - FoundationaLLM.DataPipelineEngine
+  namespace: FoundationaLLM.DataPipelineEngine.Services
+  syntax:
+    content: protected IPluginService _pluginService
+    return:
+      type: FoundationaLLM.Common.Interfaces.Plugins.IPluginService
+    content.vb: Protected _pluginService As IPluginService
+- uid: FoundationaLLM.DataPipelineEngine.Services.DataPipelineBackgroundService._dataPipelineResourceProvider
+  commentId: F:FoundationaLLM.DataPipelineEngine.Services.DataPipelineBackgroundService._dataPipelineResourceProvider
+  id: _dataPipelineResourceProvider
+  parent: FoundationaLLM.DataPipelineEngine.Services.DataPipelineBackgroundService
+  langs:
+  - csharp
+  - vb
+  name: _dataPipelineResourceProvider
+  nameWithType: DataPipelineBackgroundService._dataPipelineResourceProvider
+  fullName: FoundationaLLM.DataPipelineEngine.Services.DataPipelineBackgroundService._dataPipelineResourceProvider
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/DataPipelineEngine/Services/DataPipelineBackgroundService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: _dataPipelineResourceProvider
+    path: ../src/dotnet/DataPipelineEngine/Services/DataPipelineBackgroundService.cs
+    startLine: 29
+  assemblies:
+  - FoundationaLLM.DataPipelineEngine
+  namespace: FoundationaLLM.DataPipelineEngine.Services
+  syntax:
+    content: protected IResourceProviderService _dataPipelineResourceProvider
+    return:
+      type: FoundationaLLM.Common.Interfaces.IResourceProviderService
+    content.vb: Protected _dataPipelineResourceProvider As IResourceProviderService
+- uid: FoundationaLLM.DataPipelineEngine.Services.DataPipelineBackgroundService.ServiceName
+  commentId: P:FoundationaLLM.DataPipelineEngine.Services.DataPipelineBackgroundService.ServiceName
+  id: ServiceName
+  parent: FoundationaLLM.DataPipelineEngine.Services.DataPipelineBackgroundService
+  langs:
+  - csharp
+  - vb
+  name: ServiceName
+  nameWithType: DataPipelineBackgroundService.ServiceName
+  fullName: FoundationaLLM.DataPipelineEngine.Services.DataPipelineBackgroundService.ServiceName
+  type: Property
+  source:
+    remote:
+      path: src/dotnet/DataPipelineEngine/Services/DataPipelineBackgroundService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: ServiceName
+    path: ../src/dotnet/DataPipelineEngine/Services/DataPipelineBackgroundService.cs
+    startLine: 31
+  assemblies:
+  - FoundationaLLM.DataPipelineEngine
+  namespace: FoundationaLLM.DataPipelineEngine.Services
+  syntax:
+    content: protected virtual string ServiceName { get; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Protected Overridable ReadOnly Property ServiceName As String
+  overload: FoundationaLLM.DataPipelineEngine.Services.DataPipelineBackgroundService.ServiceName*
+- uid: FoundationaLLM.DataPipelineEngine.Services.DataPipelineBackgroundService.ResourceProviders
+  commentId: P:FoundationaLLM.DataPipelineEngine.Services.DataPipelineBackgroundService.ResourceProviders
+  id: ResourceProviders
+  parent: FoundationaLLM.DataPipelineEngine.Services.DataPipelineBackgroundService
+  langs:
+  - csharp
+  - vb
+  name: ResourceProviders
+  nameWithType: DataPipelineBackgroundService.ResourceProviders
+  fullName: FoundationaLLM.DataPipelineEngine.Services.DataPipelineBackgroundService.ResourceProviders
+  type: Property
+  source:
+    remote:
+      path: src/dotnet/DataPipelineEngine/Services/DataPipelineBackgroundService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: ResourceProviders
+    path: ../src/dotnet/DataPipelineEngine/Services/DataPipelineBackgroundService.cs
+    startLine: 36
+  assemblies:
+  - FoundationaLLM.DataPipelineEngine
+  namespace: FoundationaLLM.DataPipelineEngine.Services
+  summary: Sets the resource providers collection.
+  remarks: >-
+    This property must be exposed by services that cannot be injected with the resource providers.
+
+    These are background services that both provide and consume services to and from the resource providers.
+  example: []
+  syntax:
+    content: public IEnumerable<IResourceProviderService> ResourceProviders { set; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.IEnumerable{FoundationaLLM.Common.Interfaces.IResourceProviderService}
+    content.vb: Public WriteOnly Property ResourceProviders As IEnumerable(Of IResourceProviderService)
+  overload: FoundationaLLM.DataPipelineEngine.Services.DataPipelineBackgroundService.ResourceProviders*
+  implements:
+  - FoundationaLLM.Common.Interfaces.IResourceProviderClient.ResourceProviders
+- uid: FoundationaLLM.DataPipelineEngine.Services.DataPipelineBackgroundService.SetResourceProviders(System.Collections.Generic.IEnumerable{FoundationaLLM.Common.Interfaces.IResourceProviderService})
+  commentId: M:FoundationaLLM.DataPipelineEngine.Services.DataPipelineBackgroundService.SetResourceProviders(System.Collections.Generic.IEnumerable{FoundationaLLM.Common.Interfaces.IResourceProviderService})
+  id: SetResourceProviders(System.Collections.Generic.IEnumerable{FoundationaLLM.Common.Interfaces.IResourceProviderService})
+  parent: FoundationaLLM.DataPipelineEngine.Services.DataPipelineBackgroundService
+  langs:
+  - csharp
+  - vb
+  name: SetResourceProviders(IEnumerable<IResourceProviderService>)
+  nameWithType: DataPipelineBackgroundService.SetResourceProviders(IEnumerable<IResourceProviderService>)
+  fullName: FoundationaLLM.DataPipelineEngine.Services.DataPipelineBackgroundService.SetResourceProviders(System.Collections.Generic.IEnumerable<FoundationaLLM.Common.Interfaces.IResourceProviderService>)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/DataPipelineEngine/Services/DataPipelineBackgroundService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: SetResourceProviders
+    path: ../src/dotnet/DataPipelineEngine/Services/DataPipelineBackgroundService.cs
+    startLine: 79
+  assemblies:
+  - FoundationaLLM.DataPipelineEngine
+  namespace: FoundationaLLM.DataPipelineEngine.Services
+  summary: Implements additional resource provider initialization.
+  example: []
+  syntax:
+    content: protected virtual void SetResourceProviders(IEnumerable<IResourceProviderService> resourceProviders)
+    parameters:
+    - id: resourceProviders
+      type: System.Collections.Generic.IEnumerable{FoundationaLLM.Common.Interfaces.IResourceProviderService}
+      description: The collection of resource providers available in the main dependency injection container.
+    content.vb: Protected Overridable Sub SetResourceProviders(resourceProviders As IEnumerable(Of IResourceProviderService))
+  overload: FoundationaLLM.DataPipelineEngine.Services.DataPipelineBackgroundService.SetResourceProviders*
+  nameWithType.vb: DataPipelineBackgroundService.SetResourceProviders(IEnumerable(Of IResourceProviderService))
+  fullName.vb: FoundationaLLM.DataPipelineEngine.Services.DataPipelineBackgroundService.SetResourceProviders(System.Collections.Generic.IEnumerable(Of FoundationaLLM.Common.Interfaces.IResourceProviderService))
+  name.vb: SetResourceProviders(IEnumerable(Of IResourceProviderService))
+- uid: FoundationaLLM.DataPipelineEngine.Services.DataPipelineBackgroundService.InitializeAsyncInternal(System.Threading.CancellationToken)
+  commentId: M:FoundationaLLM.DataPipelineEngine.Services.DataPipelineBackgroundService.InitializeAsyncInternal(System.Threading.CancellationToken)
+  id: InitializeAsyncInternal(System.Threading.CancellationToken)
+  parent: FoundationaLLM.DataPipelineEngine.Services.DataPipelineBackgroundService
+  langs:
+  - csharp
+  - vb
+  name: InitializeAsyncInternal(CancellationToken)
+  nameWithType: DataPipelineBackgroundService.InitializeAsyncInternal(CancellationToken)
+  fullName: FoundationaLLM.DataPipelineEngine.Services.DataPipelineBackgroundService.InitializeAsyncInternal(System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/DataPipelineEngine/Services/DataPipelineBackgroundService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: InitializeAsyncInternal
+    path: ../src/dotnet/DataPipelineEngine/Services/DataPipelineBackgroundService.cs
+    startLine: 88
+  assemblies:
+  - FoundationaLLM.DataPipelineEngine
+  namespace: FoundationaLLM.DataPipelineEngine.Services
+  summary: Performs additional initialization for the background service.
+  example: []
+  syntax:
+    content: protected virtual Task InitializeAsyncInternal(CancellationToken stoppingToken)
+    parameters:
+    - id: stoppingToken
+      type: System.Threading.CancellationToken
+      description: The cancellation token used to signal a request to stop the service.
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Protected Overridable Function InitializeAsyncInternal(stoppingToken As CancellationToken) As Task
+  overload: FoundationaLLM.DataPipelineEngine.Services.DataPipelineBackgroundService.InitializeAsyncInternal*
+- uid: FoundationaLLM.DataPipelineEngine.Services.DataPipelineBackgroundService.ExecuteAsync(System.Threading.CancellationToken)
+  commentId: M:FoundationaLLM.DataPipelineEngine.Services.DataPipelineBackgroundService.ExecuteAsync(System.Threading.CancellationToken)
+  id: ExecuteAsync(System.Threading.CancellationToken)
+  parent: FoundationaLLM.DataPipelineEngine.Services.DataPipelineBackgroundService
+  langs:
+  - csharp
+  - vb
+  name: ExecuteAsync(CancellationToken)
+  nameWithType: DataPipelineBackgroundService.ExecuteAsync(CancellationToken)
+  fullName: FoundationaLLM.DataPipelineEngine.Services.DataPipelineBackgroundService.ExecuteAsync(System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/DataPipelineEngine/Services/DataPipelineBackgroundService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: ExecuteAsync
+    path: ../src/dotnet/DataPipelineEngine/Services/DataPipelineBackgroundService.cs
+    startLine: 97
+  assemblies:
+  - FoundationaLLM.DataPipelineEngine
+  namespace: FoundationaLLM.DataPipelineEngine.Services
+  summary: >-
+    This method is called when the <xref href="Microsoft.Extensions.Hosting.IHostedService" data-throw-if-not-resolved="false"></xref> starts. The implementation should return a task that represents
+
+    the lifetime of the long running operation(s) being performed.
+  remarks: See <a href="https://docs.microsoft.com/dotnet/core/extensions/workers">Worker Services in .NET</a> for implementation guidelines.
+  example: []
+  syntax:
+    content: protected override Task ExecuteAsync(CancellationToken stoppingToken)
+    parameters:
+    - id: stoppingToken
+      type: System.Threading.CancellationToken
+      description: Triggered when <xref href="Microsoft.Extensions.Hosting.IHostedService.StopAsync(System.Threading.CancellationToken)" data-throw-if-not-resolved="false"></xref> is called.
+    return:
+      type: System.Threading.Tasks.Task
+      description: A <xref href="System.Threading.Tasks.Task" data-throw-if-not-resolved="false"></xref> that represents the long running operations.
+    content.vb: Protected Overrides Function ExecuteAsync(stoppingToken As CancellationToken) As Task
+  overridden: Microsoft.Extensions.Hosting.BackgroundService.ExecuteAsync(System.Threading.CancellationToken)
+  overload: FoundationaLLM.DataPipelineEngine.Services.DataPipelineBackgroundService.ExecuteAsync*
+- uid: FoundationaLLM.DataPipelineEngine.Services.DataPipelineBackgroundService.ExecuteAsyncInternal(System.Threading.CancellationToken)
+  commentId: M:FoundationaLLM.DataPipelineEngine.Services.DataPipelineBackgroundService.ExecuteAsyncInternal(System.Threading.CancellationToken)
+  id: ExecuteAsyncInternal(System.Threading.CancellationToken)
+  parent: FoundationaLLM.DataPipelineEngine.Services.DataPipelineBackgroundService
+  langs:
+  - csharp
+  - vb
+  name: ExecuteAsyncInternal(CancellationToken)
+  nameWithType: DataPipelineBackgroundService.ExecuteAsyncInternal(CancellationToken)
+  fullName: FoundationaLLM.DataPipelineEngine.Services.DataPipelineBackgroundService.ExecuteAsyncInternal(System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/DataPipelineEngine/Services/DataPipelineBackgroundService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: ExecuteAsyncInternal
+    path: ../src/dotnet/DataPipelineEngine/Services/DataPipelineBackgroundService.cs
+    startLine: 129
+  assemblies:
+  - FoundationaLLM.DataPipelineEngine
+  namespace: FoundationaLLM.DataPipelineEngine.Services
+  summary: Executes the background service's main logic.
+  example: []
+  syntax:
+    content: protected virtual Task ExecuteAsyncInternal(CancellationToken stoppingToken)
+    parameters:
+    - id: stoppingToken
+      type: System.Threading.CancellationToken
+      description: The cancellation token used to signal a request to stop the service.
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Protected Overridable Function ExecuteAsyncInternal(stoppingToken As CancellationToken) As Task
+  overload: FoundationaLLM.DataPipelineEngine.Services.DataPipelineBackgroundService.ExecuteAsyncInternal*
+references:
+- uid: FoundationaLLM.DataPipelineEngine.Services
+  commentId: N:FoundationaLLM.DataPipelineEngine.Services
+  href: FoundationaLLM.html
+  name: FoundationaLLM.DataPipelineEngine.Services
+  nameWithType: FoundationaLLM.DataPipelineEngine.Services
+  fullName: FoundationaLLM.DataPipelineEngine.Services
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.DataPipelineEngine
+    name: DataPipelineEngine
+    href: FoundationaLLM.DataPipelineEngine.html
+  - name: .
+  - uid: FoundationaLLM.DataPipelineEngine.Services
+    name: Services
+    href: FoundationaLLM.DataPipelineEngine.Services.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.DataPipelineEngine
+    name: DataPipelineEngine
+    href: FoundationaLLM.DataPipelineEngine.html
+  - name: .
+  - uid: FoundationaLLM.DataPipelineEngine.Services
+    name: Services
+    href: FoundationaLLM.DataPipelineEngine.Services.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: Microsoft.Extensions.Hosting.BackgroundService
+  commentId: T:Microsoft.Extensions.Hosting.BackgroundService
+  parent: Microsoft.Extensions.Hosting
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.hosting.backgroundservice
+  name: BackgroundService
+  nameWithType: BackgroundService
+  fullName: Microsoft.Extensions.Hosting.BackgroundService
+- uid: Microsoft.Extensions.Hosting.IHostedService
+  commentId: T:Microsoft.Extensions.Hosting.IHostedService
+  parent: Microsoft.Extensions.Hosting
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.hosting.ihostedservice
+  name: IHostedService
+  nameWithType: IHostedService
+  fullName: Microsoft.Extensions.Hosting.IHostedService
+- uid: System.IDisposable
+  commentId: T:System.IDisposable
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.idisposable
+  name: IDisposable
+  nameWithType: IDisposable
+  fullName: System.IDisposable
+- uid: FoundationaLLM.Common.Interfaces.IResourceProviderClient
+  commentId: T:FoundationaLLM.Common.Interfaces.IResourceProviderClient
+  parent: FoundationaLLM.Common.Interfaces
+  href: FoundationaLLM.Common.Interfaces.IResourceProviderClient.html
+  name: IResourceProviderClient
+  nameWithType: IResourceProviderClient
+  fullName: FoundationaLLM.Common.Interfaces.IResourceProviderClient
+- uid: Microsoft.Extensions.Hosting.BackgroundService.Dispose
+  commentId: M:Microsoft.Extensions.Hosting.BackgroundService.Dispose
+  parent: Microsoft.Extensions.Hosting.BackgroundService
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.hosting.backgroundservice.dispose
+  name: Dispose()
+  nameWithType: BackgroundService.Dispose()
+  fullName: Microsoft.Extensions.Hosting.BackgroundService.Dispose()
+  spec.csharp:
+  - uid: Microsoft.Extensions.Hosting.BackgroundService.Dispose
+    name: Dispose
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.hosting.backgroundservice.dispose
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: Microsoft.Extensions.Hosting.BackgroundService.Dispose
+    name: Dispose
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.hosting.backgroundservice.dispose
+  - name: (
+  - name: )
+- uid: Microsoft.Extensions.Hosting.BackgroundService.StartAsync(System.Threading.CancellationToken)
+  commentId: M:Microsoft.Extensions.Hosting.BackgroundService.StartAsync(System.Threading.CancellationToken)
+  parent: Microsoft.Extensions.Hosting.BackgroundService
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.hosting.backgroundservice.startasync
+  name: StartAsync(CancellationToken)
+  nameWithType: BackgroundService.StartAsync(CancellationToken)
+  fullName: Microsoft.Extensions.Hosting.BackgroundService.StartAsync(System.Threading.CancellationToken)
+  spec.csharp:
+  - uid: Microsoft.Extensions.Hosting.BackgroundService.StartAsync(System.Threading.CancellationToken)
+    name: StartAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.hosting.backgroundservice.startasync
+  - name: (
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: Microsoft.Extensions.Hosting.BackgroundService.StartAsync(System.Threading.CancellationToken)
+    name: StartAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.hosting.backgroundservice.startasync
+  - name: (
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: Microsoft.Extensions.Hosting.BackgroundService.StopAsync(System.Threading.CancellationToken)
+  commentId: M:Microsoft.Extensions.Hosting.BackgroundService.StopAsync(System.Threading.CancellationToken)
+  parent: Microsoft.Extensions.Hosting.BackgroundService
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.hosting.backgroundservice.stopasync
+  name: StopAsync(CancellationToken)
+  nameWithType: BackgroundService.StopAsync(CancellationToken)
+  fullName: Microsoft.Extensions.Hosting.BackgroundService.StopAsync(System.Threading.CancellationToken)
+  spec.csharp:
+  - uid: Microsoft.Extensions.Hosting.BackgroundService.StopAsync(System.Threading.CancellationToken)
+    name: StopAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.hosting.backgroundservice.stopasync
+  - name: (
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: Microsoft.Extensions.Hosting.BackgroundService.StopAsync(System.Threading.CancellationToken)
+    name: StopAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.hosting.backgroundservice.stopasync
+  - name: (
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: Microsoft.Extensions.Hosting.BackgroundService.ExecuteTask
+  commentId: P:Microsoft.Extensions.Hosting.BackgroundService.ExecuteTask
+  parent: Microsoft.Extensions.Hosting.BackgroundService
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.hosting.backgroundservice.executetask
+  name: ExecuteTask
+  nameWithType: BackgroundService.ExecuteTask
+  fullName: Microsoft.Extensions.Hosting.BackgroundService.ExecuteTask
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  parent: FoundationaLLM.Core.Utils.ObjectExtensions
+  definition: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Microsoft.Extensions.Hosting
+  commentId: N:Microsoft.Extensions.Hosting
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft
+  name: Microsoft.Extensions.Hosting
+  nameWithType: Microsoft.Extensions.Hosting
+  fullName: Microsoft.Extensions.Hosting
+  spec.csharp:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Hosting
+    name: Hosting
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.hosting
+  spec.vb:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Hosting
+    name: Hosting
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.hosting
+- uid: FoundationaLLM.Common.Interfaces
+  commentId: N:FoundationaLLM.Common.Interfaces
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Interfaces
+  nameWithType: FoundationaLLM.Common.Interfaces
+  fullName: FoundationaLLM.Common.Interfaces
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Interfaces
+    name: Interfaces
+    href: FoundationaLLM.Common.Interfaces.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Interfaces
+    name: Interfaces
+    href: FoundationaLLM.Common.Interfaces.html
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  isExternal: true
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions
+  commentId: T:FoundationaLLM.Core.Utils.ObjectExtensions
+  parent: FoundationaLLM.Core.Utils
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html
+  name: ObjectExtensions
+  nameWithType: ObjectExtensions
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions
+- uid: FoundationaLLM.Core.Utils
+  commentId: N:FoundationaLLM.Core.Utils
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Core.Utils
+  nameWithType: FoundationaLLM.Core.Utils
+  fullName: FoundationaLLM.Core.Utils
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+- uid: FoundationaLLM.DataPipelineEngine.Services.DataPipelineBackgroundService.#ctor*
+  commentId: Overload:FoundationaLLM.DataPipelineEngine.Services.DataPipelineBackgroundService.#ctor
+  href: FoundationaLLM.DataPipelineEngine.Services.DataPipelineBackgroundService.html#FoundationaLLM_DataPipelineEngine_Services_DataPipelineBackgroundService__ctor_System_TimeSpan_System_IServiceProvider_Microsoft_Extensions_Logging_ILogger_
+  name: DataPipelineBackgroundService
+  nameWithType: DataPipelineBackgroundService.DataPipelineBackgroundService
+  fullName: FoundationaLLM.DataPipelineEngine.Services.DataPipelineBackgroundService.DataPipelineBackgroundService
+  nameWithType.vb: DataPipelineBackgroundService.New
+  fullName.vb: FoundationaLLM.DataPipelineEngine.Services.DataPipelineBackgroundService.New
+  name.vb: New
+- uid: System.TimeSpan
+  commentId: T:System.TimeSpan
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.timespan
+  name: TimeSpan
+  nameWithType: TimeSpan
+  fullName: System.TimeSpan
+- uid: System.IServiceProvider
+  commentId: T:System.IServiceProvider
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.iserviceprovider
+  name: IServiceProvider
+  nameWithType: IServiceProvider
+  fullName: System.IServiceProvider
+- uid: Microsoft.Extensions.Logging.ILogger
+  commentId: T:Microsoft.Extensions.Logging.ILogger
+  parent: Microsoft.Extensions.Logging
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger
+  name: ILogger
+  nameWithType: ILogger
+  fullName: Microsoft.Extensions.Logging.ILogger
+- uid: Microsoft.Extensions.Logging
+  commentId: N:Microsoft.Extensions.Logging
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft
+  name: Microsoft.Extensions.Logging
+  nameWithType: Microsoft.Extensions.Logging
+  fullName: Microsoft.Extensions.Logging
+  spec.csharp:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Logging
+    name: Logging
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging
+  spec.vb:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Logging
+    name: Logging
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging
+- uid: System.Threading.Tasks.Task{System.Boolean}
+  commentId: T:System.Threading.Tasks.Task{System.Boolean}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<bool>
+  nameWithType: Task<bool>
+  fullName: System.Threading.Tasks.Task<bool>
+  nameWithType.vb: Task(Of Boolean)
+  fullName.vb: System.Threading.Tasks.Task(Of Boolean)
+  name.vb: Task(Of Boolean)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: FoundationaLLM.Common.Interfaces.Plugins.IPluginService
+  commentId: T:FoundationaLLM.Common.Interfaces.Plugins.IPluginService
+  parent: FoundationaLLM.Common.Interfaces.Plugins
+  href: FoundationaLLM.Common.Interfaces.Plugins.IPluginService.html
+  name: IPluginService
+  nameWithType: IPluginService
+  fullName: FoundationaLLM.Common.Interfaces.Plugins.IPluginService
+- uid: FoundationaLLM.Common.Interfaces.Plugins
+  commentId: N:FoundationaLLM.Common.Interfaces.Plugins
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Interfaces.Plugins
+  nameWithType: FoundationaLLM.Common.Interfaces.Plugins
+  fullName: FoundationaLLM.Common.Interfaces.Plugins
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Interfaces
+    name: Interfaces
+    href: FoundationaLLM.Common.Interfaces.html
+  - name: .
+  - uid: FoundationaLLM.Common.Interfaces.Plugins
+    name: Plugins
+    href: FoundationaLLM.Common.Interfaces.Plugins.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Interfaces
+    name: Interfaces
+    href: FoundationaLLM.Common.Interfaces.html
+  - name: .
+  - uid: FoundationaLLM.Common.Interfaces.Plugins
+    name: Plugins
+    href: FoundationaLLM.Common.Interfaces.Plugins.html
+- uid: FoundationaLLM.Common.Interfaces.IResourceProviderService
+  commentId: T:FoundationaLLM.Common.Interfaces.IResourceProviderService
+  parent: FoundationaLLM.Common.Interfaces
+  href: FoundationaLLM.Common.Interfaces.IResourceProviderService.html
+  name: IResourceProviderService
+  nameWithType: IResourceProviderService
+  fullName: FoundationaLLM.Common.Interfaces.IResourceProviderService
+- uid: FoundationaLLM.DataPipelineEngine.Services.DataPipelineBackgroundService.ServiceName*
+  commentId: Overload:FoundationaLLM.DataPipelineEngine.Services.DataPipelineBackgroundService.ServiceName
+  href: FoundationaLLM.DataPipelineEngine.Services.DataPipelineBackgroundService.html#FoundationaLLM_DataPipelineEngine_Services_DataPipelineBackgroundService_ServiceName
+  name: ServiceName
+  nameWithType: DataPipelineBackgroundService.ServiceName
+  fullName: FoundationaLLM.DataPipelineEngine.Services.DataPipelineBackgroundService.ServiceName
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: FoundationaLLM.DataPipelineEngine.Services.DataPipelineBackgroundService.ResourceProviders*
+  commentId: Overload:FoundationaLLM.DataPipelineEngine.Services.DataPipelineBackgroundService.ResourceProviders
+  href: FoundationaLLM.DataPipelineEngine.Services.DataPipelineBackgroundService.html#FoundationaLLM_DataPipelineEngine_Services_DataPipelineBackgroundService_ResourceProviders
+  name: ResourceProviders
+  nameWithType: DataPipelineBackgroundService.ResourceProviders
+  fullName: FoundationaLLM.DataPipelineEngine.Services.DataPipelineBackgroundService.ResourceProviders
+- uid: FoundationaLLM.Common.Interfaces.IResourceProviderClient.ResourceProviders
+  commentId: P:FoundationaLLM.Common.Interfaces.IResourceProviderClient.ResourceProviders
+  parent: FoundationaLLM.Common.Interfaces.IResourceProviderClient
+  href: FoundationaLLM.Common.Interfaces.IResourceProviderClient.html#FoundationaLLM_Common_Interfaces_IResourceProviderClient_ResourceProviders
+  name: ResourceProviders
+  nameWithType: IResourceProviderClient.ResourceProviders
+  fullName: FoundationaLLM.Common.Interfaces.IResourceProviderClient.ResourceProviders
+- uid: System.Collections.Generic.IEnumerable{FoundationaLLM.Common.Interfaces.IResourceProviderService}
+  commentId: T:System.Collections.Generic.IEnumerable{FoundationaLLM.Common.Interfaces.IResourceProviderService}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IEnumerable`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<IResourceProviderService>
+  nameWithType: IEnumerable<IResourceProviderService>
+  fullName: System.Collections.Generic.IEnumerable<FoundationaLLM.Common.Interfaces.IResourceProviderService>
+  nameWithType.vb: IEnumerable(Of IResourceProviderService)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of FoundationaLLM.Common.Interfaces.IResourceProviderService)
+  name.vb: IEnumerable(Of IResourceProviderService)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - uid: FoundationaLLM.Common.Interfaces.IResourceProviderService
+    name: IResourceProviderService
+    href: FoundationaLLM.Common.Interfaces.IResourceProviderService.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FoundationaLLM.Common.Interfaces.IResourceProviderService
+    name: IResourceProviderService
+    href: FoundationaLLM.Common.Interfaces.IResourceProviderService.html
+  - name: )
+- uid: System.Collections.Generic.IEnumerable`1
+  commentId: T:System.Collections.Generic.IEnumerable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<T>
+  nameWithType: IEnumerable<T>
+  fullName: System.Collections.Generic.IEnumerable<T>
+  nameWithType.vb: IEnumerable(Of T)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of T)
+  name.vb: IEnumerable(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: FoundationaLLM.DataPipelineEngine.Services.DataPipelineBackgroundService.SetResourceProviders*
+  commentId: Overload:FoundationaLLM.DataPipelineEngine.Services.DataPipelineBackgroundService.SetResourceProviders
+  href: FoundationaLLM.DataPipelineEngine.Services.DataPipelineBackgroundService.html#FoundationaLLM_DataPipelineEngine_Services_DataPipelineBackgroundService_SetResourceProviders_System_Collections_Generic_IEnumerable_FoundationaLLM_Common_Interfaces_IResourceProviderService__
+  name: SetResourceProviders
+  nameWithType: DataPipelineBackgroundService.SetResourceProviders
+  fullName: FoundationaLLM.DataPipelineEngine.Services.DataPipelineBackgroundService.SetResourceProviders
+- uid: FoundationaLLM.DataPipelineEngine.Services.DataPipelineBackgroundService.InitializeAsyncInternal*
+  commentId: Overload:FoundationaLLM.DataPipelineEngine.Services.DataPipelineBackgroundService.InitializeAsyncInternal
+  href: FoundationaLLM.DataPipelineEngine.Services.DataPipelineBackgroundService.html#FoundationaLLM_DataPipelineEngine_Services_DataPipelineBackgroundService_InitializeAsyncInternal_System_Threading_CancellationToken_
+  name: InitializeAsyncInternal
+  nameWithType: DataPipelineBackgroundService.InitializeAsyncInternal
+  fullName: FoundationaLLM.DataPipelineEngine.Services.DataPipelineBackgroundService.InitializeAsyncInternal
+- uid: System.Threading.CancellationToken
+  commentId: T:System.Threading.CancellationToken
+  parent: System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  name: CancellationToken
+  nameWithType: CancellationToken
+  fullName: System.Threading.CancellationToken
+- uid: System.Threading.Tasks.Task
+  commentId: T:System.Threading.Tasks.Task
+  parent: System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  name: Task
+  nameWithType: Task
+  fullName: System.Threading.Tasks.Task
+- uid: System.Threading
+  commentId: N:System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading
+  nameWithType: System.Threading
+  fullName: System.Threading
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+- uid: Microsoft.Extensions.Hosting.IHostedService.StopAsync(System.Threading.CancellationToken)
+  commentId: M:Microsoft.Extensions.Hosting.IHostedService.StopAsync(System.Threading.CancellationToken)
+  parent: Microsoft.Extensions.Hosting.IHostedService
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.hosting.ihostedservice.stopasync
+  name: StopAsync(CancellationToken)
+  nameWithType: IHostedService.StopAsync(CancellationToken)
+  fullName: Microsoft.Extensions.Hosting.IHostedService.StopAsync(System.Threading.CancellationToken)
+  spec.csharp:
+  - uid: Microsoft.Extensions.Hosting.IHostedService.StopAsync(System.Threading.CancellationToken)
+    name: StopAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.hosting.ihostedservice.stopasync
+  - name: (
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: Microsoft.Extensions.Hosting.IHostedService.StopAsync(System.Threading.CancellationToken)
+    name: StopAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.hosting.ihostedservice.stopasync
+  - name: (
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: Microsoft.Extensions.Hosting.BackgroundService.ExecuteAsync(System.Threading.CancellationToken)
+  commentId: M:Microsoft.Extensions.Hosting.BackgroundService.ExecuteAsync(System.Threading.CancellationToken)
+  parent: Microsoft.Extensions.Hosting.BackgroundService
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.hosting.backgroundservice.executeasync
+  name: ExecuteAsync(CancellationToken)
+  nameWithType: BackgroundService.ExecuteAsync(CancellationToken)
+  fullName: Microsoft.Extensions.Hosting.BackgroundService.ExecuteAsync(System.Threading.CancellationToken)
+  spec.csharp:
+  - uid: Microsoft.Extensions.Hosting.BackgroundService.ExecuteAsync(System.Threading.CancellationToken)
+    name: ExecuteAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.hosting.backgroundservice.executeasync
+  - name: (
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: Microsoft.Extensions.Hosting.BackgroundService.ExecuteAsync(System.Threading.CancellationToken)
+    name: ExecuteAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.hosting.backgroundservice.executeasync
+  - name: (
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: FoundationaLLM.DataPipelineEngine.Services.DataPipelineBackgroundService.ExecuteAsync*
+  commentId: Overload:FoundationaLLM.DataPipelineEngine.Services.DataPipelineBackgroundService.ExecuteAsync
+  href: FoundationaLLM.DataPipelineEngine.Services.DataPipelineBackgroundService.html#FoundationaLLM_DataPipelineEngine_Services_DataPipelineBackgroundService_ExecuteAsync_System_Threading_CancellationToken_
+  name: ExecuteAsync
+  nameWithType: DataPipelineBackgroundService.ExecuteAsync
+  fullName: FoundationaLLM.DataPipelineEngine.Services.DataPipelineBackgroundService.ExecuteAsync
+- uid: FoundationaLLM.DataPipelineEngine.Services.DataPipelineBackgroundService.ExecuteAsyncInternal*
+  commentId: Overload:FoundationaLLM.DataPipelineEngine.Services.DataPipelineBackgroundService.ExecuteAsyncInternal
+  href: FoundationaLLM.DataPipelineEngine.Services.DataPipelineBackgroundService.html#FoundationaLLM_DataPipelineEngine_Services_DataPipelineBackgroundService_ExecuteAsyncInternal_System_Threading_CancellationToken_
+  name: ExecuteAsyncInternal
+  nameWithType: DataPipelineBackgroundService.ExecuteAsyncInternal
+  fullName: FoundationaLLM.DataPipelineEngine.Services.DataPipelineBackgroundService.ExecuteAsyncInternal

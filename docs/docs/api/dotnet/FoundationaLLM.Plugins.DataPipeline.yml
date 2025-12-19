@@ -1,0 +1,80 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Plugins.DataPipeline
+  commentId: N:FoundationaLLM.Plugins.DataPipeline
+  id: Plugins.DataPipeline
+  parent: FoundationaLLM
+  children:
+  - FoundationaLLM.Plugins.DataPipeline.Constants
+  - FoundationaLLM.Plugins.DataPipeline.PluginNames
+  - FoundationaLLM.Plugins.DataPipeline.PluginPackageManager
+  - FoundationaLLM.Plugins.DataPipeline.PluginParameterNames
+  - FoundationaLLM.Plugins.DataPipeline.Plugins
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM.Plugins.DataPipeline
+  nameWithType: FoundationaLLM.Plugins.DataPipeline
+  fullName: FoundationaLLM.Plugins.DataPipeline
+  type: Namespace
+  assemblies:
+  - FoundationaLLM.DataPipelinePlugins
+references:
+- uid: FoundationaLLM.Plugins.DataPipeline.Constants
+  commentId: N:FoundationaLLM.Plugins.DataPipeline.Constants
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Plugins.DataPipeline.Constants
+  nameWithType: FoundationaLLM.Plugins.DataPipeline.Constants
+  fullName: FoundationaLLM.Plugins.DataPipeline.Constants
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Plugins
+    name: Plugins
+    href: FoundationaLLM.Plugins.html
+  - name: .
+  - uid: FoundationaLLM.Plugins.DataPipeline
+    name: DataPipeline
+    href: FoundationaLLM.Plugins.DataPipeline.html
+  - name: .
+  - uid: FoundationaLLM.Plugins.DataPipeline.Constants
+    name: Constants
+    href: FoundationaLLM.Plugins.DataPipeline.Constants.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Plugins
+    name: Plugins
+    href: FoundationaLLM.Plugins.html
+  - name: .
+  - uid: FoundationaLLM.Plugins.DataPipeline
+    name: DataPipeline
+    href: FoundationaLLM.Plugins.DataPipeline.html
+  - name: .
+  - uid: FoundationaLLM.Plugins.DataPipeline.Constants
+    name: Constants
+    href: FoundationaLLM.Plugins.DataPipeline.Constants.html
+- uid: FoundationaLLM.Plugins.DataPipeline.Plugins
+  isExternal: true
+- uid: FoundationaLLM.Plugins.DataPipeline.PluginNames
+  commentId: T:FoundationaLLM.Plugins.DataPipeline.PluginNames
+  href: FoundationaLLM.Plugins.DataPipeline.PluginNames.html
+  name: PluginNames
+  nameWithType: PluginNames
+  fullName: FoundationaLLM.Plugins.DataPipeline.PluginNames
+- uid: FoundationaLLM.Plugins.DataPipeline.PluginPackageManager
+  commentId: T:FoundationaLLM.Plugins.DataPipeline.PluginPackageManager
+  href: FoundationaLLM.Plugins.DataPipeline.PluginPackageManager.html
+  name: PluginPackageManager
+  nameWithType: PluginPackageManager
+  fullName: FoundationaLLM.Plugins.DataPipeline.PluginPackageManager
+- uid: FoundationaLLM.Plugins.DataPipeline.PluginParameterNames
+  commentId: T:FoundationaLLM.Plugins.DataPipeline.PluginParameterNames
+  href: FoundationaLLM.Plugins.DataPipeline.PluginParameterNames.html
+  name: PluginParameterNames
+  nameWithType: PluginParameterNames
+  fullName: FoundationaLLM.Plugins.DataPipeline.PluginParameterNames

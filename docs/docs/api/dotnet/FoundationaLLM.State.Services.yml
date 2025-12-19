@@ -1,0 +1,31 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.State.Services
+  commentId: N:FoundationaLLM.State.Services
+  id: Services
+  parent: FoundationaLLM.State
+  children:
+  - FoundationaLLM.State.Services.StateCosmosDBService
+  - FoundationaLLM.State.Services.StateService
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM.State.Services
+  nameWithType: FoundationaLLM.State.Services
+  fullName: FoundationaLLM.State.Services
+  type: Namespace
+  assemblies:
+  - FoundationaLLM.State
+references:
+- uid: FoundationaLLM.State.Services.StateCosmosDBService
+  commentId: T:FoundationaLLM.State.Services.StateCosmosDBService
+  href: FoundationaLLM.State.Services.StateCosmosDBService.html
+  name: StateCosmosDBService
+  nameWithType: StateCosmosDBService
+  fullName: FoundationaLLM.State.Services.StateCosmosDBService
+- uid: FoundationaLLM.State.Services.StateService
+  commentId: T:FoundationaLLM.State.Services.StateService
+  href: FoundationaLLM.State.Services.StateService.html
+  name: StateService
+  nameWithType: StateService
+  fullName: FoundationaLLM.State.Services.StateService

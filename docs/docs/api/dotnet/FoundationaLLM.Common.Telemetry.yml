@@ -1,0 +1,24 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Common.Telemetry
+  commentId: N:FoundationaLLM.Common.Telemetry
+  id: Telemetry
+  parent: FoundationaLLM.Common
+  children:
+  - FoundationaLLM.Common.Telemetry.TelemetryActivitySources
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM.Common.Telemetry
+  nameWithType: FoundationaLLM.Common.Telemetry
+  fullName: FoundationaLLM.Common.Telemetry
+  type: Namespace
+  assemblies:
+  - FoundationaLLM.Common
+references:
+- uid: FoundationaLLM.Common.Telemetry.TelemetryActivitySources
+  commentId: T:FoundationaLLM.Common.Telemetry.TelemetryActivitySources
+  href: FoundationaLLM.Common.Telemetry.TelemetryActivitySources.html
+  name: TelemetryActivitySources
+  nameWithType: TelemetryActivitySources
+  fullName: FoundationaLLM.Common.Telemetry.TelemetryActivitySources

@@ -1,0 +1,24 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Common.Models.Configuration.AzureAI
+  commentId: N:FoundationaLLM.Common.Models.Configuration.AzureAI
+  id: AzureAI
+  parent: FoundationaLLM.Common.Models.Configuration
+  children:
+  - FoundationaLLM.Common.Models.Configuration.AzureAI.AzureAISettings
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM.Common.Models.Configuration.AzureAI
+  nameWithType: FoundationaLLM.Common.Models.Configuration.AzureAI
+  fullName: FoundationaLLM.Common.Models.Configuration.AzureAI
+  type: Namespace
+  assemblies:
+  - FoundationaLLM.Common
+references:
+- uid: FoundationaLLM.Common.Models.Configuration.AzureAI.AzureAISettings
+  commentId: T:FoundationaLLM.Common.Models.Configuration.AzureAI.AzureAISettings
+  href: FoundationaLLM.Common.Models.Configuration.AzureAI.AzureAISettings.html
+  name: AzureAISettings
+  nameWithType: AzureAISettings
+  fullName: FoundationaLLM.Common.Models.Configuration.AzureAI.AzureAISettings

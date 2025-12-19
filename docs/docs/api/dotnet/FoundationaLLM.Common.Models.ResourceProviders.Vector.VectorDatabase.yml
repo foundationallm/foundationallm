@@ -1,0 +1,1194 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase
+  commentId: T:FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase
+  id: VectorDatabase
+  parent: FoundationaLLM.Common.Models.ResourceProviders.Vector
+  children:
+  - FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase.APIEndpointConfigurationObjectId
+  - FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase.ContentPropertyName
+  - FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase.DatabaseName
+  - FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase.DatabaseType
+  - FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase.EmbeddingDimensions
+  - FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase.EmbeddingModel
+  - FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase.EmbeddingPropertyName
+  - FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase.MetadataProperties
+  - FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase.MetadataPropertyName
+  - FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase.VectorStoreIdPropertyName
+  langs:
+  - csharp
+  - vb
+  name: VectorDatabase
+  nameWithType: VectorDatabase
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase
+  type: Class
+  source:
+    remote:
+      path: src/dotnet/Common/Models/ResourceProviders/Vector/VectorDatabase.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: VectorDatabase
+    path: ../src/dotnet/Common/Models/ResourceProviders/Vector/VectorDatabase.cs
+    startLine: 7
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.ResourceProviders.Vector
+  summary: Represents a vector database resource.
+  example: []
+  syntax:
+    content: 'public class VectorDatabase : ResourceBase'
+    content.vb: Public Class VectorDatabase Inherits ResourceBase
+  inheritance:
+  - System.Object
+  - FoundationaLLM.Common.Models.ResourceProviders.ResourceName
+  - FoundationaLLM.Common.Models.ResourceProviders.ResourceBase
+  inheritedMembers:
+  - FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.ObjectId
+  - FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.ResourcePath
+  - FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.DisplayName
+  - FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.Description
+  - FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.CostCenter
+  - FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.Properties
+  - FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.CreatedOn
+  - FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.UpdatedOn
+  - FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.CreatedBy
+  - FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.UpdatedBy
+  - FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.Deleted
+  - FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.ExpirationDate
+  - FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.InheritableAuthorizableActions
+  - FoundationaLLM.Common.Models.ResourceProviders.ResourceName.Type
+  - FoundationaLLM.Common.Models.ResourceProviders.ResourceName.Name
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+  extensionMethods:
+  - System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase.DatabaseType
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase.DatabaseType
+  id: DatabaseType
+  parent: FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase
+  langs:
+  - csharp
+  - vb
+  name: DatabaseType
+  nameWithType: VectorDatabase.DatabaseType
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase.DatabaseType
+  type: Property
+  source:
+    remote:
+      path: src/dotnet/Common/Models/ResourceProviders/Vector/VectorDatabase.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: DatabaseType
+    path: ../src/dotnet/Common/Models/ResourceProviders/Vector/VectorDatabase.cs
+    startLine: 12
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.ResourceProviders.Vector
+  summary: Gets or sets the type of the vector database.
+  example: []
+  syntax:
+    content: >-
+      [JsonPropertyName("database_type")]
+
+      [JsonConverter(typeof(JsonStringEnumConverter))]
+
+      public required VectorDatabaseType DatabaseType { get; set; }
+    parameters: []
+    return:
+      type: FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabaseType
+    content.vb: >-
+      <JsonPropertyName("database_type")>
+
+      <JsonConverter(GetType(JsonStringEnumConverter))>
+
+      Public Property DatabaseType As VectorDatabaseType
+  overload: FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase.DatabaseType*
+  attributes:
+  - type: System.Text.Json.Serialization.JsonPropertyNameAttribute
+    ctor: System.Text.Json.Serialization.JsonPropertyNameAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: database_type
+  - type: System.Text.Json.Serialization.JsonConverterAttribute
+    ctor: System.Text.Json.Serialization.JsonConverterAttribute.#ctor(System.Type)
+    arguments:
+    - type: System.Type
+      value: System.Text.Json.Serialization.JsonStringEnumConverter
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase.DatabaseName
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase.DatabaseName
+  id: DatabaseName
+  parent: FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase
+  langs:
+  - csharp
+  - vb
+  name: DatabaseName
+  nameWithType: VectorDatabase.DatabaseName
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase.DatabaseName
+  type: Property
+  source:
+    remote:
+      path: src/dotnet/Common/Models/ResourceProviders/Vector/VectorDatabase.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: DatabaseName
+    path: ../src/dotnet/Common/Models/ResourceProviders/Vector/VectorDatabase.cs
+    startLine: 19
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.ResourceProviders.Vector
+  summary: Gets or sets the name of the vector database.
+  example: []
+  syntax:
+    content: >-
+      [JsonPropertyName("database_name")]
+
+      public required string DatabaseName { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: >-
+      <JsonPropertyName("database_name")>
+
+      Public Property DatabaseName As String
+  overload: FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase.DatabaseName*
+  attributes:
+  - type: System.Text.Json.Serialization.JsonPropertyNameAttribute
+    ctor: System.Text.Json.Serialization.JsonPropertyNameAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: database_name
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase.EmbeddingModel
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase.EmbeddingModel
+  id: EmbeddingModel
+  parent: FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase
+  langs:
+  - csharp
+  - vb
+  name: EmbeddingModel
+  nameWithType: VectorDatabase.EmbeddingModel
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase.EmbeddingModel
+  type: Property
+  source:
+    remote:
+      path: src/dotnet/Common/Models/ResourceProviders/Vector/VectorDatabase.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: EmbeddingModel
+    path: ../src/dotnet/Common/Models/ResourceProviders/Vector/VectorDatabase.cs
+    startLine: 25
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.ResourceProviders.Vector
+  summary: Gets or sets the embedding model used for the knowledge unit.
+  example: []
+  syntax:
+    content: >-
+      [JsonPropertyName("embedding_model")]
+
+      public required string EmbeddingModel { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: >-
+      <JsonPropertyName("embedding_model")>
+
+      Public Property EmbeddingModel As String
+  overload: FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase.EmbeddingModel*
+  attributes:
+  - type: System.Text.Json.Serialization.JsonPropertyNameAttribute
+    ctor: System.Text.Json.Serialization.JsonPropertyNameAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: embedding_model
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase.EmbeddingDimensions
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase.EmbeddingDimensions
+  id: EmbeddingDimensions
+  parent: FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase
+  langs:
+  - csharp
+  - vb
+  name: EmbeddingDimensions
+  nameWithType: VectorDatabase.EmbeddingDimensions
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase.EmbeddingDimensions
+  type: Property
+  source:
+    remote:
+      path: src/dotnet/Common/Models/ResourceProviders/Vector/VectorDatabase.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: EmbeddingDimensions
+    path: ../src/dotnet/Common/Models/ResourceProviders/Vector/VectorDatabase.cs
+    startLine: 31
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.ResourceProviders.Vector
+  summary: Gets or sets the number of dimensions for the embeddings used in the knowledge unit.
+  example: []
+  syntax:
+    content: >-
+      [JsonPropertyName("embedding_dimensions")]
+
+      public required int EmbeddingDimensions { get; set; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: >-
+      <JsonPropertyName("embedding_dimensions")>
+
+      Public Property EmbeddingDimensions As Integer
+  overload: FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase.EmbeddingDimensions*
+  attributes:
+  - type: System.Text.Json.Serialization.JsonPropertyNameAttribute
+    ctor: System.Text.Json.Serialization.JsonPropertyNameAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: embedding_dimensions
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase.EmbeddingPropertyName
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase.EmbeddingPropertyName
+  id: EmbeddingPropertyName
+  parent: FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase
+  langs:
+  - csharp
+  - vb
+  name: EmbeddingPropertyName
+  nameWithType: VectorDatabase.EmbeddingPropertyName
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase.EmbeddingPropertyName
+  type: Property
+  source:
+    remote:
+      path: src/dotnet/Common/Models/ResourceProviders/Vector/VectorDatabase.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: EmbeddingPropertyName
+    path: ../src/dotnet/Common/Models/ResourceProviders/Vector/VectorDatabase.cs
+    startLine: 37
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.ResourceProviders.Vector
+  summary: Gets or sets the name of the property that stores the embeddings.
+  example: []
+  syntax:
+    content: >-
+      [JsonPropertyName("embedding_property_name")]
+
+      public required string EmbeddingPropertyName { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: >-
+      <JsonPropertyName("embedding_property_name")>
+
+      Public Property EmbeddingPropertyName As String
+  overload: FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase.EmbeddingPropertyName*
+  attributes:
+  - type: System.Text.Json.Serialization.JsonPropertyNameAttribute
+    ctor: System.Text.Json.Serialization.JsonPropertyNameAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: embedding_property_name
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase.ContentPropertyName
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase.ContentPropertyName
+  id: ContentPropertyName
+  parent: FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase
+  langs:
+  - csharp
+  - vb
+  name: ContentPropertyName
+  nameWithType: VectorDatabase.ContentPropertyName
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase.ContentPropertyName
+  type: Property
+  source:
+    remote:
+      path: src/dotnet/Common/Models/ResourceProviders/Vector/VectorDatabase.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: ContentPropertyName
+    path: ../src/dotnet/Common/Models/ResourceProviders/Vector/VectorDatabase.cs
+    startLine: 43
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.ResourceProviders.Vector
+  summary: Gets or sets the name of the property that stores the content.
+  example: []
+  syntax:
+    content: >-
+      [JsonPropertyName("content_property_name")]
+
+      public required string ContentPropertyName { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: >-
+      <JsonPropertyName("content_property_name")>
+
+      Public Property ContentPropertyName As String
+  overload: FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase.ContentPropertyName*
+  attributes:
+  - type: System.Text.Json.Serialization.JsonPropertyNameAttribute
+    ctor: System.Text.Json.Serialization.JsonPropertyNameAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: content_property_name
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase.VectorStoreIdPropertyName
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase.VectorStoreIdPropertyName
+  id: VectorStoreIdPropertyName
+  parent: FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase
+  langs:
+  - csharp
+  - vb
+  name: VectorStoreIdPropertyName
+  nameWithType: VectorDatabase.VectorStoreIdPropertyName
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase.VectorStoreIdPropertyName
+  type: Property
+  source:
+    remote:
+      path: src/dotnet/Common/Models/ResourceProviders/Vector/VectorDatabase.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: VectorStoreIdPropertyName
+    path: ../src/dotnet/Common/Models/ResourceProviders/Vector/VectorDatabase.cs
+    startLine: 49
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.ResourceProviders.Vector
+  summary: Gets or sets the name of the property that stores the vector store identifier.
+  example: []
+  syntax:
+    content: >-
+      [JsonPropertyName("vector_store_id_property_name")]
+
+      public required string VectorStoreIdPropertyName { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: >-
+      <JsonPropertyName("vector_store_id_property_name")>
+
+      Public Property VectorStoreIdPropertyName As String
+  overload: FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase.VectorStoreIdPropertyName*
+  attributes:
+  - type: System.Text.Json.Serialization.JsonPropertyNameAttribute
+    ctor: System.Text.Json.Serialization.JsonPropertyNameAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: vector_store_id_property_name
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase.MetadataPropertyName
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase.MetadataPropertyName
+  id: MetadataPropertyName
+  parent: FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase
+  langs:
+  - csharp
+  - vb
+  name: MetadataPropertyName
+  nameWithType: VectorDatabase.MetadataPropertyName
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase.MetadataPropertyName
+  type: Property
+  source:
+    remote:
+      path: src/dotnet/Common/Models/ResourceProviders/Vector/VectorDatabase.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: MetadataPropertyName
+    path: ../src/dotnet/Common/Models/ResourceProviders/Vector/VectorDatabase.cs
+    startLine: 55
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.ResourceProviders.Vector
+  summary: Gets or sets the name of the metadata property that stores additional information about each item.
+  example: []
+  syntax:
+    content: >-
+      [JsonPropertyName("metadata_property_name")]
+
+      public required string MetadataPropertyName { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: >-
+      <JsonPropertyName("metadata_property_name")>
+
+      Public Property MetadataPropertyName As String
+  overload: FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase.MetadataPropertyName*
+  attributes:
+  - type: System.Text.Json.Serialization.JsonPropertyNameAttribute
+    ctor: System.Text.Json.Serialization.JsonPropertyNameAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: metadata_property_name
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase.MetadataProperties
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase.MetadataProperties
+  id: MetadataProperties
+  parent: FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase
+  langs:
+  - csharp
+  - vb
+  name: MetadataProperties
+  nameWithType: VectorDatabase.MetadataProperties
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase.MetadataProperties
+  type: Property
+  source:
+    remote:
+      path: src/dotnet/Common/Models/ResourceProviders/Vector/VectorDatabase.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: MetadataProperties
+    path: ../src/dotnet/Common/Models/ResourceProviders/Vector/VectorDatabase.cs
+    startLine: 66
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.ResourceProviders.Vector
+  summary: Gets or sets the list of metadata properties managed by the vector database.
+  remarks: >-
+    Must be a comma-separated list of metadata property names and types to be indexed.
+
+    The name and type must be separated by '|'.
+
+    For Azure AI Search databases, valid types are 'Edm.String', 'Edm.Int32', 'Edm.Int64','Edm.Single','Edm.Double','Edm.Boolean','Edm.DateTimeOffset'.
+  example: []
+  syntax:
+    content: >-
+      [JsonPropertyName("metadata_properties")]
+
+      public required string MetadataProperties { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: >-
+      <JsonPropertyName("metadata_properties")>
+
+      Public Property MetadataProperties As String
+  overload: FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase.MetadataProperties*
+  attributes:
+  - type: System.Text.Json.Serialization.JsonPropertyNameAttribute
+    ctor: System.Text.Json.Serialization.JsonPropertyNameAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: metadata_properties
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase.APIEndpointConfigurationObjectId
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase.APIEndpointConfigurationObjectId
+  id: APIEndpointConfigurationObjectId
+  parent: FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase
+  langs:
+  - csharp
+  - vb
+  name: APIEndpointConfigurationObjectId
+  nameWithType: VectorDatabase.APIEndpointConfigurationObjectId
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase.APIEndpointConfigurationObjectId
+  type: Property
+  source:
+    remote:
+      path: src/dotnet/Common/Models/ResourceProviders/Vector/VectorDatabase.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: APIEndpointConfigurationObjectId
+    path: ../src/dotnet/Common/Models/ResourceProviders/Vector/VectorDatabase.cs
+    startLine: 72
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.ResourceProviders.Vector
+  summary: Gets or sets the API Endpoint Configuration object identifier.
+  example: []
+  syntax:
+    content: >-
+      [JsonPropertyName("api_endpoint_configuration_object_id")]
+
+      public required string APIEndpointConfigurationObjectId { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: >-
+      <JsonPropertyName("api_endpoint_configuration_object_id")>
+
+      Public Property APIEndpointConfigurationObjectId As String
+  overload: FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase.APIEndpointConfigurationObjectId*
+  attributes:
+  - type: System.Text.Json.Serialization.JsonPropertyNameAttribute
+    ctor: System.Text.Json.Serialization.JsonPropertyNameAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: api_endpoint_configuration_object_id
+references:
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Vector
+  commentId: N:FoundationaLLM.Common.Models.ResourceProviders.Vector
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.ResourceProviders.Vector
+  nameWithType: FoundationaLLM.Common.Models.ResourceProviders.Vector
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Vector
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders
+    name: ResourceProviders
+    href: FoundationaLLM.Common.Models.ResourceProviders.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.Vector
+    name: Vector
+    href: FoundationaLLM.Common.Models.ResourceProviders.Vector.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders
+    name: ResourceProviders
+    href: FoundationaLLM.Common.Models.ResourceProviders.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.Vector
+    name: Vector
+    href: FoundationaLLM.Common.Models.ResourceProviders.Vector.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceName
+  commentId: T:FoundationaLLM.Common.Models.ResourceProviders.ResourceName
+  parent: FoundationaLLM.Common.Models.ResourceProviders
+  href: FoundationaLLM.Common.Models.ResourceProviders.ResourceName.html
+  name: ResourceName
+  nameWithType: ResourceName
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.ResourceName
+- uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase
+  commentId: T:FoundationaLLM.Common.Models.ResourceProviders.ResourceBase
+  parent: FoundationaLLM.Common.Models.ResourceProviders
+  href: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.html
+  name: ResourceBase
+  nameWithType: ResourceBase
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase
+- uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.ObjectId
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.ObjectId
+  parent: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase
+  href: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.html#FoundationaLLM_Common_Models_ResourceProviders_ResourceBase_ObjectId
+  name: ObjectId
+  nameWithType: ResourceBase.ObjectId
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.ObjectId
+- uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.ResourcePath
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.ResourcePath
+  parent: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase
+  href: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.html#FoundationaLLM_Common_Models_ResourceProviders_ResourceBase_ResourcePath
+  name: ResourcePath
+  nameWithType: ResourceBase.ResourcePath
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.ResourcePath
+- uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.DisplayName
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.DisplayName
+  parent: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase
+  href: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.html#FoundationaLLM_Common_Models_ResourceProviders_ResourceBase_DisplayName
+  name: DisplayName
+  nameWithType: ResourceBase.DisplayName
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.DisplayName
+- uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.Description
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.Description
+  parent: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase
+  href: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.html#FoundationaLLM_Common_Models_ResourceProviders_ResourceBase_Description
+  name: Description
+  nameWithType: ResourceBase.Description
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.Description
+- uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.CostCenter
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.CostCenter
+  parent: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase
+  href: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.html#FoundationaLLM_Common_Models_ResourceProviders_ResourceBase_CostCenter
+  name: CostCenter
+  nameWithType: ResourceBase.CostCenter
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.CostCenter
+- uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.Properties
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.Properties
+  parent: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase
+  href: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.html#FoundationaLLM_Common_Models_ResourceProviders_ResourceBase_Properties
+  name: Properties
+  nameWithType: ResourceBase.Properties
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.Properties
+- uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.CreatedOn
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.CreatedOn
+  parent: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase
+  href: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.html#FoundationaLLM_Common_Models_ResourceProviders_ResourceBase_CreatedOn
+  name: CreatedOn
+  nameWithType: ResourceBase.CreatedOn
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.CreatedOn
+- uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.UpdatedOn
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.UpdatedOn
+  parent: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase
+  href: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.html#FoundationaLLM_Common_Models_ResourceProviders_ResourceBase_UpdatedOn
+  name: UpdatedOn
+  nameWithType: ResourceBase.UpdatedOn
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.UpdatedOn
+- uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.CreatedBy
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.CreatedBy
+  parent: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase
+  href: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.html#FoundationaLLM_Common_Models_ResourceProviders_ResourceBase_CreatedBy
+  name: CreatedBy
+  nameWithType: ResourceBase.CreatedBy
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.CreatedBy
+- uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.UpdatedBy
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.UpdatedBy
+  parent: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase
+  href: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.html#FoundationaLLM_Common_Models_ResourceProviders_ResourceBase_UpdatedBy
+  name: UpdatedBy
+  nameWithType: ResourceBase.UpdatedBy
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.UpdatedBy
+- uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.Deleted
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.Deleted
+  parent: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase
+  href: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.html#FoundationaLLM_Common_Models_ResourceProviders_ResourceBase_Deleted
+  name: Deleted
+  nameWithType: ResourceBase.Deleted
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.Deleted
+- uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.ExpirationDate
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.ExpirationDate
+  parent: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase
+  href: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.html#FoundationaLLM_Common_Models_ResourceProviders_ResourceBase_ExpirationDate
+  name: ExpirationDate
+  nameWithType: ResourceBase.ExpirationDate
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.ExpirationDate
+- uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.InheritableAuthorizableActions
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.InheritableAuthorizableActions
+  parent: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase
+  href: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.html#FoundationaLLM_Common_Models_ResourceProviders_ResourceBase_InheritableAuthorizableActions
+  name: InheritableAuthorizableActions
+  nameWithType: ResourceBase.InheritableAuthorizableActions
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.InheritableAuthorizableActions
+- uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceName.Type
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.ResourceName.Type
+  parent: FoundationaLLM.Common.Models.ResourceProviders.ResourceName
+  href: FoundationaLLM.Common.Models.ResourceProviders.ResourceName.html#FoundationaLLM_Common_Models_ResourceProviders_ResourceName_Type
+  name: Type
+  nameWithType: ResourceName.Type
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.ResourceName.Type
+- uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceName.Name
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.ResourceName.Name
+  parent: FoundationaLLM.Common.Models.ResourceProviders.ResourceName
+  href: FoundationaLLM.Common.Models.ResourceProviders.ResourceName.html#FoundationaLLM_Common_Models_ResourceProviders_ResourceName_Name
+  name: Name
+  nameWithType: ResourceName.Name
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.ResourceName.Name
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  parent: FoundationaLLM.Core.Utils.ObjectExtensions
+  definition: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: FoundationaLLM.Common.Models.ResourceProviders
+  commentId: N:FoundationaLLM.Common.Models.ResourceProviders
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.ResourceProviders
+  nameWithType: FoundationaLLM.Common.Models.ResourceProviders
+  fullName: FoundationaLLM.Common.Models.ResourceProviders
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders
+    name: ResourceProviders
+    href: FoundationaLLM.Common.Models.ResourceProviders.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders
+    name: ResourceProviders
+    href: FoundationaLLM.Common.Models.ResourceProviders.html
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  isExternal: true
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions
+  commentId: T:FoundationaLLM.Core.Utils.ObjectExtensions
+  parent: FoundationaLLM.Core.Utils
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html
+  name: ObjectExtensions
+  nameWithType: ObjectExtensions
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions
+- uid: FoundationaLLM.Core.Utils
+  commentId: N:FoundationaLLM.Core.Utils
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Core.Utils
+  nameWithType: FoundationaLLM.Core.Utils
+  fullName: FoundationaLLM.Core.Utils
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase.DatabaseType*
+  commentId: Overload:FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase.DatabaseType
+  href: FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase.html#FoundationaLLM_Common_Models_ResourceProviders_Vector_VectorDatabase_DatabaseType
+  name: DatabaseType
+  nameWithType: VectorDatabase.DatabaseType
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase.DatabaseType
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabaseType
+  commentId: T:FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabaseType
+  parent: FoundationaLLM.Common.Models.ResourceProviders.Vector
+  href: FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabaseType.html
+  name: VectorDatabaseType
+  nameWithType: VectorDatabaseType
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabaseType
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase.DatabaseName*
+  commentId: Overload:FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase.DatabaseName
+  href: FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase.html#FoundationaLLM_Common_Models_ResourceProviders_Vector_VectorDatabase_DatabaseName
+  name: DatabaseName
+  nameWithType: VectorDatabase.DatabaseName
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase.DatabaseName
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase.EmbeddingModel*
+  commentId: Overload:FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase.EmbeddingModel
+  href: FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase.html#FoundationaLLM_Common_Models_ResourceProviders_Vector_VectorDatabase_EmbeddingModel
+  name: EmbeddingModel
+  nameWithType: VectorDatabase.EmbeddingModel
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase.EmbeddingModel
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase.EmbeddingDimensions*
+  commentId: Overload:FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase.EmbeddingDimensions
+  href: FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase.html#FoundationaLLM_Common_Models_ResourceProviders_Vector_VectorDatabase_EmbeddingDimensions
+  name: EmbeddingDimensions
+  nameWithType: VectorDatabase.EmbeddingDimensions
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase.EmbeddingDimensions
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase.EmbeddingPropertyName*
+  commentId: Overload:FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase.EmbeddingPropertyName
+  href: FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase.html#FoundationaLLM_Common_Models_ResourceProviders_Vector_VectorDatabase_EmbeddingPropertyName
+  name: EmbeddingPropertyName
+  nameWithType: VectorDatabase.EmbeddingPropertyName
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase.EmbeddingPropertyName
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase.ContentPropertyName*
+  commentId: Overload:FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase.ContentPropertyName
+  href: FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase.html#FoundationaLLM_Common_Models_ResourceProviders_Vector_VectorDatabase_ContentPropertyName
+  name: ContentPropertyName
+  nameWithType: VectorDatabase.ContentPropertyName
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase.ContentPropertyName
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase.VectorStoreIdPropertyName*
+  commentId: Overload:FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase.VectorStoreIdPropertyName
+  href: FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase.html#FoundationaLLM_Common_Models_ResourceProviders_Vector_VectorDatabase_VectorStoreIdPropertyName
+  name: VectorStoreIdPropertyName
+  nameWithType: VectorDatabase.VectorStoreIdPropertyName
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase.VectorStoreIdPropertyName
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase.MetadataPropertyName*
+  commentId: Overload:FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase.MetadataPropertyName
+  href: FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase.html#FoundationaLLM_Common_Models_ResourceProviders_Vector_VectorDatabase_MetadataPropertyName
+  name: MetadataPropertyName
+  nameWithType: VectorDatabase.MetadataPropertyName
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase.MetadataPropertyName
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase.MetadataProperties*
+  commentId: Overload:FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase.MetadataProperties
+  href: FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase.html#FoundationaLLM_Common_Models_ResourceProviders_Vector_VectorDatabase_MetadataProperties
+  name: MetadataProperties
+  nameWithType: VectorDatabase.MetadataProperties
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase.MetadataProperties
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase.APIEndpointConfigurationObjectId*
+  commentId: Overload:FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase.APIEndpointConfigurationObjectId
+  href: FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase.html#FoundationaLLM_Common_Models_ResourceProviders_Vector_VectorDatabase_APIEndpointConfigurationObjectId
+  name: APIEndpointConfigurationObjectId
+  nameWithType: VectorDatabase.APIEndpointConfigurationObjectId
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase.APIEndpointConfigurationObjectId

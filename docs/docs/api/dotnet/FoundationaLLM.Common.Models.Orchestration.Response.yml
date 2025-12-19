@@ -1,0 +1,132 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Common.Models.Orchestration.Response
+  commentId: N:FoundationaLLM.Common.Models.Orchestration.Response
+  id: Response
+  parent: FoundationaLLM.Common.Models.Orchestration
+  children:
+  - FoundationaLLM.Common.Models.Orchestration.Response.AnalysisResult
+  - FoundationaLLM.Common.Models.Orchestration.Response.CompletionResponse
+  - FoundationaLLM.Common.Models.Orchestration.Response.CompletionResponseBase
+  - FoundationaLLM.Common.Models.Orchestration.Response.ContentArtifact
+  - FoundationaLLM.Common.Models.Orchestration.Response.FilePathContentItem
+  - FoundationaLLM.Common.Models.Orchestration.Response.ImageFileMessageContentItem
+  - FoundationaLLM.Common.Models.Orchestration.Response.LLMCompletionResponse
+  - FoundationaLLM.Common.Models.Orchestration.Response.MessageContentItemBase
+  - FoundationaLLM.Common.Models.Orchestration.Response.TextMessageContentItem
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM.Common.Models.Orchestration.Response
+  nameWithType: FoundationaLLM.Common.Models.Orchestration.Response
+  fullName: FoundationaLLM.Common.Models.Orchestration.Response
+  type: Namespace
+  assemblies:
+  - FoundationaLLM.Common
+references:
+- uid: FoundationaLLM.Common.Models.Orchestration.Response.AnalysisResult
+  commentId: T:FoundationaLLM.Common.Models.Orchestration.Response.AnalysisResult
+  href: FoundationaLLM.Common.Models.Orchestration.Response.AnalysisResult.html
+  name: AnalysisResult
+  nameWithType: AnalysisResult
+  fullName: FoundationaLLM.Common.Models.Orchestration.Response.AnalysisResult
+- uid: FoundationaLLM.Common.Models.Orchestration.Response.CompletionResponse
+  commentId: T:FoundationaLLM.Common.Models.Orchestration.Response.CompletionResponse
+  parent: FoundationaLLM.Common.Models.Orchestration.Response
+  href: FoundationaLLM.Common.Models.Orchestration.Response.CompletionResponse.html
+  name: CompletionResponse
+  nameWithType: CompletionResponse
+  fullName: FoundationaLLM.Common.Models.Orchestration.Response.CompletionResponse
+- uid: FoundationaLLM.Common.Models.Orchestration.Response.CompletionResponseBase
+  commentId: T:FoundationaLLM.Common.Models.Orchestration.Response.CompletionResponseBase
+  parent: FoundationaLLM.Common.Models.Orchestration.Response
+  href: FoundationaLLM.Common.Models.Orchestration.Response.CompletionResponseBase.html
+  name: CompletionResponseBase
+  nameWithType: CompletionResponseBase
+  fullName: FoundationaLLM.Common.Models.Orchestration.Response.CompletionResponseBase
+- uid: FoundationaLLM.Common.Models.Orchestration.Response.ContentArtifact
+  commentId: T:FoundationaLLM.Common.Models.Orchestration.Response.ContentArtifact
+  href: FoundationaLLM.Common.Models.Orchestration.Response.ContentArtifact.html
+  name: ContentArtifact
+  nameWithType: ContentArtifact
+  fullName: FoundationaLLM.Common.Models.Orchestration.Response.ContentArtifact
+- uid: FoundationaLLM.Common.Models.Orchestration.Response.FilePathContentItem
+  commentId: T:FoundationaLLM.Common.Models.Orchestration.Response.FilePathContentItem
+  parent: FoundationaLLM.Common.Models.Orchestration.Response
+  href: FoundationaLLM.Common.Models.Orchestration.Response.FilePathContentItem.html
+  name: FilePathContentItem
+  nameWithType: FilePathContentItem
+  fullName: FoundationaLLM.Common.Models.Orchestration.Response.FilePathContentItem
+- uid: FoundationaLLM.Common.Models.Orchestration.Response.ImageFileMessageContentItem
+  commentId: T:FoundationaLLM.Common.Models.Orchestration.Response.ImageFileMessageContentItem
+  parent: FoundationaLLM.Common.Models.Orchestration.Response
+  href: FoundationaLLM.Common.Models.Orchestration.Response.ImageFileMessageContentItem.html
+  name: ImageFileMessageContentItem
+  nameWithType: ImageFileMessageContentItem
+  fullName: FoundationaLLM.Common.Models.Orchestration.Response.ImageFileMessageContentItem
+- uid: FoundationaLLM.Common.Models.Orchestration.Response.LLMCompletionResponse
+  commentId: T:FoundationaLLM.Common.Models.Orchestration.Response.LLMCompletionResponse
+  href: FoundationaLLM.Common.Models.Orchestration.Response.LLMCompletionResponse.html
+  name: LLMCompletionResponse
+  nameWithType: LLMCompletionResponse
+  fullName: FoundationaLLM.Common.Models.Orchestration.Response.LLMCompletionResponse
+- uid: FoundationaLLM.Common.Models.Orchestration.Response.MessageContentItemBase
+  commentId: T:FoundationaLLM.Common.Models.Orchestration.Response.MessageContentItemBase
+  parent: FoundationaLLM.Common.Models.Orchestration.Response
+  href: FoundationaLLM.Common.Models.Orchestration.Response.MessageContentItemBase.html
+  name: MessageContentItemBase
+  nameWithType: MessageContentItemBase
+  fullName: FoundationaLLM.Common.Models.Orchestration.Response.MessageContentItemBase
+- uid: FoundationaLLM.Common.Models.Orchestration.Response.TextMessageContentItem
+  commentId: T:FoundationaLLM.Common.Models.Orchestration.Response.TextMessageContentItem
+  parent: FoundationaLLM.Common.Models.Orchestration.Response
+  href: FoundationaLLM.Common.Models.Orchestration.Response.TextMessageContentItem.html
+  name: TextMessageContentItem
+  nameWithType: TextMessageContentItem
+  fullName: FoundationaLLM.Common.Models.Orchestration.Response.TextMessageContentItem
+- uid: FoundationaLLM.Common.Models.Orchestration.Response
+  commentId: N:FoundationaLLM.Common.Models.Orchestration.Response
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.Orchestration.Response
+  nameWithType: FoundationaLLM.Common.Models.Orchestration.Response
+  fullName: FoundationaLLM.Common.Models.Orchestration.Response
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Orchestration
+    name: Orchestration
+    href: FoundationaLLM.Common.Models.Orchestration.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Orchestration.Response
+    name: Response
+    href: FoundationaLLM.Common.Models.Orchestration.Response.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Orchestration
+    name: Orchestration
+    href: FoundationaLLM.Common.Models.Orchestration.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Orchestration.Response
+    name: Response
+    href: FoundationaLLM.Common.Models.Orchestration.Response.html

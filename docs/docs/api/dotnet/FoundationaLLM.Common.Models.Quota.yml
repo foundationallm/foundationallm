@@ -1,0 +1,78 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Common.Models.Quota
+  commentId: N:FoundationaLLM.Common.Models.Quota
+  id: Quota
+  parent: FoundationaLLM.Common.Models
+  children:
+  - FoundationaLLM.Common.Models.Quota.DistributedQuotaEnforcementEventData
+  - FoundationaLLM.Common.Models.Quota.QuotaDefinition
+  - FoundationaLLM.Common.Models.Quota.QuotaMetricPartitionState
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM.Common.Models.Quota
+  nameWithType: FoundationaLLM.Common.Models.Quota
+  fullName: FoundationaLLM.Common.Models.Quota
+  type: Namespace
+  assemblies:
+  - FoundationaLLM.Common
+references:
+- uid: FoundationaLLM.Common.Models.Quota.DistributedQuotaEnforcementEventData
+  commentId: T:FoundationaLLM.Common.Models.Quota.DistributedQuotaEnforcementEventData
+  href: FoundationaLLM.Common.Models.Quota.DistributedQuotaEnforcementEventData.html
+  name: DistributedQuotaEnforcementEventData
+  nameWithType: DistributedQuotaEnforcementEventData
+  fullName: FoundationaLLM.Common.Models.Quota.DistributedQuotaEnforcementEventData
+- uid: FoundationaLLM.Common.Models.Quota.QuotaDefinition
+  commentId: T:FoundationaLLM.Common.Models.Quota.QuotaDefinition
+  parent: FoundationaLLM.Common.Models.Quota
+  href: FoundationaLLM.Common.Models.Quota.QuotaDefinition.html
+  name: QuotaDefinition
+  nameWithType: QuotaDefinition
+  fullName: FoundationaLLM.Common.Models.Quota.QuotaDefinition
+- uid: FoundationaLLM.Common.Models.Quota.QuotaMetricPartitionState
+  commentId: T:FoundationaLLM.Common.Models.Quota.QuotaMetricPartitionState
+  parent: FoundationaLLM.Common.Models.Quota
+  href: FoundationaLLM.Common.Models.Quota.QuotaMetricPartitionState.html
+  name: QuotaMetricPartitionState
+  nameWithType: QuotaMetricPartitionState
+  fullName: FoundationaLLM.Common.Models.Quota.QuotaMetricPartitionState
+- uid: FoundationaLLM.Common.Models.Quota
+  commentId: N:FoundationaLLM.Common.Models.Quota
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.Quota
+  nameWithType: FoundationaLLM.Common.Models.Quota
+  fullName: FoundationaLLM.Common.Models.Quota
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Quota
+    name: Quota
+    href: FoundationaLLM.Common.Models.Quota.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Quota
+    name: Quota
+    href: FoundationaLLM.Common.Models.Quota.html

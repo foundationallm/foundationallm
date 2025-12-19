@@ -1,0 +1,24 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Common.Constants.AzureAI
+  commentId: N:FoundationaLLM.Common.Constants.AzureAI
+  id: AzureAI
+  parent: FoundationaLLM.Common.Constants
+  children:
+  - FoundationaLLM.Common.Constants.AzureAI.AzureAIAgentServiceCapabilityParameterNames
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM.Common.Constants.AzureAI
+  nameWithType: FoundationaLLM.Common.Constants.AzureAI
+  fullName: FoundationaLLM.Common.Constants.AzureAI
+  type: Namespace
+  assemblies:
+  - FoundationaLLM.Common
+references:
+- uid: FoundationaLLM.Common.Constants.AzureAI.AzureAIAgentServiceCapabilityParameterNames
+  commentId: T:FoundationaLLM.Common.Constants.AzureAI.AzureAIAgentServiceCapabilityParameterNames
+  href: FoundationaLLM.Common.Constants.AzureAI.AzureAIAgentServiceCapabilityParameterNames.html
+  name: AzureAIAgentServiceCapabilityParameterNames
+  nameWithType: AzureAIAgentServiceCapabilityParameterNames
+  fullName: FoundationaLLM.Common.Constants.AzureAI.AzureAIAgentServiceCapabilityParameterNames

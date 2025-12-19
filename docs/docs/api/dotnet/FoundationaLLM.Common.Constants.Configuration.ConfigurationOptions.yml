@@ -1,0 +1,751 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Common.Constants.Configuration.ConfigurationOptions
+  commentId: T:FoundationaLLM.Common.Constants.Configuration.ConfigurationOptions
+  id: ConfigurationOptions
+  parent: FoundationaLLM.Common.Constants.Configuration
+  children:
+  - FoundationaLLM.Common.Constants.Configuration.ConfigurationOptions.SelectForContextAPI(Microsoft.Extensions.Configuration.AzureAppConfiguration.AzureAppConfigurationOptions)
+  - FoundationaLLM.Common.Constants.Configuration.ConfigurationOptions.SelectForCoreAPI(Microsoft.Extensions.Configuration.AzureAppConfiguration.AzureAppConfigurationOptions)
+  - FoundationaLLM.Common.Constants.Configuration.ConfigurationOptions.SelectForCoreWorker(Microsoft.Extensions.Configuration.AzureAppConfiguration.AzureAppConfigurationOptions)
+  - FoundationaLLM.Common.Constants.Configuration.ConfigurationOptions.SelectForGatewayAPI(Microsoft.Extensions.Configuration.AzureAppConfiguration.AzureAppConfigurationOptions)
+  - FoundationaLLM.Common.Constants.Configuration.ConfigurationOptions.SelectForLangChainAPI(Microsoft.Extensions.Configuration.AzureAppConfiguration.AzureAppConfigurationOptions)
+  - FoundationaLLM.Common.Constants.Configuration.ConfigurationOptions.SelectForManagementAPI(Microsoft.Extensions.Configuration.AzureAppConfiguration.AzureAppConfigurationOptions)
+  - FoundationaLLM.Common.Constants.Configuration.ConfigurationOptions.SelectForManagementPortal(Microsoft.Extensions.Configuration.AzureAppConfiguration.AzureAppConfigurationOptions)
+  - FoundationaLLM.Common.Constants.Configuration.ConfigurationOptions.SelectForOrchestrationAPI(Microsoft.Extensions.Configuration.AzureAppConfiguration.AzureAppConfigurationOptions)
+  - FoundationaLLM.Common.Constants.Configuration.ConfigurationOptions.SelectForStateAPI(Microsoft.Extensions.Configuration.AzureAppConfiguration.AzureAppConfigurationOptions)
+  - FoundationaLLM.Common.Constants.Configuration.ConfigurationOptions.SelectForUserPortal(Microsoft.Extensions.Configuration.AzureAppConfiguration.AzureAppConfigurationOptions)
+  langs:
+  - csharp
+  - vb
+  name: ConfigurationOptions
+  nameWithType: ConfigurationOptions
+  fullName: FoundationaLLM.Common.Constants.Configuration.ConfigurationOptions
+  type: Class
+  source:
+    remote:
+      path: src/dotnet/Common/Templates/ConfigurationOptions.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: ConfigurationOptions
+    path: ../src/dotnet/Common/Templates/ConfigurationOptions.cs
+    startLine: 15
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.Configuration
+  summary: Defines methods to select configuration options.
+  example: []
+  syntax:
+    content: public static class ConfigurationOptions
+    content.vb: Public Module ConfigurationOptions
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: FoundationaLLM.Common.Constants.Configuration.ConfigurationOptions.SelectForManagementAPI(Microsoft.Extensions.Configuration.AzureAppConfiguration.AzureAppConfigurationOptions)
+  commentId: M:FoundationaLLM.Common.Constants.Configuration.ConfigurationOptions.SelectForManagementAPI(Microsoft.Extensions.Configuration.AzureAppConfiguration.AzureAppConfigurationOptions)
+  id: SelectForManagementAPI(Microsoft.Extensions.Configuration.AzureAppConfiguration.AzureAppConfigurationOptions)
+  parent: FoundationaLLM.Common.Constants.Configuration.ConfigurationOptions
+  langs:
+  - csharp
+  - vb
+  name: SelectForManagementAPI(AzureAppConfigurationOptions)
+  nameWithType: ConfigurationOptions.SelectForManagementAPI(AzureAppConfigurationOptions)
+  fullName: FoundationaLLM.Common.Constants.Configuration.ConfigurationOptions.SelectForManagementAPI(Microsoft.Extensions.Configuration.AzureAppConfiguration.AzureAppConfigurationOptions)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Common/Templates/ConfigurationOptions.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: SelectForManagementAPI
+    path: ../src/dotnet/Common/Templates/ConfigurationOptions.cs
+    startLine: 20
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.Configuration
+  summary: Selects configuration options for ManagementAPI.
+  example: []
+  syntax:
+    content: public static void SelectForManagementAPI(AzureAppConfigurationOptions options)
+    parameters:
+    - id: options
+      type: Microsoft.Extensions.Configuration.AzureAppConfiguration.AzureAppConfigurationOptions
+    content.vb: Public Shared Sub SelectForManagementAPI(options As AzureAppConfigurationOptions)
+  overload: FoundationaLLM.Common.Constants.Configuration.ConfigurationOptions.SelectForManagementAPI*
+- uid: FoundationaLLM.Common.Constants.Configuration.ConfigurationOptions.SelectForManagementPortal(Microsoft.Extensions.Configuration.AzureAppConfiguration.AzureAppConfigurationOptions)
+  commentId: M:FoundationaLLM.Common.Constants.Configuration.ConfigurationOptions.SelectForManagementPortal(Microsoft.Extensions.Configuration.AzureAppConfiguration.AzureAppConfigurationOptions)
+  id: SelectForManagementPortal(Microsoft.Extensions.Configuration.AzureAppConfiguration.AzureAppConfigurationOptions)
+  parent: FoundationaLLM.Common.Constants.Configuration.ConfigurationOptions
+  langs:
+  - csharp
+  - vb
+  name: SelectForManagementPortal(AzureAppConfigurationOptions)
+  nameWithType: ConfigurationOptions.SelectForManagementPortal(AzureAppConfigurationOptions)
+  fullName: FoundationaLLM.Common.Constants.Configuration.ConfigurationOptions.SelectForManagementPortal(Microsoft.Extensions.Configuration.AzureAppConfiguration.AzureAppConfigurationOptions)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Common/Templates/ConfigurationOptions.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: SelectForManagementPortal
+    path: ../src/dotnet/Common/Templates/ConfigurationOptions.cs
+    startLine: 52
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.Configuration
+  summary: Selects configuration options for ManagementPortal.
+  example: []
+  syntax:
+    content: public static void SelectForManagementPortal(AzureAppConfigurationOptions options)
+    parameters:
+    - id: options
+      type: Microsoft.Extensions.Configuration.AzureAppConfiguration.AzureAppConfigurationOptions
+    content.vb: Public Shared Sub SelectForManagementPortal(options As AzureAppConfigurationOptions)
+  overload: FoundationaLLM.Common.Constants.Configuration.ConfigurationOptions.SelectForManagementPortal*
+- uid: FoundationaLLM.Common.Constants.Configuration.ConfigurationOptions.SelectForCoreAPI(Microsoft.Extensions.Configuration.AzureAppConfiguration.AzureAppConfigurationOptions)
+  commentId: M:FoundationaLLM.Common.Constants.Configuration.ConfigurationOptions.SelectForCoreAPI(Microsoft.Extensions.Configuration.AzureAppConfiguration.AzureAppConfigurationOptions)
+  id: SelectForCoreAPI(Microsoft.Extensions.Configuration.AzureAppConfiguration.AzureAppConfigurationOptions)
+  parent: FoundationaLLM.Common.Constants.Configuration.ConfigurationOptions
+  langs:
+  - csharp
+  - vb
+  name: SelectForCoreAPI(AzureAppConfigurationOptions)
+  nameWithType: ConfigurationOptions.SelectForCoreAPI(AzureAppConfigurationOptions)
+  fullName: FoundationaLLM.Common.Constants.Configuration.ConfigurationOptions.SelectForCoreAPI(Microsoft.Extensions.Configuration.AzureAppConfiguration.AzureAppConfigurationOptions)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Common/Templates/ConfigurationOptions.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: SelectForCoreAPI
+    path: ../src/dotnet/Common/Templates/ConfigurationOptions.cs
+    startLine: 64
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.Configuration
+  summary: Selects configuration options for CoreAPI.
+  example: []
+  syntax:
+    content: public static void SelectForCoreAPI(AzureAppConfigurationOptions options)
+    parameters:
+    - id: options
+      type: Microsoft.Extensions.Configuration.AzureAppConfiguration.AzureAppConfigurationOptions
+    content.vb: Public Shared Sub SelectForCoreAPI(options As AzureAppConfigurationOptions)
+  overload: FoundationaLLM.Common.Constants.Configuration.ConfigurationOptions.SelectForCoreAPI*
+- uid: FoundationaLLM.Common.Constants.Configuration.ConfigurationOptions.SelectForCoreWorker(Microsoft.Extensions.Configuration.AzureAppConfiguration.AzureAppConfigurationOptions)
+  commentId: M:FoundationaLLM.Common.Constants.Configuration.ConfigurationOptions.SelectForCoreWorker(Microsoft.Extensions.Configuration.AzureAppConfiguration.AzureAppConfigurationOptions)
+  id: SelectForCoreWorker(Microsoft.Extensions.Configuration.AzureAppConfiguration.AzureAppConfigurationOptions)
+  parent: FoundationaLLM.Common.Constants.Configuration.ConfigurationOptions
+  langs:
+  - csharp
+  - vb
+  name: SelectForCoreWorker(AzureAppConfigurationOptions)
+  nameWithType: ConfigurationOptions.SelectForCoreWorker(AzureAppConfigurationOptions)
+  fullName: FoundationaLLM.Common.Constants.Configuration.ConfigurationOptions.SelectForCoreWorker(Microsoft.Extensions.Configuration.AzureAppConfiguration.AzureAppConfigurationOptions)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Common/Templates/ConfigurationOptions.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: SelectForCoreWorker
+    path: ../src/dotnet/Common/Templates/ConfigurationOptions.cs
+    startLine: 98
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.Configuration
+  summary: Selects configuration options for CoreWorker.
+  example: []
+  syntax:
+    content: public static void SelectForCoreWorker(AzureAppConfigurationOptions options)
+    parameters:
+    - id: options
+      type: Microsoft.Extensions.Configuration.AzureAppConfiguration.AzureAppConfigurationOptions
+    content.vb: Public Shared Sub SelectForCoreWorker(options As AzureAppConfigurationOptions)
+  overload: FoundationaLLM.Common.Constants.Configuration.ConfigurationOptions.SelectForCoreWorker*
+- uid: FoundationaLLM.Common.Constants.Configuration.ConfigurationOptions.SelectForUserPortal(Microsoft.Extensions.Configuration.AzureAppConfiguration.AzureAppConfigurationOptions)
+  commentId: M:FoundationaLLM.Common.Constants.Configuration.ConfigurationOptions.SelectForUserPortal(Microsoft.Extensions.Configuration.AzureAppConfiguration.AzureAppConfigurationOptions)
+  id: SelectForUserPortal(Microsoft.Extensions.Configuration.AzureAppConfiguration.AzureAppConfigurationOptions)
+  parent: FoundationaLLM.Common.Constants.Configuration.ConfigurationOptions
+  langs:
+  - csharp
+  - vb
+  name: SelectForUserPortal(AzureAppConfigurationOptions)
+  nameWithType: ConfigurationOptions.SelectForUserPortal(AzureAppConfigurationOptions)
+  fullName: FoundationaLLM.Common.Constants.Configuration.ConfigurationOptions.SelectForUserPortal(Microsoft.Extensions.Configuration.AzureAppConfiguration.AzureAppConfigurationOptions)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Common/Templates/ConfigurationOptions.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: SelectForUserPortal
+    path: ../src/dotnet/Common/Templates/ConfigurationOptions.cs
+    startLine: 107
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.Configuration
+  summary: Selects configuration options for UserPortal.
+  example: []
+  syntax:
+    content: public static void SelectForUserPortal(AzureAppConfigurationOptions options)
+    parameters:
+    - id: options
+      type: Microsoft.Extensions.Configuration.AzureAppConfiguration.AzureAppConfigurationOptions
+    content.vb: Public Shared Sub SelectForUserPortal(options As AzureAppConfigurationOptions)
+  overload: FoundationaLLM.Common.Constants.Configuration.ConfigurationOptions.SelectForUserPortal*
+- uid: FoundationaLLM.Common.Constants.Configuration.ConfigurationOptions.SelectForStateAPI(Microsoft.Extensions.Configuration.AzureAppConfiguration.AzureAppConfigurationOptions)
+  commentId: M:FoundationaLLM.Common.Constants.Configuration.ConfigurationOptions.SelectForStateAPI(Microsoft.Extensions.Configuration.AzureAppConfiguration.AzureAppConfigurationOptions)
+  id: SelectForStateAPI(Microsoft.Extensions.Configuration.AzureAppConfiguration.AzureAppConfigurationOptions)
+  parent: FoundationaLLM.Common.Constants.Configuration.ConfigurationOptions
+  langs:
+  - csharp
+  - vb
+  name: SelectForStateAPI(AzureAppConfigurationOptions)
+  nameWithType: ConfigurationOptions.SelectForStateAPI(AzureAppConfigurationOptions)
+  fullName: FoundationaLLM.Common.Constants.Configuration.ConfigurationOptions.SelectForStateAPI(Microsoft.Extensions.Configuration.AzureAppConfiguration.AzureAppConfigurationOptions)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Common/Templates/ConfigurationOptions.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: SelectForStateAPI
+    path: ../src/dotnet/Common/Templates/ConfigurationOptions.cs
+    startLine: 119
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.Configuration
+  summary: Selects configuration options for StateAPI.
+  example: []
+  syntax:
+    content: public static void SelectForStateAPI(AzureAppConfigurationOptions options)
+    parameters:
+    - id: options
+      type: Microsoft.Extensions.Configuration.AzureAppConfiguration.AzureAppConfigurationOptions
+    content.vb: Public Shared Sub SelectForStateAPI(options As AzureAppConfigurationOptions)
+  overload: FoundationaLLM.Common.Constants.Configuration.ConfigurationOptions.SelectForStateAPI*
+- uid: FoundationaLLM.Common.Constants.Configuration.ConfigurationOptions.SelectForGatewayAPI(Microsoft.Extensions.Configuration.AzureAppConfiguration.AzureAppConfigurationOptions)
+  commentId: M:FoundationaLLM.Common.Constants.Configuration.ConfigurationOptions.SelectForGatewayAPI(Microsoft.Extensions.Configuration.AzureAppConfiguration.AzureAppConfigurationOptions)
+  id: SelectForGatewayAPI(Microsoft.Extensions.Configuration.AzureAppConfiguration.AzureAppConfigurationOptions)
+  parent: FoundationaLLM.Common.Constants.Configuration.ConfigurationOptions
+  langs:
+  - csharp
+  - vb
+  name: SelectForGatewayAPI(AzureAppConfigurationOptions)
+  nameWithType: ConfigurationOptions.SelectForGatewayAPI(AzureAppConfigurationOptions)
+  fullName: FoundationaLLM.Common.Constants.Configuration.ConfigurationOptions.SelectForGatewayAPI(Microsoft.Extensions.Configuration.AzureAppConfiguration.AzureAppConfigurationOptions)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Common/Templates/ConfigurationOptions.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: SelectForGatewayAPI
+    path: ../src/dotnet/Common/Templates/ConfigurationOptions.cs
+    startLine: 129
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.Configuration
+  summary: Selects configuration options for GatewayAPI.
+  example: []
+  syntax:
+    content: public static void SelectForGatewayAPI(AzureAppConfigurationOptions options)
+    parameters:
+    - id: options
+      type: Microsoft.Extensions.Configuration.AzureAppConfiguration.AzureAppConfigurationOptions
+    content.vb: Public Shared Sub SelectForGatewayAPI(options As AzureAppConfigurationOptions)
+  overload: FoundationaLLM.Common.Constants.Configuration.ConfigurationOptions.SelectForGatewayAPI*
+- uid: FoundationaLLM.Common.Constants.Configuration.ConfigurationOptions.SelectForOrchestrationAPI(Microsoft.Extensions.Configuration.AzureAppConfiguration.AzureAppConfigurationOptions)
+  commentId: M:FoundationaLLM.Common.Constants.Configuration.ConfigurationOptions.SelectForOrchestrationAPI(Microsoft.Extensions.Configuration.AzureAppConfiguration.AzureAppConfigurationOptions)
+  id: SelectForOrchestrationAPI(Microsoft.Extensions.Configuration.AzureAppConfiguration.AzureAppConfigurationOptions)
+  parent: FoundationaLLM.Common.Constants.Configuration.ConfigurationOptions
+  langs:
+  - csharp
+  - vb
+  name: SelectForOrchestrationAPI(AzureAppConfigurationOptions)
+  nameWithType: ConfigurationOptions.SelectForOrchestrationAPI(AzureAppConfigurationOptions)
+  fullName: FoundationaLLM.Common.Constants.Configuration.ConfigurationOptions.SelectForOrchestrationAPI(Microsoft.Extensions.Configuration.AzureAppConfiguration.AzureAppConfigurationOptions)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Common/Templates/ConfigurationOptions.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: SelectForOrchestrationAPI
+    path: ../src/dotnet/Common/Templates/ConfigurationOptions.cs
+    startLine: 150
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.Configuration
+  summary: Selects configuration options for OrchestrationAPI.
+  example: []
+  syntax:
+    content: public static void SelectForOrchestrationAPI(AzureAppConfigurationOptions options)
+    parameters:
+    - id: options
+      type: Microsoft.Extensions.Configuration.AzureAppConfiguration.AzureAppConfigurationOptions
+    content.vb: Public Shared Sub SelectForOrchestrationAPI(options As AzureAppConfigurationOptions)
+  overload: FoundationaLLM.Common.Constants.Configuration.ConfigurationOptions.SelectForOrchestrationAPI*
+- uid: FoundationaLLM.Common.Constants.Configuration.ConfigurationOptions.SelectForContextAPI(Microsoft.Extensions.Configuration.AzureAppConfiguration.AzureAppConfigurationOptions)
+  commentId: M:FoundationaLLM.Common.Constants.Configuration.ConfigurationOptions.SelectForContextAPI(Microsoft.Extensions.Configuration.AzureAppConfiguration.AzureAppConfigurationOptions)
+  id: SelectForContextAPI(Microsoft.Extensions.Configuration.AzureAppConfiguration.AzureAppConfigurationOptions)
+  parent: FoundationaLLM.Common.Constants.Configuration.ConfigurationOptions
+  langs:
+  - csharp
+  - vb
+  name: SelectForContextAPI(AzureAppConfigurationOptions)
+  nameWithType: ConfigurationOptions.SelectForContextAPI(AzureAppConfigurationOptions)
+  fullName: FoundationaLLM.Common.Constants.Configuration.ConfigurationOptions.SelectForContextAPI(Microsoft.Extensions.Configuration.AzureAppConfiguration.AzureAppConfigurationOptions)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Common/Templates/ConfigurationOptions.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: SelectForContextAPI
+    path: ../src/dotnet/Common/Templates/ConfigurationOptions.cs
+    startLine: 174
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.Configuration
+  summary: Selects configuration options for ContextAPI.
+  example: []
+  syntax:
+    content: public static void SelectForContextAPI(AzureAppConfigurationOptions options)
+    parameters:
+    - id: options
+      type: Microsoft.Extensions.Configuration.AzureAppConfiguration.AzureAppConfigurationOptions
+    content.vb: Public Shared Sub SelectForContextAPI(options As AzureAppConfigurationOptions)
+  overload: FoundationaLLM.Common.Constants.Configuration.ConfigurationOptions.SelectForContextAPI*
+- uid: FoundationaLLM.Common.Constants.Configuration.ConfigurationOptions.SelectForLangChainAPI(Microsoft.Extensions.Configuration.AzureAppConfiguration.AzureAppConfigurationOptions)
+  commentId: M:FoundationaLLM.Common.Constants.Configuration.ConfigurationOptions.SelectForLangChainAPI(Microsoft.Extensions.Configuration.AzureAppConfiguration.AzureAppConfigurationOptions)
+  id: SelectForLangChainAPI(Microsoft.Extensions.Configuration.AzureAppConfiguration.AzureAppConfigurationOptions)
+  parent: FoundationaLLM.Common.Constants.Configuration.ConfigurationOptions
+  langs:
+  - csharp
+  - vb
+  name: SelectForLangChainAPI(AzureAppConfigurationOptions)
+  nameWithType: ConfigurationOptions.SelectForLangChainAPI(AzureAppConfigurationOptions)
+  fullName: FoundationaLLM.Common.Constants.Configuration.ConfigurationOptions.SelectForLangChainAPI(Microsoft.Extensions.Configuration.AzureAppConfiguration.AzureAppConfigurationOptions)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Common/Templates/ConfigurationOptions.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: SelectForLangChainAPI
+    path: ../src/dotnet/Common/Templates/ConfigurationOptions.cs
+    startLine: 195
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.Configuration
+  summary: Selects configuration options for LangChainAPI.
+  example: []
+  syntax:
+    content: public static void SelectForLangChainAPI(AzureAppConfigurationOptions options)
+    parameters:
+    - id: options
+      type: Microsoft.Extensions.Configuration.AzureAppConfiguration.AzureAppConfigurationOptions
+    content.vb: Public Shared Sub SelectForLangChainAPI(options As AzureAppConfigurationOptions)
+  overload: FoundationaLLM.Common.Constants.Configuration.ConfigurationOptions.SelectForLangChainAPI*
+references:
+- uid: FoundationaLLM.Common.Constants.Configuration
+  commentId: N:FoundationaLLM.Common.Constants.Configuration
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Constants.Configuration
+  nameWithType: FoundationaLLM.Common.Constants.Configuration
+  fullName: FoundationaLLM.Common.Constants.Configuration
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Constants
+    name: Constants
+    href: FoundationaLLM.Common.Constants.html
+  - name: .
+  - uid: FoundationaLLM.Common.Constants.Configuration
+    name: Configuration
+    href: FoundationaLLM.Common.Constants.Configuration.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Constants
+    name: Constants
+    href: FoundationaLLM.Common.Constants.html
+  - name: .
+  - uid: FoundationaLLM.Common.Constants.Configuration
+    name: Configuration
+    href: FoundationaLLM.Common.Constants.Configuration.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: FoundationaLLM.Common.Constants.Configuration.ConfigurationOptions.SelectForManagementAPI*
+  commentId: Overload:FoundationaLLM.Common.Constants.Configuration.ConfigurationOptions.SelectForManagementAPI
+  href: FoundationaLLM.Common.Constants.Configuration.ConfigurationOptions.html#FoundationaLLM_Common_Constants_Configuration_ConfigurationOptions_SelectForManagementAPI_Microsoft_Extensions_Configuration_AzureAppConfiguration_AzureAppConfigurationOptions_
+  name: SelectForManagementAPI
+  nameWithType: ConfigurationOptions.SelectForManagementAPI
+  fullName: FoundationaLLM.Common.Constants.Configuration.ConfigurationOptions.SelectForManagementAPI
+- uid: Microsoft.Extensions.Configuration.AzureAppConfiguration.AzureAppConfigurationOptions
+  commentId: T:Microsoft.Extensions.Configuration.AzureAppConfiguration.AzureAppConfigurationOptions
+  parent: Microsoft.Extensions.Configuration.AzureAppConfiguration
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.configuration.azureappconfiguration.azureappconfigurationoptions
+  name: AzureAppConfigurationOptions
+  nameWithType: AzureAppConfigurationOptions
+  fullName: Microsoft.Extensions.Configuration.AzureAppConfiguration.AzureAppConfigurationOptions
+- uid: Microsoft.Extensions.Configuration.AzureAppConfiguration
+  commentId: N:Microsoft.Extensions.Configuration.AzureAppConfiguration
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft
+  name: Microsoft.Extensions.Configuration.AzureAppConfiguration
+  nameWithType: Microsoft.Extensions.Configuration.AzureAppConfiguration
+  fullName: Microsoft.Extensions.Configuration.AzureAppConfiguration
+  spec.csharp:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Configuration
+    name: Configuration
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.configuration
+  - name: .
+  - uid: Microsoft.Extensions.Configuration.AzureAppConfiguration
+    name: AzureAppConfiguration
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.configuration.azureappconfiguration
+  spec.vb:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Configuration
+    name: Configuration
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.configuration
+  - name: .
+  - uid: Microsoft.Extensions.Configuration.AzureAppConfiguration
+    name: AzureAppConfiguration
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.configuration.azureappconfiguration
+- uid: FoundationaLLM.Common.Constants.Configuration.ConfigurationOptions.SelectForManagementPortal*
+  commentId: Overload:FoundationaLLM.Common.Constants.Configuration.ConfigurationOptions.SelectForManagementPortal
+  href: FoundationaLLM.Common.Constants.Configuration.ConfigurationOptions.html#FoundationaLLM_Common_Constants_Configuration_ConfigurationOptions_SelectForManagementPortal_Microsoft_Extensions_Configuration_AzureAppConfiguration_AzureAppConfigurationOptions_
+  name: SelectForManagementPortal
+  nameWithType: ConfigurationOptions.SelectForManagementPortal
+  fullName: FoundationaLLM.Common.Constants.Configuration.ConfigurationOptions.SelectForManagementPortal
+- uid: FoundationaLLM.Common.Constants.Configuration.ConfigurationOptions.SelectForCoreAPI*
+  commentId: Overload:FoundationaLLM.Common.Constants.Configuration.ConfigurationOptions.SelectForCoreAPI
+  href: FoundationaLLM.Common.Constants.Configuration.ConfigurationOptions.html#FoundationaLLM_Common_Constants_Configuration_ConfigurationOptions_SelectForCoreAPI_Microsoft_Extensions_Configuration_AzureAppConfiguration_AzureAppConfigurationOptions_
+  name: SelectForCoreAPI
+  nameWithType: ConfigurationOptions.SelectForCoreAPI
+  fullName: FoundationaLLM.Common.Constants.Configuration.ConfigurationOptions.SelectForCoreAPI
+- uid: FoundationaLLM.Common.Constants.Configuration.ConfigurationOptions.SelectForCoreWorker*
+  commentId: Overload:FoundationaLLM.Common.Constants.Configuration.ConfigurationOptions.SelectForCoreWorker
+  href: FoundationaLLM.Common.Constants.Configuration.ConfigurationOptions.html#FoundationaLLM_Common_Constants_Configuration_ConfigurationOptions_SelectForCoreWorker_Microsoft_Extensions_Configuration_AzureAppConfiguration_AzureAppConfigurationOptions_
+  name: SelectForCoreWorker
+  nameWithType: ConfigurationOptions.SelectForCoreWorker
+  fullName: FoundationaLLM.Common.Constants.Configuration.ConfigurationOptions.SelectForCoreWorker
+- uid: FoundationaLLM.Common.Constants.Configuration.ConfigurationOptions.SelectForUserPortal*
+  commentId: Overload:FoundationaLLM.Common.Constants.Configuration.ConfigurationOptions.SelectForUserPortal
+  href: FoundationaLLM.Common.Constants.Configuration.ConfigurationOptions.html#FoundationaLLM_Common_Constants_Configuration_ConfigurationOptions_SelectForUserPortal_Microsoft_Extensions_Configuration_AzureAppConfiguration_AzureAppConfigurationOptions_
+  name: SelectForUserPortal
+  nameWithType: ConfigurationOptions.SelectForUserPortal
+  fullName: FoundationaLLM.Common.Constants.Configuration.ConfigurationOptions.SelectForUserPortal
+- uid: FoundationaLLM.Common.Constants.Configuration.ConfigurationOptions.SelectForStateAPI*
+  commentId: Overload:FoundationaLLM.Common.Constants.Configuration.ConfigurationOptions.SelectForStateAPI
+  href: FoundationaLLM.Common.Constants.Configuration.ConfigurationOptions.html#FoundationaLLM_Common_Constants_Configuration_ConfigurationOptions_SelectForStateAPI_Microsoft_Extensions_Configuration_AzureAppConfiguration_AzureAppConfigurationOptions_
+  name: SelectForStateAPI
+  nameWithType: ConfigurationOptions.SelectForStateAPI
+  fullName: FoundationaLLM.Common.Constants.Configuration.ConfigurationOptions.SelectForStateAPI
+- uid: FoundationaLLM.Common.Constants.Configuration.ConfigurationOptions.SelectForGatewayAPI*
+  commentId: Overload:FoundationaLLM.Common.Constants.Configuration.ConfigurationOptions.SelectForGatewayAPI
+  href: FoundationaLLM.Common.Constants.Configuration.ConfigurationOptions.html#FoundationaLLM_Common_Constants_Configuration_ConfigurationOptions_SelectForGatewayAPI_Microsoft_Extensions_Configuration_AzureAppConfiguration_AzureAppConfigurationOptions_
+  name: SelectForGatewayAPI
+  nameWithType: ConfigurationOptions.SelectForGatewayAPI
+  fullName: FoundationaLLM.Common.Constants.Configuration.ConfigurationOptions.SelectForGatewayAPI
+- uid: FoundationaLLM.Common.Constants.Configuration.ConfigurationOptions.SelectForOrchestrationAPI*
+  commentId: Overload:FoundationaLLM.Common.Constants.Configuration.ConfigurationOptions.SelectForOrchestrationAPI
+  href: FoundationaLLM.Common.Constants.Configuration.ConfigurationOptions.html#FoundationaLLM_Common_Constants_Configuration_ConfigurationOptions_SelectForOrchestrationAPI_Microsoft_Extensions_Configuration_AzureAppConfiguration_AzureAppConfigurationOptions_
+  name: SelectForOrchestrationAPI
+  nameWithType: ConfigurationOptions.SelectForOrchestrationAPI
+  fullName: FoundationaLLM.Common.Constants.Configuration.ConfigurationOptions.SelectForOrchestrationAPI
+- uid: FoundationaLLM.Common.Constants.Configuration.ConfigurationOptions.SelectForContextAPI*
+  commentId: Overload:FoundationaLLM.Common.Constants.Configuration.ConfigurationOptions.SelectForContextAPI
+  href: FoundationaLLM.Common.Constants.Configuration.ConfigurationOptions.html#FoundationaLLM_Common_Constants_Configuration_ConfigurationOptions_SelectForContextAPI_Microsoft_Extensions_Configuration_AzureAppConfiguration_AzureAppConfigurationOptions_
+  name: SelectForContextAPI
+  nameWithType: ConfigurationOptions.SelectForContextAPI
+  fullName: FoundationaLLM.Common.Constants.Configuration.ConfigurationOptions.SelectForContextAPI
+- uid: FoundationaLLM.Common.Constants.Configuration.ConfigurationOptions.SelectForLangChainAPI*
+  commentId: Overload:FoundationaLLM.Common.Constants.Configuration.ConfigurationOptions.SelectForLangChainAPI
+  href: FoundationaLLM.Common.Constants.Configuration.ConfigurationOptions.html#FoundationaLLM_Common_Constants_Configuration_ConfigurationOptions_SelectForLangChainAPI_Microsoft_Extensions_Configuration_AzureAppConfiguration_AzureAppConfigurationOptions_
+  name: SelectForLangChainAPI
+  nameWithType: ConfigurationOptions.SelectForLangChainAPI
+  fullName: FoundationaLLM.Common.Constants.Configuration.ConfigurationOptions.SelectForLangChainAPI

@@ -1,0 +1,883 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Common.Constants
+  commentId: N:FoundationaLLM.Common.Constants
+  id: Constants
+  parent: FoundationaLLM.Common
+  children:
+  - FoundationaLLM.Common.Constants.Agents
+  - FoundationaLLM.Common.Constants.Authentication
+  - FoundationaLLM.Common.Constants.Authorization
+  - FoundationaLLM.Common.Constants.AuthorizationClaims
+  - FoundationaLLM.Common.Constants.AzureAI
+  - FoundationaLLM.Common.Constants.AzureCosmosDBContainers
+  - FoundationaLLM.Common.Constants.Configuration
+  - FoundationaLLM.Common.Constants.ContentTypeMappings
+  - FoundationaLLM.Common.Constants.Context
+  - FoundationaLLM.Common.Constants.CorsPolicyNames
+  - FoundationaLLM.Common.Constants.DataPipelines
+  - FoundationaLLM.Common.Constants.DataSource
+  - FoundationaLLM.Common.Constants.Events
+  - FoundationaLLM.Common.Constants.FileExtensions
+  - FoundationaLLM.Common.Constants.GatekeeperOptionNames
+  - FoundationaLLM.Common.Constants.Gateway
+  - FoundationaLLM.Common.Constants.HttpClientFactoryServiceKeyNames
+  - FoundationaLLM.Common.Constants.HttpClientNames
+  - FoundationaLLM.Common.Constants.HttpFormDataKeys
+  - FoundationaLLM.Common.Constants.HttpHeaders
+  - FoundationaLLM.Common.Constants.Instance
+  - FoundationaLLM.Common.Constants.LLMOrchestrationServiceNames
+  - FoundationaLLM.Common.Constants.OpenAI
+  - FoundationaLLM.Common.Constants.Orchestration
+  - FoundationaLLM.Common.Constants.Participants
+  - FoundationaLLM.Common.Constants.Plugins
+  - FoundationaLLM.Common.Constants.PrincipalTypes
+  - FoundationaLLM.Common.Constants.Quota
+  - FoundationaLLM.Common.Constants.ResourceProviders
+  - FoundationaLLM.Common.Constants.ServiceNames
+  - FoundationaLLM.Common.Constants.ServiceStatuses
+  - FoundationaLLM.Common.Constants.StorageNames
+  - FoundationaLLM.Common.Constants.Swagger
+  - FoundationaLLM.Common.Constants.Telemetry
+  - FoundationaLLM.Common.Constants.Templates
+  - FoundationaLLM.Common.Constants.UserProfileFlags
+  - FoundationaLLM.Common.Constants.VectorizationSteps
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM.Common.Constants
+  nameWithType: FoundationaLLM.Common.Constants
+  fullName: FoundationaLLM.Common.Constants
+  type: Namespace
+  assemblies:
+  - FoundationaLLM.Common
+references:
+- uid: FoundationaLLM.Common.Constants.Agents
+  commentId: N:FoundationaLLM.Common.Constants.Agents
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Constants.Agents
+  nameWithType: FoundationaLLM.Common.Constants.Agents
+  fullName: FoundationaLLM.Common.Constants.Agents
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Constants
+    name: Constants
+    href: FoundationaLLM.Common.Constants.html
+  - name: .
+  - uid: FoundationaLLM.Common.Constants.Agents
+    name: Agents
+    href: FoundationaLLM.Common.Constants.Agents.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Constants
+    name: Constants
+    href: FoundationaLLM.Common.Constants.html
+  - name: .
+  - uid: FoundationaLLM.Common.Constants.Agents
+    name: Agents
+    href: FoundationaLLM.Common.Constants.Agents.html
+- uid: FoundationaLLM.Common.Constants.Authentication
+  commentId: N:FoundationaLLM.Common.Constants.Authentication
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Constants.Authentication
+  nameWithType: FoundationaLLM.Common.Constants.Authentication
+  fullName: FoundationaLLM.Common.Constants.Authentication
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Constants
+    name: Constants
+    href: FoundationaLLM.Common.Constants.html
+  - name: .
+  - uid: FoundationaLLM.Common.Constants.Authentication
+    name: Authentication
+    href: FoundationaLLM.Common.Constants.Authentication.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Constants
+    name: Constants
+    href: FoundationaLLM.Common.Constants.html
+  - name: .
+  - uid: FoundationaLLM.Common.Constants.Authentication
+    name: Authentication
+    href: FoundationaLLM.Common.Constants.Authentication.html
+- uid: FoundationaLLM.Common.Constants.Authorization
+  commentId: N:FoundationaLLM.Common.Constants.Authorization
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Constants.Authorization
+  nameWithType: FoundationaLLM.Common.Constants.Authorization
+  fullName: FoundationaLLM.Common.Constants.Authorization
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Constants
+    name: Constants
+    href: FoundationaLLM.Common.Constants.html
+  - name: .
+  - uid: FoundationaLLM.Common.Constants.Authorization
+    name: Authorization
+    href: FoundationaLLM.Common.Constants.Authorization.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Constants
+    name: Constants
+    href: FoundationaLLM.Common.Constants.html
+  - name: .
+  - uid: FoundationaLLM.Common.Constants.Authorization
+    name: Authorization
+    href: FoundationaLLM.Common.Constants.Authorization.html
+- uid: FoundationaLLM.Common.Constants.AzureAI
+  commentId: N:FoundationaLLM.Common.Constants.AzureAI
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Constants.AzureAI
+  nameWithType: FoundationaLLM.Common.Constants.AzureAI
+  fullName: FoundationaLLM.Common.Constants.AzureAI
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Constants
+    name: Constants
+    href: FoundationaLLM.Common.Constants.html
+  - name: .
+  - uid: FoundationaLLM.Common.Constants.AzureAI
+    name: AzureAI
+    href: FoundationaLLM.Common.Constants.AzureAI.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Constants
+    name: Constants
+    href: FoundationaLLM.Common.Constants.html
+  - name: .
+  - uid: FoundationaLLM.Common.Constants.AzureAI
+    name: AzureAI
+    href: FoundationaLLM.Common.Constants.AzureAI.html
+- uid: FoundationaLLM.Common.Constants.Configuration
+  commentId: N:FoundationaLLM.Common.Constants.Configuration
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Constants.Configuration
+  nameWithType: FoundationaLLM.Common.Constants.Configuration
+  fullName: FoundationaLLM.Common.Constants.Configuration
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Constants
+    name: Constants
+    href: FoundationaLLM.Common.Constants.html
+  - name: .
+  - uid: FoundationaLLM.Common.Constants.Configuration
+    name: Configuration
+    href: FoundationaLLM.Common.Constants.Configuration.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Constants
+    name: Constants
+    href: FoundationaLLM.Common.Constants.html
+  - name: .
+  - uid: FoundationaLLM.Common.Constants.Configuration
+    name: Configuration
+    href: FoundationaLLM.Common.Constants.Configuration.html
+- uid: FoundationaLLM.Common.Constants.Context
+  commentId: N:FoundationaLLM.Common.Constants.Context
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Constants.Context
+  nameWithType: FoundationaLLM.Common.Constants.Context
+  fullName: FoundationaLLM.Common.Constants.Context
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Constants
+    name: Constants
+    href: FoundationaLLM.Common.Constants.html
+  - name: .
+  - uid: FoundationaLLM.Common.Constants.Context
+    name: Context
+    href: FoundationaLLM.Common.Constants.Context.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Constants
+    name: Constants
+    href: FoundationaLLM.Common.Constants.html
+  - name: .
+  - uid: FoundationaLLM.Common.Constants.Context
+    name: Context
+    href: FoundationaLLM.Common.Constants.Context.html
+- uid: FoundationaLLM.Common.Constants.DataPipelines
+  commentId: N:FoundationaLLM.Common.Constants.DataPipelines
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Constants.DataPipelines
+  nameWithType: FoundationaLLM.Common.Constants.DataPipelines
+  fullName: FoundationaLLM.Common.Constants.DataPipelines
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Constants
+    name: Constants
+    href: FoundationaLLM.Common.Constants.html
+  - name: .
+  - uid: FoundationaLLM.Common.Constants.DataPipelines
+    name: DataPipelines
+    href: FoundationaLLM.Common.Constants.DataPipelines.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Constants
+    name: Constants
+    href: FoundationaLLM.Common.Constants.html
+  - name: .
+  - uid: FoundationaLLM.Common.Constants.DataPipelines
+    name: DataPipelines
+    href: FoundationaLLM.Common.Constants.DataPipelines.html
+- uid: FoundationaLLM.Common.Constants.DataSource
+  commentId: N:FoundationaLLM.Common.Constants.DataSource
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Constants.DataSource
+  nameWithType: FoundationaLLM.Common.Constants.DataSource
+  fullName: FoundationaLLM.Common.Constants.DataSource
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Constants
+    name: Constants
+    href: FoundationaLLM.Common.Constants.html
+  - name: .
+  - uid: FoundationaLLM.Common.Constants.DataSource
+    name: DataSource
+    href: FoundationaLLM.Common.Constants.DataSource.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Constants
+    name: Constants
+    href: FoundationaLLM.Common.Constants.html
+  - name: .
+  - uid: FoundationaLLM.Common.Constants.DataSource
+    name: DataSource
+    href: FoundationaLLM.Common.Constants.DataSource.html
+- uid: FoundationaLLM.Common.Constants.Events
+  commentId: N:FoundationaLLM.Common.Constants.Events
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Constants.Events
+  nameWithType: FoundationaLLM.Common.Constants.Events
+  fullName: FoundationaLLM.Common.Constants.Events
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Constants
+    name: Constants
+    href: FoundationaLLM.Common.Constants.html
+  - name: .
+  - uid: FoundationaLLM.Common.Constants.Events
+    name: Events
+    href: FoundationaLLM.Common.Constants.Events.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Constants
+    name: Constants
+    href: FoundationaLLM.Common.Constants.html
+  - name: .
+  - uid: FoundationaLLM.Common.Constants.Events
+    name: Events
+    href: FoundationaLLM.Common.Constants.Events.html
+- uid: FoundationaLLM.Common.Constants.Gateway
+  commentId: N:FoundationaLLM.Common.Constants.Gateway
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Constants.Gateway
+  nameWithType: FoundationaLLM.Common.Constants.Gateway
+  fullName: FoundationaLLM.Common.Constants.Gateway
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Constants
+    name: Constants
+    href: FoundationaLLM.Common.Constants.html
+  - name: .
+  - uid: FoundationaLLM.Common.Constants.Gateway
+    name: Gateway
+    href: FoundationaLLM.Common.Constants.Gateway.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Constants
+    name: Constants
+    href: FoundationaLLM.Common.Constants.html
+  - name: .
+  - uid: FoundationaLLM.Common.Constants.Gateway
+    name: Gateway
+    href: FoundationaLLM.Common.Constants.Gateway.html
+- uid: FoundationaLLM.Common.Constants.Instance
+  commentId: N:FoundationaLLM.Common.Constants.Instance
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Constants.Instance
+  nameWithType: FoundationaLLM.Common.Constants.Instance
+  fullName: FoundationaLLM.Common.Constants.Instance
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Constants
+    name: Constants
+    href: FoundationaLLM.Common.Constants.html
+  - name: .
+  - uid: FoundationaLLM.Common.Constants.Instance
+    name: Instance
+    href: FoundationaLLM.Common.Constants.Instance.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Constants
+    name: Constants
+    href: FoundationaLLM.Common.Constants.html
+  - name: .
+  - uid: FoundationaLLM.Common.Constants.Instance
+    name: Instance
+    href: FoundationaLLM.Common.Constants.Instance.html
+- uid: FoundationaLLM.Common.Constants.OpenAI
+  commentId: N:FoundationaLLM.Common.Constants.OpenAI
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Constants.OpenAI
+  nameWithType: FoundationaLLM.Common.Constants.OpenAI
+  fullName: FoundationaLLM.Common.Constants.OpenAI
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Constants
+    name: Constants
+    href: FoundationaLLM.Common.Constants.html
+  - name: .
+  - uid: FoundationaLLM.Common.Constants.OpenAI
+    name: OpenAI
+    href: FoundationaLLM.Common.Constants.OpenAI.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Constants
+    name: Constants
+    href: FoundationaLLM.Common.Constants.html
+  - name: .
+  - uid: FoundationaLLM.Common.Constants.OpenAI
+    name: OpenAI
+    href: FoundationaLLM.Common.Constants.OpenAI.html
+- uid: FoundationaLLM.Common.Constants.Orchestration
+  commentId: N:FoundationaLLM.Common.Constants.Orchestration
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Constants.Orchestration
+  nameWithType: FoundationaLLM.Common.Constants.Orchestration
+  fullName: FoundationaLLM.Common.Constants.Orchestration
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Constants
+    name: Constants
+    href: FoundationaLLM.Common.Constants.html
+  - name: .
+  - uid: FoundationaLLM.Common.Constants.Orchestration
+    name: Orchestration
+    href: FoundationaLLM.Common.Constants.Orchestration.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Constants
+    name: Constants
+    href: FoundationaLLM.Common.Constants.html
+  - name: .
+  - uid: FoundationaLLM.Common.Constants.Orchestration
+    name: Orchestration
+    href: FoundationaLLM.Common.Constants.Orchestration.html
+- uid: FoundationaLLM.Common.Constants.Plugins
+  commentId: N:FoundationaLLM.Common.Constants.Plugins
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Constants.Plugins
+  nameWithType: FoundationaLLM.Common.Constants.Plugins
+  fullName: FoundationaLLM.Common.Constants.Plugins
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Constants
+    name: Constants
+    href: FoundationaLLM.Common.Constants.html
+  - name: .
+  - uid: FoundationaLLM.Common.Constants.Plugins
+    name: Plugins
+    href: FoundationaLLM.Common.Constants.Plugins.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Constants
+    name: Constants
+    href: FoundationaLLM.Common.Constants.html
+  - name: .
+  - uid: FoundationaLLM.Common.Constants.Plugins
+    name: Plugins
+    href: FoundationaLLM.Common.Constants.Plugins.html
+- uid: FoundationaLLM.Common.Constants.Quota
+  commentId: N:FoundationaLLM.Common.Constants.Quota
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Constants.Quota
+  nameWithType: FoundationaLLM.Common.Constants.Quota
+  fullName: FoundationaLLM.Common.Constants.Quota
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Constants
+    name: Constants
+    href: FoundationaLLM.Common.Constants.html
+  - name: .
+  - uid: FoundationaLLM.Common.Constants.Quota
+    name: Quota
+    href: FoundationaLLM.Common.Constants.Quota.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Constants
+    name: Constants
+    href: FoundationaLLM.Common.Constants.html
+  - name: .
+  - uid: FoundationaLLM.Common.Constants.Quota
+    name: Quota
+    href: FoundationaLLM.Common.Constants.Quota.html
+- uid: FoundationaLLM.Common.Constants.ResourceProviders
+  commentId: N:FoundationaLLM.Common.Constants.ResourceProviders
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Constants.ResourceProviders
+  nameWithType: FoundationaLLM.Common.Constants.ResourceProviders
+  fullName: FoundationaLLM.Common.Constants.ResourceProviders
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Constants
+    name: Constants
+    href: FoundationaLLM.Common.Constants.html
+  - name: .
+  - uid: FoundationaLLM.Common.Constants.ResourceProviders
+    name: ResourceProviders
+    href: FoundationaLLM.Common.Constants.ResourceProviders.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Constants
+    name: Constants
+    href: FoundationaLLM.Common.Constants.html
+  - name: .
+  - uid: FoundationaLLM.Common.Constants.ResourceProviders
+    name: ResourceProviders
+    href: FoundationaLLM.Common.Constants.ResourceProviders.html
+- uid: FoundationaLLM.Common.Constants.Telemetry
+  commentId: N:FoundationaLLM.Common.Constants.Telemetry
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Constants.Telemetry
+  nameWithType: FoundationaLLM.Common.Constants.Telemetry
+  fullName: FoundationaLLM.Common.Constants.Telemetry
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Constants
+    name: Constants
+    href: FoundationaLLM.Common.Constants.html
+  - name: .
+  - uid: FoundationaLLM.Common.Constants.Telemetry
+    name: Telemetry
+    href: FoundationaLLM.Common.Constants.Telemetry.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Constants
+    name: Constants
+    href: FoundationaLLM.Common.Constants.html
+  - name: .
+  - uid: FoundationaLLM.Common.Constants.Telemetry
+    name: Telemetry
+    href: FoundationaLLM.Common.Constants.Telemetry.html
+- uid: FoundationaLLM.Common.Constants.Templates
+  commentId: N:FoundationaLLM.Common.Constants.Templates
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Constants.Templates
+  nameWithType: FoundationaLLM.Common.Constants.Templates
+  fullName: FoundationaLLM.Common.Constants.Templates
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Constants
+    name: Constants
+    href: FoundationaLLM.Common.Constants.html
+  - name: .
+  - uid: FoundationaLLM.Common.Constants.Templates
+    name: Templates
+    href: FoundationaLLM.Common.Constants.Templates.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Constants
+    name: Constants
+    href: FoundationaLLM.Common.Constants.html
+  - name: .
+  - uid: FoundationaLLM.Common.Constants.Templates
+    name: Templates
+    href: FoundationaLLM.Common.Constants.Templates.html
+- uid: FoundationaLLM.Common.Constants.AuthorizationClaims
+  commentId: T:FoundationaLLM.Common.Constants.AuthorizationClaims
+  href: FoundationaLLM.Common.Constants.AuthorizationClaims.html
+  name: AuthorizationClaims
+  nameWithType: AuthorizationClaims
+  fullName: FoundationaLLM.Common.Constants.AuthorizationClaims
+- uid: FoundationaLLM.Common.Constants.AzureCosmosDBContainers
+  commentId: T:FoundationaLLM.Common.Constants.AzureCosmosDBContainers
+  href: FoundationaLLM.Common.Constants.AzureCosmosDBContainers.html
+  name: AzureCosmosDBContainers
+  nameWithType: AzureCosmosDBContainers
+  fullName: FoundationaLLM.Common.Constants.AzureCosmosDBContainers
+- uid: FoundationaLLM.Common.Constants.ContentTypeMappings
+  commentId: T:FoundationaLLM.Common.Constants.ContentTypeMappings
+  href: FoundationaLLM.Common.Constants.ContentTypeMappings.html
+  name: ContentTypeMappings
+  nameWithType: ContentTypeMappings
+  fullName: FoundationaLLM.Common.Constants.ContentTypeMappings
+- uid: FoundationaLLM.Common.Constants.CorsPolicyNames
+  commentId: T:FoundationaLLM.Common.Constants.CorsPolicyNames
+  href: FoundationaLLM.Common.Constants.CorsPolicyNames.html
+  name: CorsPolicyNames
+  nameWithType: CorsPolicyNames
+  fullName: FoundationaLLM.Common.Constants.CorsPolicyNames
+- uid: FoundationaLLM.Common.Constants.FileExtensions
+  commentId: T:FoundationaLLM.Common.Constants.FileExtensions
+  href: FoundationaLLM.Common.Constants.FileExtensions.html
+  name: FileExtensions
+  nameWithType: FileExtensions
+  fullName: FoundationaLLM.Common.Constants.FileExtensions
+- uid: FoundationaLLM.Common.Constants.GatekeeperOptionNames
+  commentId: T:FoundationaLLM.Common.Constants.GatekeeperOptionNames
+  href: FoundationaLLM.Common.Constants.GatekeeperOptionNames.html
+  name: GatekeeperOptionNames
+  nameWithType: GatekeeperOptionNames
+  fullName: FoundationaLLM.Common.Constants.GatekeeperOptionNames
+- uid: FoundationaLLM.Common.Constants.HttpClientFactoryServiceKeyNames
+  commentId: T:FoundationaLLM.Common.Constants.HttpClientFactoryServiceKeyNames
+  href: FoundationaLLM.Common.Constants.HttpClientFactoryServiceKeyNames.html
+  name: HttpClientFactoryServiceKeyNames
+  nameWithType: HttpClientFactoryServiceKeyNames
+  fullName: FoundationaLLM.Common.Constants.HttpClientFactoryServiceKeyNames
+- uid: FoundationaLLM.Common.Constants.HttpClientNames
+  commentId: T:FoundationaLLM.Common.Constants.HttpClientNames
+  href: FoundationaLLM.Common.Constants.HttpClientNames.html
+  name: HttpClientNames
+  nameWithType: HttpClientNames
+  fullName: FoundationaLLM.Common.Constants.HttpClientNames
+- uid: FoundationaLLM.Common.Constants.HttpFormDataKeys
+  commentId: T:FoundationaLLM.Common.Constants.HttpFormDataKeys
+  href: FoundationaLLM.Common.Constants.HttpFormDataKeys.html
+  name: HttpFormDataKeys
+  nameWithType: HttpFormDataKeys
+  fullName: FoundationaLLM.Common.Constants.HttpFormDataKeys
+- uid: FoundationaLLM.Common.Constants.HttpHeaders
+  commentId: T:FoundationaLLM.Common.Constants.HttpHeaders
+  href: FoundationaLLM.Common.Constants.HttpHeaders.html
+  name: HttpHeaders
+  nameWithType: HttpHeaders
+  fullName: FoundationaLLM.Common.Constants.HttpHeaders
+- uid: FoundationaLLM.Common.Constants.LLMOrchestrationServiceNames
+  commentId: T:FoundationaLLM.Common.Constants.LLMOrchestrationServiceNames
+  href: FoundationaLLM.Common.Constants.LLMOrchestrationServiceNames.html
+  name: LLMOrchestrationServiceNames
+  nameWithType: LLMOrchestrationServiceNames
+  fullName: FoundationaLLM.Common.Constants.LLMOrchestrationServiceNames
+- uid: FoundationaLLM.Common.Constants.Participants
+  commentId: T:FoundationaLLM.Common.Constants.Participants
+  parent: FoundationaLLM.Common.Constants
+  href: FoundationaLLM.Common.Constants.Participants.html
+  name: Participants
+  nameWithType: Participants
+  fullName: FoundationaLLM.Common.Constants.Participants
+- uid: FoundationaLLM.Common.Constants.PrincipalTypes
+  commentId: T:FoundationaLLM.Common.Constants.PrincipalTypes
+  href: FoundationaLLM.Common.Constants.PrincipalTypes.html
+  name: PrincipalTypes
+  nameWithType: PrincipalTypes
+  fullName: FoundationaLLM.Common.Constants.PrincipalTypes
+- uid: FoundationaLLM.Common.Constants.ServiceNames
+  commentId: T:FoundationaLLM.Common.Constants.ServiceNames
+  href: FoundationaLLM.Common.Constants.ServiceNames.html
+  name: ServiceNames
+  nameWithType: ServiceNames
+  fullName: FoundationaLLM.Common.Constants.ServiceNames
+- uid: FoundationaLLM.Common.Constants.ServiceStatuses
+  commentId: T:FoundationaLLM.Common.Constants.ServiceStatuses
+  href: FoundationaLLM.Common.Constants.ServiceStatuses.html
+  name: ServiceStatuses
+  nameWithType: ServiceStatuses
+  fullName: FoundationaLLM.Common.Constants.ServiceStatuses
+- uid: FoundationaLLM.Common.Constants.StorageNames
+  commentId: T:FoundationaLLM.Common.Constants.StorageNames
+  href: FoundationaLLM.Common.Constants.StorageNames.html
+  name: StorageNames
+  nameWithType: StorageNames
+  fullName: FoundationaLLM.Common.Constants.StorageNames
+- uid: FoundationaLLM.Common.Constants.Swagger
+  commentId: T:FoundationaLLM.Common.Constants.Swagger
+  href: FoundationaLLM.Common.Constants.Swagger.html
+  name: Swagger
+  nameWithType: Swagger
+  fullName: FoundationaLLM.Common.Constants.Swagger
+- uid: FoundationaLLM.Common.Constants.UserProfileFlags
+  commentId: T:FoundationaLLM.Common.Constants.UserProfileFlags
+  href: FoundationaLLM.Common.Constants.UserProfileFlags.html
+  name: UserProfileFlags
+  nameWithType: UserProfileFlags
+  fullName: FoundationaLLM.Common.Constants.UserProfileFlags
+- uid: FoundationaLLM.Common.Constants.VectorizationSteps
+  commentId: T:FoundationaLLM.Common.Constants.VectorizationSteps
+  href: FoundationaLLM.Common.Constants.VectorizationSteps.html
+  name: VectorizationSteps
+  nameWithType: VectorizationSteps
+  fullName: FoundationaLLM.Common.Constants.VectorizationSteps
+- uid: FoundationaLLM.Common.Constants
+  commentId: N:FoundationaLLM.Common.Constants
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Constants
+  nameWithType: FoundationaLLM.Common.Constants
+  fullName: FoundationaLLM.Common.Constants
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Constants
+    name: Constants
+    href: FoundationaLLM.Common.Constants.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Constants
+    name: Constants
+    href: FoundationaLLM.Common.Constants.html

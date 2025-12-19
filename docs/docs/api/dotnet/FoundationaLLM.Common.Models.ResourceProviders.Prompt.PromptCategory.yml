@@ -1,0 +1,352 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Prompt.PromptCategory
+  commentId: T:FoundationaLLM.Common.Models.ResourceProviders.Prompt.PromptCategory
+  id: PromptCategory
+  parent: FoundationaLLM.Common.Models.ResourceProviders.Prompt
+  children:
+  - FoundationaLLM.Common.Models.ResourceProviders.Prompt.PromptCategory.Agent
+  - FoundationaLLM.Common.Models.ResourceProviders.Prompt.PromptCategory.DataPipeline
+  - FoundationaLLM.Common.Models.ResourceProviders.Prompt.PromptCategory.Tool
+  - FoundationaLLM.Common.Models.ResourceProviders.Prompt.PromptCategory.Workflow
+  langs:
+  - csharp
+  - vb
+  name: PromptCategory
+  nameWithType: PromptCategory
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Prompt.PromptCategory
+  type: Enum
+  source:
+    remote:
+      path: src/dotnet/Common/Models/ResourceProviders/Prompt/PromptCategory.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: PromptCategory
+    path: ../src/dotnet/Common/Models/ResourceProviders/Prompt/PromptCategory.cs
+    startLine: 5
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.ResourceProviders.Prompt
+  summary: The category for the prompt class.
+  example: []
+  syntax:
+    content: public enum PromptCategory
+    content.vb: Public Enum PromptCategory
+  extensionMethods:
+  - System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Prompt.PromptCategory.Agent
+  commentId: F:FoundationaLLM.Common.Models.ResourceProviders.Prompt.PromptCategory.Agent
+  id: Agent
+  parent: FoundationaLLM.Common.Models.ResourceProviders.Prompt.PromptCategory
+  langs:
+  - csharp
+  - vb
+  name: Agent
+  nameWithType: PromptCategory.Agent
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Prompt.PromptCategory.Agent
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Models/ResourceProviders/Prompt/PromptCategory.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: Agent
+    path: ../src/dotnet/Common/Models/ResourceProviders/Prompt/PromptCategory.cs
+    startLine: 10
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.ResourceProviders.Prompt
+  summary: Agent prompt.
+  example: []
+  syntax:
+    content: Agent = 0
+    return:
+      type: FoundationaLLM.Common.Models.ResourceProviders.Prompt.PromptCategory
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Prompt.PromptCategory.Workflow
+  commentId: F:FoundationaLLM.Common.Models.ResourceProviders.Prompt.PromptCategory.Workflow
+  id: Workflow
+  parent: FoundationaLLM.Common.Models.ResourceProviders.Prompt.PromptCategory
+  langs:
+  - csharp
+  - vb
+  name: Workflow
+  nameWithType: PromptCategory.Workflow
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Prompt.PromptCategory.Workflow
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Models/ResourceProviders/Prompt/PromptCategory.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: Workflow
+    path: ../src/dotnet/Common/Models/ResourceProviders/Prompt/PromptCategory.cs
+    startLine: 15
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.ResourceProviders.Prompt
+  summary: Workflow prompt.
+  example: []
+  syntax:
+    content: Workflow = 1
+    return:
+      type: FoundationaLLM.Common.Models.ResourceProviders.Prompt.PromptCategory
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Prompt.PromptCategory.Tool
+  commentId: F:FoundationaLLM.Common.Models.ResourceProviders.Prompt.PromptCategory.Tool
+  id: Tool
+  parent: FoundationaLLM.Common.Models.ResourceProviders.Prompt.PromptCategory
+  langs:
+  - csharp
+  - vb
+  name: Tool
+  nameWithType: PromptCategory.Tool
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Prompt.PromptCategory.Tool
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Models/ResourceProviders/Prompt/PromptCategory.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: Tool
+    path: ../src/dotnet/Common/Models/ResourceProviders/Prompt/PromptCategory.cs
+    startLine: 20
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.ResourceProviders.Prompt
+  summary: Tool prompt.
+  example: []
+  syntax:
+    content: Tool = 2
+    return:
+      type: FoundationaLLM.Common.Models.ResourceProviders.Prompt.PromptCategory
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Prompt.PromptCategory.DataPipeline
+  commentId: F:FoundationaLLM.Common.Models.ResourceProviders.Prompt.PromptCategory.DataPipeline
+  id: DataPipeline
+  parent: FoundationaLLM.Common.Models.ResourceProviders.Prompt.PromptCategory
+  langs:
+  - csharp
+  - vb
+  name: DataPipeline
+  nameWithType: PromptCategory.DataPipeline
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Prompt.PromptCategory.DataPipeline
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Models/ResourceProviders/Prompt/PromptCategory.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: DataPipeline
+    path: ../src/dotnet/Common/Models/ResourceProviders/Prompt/PromptCategory.cs
+    startLine: 25
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.ResourceProviders.Prompt
+  summary: Data Pipeline prompt.
+  example: []
+  syntax:
+    content: DataPipeline = 3
+    return:
+      type: FoundationaLLM.Common.Models.ResourceProviders.Prompt.PromptCategory
+references:
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Prompt
+  commentId: N:FoundationaLLM.Common.Models.ResourceProviders.Prompt
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.ResourceProviders.Prompt
+  nameWithType: FoundationaLLM.Common.Models.ResourceProviders.Prompt
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Prompt
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders
+    name: ResourceProviders
+    href: FoundationaLLM.Common.Models.ResourceProviders.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.Prompt
+    name: Prompt
+    href: FoundationaLLM.Common.Models.ResourceProviders.Prompt.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders
+    name: ResourceProviders
+    href: FoundationaLLM.Common.Models.ResourceProviders.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.Prompt
+    name: Prompt
+    href: FoundationaLLM.Common.Models.ResourceProviders.Prompt.html
+- uid: System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  parent: FoundationaLLM.Core.Utils.ObjectExtensions
+  definition: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  isExternal: true
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions
+  commentId: T:FoundationaLLM.Core.Utils.ObjectExtensions
+  parent: FoundationaLLM.Core.Utils
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html
+  name: ObjectExtensions
+  nameWithType: ObjectExtensions
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions
+- uid: FoundationaLLM.Core.Utils
+  commentId: N:FoundationaLLM.Core.Utils
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Core.Utils
+  nameWithType: FoundationaLLM.Core.Utils
+  fullName: FoundationaLLM.Core.Utils
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Prompt.PromptCategory
+  commentId: T:FoundationaLLM.Common.Models.ResourceProviders.Prompt.PromptCategory
+  parent: FoundationaLLM.Common.Models.ResourceProviders.Prompt
+  href: FoundationaLLM.Common.Models.ResourceProviders.Prompt.PromptCategory.html
+  name: PromptCategory
+  nameWithType: PromptCategory
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Prompt.PromptCategory

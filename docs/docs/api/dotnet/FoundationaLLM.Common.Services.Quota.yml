@@ -1,0 +1,99 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Common.Services.Quota
+  commentId: N:FoundationaLLM.Common.Services.Quota
+  id: Quota
+  parent: FoundationaLLM.Common.Services
+  children:
+  - FoundationaLLM.Common.Services.Quota.QuotaContextBase
+  - FoundationaLLM.Common.Services.Quota.QuotaMetricPartition
+  - FoundationaLLM.Common.Services.Quota.QuotaService
+  - FoundationaLLM.Common.Services.Quota.SinglePartitionQuotaContext
+  - FoundationaLLM.Common.Services.Quota.UserIdentifierQuotaContext
+  - FoundationaLLM.Common.Services.Quota.UserPrincipalNameQuotaContext
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM.Common.Services.Quota
+  nameWithType: FoundationaLLM.Common.Services.Quota
+  fullName: FoundationaLLM.Common.Services.Quota
+  type: Namespace
+  assemblies:
+  - FoundationaLLM.Common
+references:
+- uid: FoundationaLLM.Common.Services.Quota.QuotaContextBase
+  commentId: T:FoundationaLLM.Common.Services.Quota.QuotaContextBase
+  parent: FoundationaLLM.Common.Services.Quota
+  href: FoundationaLLM.Common.Services.Quota.QuotaContextBase.html
+  name: QuotaContextBase
+  nameWithType: QuotaContextBase
+  fullName: FoundationaLLM.Common.Services.Quota.QuotaContextBase
+- uid: FoundationaLLM.Common.Services.Quota.QuotaMetricPartition
+  commentId: T:FoundationaLLM.Common.Services.Quota.QuotaMetricPartition
+  parent: FoundationaLLM.Common.Services.Quota
+  href: FoundationaLLM.Common.Services.Quota.QuotaMetricPartition.html
+  name: QuotaMetricPartition
+  nameWithType: QuotaMetricPartition
+  fullName: FoundationaLLM.Common.Services.Quota.QuotaMetricPartition
+- uid: FoundationaLLM.Common.Services.Quota.QuotaService
+  commentId: T:FoundationaLLM.Common.Services.Quota.QuotaService
+  href: FoundationaLLM.Common.Services.Quota.QuotaService.html
+  name: QuotaService
+  nameWithType: QuotaService
+  fullName: FoundationaLLM.Common.Services.Quota.QuotaService
+- uid: FoundationaLLM.Common.Services.Quota.SinglePartitionQuotaContext
+  commentId: T:FoundationaLLM.Common.Services.Quota.SinglePartitionQuotaContext
+  href: FoundationaLLM.Common.Services.Quota.SinglePartitionQuotaContext.html
+  name: SinglePartitionQuotaContext
+  nameWithType: SinglePartitionQuotaContext
+  fullName: FoundationaLLM.Common.Services.Quota.SinglePartitionQuotaContext
+- uid: FoundationaLLM.Common.Services.Quota.UserIdentifierQuotaContext
+  commentId: T:FoundationaLLM.Common.Services.Quota.UserIdentifierQuotaContext
+  href: FoundationaLLM.Common.Services.Quota.UserIdentifierQuotaContext.html
+  name: UserIdentifierQuotaContext
+  nameWithType: UserIdentifierQuotaContext
+  fullName: FoundationaLLM.Common.Services.Quota.UserIdentifierQuotaContext
+- uid: FoundationaLLM.Common.Services.Quota.UserPrincipalNameQuotaContext
+  commentId: T:FoundationaLLM.Common.Services.Quota.UserPrincipalNameQuotaContext
+  href: FoundationaLLM.Common.Services.Quota.UserPrincipalNameQuotaContext.html
+  name: UserPrincipalNameQuotaContext
+  nameWithType: UserPrincipalNameQuotaContext
+  fullName: FoundationaLLM.Common.Services.Quota.UserPrincipalNameQuotaContext
+- uid: FoundationaLLM.Common.Services.Quota
+  commentId: N:FoundationaLLM.Common.Services.Quota
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Services.Quota
+  nameWithType: FoundationaLLM.Common.Services.Quota
+  fullName: FoundationaLLM.Common.Services.Quota
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Services
+    name: Services
+    href: FoundationaLLM.Common.Services.html
+  - name: .
+  - uid: FoundationaLLM.Common.Services.Quota
+    name: Quota
+    href: FoundationaLLM.Common.Services.Quota.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Services
+    name: Services
+    href: FoundationaLLM.Common.Services.html
+  - name: .
+  - uid: FoundationaLLM.Common.Services.Quota
+    name: Quota
+    href: FoundationaLLM.Common.Services.Quota.html

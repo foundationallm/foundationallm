@@ -1,0 +1,907 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Common.Constants.ResourceProviders.ResourceProviderNames
+  commentId: T:FoundationaLLM.Common.Constants.ResourceProviders.ResourceProviderNames
+  id: ResourceProviderNames
+  parent: FoundationaLLM.Common.Constants.ResourceProviders
+  children:
+  - FoundationaLLM.Common.Constants.ResourceProviders.ResourceProviderNames.All
+  - FoundationaLLM.Common.Constants.ResourceProviders.ResourceProviderNames.FoundationaLLM_AIModel
+  - FoundationaLLM.Common.Constants.ResourceProviders.ResourceProviderNames.FoundationaLLM_Agent
+  - FoundationaLLM.Common.Constants.ResourceProviders.ResourceProviderNames.FoundationaLLM_Attachment
+  - FoundationaLLM.Common.Constants.ResourceProviders.ResourceProviderNames.FoundationaLLM_Authorization
+  - FoundationaLLM.Common.Constants.ResourceProviders.ResourceProviderNames.FoundationaLLM_AzureAI
+  - FoundationaLLM.Common.Constants.ResourceProviders.ResourceProviderNames.FoundationaLLM_AzureOpenAI
+  - FoundationaLLM.Common.Constants.ResourceProviders.ResourceProviderNames.FoundationaLLM_Configuration
+  - FoundationaLLM.Common.Constants.ResourceProviders.ResourceProviderNames.FoundationaLLM_Context
+  - FoundationaLLM.Common.Constants.ResourceProviders.ResourceProviderNames.FoundationaLLM_Conversation
+  - FoundationaLLM.Common.Constants.ResourceProviders.ResourceProviderNames.FoundationaLLM_DataPipeline
+  - FoundationaLLM.Common.Constants.ResourceProviders.ResourceProviderNames.FoundationaLLM_DataSource
+  - FoundationaLLM.Common.Constants.ResourceProviders.ResourceProviderNames.FoundationaLLM_Plugin
+  - FoundationaLLM.Common.Constants.ResourceProviders.ResourceProviderNames.FoundationaLLM_Prompt
+  - FoundationaLLM.Common.Constants.ResourceProviders.ResourceProviderNames.FoundationaLLM_Vector
+  - FoundationaLLM.Common.Constants.ResourceProviders.ResourceProviderNames.FoundationaLLM_Vectorization
+  langs:
+  - csharp
+  - vb
+  name: ResourceProviderNames
+  nameWithType: ResourceProviderNames
+  fullName: FoundationaLLM.Common.Constants.ResourceProviders.ResourceProviderNames
+  type: Class
+  source:
+    remote:
+      path: src/dotnet/Common/Constants/ResourceProviders/ResourceProviderNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: ResourceProviderNames
+    path: ../src/dotnet/Common/Constants/ResourceProviders/ResourceProviderNames.cs
+    startLine: 7
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.ResourceProviders
+  summary: Contains constants of the resource provider names.
+  example: []
+  syntax:
+    content: public static class ResourceProviderNames
+    content.vb: Public Module ResourceProviderNames
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: FoundationaLLM.Common.Constants.ResourceProviders.ResourceProviderNames.FoundationaLLM_Vectorization
+  commentId: F:FoundationaLLM.Common.Constants.ResourceProviders.ResourceProviderNames.FoundationaLLM_Vectorization
+  id: FoundationaLLM_Vectorization
+  parent: FoundationaLLM.Common.Constants.ResourceProviders.ResourceProviderNames
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM_Vectorization
+  nameWithType: ResourceProviderNames.FoundationaLLM_Vectorization
+  fullName: FoundationaLLM.Common.Constants.ResourceProviders.ResourceProviderNames.FoundationaLLM_Vectorization
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Constants/ResourceProviders/ResourceProviderNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: FoundationaLLM_Vectorization
+    path: ../src/dotnet/Common/Constants/ResourceProviders/ResourceProviderNames.cs
+    startLine: 12
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.ResourceProviders
+  summary: The name of the FoundationaLLM.Vectorization resource provider.
+  example: []
+  syntax:
+    content: public const string FoundationaLLM_Vectorization = "FoundationaLLM.Vectorization"
+    return:
+      type: System.String
+    content.vb: Public Const FoundationaLLM_Vectorization As String = "FoundationaLLM.Vectorization"
+- uid: FoundationaLLM.Common.Constants.ResourceProviders.ResourceProviderNames.FoundationaLLM_Agent
+  commentId: F:FoundationaLLM.Common.Constants.ResourceProviders.ResourceProviderNames.FoundationaLLM_Agent
+  id: FoundationaLLM_Agent
+  parent: FoundationaLLM.Common.Constants.ResourceProviders.ResourceProviderNames
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM_Agent
+  nameWithType: ResourceProviderNames.FoundationaLLM_Agent
+  fullName: FoundationaLLM.Common.Constants.ResourceProviders.ResourceProviderNames.FoundationaLLM_Agent
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Constants/ResourceProviders/ResourceProviderNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: FoundationaLLM_Agent
+    path: ../src/dotnet/Common/Constants/ResourceProviders/ResourceProviderNames.cs
+    startLine: 17
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.ResourceProviders
+  summary: The name of the FoundationaLLM.Agent resource provider.
+  example: []
+  syntax:
+    content: public const string FoundationaLLM_Agent = "FoundationaLLM.Agent"
+    return:
+      type: System.String
+    content.vb: Public Const FoundationaLLM_Agent As String = "FoundationaLLM.Agent"
+- uid: FoundationaLLM.Common.Constants.ResourceProviders.ResourceProviderNames.FoundationaLLM_Configuration
+  commentId: F:FoundationaLLM.Common.Constants.ResourceProviders.ResourceProviderNames.FoundationaLLM_Configuration
+  id: FoundationaLLM_Configuration
+  parent: FoundationaLLM.Common.Constants.ResourceProviders.ResourceProviderNames
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM_Configuration
+  nameWithType: ResourceProviderNames.FoundationaLLM_Configuration
+  fullName: FoundationaLLM.Common.Constants.ResourceProviders.ResourceProviderNames.FoundationaLLM_Configuration
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Constants/ResourceProviders/ResourceProviderNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: FoundationaLLM_Configuration
+    path: ../src/dotnet/Common/Constants/ResourceProviders/ResourceProviderNames.cs
+    startLine: 22
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.ResourceProviders
+  summary: The name of the FoundationaLLM.Configuration resource provider.
+  example: []
+  syntax:
+    content: public const string FoundationaLLM_Configuration = "FoundationaLLM.Configuration"
+    return:
+      type: System.String
+    content.vb: Public Const FoundationaLLM_Configuration As String = "FoundationaLLM.Configuration"
+- uid: FoundationaLLM.Common.Constants.ResourceProviders.ResourceProviderNames.FoundationaLLM_Prompt
+  commentId: F:FoundationaLLM.Common.Constants.ResourceProviders.ResourceProviderNames.FoundationaLLM_Prompt
+  id: FoundationaLLM_Prompt
+  parent: FoundationaLLM.Common.Constants.ResourceProviders.ResourceProviderNames
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM_Prompt
+  nameWithType: ResourceProviderNames.FoundationaLLM_Prompt
+  fullName: FoundationaLLM.Common.Constants.ResourceProviders.ResourceProviderNames.FoundationaLLM_Prompt
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Constants/ResourceProviders/ResourceProviderNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: FoundationaLLM_Prompt
+    path: ../src/dotnet/Common/Constants/ResourceProviders/ResourceProviderNames.cs
+    startLine: 27
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.ResourceProviders
+  summary: The name of the FoundationaLLM.Prompt resource provider.
+  example: []
+  syntax:
+    content: public const string FoundationaLLM_Prompt = "FoundationaLLM.Prompt"
+    return:
+      type: System.String
+    content.vb: Public Const FoundationaLLM_Prompt As String = "FoundationaLLM.Prompt"
+- uid: FoundationaLLM.Common.Constants.ResourceProviders.ResourceProviderNames.FoundationaLLM_DataSource
+  commentId: F:FoundationaLLM.Common.Constants.ResourceProviders.ResourceProviderNames.FoundationaLLM_DataSource
+  id: FoundationaLLM_DataSource
+  parent: FoundationaLLM.Common.Constants.ResourceProviders.ResourceProviderNames
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM_DataSource
+  nameWithType: ResourceProviderNames.FoundationaLLM_DataSource
+  fullName: FoundationaLLM.Common.Constants.ResourceProviders.ResourceProviderNames.FoundationaLLM_DataSource
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Constants/ResourceProviders/ResourceProviderNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: FoundationaLLM_DataSource
+    path: ../src/dotnet/Common/Constants/ResourceProviders/ResourceProviderNames.cs
+    startLine: 32
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.ResourceProviders
+  summary: The name of the FoundationaLLM.DataSource resource provider.
+  example: []
+  syntax:
+    content: public const string FoundationaLLM_DataSource = "FoundationaLLM.DataSource"
+    return:
+      type: System.String
+    content.vb: Public Const FoundationaLLM_DataSource As String = "FoundationaLLM.DataSource"
+- uid: FoundationaLLM.Common.Constants.ResourceProviders.ResourceProviderNames.FoundationaLLM_Attachment
+  commentId: F:FoundationaLLM.Common.Constants.ResourceProviders.ResourceProviderNames.FoundationaLLM_Attachment
+  id: FoundationaLLM_Attachment
+  parent: FoundationaLLM.Common.Constants.ResourceProviders.ResourceProviderNames
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM_Attachment
+  nameWithType: ResourceProviderNames.FoundationaLLM_Attachment
+  fullName: FoundationaLLM.Common.Constants.ResourceProviders.ResourceProviderNames.FoundationaLLM_Attachment
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Constants/ResourceProviders/ResourceProviderNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: FoundationaLLM_Attachment
+    path: ../src/dotnet/Common/Constants/ResourceProviders/ResourceProviderNames.cs
+    startLine: 37
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.ResourceProviders
+  summary: The name of the FoundationaLLM.Attachment resource provider.
+  example: []
+  syntax:
+    content: public const string FoundationaLLM_Attachment = "FoundationaLLM.Attachment"
+    return:
+      type: System.String
+    content.vb: Public Const FoundationaLLM_Attachment As String = "FoundationaLLM.Attachment"
+- uid: FoundationaLLM.Common.Constants.ResourceProviders.ResourceProviderNames.FoundationaLLM_Authorization
+  commentId: F:FoundationaLLM.Common.Constants.ResourceProviders.ResourceProviderNames.FoundationaLLM_Authorization
+  id: FoundationaLLM_Authorization
+  parent: FoundationaLLM.Common.Constants.ResourceProviders.ResourceProviderNames
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM_Authorization
+  nameWithType: ResourceProviderNames.FoundationaLLM_Authorization
+  fullName: FoundationaLLM.Common.Constants.ResourceProviders.ResourceProviderNames.FoundationaLLM_Authorization
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Constants/ResourceProviders/ResourceProviderNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: FoundationaLLM_Authorization
+    path: ../src/dotnet/Common/Constants/ResourceProviders/ResourceProviderNames.cs
+    startLine: 42
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.ResourceProviders
+  summary: The name of the FoundationaLLM.Authorization resource provider.
+  example: []
+  syntax:
+    content: public const string FoundationaLLM_Authorization = "FoundationaLLM.Authorization"
+    return:
+      type: System.String
+    content.vb: Public Const FoundationaLLM_Authorization As String = "FoundationaLLM.Authorization"
+- uid: FoundationaLLM.Common.Constants.ResourceProviders.ResourceProviderNames.FoundationaLLM_AIModel
+  commentId: F:FoundationaLLM.Common.Constants.ResourceProviders.ResourceProviderNames.FoundationaLLM_AIModel
+  id: FoundationaLLM_AIModel
+  parent: FoundationaLLM.Common.Constants.ResourceProviders.ResourceProviderNames
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM_AIModel
+  nameWithType: ResourceProviderNames.FoundationaLLM_AIModel
+  fullName: FoundationaLLM.Common.Constants.ResourceProviders.ResourceProviderNames.FoundationaLLM_AIModel
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Constants/ResourceProviders/ResourceProviderNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: FoundationaLLM_AIModel
+    path: ../src/dotnet/Common/Constants/ResourceProviders/ResourceProviderNames.cs
+    startLine: 47
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.ResourceProviders
+  summary: The name of the FoundationaLLM.AIModel resource provider.
+  example: []
+  syntax:
+    content: public const string FoundationaLLM_AIModel = "FoundationaLLM.AIModel"
+    return:
+      type: System.String
+    content.vb: Public Const FoundationaLLM_AIModel As String = "FoundationaLLM.AIModel"
+- uid: FoundationaLLM.Common.Constants.ResourceProviders.ResourceProviderNames.FoundationaLLM_AzureOpenAI
+  commentId: F:FoundationaLLM.Common.Constants.ResourceProviders.ResourceProviderNames.FoundationaLLM_AzureOpenAI
+  id: FoundationaLLM_AzureOpenAI
+  parent: FoundationaLLM.Common.Constants.ResourceProviders.ResourceProviderNames
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM_AzureOpenAI
+  nameWithType: ResourceProviderNames.FoundationaLLM_AzureOpenAI
+  fullName: FoundationaLLM.Common.Constants.ResourceProviders.ResourceProviderNames.FoundationaLLM_AzureOpenAI
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Constants/ResourceProviders/ResourceProviderNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: FoundationaLLM_AzureOpenAI
+    path: ../src/dotnet/Common/Constants/ResourceProviders/ResourceProviderNames.cs
+    startLine: 52
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.ResourceProviders
+  summary: The name of the FoundationaLLM.AzureOpenAI resource provider.
+  example: []
+  syntax:
+    content: public const string FoundationaLLM_AzureOpenAI = "FoundationaLLM.AzureOpenAI"
+    return:
+      type: System.String
+    content.vb: Public Const FoundationaLLM_AzureOpenAI As String = "FoundationaLLM.AzureOpenAI"
+- uid: FoundationaLLM.Common.Constants.ResourceProviders.ResourceProviderNames.FoundationaLLM_AzureAI
+  commentId: F:FoundationaLLM.Common.Constants.ResourceProviders.ResourceProviderNames.FoundationaLLM_AzureAI
+  id: FoundationaLLM_AzureAI
+  parent: FoundationaLLM.Common.Constants.ResourceProviders.ResourceProviderNames
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM_AzureAI
+  nameWithType: ResourceProviderNames.FoundationaLLM_AzureAI
+  fullName: FoundationaLLM.Common.Constants.ResourceProviders.ResourceProviderNames.FoundationaLLM_AzureAI
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Constants/ResourceProviders/ResourceProviderNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: FoundationaLLM_AzureAI
+    path: ../src/dotnet/Common/Constants/ResourceProviders/ResourceProviderNames.cs
+    startLine: 57
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.ResourceProviders
+  summary: The name of the FoundationaLLM.AzureAI resource provider.
+  example: []
+  syntax:
+    content: public const string FoundationaLLM_AzureAI = "FoundationaLLM.AzureAI"
+    return:
+      type: System.String
+    content.vb: Public Const FoundationaLLM_AzureAI As String = "FoundationaLLM.AzureAI"
+- uid: FoundationaLLM.Common.Constants.ResourceProviders.ResourceProviderNames.FoundationaLLM_Conversation
+  commentId: F:FoundationaLLM.Common.Constants.ResourceProviders.ResourceProviderNames.FoundationaLLM_Conversation
+  id: FoundationaLLM_Conversation
+  parent: FoundationaLLM.Common.Constants.ResourceProviders.ResourceProviderNames
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM_Conversation
+  nameWithType: ResourceProviderNames.FoundationaLLM_Conversation
+  fullName: FoundationaLLM.Common.Constants.ResourceProviders.ResourceProviderNames.FoundationaLLM_Conversation
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Constants/ResourceProviders/ResourceProviderNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: FoundationaLLM_Conversation
+    path: ../src/dotnet/Common/Constants/ResourceProviders/ResourceProviderNames.cs
+    startLine: 62
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.ResourceProviders
+  summary: The name of the FoundationaLLM.Conversation resource provider.
+  example: []
+  syntax:
+    content: public const string FoundationaLLM_Conversation = "FoundationaLLM.Conversation"
+    return:
+      type: System.String
+    content.vb: Public Const FoundationaLLM_Conversation As String = "FoundationaLLM.Conversation"
+- uid: FoundationaLLM.Common.Constants.ResourceProviders.ResourceProviderNames.FoundationaLLM_DataPipeline
+  commentId: F:FoundationaLLM.Common.Constants.ResourceProviders.ResourceProviderNames.FoundationaLLM_DataPipeline
+  id: FoundationaLLM_DataPipeline
+  parent: FoundationaLLM.Common.Constants.ResourceProviders.ResourceProviderNames
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM_DataPipeline
+  nameWithType: ResourceProviderNames.FoundationaLLM_DataPipeline
+  fullName: FoundationaLLM.Common.Constants.ResourceProviders.ResourceProviderNames.FoundationaLLM_DataPipeline
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Constants/ResourceProviders/ResourceProviderNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: FoundationaLLM_DataPipeline
+    path: ../src/dotnet/Common/Constants/ResourceProviders/ResourceProviderNames.cs
+    startLine: 67
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.ResourceProviders
+  summary: The name of the FoundationaLLM.DataPipeline resource provider.
+  example: []
+  syntax:
+    content: public const string FoundationaLLM_DataPipeline = "FoundationaLLM.DataPipeline"
+    return:
+      type: System.String
+    content.vb: Public Const FoundationaLLM_DataPipeline As String = "FoundationaLLM.DataPipeline"
+- uid: FoundationaLLM.Common.Constants.ResourceProviders.ResourceProviderNames.FoundationaLLM_Plugin
+  commentId: F:FoundationaLLM.Common.Constants.ResourceProviders.ResourceProviderNames.FoundationaLLM_Plugin
+  id: FoundationaLLM_Plugin
+  parent: FoundationaLLM.Common.Constants.ResourceProviders.ResourceProviderNames
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM_Plugin
+  nameWithType: ResourceProviderNames.FoundationaLLM_Plugin
+  fullName: FoundationaLLM.Common.Constants.ResourceProviders.ResourceProviderNames.FoundationaLLM_Plugin
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Constants/ResourceProviders/ResourceProviderNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: FoundationaLLM_Plugin
+    path: ../src/dotnet/Common/Constants/ResourceProviders/ResourceProviderNames.cs
+    startLine: 72
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.ResourceProviders
+  summary: The name of the FoundationaLLM.Plugin resource provider.
+  example: []
+  syntax:
+    content: public const string FoundationaLLM_Plugin = "FoundationaLLM.Plugin"
+    return:
+      type: System.String
+    content.vb: Public Const FoundationaLLM_Plugin As String = "FoundationaLLM.Plugin"
+- uid: FoundationaLLM.Common.Constants.ResourceProviders.ResourceProviderNames.FoundationaLLM_Vector
+  commentId: F:FoundationaLLM.Common.Constants.ResourceProviders.ResourceProviderNames.FoundationaLLM_Vector
+  id: FoundationaLLM_Vector
+  parent: FoundationaLLM.Common.Constants.ResourceProviders.ResourceProviderNames
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM_Vector
+  nameWithType: ResourceProviderNames.FoundationaLLM_Vector
+  fullName: FoundationaLLM.Common.Constants.ResourceProviders.ResourceProviderNames.FoundationaLLM_Vector
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Constants/ResourceProviders/ResourceProviderNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: FoundationaLLM_Vector
+    path: ../src/dotnet/Common/Constants/ResourceProviders/ResourceProviderNames.cs
+    startLine: 77
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.ResourceProviders
+  summary: The name of the FoundationaLLM.Vector resource provider.
+  example: []
+  syntax:
+    content: public const string FoundationaLLM_Vector = "FoundationaLLM.Vector"
+    return:
+      type: System.String
+    content.vb: Public Const FoundationaLLM_Vector As String = "FoundationaLLM.Vector"
+- uid: FoundationaLLM.Common.Constants.ResourceProviders.ResourceProviderNames.FoundationaLLM_Context
+  commentId: F:FoundationaLLM.Common.Constants.ResourceProviders.ResourceProviderNames.FoundationaLLM_Context
+  id: FoundationaLLM_Context
+  parent: FoundationaLLM.Common.Constants.ResourceProviders.ResourceProviderNames
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM_Context
+  nameWithType: ResourceProviderNames.FoundationaLLM_Context
+  fullName: FoundationaLLM.Common.Constants.ResourceProviders.ResourceProviderNames.FoundationaLLM_Context
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Constants/ResourceProviders/ResourceProviderNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: FoundationaLLM_Context
+    path: ../src/dotnet/Common/Constants/ResourceProviders/ResourceProviderNames.cs
+    startLine: 82
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.ResourceProviders
+  summary: The name of the FoundationaLLM.Context resource provider.
+  example: []
+  syntax:
+    content: public const string FoundationaLLM_Context = "FoundationaLLM.Context"
+    return:
+      type: System.String
+    content.vb: Public Const FoundationaLLM_Context As String = "FoundationaLLM.Context"
+- uid: FoundationaLLM.Common.Constants.ResourceProviders.ResourceProviderNames.All
+  commentId: F:FoundationaLLM.Common.Constants.ResourceProviders.ResourceProviderNames.All
+  id: All
+  parent: FoundationaLLM.Common.Constants.ResourceProviders.ResourceProviderNames
+  langs:
+  - csharp
+  - vb
+  name: All
+  nameWithType: ResourceProviderNames.All
+  fullName: FoundationaLLM.Common.Constants.ResourceProviders.ResourceProviderNames.All
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Constants/ResourceProviders/ResourceProviderNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: All
+    path: ../src/dotnet/Common/Constants/ResourceProviders/ResourceProviderNames.cs
+    startLine: 87
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.ResourceProviders
+  summary: Contains all the resource provider names.
+  example: []
+  syntax:
+    content: public static readonly ImmutableList<string> All
+    return:
+      type: System.Collections.Immutable.ImmutableList{System.String}
+    content.vb: Public Shared ReadOnly All As ImmutableList(Of String)
+references:
+- uid: FoundationaLLM.Common.Constants.ResourceProviders
+  commentId: N:FoundationaLLM.Common.Constants.ResourceProviders
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Constants.ResourceProviders
+  nameWithType: FoundationaLLM.Common.Constants.ResourceProviders
+  fullName: FoundationaLLM.Common.Constants.ResourceProviders
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Constants
+    name: Constants
+    href: FoundationaLLM.Common.Constants.html
+  - name: .
+  - uid: FoundationaLLM.Common.Constants.ResourceProviders
+    name: ResourceProviders
+    href: FoundationaLLM.Common.Constants.ResourceProviders.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Constants
+    name: Constants
+    href: FoundationaLLM.Common.Constants.html
+  - name: .
+  - uid: FoundationaLLM.Common.Constants.ResourceProviders
+    name: ResourceProviders
+    href: FoundationaLLM.Common.Constants.ResourceProviders.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System.Collections.Immutable.ImmutableList{System.String}
+  commentId: T:System.Collections.Immutable.ImmutableList{System.String}
+  parent: System.Collections.Immutable
+  definition: System.Collections.Immutable.ImmutableList`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.immutable.immutablelist-1
+  name: ImmutableList<string>
+  nameWithType: ImmutableList<string>
+  fullName: System.Collections.Immutable.ImmutableList<string>
+  nameWithType.vb: ImmutableList(Of String)
+  fullName.vb: System.Collections.Immutable.ImmutableList(Of String)
+  name.vb: ImmutableList(Of String)
+  spec.csharp:
+  - uid: System.Collections.Immutable.ImmutableList`1
+    name: ImmutableList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.immutable.immutablelist-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Immutable.ImmutableList`1
+    name: ImmutableList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.immutable.immutablelist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: System.Collections.Immutable.ImmutableList`1
+  commentId: T:System.Collections.Immutable.ImmutableList`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.immutable.immutablelist-1
+  name: ImmutableList<T>
+  nameWithType: ImmutableList<T>
+  fullName: System.Collections.Immutable.ImmutableList<T>
+  nameWithType.vb: ImmutableList(Of T)
+  fullName.vb: System.Collections.Immutable.ImmutableList(Of T)
+  name.vb: ImmutableList(Of T)
+  spec.csharp:
+  - uid: System.Collections.Immutable.ImmutableList`1
+    name: ImmutableList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.immutable.immutablelist-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Immutable.ImmutableList`1
+    name: ImmutableList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.immutable.immutablelist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Immutable
+  commentId: N:System.Collections.Immutable
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Immutable
+  nameWithType: System.Collections.Immutable
+  fullName: System.Collections.Immutable
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Immutable
+    name: Immutable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.immutable
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Immutable
+    name: Immutable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.immutable

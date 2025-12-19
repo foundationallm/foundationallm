@@ -1,0 +1,43 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Common.Models.Collections
+  commentId: N:FoundationaLLM.Common.Models.Collections
+  id: Collections
+  parent: FoundationaLLM.Common.Models
+  children:
+  - FoundationaLLM.Common.Models.Collections.PagedResponse`1
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM.Common.Models.Collections
+  nameWithType: FoundationaLLM.Common.Models.Collections
+  fullName: FoundationaLLM.Common.Models.Collections
+  type: Namespace
+  assemblies:
+  - FoundationaLLM.Common
+references:
+- uid: FoundationaLLM.Common.Models.Collections.PagedResponse`1
+  commentId: T:FoundationaLLM.Common.Models.Collections.PagedResponse`1
+  href: FoundationaLLM.Common.Models.Collections.PagedResponse-1.html
+  name: PagedResponse<T>
+  nameWithType: PagedResponse<T>
+  fullName: FoundationaLLM.Common.Models.Collections.PagedResponse<T>
+  nameWithType.vb: PagedResponse(Of T)
+  fullName.vb: FoundationaLLM.Common.Models.Collections.PagedResponse(Of T)
+  name.vb: PagedResponse(Of T)
+  spec.csharp:
+  - uid: FoundationaLLM.Common.Models.Collections.PagedResponse`1
+    name: PagedResponse
+    href: FoundationaLLM.Common.Models.Collections.PagedResponse-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: FoundationaLLM.Common.Models.Collections.PagedResponse`1
+    name: PagedResponse
+    href: FoundationaLLM.Common.Models.Collections.PagedResponse-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )

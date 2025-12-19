@@ -1,0 +1,24 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.AIModel.Validation
+  commentId: N:FoundationaLLM.AIModel.Validation
+  id: Validation
+  parent: FoundationaLLM.AIModel
+  children:
+  - FoundationaLLM.AIModel.Validation.AIModelBaseValidator
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM.AIModel.Validation
+  nameWithType: FoundationaLLM.AIModel.Validation
+  fullName: FoundationaLLM.AIModel.Validation
+  type: Namespace
+  assemblies:
+  - FoundationaLLM.AIModel
+references:
+- uid: FoundationaLLM.AIModel.Validation.AIModelBaseValidator
+  commentId: T:FoundationaLLM.AIModel.Validation.AIModelBaseValidator
+  href: FoundationaLLM.AIModel.Validation.AIModelBaseValidator.html
+  name: AIModelBaseValidator
+  nameWithType: AIModelBaseValidator
+  fullName: FoundationaLLM.AIModel.Validation.AIModelBaseValidator

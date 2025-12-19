@@ -1,0 +1,84 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Orchestration.Core.Orchestration
+  commentId: N:FoundationaLLM.Orchestration.Core.Orchestration
+  id: Orchestration
+  parent: FoundationaLLM.Orchestration.Core
+  children:
+  - FoundationaLLM.Orchestration.Core.Orchestration.AgentOrchestration
+  - FoundationaLLM.Orchestration.Core.Orchestration.ExplodedObjectsManager
+  - FoundationaLLM.Orchestration.Core.Orchestration.OrchestrationBase
+  - FoundationaLLM.Orchestration.Core.Orchestration.OrchestrationBuilder
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM.Orchestration.Core.Orchestration
+  nameWithType: FoundationaLLM.Orchestration.Core.Orchestration
+  fullName: FoundationaLLM.Orchestration.Core.Orchestration
+  type: Namespace
+  assemblies:
+  - FoundationaLLM.Orchestration.Core
+references:
+- uid: FoundationaLLM.Orchestration.Core.Orchestration.AgentOrchestration
+  commentId: T:FoundationaLLM.Orchestration.Core.Orchestration.AgentOrchestration
+  href: FoundationaLLM.Orchestration.Core.Orchestration.AgentOrchestration.html
+  name: AgentOrchestration
+  nameWithType: AgentOrchestration
+  fullName: FoundationaLLM.Orchestration.Core.Orchestration.AgentOrchestration
+- uid: FoundationaLLM.Orchestration.Core.Orchestration.ExplodedObjectsManager
+  commentId: T:FoundationaLLM.Orchestration.Core.Orchestration.ExplodedObjectsManager
+  href: FoundationaLLM.Orchestration.Core.Orchestration.ExplodedObjectsManager.html
+  name: ExplodedObjectsManager
+  nameWithType: ExplodedObjectsManager
+  fullName: FoundationaLLM.Orchestration.Core.Orchestration.ExplodedObjectsManager
+- uid: FoundationaLLM.Orchestration.Core.Orchestration.OrchestrationBase
+  commentId: T:FoundationaLLM.Orchestration.Core.Orchestration.OrchestrationBase
+  parent: FoundationaLLM.Orchestration.Core.Orchestration
+  href: FoundationaLLM.Orchestration.Core.Orchestration.OrchestrationBase.html
+  name: OrchestrationBase
+  nameWithType: OrchestrationBase
+  fullName: FoundationaLLM.Orchestration.Core.Orchestration.OrchestrationBase
+- uid: FoundationaLLM.Orchestration.Core.Orchestration.OrchestrationBuilder
+  commentId: T:FoundationaLLM.Orchestration.Core.Orchestration.OrchestrationBuilder
+  href: FoundationaLLM.Orchestration.Core.Orchestration.OrchestrationBuilder.html
+  name: OrchestrationBuilder
+  nameWithType: OrchestrationBuilder
+  fullName: FoundationaLLM.Orchestration.Core.Orchestration.OrchestrationBuilder
+- uid: FoundationaLLM.Orchestration.Core.Orchestration
+  commentId: N:FoundationaLLM.Orchestration.Core.Orchestration
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Orchestration.Core.Orchestration
+  nameWithType: FoundationaLLM.Orchestration.Core.Orchestration
+  fullName: FoundationaLLM.Orchestration.Core.Orchestration
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Orchestration
+    name: Orchestration
+    href: FoundationaLLM.Orchestration.html
+  - name: .
+  - uid: FoundationaLLM.Orchestration.Core
+    name: Core
+    href: FoundationaLLM.Orchestration.Core.html
+  - name: .
+  - uid: FoundationaLLM.Orchestration.Core.Orchestration
+    name: Orchestration
+    href: FoundationaLLM.Orchestration.Core.Orchestration.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Orchestration
+    name: Orchestration
+    href: FoundationaLLM.Orchestration.html
+  - name: .
+  - uid: FoundationaLLM.Orchestration.Core
+    name: Core
+    href: FoundationaLLM.Orchestration.Core.html
+  - name: .
+  - uid: FoundationaLLM.Orchestration.Core.Orchestration
+    name: Orchestration
+    href: FoundationaLLM.Orchestration.Core.Orchestration.html

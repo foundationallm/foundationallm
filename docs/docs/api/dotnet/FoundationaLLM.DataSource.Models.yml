@@ -1,0 +1,24 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.DataSource.Models
+  commentId: N:FoundationaLLM.DataSource.Models
+  id: Models
+  parent: FoundationaLLM.DataSource
+  children:
+  - FoundationaLLM.DataSource.Models.DataSourceReference
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM.DataSource.Models
+  nameWithType: FoundationaLLM.DataSource.Models
+  fullName: FoundationaLLM.DataSource.Models
+  type: Namespace
+  assemblies:
+  - FoundationaLLM.DataSource
+references:
+- uid: FoundationaLLM.DataSource.Models.DataSourceReference
+  commentId: T:FoundationaLLM.DataSource.Models.DataSourceReference
+  href: FoundationaLLM.DataSource.Models.DataSourceReference.html
+  name: DataSourceReference
+  nameWithType: DataSourceReference
+  fullName: FoundationaLLM.DataSource.Models.DataSourceReference

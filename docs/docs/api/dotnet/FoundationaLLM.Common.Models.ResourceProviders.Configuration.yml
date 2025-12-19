@@ -1,0 +1,185 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Configuration
+  commentId: N:FoundationaLLM.Common.Models.ResourceProviders.Configuration
+  id: Configuration
+  parent: FoundationaLLM.Common.Models.ResourceProviders
+  children:
+  - FoundationaLLM.Common.Models.ResourceProviders.Configuration.APIEndpointCategory
+  - FoundationaLLM.Common.Models.ResourceProviders.Configuration.APIEndpointConfiguration
+  - FoundationaLLM.Common.Models.ResourceProviders.Configuration.APIEndpointConfigurationFilter
+  - FoundationaLLM.Common.Models.ResourceProviders.Configuration.APIEndpointSubcategory
+  - FoundationaLLM.Common.Models.ResourceProviders.Configuration.AppConfigurationKeyBase
+  - FoundationaLLM.Common.Models.ResourceProviders.Configuration.AppConfigurationKeyValue
+  - FoundationaLLM.Common.Models.ResourceProviders.Configuration.AppConfigurationKeyVaultReference
+  - FoundationaLLM.Common.Models.ResourceProviders.Configuration.AppConfigurationSet
+  - FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValueException`1
+  - FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValue`1
+  - FoundationaLLM.Common.Models.ResourceProviders.Configuration.UrlException
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM.Common.Models.ResourceProviders.Configuration
+  nameWithType: FoundationaLLM.Common.Models.ResourceProviders.Configuration
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Configuration
+  type: Namespace
+  assemblies:
+  - FoundationaLLM.Common
+references:
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Configuration.APIEndpointCategory
+  commentId: T:FoundationaLLM.Common.Models.ResourceProviders.Configuration.APIEndpointCategory
+  parent: FoundationaLLM.Common.Models.ResourceProviders.Configuration
+  href: FoundationaLLM.Common.Models.ResourceProviders.Configuration.APIEndpointCategory.html
+  name: APIEndpointCategory
+  nameWithType: APIEndpointCategory
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Configuration.APIEndpointCategory
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Configuration.APIEndpointConfiguration
+  commentId: T:FoundationaLLM.Common.Models.ResourceProviders.Configuration.APIEndpointConfiguration
+  parent: FoundationaLLM.Common.Models.ResourceProviders.Configuration
+  href: FoundationaLLM.Common.Models.ResourceProviders.Configuration.APIEndpointConfiguration.html
+  name: APIEndpointConfiguration
+  nameWithType: APIEndpointConfiguration
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Configuration.APIEndpointConfiguration
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Configuration.APIEndpointConfigurationFilter
+  commentId: T:FoundationaLLM.Common.Models.ResourceProviders.Configuration.APIEndpointConfigurationFilter
+  href: FoundationaLLM.Common.Models.ResourceProviders.Configuration.APIEndpointConfigurationFilter.html
+  name: APIEndpointConfigurationFilter
+  nameWithType: APIEndpointConfigurationFilter
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Configuration.APIEndpointConfigurationFilter
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Configuration.APIEndpointSubcategory
+  commentId: T:FoundationaLLM.Common.Models.ResourceProviders.Configuration.APIEndpointSubcategory
+  parent: FoundationaLLM.Common.Models.ResourceProviders.Configuration
+  href: FoundationaLLM.Common.Models.ResourceProviders.Configuration.APIEndpointSubcategory.html
+  name: APIEndpointSubcategory
+  nameWithType: APIEndpointSubcategory
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Configuration.APIEndpointSubcategory
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Configuration.AppConfigurationKeyBase
+  commentId: T:FoundationaLLM.Common.Models.ResourceProviders.Configuration.AppConfigurationKeyBase
+  parent: FoundationaLLM.Common.Models.ResourceProviders.Configuration
+  href: FoundationaLLM.Common.Models.ResourceProviders.Configuration.AppConfigurationKeyBase.html
+  name: AppConfigurationKeyBase
+  nameWithType: AppConfigurationKeyBase
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Configuration.AppConfigurationKeyBase
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Configuration.AppConfigurationKeyValue
+  commentId: T:FoundationaLLM.Common.Models.ResourceProviders.Configuration.AppConfigurationKeyValue
+  parent: FoundationaLLM.Common.Models.ResourceProviders.Configuration
+  href: FoundationaLLM.Common.Models.ResourceProviders.Configuration.AppConfigurationKeyValue.html
+  name: AppConfigurationKeyValue
+  nameWithType: AppConfigurationKeyValue
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Configuration.AppConfigurationKeyValue
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Configuration.AppConfigurationKeyVaultReference
+  commentId: T:FoundationaLLM.Common.Models.ResourceProviders.Configuration.AppConfigurationKeyVaultReference
+  parent: FoundationaLLM.Common.Models.ResourceProviders.Configuration
+  href: FoundationaLLM.Common.Models.ResourceProviders.Configuration.AppConfigurationKeyVaultReference.html
+  name: AppConfigurationKeyVaultReference
+  nameWithType: AppConfigurationKeyVaultReference
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Configuration.AppConfigurationKeyVaultReference
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Configuration.AppConfigurationSet
+  commentId: T:FoundationaLLM.Common.Models.ResourceProviders.Configuration.AppConfigurationSet
+  href: FoundationaLLM.Common.Models.ResourceProviders.Configuration.AppConfigurationSet.html
+  name: AppConfigurationSet
+  nameWithType: AppConfigurationSet
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Configuration.AppConfigurationSet
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValueException`1
+  commentId: T:FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValueException`1
+  href: FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValueException-1.html
+  name: ConfigurationValueException<T>
+  nameWithType: ConfigurationValueException<T>
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValueException<T>
+  nameWithType.vb: ConfigurationValueException(Of T)
+  fullName.vb: FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValueException(Of T)
+  name.vb: ConfigurationValueException(Of T)
+  spec.csharp:
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValueException`1
+    name: ConfigurationValueException
+    href: FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValueException-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValueException`1
+    name: ConfigurationValueException
+    href: FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValueException-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValue`1
+  commentId: T:FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValue`1
+  parent: FoundationaLLM.Common.Models.ResourceProviders.Configuration
+  href: FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValue-1.html
+  name: ConfigurationValue<T>
+  nameWithType: ConfigurationValue<T>
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValue<T>
+  nameWithType.vb: ConfigurationValue(Of T)
+  fullName.vb: FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValue(Of T)
+  name.vb: ConfigurationValue(Of T)
+  spec.csharp:
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValue`1
+    name: ConfigurationValue
+    href: FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValue-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValue`1
+    name: ConfigurationValue
+    href: FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValue-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Configuration.UrlException
+  commentId: T:FoundationaLLM.Common.Models.ResourceProviders.Configuration.UrlException
+  href: FoundationaLLM.Common.Models.ResourceProviders.Configuration.UrlException.html
+  name: UrlException
+  nameWithType: UrlException
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Configuration.UrlException
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Configuration
+  commentId: N:FoundationaLLM.Common.Models.ResourceProviders.Configuration
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.ResourceProviders.Configuration
+  nameWithType: FoundationaLLM.Common.Models.ResourceProviders.Configuration
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Configuration
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders
+    name: ResourceProviders
+    href: FoundationaLLM.Common.Models.ResourceProviders.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.Configuration
+    name: Configuration
+    href: FoundationaLLM.Common.Models.ResourceProviders.Configuration.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders
+    name: ResourceProviders
+    href: FoundationaLLM.Common.Models.ResourceProviders.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.Configuration
+    name: Configuration
+    href: FoundationaLLM.Common.Models.ResourceProviders.Configuration.html

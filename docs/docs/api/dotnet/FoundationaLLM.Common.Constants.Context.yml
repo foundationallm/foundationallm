@@ -1,0 +1,52 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Common.Constants.Context
+  commentId: N:FoundationaLLM.Common.Constants.Context
+  id: Context
+  parent: FoundationaLLM.Common.Constants
+  children:
+  - FoundationaLLM.Common.Constants.Context.CodeSessionLanguages
+  - FoundationaLLM.Common.Constants.Context.ContextFileRecordMetadataPropertyNames
+  - FoundationaLLM.Common.Constants.Context.ContextRecordOrigins
+  - FoundationaLLM.Common.Constants.Context.ContextRecordTypeNames
+  - FoundationaLLM.Common.Constants.Context.FileProcessingTypes
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM.Common.Constants.Context
+  nameWithType: FoundationaLLM.Common.Constants.Context
+  fullName: FoundationaLLM.Common.Constants.Context
+  type: Namespace
+  assemblies:
+  - FoundationaLLM.Common
+references:
+- uid: FoundationaLLM.Common.Constants.Context.CodeSessionLanguages
+  commentId: T:FoundationaLLM.Common.Constants.Context.CodeSessionLanguages
+  href: FoundationaLLM.Common.Constants.Context.CodeSessionLanguages.html
+  name: CodeSessionLanguages
+  nameWithType: CodeSessionLanguages
+  fullName: FoundationaLLM.Common.Constants.Context.CodeSessionLanguages
+- uid: FoundationaLLM.Common.Constants.Context.ContextFileRecordMetadataPropertyNames
+  commentId: T:FoundationaLLM.Common.Constants.Context.ContextFileRecordMetadataPropertyNames
+  href: FoundationaLLM.Common.Constants.Context.ContextFileRecordMetadataPropertyNames.html
+  name: ContextFileRecordMetadataPropertyNames
+  nameWithType: ContextFileRecordMetadataPropertyNames
+  fullName: FoundationaLLM.Common.Constants.Context.ContextFileRecordMetadataPropertyNames
+- uid: FoundationaLLM.Common.Constants.Context.ContextRecordOrigins
+  commentId: T:FoundationaLLM.Common.Constants.Context.ContextRecordOrigins
+  href: FoundationaLLM.Common.Constants.Context.ContextRecordOrigins.html
+  name: ContextRecordOrigins
+  nameWithType: ContextRecordOrigins
+  fullName: FoundationaLLM.Common.Constants.Context.ContextRecordOrigins
+- uid: FoundationaLLM.Common.Constants.Context.ContextRecordTypeNames
+  commentId: T:FoundationaLLM.Common.Constants.Context.ContextRecordTypeNames
+  href: FoundationaLLM.Common.Constants.Context.ContextRecordTypeNames.html
+  name: ContextRecordTypeNames
+  nameWithType: ContextRecordTypeNames
+  fullName: FoundationaLLM.Common.Constants.Context.ContextRecordTypeNames
+- uid: FoundationaLLM.Common.Constants.Context.FileProcessingTypes
+  commentId: T:FoundationaLLM.Common.Constants.Context.FileProcessingTypes
+  href: FoundationaLLM.Common.Constants.Context.FileProcessingTypes.html
+  name: FileProcessingTypes
+  nameWithType: FileProcessingTypes
+  fullName: FoundationaLLM.Common.Constants.Context.FileProcessingTypes

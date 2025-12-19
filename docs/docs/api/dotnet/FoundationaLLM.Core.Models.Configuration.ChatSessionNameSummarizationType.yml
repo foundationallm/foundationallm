@@ -1,0 +1,286 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Core.Models.Configuration.ChatSessionNameSummarizationType
+  commentId: T:FoundationaLLM.Core.Models.Configuration.ChatSessionNameSummarizationType
+  id: ChatSessionNameSummarizationType
+  parent: FoundationaLLM.Core.Models.Configuration
+  children:
+  - FoundationaLLM.Core.Models.Configuration.ChatSessionNameSummarizationType.LLM
+  - FoundationaLLM.Core.Models.Configuration.ChatSessionNameSummarizationType.Timestamp
+  langs:
+  - csharp
+  - vb
+  name: ChatSessionNameSummarizationType
+  nameWithType: ChatSessionNameSummarizationType
+  fullName: FoundationaLLM.Core.Models.Configuration.ChatSessionNameSummarizationType
+  type: Enum
+  source:
+    remote:
+      path: src/dotnet/Core/Models/Configuration/ChatSessionNameSummarizationType.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: ChatSessionNameSummarizationType
+    path: ../src/dotnet/Core/Models/Configuration/ChatSessionNameSummarizationType.cs
+    startLine: 5
+  assemblies:
+  - FoundationaLLM.Core
+  namespace: FoundationaLLM.Core.Models.Configuration
+  summary: Types of summarization for chat session names.
+  example: []
+  syntax:
+    content: public enum ChatSessionNameSummarizationType
+    content.vb: Public Enum ChatSessionNameSummarizationType
+  extensionMethods:
+  - System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+- uid: FoundationaLLM.Core.Models.Configuration.ChatSessionNameSummarizationType.Timestamp
+  commentId: F:FoundationaLLM.Core.Models.Configuration.ChatSessionNameSummarizationType.Timestamp
+  id: Timestamp
+  parent: FoundationaLLM.Core.Models.Configuration.ChatSessionNameSummarizationType
+  langs:
+  - csharp
+  - vb
+  name: Timestamp
+  nameWithType: ChatSessionNameSummarizationType.Timestamp
+  fullName: FoundationaLLM.Core.Models.Configuration.ChatSessionNameSummarizationType.Timestamp
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Core/Models/Configuration/ChatSessionNameSummarizationType.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: Timestamp
+    path: ../src/dotnet/Core/Models/Configuration/ChatSessionNameSummarizationType.cs
+    startLine: 10
+  assemblies:
+  - FoundationaLLM.Core
+  namespace: FoundationaLLM.Core.Models.Configuration
+  summary: Name summarization containing the UTC time of the creation of the chat session.
+  example: []
+  syntax:
+    content: Timestamp = 0
+    return:
+      type: FoundationaLLM.Core.Models.Configuration.ChatSessionNameSummarizationType
+- uid: FoundationaLLM.Core.Models.Configuration.ChatSessionNameSummarizationType.LLM
+  commentId: F:FoundationaLLM.Core.Models.Configuration.ChatSessionNameSummarizationType.LLM
+  id: LLM
+  parent: FoundationaLLM.Core.Models.Configuration.ChatSessionNameSummarizationType
+  langs:
+  - csharp
+  - vb
+  name: LLM
+  nameWithType: ChatSessionNameSummarizationType.LLM
+  fullName: FoundationaLLM.Core.Models.Configuration.ChatSessionNameSummarizationType.LLM
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Core/Models/Configuration/ChatSessionNameSummarizationType.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: LLM
+    path: ../src/dotnet/Core/Models/Configuration/ChatSessionNameSummarizationType.cs
+    startLine: 14
+  assemblies:
+  - FoundationaLLM.Core
+  namespace: FoundationaLLM.Core.Models.Configuration
+  summary: Name summarization produced by a LLM via a completion requesting summarization.
+  example: []
+  syntax:
+    content: LLM = 1
+    return:
+      type: FoundationaLLM.Core.Models.Configuration.ChatSessionNameSummarizationType
+references:
+- uid: FoundationaLLM.Core.Models.Configuration
+  commentId: N:FoundationaLLM.Core.Models.Configuration
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Core.Models.Configuration
+  nameWithType: FoundationaLLM.Core.Models.Configuration
+  fullName: FoundationaLLM.Core.Models.Configuration
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Models
+    name: Models
+    href: FoundationaLLM.Core.Models.html
+  - name: .
+  - uid: FoundationaLLM.Core.Models.Configuration
+    name: Configuration
+    href: FoundationaLLM.Core.Models.Configuration.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Models
+    name: Models
+    href: FoundationaLLM.Core.Models.html
+  - name: .
+  - uid: FoundationaLLM.Core.Models.Configuration
+    name: Configuration
+    href: FoundationaLLM.Core.Models.Configuration.html
+- uid: System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  parent: FoundationaLLM.Core.Utils.ObjectExtensions
+  definition: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  isExternal: true
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions
+  commentId: T:FoundationaLLM.Core.Utils.ObjectExtensions
+  parent: FoundationaLLM.Core.Utils
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html
+  name: ObjectExtensions
+  nameWithType: ObjectExtensions
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions
+- uid: FoundationaLLM.Core.Utils
+  commentId: N:FoundationaLLM.Core.Utils
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Core.Utils
+  nameWithType: FoundationaLLM.Core.Utils
+  fullName: FoundationaLLM.Core.Utils
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+- uid: FoundationaLLM.Core.Models.Configuration.ChatSessionNameSummarizationType
+  commentId: T:FoundationaLLM.Core.Models.Configuration.ChatSessionNameSummarizationType
+  parent: FoundationaLLM.Core.Models.Configuration
+  href: FoundationaLLM.Core.Models.Configuration.ChatSessionNameSummarizationType.html
+  name: ChatSessionNameSummarizationType
+  nameWithType: ChatSessionNameSummarizationType
+  fullName: FoundationaLLM.Core.Models.Configuration.ChatSessionNameSummarizationType

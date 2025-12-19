@@ -1,0 +1,880 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Common.Services.Quota.QuotaMetricPartition
+  commentId: T:FoundationaLLM.Common.Services.Quota.QuotaMetricPartition
+  id: QuotaMetricPartition
+  parent: FoundationaLLM.Common.Services.Quota
+  children:
+  - FoundationaLLM.Common.Services.Quota.QuotaMetricPartition.#ctor(System.String,System.String,System.String,System.String,System.Int32,System.Int32,System.Int32,Microsoft.Extensions.Logging.ILogger)
+  - FoundationaLLM.Common.Services.Quota.QuotaMetricPartition.AddLocalMetricUnit(System.DateTimeOffset)
+  - FoundationaLLM.Common.Services.Quota.QuotaMetricPartition.AddRemoteMetricUnits(System.Collections.Generic.List{System.DateTimeOffset})
+  - FoundationaLLM.Common.Services.Quota.QuotaMetricPartition.QuotaMetricPartitionId
+  langs:
+  - csharp
+  - vb
+  name: QuotaMetricPartition
+  nameWithType: QuotaMetricPartition
+  fullName: FoundationaLLM.Common.Services.Quota.QuotaMetricPartition
+  type: Class
+  source:
+    remote:
+      path: src/dotnet/Common/Services/Quota/QuotaMetricPartition.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: QuotaMetricPartition
+    path: ../src/dotnet/Common/Services/Quota/QuotaMetricPartition.cs
+    startLine: 16
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Services.Quota
+  summary: Represents a partition of a quota metric.
+  example: []
+  syntax:
+    content: public class QuotaMetricPartition
+    content.vb: Public Class QuotaMetricPartition
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+  extensionMethods:
+  - System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+- uid: FoundationaLLM.Common.Services.Quota.QuotaMetricPartition.#ctor(System.String,System.String,System.String,System.String,System.Int32,System.Int32,System.Int32,Microsoft.Extensions.Logging.ILogger)
+  commentId: M:FoundationaLLM.Common.Services.Quota.QuotaMetricPartition.#ctor(System.String,System.String,System.String,System.String,System.Int32,System.Int32,System.Int32,Microsoft.Extensions.Logging.ILogger)
+  id: '#ctor(System.String,System.String,System.String,System.String,System.Int32,System.Int32,System.Int32,Microsoft.Extensions.Logging.ILogger)'
+  parent: FoundationaLLM.Common.Services.Quota.QuotaMetricPartition
+  langs:
+  - csharp
+  - vb
+  name: QuotaMetricPartition(string, string, string, string, int, int, int, ILogger)
+  nameWithType: QuotaMetricPartition.QuotaMetricPartition(string, string, string, string, int, int, int, ILogger)
+  fullName: FoundationaLLM.Common.Services.Quota.QuotaMetricPartition.QuotaMetricPartition(string, string, string, string, int, int, int, Microsoft.Extensions.Logging.ILogger)
+  type: Constructor
+  source:
+    remote:
+      path: src/dotnet/Common/Services/Quota/QuotaMetricPartition.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: .ctor
+    path: ../src/dotnet/Common/Services/Quota/QuotaMetricPartition.cs
+    startLine: 16
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Services.Quota
+  summary: Represents a partition of a quota metric.
+  example: []
+  syntax:
+    content: public QuotaMetricPartition(string quotaServiceIdentifier, string quotaName, string quotaContext, string quotaMetricPartitionId, int metricLimit, int metricWindowSeconds, int lockoutDurationSeconds, ILogger logger)
+    parameters:
+    - id: quotaServiceIdentifier
+      type: System.String
+      description: The identifier of the QuotaService instance managing this quota context.
+    - id: quotaName
+      type: System.String
+      description: The name of the quota that this quota metric partition refers to.
+    - id: quotaContext
+      type: System.String
+      description: The quota context that this quota metric partition refers to.
+    - id: quotaMetricPartitionId
+      type: System.String
+      description: The identifier of the quota metric partion that this sequence refers to.
+    - id: metricLimit
+      type: System.Int32
+      description: The limit of the metric for the time window specified by <code class="paramref">metricWindowSeconds</code>.
+    - id: metricWindowSeconds
+      type: System.Int32
+      description: The time window for the metric limit.
+    - id: lockoutDurationSeconds
+      type: System.Int32
+      description: The duration of the lockout period when the metric limit is exceeded.
+    - id: logger
+      type: Microsoft.Extensions.Logging.ILogger
+      description: The logger instance to use for logging.
+    content.vb: Public Sub New(quotaServiceIdentifier As String, quotaName As String, quotaContext As String, quotaMetricPartitionId As String, metricLimit As Integer, metricWindowSeconds As Integer, lockoutDurationSeconds As Integer, logger As ILogger)
+  overload: FoundationaLLM.Common.Services.Quota.QuotaMetricPartition.#ctor*
+  nameWithType.vb: QuotaMetricPartition.New(String, String, String, String, Integer, Integer, Integer, ILogger)
+  fullName.vb: FoundationaLLM.Common.Services.Quota.QuotaMetricPartition.New(String, String, String, String, Integer, Integer, Integer, Microsoft.Extensions.Logging.ILogger)
+  name.vb: New(String, String, String, String, Integer, Integer, Integer, ILogger)
+- uid: FoundationaLLM.Common.Services.Quota.QuotaMetricPartition.QuotaMetricPartitionId
+  commentId: P:FoundationaLLM.Common.Services.Quota.QuotaMetricPartition.QuotaMetricPartitionId
+  id: QuotaMetricPartitionId
+  parent: FoundationaLLM.Common.Services.Quota.QuotaMetricPartition
+  langs:
+  - csharp
+  - vb
+  name: QuotaMetricPartitionId
+  nameWithType: QuotaMetricPartition.QuotaMetricPartitionId
+  fullName: FoundationaLLM.Common.Services.Quota.QuotaMetricPartition.QuotaMetricPartitionId
+  type: Property
+  source:
+    remote:
+      path: src/dotnet/Common/Services/Quota/QuotaMetricPartition.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: QuotaMetricPartitionId
+    path: ../src/dotnet/Common/Services/Quota/QuotaMetricPartition.cs
+    startLine: 61
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Services.Quota
+  summary: The identifier of the quota metric partition that this sequence refers to.
+  remarks: The value of the identifier is only relevant within the parent quota context (where it is unique).
+  example: []
+  syntax:
+    content: public string QuotaMetricPartitionId { get; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public ReadOnly Property QuotaMetricPartitionId As String
+  overload: FoundationaLLM.Common.Services.Quota.QuotaMetricPartition.QuotaMetricPartitionId*
+- uid: FoundationaLLM.Common.Services.Quota.QuotaMetricPartition.AddLocalMetricUnit(System.DateTimeOffset)
+  commentId: M:FoundationaLLM.Common.Services.Quota.QuotaMetricPartition.AddLocalMetricUnit(System.DateTimeOffset)
+  id: AddLocalMetricUnit(System.DateTimeOffset)
+  parent: FoundationaLLM.Common.Services.Quota.QuotaMetricPartition
+  langs:
+  - csharp
+  - vb
+  name: AddLocalMetricUnit(DateTimeOffset)
+  nameWithType: QuotaMetricPartition.AddLocalMetricUnit(DateTimeOffset)
+  fullName: FoundationaLLM.Common.Services.Quota.QuotaMetricPartition.AddLocalMetricUnit(System.DateTimeOffset)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Common/Services/Quota/QuotaMetricPartition.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: AddLocalMetricUnit
+    path: ../src/dotnet/Common/Services/Quota/QuotaMetricPartition.cs
+    startLine: 68
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Services.Quota
+  summary: Adds a local metric unit to the metric partition.
+  example: []
+  syntax:
+    content: public QuotaMetricPartitionState AddLocalMetricUnit(DateTimeOffset localReferenceTime)
+    parameters:
+    - id: localReferenceTime
+      type: System.DateTimeOffset
+      description: The time at which the local metric unit was recorded.
+    return:
+      type: FoundationaLLM.Common.Models.Quota.QuotaMetricPartitionState
+      description: A <xref href="FoundationaLLM.Common.Models.Quota.QuotaMetricPartitionState" data-throw-if-not-resolved="false"></xref> instance with the current state of the metric partition.
+    content.vb: Public Function AddLocalMetricUnit(localReferenceTime As DateTimeOffset) As QuotaMetricPartitionState
+  overload: FoundationaLLM.Common.Services.Quota.QuotaMetricPartition.AddLocalMetricUnit*
+- uid: FoundationaLLM.Common.Services.Quota.QuotaMetricPartition.AddRemoteMetricUnits(System.Collections.Generic.List{System.DateTimeOffset})
+  commentId: M:FoundationaLLM.Common.Services.Quota.QuotaMetricPartition.AddRemoteMetricUnits(System.Collections.Generic.List{System.DateTimeOffset})
+  id: AddRemoteMetricUnits(System.Collections.Generic.List{System.DateTimeOffset})
+  parent: FoundationaLLM.Common.Services.Quota.QuotaMetricPartition
+  langs:
+  - csharp
+  - vb
+  name: AddRemoteMetricUnits(List<DateTimeOffset>)
+  nameWithType: QuotaMetricPartition.AddRemoteMetricUnits(List<DateTimeOffset>)
+  fullName: FoundationaLLM.Common.Services.Quota.QuotaMetricPartition.AddRemoteMetricUnits(System.Collections.Generic.List<System.DateTimeOffset>)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Common/Services/Quota/QuotaMetricPartition.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: AddRemoteMetricUnits
+    path: ../src/dotnet/Common/Services/Quota/QuotaMetricPartition.cs
+    startLine: 130
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Services.Quota
+  summary: Adds remote metric units to the metric partition.
+  example: []
+  syntax:
+    content: public QuotaMetricPartitionState? AddRemoteMetricUnits(List<DateTimeOffset> remoteReferenceTimes)
+    parameters:
+    - id: remoteReferenceTimes
+      type: System.Collections.Generic.List{System.DateTimeOffset}
+      description: The times at which the remote metric units were recorded.
+    return:
+      type: FoundationaLLM.Common.Models.Quota.QuotaMetricPartitionState
+      description: A <xref href="FoundationaLLM.Common.Models.Quota.QuotaMetricPartitionState" data-throw-if-not-resolved="false"></xref> instance with the current state of the metric partition.
+    content.vb: Public Function AddRemoteMetricUnits(remoteReferenceTimes As List(Of DateTimeOffset)) As QuotaMetricPartitionState
+  overload: FoundationaLLM.Common.Services.Quota.QuotaMetricPartition.AddRemoteMetricUnits*
+  nameWithType.vb: QuotaMetricPartition.AddRemoteMetricUnits(List(Of DateTimeOffset))
+  fullName.vb: FoundationaLLM.Common.Services.Quota.QuotaMetricPartition.AddRemoteMetricUnits(System.Collections.Generic.List(Of System.DateTimeOffset))
+  name.vb: AddRemoteMetricUnits(List(Of DateTimeOffset))
+references:
+- uid: FoundationaLLM.Common.Services.Quota
+  commentId: N:FoundationaLLM.Common.Services.Quota
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Services.Quota
+  nameWithType: FoundationaLLM.Common.Services.Quota
+  fullName: FoundationaLLM.Common.Services.Quota
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Services
+    name: Services
+    href: FoundationaLLM.Common.Services.html
+  - name: .
+  - uid: FoundationaLLM.Common.Services.Quota
+    name: Quota
+    href: FoundationaLLM.Common.Services.Quota.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Services
+    name: Services
+    href: FoundationaLLM.Common.Services.html
+  - name: .
+  - uid: FoundationaLLM.Common.Services.Quota
+    name: Quota
+    href: FoundationaLLM.Common.Services.Quota.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  parent: FoundationaLLM.Core.Utils.ObjectExtensions
+  definition: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  isExternal: true
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions
+  commentId: T:FoundationaLLM.Core.Utils.ObjectExtensions
+  parent: FoundationaLLM.Core.Utils
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html
+  name: ObjectExtensions
+  nameWithType: ObjectExtensions
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions
+- uid: FoundationaLLM.Core.Utils
+  commentId: N:FoundationaLLM.Core.Utils
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Core.Utils
+  nameWithType: FoundationaLLM.Core.Utils
+  fullName: FoundationaLLM.Core.Utils
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+- uid: FoundationaLLM.Common.Services.Quota.QuotaMetricPartition.#ctor*
+  commentId: Overload:FoundationaLLM.Common.Services.Quota.QuotaMetricPartition.#ctor
+  href: FoundationaLLM.Common.Services.Quota.QuotaMetricPartition.html#FoundationaLLM_Common_Services_Quota_QuotaMetricPartition__ctor_System_String_System_String_System_String_System_String_System_Int32_System_Int32_System_Int32_Microsoft_Extensions_Logging_ILogger_
+  name: QuotaMetricPartition
+  nameWithType: QuotaMetricPartition.QuotaMetricPartition
+  fullName: FoundationaLLM.Common.Services.Quota.QuotaMetricPartition.QuotaMetricPartition
+  nameWithType.vb: QuotaMetricPartition.New
+  fullName.vb: FoundationaLLM.Common.Services.Quota.QuotaMetricPartition.New
+  name.vb: New
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: Microsoft.Extensions.Logging.ILogger
+  commentId: T:Microsoft.Extensions.Logging.ILogger
+  parent: Microsoft.Extensions.Logging
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger
+  name: ILogger
+  nameWithType: ILogger
+  fullName: Microsoft.Extensions.Logging.ILogger
+- uid: Microsoft.Extensions.Logging
+  commentId: N:Microsoft.Extensions.Logging
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft
+  name: Microsoft.Extensions.Logging
+  nameWithType: Microsoft.Extensions.Logging
+  fullName: Microsoft.Extensions.Logging
+  spec.csharp:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Logging
+    name: Logging
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging
+  spec.vb:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Logging
+    name: Logging
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging
+- uid: FoundationaLLM.Common.Services.Quota.QuotaMetricPartition.QuotaMetricPartitionId*
+  commentId: Overload:FoundationaLLM.Common.Services.Quota.QuotaMetricPartition.QuotaMetricPartitionId
+  href: FoundationaLLM.Common.Services.Quota.QuotaMetricPartition.html#FoundationaLLM_Common_Services_Quota_QuotaMetricPartition_QuotaMetricPartitionId
+  name: QuotaMetricPartitionId
+  nameWithType: QuotaMetricPartition.QuotaMetricPartitionId
+  fullName: FoundationaLLM.Common.Services.Quota.QuotaMetricPartition.QuotaMetricPartitionId
+- uid: FoundationaLLM.Common.Models.Quota.QuotaMetricPartitionState
+  commentId: T:FoundationaLLM.Common.Models.Quota.QuotaMetricPartitionState
+  parent: FoundationaLLM.Common.Models.Quota
+  href: FoundationaLLM.Common.Models.Quota.QuotaMetricPartitionState.html
+  name: QuotaMetricPartitionState
+  nameWithType: QuotaMetricPartitionState
+  fullName: FoundationaLLM.Common.Models.Quota.QuotaMetricPartitionState
+- uid: FoundationaLLM.Common.Services.Quota.QuotaMetricPartition.AddLocalMetricUnit*
+  commentId: Overload:FoundationaLLM.Common.Services.Quota.QuotaMetricPartition.AddLocalMetricUnit
+  href: FoundationaLLM.Common.Services.Quota.QuotaMetricPartition.html#FoundationaLLM_Common_Services_Quota_QuotaMetricPartition_AddLocalMetricUnit_System_DateTimeOffset_
+  name: AddLocalMetricUnit
+  nameWithType: QuotaMetricPartition.AddLocalMetricUnit
+  fullName: FoundationaLLM.Common.Services.Quota.QuotaMetricPartition.AddLocalMetricUnit
+- uid: System.DateTimeOffset
+  commentId: T:System.DateTimeOffset
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.datetimeoffset
+  name: DateTimeOffset
+  nameWithType: DateTimeOffset
+  fullName: System.DateTimeOffset
+- uid: FoundationaLLM.Common.Models.Quota
+  commentId: N:FoundationaLLM.Common.Models.Quota
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.Quota
+  nameWithType: FoundationaLLM.Common.Models.Quota
+  fullName: FoundationaLLM.Common.Models.Quota
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Quota
+    name: Quota
+    href: FoundationaLLM.Common.Models.Quota.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Quota
+    name: Quota
+    href: FoundationaLLM.Common.Models.Quota.html
+- uid: FoundationaLLM.Common.Services.Quota.QuotaMetricPartition.AddRemoteMetricUnits*
+  commentId: Overload:FoundationaLLM.Common.Services.Quota.QuotaMetricPartition.AddRemoteMetricUnits
+  href: FoundationaLLM.Common.Services.Quota.QuotaMetricPartition.html#FoundationaLLM_Common_Services_Quota_QuotaMetricPartition_AddRemoteMetricUnits_System_Collections_Generic_List_System_DateTimeOffset__
+  name: AddRemoteMetricUnits
+  nameWithType: QuotaMetricPartition.AddRemoteMetricUnits
+  fullName: FoundationaLLM.Common.Services.Quota.QuotaMetricPartition.AddRemoteMetricUnits
+- uid: System.Collections.Generic.List{System.DateTimeOffset}
+  commentId: T:System.Collections.Generic.List{System.DateTimeOffset}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.List`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  name: List<DateTimeOffset>
+  nameWithType: List<DateTimeOffset>
+  fullName: System.Collections.Generic.List<System.DateTimeOffset>
+  nameWithType.vb: List(Of DateTimeOffset)
+  fullName.vb: System.Collections.Generic.List(Of System.DateTimeOffset)
+  name.vb: List(Of DateTimeOffset)
+  spec.csharp:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.DateTimeOffset
+    name: DateTimeOffset
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.datetimeoffset
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.DateTimeOffset
+    name: DateTimeOffset
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.datetimeoffset
+  - name: )
+- uid: System.Collections.Generic.List`1
+  commentId: T:System.Collections.Generic.List`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  name: List<T>
+  nameWithType: List<T>
+  fullName: System.Collections.Generic.List<T>
+  nameWithType.vb: List(Of T)
+  fullName.vb: System.Collections.Generic.List(Of T)
+  name.vb: List(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic

@@ -1,0 +1,964 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Context.Services.KnowledgeUnitQueryEngine
+  commentId: T:FoundationaLLM.Context.Services.KnowledgeUnitQueryEngine
+  id: KnowledgeUnitQueryEngine
+  parent: FoundationaLLM.Context.Services
+  children:
+  - FoundationaLLM.Context.Services.KnowledgeUnitQueryEngine.#ctor(FoundationaLLM.Common.Models.ResourceProviders.Context.KnowledgeUnit,FoundationaLLM.Context.Models.CachedKnowledgeUnit,FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase,FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase,Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Context.Services.KnowledgeUnitQueryEngine})
+  - FoundationaLLM.Context.Services.KnowledgeUnitQueryEngine.QueryAsync(FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeSourceQueryRequest)
+  langs:
+  - csharp
+  - vb
+  name: KnowledgeUnitQueryEngine
+  nameWithType: KnowledgeUnitQueryEngine
+  fullName: FoundationaLLM.Context.Services.KnowledgeUnitQueryEngine
+  type: Class
+  source:
+    remote:
+      path: src/dotnet/ContextEngine/Services/KnowledgeUnitQueryEngine.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: KnowledgeUnitQueryEngine
+    path: ../src/dotnet/ContextEngine/Services/KnowledgeUnitQueryEngine.cs
+    startLine: 22
+  assemblies:
+  - FoundationaLLM.ContextEngine
+  namespace: FoundationaLLM.Context.Services
+  summary: Provides methods for querying knowledge units.
+  example: []
+  syntax:
+    content: public class KnowledgeUnitQueryEngine
+    content.vb: Public Class KnowledgeUnitQueryEngine
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+  extensionMethods:
+  - System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+- uid: FoundationaLLM.Context.Services.KnowledgeUnitQueryEngine.#ctor(FoundationaLLM.Common.Models.ResourceProviders.Context.KnowledgeUnit,FoundationaLLM.Context.Models.CachedKnowledgeUnit,FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase,FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase,Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Context.Services.KnowledgeUnitQueryEngine})
+  commentId: M:FoundationaLLM.Context.Services.KnowledgeUnitQueryEngine.#ctor(FoundationaLLM.Common.Models.ResourceProviders.Context.KnowledgeUnit,FoundationaLLM.Context.Models.CachedKnowledgeUnit,FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase,FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase,Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Context.Services.KnowledgeUnitQueryEngine})
+  id: '#ctor(FoundationaLLM.Common.Models.ResourceProviders.Context.KnowledgeUnit,FoundationaLLM.Context.Models.CachedKnowledgeUnit,FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase,FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase,Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Context.Services.KnowledgeUnitQueryEngine})'
+  parent: FoundationaLLM.Context.Services.KnowledgeUnitQueryEngine
+  langs:
+  - csharp
+  - vb
+  name: KnowledgeUnitQueryEngine(KnowledgeUnit, CachedKnowledgeUnit, VectorDatabase, VectorDatabase?, ILogger<KnowledgeUnitQueryEngine>)
+  nameWithType: KnowledgeUnitQueryEngine.KnowledgeUnitQueryEngine(KnowledgeUnit, CachedKnowledgeUnit, VectorDatabase, VectorDatabase?, ILogger<KnowledgeUnitQueryEngine>)
+  fullName: FoundationaLLM.Context.Services.KnowledgeUnitQueryEngine.KnowledgeUnitQueryEngine(FoundationaLLM.Common.Models.ResourceProviders.Context.KnowledgeUnit, FoundationaLLM.Context.Models.CachedKnowledgeUnit, FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase, FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase?, Microsoft.Extensions.Logging.ILogger<FoundationaLLM.Context.Services.KnowledgeUnitQueryEngine>)
+  type: Constructor
+  source:
+    remote:
+      path: src/dotnet/ContextEngine/Services/KnowledgeUnitQueryEngine.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: .ctor
+    path: ../src/dotnet/ContextEngine/Services/KnowledgeUnitQueryEngine.cs
+    startLine: 43
+  assemblies:
+  - FoundationaLLM.ContextEngine
+  namespace: FoundationaLLM.Context.Services
+  summary: Initializes a new instance of the <xref href="FoundationaLLM.Context.Services.KnowledgeUnitQueryEngine" data-throw-if-not-resolved="false"></xref> class.
+  example: []
+  syntax:
+    content: public KnowledgeUnitQueryEngine(KnowledgeUnit knowledgeUnit, CachedKnowledgeUnit cachedKnowledgeUnit, VectorDatabase vectorDatabase, VectorDatabase? knowledgeGraphDatabase, ILogger<KnowledgeUnitQueryEngine> logger)
+    parameters:
+    - id: knowledgeUnit
+      type: FoundationaLLM.Common.Models.ResourceProviders.Context.KnowledgeUnit
+      description: The knowledge unit definition to be queried by the engine.
+    - id: cachedKnowledgeUnit
+      type: FoundationaLLM.Context.Models.CachedKnowledgeUnit
+      description: The cached version of the knowledge unit to be queried.
+    - id: vectorDatabase
+      type: FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase
+      description: The vector database associated with the knowledge unit.
+    - id: knowledgeGraphDatabase
+      type: FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase
+    - id: logger
+      type: Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Context.Services.KnowledgeUnitQueryEngine}
+      description: The logger used for logging operations within the query engine.
+    content.vb: Public Sub New(knowledgeUnit As KnowledgeUnit, cachedKnowledgeUnit As CachedKnowledgeUnit, vectorDatabase As VectorDatabase, knowledgeGraphDatabase As VectorDatabase, logger As ILogger(Of KnowledgeUnitQueryEngine))
+  overload: FoundationaLLM.Context.Services.KnowledgeUnitQueryEngine.#ctor*
+  nameWithType.vb: KnowledgeUnitQueryEngine.New(KnowledgeUnit, CachedKnowledgeUnit, VectorDatabase, VectorDatabase, ILogger(Of KnowledgeUnitQueryEngine))
+  fullName.vb: FoundationaLLM.Context.Services.KnowledgeUnitQueryEngine.New(FoundationaLLM.Common.Models.ResourceProviders.Context.KnowledgeUnit, FoundationaLLM.Context.Models.CachedKnowledgeUnit, FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase, FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase, Microsoft.Extensions.Logging.ILogger(Of FoundationaLLM.Context.Services.KnowledgeUnitQueryEngine))
+  name.vb: New(KnowledgeUnit, CachedKnowledgeUnit, VectorDatabase, VectorDatabase, ILogger(Of KnowledgeUnitQueryEngine))
+- uid: FoundationaLLM.Context.Services.KnowledgeUnitQueryEngine.QueryAsync(FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeSourceQueryRequest)
+  commentId: M:FoundationaLLM.Context.Services.KnowledgeUnitQueryEngine.QueryAsync(FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeSourceQueryRequest)
+  id: QueryAsync(FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeSourceQueryRequest)
+  parent: FoundationaLLM.Context.Services.KnowledgeUnitQueryEngine
+  langs:
+  - csharp
+  - vb
+  name: QueryAsync(ContextKnowledgeSourceQueryRequest)
+  nameWithType: KnowledgeUnitQueryEngine.QueryAsync(ContextKnowledgeSourceQueryRequest)
+  fullName: FoundationaLLM.Context.Services.KnowledgeUnitQueryEngine.QueryAsync(FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeSourceQueryRequest)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/ContextEngine/Services/KnowledgeUnitQueryEngine.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: QueryAsync
+    path: ../src/dotnet/ContextEngine/Services/KnowledgeUnitQueryEngine.cs
+    startLine: 57
+  assemblies:
+  - FoundationaLLM.ContextEngine
+  namespace: FoundationaLLM.Context.Services
+  syntax:
+    content: public Task<Result<ContextKnowledgeSourceQueryResponse>> QueryAsync(ContextKnowledgeSourceQueryRequest queryRequest)
+    parameters:
+    - id: queryRequest
+      type: FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeSourceQueryRequest
+    return:
+      type: System.Threading.Tasks.Task{FoundationaLLM.Common.Models.Services.Result{FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeSourceQueryResponse}}
+    content.vb: Public Function QueryAsync(queryRequest As ContextKnowledgeSourceQueryRequest) As Task(Of Result(Of ContextKnowledgeSourceQueryResponse))
+  overload: FoundationaLLM.Context.Services.KnowledgeUnitQueryEngine.QueryAsync*
+references:
+- uid: FoundationaLLM.Context.Services
+  commentId: N:FoundationaLLM.Context.Services
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Context.Services
+  nameWithType: FoundationaLLM.Context.Services
+  fullName: FoundationaLLM.Context.Services
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Context
+    name: Context
+    href: FoundationaLLM.Context.html
+  - name: .
+  - uid: FoundationaLLM.Context.Services
+    name: Services
+    href: FoundationaLLM.Context.Services.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Context
+    name: Context
+    href: FoundationaLLM.Context.html
+  - name: .
+  - uid: FoundationaLLM.Context.Services
+    name: Services
+    href: FoundationaLLM.Context.Services.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  parent: FoundationaLLM.Core.Utils.ObjectExtensions
+  definition: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  isExternal: true
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions
+  commentId: T:FoundationaLLM.Core.Utils.ObjectExtensions
+  parent: FoundationaLLM.Core.Utils
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html
+  name: ObjectExtensions
+  nameWithType: ObjectExtensions
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions
+- uid: FoundationaLLM.Core.Utils
+  commentId: N:FoundationaLLM.Core.Utils
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Core.Utils
+  nameWithType: FoundationaLLM.Core.Utils
+  fullName: FoundationaLLM.Core.Utils
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+- uid: FoundationaLLM.Context.Services.KnowledgeUnitQueryEngine
+  commentId: T:FoundationaLLM.Context.Services.KnowledgeUnitQueryEngine
+  href: FoundationaLLM.Context.Services.KnowledgeUnitQueryEngine.html
+  name: KnowledgeUnitQueryEngine
+  nameWithType: KnowledgeUnitQueryEngine
+  fullName: FoundationaLLM.Context.Services.KnowledgeUnitQueryEngine
+- uid: FoundationaLLM.Context.Services.KnowledgeUnitQueryEngine.#ctor*
+  commentId: Overload:FoundationaLLM.Context.Services.KnowledgeUnitQueryEngine.#ctor
+  href: FoundationaLLM.Context.Services.KnowledgeUnitQueryEngine.html#FoundationaLLM_Context_Services_KnowledgeUnitQueryEngine__ctor_FoundationaLLM_Common_Models_ResourceProviders_Context_KnowledgeUnit_FoundationaLLM_Context_Models_CachedKnowledgeUnit_FoundationaLLM_Common_Models_ResourceProviders_Vector_VectorDatabase_FoundationaLLM_Common_Models_ResourceProviders_Vector_VectorDatabase_Microsoft_Extensions_Logging_ILogger_FoundationaLLM_Context_Services_KnowledgeUnitQueryEngine__
+  name: KnowledgeUnitQueryEngine
+  nameWithType: KnowledgeUnitQueryEngine.KnowledgeUnitQueryEngine
+  fullName: FoundationaLLM.Context.Services.KnowledgeUnitQueryEngine.KnowledgeUnitQueryEngine
+  nameWithType.vb: KnowledgeUnitQueryEngine.New
+  fullName.vb: FoundationaLLM.Context.Services.KnowledgeUnitQueryEngine.New
+  name.vb: New
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Context.KnowledgeUnit
+  commentId: T:FoundationaLLM.Common.Models.ResourceProviders.Context.KnowledgeUnit
+  parent: FoundationaLLM.Common.Models.ResourceProviders.Context
+  href: FoundationaLLM.Common.Models.ResourceProviders.Context.KnowledgeUnit.html
+  name: KnowledgeUnit
+  nameWithType: KnowledgeUnit
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Context.KnowledgeUnit
+- uid: FoundationaLLM.Context.Models.CachedKnowledgeUnit
+  commentId: T:FoundationaLLM.Context.Models.CachedKnowledgeUnit
+  parent: FoundationaLLM.Context.Models
+  href: FoundationaLLM.Context.Models.CachedKnowledgeUnit.html
+  name: CachedKnowledgeUnit
+  nameWithType: CachedKnowledgeUnit
+  fullName: FoundationaLLM.Context.Models.CachedKnowledgeUnit
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase
+  commentId: T:FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase
+  parent: FoundationaLLM.Common.Models.ResourceProviders.Vector
+  href: FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase.html
+  name: VectorDatabase
+  nameWithType: VectorDatabase
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase
+- uid: Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Context.Services.KnowledgeUnitQueryEngine}
+  commentId: T:Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Context.Services.KnowledgeUnitQueryEngine}
+  parent: Microsoft.Extensions.Logging
+  definition: Microsoft.Extensions.Logging.ILogger`1
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  name: ILogger<KnowledgeUnitQueryEngine>
+  nameWithType: ILogger<KnowledgeUnitQueryEngine>
+  fullName: Microsoft.Extensions.Logging.ILogger<FoundationaLLM.Context.Services.KnowledgeUnitQueryEngine>
+  nameWithType.vb: ILogger(Of KnowledgeUnitQueryEngine)
+  fullName.vb: Microsoft.Extensions.Logging.ILogger(Of FoundationaLLM.Context.Services.KnowledgeUnitQueryEngine)
+  name.vb: ILogger(Of KnowledgeUnitQueryEngine)
+  spec.csharp:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: <
+  - uid: FoundationaLLM.Context.Services.KnowledgeUnitQueryEngine
+    name: KnowledgeUnitQueryEngine
+    href: FoundationaLLM.Context.Services.KnowledgeUnitQueryEngine.html
+  - name: '>'
+  spec.vb:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FoundationaLLM.Context.Services.KnowledgeUnitQueryEngine
+    name: KnowledgeUnitQueryEngine
+    href: FoundationaLLM.Context.Services.KnowledgeUnitQueryEngine.html
+  - name: )
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Context
+  commentId: N:FoundationaLLM.Common.Models.ResourceProviders.Context
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.ResourceProviders.Context
+  nameWithType: FoundationaLLM.Common.Models.ResourceProviders.Context
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Context
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders
+    name: ResourceProviders
+    href: FoundationaLLM.Common.Models.ResourceProviders.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.Context
+    name: Context
+    href: FoundationaLLM.Common.Models.ResourceProviders.Context.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders
+    name: ResourceProviders
+    href: FoundationaLLM.Common.Models.ResourceProviders.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.Context
+    name: Context
+    href: FoundationaLLM.Common.Models.ResourceProviders.Context.html
+- uid: FoundationaLLM.Context.Models
+  commentId: N:FoundationaLLM.Context.Models
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Context.Models
+  nameWithType: FoundationaLLM.Context.Models
+  fullName: FoundationaLLM.Context.Models
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Context
+    name: Context
+    href: FoundationaLLM.Context.html
+  - name: .
+  - uid: FoundationaLLM.Context.Models
+    name: Models
+    href: FoundationaLLM.Context.Models.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Context
+    name: Context
+    href: FoundationaLLM.Context.html
+  - name: .
+  - uid: FoundationaLLM.Context.Models
+    name: Models
+    href: FoundationaLLM.Context.Models.html
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Vector
+  commentId: N:FoundationaLLM.Common.Models.ResourceProviders.Vector
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.ResourceProviders.Vector
+  nameWithType: FoundationaLLM.Common.Models.ResourceProviders.Vector
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Vector
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders
+    name: ResourceProviders
+    href: FoundationaLLM.Common.Models.ResourceProviders.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.Vector
+    name: Vector
+    href: FoundationaLLM.Common.Models.ResourceProviders.Vector.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders
+    name: ResourceProviders
+    href: FoundationaLLM.Common.Models.ResourceProviders.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.Vector
+    name: Vector
+    href: FoundationaLLM.Common.Models.ResourceProviders.Vector.html
+- uid: Microsoft.Extensions.Logging.ILogger`1
+  commentId: T:Microsoft.Extensions.Logging.ILogger`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  name: ILogger<TCategoryName>
+  nameWithType: ILogger<TCategoryName>
+  fullName: Microsoft.Extensions.Logging.ILogger<TCategoryName>
+  nameWithType.vb: ILogger(Of TCategoryName)
+  fullName.vb: Microsoft.Extensions.Logging.ILogger(Of TCategoryName)
+  name.vb: ILogger(Of TCategoryName)
+  spec.csharp:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: <
+  - name: TCategoryName
+  - name: '>'
+  spec.vb:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TCategoryName
+  - name: )
+- uid: Microsoft.Extensions.Logging
+  commentId: N:Microsoft.Extensions.Logging
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft
+  name: Microsoft.Extensions.Logging
+  nameWithType: Microsoft.Extensions.Logging
+  fullName: Microsoft.Extensions.Logging
+  spec.csharp:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Logging
+    name: Logging
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging
+  spec.vb:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Logging
+    name: Logging
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging
+- uid: FoundationaLLM.Context.Services.KnowledgeUnitQueryEngine.QueryAsync*
+  commentId: Overload:FoundationaLLM.Context.Services.KnowledgeUnitQueryEngine.QueryAsync
+  href: FoundationaLLM.Context.Services.KnowledgeUnitQueryEngine.html#FoundationaLLM_Context_Services_KnowledgeUnitQueryEngine_QueryAsync_FoundationaLLM_Common_Models_Context_Knowledge_ContextKnowledgeSourceQueryRequest_
+  name: QueryAsync
+  nameWithType: KnowledgeUnitQueryEngine.QueryAsync
+  fullName: FoundationaLLM.Context.Services.KnowledgeUnitQueryEngine.QueryAsync
+- uid: FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeSourceQueryRequest
+  commentId: T:FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeSourceQueryRequest
+  parent: FoundationaLLM.Common.Models.Context.Knowledge
+  href: FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeSourceQueryRequest.html
+  name: ContextKnowledgeSourceQueryRequest
+  nameWithType: ContextKnowledgeSourceQueryRequest
+  fullName: FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeSourceQueryRequest
+- uid: System.Threading.Tasks.Task{FoundationaLLM.Common.Models.Services.Result{FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeSourceQueryResponse}}
+  commentId: T:System.Threading.Tasks.Task{FoundationaLLM.Common.Models.Services.Result{FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeSourceQueryResponse}}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<Result<ContextKnowledgeSourceQueryResponse>>
+  nameWithType: Task<Result<ContextKnowledgeSourceQueryResponse>>
+  fullName: System.Threading.Tasks.Task<FoundationaLLM.Common.Models.Services.Result<FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeSourceQueryResponse>>
+  nameWithType.vb: Task(Of Result(Of ContextKnowledgeSourceQueryResponse))
+  fullName.vb: System.Threading.Tasks.Task(Of FoundationaLLM.Common.Models.Services.Result(Of FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeSourceQueryResponse))
+  name.vb: Task(Of Result(Of ContextKnowledgeSourceQueryResponse))
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: FoundationaLLM.Common.Models.Services.Result`1
+    name: Result
+    href: FoundationaLLM.Common.Models.Services.Result-1.html
+  - name: <
+  - uid: FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeSourceQueryResponse
+    name: ContextKnowledgeSourceQueryResponse
+    href: FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeSourceQueryResponse.html
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FoundationaLLM.Common.Models.Services.Result`1
+    name: Result
+    href: FoundationaLLM.Common.Models.Services.Result-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeSourceQueryResponse
+    name: ContextKnowledgeSourceQueryResponse
+    href: FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeSourceQueryResponse.html
+  - name: )
+  - name: )
+- uid: FoundationaLLM.Common.Models.Context.Knowledge
+  commentId: N:FoundationaLLM.Common.Models.Context.Knowledge
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.Context.Knowledge
+  nameWithType: FoundationaLLM.Common.Models.Context.Knowledge
+  fullName: FoundationaLLM.Common.Models.Context.Knowledge
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Context
+    name: Context
+    href: FoundationaLLM.Common.Models.Context.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Context.Knowledge
+    name: Knowledge
+    href: FoundationaLLM.Common.Models.Context.Knowledge.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Context
+    name: Context
+    href: FoundationaLLM.Common.Models.Context.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Context.Knowledge
+    name: Knowledge
+    href: FoundationaLLM.Common.Models.Context.Knowledge.html
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks

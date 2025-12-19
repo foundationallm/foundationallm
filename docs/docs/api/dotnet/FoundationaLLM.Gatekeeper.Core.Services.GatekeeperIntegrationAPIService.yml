@@ -1,0 +1,977 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Gatekeeper.Core.Services.GatekeeperIntegrationAPIService
+  commentId: T:FoundationaLLM.Gatekeeper.Core.Services.GatekeeperIntegrationAPIService
+  id: GatekeeperIntegrationAPIService
+  parent: FoundationaLLM.Gatekeeper.Core.Services
+  children:
+  - FoundationaLLM.Gatekeeper.Core.Services.GatekeeperIntegrationAPIService.#ctor(FoundationaLLM.Common.Interfaces.IOrchestrationContext,FoundationaLLM.Common.Interfaces.IHttpClientFactoryService)
+  - FoundationaLLM.Gatekeeper.Core.Services.GatekeeperIntegrationAPIService.AnalyzeText(System.String)
+  - FoundationaLLM.Gatekeeper.Core.Services.GatekeeperIntegrationAPIService.AnonymizeText(System.String)
+  langs:
+  - csharp
+  - vb
+  name: GatekeeperIntegrationAPIService
+  nameWithType: GatekeeperIntegrationAPIService
+  fullName: FoundationaLLM.Gatekeeper.Core.Services.GatekeeperIntegrationAPIService
+  type: Class
+  source:
+    remote:
+      path: src/dotnet/Gatekeeper/Services/GatekeeperIntegrationAPIService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: GatekeeperIntegrationAPIService
+    path: ../src/dotnet/Gatekeeper/Services/GatekeeperIntegrationAPIService.cs
+    startLine: 12
+  assemblies:
+  - FoundationaLLM.Gatekeeper.Core
+  namespace: FoundationaLLM.Gatekeeper.Core.Services
+  summary: Contains methods for interacting with the Gatekeeper API.
+  example: []
+  syntax:
+    content: 'public class GatekeeperIntegrationAPIService : IGatekeeperIntegrationAPIService'
+    content.vb: Public Class GatekeeperIntegrationAPIService Implements IGatekeeperIntegrationAPIService
+  inheritance:
+  - System.Object
+  implements:
+  - FoundationaLLM.Gatekeeper.Core.Interfaces.IGatekeeperIntegrationAPIService
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+  extensionMethods:
+  - System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+- uid: FoundationaLLM.Gatekeeper.Core.Services.GatekeeperIntegrationAPIService.#ctor(FoundationaLLM.Common.Interfaces.IOrchestrationContext,FoundationaLLM.Common.Interfaces.IHttpClientFactoryService)
+  commentId: M:FoundationaLLM.Gatekeeper.Core.Services.GatekeeperIntegrationAPIService.#ctor(FoundationaLLM.Common.Interfaces.IOrchestrationContext,FoundationaLLM.Common.Interfaces.IHttpClientFactoryService)
+  id: '#ctor(FoundationaLLM.Common.Interfaces.IOrchestrationContext,FoundationaLLM.Common.Interfaces.IHttpClientFactoryService)'
+  parent: FoundationaLLM.Gatekeeper.Core.Services.GatekeeperIntegrationAPIService
+  langs:
+  - csharp
+  - vb
+  name: GatekeeperIntegrationAPIService(IOrchestrationContext, IHttpClientFactoryService)
+  nameWithType: GatekeeperIntegrationAPIService.GatekeeperIntegrationAPIService(IOrchestrationContext, IHttpClientFactoryService)
+  fullName: FoundationaLLM.Gatekeeper.Core.Services.GatekeeperIntegrationAPIService.GatekeeperIntegrationAPIService(FoundationaLLM.Common.Interfaces.IOrchestrationContext, FoundationaLLM.Common.Interfaces.IHttpClientFactoryService)
+  type: Constructor
+  source:
+    remote:
+      path: src/dotnet/Gatekeeper/Services/GatekeeperIntegrationAPIService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: .ctor
+    path: ../src/dotnet/Gatekeeper/Services/GatekeeperIntegrationAPIService.cs
+    startLine: 26
+  assemblies:
+  - FoundationaLLM.Gatekeeper.Core
+  namespace: FoundationaLLM.Gatekeeper.Core.Services
+  summary: Initializes a new instance of the <xref href="FoundationaLLM.Gatekeeper.Core.Services.GatekeeperIntegrationAPIService" data-throw-if-not-resolved="false"></xref> class.
+  example: []
+  syntax:
+    content: public GatekeeperIntegrationAPIService(IOrchestrationContext callContext, IHttpClientFactoryService httpClientFactoryService)
+    parameters:
+    - id: callContext
+      type: FoundationaLLM.Common.Interfaces.IOrchestrationContext
+      description: >-
+        Stores context information extracted from the current HTTP request. This information
+            is primarily used to inject HTTP headers into downstream HTTP calls.
+    - id: httpClientFactoryService
+      type: FoundationaLLM.Common.Interfaces.IHttpClientFactoryService
+      description: >-
+        The <xref href="FoundationaLLM.Common.Interfaces.IHttpClientFactoryService" data-throw-if-not-resolved="false"></xref>
+            used to retrieve an <xref href="System.Net.Http.HttpClient" data-throw-if-not-resolved="false"></xref> instance that contains required
+            headers for Gatekeeper Integration API requests.
+    content.vb: Public Sub New(callContext As IOrchestrationContext, httpClientFactoryService As IHttpClientFactoryService)
+  overload: FoundationaLLM.Gatekeeper.Core.Services.GatekeeperIntegrationAPIService.#ctor*
+  nameWithType.vb: GatekeeperIntegrationAPIService.New(IOrchestrationContext, IHttpClientFactoryService)
+  fullName.vb: FoundationaLLM.Gatekeeper.Core.Services.GatekeeperIntegrationAPIService.New(FoundationaLLM.Common.Interfaces.IOrchestrationContext, FoundationaLLM.Common.Interfaces.IHttpClientFactoryService)
+  name.vb: New(IOrchestrationContext, IHttpClientFactoryService)
+- uid: FoundationaLLM.Gatekeeper.Core.Services.GatekeeperIntegrationAPIService.AnalyzeText(System.String)
+  commentId: M:FoundationaLLM.Gatekeeper.Core.Services.GatekeeperIntegrationAPIService.AnalyzeText(System.String)
+  id: AnalyzeText(System.String)
+  parent: FoundationaLLM.Gatekeeper.Core.Services.GatekeeperIntegrationAPIService
+  langs:
+  - csharp
+  - vb
+  name: AnalyzeText(string)
+  nameWithType: GatekeeperIntegrationAPIService.AnalyzeText(string)
+  fullName: FoundationaLLM.Gatekeeper.Core.Services.GatekeeperIntegrationAPIService.AnalyzeText(string)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Gatekeeper/Services/GatekeeperIntegrationAPIService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: AnalyzeText
+    path: ../src/dotnet/Gatekeeper/Services/GatekeeperIntegrationAPIService.cs
+    startLine: 36
+  assemblies:
+  - FoundationaLLM.Gatekeeper.Core
+  namespace: FoundationaLLM.Gatekeeper.Core.Services
+  summary: Analyze text to identify PII (personally identifiable information) entities.
+  example: []
+  syntax:
+    content: public Task<List<PIIResult>> AnalyzeText(string text)
+    parameters:
+    - id: text
+      type: System.String
+      description: The input text.
+    return:
+      type: System.Threading.Tasks.Task{System.Collections.Generic.List{FoundationaLLM.Gatekeeper.Core.Models.Integration.PIIResult}}
+      description: A list of PII (personally identifiable information) entities identified in the analyzed text.
+    content.vb: Public Function AnalyzeText(text As String) As Task(Of List(Of PIIResult))
+  overload: FoundationaLLM.Gatekeeper.Core.Services.GatekeeperIntegrationAPIService.AnalyzeText*
+  implements:
+  - FoundationaLLM.Gatekeeper.Core.Interfaces.IGatekeeperIntegrationAPIService.AnalyzeText(System.String)
+  nameWithType.vb: GatekeeperIntegrationAPIService.AnalyzeText(String)
+  fullName.vb: FoundationaLLM.Gatekeeper.Core.Services.GatekeeperIntegrationAPIService.AnalyzeText(String)
+  name.vb: AnalyzeText(String)
+- uid: FoundationaLLM.Gatekeeper.Core.Services.GatekeeperIntegrationAPIService.AnonymizeText(System.String)
+  commentId: M:FoundationaLLM.Gatekeeper.Core.Services.GatekeeperIntegrationAPIService.AnonymizeText(System.String)
+  id: AnonymizeText(System.String)
+  parent: FoundationaLLM.Gatekeeper.Core.Services.GatekeeperIntegrationAPIService
+  langs:
+  - csharp
+  - vb
+  name: AnonymizeText(string)
+  nameWithType: GatekeeperIntegrationAPIService.AnonymizeText(string)
+  fullName: FoundationaLLM.Gatekeeper.Core.Services.GatekeeperIntegrationAPIService.AnonymizeText(string)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Gatekeeper/Services/GatekeeperIntegrationAPIService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: AnonymizeText
+    path: ../src/dotnet/Gatekeeper/Services/GatekeeperIntegrationAPIService.cs
+    startLine: 59
+  assemblies:
+  - FoundationaLLM.Gatekeeper.Core
+  namespace: FoundationaLLM.Gatekeeper.Core.Services
+  summary: Anonymize text with identified PII (personally identifiable information) entities.
+  example: []
+  syntax:
+    content: public Task<string> AnonymizeText(string text)
+    parameters:
+    - id: text
+      type: System.String
+      description: The input text.
+    return:
+      type: System.Threading.Tasks.Task{System.String}
+      description: The anonymized text.
+    content.vb: Public Function AnonymizeText(text As String) As Task(Of String)
+  overload: FoundationaLLM.Gatekeeper.Core.Services.GatekeeperIntegrationAPIService.AnonymizeText*
+  implements:
+  - FoundationaLLM.Gatekeeper.Core.Interfaces.IGatekeeperIntegrationAPIService.AnonymizeText(System.String)
+  nameWithType.vb: GatekeeperIntegrationAPIService.AnonymizeText(String)
+  fullName.vb: FoundationaLLM.Gatekeeper.Core.Services.GatekeeperIntegrationAPIService.AnonymizeText(String)
+  name.vb: AnonymizeText(String)
+references:
+- uid: FoundationaLLM.Gatekeeper.Core.Services
+  commentId: N:FoundationaLLM.Gatekeeper.Core.Services
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Gatekeeper.Core.Services
+  nameWithType: FoundationaLLM.Gatekeeper.Core.Services
+  fullName: FoundationaLLM.Gatekeeper.Core.Services
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Gatekeeper
+    name: Gatekeeper
+    href: FoundationaLLM.Gatekeeper.html
+  - name: .
+  - uid: FoundationaLLM.Gatekeeper.Core
+    name: Core
+    href: FoundationaLLM.Gatekeeper.Core.html
+  - name: .
+  - uid: FoundationaLLM.Gatekeeper.Core.Services
+    name: Services
+    href: FoundationaLLM.Gatekeeper.Core.Services.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Gatekeeper
+    name: Gatekeeper
+    href: FoundationaLLM.Gatekeeper.html
+  - name: .
+  - uid: FoundationaLLM.Gatekeeper.Core
+    name: Core
+    href: FoundationaLLM.Gatekeeper.Core.html
+  - name: .
+  - uid: FoundationaLLM.Gatekeeper.Core.Services
+    name: Services
+    href: FoundationaLLM.Gatekeeper.Core.Services.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: FoundationaLLM.Gatekeeper.Core.Interfaces.IGatekeeperIntegrationAPIService
+  commentId: T:FoundationaLLM.Gatekeeper.Core.Interfaces.IGatekeeperIntegrationAPIService
+  parent: FoundationaLLM.Gatekeeper.Core.Interfaces
+  href: FoundationaLLM.Gatekeeper.Core.Interfaces.IGatekeeperIntegrationAPIService.html
+  name: IGatekeeperIntegrationAPIService
+  nameWithType: IGatekeeperIntegrationAPIService
+  fullName: FoundationaLLM.Gatekeeper.Core.Interfaces.IGatekeeperIntegrationAPIService
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  parent: FoundationaLLM.Core.Utils.ObjectExtensions
+  definition: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: FoundationaLLM.Gatekeeper.Core.Interfaces
+  commentId: N:FoundationaLLM.Gatekeeper.Core.Interfaces
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Gatekeeper.Core.Interfaces
+  nameWithType: FoundationaLLM.Gatekeeper.Core.Interfaces
+  fullName: FoundationaLLM.Gatekeeper.Core.Interfaces
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Gatekeeper
+    name: Gatekeeper
+    href: FoundationaLLM.Gatekeeper.html
+  - name: .
+  - uid: FoundationaLLM.Gatekeeper.Core
+    name: Core
+    href: FoundationaLLM.Gatekeeper.Core.html
+  - name: .
+  - uid: FoundationaLLM.Gatekeeper.Core.Interfaces
+    name: Interfaces
+    href: FoundationaLLM.Gatekeeper.Core.Interfaces.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Gatekeeper
+    name: Gatekeeper
+    href: FoundationaLLM.Gatekeeper.html
+  - name: .
+  - uid: FoundationaLLM.Gatekeeper.Core
+    name: Core
+    href: FoundationaLLM.Gatekeeper.Core.html
+  - name: .
+  - uid: FoundationaLLM.Gatekeeper.Core.Interfaces
+    name: Interfaces
+    href: FoundationaLLM.Gatekeeper.Core.Interfaces.html
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  isExternal: true
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions
+  commentId: T:FoundationaLLM.Core.Utils.ObjectExtensions
+  parent: FoundationaLLM.Core.Utils
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html
+  name: ObjectExtensions
+  nameWithType: ObjectExtensions
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions
+- uid: FoundationaLLM.Core.Utils
+  commentId: N:FoundationaLLM.Core.Utils
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Core.Utils
+  nameWithType: FoundationaLLM.Core.Utils
+  fullName: FoundationaLLM.Core.Utils
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+- uid: FoundationaLLM.Gatekeeper.Core.Services.GatekeeperIntegrationAPIService
+  commentId: T:FoundationaLLM.Gatekeeper.Core.Services.GatekeeperIntegrationAPIService
+  href: FoundationaLLM.Gatekeeper.Core.Services.GatekeeperIntegrationAPIService.html
+  name: GatekeeperIntegrationAPIService
+  nameWithType: GatekeeperIntegrationAPIService
+  fullName: FoundationaLLM.Gatekeeper.Core.Services.GatekeeperIntegrationAPIService
+- uid: FoundationaLLM.Common.Interfaces.IHttpClientFactoryService
+  commentId: T:FoundationaLLM.Common.Interfaces.IHttpClientFactoryService
+  parent: FoundationaLLM.Common.Interfaces
+  href: FoundationaLLM.Common.Interfaces.IHttpClientFactoryService.html
+  name: IHttpClientFactoryService
+  nameWithType: IHttpClientFactoryService
+  fullName: FoundationaLLM.Common.Interfaces.IHttpClientFactoryService
+- uid: System.Net.Http.HttpClient
+  commentId: T:System.Net.Http.HttpClient
+  parent: System.Net.Http
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.net.http.httpclient
+  name: HttpClient
+  nameWithType: HttpClient
+  fullName: System.Net.Http.HttpClient
+- uid: FoundationaLLM.Gatekeeper.Core.Services.GatekeeperIntegrationAPIService.#ctor*
+  commentId: Overload:FoundationaLLM.Gatekeeper.Core.Services.GatekeeperIntegrationAPIService.#ctor
+  href: FoundationaLLM.Gatekeeper.Core.Services.GatekeeperIntegrationAPIService.html#FoundationaLLM_Gatekeeper_Core_Services_GatekeeperIntegrationAPIService__ctor_FoundationaLLM_Common_Interfaces_IOrchestrationContext_FoundationaLLM_Common_Interfaces_IHttpClientFactoryService_
+  name: GatekeeperIntegrationAPIService
+  nameWithType: GatekeeperIntegrationAPIService.GatekeeperIntegrationAPIService
+  fullName: FoundationaLLM.Gatekeeper.Core.Services.GatekeeperIntegrationAPIService.GatekeeperIntegrationAPIService
+  nameWithType.vb: GatekeeperIntegrationAPIService.New
+  fullName.vb: FoundationaLLM.Gatekeeper.Core.Services.GatekeeperIntegrationAPIService.New
+  name.vb: New
+- uid: FoundationaLLM.Common.Interfaces.IOrchestrationContext
+  commentId: T:FoundationaLLM.Common.Interfaces.IOrchestrationContext
+  parent: FoundationaLLM.Common.Interfaces
+  href: FoundationaLLM.Common.Interfaces.IOrchestrationContext.html
+  name: IOrchestrationContext
+  nameWithType: IOrchestrationContext
+  fullName: FoundationaLLM.Common.Interfaces.IOrchestrationContext
+- uid: FoundationaLLM.Common.Interfaces
+  commentId: N:FoundationaLLM.Common.Interfaces
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Interfaces
+  nameWithType: FoundationaLLM.Common.Interfaces
+  fullName: FoundationaLLM.Common.Interfaces
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Interfaces
+    name: Interfaces
+    href: FoundationaLLM.Common.Interfaces.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Interfaces
+    name: Interfaces
+    href: FoundationaLLM.Common.Interfaces.html
+- uid: System.Net.Http
+  commentId: N:System.Net.Http
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Net.Http
+  nameWithType: System.Net.Http
+  fullName: System.Net.Http
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Net
+    name: Net
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.net
+  - name: .
+  - uid: System.Net.Http
+    name: Http
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.net.http
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Net
+    name: Net
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.net
+  - name: .
+  - uid: System.Net.Http
+    name: Http
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.net.http
+- uid: FoundationaLLM.Gatekeeper.Core.Services.GatekeeperIntegrationAPIService.AnalyzeText*
+  commentId: Overload:FoundationaLLM.Gatekeeper.Core.Services.GatekeeperIntegrationAPIService.AnalyzeText
+  href: FoundationaLLM.Gatekeeper.Core.Services.GatekeeperIntegrationAPIService.html#FoundationaLLM_Gatekeeper_Core_Services_GatekeeperIntegrationAPIService_AnalyzeText_System_String_
+  name: AnalyzeText
+  nameWithType: GatekeeperIntegrationAPIService.AnalyzeText
+  fullName: FoundationaLLM.Gatekeeper.Core.Services.GatekeeperIntegrationAPIService.AnalyzeText
+- uid: FoundationaLLM.Gatekeeper.Core.Interfaces.IGatekeeperIntegrationAPIService.AnalyzeText(System.String)
+  commentId: M:FoundationaLLM.Gatekeeper.Core.Interfaces.IGatekeeperIntegrationAPIService.AnalyzeText(System.String)
+  parent: FoundationaLLM.Gatekeeper.Core.Interfaces.IGatekeeperIntegrationAPIService
+  isExternal: true
+  href: FoundationaLLM.Gatekeeper.Core.Interfaces.IGatekeeperIntegrationAPIService.html#FoundationaLLM_Gatekeeper_Core_Interfaces_IGatekeeperIntegrationAPIService_AnalyzeText_System_String_
+  name: AnalyzeText(string)
+  nameWithType: IGatekeeperIntegrationAPIService.AnalyzeText(string)
+  fullName: FoundationaLLM.Gatekeeper.Core.Interfaces.IGatekeeperIntegrationAPIService.AnalyzeText(string)
+  nameWithType.vb: IGatekeeperIntegrationAPIService.AnalyzeText(String)
+  fullName.vb: FoundationaLLM.Gatekeeper.Core.Interfaces.IGatekeeperIntegrationAPIService.AnalyzeText(String)
+  name.vb: AnalyzeText(String)
+  spec.csharp:
+  - uid: FoundationaLLM.Gatekeeper.Core.Interfaces.IGatekeeperIntegrationAPIService.AnalyzeText(System.String)
+    name: AnalyzeText
+    href: FoundationaLLM.Gatekeeper.Core.Interfaces.IGatekeeperIntegrationAPIService.html#FoundationaLLM_Gatekeeper_Core_Interfaces_IGatekeeperIntegrationAPIService_AnalyzeText_System_String_
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Gatekeeper.Core.Interfaces.IGatekeeperIntegrationAPIService.AnalyzeText(System.String)
+    name: AnalyzeText
+    href: FoundationaLLM.Gatekeeper.Core.Interfaces.IGatekeeperIntegrationAPIService.html#FoundationaLLM_Gatekeeper_Core_Interfaces_IGatekeeperIntegrationAPIService_AnalyzeText_System_String_
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System.Threading.Tasks.Task{System.Collections.Generic.List{FoundationaLLM.Gatekeeper.Core.Models.Integration.PIIResult}}
+  commentId: T:System.Threading.Tasks.Task{System.Collections.Generic.List{FoundationaLLM.Gatekeeper.Core.Models.Integration.PIIResult}}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<List<PIIResult>>
+  nameWithType: Task<List<PIIResult>>
+  fullName: System.Threading.Tasks.Task<System.Collections.Generic.List<FoundationaLLM.Gatekeeper.Core.Models.Integration.PIIResult>>
+  nameWithType.vb: Task(Of List(Of PIIResult))
+  fullName.vb: System.Threading.Tasks.Task(Of System.Collections.Generic.List(Of FoundationaLLM.Gatekeeper.Core.Models.Integration.PIIResult))
+  name.vb: Task(Of List(Of PIIResult))
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: FoundationaLLM.Gatekeeper.Core.Models.Integration.PIIResult
+    name: PIIResult
+    href: FoundationaLLM.Gatekeeper.Core.Models.Integration.PIIResult.html
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FoundationaLLM.Gatekeeper.Core.Models.Integration.PIIResult
+    name: PIIResult
+    href: FoundationaLLM.Gatekeeper.Core.Models.Integration.PIIResult.html
+  - name: )
+  - name: )
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: FoundationaLLM.Gatekeeper.Core.Services.GatekeeperIntegrationAPIService.AnonymizeText*
+  commentId: Overload:FoundationaLLM.Gatekeeper.Core.Services.GatekeeperIntegrationAPIService.AnonymizeText
+  href: FoundationaLLM.Gatekeeper.Core.Services.GatekeeperIntegrationAPIService.html#FoundationaLLM_Gatekeeper_Core_Services_GatekeeperIntegrationAPIService_AnonymizeText_System_String_
+  name: AnonymizeText
+  nameWithType: GatekeeperIntegrationAPIService.AnonymizeText
+  fullName: FoundationaLLM.Gatekeeper.Core.Services.GatekeeperIntegrationAPIService.AnonymizeText
+- uid: FoundationaLLM.Gatekeeper.Core.Interfaces.IGatekeeperIntegrationAPIService.AnonymizeText(System.String)
+  commentId: M:FoundationaLLM.Gatekeeper.Core.Interfaces.IGatekeeperIntegrationAPIService.AnonymizeText(System.String)
+  parent: FoundationaLLM.Gatekeeper.Core.Interfaces.IGatekeeperIntegrationAPIService
+  isExternal: true
+  href: FoundationaLLM.Gatekeeper.Core.Interfaces.IGatekeeperIntegrationAPIService.html#FoundationaLLM_Gatekeeper_Core_Interfaces_IGatekeeperIntegrationAPIService_AnonymizeText_System_String_
+  name: AnonymizeText(string)
+  nameWithType: IGatekeeperIntegrationAPIService.AnonymizeText(string)
+  fullName: FoundationaLLM.Gatekeeper.Core.Interfaces.IGatekeeperIntegrationAPIService.AnonymizeText(string)
+  nameWithType.vb: IGatekeeperIntegrationAPIService.AnonymizeText(String)
+  fullName.vb: FoundationaLLM.Gatekeeper.Core.Interfaces.IGatekeeperIntegrationAPIService.AnonymizeText(String)
+  name.vb: AnonymizeText(String)
+  spec.csharp:
+  - uid: FoundationaLLM.Gatekeeper.Core.Interfaces.IGatekeeperIntegrationAPIService.AnonymizeText(System.String)
+    name: AnonymizeText
+    href: FoundationaLLM.Gatekeeper.Core.Interfaces.IGatekeeperIntegrationAPIService.html#FoundationaLLM_Gatekeeper_Core_Interfaces_IGatekeeperIntegrationAPIService_AnonymizeText_System_String_
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Gatekeeper.Core.Interfaces.IGatekeeperIntegrationAPIService.AnonymizeText(System.String)
+    name: AnonymizeText
+    href: FoundationaLLM.Gatekeeper.Core.Interfaces.IGatekeeperIntegrationAPIService.html#FoundationaLLM_Gatekeeper_Core_Interfaces_IGatekeeperIntegrationAPIService_AnonymizeText_System_String_
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: System.Threading.Tasks.Task{System.String}
+  commentId: T:System.Threading.Tasks.Task{System.String}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<string>
+  nameWithType: Task<string>
+  fullName: System.Threading.Tasks.Task<string>
+  nameWithType.vb: Task(Of String)
+  fullName.vb: System.Threading.Tasks.Task(Of String)
+  name.vb: Task(Of String)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )

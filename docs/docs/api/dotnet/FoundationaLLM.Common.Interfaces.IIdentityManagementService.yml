@@ -1,0 +1,863 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Common.Interfaces.IIdentityManagementService
+  commentId: T:FoundationaLLM.Common.Interfaces.IIdentityManagementService
+  id: IIdentityManagementService
+  parent: FoundationaLLM.Common.Interfaces
+  children:
+  - FoundationaLLM.Common.Interfaces.IIdentityManagementService.GetGroupsForPrincipal(System.String)
+  - FoundationaLLM.Common.Interfaces.IIdentityManagementService.GetObjectsByIds(FoundationaLLM.Common.Models.Authentication.ObjectQueryParameters)
+  - FoundationaLLM.Common.Interfaces.IIdentityManagementService.GetServicePrincipalById(System.String)
+  - FoundationaLLM.Common.Interfaces.IIdentityManagementService.GetServicePrincipals(FoundationaLLM.Common.Models.Authentication.ObjectQueryParameters)
+  - FoundationaLLM.Common.Interfaces.IIdentityManagementService.GetUserById(System.String)
+  - FoundationaLLM.Common.Interfaces.IIdentityManagementService.GetUserGroupById(System.String)
+  - FoundationaLLM.Common.Interfaces.IIdentityManagementService.GetUserGroups(FoundationaLLM.Common.Models.Authentication.ObjectQueryParameters)
+  - FoundationaLLM.Common.Interfaces.IIdentityManagementService.GetUsers(FoundationaLLM.Common.Models.Authentication.ObjectQueryParameters)
+  langs:
+  - csharp
+  - vb
+  name: IIdentityManagementService
+  nameWithType: IIdentityManagementService
+  fullName: FoundationaLLM.Common.Interfaces.IIdentityManagementService
+  type: Interface
+  source:
+    remote:
+      path: src/dotnet/Common/Interfaces/IIdentityManagementService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: IIdentityManagementService
+    path: ../src/dotnet/Common/Interfaces/IIdentityManagementService.cs
+    startLine: 8
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Interfaces
+  summary: Provides identity management services.
+  example: []
+  syntax:
+    content: public interface IIdentityManagementService
+    content.vb: Public Interface IIdentityManagementService
+  extensionMethods:
+  - System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+- uid: FoundationaLLM.Common.Interfaces.IIdentityManagementService.GetGroupsForPrincipal(System.String)
+  commentId: M:FoundationaLLM.Common.Interfaces.IIdentityManagementService.GetGroupsForPrincipal(System.String)
+  id: GetGroupsForPrincipal(System.String)
+  parent: FoundationaLLM.Common.Interfaces.IIdentityManagementService
+  langs:
+  - csharp
+  - vb
+  name: GetGroupsForPrincipal(string)
+  nameWithType: IIdentityManagementService.GetGroupsForPrincipal(string)
+  fullName: FoundationaLLM.Common.Interfaces.IIdentityManagementService.GetGroupsForPrincipal(string)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Common/Interfaces/IIdentityManagementService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: GetGroupsForPrincipal
+    path: ../src/dotnet/Common/Interfaces/IIdentityManagementService.cs
+    startLine: 15
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Interfaces
+  summary: Retrieves the group identifiers list of the groups where the specified user principal is a member.
+  example: []
+  syntax:
+    content: Task<List<string>> GetGroupsForPrincipal(string userIdentifier)
+    parameters:
+    - id: userIdentifier
+      type: System.String
+      description: The user identifier for which group membership is retrieved. Can be either an object id or a user principal name (UPN).
+    return:
+      type: System.Threading.Tasks.Task{System.Collections.Generic.List{System.String}}
+      description: ''
+    content.vb: Function GetGroupsForPrincipal(userIdentifier As String) As Task(Of List(Of String))
+  overload: FoundationaLLM.Common.Interfaces.IIdentityManagementService.GetGroupsForPrincipal*
+  nameWithType.vb: IIdentityManagementService.GetGroupsForPrincipal(String)
+  fullName.vb: FoundationaLLM.Common.Interfaces.IIdentityManagementService.GetGroupsForPrincipal(String)
+  name.vb: GetGroupsForPrincipal(String)
+- uid: FoundationaLLM.Common.Interfaces.IIdentityManagementService.GetObjectsByIds(FoundationaLLM.Common.Models.Authentication.ObjectQueryParameters)
+  commentId: M:FoundationaLLM.Common.Interfaces.IIdentityManagementService.GetObjectsByIds(FoundationaLLM.Common.Models.Authentication.ObjectQueryParameters)
+  id: GetObjectsByIds(FoundationaLLM.Common.Models.Authentication.ObjectQueryParameters)
+  parent: FoundationaLLM.Common.Interfaces.IIdentityManagementService
+  langs:
+  - csharp
+  - vb
+  name: GetObjectsByIds(ObjectQueryParameters)
+  nameWithType: IIdentityManagementService.GetObjectsByIds(ObjectQueryParameters)
+  fullName: FoundationaLLM.Common.Interfaces.IIdentityManagementService.GetObjectsByIds(FoundationaLLM.Common.Models.Authentication.ObjectQueryParameters)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Common/Interfaces/IIdentityManagementService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: GetObjectsByIds
+    path: ../src/dotnet/Common/Interfaces/IIdentityManagementService.cs
+    startLine: 22
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Interfaces
+  summary: Retrieves user and group objects by the passed in list of IDs.
+  example: []
+  syntax:
+    content: Task<List<ObjectQueryResult>> GetObjectsByIds(ObjectQueryParameters parameters)
+    parameters:
+    - id: parameters
+      type: FoundationaLLM.Common.Models.Authentication.ObjectQueryParameters
+      description: ''
+    return:
+      type: System.Threading.Tasks.Task{System.Collections.Generic.List{FoundationaLLM.Common.Models.Authentication.ObjectQueryResult}}
+      description: ''
+    content.vb: Function GetObjectsByIds(parameters As ObjectQueryParameters) As Task(Of List(Of ObjectQueryResult))
+  overload: FoundationaLLM.Common.Interfaces.IIdentityManagementService.GetObjectsByIds*
+- uid: FoundationaLLM.Common.Interfaces.IIdentityManagementService.GetUserGroups(FoundationaLLM.Common.Models.Authentication.ObjectQueryParameters)
+  commentId: M:FoundationaLLM.Common.Interfaces.IIdentityManagementService.GetUserGroups(FoundationaLLM.Common.Models.Authentication.ObjectQueryParameters)
+  id: GetUserGroups(FoundationaLLM.Common.Models.Authentication.ObjectQueryParameters)
+  parent: FoundationaLLM.Common.Interfaces.IIdentityManagementService
+  langs:
+  - csharp
+  - vb
+  name: GetUserGroups(ObjectQueryParameters)
+  nameWithType: IIdentityManagementService.GetUserGroups(ObjectQueryParameters)
+  fullName: FoundationaLLM.Common.Interfaces.IIdentityManagementService.GetUserGroups(FoundationaLLM.Common.Models.Authentication.ObjectQueryParameters)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Common/Interfaces/IIdentityManagementService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: GetUserGroups
+    path: ../src/dotnet/Common/Interfaces/IIdentityManagementService.cs
+    startLine: 29
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Interfaces
+  summary: Retrieves a list of group accounts with filtering and paging options.
+  example: []
+  syntax:
+    content: Task<PagedResponse<ObjectQueryResult>> GetUserGroups(ObjectQueryParameters queryParams)
+    parameters:
+    - id: queryParams
+      type: FoundationaLLM.Common.Models.Authentication.ObjectQueryParameters
+      description: The filtering and paging options used when retrieving group accounts.
+    return:
+      type: System.Threading.Tasks.Task{FoundationaLLM.Common.Models.Collections.PagedResponse{FoundationaLLM.Common.Models.Authentication.ObjectQueryResult}}
+      description: ''
+    content.vb: Function GetUserGroups(queryParams As ObjectQueryParameters) As Task(Of PagedResponse(Of ObjectQueryResult))
+  overload: FoundationaLLM.Common.Interfaces.IIdentityManagementService.GetUserGroups*
+- uid: FoundationaLLM.Common.Interfaces.IIdentityManagementService.GetUserGroupById(System.String)
+  commentId: M:FoundationaLLM.Common.Interfaces.IIdentityManagementService.GetUserGroupById(System.String)
+  id: GetUserGroupById(System.String)
+  parent: FoundationaLLM.Common.Interfaces.IIdentityManagementService
+  langs:
+  - csharp
+  - vb
+  name: GetUserGroupById(string)
+  nameWithType: IIdentityManagementService.GetUserGroupById(string)
+  fullName: FoundationaLLM.Common.Interfaces.IIdentityManagementService.GetUserGroupById(string)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Common/Interfaces/IIdentityManagementService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: GetUserGroupById
+    path: ../src/dotnet/Common/Interfaces/IIdentityManagementService.cs
+    startLine: 36
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Interfaces
+  summary: Retrieves a group account by its identifier.
+  example: []
+  syntax:
+    content: Task<ObjectQueryResult> GetUserGroupById(string groupId)
+    parameters:
+    - id: groupId
+      type: System.String
+      description: The group account identifier used to retrieve a single group account.
+    return:
+      type: System.Threading.Tasks.Task{FoundationaLLM.Common.Models.Authentication.ObjectQueryResult}
+      description: ''
+    content.vb: Function GetUserGroupById(groupId As String) As Task(Of ObjectQueryResult)
+  overload: FoundationaLLM.Common.Interfaces.IIdentityManagementService.GetUserGroupById*
+  nameWithType.vb: IIdentityManagementService.GetUserGroupById(String)
+  fullName.vb: FoundationaLLM.Common.Interfaces.IIdentityManagementService.GetUserGroupById(String)
+  name.vb: GetUserGroupById(String)
+- uid: FoundationaLLM.Common.Interfaces.IIdentityManagementService.GetUsers(FoundationaLLM.Common.Models.Authentication.ObjectQueryParameters)
+  commentId: M:FoundationaLLM.Common.Interfaces.IIdentityManagementService.GetUsers(FoundationaLLM.Common.Models.Authentication.ObjectQueryParameters)
+  id: GetUsers(FoundationaLLM.Common.Models.Authentication.ObjectQueryParameters)
+  parent: FoundationaLLM.Common.Interfaces.IIdentityManagementService
+  langs:
+  - csharp
+  - vb
+  name: GetUsers(ObjectQueryParameters)
+  nameWithType: IIdentityManagementService.GetUsers(ObjectQueryParameters)
+  fullName: FoundationaLLM.Common.Interfaces.IIdentityManagementService.GetUsers(FoundationaLLM.Common.Models.Authentication.ObjectQueryParameters)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Common/Interfaces/IIdentityManagementService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: GetUsers
+    path: ../src/dotnet/Common/Interfaces/IIdentityManagementService.cs
+    startLine: 43
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Interfaces
+  summary: Retrieves a list of user accounts with filtering and paging options.
+  example: []
+  syntax:
+    content: Task<PagedResponse<ObjectQueryResult>> GetUsers(ObjectQueryParameters queryParams)
+    parameters:
+    - id: queryParams
+      type: FoundationaLLM.Common.Models.Authentication.ObjectQueryParameters
+      description: The filtering and paging options used when retrieving users.
+    return:
+      type: System.Threading.Tasks.Task{FoundationaLLM.Common.Models.Collections.PagedResponse{FoundationaLLM.Common.Models.Authentication.ObjectQueryResult}}
+      description: ''
+    content.vb: Function GetUsers(queryParams As ObjectQueryParameters) As Task(Of PagedResponse(Of ObjectQueryResult))
+  overload: FoundationaLLM.Common.Interfaces.IIdentityManagementService.GetUsers*
+- uid: FoundationaLLM.Common.Interfaces.IIdentityManagementService.GetUserById(System.String)
+  commentId: M:FoundationaLLM.Common.Interfaces.IIdentityManagementService.GetUserById(System.String)
+  id: GetUserById(System.String)
+  parent: FoundationaLLM.Common.Interfaces.IIdentityManagementService
+  langs:
+  - csharp
+  - vb
+  name: GetUserById(string)
+  nameWithType: IIdentityManagementService.GetUserById(string)
+  fullName: FoundationaLLM.Common.Interfaces.IIdentityManagementService.GetUserById(string)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Common/Interfaces/IIdentityManagementService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: GetUserById
+    path: ../src/dotnet/Common/Interfaces/IIdentityManagementService.cs
+    startLine: 50
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Interfaces
+  summary: Retrieves a user account by its identifier.
+  example: []
+  syntax:
+    content: Task<ObjectQueryResult> GetUserById(string userId)
+    parameters:
+    - id: userId
+      type: System.String
+      description: The user identifier used to retrieve a single user account.
+    return:
+      type: System.Threading.Tasks.Task{FoundationaLLM.Common.Models.Authentication.ObjectQueryResult}
+      description: ''
+    content.vb: Function GetUserById(userId As String) As Task(Of ObjectQueryResult)
+  overload: FoundationaLLM.Common.Interfaces.IIdentityManagementService.GetUserById*
+  nameWithType.vb: IIdentityManagementService.GetUserById(String)
+  fullName.vb: FoundationaLLM.Common.Interfaces.IIdentityManagementService.GetUserById(String)
+  name.vb: GetUserById(String)
+- uid: FoundationaLLM.Common.Interfaces.IIdentityManagementService.GetServicePrincipals(FoundationaLLM.Common.Models.Authentication.ObjectQueryParameters)
+  commentId: M:FoundationaLLM.Common.Interfaces.IIdentityManagementService.GetServicePrincipals(FoundationaLLM.Common.Models.Authentication.ObjectQueryParameters)
+  id: GetServicePrincipals(FoundationaLLM.Common.Models.Authentication.ObjectQueryParameters)
+  parent: FoundationaLLM.Common.Interfaces.IIdentityManagementService
+  langs:
+  - csharp
+  - vb
+  name: GetServicePrincipals(ObjectQueryParameters)
+  nameWithType: IIdentityManagementService.GetServicePrincipals(ObjectQueryParameters)
+  fullName: FoundationaLLM.Common.Interfaces.IIdentityManagementService.GetServicePrincipals(FoundationaLLM.Common.Models.Authentication.ObjectQueryParameters)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Common/Interfaces/IIdentityManagementService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: GetServicePrincipals
+    path: ../src/dotnet/Common/Interfaces/IIdentityManagementService.cs
+    startLine: 57
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Interfaces
+  summary: Retrieves a list of service principals with filtering and paging options.
+  example: []
+  syntax:
+    content: Task<PagedResponse<ObjectQueryResult>> GetServicePrincipals(ObjectQueryParameters queryParams)
+    parameters:
+    - id: queryParams
+      type: FoundationaLLM.Common.Models.Authentication.ObjectQueryParameters
+      description: The filtering and paging options used when retrieving service principals.
+    return:
+      type: System.Threading.Tasks.Task{FoundationaLLM.Common.Models.Collections.PagedResponse{FoundationaLLM.Common.Models.Authentication.ObjectQueryResult}}
+      description: ''
+    content.vb: Function GetServicePrincipals(queryParams As ObjectQueryParameters) As Task(Of PagedResponse(Of ObjectQueryResult))
+  overload: FoundationaLLM.Common.Interfaces.IIdentityManagementService.GetServicePrincipals*
+- uid: FoundationaLLM.Common.Interfaces.IIdentityManagementService.GetServicePrincipalById(System.String)
+  commentId: M:FoundationaLLM.Common.Interfaces.IIdentityManagementService.GetServicePrincipalById(System.String)
+  id: GetServicePrincipalById(System.String)
+  parent: FoundationaLLM.Common.Interfaces.IIdentityManagementService
+  langs:
+  - csharp
+  - vb
+  name: GetServicePrincipalById(string)
+  nameWithType: IIdentityManagementService.GetServicePrincipalById(string)
+  fullName: FoundationaLLM.Common.Interfaces.IIdentityManagementService.GetServicePrincipalById(string)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Common/Interfaces/IIdentityManagementService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: GetServicePrincipalById
+    path: ../src/dotnet/Common/Interfaces/IIdentityManagementService.cs
+    startLine: 64
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Interfaces
+  summary: Retrieves a security principal by its identifier.
+  example: []
+  syntax:
+    content: Task<ObjectQueryResult> GetServicePrincipalById(string servicePrincipalId)
+    parameters:
+    - id: servicePrincipalId
+      type: System.String
+      description: The service principal identifier used to retrieve a single service principal.
+    return:
+      type: System.Threading.Tasks.Task{FoundationaLLM.Common.Models.Authentication.ObjectQueryResult}
+      description: ''
+    content.vb: Function GetServicePrincipalById(servicePrincipalId As String) As Task(Of ObjectQueryResult)
+  overload: FoundationaLLM.Common.Interfaces.IIdentityManagementService.GetServicePrincipalById*
+  nameWithType.vb: IIdentityManagementService.GetServicePrincipalById(String)
+  fullName.vb: FoundationaLLM.Common.Interfaces.IIdentityManagementService.GetServicePrincipalById(String)
+  name.vb: GetServicePrincipalById(String)
+references:
+- uid: FoundationaLLM.Common.Interfaces
+  commentId: N:FoundationaLLM.Common.Interfaces
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Interfaces
+  nameWithType: FoundationaLLM.Common.Interfaces
+  fullName: FoundationaLLM.Common.Interfaces
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Interfaces
+    name: Interfaces
+    href: FoundationaLLM.Common.Interfaces.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Interfaces
+    name: Interfaces
+    href: FoundationaLLM.Common.Interfaces.html
+- uid: System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  parent: FoundationaLLM.Core.Utils.ObjectExtensions
+  definition: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  isExternal: true
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions
+  commentId: T:FoundationaLLM.Core.Utils.ObjectExtensions
+  parent: FoundationaLLM.Core.Utils
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html
+  name: ObjectExtensions
+  nameWithType: ObjectExtensions
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions
+- uid: FoundationaLLM.Core.Utils
+  commentId: N:FoundationaLLM.Core.Utils
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Core.Utils
+  nameWithType: FoundationaLLM.Core.Utils
+  fullName: FoundationaLLM.Core.Utils
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+- uid: FoundationaLLM.Common.Interfaces.IIdentityManagementService.GetGroupsForPrincipal*
+  commentId: Overload:FoundationaLLM.Common.Interfaces.IIdentityManagementService.GetGroupsForPrincipal
+  href: FoundationaLLM.Common.Interfaces.IIdentityManagementService.html#FoundationaLLM_Common_Interfaces_IIdentityManagementService_GetGroupsForPrincipal_System_String_
+  name: GetGroupsForPrincipal
+  nameWithType: IIdentityManagementService.GetGroupsForPrincipal
+  fullName: FoundationaLLM.Common.Interfaces.IIdentityManagementService.GetGroupsForPrincipal
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System.Threading.Tasks.Task{System.Collections.Generic.List{System.String}}
+  commentId: T:System.Threading.Tasks.Task{System.Collections.Generic.List{System.String}}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<List<string>>
+  nameWithType: Task<List<string>>
+  fullName: System.Threading.Tasks.Task<System.Collections.Generic.List<string>>
+  nameWithType.vb: Task(Of List(Of String))
+  fullName.vb: System.Threading.Tasks.Task(Of System.Collections.Generic.List(Of String))
+  name.vb: Task(Of List(Of String))
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: FoundationaLLM.Common.Interfaces.IIdentityManagementService.GetObjectsByIds*
+  commentId: Overload:FoundationaLLM.Common.Interfaces.IIdentityManagementService.GetObjectsByIds
+  href: FoundationaLLM.Common.Interfaces.IIdentityManagementService.html#FoundationaLLM_Common_Interfaces_IIdentityManagementService_GetObjectsByIds_FoundationaLLM_Common_Models_Authentication_ObjectQueryParameters_
+  name: GetObjectsByIds
+  nameWithType: IIdentityManagementService.GetObjectsByIds
+  fullName: FoundationaLLM.Common.Interfaces.IIdentityManagementService.GetObjectsByIds
+- uid: FoundationaLLM.Common.Models.Authentication.ObjectQueryParameters
+  commentId: T:FoundationaLLM.Common.Models.Authentication.ObjectQueryParameters
+  parent: FoundationaLLM.Common.Models.Authentication
+  href: FoundationaLLM.Common.Models.Authentication.ObjectQueryParameters.html
+  name: ObjectQueryParameters
+  nameWithType: ObjectQueryParameters
+  fullName: FoundationaLLM.Common.Models.Authentication.ObjectQueryParameters
+- uid: System.Threading.Tasks.Task{System.Collections.Generic.List{FoundationaLLM.Common.Models.Authentication.ObjectQueryResult}}
+  commentId: T:System.Threading.Tasks.Task{System.Collections.Generic.List{FoundationaLLM.Common.Models.Authentication.ObjectQueryResult}}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<List<ObjectQueryResult>>
+  nameWithType: Task<List<ObjectQueryResult>>
+  fullName: System.Threading.Tasks.Task<System.Collections.Generic.List<FoundationaLLM.Common.Models.Authentication.ObjectQueryResult>>
+  nameWithType.vb: Task(Of List(Of ObjectQueryResult))
+  fullName.vb: System.Threading.Tasks.Task(Of System.Collections.Generic.List(Of FoundationaLLM.Common.Models.Authentication.ObjectQueryResult))
+  name.vb: Task(Of List(Of ObjectQueryResult))
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: FoundationaLLM.Common.Models.Authentication.ObjectQueryResult
+    name: ObjectQueryResult
+    href: FoundationaLLM.Common.Models.Authentication.ObjectQueryResult.html
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FoundationaLLM.Common.Models.Authentication.ObjectQueryResult
+    name: ObjectQueryResult
+    href: FoundationaLLM.Common.Models.Authentication.ObjectQueryResult.html
+  - name: )
+  - name: )
+- uid: FoundationaLLM.Common.Models.Authentication
+  commentId: N:FoundationaLLM.Common.Models.Authentication
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.Authentication
+  nameWithType: FoundationaLLM.Common.Models.Authentication
+  fullName: FoundationaLLM.Common.Models.Authentication
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Authentication
+    name: Authentication
+    href: FoundationaLLM.Common.Models.Authentication.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Authentication
+    name: Authentication
+    href: FoundationaLLM.Common.Models.Authentication.html
+- uid: FoundationaLLM.Common.Interfaces.IIdentityManagementService.GetUserGroups*
+  commentId: Overload:FoundationaLLM.Common.Interfaces.IIdentityManagementService.GetUserGroups
+  href: FoundationaLLM.Common.Interfaces.IIdentityManagementService.html#FoundationaLLM_Common_Interfaces_IIdentityManagementService_GetUserGroups_FoundationaLLM_Common_Models_Authentication_ObjectQueryParameters_
+  name: GetUserGroups
+  nameWithType: IIdentityManagementService.GetUserGroups
+  fullName: FoundationaLLM.Common.Interfaces.IIdentityManagementService.GetUserGroups
+- uid: System.Threading.Tasks.Task{FoundationaLLM.Common.Models.Collections.PagedResponse{FoundationaLLM.Common.Models.Authentication.ObjectQueryResult}}
+  commentId: T:System.Threading.Tasks.Task{FoundationaLLM.Common.Models.Collections.PagedResponse{FoundationaLLM.Common.Models.Authentication.ObjectQueryResult}}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<PagedResponse<ObjectQueryResult>>
+  nameWithType: Task<PagedResponse<ObjectQueryResult>>
+  fullName: System.Threading.Tasks.Task<FoundationaLLM.Common.Models.Collections.PagedResponse<FoundationaLLM.Common.Models.Authentication.ObjectQueryResult>>
+  nameWithType.vb: Task(Of PagedResponse(Of ObjectQueryResult))
+  fullName.vb: System.Threading.Tasks.Task(Of FoundationaLLM.Common.Models.Collections.PagedResponse(Of FoundationaLLM.Common.Models.Authentication.ObjectQueryResult))
+  name.vb: Task(Of PagedResponse(Of ObjectQueryResult))
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: FoundationaLLM.Common.Models.Collections.PagedResponse`1
+    name: PagedResponse
+    href: FoundationaLLM.Common.Models.Collections.PagedResponse-1.html
+  - name: <
+  - uid: FoundationaLLM.Common.Models.Authentication.ObjectQueryResult
+    name: ObjectQueryResult
+    href: FoundationaLLM.Common.Models.Authentication.ObjectQueryResult.html
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FoundationaLLM.Common.Models.Collections.PagedResponse`1
+    name: PagedResponse
+    href: FoundationaLLM.Common.Models.Collections.PagedResponse-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FoundationaLLM.Common.Models.Authentication.ObjectQueryResult
+    name: ObjectQueryResult
+    href: FoundationaLLM.Common.Models.Authentication.ObjectQueryResult.html
+  - name: )
+  - name: )
+- uid: FoundationaLLM.Common.Interfaces.IIdentityManagementService.GetUserGroupById*
+  commentId: Overload:FoundationaLLM.Common.Interfaces.IIdentityManagementService.GetUserGroupById
+  href: FoundationaLLM.Common.Interfaces.IIdentityManagementService.html#FoundationaLLM_Common_Interfaces_IIdentityManagementService_GetUserGroupById_System_String_
+  name: GetUserGroupById
+  nameWithType: IIdentityManagementService.GetUserGroupById
+  fullName: FoundationaLLM.Common.Interfaces.IIdentityManagementService.GetUserGroupById
+- uid: System.Threading.Tasks.Task{FoundationaLLM.Common.Models.Authentication.ObjectQueryResult}
+  commentId: T:System.Threading.Tasks.Task{FoundationaLLM.Common.Models.Authentication.ObjectQueryResult}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<ObjectQueryResult>
+  nameWithType: Task<ObjectQueryResult>
+  fullName: System.Threading.Tasks.Task<FoundationaLLM.Common.Models.Authentication.ObjectQueryResult>
+  nameWithType.vb: Task(Of ObjectQueryResult)
+  fullName.vb: System.Threading.Tasks.Task(Of FoundationaLLM.Common.Models.Authentication.ObjectQueryResult)
+  name.vb: Task(Of ObjectQueryResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: FoundationaLLM.Common.Models.Authentication.ObjectQueryResult
+    name: ObjectQueryResult
+    href: FoundationaLLM.Common.Models.Authentication.ObjectQueryResult.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FoundationaLLM.Common.Models.Authentication.ObjectQueryResult
+    name: ObjectQueryResult
+    href: FoundationaLLM.Common.Models.Authentication.ObjectQueryResult.html
+  - name: )
+- uid: FoundationaLLM.Common.Interfaces.IIdentityManagementService.GetUsers*
+  commentId: Overload:FoundationaLLM.Common.Interfaces.IIdentityManagementService.GetUsers
+  href: FoundationaLLM.Common.Interfaces.IIdentityManagementService.html#FoundationaLLM_Common_Interfaces_IIdentityManagementService_GetUsers_FoundationaLLM_Common_Models_Authentication_ObjectQueryParameters_
+  name: GetUsers
+  nameWithType: IIdentityManagementService.GetUsers
+  fullName: FoundationaLLM.Common.Interfaces.IIdentityManagementService.GetUsers
+- uid: FoundationaLLM.Common.Interfaces.IIdentityManagementService.GetUserById*
+  commentId: Overload:FoundationaLLM.Common.Interfaces.IIdentityManagementService.GetUserById
+  href: FoundationaLLM.Common.Interfaces.IIdentityManagementService.html#FoundationaLLM_Common_Interfaces_IIdentityManagementService_GetUserById_System_String_
+  name: GetUserById
+  nameWithType: IIdentityManagementService.GetUserById
+  fullName: FoundationaLLM.Common.Interfaces.IIdentityManagementService.GetUserById
+- uid: FoundationaLLM.Common.Interfaces.IIdentityManagementService.GetServicePrincipals*
+  commentId: Overload:FoundationaLLM.Common.Interfaces.IIdentityManagementService.GetServicePrincipals
+  href: FoundationaLLM.Common.Interfaces.IIdentityManagementService.html#FoundationaLLM_Common_Interfaces_IIdentityManagementService_GetServicePrincipals_FoundationaLLM_Common_Models_Authentication_ObjectQueryParameters_
+  name: GetServicePrincipals
+  nameWithType: IIdentityManagementService.GetServicePrincipals
+  fullName: FoundationaLLM.Common.Interfaces.IIdentityManagementService.GetServicePrincipals
+- uid: FoundationaLLM.Common.Interfaces.IIdentityManagementService.GetServicePrincipalById*
+  commentId: Overload:FoundationaLLM.Common.Interfaces.IIdentityManagementService.GetServicePrincipalById
+  href: FoundationaLLM.Common.Interfaces.IIdentityManagementService.html#FoundationaLLM_Common_Interfaces_IIdentityManagementService_GetServicePrincipalById_System_String_
+  name: GetServicePrincipalById
+  nameWithType: IIdentityManagementService.GetServicePrincipalById
+  fullName: FoundationaLLM.Common.Interfaces.IIdentityManagementService.GetServicePrincipalById

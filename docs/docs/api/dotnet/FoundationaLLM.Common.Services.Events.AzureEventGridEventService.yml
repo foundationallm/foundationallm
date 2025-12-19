@@ -1,0 +1,1761 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Common.Services.Events.AzureEventGridEventService
+  commentId: T:FoundationaLLM.Common.Services.Events.AzureEventGridEventService
+  id: AzureEventGridEventService
+  parent: FoundationaLLM.Common.Services.Events
+  children:
+  - FoundationaLLM.Common.Services.Events.AzureEventGridEventService.#ctor(Microsoft.Extensions.Options.IOptions{FoundationaLLM.Common.Models.Configuration.Instance.InstanceSettings},FoundationaLLM.Common.Models.Configuration.Environment.DependencyInjectionContainerSettings,Microsoft.Extensions.Options.IOptions{FoundationaLLM.Common.Models.Configuration.Events.AzureEventGridEventServiceSettings},Microsoft.Extensions.Options.IOptions{FoundationaLLM.Common.Models.Configuration.Events.AzureEventGridEventServiceProfile},FoundationaLLM.Common.Interfaces.IAzureResourceManagerService,FoundationaLLM.Common.Interfaces.IHttpClientFactoryService,Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Common.Services.Events.AzureEventGridEventService})
+  - FoundationaLLM.Common.Services.Events.AzureEventGridEventService.ExecuteAsync(System.Threading.CancellationToken)
+  - FoundationaLLM.Common.Services.Events.AzureEventGridEventService.InitializationTask
+  - FoundationaLLM.Common.Services.Events.AzureEventGridEventService.SendEvent(System.String,Azure.Messaging.CloudEvent)
+  - FoundationaLLM.Common.Services.Events.AzureEventGridEventService.ServiceInstanceName
+  - FoundationaLLM.Common.Services.Events.AzureEventGridEventService.StartAsync(System.Threading.CancellationToken)
+  - FoundationaLLM.Common.Services.Events.AzureEventGridEventService.StopAsync(System.Threading.CancellationToken)
+  - FoundationaLLM.Common.Services.Events.AzureEventGridEventService.SubscribeToEventTypeEvent(System.String,FoundationaLLM.Common.Models.Events.EventTypeEventDelegate)
+  - FoundationaLLM.Common.Services.Events.AzureEventGridEventService.UnsubscribeFromEventTypeEvent(System.String,FoundationaLLM.Common.Models.Events.EventTypeEventDelegate)
+  langs:
+  - csharp
+  - vb
+  name: AzureEventGridEventService
+  nameWithType: AzureEventGridEventService
+  fullName: FoundationaLLM.Common.Services.Events.AzureEventGridEventService
+  type: Class
+  source:
+    remote:
+      path: src/dotnet/Common/Services/Events/AzureEventGridEventService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: AzureEventGridEventService
+    path: ../src/dotnet/Common/Services/Events/AzureEventGridEventService.cs
+    startLine: 22
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Services.Events
+  summary: Provides services to integrate with the Azure Event Grid eventing platform.
+  example: []
+  syntax:
+    content: 'public class AzureEventGridEventService : IEventService'
+    content.vb: Public Class AzureEventGridEventService Implements IEventService
+  inheritance:
+  - System.Object
+  implements:
+  - FoundationaLLM.Common.Interfaces.IEventService
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+  extensionMethods:
+  - System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+- uid: FoundationaLLM.Common.Services.Events.AzureEventGridEventService.ServiceInstanceName
+  commentId: P:FoundationaLLM.Common.Services.Events.AzureEventGridEventService.ServiceInstanceName
+  id: ServiceInstanceName
+  parent: FoundationaLLM.Common.Services.Events.AzureEventGridEventService
+  langs:
+  - csharp
+  - vb
+  name: ServiceInstanceName
+  nameWithType: AzureEventGridEventService.ServiceInstanceName
+  fullName: FoundationaLLM.Common.Services.Events.AzureEventGridEventService.ServiceInstanceName
+  type: Property
+  source:
+    remote:
+      path: src/dotnet/Common/Services/Events/AzureEventGridEventService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: ServiceInstanceName
+    path: ../src/dotnet/Common/Services/Events/AzureEventGridEventService.cs
+    startLine: 46
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Services.Events
+  summary: The name of the service instance.
+  example: []
+  syntax:
+    content: public string ServiceInstanceName { get; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public ReadOnly Property ServiceInstanceName As String
+  overload: FoundationaLLM.Common.Services.Events.AzureEventGridEventService.ServiceInstanceName*
+  implements:
+  - FoundationaLLM.Common.Interfaces.IEventService.ServiceInstanceName
+- uid: FoundationaLLM.Common.Services.Events.AzureEventGridEventService.InitializationTask
+  commentId: P:FoundationaLLM.Common.Services.Events.AzureEventGridEventService.InitializationTask
+  id: InitializationTask
+  parent: FoundationaLLM.Common.Services.Events.AzureEventGridEventService
+  langs:
+  - csharp
+  - vb
+  name: InitializationTask
+  nameWithType: AzureEventGridEventService.InitializationTask
+  fullName: FoundationaLLM.Common.Services.Events.AzureEventGridEventService.InitializationTask
+  type: Property
+  source:
+    remote:
+      path: src/dotnet/Common/Services/Events/AzureEventGridEventService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: InitializationTask
+    path: ../src/dotnet/Common/Services/Events/AzureEventGridEventService.cs
+    startLine: 49
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Services.Events
+  summary: >-
+    Gets the <xref href="System.Threading.Tasks.TaskCompletionSource%601" data-throw-if-not-resolved="false"></xref> (<code>TResult</code> of type <xref href="System.Boolean" data-throw-if-not-resolved="false"></xref>)
+
+    that signals the completion of the initialization task.
+  remarks: The result of the task indicates whether initialization completed successfully or not.
+  example: []
+  syntax:
+    content: public Task<bool> InitializationTask { get; }
+    parameters: []
+    return:
+      type: System.Threading.Tasks.Task{System.Boolean}
+    content.vb: Public ReadOnly Property InitializationTask As Task(Of Boolean)
+  overload: FoundationaLLM.Common.Services.Events.AzureEventGridEventService.InitializationTask*
+  implements:
+  - FoundationaLLM.Common.Interfaces.IEventService.InitializationTask
+- uid: FoundationaLLM.Common.Services.Events.AzureEventGridEventService.#ctor(Microsoft.Extensions.Options.IOptions{FoundationaLLM.Common.Models.Configuration.Instance.InstanceSettings},FoundationaLLM.Common.Models.Configuration.Environment.DependencyInjectionContainerSettings,Microsoft.Extensions.Options.IOptions{FoundationaLLM.Common.Models.Configuration.Events.AzureEventGridEventServiceSettings},Microsoft.Extensions.Options.IOptions{FoundationaLLM.Common.Models.Configuration.Events.AzureEventGridEventServiceProfile},FoundationaLLM.Common.Interfaces.IAzureResourceManagerService,FoundationaLLM.Common.Interfaces.IHttpClientFactoryService,Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Common.Services.Events.AzureEventGridEventService})
+  commentId: M:FoundationaLLM.Common.Services.Events.AzureEventGridEventService.#ctor(Microsoft.Extensions.Options.IOptions{FoundationaLLM.Common.Models.Configuration.Instance.InstanceSettings},FoundationaLLM.Common.Models.Configuration.Environment.DependencyInjectionContainerSettings,Microsoft.Extensions.Options.IOptions{FoundationaLLM.Common.Models.Configuration.Events.AzureEventGridEventServiceSettings},Microsoft.Extensions.Options.IOptions{FoundationaLLM.Common.Models.Configuration.Events.AzureEventGridEventServiceProfile},FoundationaLLM.Common.Interfaces.IAzureResourceManagerService,FoundationaLLM.Common.Interfaces.IHttpClientFactoryService,Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Common.Services.Events.AzureEventGridEventService})
+  id: '#ctor(Microsoft.Extensions.Options.IOptions{FoundationaLLM.Common.Models.Configuration.Instance.InstanceSettings},FoundationaLLM.Common.Models.Configuration.Environment.DependencyInjectionContainerSettings,Microsoft.Extensions.Options.IOptions{FoundationaLLM.Common.Models.Configuration.Events.AzureEventGridEventServiceSettings},Microsoft.Extensions.Options.IOptions{FoundationaLLM.Common.Models.Configuration.Events.AzureEventGridEventServiceProfile},FoundationaLLM.Common.Interfaces.IAzureResourceManagerService,FoundationaLLM.Common.Interfaces.IHttpClientFactoryService,Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Common.Services.Events.AzureEventGridEventService})'
+  parent: FoundationaLLM.Common.Services.Events.AzureEventGridEventService
+  langs:
+  - csharp
+  - vb
+  name: AzureEventGridEventService(IOptions<InstanceSettings>, DependencyInjectionContainerSettings, IOptions<AzureEventGridEventServiceSettings>, IOptions<AzureEventGridEventServiceProfile>, IAzureResourceManagerService, IHttpClientFactoryService, ILogger<AzureEventGridEventService>)
+  nameWithType: AzureEventGridEventService.AzureEventGridEventService(IOptions<InstanceSettings>, DependencyInjectionContainerSettings, IOptions<AzureEventGridEventServiceSettings>, IOptions<AzureEventGridEventServiceProfile>, IAzureResourceManagerService, IHttpClientFactoryService, ILogger<AzureEventGridEventService>)
+  fullName: FoundationaLLM.Common.Services.Events.AzureEventGridEventService.AzureEventGridEventService(Microsoft.Extensions.Options.IOptions<FoundationaLLM.Common.Models.Configuration.Instance.InstanceSettings>, FoundationaLLM.Common.Models.Configuration.Environment.DependencyInjectionContainerSettings, Microsoft.Extensions.Options.IOptions<FoundationaLLM.Common.Models.Configuration.Events.AzureEventGridEventServiceSettings>, Microsoft.Extensions.Options.IOptions<FoundationaLLM.Common.Models.Configuration.Events.AzureEventGridEventServiceProfile>, FoundationaLLM.Common.Interfaces.IAzureResourceManagerService, FoundationaLLM.Common.Interfaces.IHttpClientFactoryService, Microsoft.Extensions.Logging.ILogger<FoundationaLLM.Common.Services.Events.AzureEventGridEventService>)
+  type: Constructor
+  source:
+    remote:
+      path: src/dotnet/Common/Services/Events/AzureEventGridEventService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: .ctor
+    path: ../src/dotnet/Common/Services/Events/AzureEventGridEventService.cs
+    startLine: 61
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Services.Events
+  summary: Creates a new instance of the <xref href="FoundationaLLM.Common.Services.Events.AzureEventGridEventService" data-throw-if-not-resolved="false"></xref> event service.
+  example: []
+  syntax:
+    content: public AzureEventGridEventService(IOptions<InstanceSettings> instanceOptions, DependencyInjectionContainerSettings dependencyInjectionContainerSettings, IOptions<AzureEventGridEventServiceSettings> settingsOptions, IOptions<AzureEventGridEventServiceProfile> profileOptions, IAzureResourceManagerService azureResourceManager, IHttpClientFactoryService httpClientFactory, ILogger<AzureEventGridEventService> logger)
+    parameters:
+    - id: instanceOptions
+      type: Microsoft.Extensions.Options.IOptions{FoundationaLLM.Common.Models.Configuration.Instance.InstanceSettings}
+      description: The FoundationaLLM instance-level settings.
+    - id: dependencyInjectionContainerSettings
+      type: FoundationaLLM.Common.Models.Configuration.Environment.DependencyInjectionContainerSettings
+      description: The <xref href="FoundationaLLM.Common.Models.Configuration.Environment.DependencyInjectionContainerSettings" data-throw-if-not-resolved="false"></xref> providing the configuration of the dependency injection container.
+    - id: settingsOptions
+      type: Microsoft.Extensions.Options.IOptions{FoundationaLLM.Common.Models.Configuration.Events.AzureEventGridEventServiceSettings}
+      description: The options providing the settings for the service.
+    - id: profileOptions
+      type: Microsoft.Extensions.Options.IOptions{FoundationaLLM.Common.Models.Configuration.Events.AzureEventGridEventServiceProfile}
+      description: The options providing the profile for the service.
+    - id: azureResourceManager
+      type: FoundationaLLM.Common.Interfaces.IAzureResourceManagerService
+      description: The <xref href="FoundationaLLM.Common.Interfaces.IAzureResourceManagerService" data-throw-if-not-resolved="false"></xref> service providing access to Azure ARM services.
+    - id: httpClientFactory
+      type: FoundationaLLM.Common.Interfaces.IHttpClientFactoryService
+      description: The <xref href="FoundationaLLM.Common.Interfaces.IHttpClientFactoryService" data-throw-if-not-resolved="false"></xref> service used to create HTTP clients.
+    - id: logger
+      type: Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Common.Services.Events.AzureEventGridEventService}
+      description: The logger used for logging.
+    content.vb: Public Sub New(instanceOptions As IOptions(Of InstanceSettings), dependencyInjectionContainerSettings As DependencyInjectionContainerSettings, settingsOptions As IOptions(Of AzureEventGridEventServiceSettings), profileOptions As IOptions(Of AzureEventGridEventServiceProfile), azureResourceManager As IAzureResourceManagerService, httpClientFactory As IHttpClientFactoryService, logger As ILogger(Of AzureEventGridEventService))
+  overload: FoundationaLLM.Common.Services.Events.AzureEventGridEventService.#ctor*
+  nameWithType.vb: AzureEventGridEventService.New(IOptions(Of InstanceSettings), DependencyInjectionContainerSettings, IOptions(Of AzureEventGridEventServiceSettings), IOptions(Of AzureEventGridEventServiceProfile), IAzureResourceManagerService, IHttpClientFactoryService, ILogger(Of AzureEventGridEventService))
+  fullName.vb: FoundationaLLM.Common.Services.Events.AzureEventGridEventService.New(Microsoft.Extensions.Options.IOptions(Of FoundationaLLM.Common.Models.Configuration.Instance.InstanceSettings), FoundationaLLM.Common.Models.Configuration.Environment.DependencyInjectionContainerSettings, Microsoft.Extensions.Options.IOptions(Of FoundationaLLM.Common.Models.Configuration.Events.AzureEventGridEventServiceSettings), Microsoft.Extensions.Options.IOptions(Of FoundationaLLM.Common.Models.Configuration.Events.AzureEventGridEventServiceProfile), FoundationaLLM.Common.Interfaces.IAzureResourceManagerService, FoundationaLLM.Common.Interfaces.IHttpClientFactoryService, Microsoft.Extensions.Logging.ILogger(Of FoundationaLLM.Common.Services.Events.AzureEventGridEventService))
+  name.vb: New(IOptions(Of InstanceSettings), DependencyInjectionContainerSettings, IOptions(Of AzureEventGridEventServiceSettings), IOptions(Of AzureEventGridEventServiceProfile), IAzureResourceManagerService, IHttpClientFactoryService, ILogger(Of AzureEventGridEventService))
+- uid: FoundationaLLM.Common.Services.Events.AzureEventGridEventService.StartAsync(System.Threading.CancellationToken)
+  commentId: M:FoundationaLLM.Common.Services.Events.AzureEventGridEventService.StartAsync(System.Threading.CancellationToken)
+  id: StartAsync(System.Threading.CancellationToken)
+  parent: FoundationaLLM.Common.Services.Events.AzureEventGridEventService
+  langs:
+  - csharp
+  - vb
+  name: StartAsync(CancellationToken)
+  nameWithType: AzureEventGridEventService.StartAsync(CancellationToken)
+  fullName: FoundationaLLM.Common.Services.Events.AzureEventGridEventService.StartAsync(System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Common/Services/Events/AzureEventGridEventService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: StartAsync
+    path: ../src/dotnet/Common/Services/Events/AzureEventGridEventService.cs
+    startLine: 85
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Services.Events
+  summary: Starts the event service, allowing it to initialize.
+  example: []
+  syntax:
+    content: public Task StartAsync(CancellationToken cancellationToken)
+    parameters:
+    - id: cancellationToken
+      type: System.Threading.CancellationToken
+      description: The <xref href="System.Threading.CancellationToken" data-throw-if-not-resolved="false"></xref> signaling cancellation.
+    return:
+      type: System.Threading.Tasks.Task
+      description: ''
+    content.vb: Public Function StartAsync(cancellationToken As CancellationToken) As Task
+  overload: FoundationaLLM.Common.Services.Events.AzureEventGridEventService.StartAsync*
+  implements:
+  - FoundationaLLM.Common.Interfaces.IEventService.StartAsync(System.Threading.CancellationToken)
+- uid: FoundationaLLM.Common.Services.Events.AzureEventGridEventService.StopAsync(System.Threading.CancellationToken)
+  commentId: M:FoundationaLLM.Common.Services.Events.AzureEventGridEventService.StopAsync(System.Threading.CancellationToken)
+  id: StopAsync(System.Threading.CancellationToken)
+  parent: FoundationaLLM.Common.Services.Events.AzureEventGridEventService
+  langs:
+  - csharp
+  - vb
+  name: StopAsync(CancellationToken)
+  nameWithType: AzureEventGridEventService.StopAsync(CancellationToken)
+  fullName: FoundationaLLM.Common.Services.Events.AzureEventGridEventService.StopAsync(System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Common/Services/Events/AzureEventGridEventService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: StopAsync
+    path: ../src/dotnet/Common/Services/Events/AzureEventGridEventService.cs
+    startLine: 117
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Services.Events
+  summary: Stops the event service, allowing it to cleanup.
+  example: []
+  syntax:
+    content: public Task StopAsync(CancellationToken cancellationToken)
+    parameters:
+    - id: cancellationToken
+      type: System.Threading.CancellationToken
+      description: The <xref href="System.Threading.CancellationToken" data-throw-if-not-resolved="false"></xref> signaling cancellation.
+    return:
+      type: System.Threading.Tasks.Task
+      description: ''
+    content.vb: Public Function StopAsync(cancellationToken As CancellationToken) As Task
+  overload: FoundationaLLM.Common.Services.Events.AzureEventGridEventService.StopAsync*
+  implements:
+  - FoundationaLLM.Common.Interfaces.IEventService.StopAsync(System.Threading.CancellationToken)
+- uid: FoundationaLLM.Common.Services.Events.AzureEventGridEventService.ExecuteAsync(System.Threading.CancellationToken)
+  commentId: M:FoundationaLLM.Common.Services.Events.AzureEventGridEventService.ExecuteAsync(System.Threading.CancellationToken)
+  id: ExecuteAsync(System.Threading.CancellationToken)
+  parent: FoundationaLLM.Common.Services.Events.AzureEventGridEventService
+  langs:
+  - csharp
+  - vb
+  name: ExecuteAsync(CancellationToken)
+  nameWithType: AzureEventGridEventService.ExecuteAsync(CancellationToken)
+  fullName: FoundationaLLM.Common.Services.Events.AzureEventGridEventService.ExecuteAsync(System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Common/Services/Events/AzureEventGridEventService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: ExecuteAsync
+    path: ../src/dotnet/Common/Services/Events/AzureEventGridEventService.cs
+    startLine: 121
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Services.Events
+  summary: Executes the event service until cancellation is signaled.
+  example: []
+  syntax:
+    content: public Task ExecuteAsync(CancellationToken cancellationToken)
+    parameters:
+    - id: cancellationToken
+      type: System.Threading.CancellationToken
+      description: The <xref href="System.Threading.CancellationToken" data-throw-if-not-resolved="false"></xref> signaling cancellation.
+    return:
+      type: System.Threading.Tasks.Task
+      description: ''
+    content.vb: Public Function ExecuteAsync(cancellationToken As CancellationToken) As Task
+  overload: FoundationaLLM.Common.Services.Events.AzureEventGridEventService.ExecuteAsync*
+  implements:
+  - FoundationaLLM.Common.Interfaces.IEventService.ExecuteAsync(System.Threading.CancellationToken)
+- uid: FoundationaLLM.Common.Services.Events.AzureEventGridEventService.SubscribeToEventTypeEvent(System.String,FoundationaLLM.Common.Models.Events.EventTypeEventDelegate)
+  commentId: M:FoundationaLLM.Common.Services.Events.AzureEventGridEventService.SubscribeToEventTypeEvent(System.String,FoundationaLLM.Common.Models.Events.EventTypeEventDelegate)
+  id: SubscribeToEventTypeEvent(System.String,FoundationaLLM.Common.Models.Events.EventTypeEventDelegate)
+  parent: FoundationaLLM.Common.Services.Events.AzureEventGridEventService
+  langs:
+  - csharp
+  - vb
+  name: SubscribeToEventTypeEvent(string, EventTypeEventDelegate)
+  nameWithType: AzureEventGridEventService.SubscribeToEventTypeEvent(string, EventTypeEventDelegate)
+  fullName: FoundationaLLM.Common.Services.Events.AzureEventGridEventService.SubscribeToEventTypeEvent(string, FoundationaLLM.Common.Models.Events.EventTypeEventDelegate)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Common/Services/Events/AzureEventGridEventService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: SubscribeToEventTypeEvent
+    path: ../src/dotnet/Common/Services/Events/AzureEventGridEventService.cs
+    startLine: 195
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Services.Events
+  summary: Adds an event set event delgate to the list of event handlers for a specified event set namespace.
+  example: []
+  syntax:
+    content: public void SubscribeToEventTypeEvent(string eventType, EventTypeEventDelegate eventHandler)
+    parameters:
+    - id: eventType
+      type: System.String
+      description: The event type to subscribe to.
+    - id: eventHandler
+      type: FoundationaLLM.Common.Models.Events.EventTypeEventDelegate
+      description: The function to be invoked during event handling.
+    content.vb: Public Sub SubscribeToEventTypeEvent(eventType As String, eventHandler As EventTypeEventDelegate)
+  overload: FoundationaLLM.Common.Services.Events.AzureEventGridEventService.SubscribeToEventTypeEvent*
+  implements:
+  - FoundationaLLM.Common.Interfaces.IEventService.SubscribeToEventTypeEvent(System.String,FoundationaLLM.Common.Models.Events.EventTypeEventDelegate)
+  nameWithType.vb: AzureEventGridEventService.SubscribeToEventTypeEvent(String, EventTypeEventDelegate)
+  fullName.vb: FoundationaLLM.Common.Services.Events.AzureEventGridEventService.SubscribeToEventTypeEvent(String, FoundationaLLM.Common.Models.Events.EventTypeEventDelegate)
+  name.vb: SubscribeToEventTypeEvent(String, EventTypeEventDelegate)
+- uid: FoundationaLLM.Common.Services.Events.AzureEventGridEventService.UnsubscribeFromEventTypeEvent(System.String,FoundationaLLM.Common.Models.Events.EventTypeEventDelegate)
+  commentId: M:FoundationaLLM.Common.Services.Events.AzureEventGridEventService.UnsubscribeFromEventTypeEvent(System.String,FoundationaLLM.Common.Models.Events.EventTypeEventDelegate)
+  id: UnsubscribeFromEventTypeEvent(System.String,FoundationaLLM.Common.Models.Events.EventTypeEventDelegate)
+  parent: FoundationaLLM.Common.Services.Events.AzureEventGridEventService
+  langs:
+  - csharp
+  - vb
+  name: UnsubscribeFromEventTypeEvent(string, EventTypeEventDelegate)
+  nameWithType: AzureEventGridEventService.UnsubscribeFromEventTypeEvent(string, EventTypeEventDelegate)
+  fullName: FoundationaLLM.Common.Services.Events.AzureEventGridEventService.UnsubscribeFromEventTypeEvent(string, FoundationaLLM.Common.Models.Events.EventTypeEventDelegate)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Common/Services/Events/AzureEventGridEventService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: UnsubscribeFromEventTypeEvent
+    path: ../src/dotnet/Common/Services/Events/AzureEventGridEventService.cs
+    startLine: 209
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Services.Events
+  summary: Removes an event set event delegate from the list of event handlers for a specified event set namespace.
+  example: []
+  syntax:
+    content: public void UnsubscribeFromEventTypeEvent(string eventType, EventTypeEventDelegate eventHandler)
+    parameters:
+    - id: eventType
+      type: System.String
+      description: The event type to subscribe to.
+    - id: eventHandler
+      type: FoundationaLLM.Common.Models.Events.EventTypeEventDelegate
+      description: The function to be invoked during event handling.
+    content.vb: Public Sub UnsubscribeFromEventTypeEvent(eventType As String, eventHandler As EventTypeEventDelegate)
+  overload: FoundationaLLM.Common.Services.Events.AzureEventGridEventService.UnsubscribeFromEventTypeEvent*
+  implements:
+  - FoundationaLLM.Common.Interfaces.IEventService.UnsubscribeFromEventTypeEvent(System.String,FoundationaLLM.Common.Models.Events.EventTypeEventDelegate)
+  nameWithType.vb: AzureEventGridEventService.UnsubscribeFromEventTypeEvent(String, EventTypeEventDelegate)
+  fullName.vb: FoundationaLLM.Common.Services.Events.AzureEventGridEventService.UnsubscribeFromEventTypeEvent(String, FoundationaLLM.Common.Models.Events.EventTypeEventDelegate)
+  name.vb: UnsubscribeFromEventTypeEvent(String, EventTypeEventDelegate)
+- uid: FoundationaLLM.Common.Services.Events.AzureEventGridEventService.SendEvent(System.String,Azure.Messaging.CloudEvent)
+  commentId: M:FoundationaLLM.Common.Services.Events.AzureEventGridEventService.SendEvent(System.String,Azure.Messaging.CloudEvent)
+  id: SendEvent(System.String,Azure.Messaging.CloudEvent)
+  parent: FoundationaLLM.Common.Services.Events.AzureEventGridEventService
+  langs:
+  - csharp
+  - vb
+  name: SendEvent(string, CloudEvent)
+  nameWithType: AzureEventGridEventService.SendEvent(string, CloudEvent)
+  fullName: FoundationaLLM.Common.Services.Events.AzureEventGridEventService.SendEvent(string, Azure.Messaging.CloudEvent)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Common/Services/Events/AzureEventGridEventService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: SendEvent
+    path: ../src/dotnet/Common/Services/Events/AzureEventGridEventService.cs
+    startLine: 219
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Services.Events
+  summary: Sends an event to the event service.
+  example: []
+  syntax:
+    content: public Task SendEvent(string topicName, CloudEvent cloudEvent)
+    parameters:
+    - id: topicName
+      type: System.String
+      description: The name of the topic where the event should be sent.
+    - id: cloudEvent
+      type: Azure.Messaging.CloudEvent
+      description: The <xref href="Azure.Messaging.CloudEvent" data-throw-if-not-resolved="false"></xref> object containing the details of the event.
+    return:
+      type: System.Threading.Tasks.Task
+      description: ''
+    content.vb: Public Function SendEvent(topicName As String, cloudEvent As CloudEvent) As Task
+  overload: FoundationaLLM.Common.Services.Events.AzureEventGridEventService.SendEvent*
+  implements:
+  - FoundationaLLM.Common.Interfaces.IEventService.SendEvent(System.String,Azure.Messaging.CloudEvent)
+  nameWithType.vb: AzureEventGridEventService.SendEvent(String, CloudEvent)
+  fullName.vb: FoundationaLLM.Common.Services.Events.AzureEventGridEventService.SendEvent(String, Azure.Messaging.CloudEvent)
+  name.vb: SendEvent(String, CloudEvent)
+references:
+- uid: FoundationaLLM.Common.Services.Events
+  commentId: N:FoundationaLLM.Common.Services.Events
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Services.Events
+  nameWithType: FoundationaLLM.Common.Services.Events
+  fullName: FoundationaLLM.Common.Services.Events
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Services
+    name: Services
+    href: FoundationaLLM.Common.Services.html
+  - name: .
+  - uid: FoundationaLLM.Common.Services.Events
+    name: Events
+    href: FoundationaLLM.Common.Services.Events.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Services
+    name: Services
+    href: FoundationaLLM.Common.Services.html
+  - name: .
+  - uid: FoundationaLLM.Common.Services.Events
+    name: Events
+    href: FoundationaLLM.Common.Services.Events.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: FoundationaLLM.Common.Interfaces.IEventService
+  commentId: T:FoundationaLLM.Common.Interfaces.IEventService
+  parent: FoundationaLLM.Common.Interfaces
+  href: FoundationaLLM.Common.Interfaces.IEventService.html
+  name: IEventService
+  nameWithType: IEventService
+  fullName: FoundationaLLM.Common.Interfaces.IEventService
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  parent: FoundationaLLM.Core.Utils.ObjectExtensions
+  definition: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: FoundationaLLM.Common.Interfaces
+  commentId: N:FoundationaLLM.Common.Interfaces
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Interfaces
+  nameWithType: FoundationaLLM.Common.Interfaces
+  fullName: FoundationaLLM.Common.Interfaces
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Interfaces
+    name: Interfaces
+    href: FoundationaLLM.Common.Interfaces.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Interfaces
+    name: Interfaces
+    href: FoundationaLLM.Common.Interfaces.html
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  isExternal: true
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions
+  commentId: T:FoundationaLLM.Core.Utils.ObjectExtensions
+  parent: FoundationaLLM.Core.Utils
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html
+  name: ObjectExtensions
+  nameWithType: ObjectExtensions
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions
+- uid: FoundationaLLM.Core.Utils
+  commentId: N:FoundationaLLM.Core.Utils
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Core.Utils
+  nameWithType: FoundationaLLM.Core.Utils
+  fullName: FoundationaLLM.Core.Utils
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+- uid: FoundationaLLM.Common.Services.Events.AzureEventGridEventService.ServiceInstanceName*
+  commentId: Overload:FoundationaLLM.Common.Services.Events.AzureEventGridEventService.ServiceInstanceName
+  href: FoundationaLLM.Common.Services.Events.AzureEventGridEventService.html#FoundationaLLM_Common_Services_Events_AzureEventGridEventService_ServiceInstanceName
+  name: ServiceInstanceName
+  nameWithType: AzureEventGridEventService.ServiceInstanceName
+  fullName: FoundationaLLM.Common.Services.Events.AzureEventGridEventService.ServiceInstanceName
+- uid: FoundationaLLM.Common.Interfaces.IEventService.ServiceInstanceName
+  commentId: P:FoundationaLLM.Common.Interfaces.IEventService.ServiceInstanceName
+  parent: FoundationaLLM.Common.Interfaces.IEventService
+  href: FoundationaLLM.Common.Interfaces.IEventService.html#FoundationaLLM_Common_Interfaces_IEventService_ServiceInstanceName
+  name: ServiceInstanceName
+  nameWithType: IEventService.ServiceInstanceName
+  fullName: FoundationaLLM.Common.Interfaces.IEventService.ServiceInstanceName
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System.Threading.Tasks.TaskCompletionSource`1
+  commentId: T:System.Threading.Tasks.TaskCompletionSource`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.taskcompletionsource-1
+  name: TaskCompletionSource<TResult>
+  nameWithType: TaskCompletionSource<TResult>
+  fullName: System.Threading.Tasks.TaskCompletionSource<TResult>
+  nameWithType.vb: TaskCompletionSource(Of TResult)
+  fullName.vb: System.Threading.Tasks.TaskCompletionSource(Of TResult)
+  name.vb: TaskCompletionSource(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.TaskCompletionSource`1
+    name: TaskCompletionSource
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.taskcompletionsource-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.TaskCompletionSource`1
+    name: TaskCompletionSource
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.taskcompletionsource-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: FoundationaLLM.Common.Services.Events.AzureEventGridEventService.InitializationTask*
+  commentId: Overload:FoundationaLLM.Common.Services.Events.AzureEventGridEventService.InitializationTask
+  href: FoundationaLLM.Common.Services.Events.AzureEventGridEventService.html#FoundationaLLM_Common_Services_Events_AzureEventGridEventService_InitializationTask
+  name: InitializationTask
+  nameWithType: AzureEventGridEventService.InitializationTask
+  fullName: FoundationaLLM.Common.Services.Events.AzureEventGridEventService.InitializationTask
+- uid: FoundationaLLM.Common.Interfaces.IEventService.InitializationTask
+  commentId: P:FoundationaLLM.Common.Interfaces.IEventService.InitializationTask
+  parent: FoundationaLLM.Common.Interfaces.IEventService
+  href: FoundationaLLM.Common.Interfaces.IEventService.html#FoundationaLLM_Common_Interfaces_IEventService_InitializationTask
+  name: InitializationTask
+  nameWithType: IEventService.InitializationTask
+  fullName: FoundationaLLM.Common.Interfaces.IEventService.InitializationTask
+- uid: System.Threading.Tasks.Task{System.Boolean}
+  commentId: T:System.Threading.Tasks.Task{System.Boolean}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<bool>
+  nameWithType: Task<bool>
+  fullName: System.Threading.Tasks.Task<bool>
+  nameWithType.vb: Task(Of Boolean)
+  fullName.vb: System.Threading.Tasks.Task(Of Boolean)
+  name.vb: Task(Of Boolean)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: FoundationaLLM.Common.Services.Events.AzureEventGridEventService
+  commentId: T:FoundationaLLM.Common.Services.Events.AzureEventGridEventService
+  href: FoundationaLLM.Common.Services.Events.AzureEventGridEventService.html
+  name: AzureEventGridEventService
+  nameWithType: AzureEventGridEventService
+  fullName: FoundationaLLM.Common.Services.Events.AzureEventGridEventService
+- uid: FoundationaLLM.Common.Models.Configuration.Environment.DependencyInjectionContainerSettings
+  commentId: T:FoundationaLLM.Common.Models.Configuration.Environment.DependencyInjectionContainerSettings
+  parent: FoundationaLLM.Common.Models.Configuration.Environment
+  href: FoundationaLLM.Common.Models.Configuration.Environment.DependencyInjectionContainerSettings.html
+  name: DependencyInjectionContainerSettings
+  nameWithType: DependencyInjectionContainerSettings
+  fullName: FoundationaLLM.Common.Models.Configuration.Environment.DependencyInjectionContainerSettings
+- uid: FoundationaLLM.Common.Interfaces.IAzureResourceManagerService
+  commentId: T:FoundationaLLM.Common.Interfaces.IAzureResourceManagerService
+  parent: FoundationaLLM.Common.Interfaces
+  href: FoundationaLLM.Common.Interfaces.IAzureResourceManagerService.html
+  name: IAzureResourceManagerService
+  nameWithType: IAzureResourceManagerService
+  fullName: FoundationaLLM.Common.Interfaces.IAzureResourceManagerService
+- uid: FoundationaLLM.Common.Interfaces.IHttpClientFactoryService
+  commentId: T:FoundationaLLM.Common.Interfaces.IHttpClientFactoryService
+  parent: FoundationaLLM.Common.Interfaces
+  href: FoundationaLLM.Common.Interfaces.IHttpClientFactoryService.html
+  name: IHttpClientFactoryService
+  nameWithType: IHttpClientFactoryService
+  fullName: FoundationaLLM.Common.Interfaces.IHttpClientFactoryService
+- uid: FoundationaLLM.Common.Services.Events.AzureEventGridEventService.#ctor*
+  commentId: Overload:FoundationaLLM.Common.Services.Events.AzureEventGridEventService.#ctor
+  href: FoundationaLLM.Common.Services.Events.AzureEventGridEventService.html#FoundationaLLM_Common_Services_Events_AzureEventGridEventService__ctor_Microsoft_Extensions_Options_IOptions_FoundationaLLM_Common_Models_Configuration_Instance_InstanceSettings__FoundationaLLM_Common_Models_Configuration_Environment_DependencyInjectionContainerSettings_Microsoft_Extensions_Options_IOptions_FoundationaLLM_Common_Models_Configuration_Events_AzureEventGridEventServiceSettings__Microsoft_Extensions_Options_IOptions_FoundationaLLM_Common_Models_Configuration_Events_AzureEventGridEventServiceProfile__FoundationaLLM_Common_Interfaces_IAzureResourceManagerService_FoundationaLLM_Common_Interfaces_IHttpClientFactoryService_Microsoft_Extensions_Logging_ILogger_FoundationaLLM_Common_Services_Events_AzureEventGridEventService__
+  name: AzureEventGridEventService
+  nameWithType: AzureEventGridEventService.AzureEventGridEventService
+  fullName: FoundationaLLM.Common.Services.Events.AzureEventGridEventService.AzureEventGridEventService
+  nameWithType.vb: AzureEventGridEventService.New
+  fullName.vb: FoundationaLLM.Common.Services.Events.AzureEventGridEventService.New
+  name.vb: New
+- uid: Microsoft.Extensions.Options.IOptions{FoundationaLLM.Common.Models.Configuration.Instance.InstanceSettings}
+  commentId: T:Microsoft.Extensions.Options.IOptions{FoundationaLLM.Common.Models.Configuration.Instance.InstanceSettings}
+  parent: Microsoft.Extensions.Options
+  definition: Microsoft.Extensions.Options.IOptions`1
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.options.ioptions-1
+  name: IOptions<InstanceSettings>
+  nameWithType: IOptions<InstanceSettings>
+  fullName: Microsoft.Extensions.Options.IOptions<FoundationaLLM.Common.Models.Configuration.Instance.InstanceSettings>
+  nameWithType.vb: IOptions(Of InstanceSettings)
+  fullName.vb: Microsoft.Extensions.Options.IOptions(Of FoundationaLLM.Common.Models.Configuration.Instance.InstanceSettings)
+  name.vb: IOptions(Of InstanceSettings)
+  spec.csharp:
+  - uid: Microsoft.Extensions.Options.IOptions`1
+    name: IOptions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.options.ioptions-1
+  - name: <
+  - uid: FoundationaLLM.Common.Models.Configuration.Instance.InstanceSettings
+    name: InstanceSettings
+    href: FoundationaLLM.Common.Models.Configuration.Instance.InstanceSettings.html
+  - name: '>'
+  spec.vb:
+  - uid: Microsoft.Extensions.Options.IOptions`1
+    name: IOptions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.options.ioptions-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FoundationaLLM.Common.Models.Configuration.Instance.InstanceSettings
+    name: InstanceSettings
+    href: FoundationaLLM.Common.Models.Configuration.Instance.InstanceSettings.html
+  - name: )
+- uid: Microsoft.Extensions.Options.IOptions{FoundationaLLM.Common.Models.Configuration.Events.AzureEventGridEventServiceSettings}
+  commentId: T:Microsoft.Extensions.Options.IOptions{FoundationaLLM.Common.Models.Configuration.Events.AzureEventGridEventServiceSettings}
+  parent: Microsoft.Extensions.Options
+  definition: Microsoft.Extensions.Options.IOptions`1
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.options.ioptions-1
+  name: IOptions<AzureEventGridEventServiceSettings>
+  nameWithType: IOptions<AzureEventGridEventServiceSettings>
+  fullName: Microsoft.Extensions.Options.IOptions<FoundationaLLM.Common.Models.Configuration.Events.AzureEventGridEventServiceSettings>
+  nameWithType.vb: IOptions(Of AzureEventGridEventServiceSettings)
+  fullName.vb: Microsoft.Extensions.Options.IOptions(Of FoundationaLLM.Common.Models.Configuration.Events.AzureEventGridEventServiceSettings)
+  name.vb: IOptions(Of AzureEventGridEventServiceSettings)
+  spec.csharp:
+  - uid: Microsoft.Extensions.Options.IOptions`1
+    name: IOptions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.options.ioptions-1
+  - name: <
+  - uid: FoundationaLLM.Common.Models.Configuration.Events.AzureEventGridEventServiceSettings
+    name: AzureEventGridEventServiceSettings
+    href: FoundationaLLM.Common.Models.Configuration.Events.AzureEventGridEventServiceSettings.html
+  - name: '>'
+  spec.vb:
+  - uid: Microsoft.Extensions.Options.IOptions`1
+    name: IOptions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.options.ioptions-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FoundationaLLM.Common.Models.Configuration.Events.AzureEventGridEventServiceSettings
+    name: AzureEventGridEventServiceSettings
+    href: FoundationaLLM.Common.Models.Configuration.Events.AzureEventGridEventServiceSettings.html
+  - name: )
+- uid: Microsoft.Extensions.Options.IOptions{FoundationaLLM.Common.Models.Configuration.Events.AzureEventGridEventServiceProfile}
+  commentId: T:Microsoft.Extensions.Options.IOptions{FoundationaLLM.Common.Models.Configuration.Events.AzureEventGridEventServiceProfile}
+  parent: Microsoft.Extensions.Options
+  definition: Microsoft.Extensions.Options.IOptions`1
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.options.ioptions-1
+  name: IOptions<AzureEventGridEventServiceProfile>
+  nameWithType: IOptions<AzureEventGridEventServiceProfile>
+  fullName: Microsoft.Extensions.Options.IOptions<FoundationaLLM.Common.Models.Configuration.Events.AzureEventGridEventServiceProfile>
+  nameWithType.vb: IOptions(Of AzureEventGridEventServiceProfile)
+  fullName.vb: Microsoft.Extensions.Options.IOptions(Of FoundationaLLM.Common.Models.Configuration.Events.AzureEventGridEventServiceProfile)
+  name.vb: IOptions(Of AzureEventGridEventServiceProfile)
+  spec.csharp:
+  - uid: Microsoft.Extensions.Options.IOptions`1
+    name: IOptions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.options.ioptions-1
+  - name: <
+  - uid: FoundationaLLM.Common.Models.Configuration.Events.AzureEventGridEventServiceProfile
+    name: AzureEventGridEventServiceProfile
+    href: FoundationaLLM.Common.Models.Configuration.Events.AzureEventGridEventServiceProfile.html
+  - name: '>'
+  spec.vb:
+  - uid: Microsoft.Extensions.Options.IOptions`1
+    name: IOptions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.options.ioptions-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FoundationaLLM.Common.Models.Configuration.Events.AzureEventGridEventServiceProfile
+    name: AzureEventGridEventServiceProfile
+    href: FoundationaLLM.Common.Models.Configuration.Events.AzureEventGridEventServiceProfile.html
+  - name: )
+- uid: Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Common.Services.Events.AzureEventGridEventService}
+  commentId: T:Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Common.Services.Events.AzureEventGridEventService}
+  parent: Microsoft.Extensions.Logging
+  definition: Microsoft.Extensions.Logging.ILogger`1
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  name: ILogger<AzureEventGridEventService>
+  nameWithType: ILogger<AzureEventGridEventService>
+  fullName: Microsoft.Extensions.Logging.ILogger<FoundationaLLM.Common.Services.Events.AzureEventGridEventService>
+  nameWithType.vb: ILogger(Of AzureEventGridEventService)
+  fullName.vb: Microsoft.Extensions.Logging.ILogger(Of FoundationaLLM.Common.Services.Events.AzureEventGridEventService)
+  name.vb: ILogger(Of AzureEventGridEventService)
+  spec.csharp:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: <
+  - uid: FoundationaLLM.Common.Services.Events.AzureEventGridEventService
+    name: AzureEventGridEventService
+    href: FoundationaLLM.Common.Services.Events.AzureEventGridEventService.html
+  - name: '>'
+  spec.vb:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FoundationaLLM.Common.Services.Events.AzureEventGridEventService
+    name: AzureEventGridEventService
+    href: FoundationaLLM.Common.Services.Events.AzureEventGridEventService.html
+  - name: )
+- uid: FoundationaLLM.Common.Models.Configuration.Environment
+  commentId: N:FoundationaLLM.Common.Models.Configuration.Environment
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.Configuration.Environment
+  nameWithType: FoundationaLLM.Common.Models.Configuration.Environment
+  fullName: FoundationaLLM.Common.Models.Configuration.Environment
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Configuration
+    name: Configuration
+    href: FoundationaLLM.Common.Models.Configuration.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Configuration.Environment
+    name: Environment
+    href: FoundationaLLM.Common.Models.Configuration.Environment.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Configuration
+    name: Configuration
+    href: FoundationaLLM.Common.Models.Configuration.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Configuration.Environment
+    name: Environment
+    href: FoundationaLLM.Common.Models.Configuration.Environment.html
+- uid: Microsoft.Extensions.Options.IOptions`1
+  commentId: T:Microsoft.Extensions.Options.IOptions`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.options.ioptions-1
+  name: IOptions<TOptions>
+  nameWithType: IOptions<TOptions>
+  fullName: Microsoft.Extensions.Options.IOptions<TOptions>
+  nameWithType.vb: IOptions(Of TOptions)
+  fullName.vb: Microsoft.Extensions.Options.IOptions(Of TOptions)
+  name.vb: IOptions(Of TOptions)
+  spec.csharp:
+  - uid: Microsoft.Extensions.Options.IOptions`1
+    name: IOptions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.options.ioptions-1
+  - name: <
+  - name: TOptions
+  - name: '>'
+  spec.vb:
+  - uid: Microsoft.Extensions.Options.IOptions`1
+    name: IOptions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.options.ioptions-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TOptions
+  - name: )
+- uid: Microsoft.Extensions.Options
+  commentId: N:Microsoft.Extensions.Options
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft
+  name: Microsoft.Extensions.Options
+  nameWithType: Microsoft.Extensions.Options
+  fullName: Microsoft.Extensions.Options
+  spec.csharp:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Options
+    name: Options
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.options
+  spec.vb:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Options
+    name: Options
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.options
+- uid: Microsoft.Extensions.Logging.ILogger`1
+  commentId: T:Microsoft.Extensions.Logging.ILogger`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  name: ILogger<TCategoryName>
+  nameWithType: ILogger<TCategoryName>
+  fullName: Microsoft.Extensions.Logging.ILogger<TCategoryName>
+  nameWithType.vb: ILogger(Of TCategoryName)
+  fullName.vb: Microsoft.Extensions.Logging.ILogger(Of TCategoryName)
+  name.vb: ILogger(Of TCategoryName)
+  spec.csharp:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: <
+  - name: TCategoryName
+  - name: '>'
+  spec.vb:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TCategoryName
+  - name: )
+- uid: Microsoft.Extensions.Logging
+  commentId: N:Microsoft.Extensions.Logging
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft
+  name: Microsoft.Extensions.Logging
+  nameWithType: Microsoft.Extensions.Logging
+  fullName: Microsoft.Extensions.Logging
+  spec.csharp:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Logging
+    name: Logging
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging
+  spec.vb:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Logging
+    name: Logging
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging
+- uid: System.Threading.CancellationToken
+  commentId: T:System.Threading.CancellationToken
+  parent: System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  name: CancellationToken
+  nameWithType: CancellationToken
+  fullName: System.Threading.CancellationToken
+- uid: FoundationaLLM.Common.Services.Events.AzureEventGridEventService.StartAsync*
+  commentId: Overload:FoundationaLLM.Common.Services.Events.AzureEventGridEventService.StartAsync
+  href: FoundationaLLM.Common.Services.Events.AzureEventGridEventService.html#FoundationaLLM_Common_Services_Events_AzureEventGridEventService_StartAsync_System_Threading_CancellationToken_
+  name: StartAsync
+  nameWithType: AzureEventGridEventService.StartAsync
+  fullName: FoundationaLLM.Common.Services.Events.AzureEventGridEventService.StartAsync
+- uid: FoundationaLLM.Common.Interfaces.IEventService.StartAsync(System.Threading.CancellationToken)
+  commentId: M:FoundationaLLM.Common.Interfaces.IEventService.StartAsync(System.Threading.CancellationToken)
+  parent: FoundationaLLM.Common.Interfaces.IEventService
+  isExternal: true
+  href: FoundationaLLM.Common.Interfaces.IEventService.html#FoundationaLLM_Common_Interfaces_IEventService_StartAsync_System_Threading_CancellationToken_
+  name: StartAsync(CancellationToken)
+  nameWithType: IEventService.StartAsync(CancellationToken)
+  fullName: FoundationaLLM.Common.Interfaces.IEventService.StartAsync(System.Threading.CancellationToken)
+  spec.csharp:
+  - uid: FoundationaLLM.Common.Interfaces.IEventService.StartAsync(System.Threading.CancellationToken)
+    name: StartAsync
+    href: FoundationaLLM.Common.Interfaces.IEventService.html#FoundationaLLM_Common_Interfaces_IEventService_StartAsync_System_Threading_CancellationToken_
+  - name: (
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Common.Interfaces.IEventService.StartAsync(System.Threading.CancellationToken)
+    name: StartAsync
+    href: FoundationaLLM.Common.Interfaces.IEventService.html#FoundationaLLM_Common_Interfaces_IEventService_StartAsync_System_Threading_CancellationToken_
+  - name: (
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: System.Threading.Tasks.Task
+  commentId: T:System.Threading.Tasks.Task
+  parent: System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  name: Task
+  nameWithType: Task
+  fullName: System.Threading.Tasks.Task
+- uid: System.Threading
+  commentId: N:System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading
+  nameWithType: System.Threading
+  fullName: System.Threading
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+- uid: FoundationaLLM.Common.Services.Events.AzureEventGridEventService.StopAsync*
+  commentId: Overload:FoundationaLLM.Common.Services.Events.AzureEventGridEventService.StopAsync
+  href: FoundationaLLM.Common.Services.Events.AzureEventGridEventService.html#FoundationaLLM_Common_Services_Events_AzureEventGridEventService_StopAsync_System_Threading_CancellationToken_
+  name: StopAsync
+  nameWithType: AzureEventGridEventService.StopAsync
+  fullName: FoundationaLLM.Common.Services.Events.AzureEventGridEventService.StopAsync
+- uid: FoundationaLLM.Common.Interfaces.IEventService.StopAsync(System.Threading.CancellationToken)
+  commentId: M:FoundationaLLM.Common.Interfaces.IEventService.StopAsync(System.Threading.CancellationToken)
+  parent: FoundationaLLM.Common.Interfaces.IEventService
+  isExternal: true
+  href: FoundationaLLM.Common.Interfaces.IEventService.html#FoundationaLLM_Common_Interfaces_IEventService_StopAsync_System_Threading_CancellationToken_
+  name: StopAsync(CancellationToken)
+  nameWithType: IEventService.StopAsync(CancellationToken)
+  fullName: FoundationaLLM.Common.Interfaces.IEventService.StopAsync(System.Threading.CancellationToken)
+  spec.csharp:
+  - uid: FoundationaLLM.Common.Interfaces.IEventService.StopAsync(System.Threading.CancellationToken)
+    name: StopAsync
+    href: FoundationaLLM.Common.Interfaces.IEventService.html#FoundationaLLM_Common_Interfaces_IEventService_StopAsync_System_Threading_CancellationToken_
+  - name: (
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Common.Interfaces.IEventService.StopAsync(System.Threading.CancellationToken)
+    name: StopAsync
+    href: FoundationaLLM.Common.Interfaces.IEventService.html#FoundationaLLM_Common_Interfaces_IEventService_StopAsync_System_Threading_CancellationToken_
+  - name: (
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: FoundationaLLM.Common.Services.Events.AzureEventGridEventService.ExecuteAsync*
+  commentId: Overload:FoundationaLLM.Common.Services.Events.AzureEventGridEventService.ExecuteAsync
+  href: FoundationaLLM.Common.Services.Events.AzureEventGridEventService.html#FoundationaLLM_Common_Services_Events_AzureEventGridEventService_ExecuteAsync_System_Threading_CancellationToken_
+  name: ExecuteAsync
+  nameWithType: AzureEventGridEventService.ExecuteAsync
+  fullName: FoundationaLLM.Common.Services.Events.AzureEventGridEventService.ExecuteAsync
+- uid: FoundationaLLM.Common.Interfaces.IEventService.ExecuteAsync(System.Threading.CancellationToken)
+  commentId: M:FoundationaLLM.Common.Interfaces.IEventService.ExecuteAsync(System.Threading.CancellationToken)
+  parent: FoundationaLLM.Common.Interfaces.IEventService
+  isExternal: true
+  href: FoundationaLLM.Common.Interfaces.IEventService.html#FoundationaLLM_Common_Interfaces_IEventService_ExecuteAsync_System_Threading_CancellationToken_
+  name: ExecuteAsync(CancellationToken)
+  nameWithType: IEventService.ExecuteAsync(CancellationToken)
+  fullName: FoundationaLLM.Common.Interfaces.IEventService.ExecuteAsync(System.Threading.CancellationToken)
+  spec.csharp:
+  - uid: FoundationaLLM.Common.Interfaces.IEventService.ExecuteAsync(System.Threading.CancellationToken)
+    name: ExecuteAsync
+    href: FoundationaLLM.Common.Interfaces.IEventService.html#FoundationaLLM_Common_Interfaces_IEventService_ExecuteAsync_System_Threading_CancellationToken_
+  - name: (
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Common.Interfaces.IEventService.ExecuteAsync(System.Threading.CancellationToken)
+    name: ExecuteAsync
+    href: FoundationaLLM.Common.Interfaces.IEventService.html#FoundationaLLM_Common_Interfaces_IEventService_ExecuteAsync_System_Threading_CancellationToken_
+  - name: (
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: FoundationaLLM.Common.Services.Events.AzureEventGridEventService.SubscribeToEventTypeEvent*
+  commentId: Overload:FoundationaLLM.Common.Services.Events.AzureEventGridEventService.SubscribeToEventTypeEvent
+  href: FoundationaLLM.Common.Services.Events.AzureEventGridEventService.html#FoundationaLLM_Common_Services_Events_AzureEventGridEventService_SubscribeToEventTypeEvent_System_String_FoundationaLLM_Common_Models_Events_EventTypeEventDelegate_
+  name: SubscribeToEventTypeEvent
+  nameWithType: AzureEventGridEventService.SubscribeToEventTypeEvent
+  fullName: FoundationaLLM.Common.Services.Events.AzureEventGridEventService.SubscribeToEventTypeEvent
+- uid: FoundationaLLM.Common.Interfaces.IEventService.SubscribeToEventTypeEvent(System.String,FoundationaLLM.Common.Models.Events.EventTypeEventDelegate)
+  commentId: M:FoundationaLLM.Common.Interfaces.IEventService.SubscribeToEventTypeEvent(System.String,FoundationaLLM.Common.Models.Events.EventTypeEventDelegate)
+  parent: FoundationaLLM.Common.Interfaces.IEventService
+  isExternal: true
+  href: FoundationaLLM.Common.Interfaces.IEventService.html#FoundationaLLM_Common_Interfaces_IEventService_SubscribeToEventTypeEvent_System_String_FoundationaLLM_Common_Models_Events_EventTypeEventDelegate_
+  name: SubscribeToEventTypeEvent(string, EventTypeEventDelegate)
+  nameWithType: IEventService.SubscribeToEventTypeEvent(string, EventTypeEventDelegate)
+  fullName: FoundationaLLM.Common.Interfaces.IEventService.SubscribeToEventTypeEvent(string, FoundationaLLM.Common.Models.Events.EventTypeEventDelegate)
+  nameWithType.vb: IEventService.SubscribeToEventTypeEvent(String, EventTypeEventDelegate)
+  fullName.vb: FoundationaLLM.Common.Interfaces.IEventService.SubscribeToEventTypeEvent(String, FoundationaLLM.Common.Models.Events.EventTypeEventDelegate)
+  name.vb: SubscribeToEventTypeEvent(String, EventTypeEventDelegate)
+  spec.csharp:
+  - uid: FoundationaLLM.Common.Interfaces.IEventService.SubscribeToEventTypeEvent(System.String,FoundationaLLM.Common.Models.Events.EventTypeEventDelegate)
+    name: SubscribeToEventTypeEvent
+    href: FoundationaLLM.Common.Interfaces.IEventService.html#FoundationaLLM_Common_Interfaces_IEventService_SubscribeToEventTypeEvent_System_String_FoundationaLLM_Common_Models_Events_EventTypeEventDelegate_
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: FoundationaLLM.Common.Models.Events.EventTypeEventDelegate
+    name: EventTypeEventDelegate
+    href: FoundationaLLM.Common.Models.Events.EventTypeEventDelegate.html
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Common.Interfaces.IEventService.SubscribeToEventTypeEvent(System.String,FoundationaLLM.Common.Models.Events.EventTypeEventDelegate)
+    name: SubscribeToEventTypeEvent
+    href: FoundationaLLM.Common.Interfaces.IEventService.html#FoundationaLLM_Common_Interfaces_IEventService_SubscribeToEventTypeEvent_System_String_FoundationaLLM_Common_Models_Events_EventTypeEventDelegate_
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: FoundationaLLM.Common.Models.Events.EventTypeEventDelegate
+    name: EventTypeEventDelegate
+    href: FoundationaLLM.Common.Models.Events.EventTypeEventDelegate.html
+  - name: )
+- uid: FoundationaLLM.Common.Models.Events.EventTypeEventDelegate
+  commentId: T:FoundationaLLM.Common.Models.Events.EventTypeEventDelegate
+  parent: FoundationaLLM.Common.Models.Events
+  href: FoundationaLLM.Common.Models.Events.EventTypeEventDelegate.html
+  name: EventTypeEventDelegate
+  nameWithType: EventTypeEventDelegate
+  fullName: FoundationaLLM.Common.Models.Events.EventTypeEventDelegate
+- uid: FoundationaLLM.Common.Models.Events
+  commentId: N:FoundationaLLM.Common.Models.Events
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.Events
+  nameWithType: FoundationaLLM.Common.Models.Events
+  fullName: FoundationaLLM.Common.Models.Events
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Events
+    name: Events
+    href: FoundationaLLM.Common.Models.Events.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Events
+    name: Events
+    href: FoundationaLLM.Common.Models.Events.html
+- uid: FoundationaLLM.Common.Services.Events.AzureEventGridEventService.UnsubscribeFromEventTypeEvent*
+  commentId: Overload:FoundationaLLM.Common.Services.Events.AzureEventGridEventService.UnsubscribeFromEventTypeEvent
+  href: FoundationaLLM.Common.Services.Events.AzureEventGridEventService.html#FoundationaLLM_Common_Services_Events_AzureEventGridEventService_UnsubscribeFromEventTypeEvent_System_String_FoundationaLLM_Common_Models_Events_EventTypeEventDelegate_
+  name: UnsubscribeFromEventTypeEvent
+  nameWithType: AzureEventGridEventService.UnsubscribeFromEventTypeEvent
+  fullName: FoundationaLLM.Common.Services.Events.AzureEventGridEventService.UnsubscribeFromEventTypeEvent
+- uid: FoundationaLLM.Common.Interfaces.IEventService.UnsubscribeFromEventTypeEvent(System.String,FoundationaLLM.Common.Models.Events.EventTypeEventDelegate)
+  commentId: M:FoundationaLLM.Common.Interfaces.IEventService.UnsubscribeFromEventTypeEvent(System.String,FoundationaLLM.Common.Models.Events.EventTypeEventDelegate)
+  parent: FoundationaLLM.Common.Interfaces.IEventService
+  isExternal: true
+  href: FoundationaLLM.Common.Interfaces.IEventService.html#FoundationaLLM_Common_Interfaces_IEventService_UnsubscribeFromEventTypeEvent_System_String_FoundationaLLM_Common_Models_Events_EventTypeEventDelegate_
+  name: UnsubscribeFromEventTypeEvent(string, EventTypeEventDelegate)
+  nameWithType: IEventService.UnsubscribeFromEventTypeEvent(string, EventTypeEventDelegate)
+  fullName: FoundationaLLM.Common.Interfaces.IEventService.UnsubscribeFromEventTypeEvent(string, FoundationaLLM.Common.Models.Events.EventTypeEventDelegate)
+  nameWithType.vb: IEventService.UnsubscribeFromEventTypeEvent(String, EventTypeEventDelegate)
+  fullName.vb: FoundationaLLM.Common.Interfaces.IEventService.UnsubscribeFromEventTypeEvent(String, FoundationaLLM.Common.Models.Events.EventTypeEventDelegate)
+  name.vb: UnsubscribeFromEventTypeEvent(String, EventTypeEventDelegate)
+  spec.csharp:
+  - uid: FoundationaLLM.Common.Interfaces.IEventService.UnsubscribeFromEventTypeEvent(System.String,FoundationaLLM.Common.Models.Events.EventTypeEventDelegate)
+    name: UnsubscribeFromEventTypeEvent
+    href: FoundationaLLM.Common.Interfaces.IEventService.html#FoundationaLLM_Common_Interfaces_IEventService_UnsubscribeFromEventTypeEvent_System_String_FoundationaLLM_Common_Models_Events_EventTypeEventDelegate_
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: FoundationaLLM.Common.Models.Events.EventTypeEventDelegate
+    name: EventTypeEventDelegate
+    href: FoundationaLLM.Common.Models.Events.EventTypeEventDelegate.html
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Common.Interfaces.IEventService.UnsubscribeFromEventTypeEvent(System.String,FoundationaLLM.Common.Models.Events.EventTypeEventDelegate)
+    name: UnsubscribeFromEventTypeEvent
+    href: FoundationaLLM.Common.Interfaces.IEventService.html#FoundationaLLM_Common_Interfaces_IEventService_UnsubscribeFromEventTypeEvent_System_String_FoundationaLLM_Common_Models_Events_EventTypeEventDelegate_
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: FoundationaLLM.Common.Models.Events.EventTypeEventDelegate
+    name: EventTypeEventDelegate
+    href: FoundationaLLM.Common.Models.Events.EventTypeEventDelegate.html
+  - name: )
+- uid: Azure.Messaging.CloudEvent
+  commentId: T:Azure.Messaging.CloudEvent
+  parent: Azure.Messaging
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/azure.messaging.cloudevent
+  name: CloudEvent
+  nameWithType: CloudEvent
+  fullName: Azure.Messaging.CloudEvent
+- uid: FoundationaLLM.Common.Services.Events.AzureEventGridEventService.SendEvent*
+  commentId: Overload:FoundationaLLM.Common.Services.Events.AzureEventGridEventService.SendEvent
+  href: FoundationaLLM.Common.Services.Events.AzureEventGridEventService.html#FoundationaLLM_Common_Services_Events_AzureEventGridEventService_SendEvent_System_String_Azure_Messaging_CloudEvent_
+  name: SendEvent
+  nameWithType: AzureEventGridEventService.SendEvent
+  fullName: FoundationaLLM.Common.Services.Events.AzureEventGridEventService.SendEvent
+- uid: FoundationaLLM.Common.Interfaces.IEventService.SendEvent(System.String,Azure.Messaging.CloudEvent)
+  commentId: M:FoundationaLLM.Common.Interfaces.IEventService.SendEvent(System.String,Azure.Messaging.CloudEvent)
+  parent: FoundationaLLM.Common.Interfaces.IEventService
+  isExternal: true
+  href: FoundationaLLM.Common.Interfaces.IEventService.html#FoundationaLLM_Common_Interfaces_IEventService_SendEvent_System_String_Azure_Messaging_CloudEvent_
+  name: SendEvent(string, CloudEvent)
+  nameWithType: IEventService.SendEvent(string, CloudEvent)
+  fullName: FoundationaLLM.Common.Interfaces.IEventService.SendEvent(string, Azure.Messaging.CloudEvent)
+  nameWithType.vb: IEventService.SendEvent(String, CloudEvent)
+  fullName.vb: FoundationaLLM.Common.Interfaces.IEventService.SendEvent(String, Azure.Messaging.CloudEvent)
+  name.vb: SendEvent(String, CloudEvent)
+  spec.csharp:
+  - uid: FoundationaLLM.Common.Interfaces.IEventService.SendEvent(System.String,Azure.Messaging.CloudEvent)
+    name: SendEvent
+    href: FoundationaLLM.Common.Interfaces.IEventService.html#FoundationaLLM_Common_Interfaces_IEventService_SendEvent_System_String_Azure_Messaging_CloudEvent_
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: Azure.Messaging.CloudEvent
+    name: CloudEvent
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/azure.messaging.cloudevent
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Common.Interfaces.IEventService.SendEvent(System.String,Azure.Messaging.CloudEvent)
+    name: SendEvent
+    href: FoundationaLLM.Common.Interfaces.IEventService.html#FoundationaLLM_Common_Interfaces_IEventService_SendEvent_System_String_Azure_Messaging_CloudEvent_
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: Azure.Messaging.CloudEvent
+    name: CloudEvent
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/azure.messaging.cloudevent
+  - name: )
+- uid: Azure.Messaging
+  commentId: N:Azure.Messaging
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/azure
+  name: Azure.Messaging
+  nameWithType: Azure.Messaging
+  fullName: Azure.Messaging
+  spec.csharp:
+  - uid: Azure
+    name: Azure
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/azure
+  - name: .
+  - uid: Azure.Messaging
+    name: Messaging
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/azure.messaging
+  spec.vb:
+  - uid: Azure
+    name: Azure
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/azure
+  - name: .
+  - uid: Azure.Messaging
+    name: Messaging
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/azure.messaging

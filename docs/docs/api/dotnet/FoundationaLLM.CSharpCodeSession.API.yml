@@ -1,0 +1,90 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.CSharpCodeSession.API
+  id: CSharpCodeSession.API
+  parent: FoundationaLLM
+  children:
+  - FoundationaLLM.CSharpCodeSession.API.Controllers
+  - FoundationaLLM.CSharpCodeSession.API.Models
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM.CSharpCodeSession.API
+  type: Namespace
+references:
+- uid: FoundationaLLM.CSharpCodeSession.API.Controllers
+  commentId: N:FoundationaLLM.CSharpCodeSession.API.Controllers
+  href: FoundationaLLM.html
+  name: FoundationaLLM.CSharpCodeSession.API.Controllers
+  nameWithType: FoundationaLLM.CSharpCodeSession.API.Controllers
+  fullName: FoundationaLLM.CSharpCodeSession.API.Controllers
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.CSharpCodeSession
+    name: CSharpCodeSession
+    href: FoundationaLLM.CSharpCodeSession.html
+  - name: .
+  - uid: FoundationaLLM.CSharpCodeSession.API
+    name: API
+    href: FoundationaLLM.CSharpCodeSession.API.html
+  - name: .
+  - uid: FoundationaLLM.CSharpCodeSession.API.Controllers
+    name: Controllers
+    href: FoundationaLLM.CSharpCodeSession.API.Controllers.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.CSharpCodeSession
+    name: CSharpCodeSession
+    href: FoundationaLLM.CSharpCodeSession.html
+  - name: .
+  - uid: FoundationaLLM.CSharpCodeSession.API
+    name: API
+    href: FoundationaLLM.CSharpCodeSession.API.html
+  - name: .
+  - uid: FoundationaLLM.CSharpCodeSession.API.Controllers
+    name: Controllers
+    href: FoundationaLLM.CSharpCodeSession.API.Controllers.html
+- uid: FoundationaLLM.CSharpCodeSession.API.Models
+  commentId: N:FoundationaLLM.CSharpCodeSession.API.Models
+  href: FoundationaLLM.html
+  name: FoundationaLLM.CSharpCodeSession.API.Models
+  nameWithType: FoundationaLLM.CSharpCodeSession.API.Models
+  fullName: FoundationaLLM.CSharpCodeSession.API.Models
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.CSharpCodeSession
+    name: CSharpCodeSession
+    href: FoundationaLLM.CSharpCodeSession.html
+  - name: .
+  - uid: FoundationaLLM.CSharpCodeSession.API
+    name: API
+    href: FoundationaLLM.CSharpCodeSession.API.html
+  - name: .
+  - uid: FoundationaLLM.CSharpCodeSession.API.Models
+    name: Models
+    href: FoundationaLLM.CSharpCodeSession.API.Models.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.CSharpCodeSession
+    name: CSharpCodeSession
+    href: FoundationaLLM.CSharpCodeSession.html
+  - name: .
+  - uid: FoundationaLLM.CSharpCodeSession.API
+    name: API
+    href: FoundationaLLM.CSharpCodeSession.API.html
+  - name: .
+  - uid: FoundationaLLM.CSharpCodeSession.API.Models
+    name: Models
+    href: FoundationaLLM.CSharpCodeSession.API.Models.html

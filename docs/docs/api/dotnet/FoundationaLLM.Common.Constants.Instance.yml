@@ -1,0 +1,24 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Common.Constants.Instance
+  commentId: N:FoundationaLLM.Common.Constants.Instance
+  id: Instance
+  parent: FoundationaLLM.Common.Constants
+  children:
+  - FoundationaLLM.Common.Constants.Instance.SecurityGroupRetrievalStrategies
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM.Common.Constants.Instance
+  nameWithType: FoundationaLLM.Common.Constants.Instance
+  fullName: FoundationaLLM.Common.Constants.Instance
+  type: Namespace
+  assemblies:
+  - FoundationaLLM.Common
+references:
+- uid: FoundationaLLM.Common.Constants.Instance.SecurityGroupRetrievalStrategies
+  commentId: T:FoundationaLLM.Common.Constants.Instance.SecurityGroupRetrievalStrategies
+  href: FoundationaLLM.Common.Constants.Instance.SecurityGroupRetrievalStrategies.html
+  name: SecurityGroupRetrievalStrategies
+  nameWithType: SecurityGroupRetrievalStrategies
+  fullName: FoundationaLLM.Common.Constants.Instance.SecurityGroupRetrievalStrategies

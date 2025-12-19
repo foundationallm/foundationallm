@@ -1,0 +1,31 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.DataPipelineEngine.Clients
+  commentId: N:FoundationaLLM.DataPipelineEngine.Clients
+  id: Clients
+  parent: FoundationaLLM.DataPipelineEngine
+  children:
+  - FoundationaLLM.DataPipelineEngine.Clients.LocalDataPipelineServiceClient
+  - FoundationaLLM.DataPipelineEngine.Clients.NullDataPipelineServiceClient
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM.DataPipelineEngine.Clients
+  nameWithType: FoundationaLLM.DataPipelineEngine.Clients
+  fullName: FoundationaLLM.DataPipelineEngine.Clients
+  type: Namespace
+  assemblies:
+  - FoundationaLLM.DataPipelineEngine
+references:
+- uid: FoundationaLLM.DataPipelineEngine.Clients.LocalDataPipelineServiceClient
+  commentId: T:FoundationaLLM.DataPipelineEngine.Clients.LocalDataPipelineServiceClient
+  href: FoundationaLLM.DataPipelineEngine.Clients.LocalDataPipelineServiceClient.html
+  name: LocalDataPipelineServiceClient
+  nameWithType: LocalDataPipelineServiceClient
+  fullName: FoundationaLLM.DataPipelineEngine.Clients.LocalDataPipelineServiceClient
+- uid: FoundationaLLM.DataPipelineEngine.Clients.NullDataPipelineServiceClient
+  commentId: T:FoundationaLLM.DataPipelineEngine.Clients.NullDataPipelineServiceClient
+  href: FoundationaLLM.DataPipelineEngine.Clients.NullDataPipelineServiceClient.html
+  name: NullDataPipelineServiceClient
+  nameWithType: NullDataPipelineServiceClient
+  fullName: FoundationaLLM.DataPipelineEngine.Clients.NullDataPipelineServiceClient

@@ -1,0 +1,439 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Common.Interfaces.IManagementCapabilitiesService
+  commentId: T:FoundationaLLM.Common.Interfaces.IManagementCapabilitiesService
+  id: IManagementCapabilitiesService
+  parent: FoundationaLLM.Common.Interfaces
+  children:
+  - FoundationaLLM.Common.Interfaces.IManagementCapabilitiesService.IsResourcePathAvailable(System.Net.Http.HttpMethod,FoundationaLLM.Common.Models.ResourceProviders.ResourcePath)
+  - FoundationaLLM.Common.Interfaces.IManagementCapabilitiesService.IsValidRequestPayload(System.Object)
+  langs:
+  - csharp
+  - vb
+  name: IManagementCapabilitiesService
+  nameWithType: IManagementCapabilitiesService
+  fullName: FoundationaLLM.Common.Interfaces.IManagementCapabilitiesService
+  type: Interface
+  source:
+    remote:
+      path: src/dotnet/Common/Interfaces/IManagementCapabilitiesService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: IManagementCapabilitiesService
+    path: ../src/dotnet/Common/Interfaces/IManagementCapabilitiesService.cs
+    startLine: 9
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Interfaces
+  summary: Defines a mechanism to restrict access to resource providers and resource types.
+  remarks: >-
+    Implementations of this interface should provide logic to determine whether a given resource
+        path is available for use, such as limiting the exposed resource provider capabilities in certain APIs.
+  example: []
+  syntax:
+    content: public interface IManagementCapabilitiesService
+    content.vb: Public Interface IManagementCapabilitiesService
+  extensionMethods:
+  - System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+- uid: FoundationaLLM.Common.Interfaces.IManagementCapabilitiesService.IsResourcePathAvailable(System.Net.Http.HttpMethod,FoundationaLLM.Common.Models.ResourceProviders.ResourcePath)
+  commentId: M:FoundationaLLM.Common.Interfaces.IManagementCapabilitiesService.IsResourcePathAvailable(System.Net.Http.HttpMethod,FoundationaLLM.Common.Models.ResourceProviders.ResourcePath)
+  id: IsResourcePathAvailable(System.Net.Http.HttpMethod,FoundationaLLM.Common.Models.ResourceProviders.ResourcePath)
+  parent: FoundationaLLM.Common.Interfaces.IManagementCapabilitiesService
+  langs:
+  - csharp
+  - vb
+  name: IsResourcePathAvailable(HttpMethod, ResourcePath)
+  nameWithType: IManagementCapabilitiesService.IsResourcePathAvailable(HttpMethod, ResourcePath)
+  fullName: FoundationaLLM.Common.Interfaces.IManagementCapabilitiesService.IsResourcePathAvailable(System.Net.Http.HttpMethod, FoundationaLLM.Common.Models.ResourceProviders.ResourcePath)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Common/Interfaces/IManagementCapabilitiesService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: IsResourcePathAvailable
+    path: ../src/dotnet/Common/Interfaces/IManagementCapabilitiesService.cs
+    startLine: 18
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Interfaces
+  summary: Determines whether the specified resource path is available for the given HTTP method.
+  example: []
+  syntax:
+    content: bool IsResourcePathAvailable(HttpMethod method, ResourcePath resourcePath)
+    parameters:
+    - id: method
+      type: System.Net.Http.HttpMethod
+      description: The HTTP method to check, such as <xref href="System.Net.Http.HttpMethod.Get" data-throw-if-not-resolved="false"></xref> or <xref href="System.Net.Http.HttpMethod.Post" data-throw-if-not-resolved="false"></xref>.
+    - id: resourcePath
+      type: FoundationaLLM.Common.Models.ResourceProviders.ResourcePath
+      description: The resource path to evaluate for availability.
+    return:
+      type: System.Boolean
+      description: <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if the resource path is available for the specified HTTP method; otherwise, <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.
+    content.vb: Function IsResourcePathAvailable(method As HttpMethod, resourcePath As ResourcePath) As Boolean
+  overload: FoundationaLLM.Common.Interfaces.IManagementCapabilitiesService.IsResourcePathAvailable*
+- uid: FoundationaLLM.Common.Interfaces.IManagementCapabilitiesService.IsValidRequestPayload(System.Object)
+  commentId: M:FoundationaLLM.Common.Interfaces.IManagementCapabilitiesService.IsValidRequestPayload(System.Object)
+  id: IsValidRequestPayload(System.Object)
+  parent: FoundationaLLM.Common.Interfaces.IManagementCapabilitiesService
+  langs:
+  - csharp
+  - vb
+  name: IsValidRequestPayload(object)
+  nameWithType: IManagementCapabilitiesService.IsValidRequestPayload(object)
+  fullName: FoundationaLLM.Common.Interfaces.IManagementCapabilitiesService.IsValidRequestPayload(object)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Common/Interfaces/IManagementCapabilitiesService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: IsValidRequestPayload
+    path: ../src/dotnet/Common/Interfaces/IManagementCapabilitiesService.cs
+    startLine: 27
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Interfaces
+  summary: Determines whether the provided request payload is valid.
+  example: []
+  syntax:
+    content: bool IsValidRequestPayload(object requestPayload)
+    parameters:
+    - id: requestPayload
+      type: System.Object
+      description: ''
+    return:
+      type: System.Boolean
+      description: ''
+    content.vb: Function IsValidRequestPayload(requestPayload As Object) As Boolean
+  overload: FoundationaLLM.Common.Interfaces.IManagementCapabilitiesService.IsValidRequestPayload*
+  nameWithType.vb: IManagementCapabilitiesService.IsValidRequestPayload(Object)
+  fullName.vb: FoundationaLLM.Common.Interfaces.IManagementCapabilitiesService.IsValidRequestPayload(Object)
+  name.vb: IsValidRequestPayload(Object)
+references:
+- uid: FoundationaLLM.Common.Interfaces
+  commentId: N:FoundationaLLM.Common.Interfaces
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Interfaces
+  nameWithType: FoundationaLLM.Common.Interfaces
+  fullName: FoundationaLLM.Common.Interfaces
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Interfaces
+    name: Interfaces
+    href: FoundationaLLM.Common.Interfaces.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Interfaces
+    name: Interfaces
+    href: FoundationaLLM.Common.Interfaces.html
+- uid: System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  parent: FoundationaLLM.Core.Utils.ObjectExtensions
+  definition: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  isExternal: true
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions
+  commentId: T:FoundationaLLM.Core.Utils.ObjectExtensions
+  parent: FoundationaLLM.Core.Utils
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html
+  name: ObjectExtensions
+  nameWithType: ObjectExtensions
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions
+- uid: FoundationaLLM.Core.Utils
+  commentId: N:FoundationaLLM.Core.Utils
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Core.Utils
+  nameWithType: FoundationaLLM.Core.Utils
+  fullName: FoundationaLLM.Core.Utils
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+- uid: System.Net.Http.HttpMethod.Get
+  commentId: P:System.Net.Http.HttpMethod.Get
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.net.http.httpmethod.get
+  name: Get
+  nameWithType: HttpMethod.Get
+  fullName: System.Net.Http.HttpMethod.Get
+- uid: System.Net.Http.HttpMethod.Post
+  commentId: P:System.Net.Http.HttpMethod.Post
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.net.http.httpmethod.post
+  name: Post
+  nameWithType: HttpMethod.Post
+  fullName: System.Net.Http.HttpMethod.Post
+- uid: FoundationaLLM.Common.Interfaces.IManagementCapabilitiesService.IsResourcePathAvailable*
+  commentId: Overload:FoundationaLLM.Common.Interfaces.IManagementCapabilitiesService.IsResourcePathAvailable
+  href: FoundationaLLM.Common.Interfaces.IManagementCapabilitiesService.html#FoundationaLLM_Common_Interfaces_IManagementCapabilitiesService_IsResourcePathAvailable_System_Net_Http_HttpMethod_FoundationaLLM_Common_Models_ResourceProviders_ResourcePath_
+  name: IsResourcePathAvailable
+  nameWithType: IManagementCapabilitiesService.IsResourcePathAvailable
+  fullName: FoundationaLLM.Common.Interfaces.IManagementCapabilitiesService.IsResourcePathAvailable
+- uid: System.Net.Http.HttpMethod
+  commentId: T:System.Net.Http.HttpMethod
+  parent: System.Net.Http
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.net.http.httpmethod
+  name: HttpMethod
+  nameWithType: HttpMethod
+  fullName: System.Net.Http.HttpMethod
+- uid: FoundationaLLM.Common.Models.ResourceProviders.ResourcePath
+  commentId: T:FoundationaLLM.Common.Models.ResourceProviders.ResourcePath
+  parent: FoundationaLLM.Common.Models.ResourceProviders
+  href: FoundationaLLM.Common.Models.ResourceProviders.ResourcePath.html
+  name: ResourcePath
+  nameWithType: ResourcePath
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.ResourcePath
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: System.Net.Http
+  commentId: N:System.Net.Http
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Net.Http
+  nameWithType: System.Net.Http
+  fullName: System.Net.Http
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Net
+    name: Net
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.net
+  - name: .
+  - uid: System.Net.Http
+    name: Http
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.net.http
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Net
+    name: Net
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.net
+  - name: .
+  - uid: System.Net.Http
+    name: Http
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.net.http
+- uid: FoundationaLLM.Common.Models.ResourceProviders
+  commentId: N:FoundationaLLM.Common.Models.ResourceProviders
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.ResourceProviders
+  nameWithType: FoundationaLLM.Common.Models.ResourceProviders
+  fullName: FoundationaLLM.Common.Models.ResourceProviders
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders
+    name: ResourceProviders
+    href: FoundationaLLM.Common.Models.ResourceProviders.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders
+    name: ResourceProviders
+    href: FoundationaLLM.Common.Models.ResourceProviders.html
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: FoundationaLLM.Common.Interfaces.IManagementCapabilitiesService.IsValidRequestPayload*
+  commentId: Overload:FoundationaLLM.Common.Interfaces.IManagementCapabilitiesService.IsValidRequestPayload
+  href: FoundationaLLM.Common.Interfaces.IManagementCapabilitiesService.html#FoundationaLLM_Common_Interfaces_IManagementCapabilitiesService_IsValidRequestPayload_System_Object_
+  name: IsValidRequestPayload
+  nameWithType: IManagementCapabilitiesService.IsValidRequestPayload
+  fullName: FoundationaLLM.Common.Interfaces.IManagementCapabilitiesService.IsValidRequestPayload
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object

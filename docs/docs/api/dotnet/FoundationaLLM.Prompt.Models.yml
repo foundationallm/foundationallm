@@ -1,0 +1,24 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Prompt.Models
+  commentId: N:FoundationaLLM.Prompt.Models
+  id: Models
+  parent: FoundationaLLM.Prompt
+  children:
+  - FoundationaLLM.Prompt.Models.PromptReference
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM.Prompt.Models
+  nameWithType: FoundationaLLM.Prompt.Models
+  fullName: FoundationaLLM.Prompt.Models
+  type: Namespace
+  assemblies:
+  - FoundationaLLM.Prompt
+references:
+- uid: FoundationaLLM.Prompt.Models.PromptReference
+  commentId: T:FoundationaLLM.Prompt.Models.PromptReference
+  href: FoundationaLLM.Prompt.Models.PromptReference.html
+  name: PromptReference
+  nameWithType: PromptReference
+  fullName: FoundationaLLM.Prompt.Models.PromptReference

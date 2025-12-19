@@ -1,0 +1,915 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Common.Services.IAzureAppConfigurationService
+  commentId: T:FoundationaLLM.Common.Services.IAzureAppConfigurationService
+  id: IAzureAppConfigurationService
+  parent: FoundationaLLM.Common.Services
+  children:
+  - FoundationaLLM.Common.Services.IAzureAppConfigurationService.CheckAppConfigurationSettingExistsAsync(System.String)
+  - FoundationaLLM.Common.Services.IAzureAppConfigurationService.CheckAppConfigurationSettingsExistAsync
+  - FoundationaLLM.Common.Services.IAzureAppConfigurationService.DeleteAppConfigurationSettingAsync(System.String)
+  - FoundationaLLM.Common.Services.IAzureAppConfigurationService.GetConfigurationSettingAsync(System.String)
+  - FoundationaLLM.Common.Services.IAzureAppConfigurationService.GetConfigurationSettingsAsync(System.String)
+  - FoundationaLLM.Common.Services.IAzureAppConfigurationService.GetFeatureFlagAsync(System.String)
+  - FoundationaLLM.Common.Services.IAzureAppConfigurationService.SetConfigurationSettingAsync(System.String,System.String,System.String)
+  - FoundationaLLM.Common.Services.IAzureAppConfigurationService.SetFeatureFlagAsync(System.String,System.Boolean)
+  langs:
+  - csharp
+  - vb
+  name: IAzureAppConfigurationService
+  nameWithType: IAzureAppConfigurationService
+  fullName: FoundationaLLM.Common.Services.IAzureAppConfigurationService
+  type: Interface
+  source:
+    remote:
+      path: src/dotnet/Common/Interfaces/IAzureAppConfigurationService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: IAzureAppConfigurationService
+    path: ../src/dotnet/Common/Interfaces/IAzureAppConfigurationService.cs
+    startLine: 5
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Services
+  summary: Provides access to and management of Azure App Configuration.
+  example: []
+  syntax:
+    content: public interface IAzureAppConfigurationService
+    content.vb: Public Interface IAzureAppConfigurationService
+  extensionMethods:
+  - System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+- uid: FoundationaLLM.Common.Services.IAzureAppConfigurationService.GetConfigurationSettingAsync(System.String)
+  commentId: M:FoundationaLLM.Common.Services.IAzureAppConfigurationService.GetConfigurationSettingAsync(System.String)
+  id: GetConfigurationSettingAsync(System.String)
+  parent: FoundationaLLM.Common.Services.IAzureAppConfigurationService
+  langs:
+  - csharp
+  - vb
+  name: GetConfigurationSettingAsync(string)
+  nameWithType: IAzureAppConfigurationService.GetConfigurationSettingAsync(string)
+  fullName: FoundationaLLM.Common.Services.IAzureAppConfigurationService.GetConfigurationSettingAsync(string)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Common/Interfaces/IAzureAppConfigurationService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: GetConfigurationSettingAsync
+    path: ../src/dotnet/Common/Interfaces/IAzureAppConfigurationService.cs
+    startLine: 12
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Services
+  summary: Gets the value of a configuration setting from Azure App Configuration.
+  example: []
+  syntax:
+    content: Task<string?> GetConfigurationSettingAsync(string key)
+    parameters:
+    - id: key
+      type: System.String
+      description: The App Configuration setting key.
+    return:
+      type: System.Threading.Tasks.Task{System.String}
+      description: ''
+    content.vb: Function GetConfigurationSettingAsync(key As String) As Task(Of String)
+  overload: FoundationaLLM.Common.Services.IAzureAppConfigurationService.GetConfigurationSettingAsync*
+  nameWithType.vb: IAzureAppConfigurationService.GetConfigurationSettingAsync(String)
+  fullName.vb: FoundationaLLM.Common.Services.IAzureAppConfigurationService.GetConfigurationSettingAsync(String)
+  name.vb: GetConfigurationSettingAsync(String)
+- uid: FoundationaLLM.Common.Services.IAzureAppConfigurationService.GetConfigurationSettingsAsync(System.String)
+  commentId: M:FoundationaLLM.Common.Services.IAzureAppConfigurationService.GetConfigurationSettingsAsync(System.String)
+  id: GetConfigurationSettingsAsync(System.String)
+  parent: FoundationaLLM.Common.Services.IAzureAppConfigurationService
+  langs:
+  - csharp
+  - vb
+  name: GetConfigurationSettingsAsync(string)
+  nameWithType: IAzureAppConfigurationService.GetConfigurationSettingsAsync(string)
+  fullName: FoundationaLLM.Common.Services.IAzureAppConfigurationService.GetConfigurationSettingsAsync(string)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Common/Interfaces/IAzureAppConfigurationService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: GetConfigurationSettingsAsync
+    path: ../src/dotnet/Common/Interfaces/IAzureAppConfigurationService.cs
+    startLine: 19
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Services
+  summary: Gets the values of configuration settings from Azure App Configuration.
+  example: []
+  syntax:
+    content: Task<List<(string Key, string? Value, string ContentType)>> GetConfigurationSettingsAsync(string keyFilter)
+    parameters:
+    - id: keyFilter
+      type: System.String
+      description: The key name filter used to select the settings keys for which values are retrieved.
+    return:
+      type: System.Threading.Tasks.Task{System.Collections.Generic.List{System.ValueTuple{System.String,System.String,System.String}}}
+      description: ''
+    content.vb: Function GetConfigurationSettingsAsync(keyFilter As String) As Task(Of List(Of (Key As String, Value As String, ContentType As String)))
+  overload: FoundationaLLM.Common.Services.IAzureAppConfigurationService.GetConfigurationSettingsAsync*
+  nameWithType.vb: IAzureAppConfigurationService.GetConfigurationSettingsAsync(String)
+  fullName.vb: FoundationaLLM.Common.Services.IAzureAppConfigurationService.GetConfigurationSettingsAsync(String)
+  name.vb: GetConfigurationSettingsAsync(String)
+- uid: FoundationaLLM.Common.Services.IAzureAppConfigurationService.SetConfigurationSettingAsync(System.String,System.String,System.String)
+  commentId: M:FoundationaLLM.Common.Services.IAzureAppConfigurationService.SetConfigurationSettingAsync(System.String,System.String,System.String)
+  id: SetConfigurationSettingAsync(System.String,System.String,System.String)
+  parent: FoundationaLLM.Common.Services.IAzureAppConfigurationService
+  langs:
+  - csharp
+  - vb
+  name: SetConfigurationSettingAsync(string, string, string)
+  nameWithType: IAzureAppConfigurationService.SetConfigurationSettingAsync(string, string, string)
+  fullName: FoundationaLLM.Common.Services.IAzureAppConfigurationService.SetConfigurationSettingAsync(string, string, string)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Common/Interfaces/IAzureAppConfigurationService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: SetConfigurationSettingAsync
+    path: ../src/dotnet/Common/Interfaces/IAzureAppConfigurationService.cs
+    startLine: 28
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Services
+  summary: Sets the value of a configuration setting in Azure App Configuration.
+  example: []
+  syntax:
+    content: Task SetConfigurationSettingAsync(string key, string value, string contentType)
+    parameters:
+    - id: key
+      type: System.String
+      description: The App Configuration setting key.
+    - id: value
+      type: System.String
+      description: The value to set.
+    - id: contentType
+      type: System.String
+      description: The content type of the value.
+    return:
+      type: System.Threading.Tasks.Task
+      description: ''
+    content.vb: Function SetConfigurationSettingAsync(key As String, value As String, contentType As String) As Task
+  overload: FoundationaLLM.Common.Services.IAzureAppConfigurationService.SetConfigurationSettingAsync*
+  nameWithType.vb: IAzureAppConfigurationService.SetConfigurationSettingAsync(String, String, String)
+  fullName.vb: FoundationaLLM.Common.Services.IAzureAppConfigurationService.SetConfigurationSettingAsync(String, String, String)
+  name.vb: SetConfigurationSettingAsync(String, String, String)
+- uid: FoundationaLLM.Common.Services.IAzureAppConfigurationService.GetFeatureFlagAsync(System.String)
+  commentId: M:FoundationaLLM.Common.Services.IAzureAppConfigurationService.GetFeatureFlagAsync(System.String)
+  id: GetFeatureFlagAsync(System.String)
+  parent: FoundationaLLM.Common.Services.IAzureAppConfigurationService
+  langs:
+  - csharp
+  - vb
+  name: GetFeatureFlagAsync(string)
+  nameWithType: IAzureAppConfigurationService.GetFeatureFlagAsync(string)
+  fullName: FoundationaLLM.Common.Services.IAzureAppConfigurationService.GetFeatureFlagAsync(string)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Common/Interfaces/IAzureAppConfigurationService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: GetFeatureFlagAsync
+    path: ../src/dotnet/Common/Interfaces/IAzureAppConfigurationService.cs
+    startLine: 35
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Services
+  summary: Gets the value of a feature flag from Azure App Configuration.
+  example: []
+  syntax:
+    content: Task<bool> GetFeatureFlagAsync(string key)
+    parameters:
+    - id: key
+      type: System.String
+      description: The App Configuration feature flag key.
+    return:
+      type: System.Threading.Tasks.Task{System.Boolean}
+      description: ''
+    content.vb: Function GetFeatureFlagAsync(key As String) As Task(Of Boolean)
+  overload: FoundationaLLM.Common.Services.IAzureAppConfigurationService.GetFeatureFlagAsync*
+  nameWithType.vb: IAzureAppConfigurationService.GetFeatureFlagAsync(String)
+  fullName.vb: FoundationaLLM.Common.Services.IAzureAppConfigurationService.GetFeatureFlagAsync(String)
+  name.vb: GetFeatureFlagAsync(String)
+- uid: FoundationaLLM.Common.Services.IAzureAppConfigurationService.SetFeatureFlagAsync(System.String,System.Boolean)
+  commentId: M:FoundationaLLM.Common.Services.IAzureAppConfigurationService.SetFeatureFlagAsync(System.String,System.Boolean)
+  id: SetFeatureFlagAsync(System.String,System.Boolean)
+  parent: FoundationaLLM.Common.Services.IAzureAppConfigurationService
+  langs:
+  - csharp
+  - vb
+  name: SetFeatureFlagAsync(string, bool)
+  nameWithType: IAzureAppConfigurationService.SetFeatureFlagAsync(string, bool)
+  fullName: FoundationaLLM.Common.Services.IAzureAppConfigurationService.SetFeatureFlagAsync(string, bool)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Common/Interfaces/IAzureAppConfigurationService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: SetFeatureFlagAsync
+    path: ../src/dotnet/Common/Interfaces/IAzureAppConfigurationService.cs
+    startLine: 43
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Services
+  summary: Sets the value of a feature flag in Azure App Configuration.
+  example: []
+  syntax:
+    content: Task SetFeatureFlagAsync(string key, bool flagEnabled)
+    parameters:
+    - id: key
+      type: System.String
+      description: The App Configuration feature flag key.
+    - id: flagEnabled
+      type: System.Boolean
+      description: Whether to enable the feature flag.
+    return:
+      type: System.Threading.Tasks.Task
+      description: ''
+    content.vb: Function SetFeatureFlagAsync(key As String, flagEnabled As Boolean) As Task
+  overload: FoundationaLLM.Common.Services.IAzureAppConfigurationService.SetFeatureFlagAsync*
+  nameWithType.vb: IAzureAppConfigurationService.SetFeatureFlagAsync(String, Boolean)
+  fullName.vb: FoundationaLLM.Common.Services.IAzureAppConfigurationService.SetFeatureFlagAsync(String, Boolean)
+  name.vb: SetFeatureFlagAsync(String, Boolean)
+- uid: FoundationaLLM.Common.Services.IAzureAppConfigurationService.CheckAppConfigurationSettingsExistAsync
+  commentId: M:FoundationaLLM.Common.Services.IAzureAppConfigurationService.CheckAppConfigurationSettingsExistAsync
+  id: CheckAppConfigurationSettingsExistAsync
+  parent: FoundationaLLM.Common.Services.IAzureAppConfigurationService
+  langs:
+  - csharp
+  - vb
+  name: CheckAppConfigurationSettingsExistAsync()
+  nameWithType: IAzureAppConfigurationService.CheckAppConfigurationSettingsExistAsync()
+  fullName: FoundationaLLM.Common.Services.IAzureAppConfigurationService.CheckAppConfigurationSettingsExistAsync()
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Common/Interfaces/IAzureAppConfigurationService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: CheckAppConfigurationSettingsExistAsync
+    path: ../src/dotnet/Common/Interfaces/IAzureAppConfigurationService.cs
+    startLine: 49
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Services
+  summary: Returns a map of configuration setting keys and whether they exist in Azure App Configuration.
+  example: []
+  syntax:
+    content: Task<Dictionary<string, bool>> CheckAppConfigurationSettingsExistAsync()
+    return:
+      type: System.Threading.Tasks.Task{System.Collections.Generic.Dictionary{System.String,System.Boolean}}
+      description: ''
+    content.vb: Function CheckAppConfigurationSettingsExistAsync() As Task(Of Dictionary(Of String, Boolean))
+  overload: FoundationaLLM.Common.Services.IAzureAppConfigurationService.CheckAppConfigurationSettingsExistAsync*
+- uid: FoundationaLLM.Common.Services.IAzureAppConfigurationService.CheckAppConfigurationSettingExistsAsync(System.String)
+  commentId: M:FoundationaLLM.Common.Services.IAzureAppConfigurationService.CheckAppConfigurationSettingExistsAsync(System.String)
+  id: CheckAppConfigurationSettingExistsAsync(System.String)
+  parent: FoundationaLLM.Common.Services.IAzureAppConfigurationService
+  langs:
+  - csharp
+  - vb
+  name: CheckAppConfigurationSettingExistsAsync(string)
+  nameWithType: IAzureAppConfigurationService.CheckAppConfigurationSettingExistsAsync(string)
+  fullName: FoundationaLLM.Common.Services.IAzureAppConfigurationService.CheckAppConfigurationSettingExistsAsync(string)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Common/Interfaces/IAzureAppConfigurationService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: CheckAppConfigurationSettingExistsAsync
+    path: ../src/dotnet/Common/Interfaces/IAzureAppConfigurationService.cs
+    startLine: 56
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Services
+  summary: Check if an individual Azure App Configuration key exists.
+  example: []
+  syntax:
+    content: Task<bool> CheckAppConfigurationSettingExistsAsync(string key)
+    parameters:
+    - id: key
+      type: System.String
+      description: ''
+    return:
+      type: System.Threading.Tasks.Task{System.Boolean}
+      description: ''
+    content.vb: Function CheckAppConfigurationSettingExistsAsync(key As String) As Task(Of Boolean)
+  overload: FoundationaLLM.Common.Services.IAzureAppConfigurationService.CheckAppConfigurationSettingExistsAsync*
+  nameWithType.vb: IAzureAppConfigurationService.CheckAppConfigurationSettingExistsAsync(String)
+  fullName.vb: FoundationaLLM.Common.Services.IAzureAppConfigurationService.CheckAppConfigurationSettingExistsAsync(String)
+  name.vb: CheckAppConfigurationSettingExistsAsync(String)
+- uid: FoundationaLLM.Common.Services.IAzureAppConfigurationService.DeleteAppConfigurationSettingAsync(System.String)
+  commentId: M:FoundationaLLM.Common.Services.IAzureAppConfigurationService.DeleteAppConfigurationSettingAsync(System.String)
+  id: DeleteAppConfigurationSettingAsync(System.String)
+  parent: FoundationaLLM.Common.Services.IAzureAppConfigurationService
+  langs:
+  - csharp
+  - vb
+  name: DeleteAppConfigurationSettingAsync(string)
+  nameWithType: IAzureAppConfigurationService.DeleteAppConfigurationSettingAsync(string)
+  fullName: FoundationaLLM.Common.Services.IAzureAppConfigurationService.DeleteAppConfigurationSettingAsync(string)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Common/Interfaces/IAzureAppConfigurationService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: DeleteAppConfigurationSettingAsync
+    path: ../src/dotnet/Common/Interfaces/IAzureAppConfigurationService.cs
+    startLine: 63
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Services
+  summary: Deletes an Azure App Configuration setting and its associated Azure Key Vault secret.
+  example: []
+  syntax:
+    content: Task DeleteAppConfigurationSettingAsync(string key)
+    parameters:
+    - id: key
+      type: System.String
+      description: The App Configuration setting key.
+    return:
+      type: System.Threading.Tasks.Task
+      description: ''
+    content.vb: Function DeleteAppConfigurationSettingAsync(key As String) As Task
+  overload: FoundationaLLM.Common.Services.IAzureAppConfigurationService.DeleteAppConfigurationSettingAsync*
+  nameWithType.vb: IAzureAppConfigurationService.DeleteAppConfigurationSettingAsync(String)
+  fullName.vb: FoundationaLLM.Common.Services.IAzureAppConfigurationService.DeleteAppConfigurationSettingAsync(String)
+  name.vb: DeleteAppConfigurationSettingAsync(String)
+references:
+- uid: FoundationaLLM.Common.Services
+  commentId: N:FoundationaLLM.Common.Services
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Services
+  nameWithType: FoundationaLLM.Common.Services
+  fullName: FoundationaLLM.Common.Services
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Services
+    name: Services
+    href: FoundationaLLM.Common.Services.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Services
+    name: Services
+    href: FoundationaLLM.Common.Services.html
+- uid: System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  parent: FoundationaLLM.Core.Utils.ObjectExtensions
+  definition: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  isExternal: true
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions
+  commentId: T:FoundationaLLM.Core.Utils.ObjectExtensions
+  parent: FoundationaLLM.Core.Utils
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html
+  name: ObjectExtensions
+  nameWithType: ObjectExtensions
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions
+- uid: FoundationaLLM.Core.Utils
+  commentId: N:FoundationaLLM.Core.Utils
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Core.Utils
+  nameWithType: FoundationaLLM.Core.Utils
+  fullName: FoundationaLLM.Core.Utils
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+- uid: FoundationaLLM.Common.Services.IAzureAppConfigurationService.GetConfigurationSettingAsync*
+  commentId: Overload:FoundationaLLM.Common.Services.IAzureAppConfigurationService.GetConfigurationSettingAsync
+  href: FoundationaLLM.Common.Services.IAzureAppConfigurationService.html#FoundationaLLM_Common_Services_IAzureAppConfigurationService_GetConfigurationSettingAsync_System_String_
+  name: GetConfigurationSettingAsync
+  nameWithType: IAzureAppConfigurationService.GetConfigurationSettingAsync
+  fullName: FoundationaLLM.Common.Services.IAzureAppConfigurationService.GetConfigurationSettingAsync
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System.Threading.Tasks.Task{System.String}
+  commentId: T:System.Threading.Tasks.Task{System.String}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<string>
+  nameWithType: Task<string>
+  fullName: System.Threading.Tasks.Task<string>
+  nameWithType.vb: Task(Of String)
+  fullName.vb: System.Threading.Tasks.Task(Of String)
+  name.vb: Task(Of String)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: FoundationaLLM.Common.Services.IAzureAppConfigurationService.GetConfigurationSettingsAsync*
+  commentId: Overload:FoundationaLLM.Common.Services.IAzureAppConfigurationService.GetConfigurationSettingsAsync
+  href: FoundationaLLM.Common.Services.IAzureAppConfigurationService.html#FoundationaLLM_Common_Services_IAzureAppConfigurationService_GetConfigurationSettingsAsync_System_String_
+  name: GetConfigurationSettingsAsync
+  nameWithType: IAzureAppConfigurationService.GetConfigurationSettingsAsync
+  fullName: FoundationaLLM.Common.Services.IAzureAppConfigurationService.GetConfigurationSettingsAsync
+- uid: System.Threading.Tasks.Task{System.Collections.Generic.List{System.ValueTuple{System.String,System.String,System.String}}}
+  commentId: T:System.Threading.Tasks.Task{System.Collections.Generic.List{System.ValueTuple{System.String,System.String,System.String}}}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<List<(string Key, string Value, string ContentType)>>
+  nameWithType: Task<List<(string Key, string Value, string ContentType)>>
+  fullName: System.Threading.Tasks.Task<System.Collections.Generic.List<(string Key, string Value, string ContentType)>>
+  nameWithType.vb: Task(Of List(Of (Key As String, Value As String, ContentType As String)))
+  fullName.vb: System.Threading.Tasks.Task(Of System.Collections.Generic.List(Of (Key As String, Value As String, ContentType As String)))
+  name.vb: Task(Of List(Of (Key As String, Value As String, ContentType As String)))
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: " "
+  - uid: System.ValueTuple{System.String,System.String,System.String}.Key
+    name: Key
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.string,system.string,system.string-.key
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: " "
+  - uid: System.ValueTuple{System.String,System.String,System.String}.Value
+    name: Value
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.string,system.string,system.string-.value
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: " "
+  - uid: System.ValueTuple{System.String,System.String,System.String}.ContentType
+    name: ContentType
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.string,system.string,system.string-.contenttype
+  - name: )
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: (
+  - uid: System.ValueTuple{System.String,System.String,System.String}.Key
+    name: Key
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.string,system.string,system.string-.key
+  - name: " "
+  - name: As
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.ValueTuple{System.String,System.String,System.String}.Value
+    name: Value
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.string,system.string,system.string-.value
+  - name: " "
+  - name: As
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.ValueTuple{System.String,System.String,System.String}.ContentType
+    name: ContentType
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.string,system.string,system.string-.contenttype
+  - name: " "
+  - name: As
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+  - name: )
+- uid: FoundationaLLM.Common.Services.IAzureAppConfigurationService.SetConfigurationSettingAsync*
+  commentId: Overload:FoundationaLLM.Common.Services.IAzureAppConfigurationService.SetConfigurationSettingAsync
+  href: FoundationaLLM.Common.Services.IAzureAppConfigurationService.html#FoundationaLLM_Common_Services_IAzureAppConfigurationService_SetConfigurationSettingAsync_System_String_System_String_System_String_
+  name: SetConfigurationSettingAsync
+  nameWithType: IAzureAppConfigurationService.SetConfigurationSettingAsync
+  fullName: FoundationaLLM.Common.Services.IAzureAppConfigurationService.SetConfigurationSettingAsync
+- uid: System.Threading.Tasks.Task
+  commentId: T:System.Threading.Tasks.Task
+  parent: System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  name: Task
+  nameWithType: Task
+  fullName: System.Threading.Tasks.Task
+- uid: FoundationaLLM.Common.Services.IAzureAppConfigurationService.GetFeatureFlagAsync*
+  commentId: Overload:FoundationaLLM.Common.Services.IAzureAppConfigurationService.GetFeatureFlagAsync
+  href: FoundationaLLM.Common.Services.IAzureAppConfigurationService.html#FoundationaLLM_Common_Services_IAzureAppConfigurationService_GetFeatureFlagAsync_System_String_
+  name: GetFeatureFlagAsync
+  nameWithType: IAzureAppConfigurationService.GetFeatureFlagAsync
+  fullName: FoundationaLLM.Common.Services.IAzureAppConfigurationService.GetFeatureFlagAsync
+- uid: System.Threading.Tasks.Task{System.Boolean}
+  commentId: T:System.Threading.Tasks.Task{System.Boolean}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<bool>
+  nameWithType: Task<bool>
+  fullName: System.Threading.Tasks.Task<bool>
+  nameWithType.vb: Task(Of Boolean)
+  fullName.vb: System.Threading.Tasks.Task(Of Boolean)
+  name.vb: Task(Of Boolean)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: FoundationaLLM.Common.Services.IAzureAppConfigurationService.SetFeatureFlagAsync*
+  commentId: Overload:FoundationaLLM.Common.Services.IAzureAppConfigurationService.SetFeatureFlagAsync
+  href: FoundationaLLM.Common.Services.IAzureAppConfigurationService.html#FoundationaLLM_Common_Services_IAzureAppConfigurationService_SetFeatureFlagAsync_System_String_System_Boolean_
+  name: SetFeatureFlagAsync
+  nameWithType: IAzureAppConfigurationService.SetFeatureFlagAsync
+  fullName: FoundationaLLM.Common.Services.IAzureAppConfigurationService.SetFeatureFlagAsync
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: FoundationaLLM.Common.Services.IAzureAppConfigurationService.CheckAppConfigurationSettingsExistAsync*
+  commentId: Overload:FoundationaLLM.Common.Services.IAzureAppConfigurationService.CheckAppConfigurationSettingsExistAsync
+  href: FoundationaLLM.Common.Services.IAzureAppConfigurationService.html#FoundationaLLM_Common_Services_IAzureAppConfigurationService_CheckAppConfigurationSettingsExistAsync
+  name: CheckAppConfigurationSettingsExistAsync
+  nameWithType: IAzureAppConfigurationService.CheckAppConfigurationSettingsExistAsync
+  fullName: FoundationaLLM.Common.Services.IAzureAppConfigurationService.CheckAppConfigurationSettingsExistAsync
+- uid: System.Threading.Tasks.Task{System.Collections.Generic.Dictionary{System.String,System.Boolean}}
+  commentId: T:System.Threading.Tasks.Task{System.Collections.Generic.Dictionary{System.String,System.Boolean}}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<Dictionary<string, bool>>
+  nameWithType: Task<Dictionary<string, bool>>
+  fullName: System.Threading.Tasks.Task<System.Collections.Generic.Dictionary<string, bool>>
+  nameWithType.vb: Task(Of Dictionary(Of String, Boolean))
+  fullName.vb: System.Threading.Tasks.Task(Of System.Collections.Generic.Dictionary(Of String, Boolean))
+  name.vb: Task(Of Dictionary(Of String, Boolean))
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  - name: )
+- uid: FoundationaLLM.Common.Services.IAzureAppConfigurationService.CheckAppConfigurationSettingExistsAsync*
+  commentId: Overload:FoundationaLLM.Common.Services.IAzureAppConfigurationService.CheckAppConfigurationSettingExistsAsync
+  href: FoundationaLLM.Common.Services.IAzureAppConfigurationService.html#FoundationaLLM_Common_Services_IAzureAppConfigurationService_CheckAppConfigurationSettingExistsAsync_System_String_
+  name: CheckAppConfigurationSettingExistsAsync
+  nameWithType: IAzureAppConfigurationService.CheckAppConfigurationSettingExistsAsync
+  fullName: FoundationaLLM.Common.Services.IAzureAppConfigurationService.CheckAppConfigurationSettingExistsAsync
+- uid: FoundationaLLM.Common.Services.IAzureAppConfigurationService.DeleteAppConfigurationSettingAsync*
+  commentId: Overload:FoundationaLLM.Common.Services.IAzureAppConfigurationService.DeleteAppConfigurationSettingAsync
+  href: FoundationaLLM.Common.Services.IAzureAppConfigurationService.html#FoundationaLLM_Common_Services_IAzureAppConfigurationService_DeleteAppConfigurationSettingAsync_System_String_
+  name: DeleteAppConfigurationSettingAsync
+  nameWithType: IAzureAppConfigurationService.DeleteAppConfigurationSettingAsync
+  fullName: FoundationaLLM.Common.Services.IAzureAppConfigurationService.DeleteAppConfigurationSettingAsync

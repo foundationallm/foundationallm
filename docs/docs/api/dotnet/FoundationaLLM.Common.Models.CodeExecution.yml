@@ -1,0 +1,136 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Common.Models.CodeExecution
+  commentId: N:FoundationaLLM.Common.Models.CodeExecution
+  id: CodeExecution
+  parent: FoundationaLLM.Common.Models
+  children:
+  - FoundationaLLM.Common.Models.CodeExecution.CodeSessionCodeExecuteRequest
+  - FoundationaLLM.Common.Models.CodeExecution.CodeSessionCodeExecuteResponse
+  - FoundationaLLM.Common.Models.CodeExecution.CodeSessionFileDownloadRequest
+  - FoundationaLLM.Common.Models.CodeExecution.CodeSessionFileDownloadRequestValidator
+  - FoundationaLLM.Common.Models.CodeExecution.CodeSessionFileDownloadResponse
+  - FoundationaLLM.Common.Models.CodeExecution.CodeSessionFileUploadRequest
+  - FoundationaLLM.Common.Models.CodeExecution.CodeSessionFileUploadRequestValidator
+  - FoundationaLLM.Common.Models.CodeExecution.CodeSessionFileUploadResponse
+  - FoundationaLLM.Common.Models.CodeExecution.CreateCodeSessionRequest
+  - FoundationaLLM.Common.Models.CodeExecution.CreateCodeSessionRequestValidator
+  - FoundationaLLM.Common.Models.CodeExecution.CreateCodeSessionResponse
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM.Common.Models.CodeExecution
+  nameWithType: FoundationaLLM.Common.Models.CodeExecution
+  fullName: FoundationaLLM.Common.Models.CodeExecution
+  type: Namespace
+  assemblies:
+  - FoundationaLLM.Common
+references:
+- uid: FoundationaLLM.Common.Models.CodeExecution.CodeSessionCodeExecuteRequest
+  commentId: T:FoundationaLLM.Common.Models.CodeExecution.CodeSessionCodeExecuteRequest
+  parent: FoundationaLLM.Common.Models.CodeExecution
+  href: FoundationaLLM.Common.Models.CodeExecution.CodeSessionCodeExecuteRequest.html
+  name: CodeSessionCodeExecuteRequest
+  nameWithType: CodeSessionCodeExecuteRequest
+  fullName: FoundationaLLM.Common.Models.CodeExecution.CodeSessionCodeExecuteRequest
+- uid: FoundationaLLM.Common.Models.CodeExecution.CodeSessionCodeExecuteResponse
+  commentId: T:FoundationaLLM.Common.Models.CodeExecution.CodeSessionCodeExecuteResponse
+  href: FoundationaLLM.Common.Models.CodeExecution.CodeSessionCodeExecuteResponse.html
+  name: CodeSessionCodeExecuteResponse
+  nameWithType: CodeSessionCodeExecuteResponse
+  fullName: FoundationaLLM.Common.Models.CodeExecution.CodeSessionCodeExecuteResponse
+- uid: FoundationaLLM.Common.Models.CodeExecution.CodeSessionFileDownloadRequest
+  commentId: T:FoundationaLLM.Common.Models.CodeExecution.CodeSessionFileDownloadRequest
+  parent: FoundationaLLM.Common.Models.CodeExecution
+  href: FoundationaLLM.Common.Models.CodeExecution.CodeSessionFileDownloadRequest.html
+  name: CodeSessionFileDownloadRequest
+  nameWithType: CodeSessionFileDownloadRequest
+  fullName: FoundationaLLM.Common.Models.CodeExecution.CodeSessionFileDownloadRequest
+- uid: FoundationaLLM.Common.Models.CodeExecution.CodeSessionFileDownloadRequestValidator
+  commentId: T:FoundationaLLM.Common.Models.CodeExecution.CodeSessionFileDownloadRequestValidator
+  href: FoundationaLLM.Common.Models.CodeExecution.CodeSessionFileDownloadRequestValidator.html
+  name: CodeSessionFileDownloadRequestValidator
+  nameWithType: CodeSessionFileDownloadRequestValidator
+  fullName: FoundationaLLM.Common.Models.CodeExecution.CodeSessionFileDownloadRequestValidator
+- uid: FoundationaLLM.Common.Models.CodeExecution.CodeSessionFileDownloadResponse
+  commentId: T:FoundationaLLM.Common.Models.CodeExecution.CodeSessionFileDownloadResponse
+  href: FoundationaLLM.Common.Models.CodeExecution.CodeSessionFileDownloadResponse.html
+  name: CodeSessionFileDownloadResponse
+  nameWithType: CodeSessionFileDownloadResponse
+  fullName: FoundationaLLM.Common.Models.CodeExecution.CodeSessionFileDownloadResponse
+- uid: FoundationaLLM.Common.Models.CodeExecution.CodeSessionFileUploadRequest
+  commentId: T:FoundationaLLM.Common.Models.CodeExecution.CodeSessionFileUploadRequest
+  parent: FoundationaLLM.Common.Models.CodeExecution
+  href: FoundationaLLM.Common.Models.CodeExecution.CodeSessionFileUploadRequest.html
+  name: CodeSessionFileUploadRequest
+  nameWithType: CodeSessionFileUploadRequest
+  fullName: FoundationaLLM.Common.Models.CodeExecution.CodeSessionFileUploadRequest
+- uid: FoundationaLLM.Common.Models.CodeExecution.CodeSessionFileUploadRequestValidator
+  commentId: T:FoundationaLLM.Common.Models.CodeExecution.CodeSessionFileUploadRequestValidator
+  href: FoundationaLLM.Common.Models.CodeExecution.CodeSessionFileUploadRequestValidator.html
+  name: CodeSessionFileUploadRequestValidator
+  nameWithType: CodeSessionFileUploadRequestValidator
+  fullName: FoundationaLLM.Common.Models.CodeExecution.CodeSessionFileUploadRequestValidator
+- uid: FoundationaLLM.Common.Models.CodeExecution.CodeSessionFileUploadResponse
+  commentId: T:FoundationaLLM.Common.Models.CodeExecution.CodeSessionFileUploadResponse
+  href: FoundationaLLM.Common.Models.CodeExecution.CodeSessionFileUploadResponse.html
+  name: CodeSessionFileUploadResponse
+  nameWithType: CodeSessionFileUploadResponse
+  fullName: FoundationaLLM.Common.Models.CodeExecution.CodeSessionFileUploadResponse
+- uid: FoundationaLLM.Common.Models.CodeExecution.CreateCodeSessionRequest
+  commentId: T:FoundationaLLM.Common.Models.CodeExecution.CreateCodeSessionRequest
+  parent: FoundationaLLM.Common.Models.CodeExecution
+  href: FoundationaLLM.Common.Models.CodeExecution.CreateCodeSessionRequest.html
+  name: CreateCodeSessionRequest
+  nameWithType: CreateCodeSessionRequest
+  fullName: FoundationaLLM.Common.Models.CodeExecution.CreateCodeSessionRequest
+- uid: FoundationaLLM.Common.Models.CodeExecution.CreateCodeSessionRequestValidator
+  commentId: T:FoundationaLLM.Common.Models.CodeExecution.CreateCodeSessionRequestValidator
+  href: FoundationaLLM.Common.Models.CodeExecution.CreateCodeSessionRequestValidator.html
+  name: CreateCodeSessionRequestValidator
+  nameWithType: CreateCodeSessionRequestValidator
+  fullName: FoundationaLLM.Common.Models.CodeExecution.CreateCodeSessionRequestValidator
+- uid: FoundationaLLM.Common.Models.CodeExecution.CreateCodeSessionResponse
+  commentId: T:FoundationaLLM.Common.Models.CodeExecution.CreateCodeSessionResponse
+  href: FoundationaLLM.Common.Models.CodeExecution.CreateCodeSessionResponse.html
+  name: CreateCodeSessionResponse
+  nameWithType: CreateCodeSessionResponse
+  fullName: FoundationaLLM.Common.Models.CodeExecution.CreateCodeSessionResponse
+- uid: FoundationaLLM.Common.Models.CodeExecution
+  commentId: N:FoundationaLLM.Common.Models.CodeExecution
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.CodeExecution
+  nameWithType: FoundationaLLM.Common.Models.CodeExecution
+  fullName: FoundationaLLM.Common.Models.CodeExecution
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.CodeExecution
+    name: CodeExecution
+    href: FoundationaLLM.Common.Models.CodeExecution.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.CodeExecution
+    name: CodeExecution
+    href: FoundationaLLM.Common.Models.CodeExecution.html

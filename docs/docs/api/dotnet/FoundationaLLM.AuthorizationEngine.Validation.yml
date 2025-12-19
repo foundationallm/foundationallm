@@ -1,0 +1,24 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.AuthorizationEngine.Validation
+  commentId: N:FoundationaLLM.AuthorizationEngine.Validation
+  id: Validation
+  parent: FoundationaLLM.AuthorizationEngine
+  children:
+  - FoundationaLLM.AuthorizationEngine.Validation.ActionAuthorizationRequestValidator
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM.AuthorizationEngine.Validation
+  nameWithType: FoundationaLLM.AuthorizationEngine.Validation
+  fullName: FoundationaLLM.AuthorizationEngine.Validation
+  type: Namespace
+  assemblies:
+  - FoundationaLLM.AuthorizationEngine
+references:
+- uid: FoundationaLLM.AuthorizationEngine.Validation.ActionAuthorizationRequestValidator
+  commentId: T:FoundationaLLM.AuthorizationEngine.Validation.ActionAuthorizationRequestValidator
+  href: FoundationaLLM.AuthorizationEngine.Validation.ActionAuthorizationRequestValidator.html
+  name: ActionAuthorizationRequestValidator
+  nameWithType: ActionAuthorizationRequestValidator
+  fullName: FoundationaLLM.AuthorizationEngine.Validation.ActionAuthorizationRequestValidator

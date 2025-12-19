@@ -1,0 +1,31 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Common.Middleware
+  commentId: N:FoundationaLLM.Common.Middleware
+  id: Middleware
+  parent: FoundationaLLM.Common
+  children:
+  - FoundationaLLM.Common.Middleware.CallContextMiddleware
+  - FoundationaLLM.Common.Middleware.QuotaMiddleware
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM.Common.Middleware
+  nameWithType: FoundationaLLM.Common.Middleware
+  fullName: FoundationaLLM.Common.Middleware
+  type: Namespace
+  assemblies:
+  - FoundationaLLM.Common
+references:
+- uid: FoundationaLLM.Common.Middleware.CallContextMiddleware
+  commentId: T:FoundationaLLM.Common.Middleware.CallContextMiddleware
+  href: FoundationaLLM.Common.Middleware.CallContextMiddleware.html
+  name: CallContextMiddleware
+  nameWithType: CallContextMiddleware
+  fullName: FoundationaLLM.Common.Middleware.CallContextMiddleware
+- uid: FoundationaLLM.Common.Middleware.QuotaMiddleware
+  commentId: T:FoundationaLLM.Common.Middleware.QuotaMiddleware
+  href: FoundationaLLM.Common.Middleware.QuotaMiddleware.html
+  name: QuotaMiddleware
+  nameWithType: QuotaMiddleware
+  fullName: FoundationaLLM.Common.Middleware.QuotaMiddleware

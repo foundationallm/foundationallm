@@ -1,0 +1,420 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Common.Interfaces.IResourceProviderResourceCacheService
+  commentId: T:FoundationaLLM.Common.Interfaces.IResourceProviderResourceCacheService
+  id: IResourceProviderResourceCacheService
+  parent: FoundationaLLM.Common.Interfaces
+  children:
+  - FoundationaLLM.Common.Interfaces.IResourceProviderResourceCacheService.Reset
+  - FoundationaLLM.Common.Interfaces.IResourceProviderResourceCacheService.SetValue``1(FoundationaLLM.Common.Models.ResourceProviders.ResourceReference,``0)
+  - FoundationaLLM.Common.Interfaces.IResourceProviderResourceCacheService.TryGetValue``1(FoundationaLLM.Common.Models.ResourceProviders.ResourceReference,``0@)
+  langs:
+  - csharp
+  - vb
+  name: IResourceProviderResourceCacheService
+  nameWithType: IResourceProviderResourceCacheService
+  fullName: FoundationaLLM.Common.Interfaces.IResourceProviderResourceCacheService
+  type: Interface
+  source:
+    remote:
+      path: src/dotnet/Common/Interfaces/IResourceProviderResourceCacheService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: IResourceProviderResourceCacheService
+    path: ../src/dotnet/Common/Interfaces/IResourceProviderResourceCacheService.cs
+    startLine: 7
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Interfaces
+  summary: Provides the resource caching services used by FoundationaLLM resource providers.
+  example: []
+  syntax:
+    content: public interface IResourceProviderResourceCacheService
+    content.vb: Public Interface IResourceProviderResourceCacheService
+  extensionMethods:
+  - System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+- uid: FoundationaLLM.Common.Interfaces.IResourceProviderResourceCacheService.TryGetValue``1(FoundationaLLM.Common.Models.ResourceProviders.ResourceReference,``0@)
+  commentId: M:FoundationaLLM.Common.Interfaces.IResourceProviderResourceCacheService.TryGetValue``1(FoundationaLLM.Common.Models.ResourceProviders.ResourceReference,``0@)
+  id: TryGetValue``1(FoundationaLLM.Common.Models.ResourceProviders.ResourceReference,``0@)
+  parent: FoundationaLLM.Common.Interfaces.IResourceProviderResourceCacheService
+  langs:
+  - csharp
+  - vb
+  name: TryGetValue<T>(ResourceReference, out T?)
+  nameWithType: IResourceProviderResourceCacheService.TryGetValue<T>(ResourceReference, out T?)
+  fullName: FoundationaLLM.Common.Interfaces.IResourceProviderResourceCacheService.TryGetValue<T>(FoundationaLLM.Common.Models.ResourceProviders.ResourceReference, out T?)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Common/Interfaces/IResourceProviderResourceCacheService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: TryGetValue
+    path: ../src/dotnet/Common/Interfaces/IResourceProviderResourceCacheService.cs
+    startLine: 16
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Interfaces
+  summary: Tries to get a resource value identified by a resource reference from the cache.
+  example: []
+  syntax:
+    content: 'bool TryGetValue<T>(ResourceReference resourceReference, out T? resourceValue) where T : ResourceBase'
+    parameters:
+    - id: resourceReference
+      type: FoundationaLLM.Common.Models.ResourceProviders.ResourceReference
+      description: The <xref href="FoundationaLLM.Common.Models.ResourceProviders.ResourceReference" data-throw-if-not-resolved="false"></xref> used as a key in the cache.
+    - id: resourceValue
+      type: '{T}'
+      description: The resource value to be retrieved.
+    typeParameters:
+    - id: T
+      description: The type of resource value to be retrieved.
+    return:
+      type: System.Boolean
+      description: <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> is the resource value was found in the cache, <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a> otherwise.
+    content.vb: Function TryGetValue(Of T As ResourceBase)(resourceReference As ResourceReference, resourceValue As T) As Boolean
+  overload: FoundationaLLM.Common.Interfaces.IResourceProviderResourceCacheService.TryGetValue*
+  nameWithType.vb: IResourceProviderResourceCacheService.TryGetValue(Of T)(ResourceReference, T)
+  fullName.vb: FoundationaLLM.Common.Interfaces.IResourceProviderResourceCacheService.TryGetValue(Of T)(FoundationaLLM.Common.Models.ResourceProviders.ResourceReference, T)
+  name.vb: TryGetValue(Of T)(ResourceReference, T)
+- uid: FoundationaLLM.Common.Interfaces.IResourceProviderResourceCacheService.SetValue``1(FoundationaLLM.Common.Models.ResourceProviders.ResourceReference,``0)
+  commentId: M:FoundationaLLM.Common.Interfaces.IResourceProviderResourceCacheService.SetValue``1(FoundationaLLM.Common.Models.ResourceProviders.ResourceReference,``0)
+  id: SetValue``1(FoundationaLLM.Common.Models.ResourceProviders.ResourceReference,``0)
+  parent: FoundationaLLM.Common.Interfaces.IResourceProviderResourceCacheService
+  langs:
+  - csharp
+  - vb
+  name: SetValue<T>(ResourceReference, T)
+  nameWithType: IResourceProviderResourceCacheService.SetValue<T>(ResourceReference, T)
+  fullName: FoundationaLLM.Common.Interfaces.IResourceProviderResourceCacheService.SetValue<T>(FoundationaLLM.Common.Models.ResourceProviders.ResourceReference, T)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Common/Interfaces/IResourceProviderResourceCacheService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: SetValue
+    path: ../src/dotnet/Common/Interfaces/IResourceProviderResourceCacheService.cs
+    startLine: 24
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Interfaces
+  summary: Sets a resource value identified by a resource reference in the cache.
+  example: []
+  syntax:
+    content: 'void SetValue<T>(ResourceReference resourceReference, T resourceValue) where T : ResourceBase'
+    parameters:
+    - id: resourceReference
+      type: FoundationaLLM.Common.Models.ResourceProviders.ResourceReference
+      description: The <xref href="FoundationaLLM.Common.Models.ResourceProviders.ResourceReference" data-throw-if-not-resolved="false"></xref> used as a key in the cache.
+    - id: resourceValue
+      type: '{T}'
+      description: The resource value to be set.
+    typeParameters:
+    - id: T
+      description: The type of resource value to be set.
+    content.vb: Sub SetValue(Of T As ResourceBase)(resourceReference As ResourceReference, resourceValue As T)
+  overload: FoundationaLLM.Common.Interfaces.IResourceProviderResourceCacheService.SetValue*
+  nameWithType.vb: IResourceProviderResourceCacheService.SetValue(Of T)(ResourceReference, T)
+  fullName.vb: FoundationaLLM.Common.Interfaces.IResourceProviderResourceCacheService.SetValue(Of T)(FoundationaLLM.Common.Models.ResourceProviders.ResourceReference, T)
+  name.vb: SetValue(Of T)(ResourceReference, T)
+- uid: FoundationaLLM.Common.Interfaces.IResourceProviderResourceCacheService.Reset
+  commentId: M:FoundationaLLM.Common.Interfaces.IResourceProviderResourceCacheService.Reset
+  id: Reset
+  parent: FoundationaLLM.Common.Interfaces.IResourceProviderResourceCacheService
+  langs:
+  - csharp
+  - vb
+  name: Reset()
+  nameWithType: IResourceProviderResourceCacheService.Reset()
+  fullName: FoundationaLLM.Common.Interfaces.IResourceProviderResourceCacheService.Reset()
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Common/Interfaces/IResourceProviderResourceCacheService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: Reset
+    path: ../src/dotnet/Common/Interfaces/IResourceProviderResourceCacheService.cs
+    startLine: 29
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Interfaces
+  summary: Resets the cache.
+  example: []
+  syntax:
+    content: void Reset()
+    content.vb: Sub Reset()
+  overload: FoundationaLLM.Common.Interfaces.IResourceProviderResourceCacheService.Reset*
+references:
+- uid: FoundationaLLM.Common.Interfaces
+  commentId: N:FoundationaLLM.Common.Interfaces
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Interfaces
+  nameWithType: FoundationaLLM.Common.Interfaces
+  fullName: FoundationaLLM.Common.Interfaces
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Interfaces
+    name: Interfaces
+    href: FoundationaLLM.Common.Interfaces.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Interfaces
+    name: Interfaces
+    href: FoundationaLLM.Common.Interfaces.html
+- uid: System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  parent: FoundationaLLM.Core.Utils.ObjectExtensions
+  definition: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  isExternal: true
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions
+  commentId: T:FoundationaLLM.Core.Utils.ObjectExtensions
+  parent: FoundationaLLM.Core.Utils
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html
+  name: ObjectExtensions
+  nameWithType: ObjectExtensions
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions
+- uid: FoundationaLLM.Core.Utils
+  commentId: N:FoundationaLLM.Core.Utils
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Core.Utils
+  nameWithType: FoundationaLLM.Core.Utils
+  fullName: FoundationaLLM.Core.Utils
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+- uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceReference
+  commentId: T:FoundationaLLM.Common.Models.ResourceProviders.ResourceReference
+  parent: FoundationaLLM.Common.Models.ResourceProviders
+  href: FoundationaLLM.Common.Models.ResourceProviders.ResourceReference.html
+  name: ResourceReference
+  nameWithType: ResourceReference
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.ResourceReference
+- uid: FoundationaLLM.Common.Interfaces.IResourceProviderResourceCacheService.TryGetValue*
+  commentId: Overload:FoundationaLLM.Common.Interfaces.IResourceProviderResourceCacheService.TryGetValue
+  href: FoundationaLLM.Common.Interfaces.IResourceProviderResourceCacheService.html#FoundationaLLM_Common_Interfaces_IResourceProviderResourceCacheService_TryGetValue__1_FoundationaLLM_Common_Models_ResourceProviders_ResourceReference___0__
+  name: TryGetValue
+  nameWithType: IResourceProviderResourceCacheService.TryGetValue
+  fullName: FoundationaLLM.Common.Interfaces.IResourceProviderResourceCacheService.TryGetValue
+- uid: '{T}'
+  commentId: '!:T'
+  definition: T
+  name: T
+  nameWithType: T
+  fullName: T
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: FoundationaLLM.Common.Models.ResourceProviders
+  commentId: N:FoundationaLLM.Common.Models.ResourceProviders
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.ResourceProviders
+  nameWithType: FoundationaLLM.Common.Models.ResourceProviders
+  fullName: FoundationaLLM.Common.Models.ResourceProviders
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders
+    name: ResourceProviders
+    href: FoundationaLLM.Common.Models.ResourceProviders.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders
+    name: ResourceProviders
+    href: FoundationaLLM.Common.Models.ResourceProviders.html
+- uid: T
+  name: T
+  nameWithType: T
+  fullName: T
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: FoundationaLLM.Common.Interfaces.IResourceProviderResourceCacheService.SetValue*
+  commentId: Overload:FoundationaLLM.Common.Interfaces.IResourceProviderResourceCacheService.SetValue
+  href: FoundationaLLM.Common.Interfaces.IResourceProviderResourceCacheService.html#FoundationaLLM_Common_Interfaces_IResourceProviderResourceCacheService_SetValue__1_FoundationaLLM_Common_Models_ResourceProviders_ResourceReference___0_
+  name: SetValue
+  nameWithType: IResourceProviderResourceCacheService.SetValue
+  fullName: FoundationaLLM.Common.Interfaces.IResourceProviderResourceCacheService.SetValue
+- uid: FoundationaLLM.Common.Interfaces.IResourceProviderResourceCacheService.Reset*
+  commentId: Overload:FoundationaLLM.Common.Interfaces.IResourceProviderResourceCacheService.Reset
+  href: FoundationaLLM.Common.Interfaces.IResourceProviderResourceCacheService.html#FoundationaLLM_Common_Interfaces_IResourceProviderResourceCacheService_Reset
+  name: Reset
+  nameWithType: IResourceProviderResourceCacheService.Reset
+  fullName: FoundationaLLM.Common.Interfaces.IResourceProviderResourceCacheService.Reset

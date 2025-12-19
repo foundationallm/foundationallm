@@ -1,0 +1,1083 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Context.Interfaces.IFileService
+  commentId: T:FoundationaLLM.Context.Interfaces.IFileService
+  id: IFileService
+  parent: FoundationaLLM.Context.Interfaces
+  children:
+  - FoundationaLLM.Context.Interfaces.IFileService.CreateFileForAgent(System.String,System.String,System.String,System.String,System.String,System.IO.Stream,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity,System.Collections.Generic.Dictionary{System.String,System.String})
+  - FoundationaLLM.Context.Interfaces.IFileService.CreateFileForConversation(System.String,System.String,System.String,System.String,System.String,System.String,System.IO.Stream,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity,System.Collections.Generic.Dictionary{System.String,System.String})
+  - FoundationaLLM.Context.Interfaces.IFileService.DeleteFileRecord(System.String,System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  - FoundationaLLM.Context.Interfaces.IFileService.GetFileContent(System.String,System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  - FoundationaLLM.Context.Interfaces.IFileService.GetFileContent(System.String,System.String,System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  - FoundationaLLM.Context.Interfaces.IFileService.GetFileRecord(System.String,System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  langs:
+  - csharp
+  - vb
+  name: IFileService
+  nameWithType: IFileService
+  fullName: FoundationaLLM.Context.Interfaces.IFileService
+  type: Interface
+  source:
+    remote:
+      path: src/dotnet/ContextEngine/Interfaces/IFileService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: IFileService
+    path: ../src/dotnet/ContextEngine/Interfaces/IFileService.cs
+    startLine: 9
+  assemblies:
+  - FoundationaLLM.ContextEngine
+  namespace: FoundationaLLM.Context.Interfaces
+  summary: Defines the service interface for the FoundationaLLM File service.
+  example: []
+  syntax:
+    content: public interface IFileService
+    content.vb: Public Interface IFileService
+  extensionMethods:
+  - System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+- uid: FoundationaLLM.Context.Interfaces.IFileService.CreateFileForConversation(System.String,System.String,System.String,System.String,System.String,System.String,System.IO.Stream,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity,System.Collections.Generic.Dictionary{System.String,System.String})
+  commentId: M:FoundationaLLM.Context.Interfaces.IFileService.CreateFileForConversation(System.String,System.String,System.String,System.String,System.String,System.String,System.IO.Stream,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity,System.Collections.Generic.Dictionary{System.String,System.String})
+  id: CreateFileForConversation(System.String,System.String,System.String,System.String,System.String,System.String,System.IO.Stream,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity,System.Collections.Generic.Dictionary{System.String,System.String})
+  parent: FoundationaLLM.Context.Interfaces.IFileService
+  langs:
+  - csharp
+  - vb
+  name: CreateFileForConversation(string, string, string?, string, string, string, Stream, UnifiedUserIdentity, Dictionary<string, string>?)
+  nameWithType: IFileService.CreateFileForConversation(string, string, string?, string, string, string, Stream, UnifiedUserIdentity, Dictionary<string, string>?)
+  fullName: FoundationaLLM.Context.Interfaces.IFileService.CreateFileForConversation(string, string, string?, string, string, string, System.IO.Stream, FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity, System.Collections.Generic.Dictionary<string, string>?)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/ContextEngine/Interfaces/IFileService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: CreateFileForConversation
+    path: ../src/dotnet/ContextEngine/Interfaces/IFileService.cs
+    startLine: 26
+  assemblies:
+  - FoundationaLLM.ContextEngine
+  namespace: FoundationaLLM.Context.Interfaces
+  summary: Create a new file.
+  example: []
+  syntax:
+    content: Task<Result<ContextFileRecord>> CreateFileForConversation(string instanceId, string origin, string? agentName, string conversationId, string fileName, string contentType, Stream content, UnifiedUserIdentity userIdentity, Dictionary<string, string>? metadata = null)
+    parameters:
+    - id: instanceId
+      type: System.String
+      description: The FoundationaLLM instance identifier.
+    - id: origin
+      type: System.String
+      description: The origin of the file.
+    - id: agentName
+      type: System.String
+      description: The name of the agent.
+    - id: conversationId
+      type: System.String
+      description: The conversation identifier.
+    - id: fileName
+      type: System.String
+      description: The original name of the file.
+    - id: contentType
+      type: System.String
+      description: The content type of the file.
+    - id: content
+      type: System.IO.Stream
+      description: The <xref href="System.IO.Stream" data-throw-if-not-resolved="false"></xref> providing the raw content of the file.
+    - id: userIdentity
+      type: FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity
+      description: The <xref href="FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity" data-throw-if-not-resolved="false"></xref> providing details about the user identity.
+    - id: metadata
+      type: System.Collections.Generic.Dictionary{System.String,System.String}
+      description: Optional metadata dictionary associated with the file.
+    return:
+      type: System.Threading.Tasks.Task{FoundationaLLM.Common.Models.Services.Result{FoundationaLLM.Common.Models.Context.ContextFileRecord}}
+      description: A <xref href="System.Threading.Tasks.Task" data-throw-if-not-resolved="false"></xref> producing a <xref href="FoundationaLLM.Common.Models.Services.Result%601" data-throw-if-not-resolved="false"></xref> whose value is a <xref href="FoundationaLLM.Common.Models.Context.ContextFileRecord" data-throw-if-not-resolved="false"></xref> describing the newly created file when successful; otherwise a failed result containing a domain error.
+    content.vb: Function CreateFileForConversation(instanceId As String, origin As String, agentName As String, conversationId As String, fileName As String, contentType As String, content As Stream, userIdentity As UnifiedUserIdentity, metadata As Dictionary(Of String, String) = Nothing) As Task(Of Result(Of ContextFileRecord))
+  overload: FoundationaLLM.Context.Interfaces.IFileService.CreateFileForConversation*
+  nameWithType.vb: IFileService.CreateFileForConversation(String, String, String, String, String, String, Stream, UnifiedUserIdentity, Dictionary(Of String, String))
+  fullName.vb: FoundationaLLM.Context.Interfaces.IFileService.CreateFileForConversation(String, String, String, String, String, String, System.IO.Stream, FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity, System.Collections.Generic.Dictionary(Of String, String))
+  name.vb: CreateFileForConversation(String, String, String, String, String, String, Stream, UnifiedUserIdentity, Dictionary(Of String, String))
+- uid: FoundationaLLM.Context.Interfaces.IFileService.CreateFileForAgent(System.String,System.String,System.String,System.String,System.String,System.IO.Stream,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity,System.Collections.Generic.Dictionary{System.String,System.String})
+  commentId: M:FoundationaLLM.Context.Interfaces.IFileService.CreateFileForAgent(System.String,System.String,System.String,System.String,System.String,System.IO.Stream,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity,System.Collections.Generic.Dictionary{System.String,System.String})
+  id: CreateFileForAgent(System.String,System.String,System.String,System.String,System.String,System.IO.Stream,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity,System.Collections.Generic.Dictionary{System.String,System.String})
+  parent: FoundationaLLM.Context.Interfaces.IFileService
+  langs:
+  - csharp
+  - vb
+  name: CreateFileForAgent(string, string, string, string, string, Stream, UnifiedUserIdentity, Dictionary<string, string>?)
+  nameWithType: IFileService.CreateFileForAgent(string, string, string, string, string, Stream, UnifiedUserIdentity, Dictionary<string, string>?)
+  fullName: FoundationaLLM.Context.Interfaces.IFileService.CreateFileForAgent(string, string, string, string, string, System.IO.Stream, FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity, System.Collections.Generic.Dictionary<string, string>?)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/ContextEngine/Interfaces/IFileService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: CreateFileForAgent
+    path: ../src/dotnet/ContextEngine/Interfaces/IFileService.cs
+    startLine: 51
+  assemblies:
+  - FoundationaLLM.ContextEngine
+  namespace: FoundationaLLM.Context.Interfaces
+  summary: Create a new file.
+  example: []
+  syntax:
+    content: Task<Result<ContextFileRecord>> CreateFileForAgent(string instanceId, string origin, string agentName, string fileName, string contentType, Stream content, UnifiedUserIdentity userIdentity, Dictionary<string, string>? metadata = null)
+    parameters:
+    - id: instanceId
+      type: System.String
+      description: The FoundationaLLM instance identifier.
+    - id: origin
+      type: System.String
+      description: The origin of the file.
+    - id: agentName
+      type: System.String
+      description: The name of the agent.
+    - id: fileName
+      type: System.String
+      description: The original name of the file.
+    - id: contentType
+      type: System.String
+      description: The content type of the file.
+    - id: content
+      type: System.IO.Stream
+      description: The <xref href="System.IO.Stream" data-throw-if-not-resolved="false"></xref> providing the raw content of the file.
+    - id: userIdentity
+      type: FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity
+      description: The <xref href="FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity" data-throw-if-not-resolved="false"></xref> providing details about the user identity.
+    - id: metadata
+      type: System.Collections.Generic.Dictionary{System.String,System.String}
+      description: Optional metadata dictionary associated with the file.
+    return:
+      type: System.Threading.Tasks.Task{FoundationaLLM.Common.Models.Services.Result{FoundationaLLM.Common.Models.Context.ContextFileRecord}}
+      description: A <xref href="System.Threading.Tasks.Task" data-throw-if-not-resolved="false"></xref> producing a <xref href="FoundationaLLM.Common.Models.Services.Result%601" data-throw-if-not-resolved="false"></xref> whose value is a <xref href="FoundationaLLM.Common.Models.Context.ContextFileRecord" data-throw-if-not-resolved="false"></xref> describing the newly created file when successful; otherwise a failed result containing a domain error.
+    content.vb: Function CreateFileForAgent(instanceId As String, origin As String, agentName As String, fileName As String, contentType As String, content As Stream, userIdentity As UnifiedUserIdentity, metadata As Dictionary(Of String, String) = Nothing) As Task(Of Result(Of ContextFileRecord))
+  overload: FoundationaLLM.Context.Interfaces.IFileService.CreateFileForAgent*
+  nameWithType.vb: IFileService.CreateFileForAgent(String, String, String, String, String, Stream, UnifiedUserIdentity, Dictionary(Of String, String))
+  fullName.vb: FoundationaLLM.Context.Interfaces.IFileService.CreateFileForAgent(String, String, String, String, String, System.IO.Stream, FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity, System.Collections.Generic.Dictionary(Of String, String))
+  name.vb: CreateFileForAgent(String, String, String, String, String, Stream, UnifiedUserIdentity, Dictionary(Of String, String))
+- uid: FoundationaLLM.Context.Interfaces.IFileService.GetFileContent(System.String,System.String,System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  commentId: M:FoundationaLLM.Context.Interfaces.IFileService.GetFileContent(System.String,System.String,System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  id: GetFileContent(System.String,System.String,System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  parent: FoundationaLLM.Context.Interfaces.IFileService
+  langs:
+  - csharp
+  - vb
+  name: GetFileContent(string, string, string, UnifiedUserIdentity)
+  nameWithType: IFileService.GetFileContent(string, string, string, UnifiedUserIdentity)
+  fullName: FoundationaLLM.Context.Interfaces.IFileService.GetFileContent(string, string, string, FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/ContextEngine/Interfaces/IFileService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: GetFileContent
+    path: ../src/dotnet/ContextEngine/Interfaces/IFileService.cs
+    startLine: 71
+  assemblies:
+  - FoundationaLLM.ContextEngine
+  namespace: FoundationaLLM.Context.Interfaces
+  summary: Get the binary content of a file.
+  example: []
+  syntax:
+    content: Task<Result<ContextFileContent>> GetFileContent(string instanceId, string conversationId, string fileName, UnifiedUserIdentity userIdentity)
+    parameters:
+    - id: instanceId
+      type: System.String
+      description: The FoundationaLLM instance identifier.
+    - id: conversationId
+      type: System.String
+      description: The conversation identifier.
+    - id: fileName
+      type: System.String
+      description: The name of the file to retrieve.
+    - id: userIdentity
+      type: FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity
+      description: The <xref href="FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity" data-throw-if-not-resolved="false"></xref> providing details about the user identity.
+    return:
+      type: System.Threading.Tasks.Task{FoundationaLLM.Common.Models.Services.Result{FoundationaLLM.Common.Models.Context.ContextFileContent}}
+      description: A <xref href="System.Threading.Tasks.Task" data-throw-if-not-resolved="false"></xref> producing a <xref href="FoundationaLLM.Common.Models.Services.Result%601" data-throw-if-not-resolved="false"></xref> whose value is a <xref href="FoundationaLLM.Common.Models.Context.ContextFileContent" data-throw-if-not-resolved="false"></xref> containing the file's binary content when successful; otherwise a failed result containing a domain error.
+    content.vb: Function GetFileContent(instanceId As String, conversationId As String, fileName As String, userIdentity As UnifiedUserIdentity) As Task(Of Result(Of ContextFileContent))
+  overload: FoundationaLLM.Context.Interfaces.IFileService.GetFileContent*
+  nameWithType.vb: IFileService.GetFileContent(String, String, String, UnifiedUserIdentity)
+  fullName.vb: FoundationaLLM.Context.Interfaces.IFileService.GetFileContent(String, String, String, FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  name.vb: GetFileContent(String, String, String, UnifiedUserIdentity)
+- uid: FoundationaLLM.Context.Interfaces.IFileService.GetFileContent(System.String,System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  commentId: M:FoundationaLLM.Context.Interfaces.IFileService.GetFileContent(System.String,System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  id: GetFileContent(System.String,System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  parent: FoundationaLLM.Context.Interfaces.IFileService
+  langs:
+  - csharp
+  - vb
+  name: GetFileContent(string, string, UnifiedUserIdentity)
+  nameWithType: IFileService.GetFileContent(string, string, UnifiedUserIdentity)
+  fullName: FoundationaLLM.Context.Interfaces.IFileService.GetFileContent(string, string, FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/ContextEngine/Interfaces/IFileService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: GetFileContent
+    path: ../src/dotnet/ContextEngine/Interfaces/IFileService.cs
+    startLine: 86
+  assemblies:
+  - FoundationaLLM.ContextEngine
+  namespace: FoundationaLLM.Context.Interfaces
+  summary: Get the binary content of a file.
+  example: []
+  syntax:
+    content: Task<Result<ContextFileContent>> GetFileContent(string instanceId, string fileId, UnifiedUserIdentity userIdentity)
+    parameters:
+    - id: instanceId
+      type: System.String
+      description: The FoundationaLLM instance identifier.
+    - id: fileId
+      type: System.String
+      description: The identifier of the file.
+    - id: userIdentity
+      type: FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity
+      description: The <xref href="FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity" data-throw-if-not-resolved="false"></xref> providing details about the user identity.
+    return:
+      type: System.Threading.Tasks.Task{FoundationaLLM.Common.Models.Services.Result{FoundationaLLM.Common.Models.Context.ContextFileContent}}
+      description: A <xref href="System.Threading.Tasks.Task" data-throw-if-not-resolved="false"></xref> producing a <xref href="FoundationaLLM.Common.Models.Services.Result%601" data-throw-if-not-resolved="false"></xref> whose value is a <xref href="FoundationaLLM.Common.Models.Context.ContextFileContent" data-throw-if-not-resolved="false"></xref> containing the file's binary content when successful; otherwise a failed result containing a domain error.
+    content.vb: Function GetFileContent(instanceId As String, fileId As String, userIdentity As UnifiedUserIdentity) As Task(Of Result(Of ContextFileContent))
+  overload: FoundationaLLM.Context.Interfaces.IFileService.GetFileContent*
+  nameWithType.vb: IFileService.GetFileContent(String, String, UnifiedUserIdentity)
+  fullName.vb: FoundationaLLM.Context.Interfaces.IFileService.GetFileContent(String, String, FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  name.vb: GetFileContent(String, String, UnifiedUserIdentity)
+- uid: FoundationaLLM.Context.Interfaces.IFileService.GetFileRecord(System.String,System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  commentId: M:FoundationaLLM.Context.Interfaces.IFileService.GetFileRecord(System.String,System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  id: GetFileRecord(System.String,System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  parent: FoundationaLLM.Context.Interfaces.IFileService
+  langs:
+  - csharp
+  - vb
+  name: GetFileRecord(string, string, UnifiedUserIdentity)
+  nameWithType: IFileService.GetFileRecord(string, string, UnifiedUserIdentity)
+  fullName: FoundationaLLM.Context.Interfaces.IFileService.GetFileRecord(string, string, FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/ContextEngine/Interfaces/IFileService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: GetFileRecord
+    path: ../src/dotnet/ContextEngine/Interfaces/IFileService.cs
+    startLine: 100
+  assemblies:
+  - FoundationaLLM.ContextEngine
+  namespace: FoundationaLLM.Context.Interfaces
+  summary: Get the file record associated with a file.
+  example: []
+  syntax:
+    content: Task<Result<ContextFileRecord>> GetFileRecord(string instanceId, string fileId, UnifiedUserIdentity userIdentity)
+    parameters:
+    - id: instanceId
+      type: System.String
+      description: The FoundationaLLM instance identifier.
+    - id: fileId
+      type: System.String
+      description: The identifier of the file.
+    - id: userIdentity
+      type: FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity
+      description: The <xref href="FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity" data-throw-if-not-resolved="false"></xref> providing details about the user identity.
+    return:
+      type: System.Threading.Tasks.Task{FoundationaLLM.Common.Models.Services.Result{FoundationaLLM.Common.Models.Context.ContextFileRecord}}
+      description: A <xref href="System.Threading.Tasks.Task" data-throw-if-not-resolved="false"></xref> producing a <xref href="FoundationaLLM.Common.Models.Services.Result%601" data-throw-if-not-resolved="false"></xref> whose value is a <xref href="FoundationaLLM.Common.Models.Context.ContextFileRecord" data-throw-if-not-resolved="false"></xref> representing the file record when successful; otherwise a failed result containing a domain error.
+    content.vb: Function GetFileRecord(instanceId As String, fileId As String, userIdentity As UnifiedUserIdentity) As Task(Of Result(Of ContextFileRecord))
+  overload: FoundationaLLM.Context.Interfaces.IFileService.GetFileRecord*
+  nameWithType.vb: IFileService.GetFileRecord(String, String, UnifiedUserIdentity)
+  fullName.vb: FoundationaLLM.Context.Interfaces.IFileService.GetFileRecord(String, String, FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  name.vb: GetFileRecord(String, String, UnifiedUserIdentity)
+- uid: FoundationaLLM.Context.Interfaces.IFileService.DeleteFileRecord(System.String,System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  commentId: M:FoundationaLLM.Context.Interfaces.IFileService.DeleteFileRecord(System.String,System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  id: DeleteFileRecord(System.String,System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  parent: FoundationaLLM.Context.Interfaces.IFileService
+  langs:
+  - csharp
+  - vb
+  name: DeleteFileRecord(string, string, UnifiedUserIdentity)
+  nameWithType: IFileService.DeleteFileRecord(string, string, UnifiedUserIdentity)
+  fullName: FoundationaLLM.Context.Interfaces.IFileService.DeleteFileRecord(string, string, FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/ContextEngine/Interfaces/IFileService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: DeleteFileRecord
+    path: ../src/dotnet/ContextEngine/Interfaces/IFileService.cs
+    startLine: 114
+  assemblies:
+  - FoundationaLLM.ContextEngine
+  namespace: FoundationaLLM.Context.Interfaces
+  summary: Deletes the file record associated with a file.
+  example: []
+  syntax:
+    content: Task<Result> DeleteFileRecord(string instanceId, string fileId, UnifiedUserIdentity userIdentity)
+    parameters:
+    - id: instanceId
+      type: System.String
+      description: The FoundationaLLM instance identifier.
+    - id: fileId
+      type: System.String
+      description: The identifier of the file.
+    - id: userIdentity
+      type: FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity
+      description: The <xref href="FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity" data-throw-if-not-resolved="false"></xref> providing details about the user identity.
+    return:
+      type: System.Threading.Tasks.Task{FoundationaLLM.Common.Models.Services.Result}
+      description: A <xref href="System.Threading.Tasks.Task" data-throw-if-not-resolved="false"></xref> producing a <xref href="FoundationaLLM.Common.Models.Services.Result" data-throw-if-not-resolved="false"></xref> indicating success when the record is deleted; otherwise a failed result containing a domain error.
+    content.vb: Function DeleteFileRecord(instanceId As String, fileId As String, userIdentity As UnifiedUserIdentity) As Task(Of Result)
+  overload: FoundationaLLM.Context.Interfaces.IFileService.DeleteFileRecord*
+  nameWithType.vb: IFileService.DeleteFileRecord(String, String, UnifiedUserIdentity)
+  fullName.vb: FoundationaLLM.Context.Interfaces.IFileService.DeleteFileRecord(String, String, FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  name.vb: DeleteFileRecord(String, String, UnifiedUserIdentity)
+references:
+- uid: FoundationaLLM.Context.Interfaces
+  commentId: N:FoundationaLLM.Context.Interfaces
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Context.Interfaces
+  nameWithType: FoundationaLLM.Context.Interfaces
+  fullName: FoundationaLLM.Context.Interfaces
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Context
+    name: Context
+    href: FoundationaLLM.Context.html
+  - name: .
+  - uid: FoundationaLLM.Context.Interfaces
+    name: Interfaces
+    href: FoundationaLLM.Context.Interfaces.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Context
+    name: Context
+    href: FoundationaLLM.Context.html
+  - name: .
+  - uid: FoundationaLLM.Context.Interfaces
+    name: Interfaces
+    href: FoundationaLLM.Context.Interfaces.html
+- uid: System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  parent: FoundationaLLM.Core.Utils.ObjectExtensions
+  definition: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  isExternal: true
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions
+  commentId: T:FoundationaLLM.Core.Utils.ObjectExtensions
+  parent: FoundationaLLM.Core.Utils
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html
+  name: ObjectExtensions
+  nameWithType: ObjectExtensions
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions
+- uid: FoundationaLLM.Core.Utils
+  commentId: N:FoundationaLLM.Core.Utils
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Core.Utils
+  nameWithType: FoundationaLLM.Core.Utils
+  fullName: FoundationaLLM.Core.Utils
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+- uid: System.IO.Stream
+  commentId: T:System.IO.Stream
+  parent: System.IO
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.io.stream
+  name: Stream
+  nameWithType: Stream
+  fullName: System.IO.Stream
+- uid: FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity
+  commentId: T:FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity
+  parent: FoundationaLLM.Common.Models.Authentication
+  href: FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity.html
+  name: UnifiedUserIdentity
+  nameWithType: UnifiedUserIdentity
+  fullName: FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity
+- uid: System.Threading.Tasks.Task
+  commentId: T:System.Threading.Tasks.Task
+  parent: System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  name: Task
+  nameWithType: Task
+  fullName: System.Threading.Tasks.Task
+- uid: FoundationaLLM.Common.Models.Services.Result`1
+  commentId: T:FoundationaLLM.Common.Models.Services.Result`1
+  parent: FoundationaLLM.Common.Models.Services
+  href: FoundationaLLM.Common.Models.Services.Result-1.html
+  name: Result<T>
+  nameWithType: Result<T>
+  fullName: FoundationaLLM.Common.Models.Services.Result<T>
+  nameWithType.vb: Result(Of T)
+  fullName.vb: FoundationaLLM.Common.Models.Services.Result(Of T)
+  name.vb: Result(Of T)
+  spec.csharp:
+  - uid: FoundationaLLM.Common.Models.Services.Result`1
+    name: Result
+    href: FoundationaLLM.Common.Models.Services.Result-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: FoundationaLLM.Common.Models.Services.Result`1
+    name: Result
+    href: FoundationaLLM.Common.Models.Services.Result-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: FoundationaLLM.Common.Models.Context.ContextFileRecord
+  commentId: T:FoundationaLLM.Common.Models.Context.ContextFileRecord
+  parent: FoundationaLLM.Common.Models.Context
+  href: FoundationaLLM.Common.Models.Context.ContextFileRecord.html
+  name: ContextFileRecord
+  nameWithType: ContextFileRecord
+  fullName: FoundationaLLM.Common.Models.Context.ContextFileRecord
+- uid: FoundationaLLM.Context.Interfaces.IFileService.CreateFileForConversation*
+  commentId: Overload:FoundationaLLM.Context.Interfaces.IFileService.CreateFileForConversation
+  href: FoundationaLLM.Context.Interfaces.IFileService.html#FoundationaLLM_Context_Interfaces_IFileService_CreateFileForConversation_System_String_System_String_System_String_System_String_System_String_System_String_System_IO_Stream_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_System_Collections_Generic_Dictionary_System_String_System_String__
+  name: CreateFileForConversation
+  nameWithType: IFileService.CreateFileForConversation
+  fullName: FoundationaLLM.Context.Interfaces.IFileService.CreateFileForConversation
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System.Collections.Generic.Dictionary{System.String,System.String}
+  commentId: T:System.Collections.Generic.Dictionary{System.String,System.String}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.Dictionary`2
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  name: Dictionary<string, string>
+  nameWithType: Dictionary<string, string>
+  fullName: System.Collections.Generic.Dictionary<string, string>
+  nameWithType.vb: Dictionary(Of String, String)
+  fullName.vb: System.Collections.Generic.Dictionary(Of String, String)
+  name.vb: Dictionary(Of String, String)
+  spec.csharp:
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: System.Threading.Tasks.Task{FoundationaLLM.Common.Models.Services.Result{FoundationaLLM.Common.Models.Context.ContextFileRecord}}
+  commentId: T:System.Threading.Tasks.Task{FoundationaLLM.Common.Models.Services.Result{FoundationaLLM.Common.Models.Context.ContextFileRecord}}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<Result<ContextFileRecord>>
+  nameWithType: Task<Result<ContextFileRecord>>
+  fullName: System.Threading.Tasks.Task<FoundationaLLM.Common.Models.Services.Result<FoundationaLLM.Common.Models.Context.ContextFileRecord>>
+  nameWithType.vb: Task(Of Result(Of ContextFileRecord))
+  fullName.vb: System.Threading.Tasks.Task(Of FoundationaLLM.Common.Models.Services.Result(Of FoundationaLLM.Common.Models.Context.ContextFileRecord))
+  name.vb: Task(Of Result(Of ContextFileRecord))
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: FoundationaLLM.Common.Models.Services.Result`1
+    name: Result
+    href: FoundationaLLM.Common.Models.Services.Result-1.html
+  - name: <
+  - uid: FoundationaLLM.Common.Models.Context.ContextFileRecord
+    name: ContextFileRecord
+    href: FoundationaLLM.Common.Models.Context.ContextFileRecord.html
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FoundationaLLM.Common.Models.Services.Result`1
+    name: Result
+    href: FoundationaLLM.Common.Models.Services.Result-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FoundationaLLM.Common.Models.Context.ContextFileRecord
+    name: ContextFileRecord
+    href: FoundationaLLM.Common.Models.Context.ContextFileRecord.html
+  - name: )
+  - name: )
+- uid: System.IO
+  commentId: N:System.IO
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.IO
+  nameWithType: System.IO
+  fullName: System.IO
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.IO
+    name: IO
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.io
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.IO
+    name: IO
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.io
+- uid: FoundationaLLM.Common.Models.Authentication
+  commentId: N:FoundationaLLM.Common.Models.Authentication
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.Authentication
+  nameWithType: FoundationaLLM.Common.Models.Authentication
+  fullName: FoundationaLLM.Common.Models.Authentication
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Authentication
+    name: Authentication
+    href: FoundationaLLM.Common.Models.Authentication.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Authentication
+    name: Authentication
+    href: FoundationaLLM.Common.Models.Authentication.html
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: FoundationaLLM.Common.Models.Services
+  commentId: N:FoundationaLLM.Common.Models.Services
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.Services
+  nameWithType: FoundationaLLM.Common.Models.Services
+  fullName: FoundationaLLM.Common.Models.Services
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Services
+    name: Services
+    href: FoundationaLLM.Common.Models.Services.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Services
+    name: Services
+    href: FoundationaLLM.Common.Models.Services.html
+- uid: FoundationaLLM.Common.Models.Context
+  commentId: N:FoundationaLLM.Common.Models.Context
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.Context
+  nameWithType: FoundationaLLM.Common.Models.Context
+  fullName: FoundationaLLM.Common.Models.Context
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Context
+    name: Context
+    href: FoundationaLLM.Common.Models.Context.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Context
+    name: Context
+    href: FoundationaLLM.Common.Models.Context.html
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.Collections.Generic.Dictionary`2
+  commentId: T:System.Collections.Generic.Dictionary`2
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  name: Dictionary<TKey, TValue>
+  nameWithType: Dictionary<TKey, TValue>
+  fullName: System.Collections.Generic.Dictionary<TKey, TValue>
+  nameWithType.vb: Dictionary(Of TKey, TValue)
+  fullName.vb: System.Collections.Generic.Dictionary(Of TKey, TValue)
+  name.vb: Dictionary(Of TKey, TValue)
+  spec.csharp:
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  - name: <
+  - name: TKey
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TKey
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: FoundationaLLM.Context.Interfaces.IFileService.CreateFileForAgent*
+  commentId: Overload:FoundationaLLM.Context.Interfaces.IFileService.CreateFileForAgent
+  href: FoundationaLLM.Context.Interfaces.IFileService.html#FoundationaLLM_Context_Interfaces_IFileService_CreateFileForAgent_System_String_System_String_System_String_System_String_System_String_System_IO_Stream_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_System_Collections_Generic_Dictionary_System_String_System_String__
+  name: CreateFileForAgent
+  nameWithType: IFileService.CreateFileForAgent
+  fullName: FoundationaLLM.Context.Interfaces.IFileService.CreateFileForAgent
+- uid: FoundationaLLM.Common.Models.Context.ContextFileContent
+  commentId: T:FoundationaLLM.Common.Models.Context.ContextFileContent
+  href: FoundationaLLM.Common.Models.Context.ContextFileContent.html
+  name: ContextFileContent
+  nameWithType: ContextFileContent
+  fullName: FoundationaLLM.Common.Models.Context.ContextFileContent
+- uid: FoundationaLLM.Context.Interfaces.IFileService.GetFileContent*
+  commentId: Overload:FoundationaLLM.Context.Interfaces.IFileService.GetFileContent
+  href: FoundationaLLM.Context.Interfaces.IFileService.html#FoundationaLLM_Context_Interfaces_IFileService_GetFileContent_System_String_System_String_System_String_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_
+  name: GetFileContent
+  nameWithType: IFileService.GetFileContent
+  fullName: FoundationaLLM.Context.Interfaces.IFileService.GetFileContent
+- uid: System.Threading.Tasks.Task{FoundationaLLM.Common.Models.Services.Result{FoundationaLLM.Common.Models.Context.ContextFileContent}}
+  commentId: T:System.Threading.Tasks.Task{FoundationaLLM.Common.Models.Services.Result{FoundationaLLM.Common.Models.Context.ContextFileContent}}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<Result<ContextFileContent>>
+  nameWithType: Task<Result<ContextFileContent>>
+  fullName: System.Threading.Tasks.Task<FoundationaLLM.Common.Models.Services.Result<FoundationaLLM.Common.Models.Context.ContextFileContent>>
+  nameWithType.vb: Task(Of Result(Of ContextFileContent))
+  fullName.vb: System.Threading.Tasks.Task(Of FoundationaLLM.Common.Models.Services.Result(Of FoundationaLLM.Common.Models.Context.ContextFileContent))
+  name.vb: Task(Of Result(Of ContextFileContent))
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: FoundationaLLM.Common.Models.Services.Result`1
+    name: Result
+    href: FoundationaLLM.Common.Models.Services.Result-1.html
+  - name: <
+  - uid: FoundationaLLM.Common.Models.Context.ContextFileContent
+    name: ContextFileContent
+    href: FoundationaLLM.Common.Models.Context.ContextFileContent.html
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FoundationaLLM.Common.Models.Services.Result`1
+    name: Result
+    href: FoundationaLLM.Common.Models.Services.Result-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FoundationaLLM.Common.Models.Context.ContextFileContent
+    name: ContextFileContent
+    href: FoundationaLLM.Common.Models.Context.ContextFileContent.html
+  - name: )
+  - name: )
+- uid: FoundationaLLM.Context.Interfaces.IFileService.GetFileRecord*
+  commentId: Overload:FoundationaLLM.Context.Interfaces.IFileService.GetFileRecord
+  href: FoundationaLLM.Context.Interfaces.IFileService.html#FoundationaLLM_Context_Interfaces_IFileService_GetFileRecord_System_String_System_String_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_
+  name: GetFileRecord
+  nameWithType: IFileService.GetFileRecord
+  fullName: FoundationaLLM.Context.Interfaces.IFileService.GetFileRecord
+- uid: FoundationaLLM.Common.Models.Services.Result
+  commentId: T:FoundationaLLM.Common.Models.Services.Result
+  parent: FoundationaLLM.Common.Models.Services
+  href: FoundationaLLM.Common.Models.Services.Result.html
+  name: Result
+  nameWithType: Result
+  fullName: FoundationaLLM.Common.Models.Services.Result
+- uid: FoundationaLLM.Context.Interfaces.IFileService.DeleteFileRecord*
+  commentId: Overload:FoundationaLLM.Context.Interfaces.IFileService.DeleteFileRecord
+  href: FoundationaLLM.Context.Interfaces.IFileService.html#FoundationaLLM_Context_Interfaces_IFileService_DeleteFileRecord_System_String_System_String_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_
+  name: DeleteFileRecord
+  nameWithType: IFileService.DeleteFileRecord
+  fullName: FoundationaLLM.Context.Interfaces.IFileService.DeleteFileRecord
+- uid: System.Threading.Tasks.Task{FoundationaLLM.Common.Models.Services.Result}
+  commentId: T:System.Threading.Tasks.Task{FoundationaLLM.Common.Models.Services.Result}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<Result>
+  nameWithType: Task<Result>
+  fullName: System.Threading.Tasks.Task<FoundationaLLM.Common.Models.Services.Result>
+  nameWithType.vb: Task(Of Result)
+  fullName.vb: System.Threading.Tasks.Task(Of FoundationaLLM.Common.Models.Services.Result)
+  name.vb: Task(Of Result)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: FoundationaLLM.Common.Models.Services.Result
+    name: Result
+    href: FoundationaLLM.Common.Models.Services.Result.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FoundationaLLM.Common.Models.Services.Result
+    name: Result
+    href: FoundationaLLM.Common.Models.Services.Result.html
+  - name: )

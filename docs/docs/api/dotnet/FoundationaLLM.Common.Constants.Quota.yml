@@ -1,0 +1,71 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Common.Constants.Quota
+  commentId: N:FoundationaLLM.Common.Constants.Quota
+  id: Quota
+  parent: FoundationaLLM.Common.Constants
+  children:
+  - FoundationaLLM.Common.Constants.Quota.QuotaMetricPartitionType
+  - FoundationaLLM.Common.Constants.Quota.QuotaType
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM.Common.Constants.Quota
+  nameWithType: FoundationaLLM.Common.Constants.Quota
+  fullName: FoundationaLLM.Common.Constants.Quota
+  type: Namespace
+  assemblies:
+  - FoundationaLLM.Common
+references:
+- uid: FoundationaLLM.Common.Constants.Quota.QuotaMetricPartitionType
+  commentId: T:FoundationaLLM.Common.Constants.Quota.QuotaMetricPartitionType
+  parent: FoundationaLLM.Common.Constants.Quota
+  href: FoundationaLLM.Common.Constants.Quota.QuotaMetricPartitionType.html
+  name: QuotaMetricPartitionType
+  nameWithType: QuotaMetricPartitionType
+  fullName: FoundationaLLM.Common.Constants.Quota.QuotaMetricPartitionType
+- uid: FoundationaLLM.Common.Constants.Quota.QuotaType
+  commentId: T:FoundationaLLM.Common.Constants.Quota.QuotaType
+  parent: FoundationaLLM.Common.Constants.Quota
+  href: FoundationaLLM.Common.Constants.Quota.QuotaType.html
+  name: QuotaType
+  nameWithType: QuotaType
+  fullName: FoundationaLLM.Common.Constants.Quota.QuotaType
+- uid: FoundationaLLM.Common.Constants.Quota
+  commentId: N:FoundationaLLM.Common.Constants.Quota
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Constants.Quota
+  nameWithType: FoundationaLLM.Common.Constants.Quota
+  fullName: FoundationaLLM.Common.Constants.Quota
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Constants
+    name: Constants
+    href: FoundationaLLM.Common.Constants.html
+  - name: .
+  - uid: FoundationaLLM.Common.Constants.Quota
+    name: Quota
+    href: FoundationaLLM.Common.Constants.Quota.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Constants
+    name: Constants
+    href: FoundationaLLM.Common.Constants.html
+  - name: .
+  - uid: FoundationaLLM.Common.Constants.Quota
+    name: Quota
+    href: FoundationaLLM.Common.Constants.Quota.html

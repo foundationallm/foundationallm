@@ -1,0 +1,31 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.SemanticKernel.API.Controllers
+  commentId: N:FoundationaLLM.SemanticKernel.API.Controllers
+  id: Controllers
+  parent: FoundationaLLM.SemanticKernel.API
+  children:
+  - FoundationaLLM.SemanticKernel.API.Controllers.CompletionsController
+  - FoundationaLLM.SemanticKernel.API.Controllers.StatusController
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM.SemanticKernel.API.Controllers
+  nameWithType: FoundationaLLM.SemanticKernel.API.Controllers
+  fullName: FoundationaLLM.SemanticKernel.API.Controllers
+  type: Namespace
+  assemblies:
+  - FoundationaLLM.SemanticKernel.API
+references:
+- uid: FoundationaLLM.SemanticKernel.API.Controllers.CompletionsController
+  commentId: T:FoundationaLLM.SemanticKernel.API.Controllers.CompletionsController
+  href: FoundationaLLM.SemanticKernel.API.Controllers.CompletionsController.html
+  name: CompletionsController
+  nameWithType: CompletionsController
+  fullName: FoundationaLLM.SemanticKernel.API.Controllers.CompletionsController
+- uid: FoundationaLLM.SemanticKernel.API.Controllers.StatusController
+  commentId: T:FoundationaLLM.SemanticKernel.API.Controllers.StatusController
+  href: FoundationaLLM.SemanticKernel.API.Controllers.StatusController.html
+  name: StatusController
+  nameWithType: StatusController
+  fullName: FoundationaLLM.SemanticKernel.API.Controllers.StatusController

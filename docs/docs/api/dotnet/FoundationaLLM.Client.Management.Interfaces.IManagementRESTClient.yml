@@ -1,0 +1,356 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Client.Management.Interfaces.IManagementRESTClient
+  commentId: T:FoundationaLLM.Client.Management.Interfaces.IManagementRESTClient
+  id: IManagementRESTClient
+  parent: FoundationaLLM.Client.Management.Interfaces
+  children:
+  - FoundationaLLM.Client.Management.Interfaces.IManagementRESTClient.Identity
+  - FoundationaLLM.Client.Management.Interfaces.IManagementRESTClient.Resources
+  - FoundationaLLM.Client.Management.Interfaces.IManagementRESTClient.Status
+  langs:
+  - csharp
+  - vb
+  name: IManagementRESTClient
+  nameWithType: IManagementRESTClient
+  fullName: FoundationaLLM.Client.Management.Interfaces.IManagementRESTClient
+  type: Interface
+  source:
+    remote:
+      path: src/dotnet/ManagementClient/Interfaces/IManagementRESTClient.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: IManagementRESTClient
+    path: ../src/dotnet/ManagementClient/Interfaces/IManagementRESTClient.cs
+    startLine: 5
+  assemblies:
+  - FoundationaLLM.Client.Management
+  namespace: FoundationaLLM.Client.Management.Interfaces
+  summary: Contains methods to interact with the Management API's endpoints.
+  example: []
+  syntax:
+    content: public interface IManagementRESTClient
+    content.vb: Public Interface IManagementRESTClient
+  extensionMethods:
+  - System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+- uid: FoundationaLLM.Client.Management.Interfaces.IManagementRESTClient.Identity
+  commentId: P:FoundationaLLM.Client.Management.Interfaces.IManagementRESTClient.Identity
+  id: Identity
+  parent: FoundationaLLM.Client.Management.Interfaces.IManagementRESTClient
+  langs:
+  - csharp
+  - vb
+  name: Identity
+  nameWithType: IManagementRESTClient.Identity
+  fullName: FoundationaLLM.Client.Management.Interfaces.IManagementRESTClient.Identity
+  type: Property
+  source:
+    remote:
+      path: src/dotnet/ManagementClient/Interfaces/IManagementRESTClient.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: Identity
+    path: ../src/dotnet/ManagementClient/Interfaces/IManagementRESTClient.cs
+    startLine: 10
+  assemblies:
+  - FoundationaLLM.Client.Management
+  namespace: FoundationaLLM.Client.Management.Interfaces
+  summary: Contains methods to interact with the Identity endpoints.
+  example: []
+  syntax:
+    content: IIdentityRESTClient Identity { get; }
+    parameters: []
+    return:
+      type: FoundationaLLM.Client.Management.Interfaces.IIdentityRESTClient
+    content.vb: ReadOnly Property Identity As IIdentityRESTClient
+  overload: FoundationaLLM.Client.Management.Interfaces.IManagementRESTClient.Identity*
+- uid: FoundationaLLM.Client.Management.Interfaces.IManagementRESTClient.Resources
+  commentId: P:FoundationaLLM.Client.Management.Interfaces.IManagementRESTClient.Resources
+  id: Resources
+  parent: FoundationaLLM.Client.Management.Interfaces.IManagementRESTClient
+  langs:
+  - csharp
+  - vb
+  name: Resources
+  nameWithType: IManagementRESTClient.Resources
+  fullName: FoundationaLLM.Client.Management.Interfaces.IManagementRESTClient.Resources
+  type: Property
+  source:
+    remote:
+      path: src/dotnet/ManagementClient/Interfaces/IManagementRESTClient.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: Resources
+    path: ../src/dotnet/ManagementClient/Interfaces/IManagementRESTClient.cs
+    startLine: 15
+  assemblies:
+  - FoundationaLLM.Client.Management
+  namespace: FoundationaLLM.Client.Management.Interfaces
+  summary: Contains methods to interact with the Resources endpoints.
+  example: []
+  syntax:
+    content: IResourceRESTClient Resources { get; }
+    parameters: []
+    return:
+      type: FoundationaLLM.Client.Management.Interfaces.IResourceRESTClient
+    content.vb: ReadOnly Property Resources As IResourceRESTClient
+  overload: FoundationaLLM.Client.Management.Interfaces.IManagementRESTClient.Resources*
+- uid: FoundationaLLM.Client.Management.Interfaces.IManagementRESTClient.Status
+  commentId: P:FoundationaLLM.Client.Management.Interfaces.IManagementRESTClient.Status
+  id: Status
+  parent: FoundationaLLM.Client.Management.Interfaces.IManagementRESTClient
+  langs:
+  - csharp
+  - vb
+  name: Status
+  nameWithType: IManagementRESTClient.Status
+  fullName: FoundationaLLM.Client.Management.Interfaces.IManagementRESTClient.Status
+  type: Property
+  source:
+    remote:
+      path: src/dotnet/ManagementClient/Interfaces/IManagementRESTClient.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: Status
+    path: ../src/dotnet/ManagementClient/Interfaces/IManagementRESTClient.cs
+    startLine: 20
+  assemblies:
+  - FoundationaLLM.Client.Management
+  namespace: FoundationaLLM.Client.Management.Interfaces
+  summary: Contains methods to interact with the Status endpoints.
+  example: []
+  syntax:
+    content: IStatusRESTClient Status { get; }
+    parameters: []
+    return:
+      type: FoundationaLLM.Client.Management.Interfaces.IStatusRESTClient
+    content.vb: ReadOnly Property Status As IStatusRESTClient
+  overload: FoundationaLLM.Client.Management.Interfaces.IManagementRESTClient.Status*
+references:
+- uid: FoundationaLLM.Client.Management.Interfaces
+  commentId: N:FoundationaLLM.Client.Management.Interfaces
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Client.Management.Interfaces
+  nameWithType: FoundationaLLM.Client.Management.Interfaces
+  fullName: FoundationaLLM.Client.Management.Interfaces
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Client
+    name: Client
+    href: FoundationaLLM.Client.html
+  - name: .
+  - uid: FoundationaLLM.Client.Management
+    name: Management
+    href: FoundationaLLM.Client.Management.html
+  - name: .
+  - uid: FoundationaLLM.Client.Management.Interfaces
+    name: Interfaces
+    href: FoundationaLLM.Client.Management.Interfaces.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Client
+    name: Client
+    href: FoundationaLLM.Client.html
+  - name: .
+  - uid: FoundationaLLM.Client.Management
+    name: Management
+    href: FoundationaLLM.Client.Management.html
+  - name: .
+  - uid: FoundationaLLM.Client.Management.Interfaces
+    name: Interfaces
+    href: FoundationaLLM.Client.Management.Interfaces.html
+- uid: System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  parent: FoundationaLLM.Core.Utils.ObjectExtensions
+  definition: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  isExternal: true
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions
+  commentId: T:FoundationaLLM.Core.Utils.ObjectExtensions
+  parent: FoundationaLLM.Core.Utils
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html
+  name: ObjectExtensions
+  nameWithType: ObjectExtensions
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions
+- uid: FoundationaLLM.Core.Utils
+  commentId: N:FoundationaLLM.Core.Utils
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Core.Utils
+  nameWithType: FoundationaLLM.Core.Utils
+  fullName: FoundationaLLM.Core.Utils
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+- uid: FoundationaLLM.Client.Management.Interfaces.IManagementRESTClient.Identity*
+  commentId: Overload:FoundationaLLM.Client.Management.Interfaces.IManagementRESTClient.Identity
+  href: FoundationaLLM.Client.Management.Interfaces.IManagementRESTClient.html#FoundationaLLM_Client_Management_Interfaces_IManagementRESTClient_Identity
+  name: Identity
+  nameWithType: IManagementRESTClient.Identity
+  fullName: FoundationaLLM.Client.Management.Interfaces.IManagementRESTClient.Identity
+- uid: FoundationaLLM.Client.Management.Interfaces.IIdentityRESTClient
+  commentId: T:FoundationaLLM.Client.Management.Interfaces.IIdentityRESTClient
+  parent: FoundationaLLM.Client.Management.Interfaces
+  href: FoundationaLLM.Client.Management.Interfaces.IIdentityRESTClient.html
+  name: IIdentityRESTClient
+  nameWithType: IIdentityRESTClient
+  fullName: FoundationaLLM.Client.Management.Interfaces.IIdentityRESTClient
+- uid: FoundationaLLM.Client.Management.Interfaces.IManagementRESTClient.Resources*
+  commentId: Overload:FoundationaLLM.Client.Management.Interfaces.IManagementRESTClient.Resources
+  href: FoundationaLLM.Client.Management.Interfaces.IManagementRESTClient.html#FoundationaLLM_Client_Management_Interfaces_IManagementRESTClient_Resources
+  name: Resources
+  nameWithType: IManagementRESTClient.Resources
+  fullName: FoundationaLLM.Client.Management.Interfaces.IManagementRESTClient.Resources
+- uid: FoundationaLLM.Client.Management.Interfaces.IResourceRESTClient
+  commentId: T:FoundationaLLM.Client.Management.Interfaces.IResourceRESTClient
+  parent: FoundationaLLM.Client.Management.Interfaces
+  href: FoundationaLLM.Client.Management.Interfaces.IResourceRESTClient.html
+  name: IResourceRESTClient
+  nameWithType: IResourceRESTClient
+  fullName: FoundationaLLM.Client.Management.Interfaces.IResourceRESTClient
+- uid: FoundationaLLM.Client.Management.Interfaces.IManagementRESTClient.Status*
+  commentId: Overload:FoundationaLLM.Client.Management.Interfaces.IManagementRESTClient.Status
+  href: FoundationaLLM.Client.Management.Interfaces.IManagementRESTClient.html#FoundationaLLM_Client_Management_Interfaces_IManagementRESTClient_Status
+  name: Status
+  nameWithType: IManagementRESTClient.Status
+  fullName: FoundationaLLM.Client.Management.Interfaces.IManagementRESTClient.Status
+- uid: FoundationaLLM.Client.Management.Interfaces.IStatusRESTClient
+  commentId: T:FoundationaLLM.Client.Management.Interfaces.IStatusRESTClient
+  parent: FoundationaLLM.Client.Management.Interfaces
+  href: FoundationaLLM.Client.Management.Interfaces.IStatusRESTClient.html
+  name: IStatusRESTClient
+  nameWithType: IStatusRESTClient
+  fullName: FoundationaLLM.Client.Management.Interfaces.IStatusRESTClient

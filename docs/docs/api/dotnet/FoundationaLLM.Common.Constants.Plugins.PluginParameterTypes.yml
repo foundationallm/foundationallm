@@ -1,0 +1,537 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Common.Constants.Plugins.PluginParameterTypes
+  commentId: T:FoundationaLLM.Common.Constants.Plugins.PluginParameterTypes
+  id: PluginParameterTypes
+  parent: FoundationaLLM.Common.Constants.Plugins
+  children:
+  - FoundationaLLM.Common.Constants.Plugins.PluginParameterTypes.Array
+  - FoundationaLLM.Common.Constants.Plugins.PluginParameterTypes.Bool
+  - FoundationaLLM.Common.Constants.Plugins.PluginParameterTypes.DateTime
+  - FoundationaLLM.Common.Constants.Plugins.PluginParameterTypes.Float
+  - FoundationaLLM.Common.Constants.Plugins.PluginParameterTypes.Int
+  - FoundationaLLM.Common.Constants.Plugins.PluginParameterTypes.ResourceObjectId
+  - FoundationaLLM.Common.Constants.Plugins.PluginParameterTypes.String
+  langs:
+  - csharp
+  - vb
+  name: PluginParameterTypes
+  nameWithType: PluginParameterTypes
+  fullName: FoundationaLLM.Common.Constants.Plugins.PluginParameterTypes
+  type: Class
+  source:
+    remote:
+      path: src/dotnet/Common/Constants/Plugins/PluginParameterTypes.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: PluginParameterTypes
+    path: ../src/dotnet/Common/Constants/Plugins/PluginParameterTypes.cs
+    startLine: 5
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.Plugins
+  summary: Provides the constant values for plugin parameter types.
+  example: []
+  syntax:
+    content: public static class PluginParameterTypes
+    content.vb: Public Module PluginParameterTypes
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: FoundationaLLM.Common.Constants.Plugins.PluginParameterTypes.String
+  commentId: F:FoundationaLLM.Common.Constants.Plugins.PluginParameterTypes.String
+  id: String
+  parent: FoundationaLLM.Common.Constants.Plugins.PluginParameterTypes
+  langs:
+  - csharp
+  - vb
+  name: String
+  nameWithType: PluginParameterTypes.String
+  fullName: FoundationaLLM.Common.Constants.Plugins.PluginParameterTypes.String
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Constants/Plugins/PluginParameterTypes.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: String
+    path: ../src/dotnet/Common/Constants/Plugins/PluginParameterTypes.cs
+    startLine: 10
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.Plugins
+  summary: Represents a parameter of type string.
+  example: []
+  syntax:
+    content: public const string String = "string"
+    return:
+      type: System.String
+    content.vb: Public Const String As String = "string"
+- uid: FoundationaLLM.Common.Constants.Plugins.PluginParameterTypes.Int
+  commentId: F:FoundationaLLM.Common.Constants.Plugins.PluginParameterTypes.Int
+  id: Int
+  parent: FoundationaLLM.Common.Constants.Plugins.PluginParameterTypes
+  langs:
+  - csharp
+  - vb
+  name: Int
+  nameWithType: PluginParameterTypes.Int
+  fullName: FoundationaLLM.Common.Constants.Plugins.PluginParameterTypes.Int
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Constants/Plugins/PluginParameterTypes.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: Int
+    path: ../src/dotnet/Common/Constants/Plugins/PluginParameterTypes.cs
+    startLine: 15
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.Plugins
+  summary: Represents a parameter of type numeric.
+  example: []
+  syntax:
+    content: public const string Int = "int"
+    return:
+      type: System.String
+    content.vb: Public Const Int As String = "int"
+- uid: FoundationaLLM.Common.Constants.Plugins.PluginParameterTypes.Float
+  commentId: F:FoundationaLLM.Common.Constants.Plugins.PluginParameterTypes.Float
+  id: Float
+  parent: FoundationaLLM.Common.Constants.Plugins.PluginParameterTypes
+  langs:
+  - csharp
+  - vb
+  name: Float
+  nameWithType: PluginParameterTypes.Float
+  fullName: FoundationaLLM.Common.Constants.Plugins.PluginParameterTypes.Float
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Constants/Plugins/PluginParameterTypes.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: Float
+    path: ../src/dotnet/Common/Constants/Plugins/PluginParameterTypes.cs
+    startLine: 20
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.Plugins
+  summary: Represents a parameter of type float.
+  example: []
+  syntax:
+    content: public const string Float = "float"
+    return:
+      type: System.String
+    content.vb: Public Const Float As String = "float"
+- uid: FoundationaLLM.Common.Constants.Plugins.PluginParameterTypes.Bool
+  commentId: F:FoundationaLLM.Common.Constants.Plugins.PluginParameterTypes.Bool
+  id: Bool
+  parent: FoundationaLLM.Common.Constants.Plugins.PluginParameterTypes
+  langs:
+  - csharp
+  - vb
+  name: Bool
+  nameWithType: PluginParameterTypes.Bool
+  fullName: FoundationaLLM.Common.Constants.Plugins.PluginParameterTypes.Bool
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Constants/Plugins/PluginParameterTypes.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: Bool
+    path: ../src/dotnet/Common/Constants/Plugins/PluginParameterTypes.cs
+    startLine: 25
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.Plugins
+  summary: Represents a parameter of type boolean.
+  example: []
+  syntax:
+    content: public const string Bool = "bool"
+    return:
+      type: System.String
+    content.vb: Public Const Bool As String = "bool"
+- uid: FoundationaLLM.Common.Constants.Plugins.PluginParameterTypes.DateTime
+  commentId: F:FoundationaLLM.Common.Constants.Plugins.PluginParameterTypes.DateTime
+  id: DateTime
+  parent: FoundationaLLM.Common.Constants.Plugins.PluginParameterTypes
+  langs:
+  - csharp
+  - vb
+  name: DateTime
+  nameWithType: PluginParameterTypes.DateTime
+  fullName: FoundationaLLM.Common.Constants.Plugins.PluginParameterTypes.DateTime
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Constants/Plugins/PluginParameterTypes.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: DateTime
+    path: ../src/dotnet/Common/Constants/Plugins/PluginParameterTypes.cs
+    startLine: 30
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.Plugins
+  summary: Represents a parameter of type datetime.
+  example: []
+  syntax:
+    content: public const string DateTime = "datetime"
+    return:
+      type: System.String
+    content.vb: Public Const DateTime As String = "datetime"
+- uid: FoundationaLLM.Common.Constants.Plugins.PluginParameterTypes.Array
+  commentId: F:FoundationaLLM.Common.Constants.Plugins.PluginParameterTypes.Array
+  id: Array
+  parent: FoundationaLLM.Common.Constants.Plugins.PluginParameterTypes
+  langs:
+  - csharp
+  - vb
+  name: Array
+  nameWithType: PluginParameterTypes.Array
+  fullName: FoundationaLLM.Common.Constants.Plugins.PluginParameterTypes.Array
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Constants/Plugins/PluginParameterTypes.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: Array
+    path: ../src/dotnet/Common/Constants/Plugins/PluginParameterTypes.cs
+    startLine: 35
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.Plugins
+  summary: Represents a parameter of type string array.
+  example: []
+  syntax:
+    content: public const string Array = "array"
+    return:
+      type: System.String
+    content.vb: Public Const Array As String = "array"
+- uid: FoundationaLLM.Common.Constants.Plugins.PluginParameterTypes.ResourceObjectId
+  commentId: F:FoundationaLLM.Common.Constants.Plugins.PluginParameterTypes.ResourceObjectId
+  id: ResourceObjectId
+  parent: FoundationaLLM.Common.Constants.Plugins.PluginParameterTypes
+  langs:
+  - csharp
+  - vb
+  name: ResourceObjectId
+  nameWithType: PluginParameterTypes.ResourceObjectId
+  fullName: FoundationaLLM.Common.Constants.Plugins.PluginParameterTypes.ResourceObjectId
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Constants/Plugins/PluginParameterTypes.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: ResourceObjectId
+    path: ../src/dotnet/Common/Constants/Plugins/PluginParameterTypes.cs
+    startLine: 40
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.Plugins
+  summary: Represents a parameter of type FoundationaLLM resource object identifier.
+  example: []
+  syntax:
+    content: public const string ResourceObjectId = "resource-object-id"
+    return:
+      type: System.String
+    content.vb: Public Const ResourceObjectId As String = "resource-object-id"
+references:
+- uid: FoundationaLLM.Common.Constants.Plugins
+  commentId: N:FoundationaLLM.Common.Constants.Plugins
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Constants.Plugins
+  nameWithType: FoundationaLLM.Common.Constants.Plugins
+  fullName: FoundationaLLM.Common.Constants.Plugins
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Constants
+    name: Constants
+    href: FoundationaLLM.Common.Constants.html
+  - name: .
+  - uid: FoundationaLLM.Common.Constants.Plugins
+    name: Plugins
+    href: FoundationaLLM.Common.Constants.Plugins.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Constants
+    name: Constants
+    href: FoundationaLLM.Common.Constants.html
+  - name: .
+  - uid: FoundationaLLM.Common.Constants.Plugins
+    name: Plugins
+    href: FoundationaLLM.Common.Constants.Plugins.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String

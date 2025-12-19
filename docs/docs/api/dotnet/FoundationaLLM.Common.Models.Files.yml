@@ -1,0 +1,63 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Common.Models.Files
+  commentId: N:FoundationaLLM.Common.Models.Files
+  id: Files
+  parent: FoundationaLLM.Common.Models
+  children:
+  - FoundationaLLM.Common.Models.Files.FileContentTypeResult
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM.Common.Models.Files
+  nameWithType: FoundationaLLM.Common.Models.Files
+  fullName: FoundationaLLM.Common.Models.Files
+  type: Namespace
+  assemblies:
+  - FoundationaLLM.Common
+references:
+- uid: FoundationaLLM.Common.Models.Files.FileContentTypeResult
+  commentId: T:FoundationaLLM.Common.Models.Files.FileContentTypeResult
+  parent: FoundationaLLM.Common.Models.Files
+  href: FoundationaLLM.Common.Models.Files.FileContentTypeResult.html
+  name: FileContentTypeResult
+  nameWithType: FileContentTypeResult
+  fullName: FoundationaLLM.Common.Models.Files.FileContentTypeResult
+- uid: FoundationaLLM.Common.Models.Files
+  commentId: N:FoundationaLLM.Common.Models.Files
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.Files
+  nameWithType: FoundationaLLM.Common.Models.Files
+  fullName: FoundationaLLM.Common.Models.Files
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Files
+    name: Files
+    href: FoundationaLLM.Common.Models.Files.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Files
+    name: Files
+    href: FoundationaLLM.Common.Models.Files.html

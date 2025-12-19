@@ -1,0 +1,1721 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Context.Services.CodeSessionService
+  commentId: T:FoundationaLLM.Context.Services.CodeSessionService
+  id: CodeSessionService
+  parent: FoundationaLLM.Context.Services
+  children:
+  - FoundationaLLM.Context.Services.CodeSessionService.#ctor(FoundationaLLM.Context.Interfaces.IFileService,FoundationaLLM.Context.Interfaces.IAzureCosmosDBCodeSessionService,System.Collections.Generic.IEnumerable{FoundationaLLM.Context.Interfaces.ICodeSessionProviderService},FoundationaLLM.Common.Interfaces.IResourceValidatorFactory,Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Context.Services.CodeSessionService})
+  - FoundationaLLM.Context.Services.CodeSessionService.CreateCodeSession(System.String,FoundationaLLM.Common.Models.CodeExecution.CreateCodeSessionRequest,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  - FoundationaLLM.Context.Services.CodeSessionService.DownloadFilesFromCodeSession(System.String,System.String,System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  - FoundationaLLM.Context.Services.CodeSessionService.ExecuteCodeInCodeSession(System.String,System.String,System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  - FoundationaLLM.Context.Services.CodeSessionService.UploadFilesToCodeSession(System.String,System.String,FoundationaLLM.Common.Models.CodeExecution.CodeSessionFileUploadRequest,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  langs:
+  - csharp
+  - vb
+  name: CodeSessionService
+  nameWithType: CodeSessionService
+  fullName: FoundationaLLM.Context.Services.CodeSessionService
+  type: Class
+  source:
+    remote:
+      path: src/dotnet/ContextEngine/Services/CodeSessionService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: CodeSessionService
+    path: ../src/dotnet/ContextEngine/Services/CodeSessionService.cs
+    startLine: 24
+  assemblies:
+  - FoundationaLLM.ContextEngine
+  namespace: FoundationaLLM.Context.Services
+  summary: Implements the FoundationaLLM Code Session service.
+  example: []
+  syntax:
+    content: 'public class CodeSessionService : ICodeSessionService'
+    content.vb: Public Class CodeSessionService Implements ICodeSessionService
+  inheritance:
+  - System.Object
+  implements:
+  - FoundationaLLM.Context.Interfaces.ICodeSessionService
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+  extensionMethods:
+  - System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+- uid: FoundationaLLM.Context.Services.CodeSessionService.#ctor(FoundationaLLM.Context.Interfaces.IFileService,FoundationaLLM.Context.Interfaces.IAzureCosmosDBCodeSessionService,System.Collections.Generic.IEnumerable{FoundationaLLM.Context.Interfaces.ICodeSessionProviderService},FoundationaLLM.Common.Interfaces.IResourceValidatorFactory,Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Context.Services.CodeSessionService})
+  commentId: M:FoundationaLLM.Context.Services.CodeSessionService.#ctor(FoundationaLLM.Context.Interfaces.IFileService,FoundationaLLM.Context.Interfaces.IAzureCosmosDBCodeSessionService,System.Collections.Generic.IEnumerable{FoundationaLLM.Context.Interfaces.ICodeSessionProviderService},FoundationaLLM.Common.Interfaces.IResourceValidatorFactory,Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Context.Services.CodeSessionService})
+  id: '#ctor(FoundationaLLM.Context.Interfaces.IFileService,FoundationaLLM.Context.Interfaces.IAzureCosmosDBCodeSessionService,System.Collections.Generic.IEnumerable{FoundationaLLM.Context.Interfaces.ICodeSessionProviderService},FoundationaLLM.Common.Interfaces.IResourceValidatorFactory,Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Context.Services.CodeSessionService})'
+  parent: FoundationaLLM.Context.Services.CodeSessionService
+  langs:
+  - csharp
+  - vb
+  name: CodeSessionService(IFileService, IAzureCosmosDBCodeSessionService, IEnumerable<ICodeSessionProviderService>, IResourceValidatorFactory, ILogger<CodeSessionService>)
+  nameWithType: CodeSessionService.CodeSessionService(IFileService, IAzureCosmosDBCodeSessionService, IEnumerable<ICodeSessionProviderService>, IResourceValidatorFactory, ILogger<CodeSessionService>)
+  fullName: FoundationaLLM.Context.Services.CodeSessionService.CodeSessionService(FoundationaLLM.Context.Interfaces.IFileService, FoundationaLLM.Context.Interfaces.IAzureCosmosDBCodeSessionService, System.Collections.Generic.IEnumerable<FoundationaLLM.Context.Interfaces.ICodeSessionProviderService>, FoundationaLLM.Common.Interfaces.IResourceValidatorFactory, Microsoft.Extensions.Logging.ILogger<FoundationaLLM.Context.Services.CodeSessionService>)
+  type: Constructor
+  source:
+    remote:
+      path: src/dotnet/ContextEngine/Services/CodeSessionService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: .ctor
+    path: ../src/dotnet/ContextEngine/Services/CodeSessionService.cs
+    startLine: 24
+  assemblies:
+  - FoundationaLLM.ContextEngine
+  namespace: FoundationaLLM.Context.Services
+  summary: Implements the FoundationaLLM Code Session service.
+  example: []
+  syntax:
+    content: public CodeSessionService(IFileService fileService, IAzureCosmosDBCodeSessionService cosmosDBService, IEnumerable<ICodeSessionProviderService> codeSessionProviderServices, IResourceValidatorFactory resourceValidatorFactory, ILogger<CodeSessionService> logger)
+    parameters:
+    - id: fileService
+      type: FoundationaLLM.Context.Interfaces.IFileService
+      description: The file service used for file operations.
+    - id: cosmosDBService
+      type: FoundationaLLM.Context.Interfaces.IAzureCosmosDBCodeSessionService
+      description: The Azure Cosmos DB service providing database services.
+    - id: codeSessionProviderServices
+      type: System.Collections.Generic.IEnumerable{FoundationaLLM.Context.Interfaces.ICodeSessionProviderService}
+      description: The code session provider services.
+    - id: resourceValidatorFactory
+      type: FoundationaLLM.Common.Interfaces.IResourceValidatorFactory
+      description: The resource validator factory.
+    - id: logger
+      type: Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Context.Services.CodeSessionService}
+      description: The logger used for logging.
+    content.vb: Public Sub New(fileService As IFileService, cosmosDBService As IAzureCosmosDBCodeSessionService, codeSessionProviderServices As IEnumerable(Of ICodeSessionProviderService), resourceValidatorFactory As IResourceValidatorFactory, logger As ILogger(Of CodeSessionService))
+  overload: FoundationaLLM.Context.Services.CodeSessionService.#ctor*
+  nameWithType.vb: CodeSessionService.New(IFileService, IAzureCosmosDBCodeSessionService, IEnumerable(Of ICodeSessionProviderService), IResourceValidatorFactory, ILogger(Of CodeSessionService))
+  fullName.vb: FoundationaLLM.Context.Services.CodeSessionService.New(FoundationaLLM.Context.Interfaces.IFileService, FoundationaLLM.Context.Interfaces.IAzureCosmosDBCodeSessionService, System.Collections.Generic.IEnumerable(Of FoundationaLLM.Context.Interfaces.ICodeSessionProviderService), FoundationaLLM.Common.Interfaces.IResourceValidatorFactory, Microsoft.Extensions.Logging.ILogger(Of FoundationaLLM.Context.Services.CodeSessionService))
+  name.vb: New(IFileService, IAzureCosmosDBCodeSessionService, IEnumerable(Of ICodeSessionProviderService), IResourceValidatorFactory, ILogger(Of CodeSessionService))
+- uid: FoundationaLLM.Context.Services.CodeSessionService.CreateCodeSession(System.String,FoundationaLLM.Common.Models.CodeExecution.CreateCodeSessionRequest,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  commentId: M:FoundationaLLM.Context.Services.CodeSessionService.CreateCodeSession(System.String,FoundationaLLM.Common.Models.CodeExecution.CreateCodeSessionRequest,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  id: CreateCodeSession(System.String,FoundationaLLM.Common.Models.CodeExecution.CreateCodeSessionRequest,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  parent: FoundationaLLM.Context.Services.CodeSessionService
+  langs:
+  - csharp
+  - vb
+  name: CreateCodeSession(string, CreateCodeSessionRequest, UnifiedUserIdentity)
+  nameWithType: CodeSessionService.CreateCodeSession(string, CreateCodeSessionRequest, UnifiedUserIdentity)
+  fullName: FoundationaLLM.Context.Services.CodeSessionService.CreateCodeSession(string, FoundationaLLM.Common.Models.CodeExecution.CreateCodeSessionRequest, FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/ContextEngine/Services/CodeSessionService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: CreateCodeSession
+    path: ../src/dotnet/ContextEngine/Services/CodeSessionService.cs
+    startLine: 57
+  assemblies:
+  - FoundationaLLM.ContextEngine
+  namespace: FoundationaLLM.Context.Services
+  summary: Creates a new code session using one of the registered code session providers.
+  example: []
+  syntax:
+    content: public Task<Result<CreateCodeSessionResponse>> CreateCodeSession(string instanceId, CreateCodeSessionRequest codeSessionRequest, UnifiedUserIdentity userIdentity)
+    parameters:
+    - id: instanceId
+      type: System.String
+      description: The unique identifier of the FoundationaLLM instance.
+    - id: codeSessionRequest
+      type: FoundationaLLM.Common.Models.CodeExecution.CreateCodeSessionRequest
+      description: The <xref href="FoundationaLLM.Common.Models.CodeExecution.CreateCodeSessionRequest" data-throw-if-not-resolved="false"></xref> providing the details of the request to create the code session.
+    - id: userIdentity
+      type: FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity
+      description: The <xref href="FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity" data-throw-if-not-resolved="false"></xref> providing the user identity information.
+    return:
+      type: System.Threading.Tasks.Task{FoundationaLLM.Common.Models.Services.Result{FoundationaLLM.Common.Models.CodeExecution.CreateCodeSessionResponse}}
+      description: A <xref href="System.Threading.Tasks.Task" data-throw-if-not-resolved="false"></xref> producing a <xref href="FoundationaLLM.Common.Models.Services.Result%601" data-throw-if-not-resolved="false"></xref> whose value is a <xref href="FoundationaLLM.Common.Models.CodeExecution.CreateCodeSessionResponse" data-throw-if-not-resolved="false"></xref> on success; otherwise a failed <xref href="FoundationaLLM.Common.Models.Services.Result%601" data-throw-if-not-resolved="false"></xref> with a domain error.
+    content.vb: Public Function CreateCodeSession(instanceId As String, codeSessionRequest As CreateCodeSessionRequest, userIdentity As UnifiedUserIdentity) As Task(Of Result(Of CreateCodeSessionResponse))
+  overload: FoundationaLLM.Context.Services.CodeSessionService.CreateCodeSession*
+  implements:
+  - FoundationaLLM.Context.Interfaces.ICodeSessionService.CreateCodeSession(System.String,FoundationaLLM.Common.Models.CodeExecution.CreateCodeSessionRequest,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  nameWithType.vb: CodeSessionService.CreateCodeSession(String, CreateCodeSessionRequest, UnifiedUserIdentity)
+  fullName.vb: FoundationaLLM.Context.Services.CodeSessionService.CreateCodeSession(String, FoundationaLLM.Common.Models.CodeExecution.CreateCodeSessionRequest, FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  name.vb: CreateCodeSession(String, CreateCodeSessionRequest, UnifiedUserIdentity)
+- uid: FoundationaLLM.Context.Services.CodeSessionService.UploadFilesToCodeSession(System.String,System.String,FoundationaLLM.Common.Models.CodeExecution.CodeSessionFileUploadRequest,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  commentId: M:FoundationaLLM.Context.Services.CodeSessionService.UploadFilesToCodeSession(System.String,System.String,FoundationaLLM.Common.Models.CodeExecution.CodeSessionFileUploadRequest,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  id: UploadFilesToCodeSession(System.String,System.String,FoundationaLLM.Common.Models.CodeExecution.CodeSessionFileUploadRequest,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  parent: FoundationaLLM.Context.Services.CodeSessionService
+  langs:
+  - csharp
+  - vb
+  name: UploadFilesToCodeSession(string, string, CodeSessionFileUploadRequest, UnifiedUserIdentity)
+  nameWithType: CodeSessionService.UploadFilesToCodeSession(string, string, CodeSessionFileUploadRequest, UnifiedUserIdentity)
+  fullName: FoundationaLLM.Context.Services.CodeSessionService.UploadFilesToCodeSession(string, string, FoundationaLLM.Common.Models.CodeExecution.CodeSessionFileUploadRequest, FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/ContextEngine/Services/CodeSessionService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: UploadFilesToCodeSession
+    path: ../src/dotnet/ContextEngine/Services/CodeSessionService.cs
+    startLine: 103
+  assemblies:
+  - FoundationaLLM.ContextEngine
+  namespace: FoundationaLLM.Context.Services
+  summary: Uploads files to a code session.
+  example: []
+  syntax:
+    content: public Task<Result<CodeSessionFileUploadResponse>> UploadFilesToCodeSession(string instanceId, string sessionId, CodeSessionFileUploadRequest request, UnifiedUserIdentity userIdentity)
+    parameters:
+    - id: instanceId
+      type: System.String
+      description: The FoundationaLLM instance identifier.
+    - id: sessionId
+      type: System.String
+      description: The identifier of the code session where the files must be uploaded.
+    - id: request
+      type: FoundationaLLM.Common.Models.CodeExecution.CodeSessionFileUploadRequest
+      description: The <xref href="FoundationaLLM.Common.Models.CodeExecution.CodeSessionFileUploadRequest" data-throw-if-not-resolved="false"></xref> providing the details of the request.
+    - id: userIdentity
+      type: FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity
+      description: The <xref href="FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity" data-throw-if-not-resolved="false"></xref> providing the user identity information.
+    return:
+      type: System.Threading.Tasks.Task{FoundationaLLM.Common.Models.Services.Result{FoundationaLLM.Common.Models.CodeExecution.CodeSessionFileUploadResponse}}
+      description: A <xref href="System.Threading.Tasks.Task" data-throw-if-not-resolved="false"></xref> producing a <xref href="FoundationaLLM.Common.Models.Services.Result%601" data-throw-if-not-resolved="false"></xref> whose value is a <xref href="FoundationaLLM.Common.Models.CodeExecution.CodeSessionFileUploadResponse" data-throw-if-not-resolved="false"></xref> containing per-file upload success data; otherwise a failed result with a domain error.
+    content.vb: Public Function UploadFilesToCodeSession(instanceId As String, sessionId As String, request As CodeSessionFileUploadRequest, userIdentity As UnifiedUserIdentity) As Task(Of Result(Of CodeSessionFileUploadResponse))
+  overload: FoundationaLLM.Context.Services.CodeSessionService.UploadFilesToCodeSession*
+  implements:
+  - FoundationaLLM.Context.Interfaces.ICodeSessionService.UploadFilesToCodeSession(System.String,System.String,FoundationaLLM.Common.Models.CodeExecution.CodeSessionFileUploadRequest,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  nameWithType.vb: CodeSessionService.UploadFilesToCodeSession(String, String, CodeSessionFileUploadRequest, UnifiedUserIdentity)
+  fullName.vb: FoundationaLLM.Context.Services.CodeSessionService.UploadFilesToCodeSession(String, String, FoundationaLLM.Common.Models.CodeExecution.CodeSessionFileUploadRequest, FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  name.vb: UploadFilesToCodeSession(String, String, CodeSessionFileUploadRequest, UnifiedUserIdentity)
+- uid: FoundationaLLM.Context.Services.CodeSessionService.DownloadFilesFromCodeSession(System.String,System.String,System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  commentId: M:FoundationaLLM.Context.Services.CodeSessionService.DownloadFilesFromCodeSession(System.String,System.String,System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  id: DownloadFilesFromCodeSession(System.String,System.String,System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  parent: FoundationaLLM.Context.Services.CodeSessionService
+  langs:
+  - csharp
+  - vb
+  name: DownloadFilesFromCodeSession(string, string, string, UnifiedUserIdentity)
+  nameWithType: CodeSessionService.DownloadFilesFromCodeSession(string, string, string, UnifiedUserIdentity)
+  fullName: FoundationaLLM.Context.Services.CodeSessionService.DownloadFilesFromCodeSession(string, string, string, FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/ContextEngine/Services/CodeSessionService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: DownloadFilesFromCodeSession
+    path: ../src/dotnet/ContextEngine/Services/CodeSessionService.cs
+    startLine: 181
+  assemblies:
+  - FoundationaLLM.ContextEngine
+  namespace: FoundationaLLM.Context.Services
+  summary: Downloads newly created files from a code session.
+  remarks: >-
+    By newly created files we mean files that were not uploaded to the code session but were created during the code execution.
+
+    The <code class="paramref">operationId</code> is the identifier of the file upload operation that initially uploaded the files.
+  example: []
+  syntax:
+    content: public Task<Result<CodeSessionFileDownloadResponse>> DownloadFilesFromCodeSession(string instanceId, string sessionId, string operationId, UnifiedUserIdentity userIdentity)
+    parameters:
+    - id: instanceId
+      type: System.String
+      description: The FoundationaLLM instance identifier.
+    - id: sessionId
+      type: System.String
+      description: The identifier of the code session from where the files must be downloaded.
+    - id: operationId
+      type: System.String
+      description: The code session file upload operation identifier.
+    - id: userIdentity
+      type: FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity
+      description: The <xref href="FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity" data-throw-if-not-resolved="false"></xref> providing the user identity information.
+    return:
+      type: System.Threading.Tasks.Task{FoundationaLLM.Common.Models.Services.Result{FoundationaLLM.Common.Models.CodeExecution.CodeSessionFileDownloadResponse}}
+      description: A <xref href="System.Threading.Tasks.Task" data-throw-if-not-resolved="false"></xref> producing a <xref href="FoundationaLLM.Common.Models.Services.Result%601" data-throw-if-not-resolved="false"></xref> whose value is a <xref href="FoundationaLLM.Common.Models.CodeExecution.CodeSessionFileDownloadResponse" data-throw-if-not-resolved="false"></xref> containing downloaded file records and any errors; otherwise a failed result with a domain error.
+    content.vb: Public Function DownloadFilesFromCodeSession(instanceId As String, sessionId As String, operationId As String, userIdentity As UnifiedUserIdentity) As Task(Of Result(Of CodeSessionFileDownloadResponse))
+  overload: FoundationaLLM.Context.Services.CodeSessionService.DownloadFilesFromCodeSession*
+  implements:
+  - FoundationaLLM.Context.Interfaces.ICodeSessionService.DownloadFilesFromCodeSession(System.String,System.String,System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  nameWithType.vb: CodeSessionService.DownloadFilesFromCodeSession(String, String, String, UnifiedUserIdentity)
+  fullName.vb: FoundationaLLM.Context.Services.CodeSessionService.DownloadFilesFromCodeSession(String, String, String, FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  name.vb: DownloadFilesFromCodeSession(String, String, String, UnifiedUserIdentity)
+- uid: FoundationaLLM.Context.Services.CodeSessionService.ExecuteCodeInCodeSession(System.String,System.String,System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  commentId: M:FoundationaLLM.Context.Services.CodeSessionService.ExecuteCodeInCodeSession(System.String,System.String,System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  id: ExecuteCodeInCodeSession(System.String,System.String,System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  parent: FoundationaLLM.Context.Services.CodeSessionService
+  langs:
+  - csharp
+  - vb
+  name: ExecuteCodeInCodeSession(string, string, string, UnifiedUserIdentity)
+  nameWithType: CodeSessionService.ExecuteCodeInCodeSession(string, string, string, UnifiedUserIdentity)
+  fullName: FoundationaLLM.Context.Services.CodeSessionService.ExecuteCodeInCodeSession(string, string, string, FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/ContextEngine/Services/CodeSessionService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: ExecuteCodeInCodeSession
+    path: ../src/dotnet/ContextEngine/Services/CodeSessionService.cs
+    startLine: 297
+  assemblies:
+  - FoundationaLLM.ContextEngine
+  namespace: FoundationaLLM.Context.Services
+  summary: Executes code in a code session and returns the result of the execution.
+  example: []
+  syntax:
+    content: public Task<Result<CodeSessionCodeExecuteResponse>> ExecuteCodeInCodeSession(string instanceId, string sessionId, string codeToExecute, UnifiedUserIdentity userIdentity)
+    parameters:
+    - id: instanceId
+      type: System.String
+      description: The FoundationaLLM instance identifier.
+    - id: sessionId
+      type: System.String
+      description: The identifier of the code session where the code must be executed.
+    - id: codeToExecute
+      type: System.String
+      description: The code to execute.
+    - id: userIdentity
+      type: FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity
+      description: The <xref href="FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity" data-throw-if-not-resolved="false"></xref> providing the user identity information.
+    return:
+      type: System.Threading.Tasks.Task{FoundationaLLM.Common.Models.Services.Result{FoundationaLLM.Common.Models.CodeExecution.CodeSessionCodeExecuteResponse}}
+      description: A <xref href="System.Threading.Tasks.Task" data-throw-if-not-resolved="false"></xref> producing a <xref href="FoundationaLLM.Common.Models.Services.Result%601" data-throw-if-not-resolved="false"></xref> whose value is a <xref href="FoundationaLLM.Common.Models.CodeExecution.CodeSessionCodeExecuteResponse" data-throw-if-not-resolved="false"></xref> with execution status, result, standard output, and error output; otherwise a failed result with a domain error.
+    content.vb: Public Function ExecuteCodeInCodeSession(instanceId As String, sessionId As String, codeToExecute As String, userIdentity As UnifiedUserIdentity) As Task(Of Result(Of CodeSessionCodeExecuteResponse))
+  overload: FoundationaLLM.Context.Services.CodeSessionService.ExecuteCodeInCodeSession*
+  implements:
+  - FoundationaLLM.Context.Interfaces.ICodeSessionService.ExecuteCodeInCodeSession(System.String,System.String,System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  nameWithType.vb: CodeSessionService.ExecuteCodeInCodeSession(String, String, String, UnifiedUserIdentity)
+  fullName.vb: FoundationaLLM.Context.Services.CodeSessionService.ExecuteCodeInCodeSession(String, String, String, FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  name.vb: ExecuteCodeInCodeSession(String, String, String, UnifiedUserIdentity)
+references:
+- uid: FoundationaLLM.Context.Services
+  commentId: N:FoundationaLLM.Context.Services
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Context.Services
+  nameWithType: FoundationaLLM.Context.Services
+  fullName: FoundationaLLM.Context.Services
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Context
+    name: Context
+    href: FoundationaLLM.Context.html
+  - name: .
+  - uid: FoundationaLLM.Context.Services
+    name: Services
+    href: FoundationaLLM.Context.Services.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Context
+    name: Context
+    href: FoundationaLLM.Context.html
+  - name: .
+  - uid: FoundationaLLM.Context.Services
+    name: Services
+    href: FoundationaLLM.Context.Services.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: FoundationaLLM.Context.Interfaces.ICodeSessionService
+  commentId: T:FoundationaLLM.Context.Interfaces.ICodeSessionService
+  parent: FoundationaLLM.Context.Interfaces
+  href: FoundationaLLM.Context.Interfaces.ICodeSessionService.html
+  name: ICodeSessionService
+  nameWithType: ICodeSessionService
+  fullName: FoundationaLLM.Context.Interfaces.ICodeSessionService
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  parent: FoundationaLLM.Core.Utils.ObjectExtensions
+  definition: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: FoundationaLLM.Context.Interfaces
+  commentId: N:FoundationaLLM.Context.Interfaces
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Context.Interfaces
+  nameWithType: FoundationaLLM.Context.Interfaces
+  fullName: FoundationaLLM.Context.Interfaces
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Context
+    name: Context
+    href: FoundationaLLM.Context.html
+  - name: .
+  - uid: FoundationaLLM.Context.Interfaces
+    name: Interfaces
+    href: FoundationaLLM.Context.Interfaces.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Context
+    name: Context
+    href: FoundationaLLM.Context.html
+  - name: .
+  - uid: FoundationaLLM.Context.Interfaces
+    name: Interfaces
+    href: FoundationaLLM.Context.Interfaces.html
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  isExternal: true
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions
+  commentId: T:FoundationaLLM.Core.Utils.ObjectExtensions
+  parent: FoundationaLLM.Core.Utils
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html
+  name: ObjectExtensions
+  nameWithType: ObjectExtensions
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions
+- uid: FoundationaLLM.Core.Utils
+  commentId: N:FoundationaLLM.Core.Utils
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Core.Utils
+  nameWithType: FoundationaLLM.Core.Utils
+  fullName: FoundationaLLM.Core.Utils
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+- uid: FoundationaLLM.Context.Services.CodeSessionService.#ctor*
+  commentId: Overload:FoundationaLLM.Context.Services.CodeSessionService.#ctor
+  href: FoundationaLLM.Context.Services.CodeSessionService.html#FoundationaLLM_Context_Services_CodeSessionService__ctor_FoundationaLLM_Context_Interfaces_IFileService_FoundationaLLM_Context_Interfaces_IAzureCosmosDBCodeSessionService_System_Collections_Generic_IEnumerable_FoundationaLLM_Context_Interfaces_ICodeSessionProviderService__FoundationaLLM_Common_Interfaces_IResourceValidatorFactory_Microsoft_Extensions_Logging_ILogger_FoundationaLLM_Context_Services_CodeSessionService__
+  name: CodeSessionService
+  nameWithType: CodeSessionService.CodeSessionService
+  fullName: FoundationaLLM.Context.Services.CodeSessionService.CodeSessionService
+  nameWithType.vb: CodeSessionService.New
+  fullName.vb: FoundationaLLM.Context.Services.CodeSessionService.New
+  name.vb: New
+- uid: FoundationaLLM.Context.Interfaces.IFileService
+  commentId: T:FoundationaLLM.Context.Interfaces.IFileService
+  parent: FoundationaLLM.Context.Interfaces
+  href: FoundationaLLM.Context.Interfaces.IFileService.html
+  name: IFileService
+  nameWithType: IFileService
+  fullName: FoundationaLLM.Context.Interfaces.IFileService
+- uid: FoundationaLLM.Context.Interfaces.IAzureCosmosDBCodeSessionService
+  commentId: T:FoundationaLLM.Context.Interfaces.IAzureCosmosDBCodeSessionService
+  parent: FoundationaLLM.Context.Interfaces
+  href: FoundationaLLM.Context.Interfaces.IAzureCosmosDBCodeSessionService.html
+  name: IAzureCosmosDBCodeSessionService
+  nameWithType: IAzureCosmosDBCodeSessionService
+  fullName: FoundationaLLM.Context.Interfaces.IAzureCosmosDBCodeSessionService
+- uid: System.Collections.Generic.IEnumerable{FoundationaLLM.Context.Interfaces.ICodeSessionProviderService}
+  commentId: T:System.Collections.Generic.IEnumerable{FoundationaLLM.Context.Interfaces.ICodeSessionProviderService}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IEnumerable`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<ICodeSessionProviderService>
+  nameWithType: IEnumerable<ICodeSessionProviderService>
+  fullName: System.Collections.Generic.IEnumerable<FoundationaLLM.Context.Interfaces.ICodeSessionProviderService>
+  nameWithType.vb: IEnumerable(Of ICodeSessionProviderService)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of FoundationaLLM.Context.Interfaces.ICodeSessionProviderService)
+  name.vb: IEnumerable(Of ICodeSessionProviderService)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - uid: FoundationaLLM.Context.Interfaces.ICodeSessionProviderService
+    name: ICodeSessionProviderService
+    href: FoundationaLLM.Context.Interfaces.ICodeSessionProviderService.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FoundationaLLM.Context.Interfaces.ICodeSessionProviderService
+    name: ICodeSessionProviderService
+    href: FoundationaLLM.Context.Interfaces.ICodeSessionProviderService.html
+  - name: )
+- uid: FoundationaLLM.Common.Interfaces.IResourceValidatorFactory
+  commentId: T:FoundationaLLM.Common.Interfaces.IResourceValidatorFactory
+  parent: FoundationaLLM.Common.Interfaces
+  href: FoundationaLLM.Common.Interfaces.IResourceValidatorFactory.html
+  name: IResourceValidatorFactory
+  nameWithType: IResourceValidatorFactory
+  fullName: FoundationaLLM.Common.Interfaces.IResourceValidatorFactory
+- uid: Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Context.Services.CodeSessionService}
+  commentId: T:Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Context.Services.CodeSessionService}
+  parent: Microsoft.Extensions.Logging
+  definition: Microsoft.Extensions.Logging.ILogger`1
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  name: ILogger<CodeSessionService>
+  nameWithType: ILogger<CodeSessionService>
+  fullName: Microsoft.Extensions.Logging.ILogger<FoundationaLLM.Context.Services.CodeSessionService>
+  nameWithType.vb: ILogger(Of CodeSessionService)
+  fullName.vb: Microsoft.Extensions.Logging.ILogger(Of FoundationaLLM.Context.Services.CodeSessionService)
+  name.vb: ILogger(Of CodeSessionService)
+  spec.csharp:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: <
+  - uid: FoundationaLLM.Context.Services.CodeSessionService
+    name: CodeSessionService
+    href: FoundationaLLM.Context.Services.CodeSessionService.html
+  - name: '>'
+  spec.vb:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FoundationaLLM.Context.Services.CodeSessionService
+    name: CodeSessionService
+    href: FoundationaLLM.Context.Services.CodeSessionService.html
+  - name: )
+- uid: System.Collections.Generic.IEnumerable`1
+  commentId: T:System.Collections.Generic.IEnumerable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<T>
+  nameWithType: IEnumerable<T>
+  fullName: System.Collections.Generic.IEnumerable<T>
+  nameWithType.vb: IEnumerable(Of T)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of T)
+  name.vb: IEnumerable(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: FoundationaLLM.Common.Interfaces
+  commentId: N:FoundationaLLM.Common.Interfaces
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Interfaces
+  nameWithType: FoundationaLLM.Common.Interfaces
+  fullName: FoundationaLLM.Common.Interfaces
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Interfaces
+    name: Interfaces
+    href: FoundationaLLM.Common.Interfaces.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Interfaces
+    name: Interfaces
+    href: FoundationaLLM.Common.Interfaces.html
+- uid: Microsoft.Extensions.Logging.ILogger`1
+  commentId: T:Microsoft.Extensions.Logging.ILogger`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  name: ILogger<TCategoryName>
+  nameWithType: ILogger<TCategoryName>
+  fullName: Microsoft.Extensions.Logging.ILogger<TCategoryName>
+  nameWithType.vb: ILogger(Of TCategoryName)
+  fullName.vb: Microsoft.Extensions.Logging.ILogger(Of TCategoryName)
+  name.vb: ILogger(Of TCategoryName)
+  spec.csharp:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: <
+  - name: TCategoryName
+  - name: '>'
+  spec.vb:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TCategoryName
+  - name: )
+- uid: Microsoft.Extensions.Logging
+  commentId: N:Microsoft.Extensions.Logging
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft
+  name: Microsoft.Extensions.Logging
+  nameWithType: Microsoft.Extensions.Logging
+  fullName: Microsoft.Extensions.Logging
+  spec.csharp:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Logging
+    name: Logging
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging
+  spec.vb:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Logging
+    name: Logging
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging
+- uid: FoundationaLLM.Common.Models.CodeExecution.CreateCodeSessionRequest
+  commentId: T:FoundationaLLM.Common.Models.CodeExecution.CreateCodeSessionRequest
+  parent: FoundationaLLM.Common.Models.CodeExecution
+  href: FoundationaLLM.Common.Models.CodeExecution.CreateCodeSessionRequest.html
+  name: CreateCodeSessionRequest
+  nameWithType: CreateCodeSessionRequest
+  fullName: FoundationaLLM.Common.Models.CodeExecution.CreateCodeSessionRequest
+- uid: FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity
+  commentId: T:FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity
+  parent: FoundationaLLM.Common.Models.Authentication
+  href: FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity.html
+  name: UnifiedUserIdentity
+  nameWithType: UnifiedUserIdentity
+  fullName: FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity
+- uid: System.Threading.Tasks.Task
+  commentId: T:System.Threading.Tasks.Task
+  parent: System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  name: Task
+  nameWithType: Task
+  fullName: System.Threading.Tasks.Task
+- uid: FoundationaLLM.Common.Models.Services.Result`1
+  commentId: T:FoundationaLLM.Common.Models.Services.Result`1
+  parent: FoundationaLLM.Common.Models.Services
+  href: FoundationaLLM.Common.Models.Services.Result-1.html
+  name: Result<T>
+  nameWithType: Result<T>
+  fullName: FoundationaLLM.Common.Models.Services.Result<T>
+  nameWithType.vb: Result(Of T)
+  fullName.vb: FoundationaLLM.Common.Models.Services.Result(Of T)
+  name.vb: Result(Of T)
+  spec.csharp:
+  - uid: FoundationaLLM.Common.Models.Services.Result`1
+    name: Result
+    href: FoundationaLLM.Common.Models.Services.Result-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: FoundationaLLM.Common.Models.Services.Result`1
+    name: Result
+    href: FoundationaLLM.Common.Models.Services.Result-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: FoundationaLLM.Common.Models.CodeExecution.CreateCodeSessionResponse
+  commentId: T:FoundationaLLM.Common.Models.CodeExecution.CreateCodeSessionResponse
+  href: FoundationaLLM.Common.Models.CodeExecution.CreateCodeSessionResponse.html
+  name: CreateCodeSessionResponse
+  nameWithType: CreateCodeSessionResponse
+  fullName: FoundationaLLM.Common.Models.CodeExecution.CreateCodeSessionResponse
+- uid: FoundationaLLM.Context.Services.CodeSessionService.CreateCodeSession*
+  commentId: Overload:FoundationaLLM.Context.Services.CodeSessionService.CreateCodeSession
+  href: FoundationaLLM.Context.Services.CodeSessionService.html#FoundationaLLM_Context_Services_CodeSessionService_CreateCodeSession_System_String_FoundationaLLM_Common_Models_CodeExecution_CreateCodeSessionRequest_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_
+  name: CreateCodeSession
+  nameWithType: CodeSessionService.CreateCodeSession
+  fullName: FoundationaLLM.Context.Services.CodeSessionService.CreateCodeSession
+- uid: FoundationaLLM.Context.Interfaces.ICodeSessionService.CreateCodeSession(System.String,FoundationaLLM.Common.Models.CodeExecution.CreateCodeSessionRequest,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  commentId: M:FoundationaLLM.Context.Interfaces.ICodeSessionService.CreateCodeSession(System.String,FoundationaLLM.Common.Models.CodeExecution.CreateCodeSessionRequest,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  parent: FoundationaLLM.Context.Interfaces.ICodeSessionService
+  isExternal: true
+  href: FoundationaLLM.Context.Interfaces.ICodeSessionService.html#FoundationaLLM_Context_Interfaces_ICodeSessionService_CreateCodeSession_System_String_FoundationaLLM_Common_Models_CodeExecution_CreateCodeSessionRequest_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_
+  name: CreateCodeSession(string, CreateCodeSessionRequest, UnifiedUserIdentity)
+  nameWithType: ICodeSessionService.CreateCodeSession(string, CreateCodeSessionRequest, UnifiedUserIdentity)
+  fullName: FoundationaLLM.Context.Interfaces.ICodeSessionService.CreateCodeSession(string, FoundationaLLM.Common.Models.CodeExecution.CreateCodeSessionRequest, FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  nameWithType.vb: ICodeSessionService.CreateCodeSession(String, CreateCodeSessionRequest, UnifiedUserIdentity)
+  fullName.vb: FoundationaLLM.Context.Interfaces.ICodeSessionService.CreateCodeSession(String, FoundationaLLM.Common.Models.CodeExecution.CreateCodeSessionRequest, FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  name.vb: CreateCodeSession(String, CreateCodeSessionRequest, UnifiedUserIdentity)
+  spec.csharp:
+  - uid: FoundationaLLM.Context.Interfaces.ICodeSessionService.CreateCodeSession(System.String,FoundationaLLM.Common.Models.CodeExecution.CreateCodeSessionRequest,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+    name: CreateCodeSession
+    href: FoundationaLLM.Context.Interfaces.ICodeSessionService.html#FoundationaLLM_Context_Interfaces_ICodeSessionService_CreateCodeSession_System_String_FoundationaLLM_Common_Models_CodeExecution_CreateCodeSessionRequest_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: FoundationaLLM.Common.Models.CodeExecution.CreateCodeSessionRequest
+    name: CreateCodeSessionRequest
+    href: FoundationaLLM.Common.Models.CodeExecution.CreateCodeSessionRequest.html
+  - name: ','
+  - name: " "
+  - uid: FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity
+    name: UnifiedUserIdentity
+    href: FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity.html
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Context.Interfaces.ICodeSessionService.CreateCodeSession(System.String,FoundationaLLM.Common.Models.CodeExecution.CreateCodeSessionRequest,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+    name: CreateCodeSession
+    href: FoundationaLLM.Context.Interfaces.ICodeSessionService.html#FoundationaLLM_Context_Interfaces_ICodeSessionService_CreateCodeSession_System_String_FoundationaLLM_Common_Models_CodeExecution_CreateCodeSessionRequest_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: FoundationaLLM.Common.Models.CodeExecution.CreateCodeSessionRequest
+    name: CreateCodeSessionRequest
+    href: FoundationaLLM.Common.Models.CodeExecution.CreateCodeSessionRequest.html
+  - name: ','
+  - name: " "
+  - uid: FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity
+    name: UnifiedUserIdentity
+    href: FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity.html
+  - name: )
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System.Threading.Tasks.Task{FoundationaLLM.Common.Models.Services.Result{FoundationaLLM.Common.Models.CodeExecution.CreateCodeSessionResponse}}
+  commentId: T:System.Threading.Tasks.Task{FoundationaLLM.Common.Models.Services.Result{FoundationaLLM.Common.Models.CodeExecution.CreateCodeSessionResponse}}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<Result<CreateCodeSessionResponse>>
+  nameWithType: Task<Result<CreateCodeSessionResponse>>
+  fullName: System.Threading.Tasks.Task<FoundationaLLM.Common.Models.Services.Result<FoundationaLLM.Common.Models.CodeExecution.CreateCodeSessionResponse>>
+  nameWithType.vb: Task(Of Result(Of CreateCodeSessionResponse))
+  fullName.vb: System.Threading.Tasks.Task(Of FoundationaLLM.Common.Models.Services.Result(Of FoundationaLLM.Common.Models.CodeExecution.CreateCodeSessionResponse))
+  name.vb: Task(Of Result(Of CreateCodeSessionResponse))
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: FoundationaLLM.Common.Models.Services.Result`1
+    name: Result
+    href: FoundationaLLM.Common.Models.Services.Result-1.html
+  - name: <
+  - uid: FoundationaLLM.Common.Models.CodeExecution.CreateCodeSessionResponse
+    name: CreateCodeSessionResponse
+    href: FoundationaLLM.Common.Models.CodeExecution.CreateCodeSessionResponse.html
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FoundationaLLM.Common.Models.Services.Result`1
+    name: Result
+    href: FoundationaLLM.Common.Models.Services.Result-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FoundationaLLM.Common.Models.CodeExecution.CreateCodeSessionResponse
+    name: CreateCodeSessionResponse
+    href: FoundationaLLM.Common.Models.CodeExecution.CreateCodeSessionResponse.html
+  - name: )
+  - name: )
+- uid: FoundationaLLM.Common.Models.CodeExecution
+  commentId: N:FoundationaLLM.Common.Models.CodeExecution
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.CodeExecution
+  nameWithType: FoundationaLLM.Common.Models.CodeExecution
+  fullName: FoundationaLLM.Common.Models.CodeExecution
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.CodeExecution
+    name: CodeExecution
+    href: FoundationaLLM.Common.Models.CodeExecution.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.CodeExecution
+    name: CodeExecution
+    href: FoundationaLLM.Common.Models.CodeExecution.html
+- uid: FoundationaLLM.Common.Models.Authentication
+  commentId: N:FoundationaLLM.Common.Models.Authentication
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.Authentication
+  nameWithType: FoundationaLLM.Common.Models.Authentication
+  fullName: FoundationaLLM.Common.Models.Authentication
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Authentication
+    name: Authentication
+    href: FoundationaLLM.Common.Models.Authentication.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Authentication
+    name: Authentication
+    href: FoundationaLLM.Common.Models.Authentication.html
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: FoundationaLLM.Common.Models.Services
+  commentId: N:FoundationaLLM.Common.Models.Services
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.Services
+  nameWithType: FoundationaLLM.Common.Models.Services
+  fullName: FoundationaLLM.Common.Models.Services
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Services
+    name: Services
+    href: FoundationaLLM.Common.Models.Services.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Services
+    name: Services
+    href: FoundationaLLM.Common.Models.Services.html
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: FoundationaLLM.Common.Models.CodeExecution.CodeSessionFileUploadRequest
+  commentId: T:FoundationaLLM.Common.Models.CodeExecution.CodeSessionFileUploadRequest
+  parent: FoundationaLLM.Common.Models.CodeExecution
+  href: FoundationaLLM.Common.Models.CodeExecution.CodeSessionFileUploadRequest.html
+  name: CodeSessionFileUploadRequest
+  nameWithType: CodeSessionFileUploadRequest
+  fullName: FoundationaLLM.Common.Models.CodeExecution.CodeSessionFileUploadRequest
+- uid: FoundationaLLM.Common.Models.CodeExecution.CodeSessionFileUploadResponse
+  commentId: T:FoundationaLLM.Common.Models.CodeExecution.CodeSessionFileUploadResponse
+  href: FoundationaLLM.Common.Models.CodeExecution.CodeSessionFileUploadResponse.html
+  name: CodeSessionFileUploadResponse
+  nameWithType: CodeSessionFileUploadResponse
+  fullName: FoundationaLLM.Common.Models.CodeExecution.CodeSessionFileUploadResponse
+- uid: FoundationaLLM.Context.Services.CodeSessionService.UploadFilesToCodeSession*
+  commentId: Overload:FoundationaLLM.Context.Services.CodeSessionService.UploadFilesToCodeSession
+  href: FoundationaLLM.Context.Services.CodeSessionService.html#FoundationaLLM_Context_Services_CodeSessionService_UploadFilesToCodeSession_System_String_System_String_FoundationaLLM_Common_Models_CodeExecution_CodeSessionFileUploadRequest_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_
+  name: UploadFilesToCodeSession
+  nameWithType: CodeSessionService.UploadFilesToCodeSession
+  fullName: FoundationaLLM.Context.Services.CodeSessionService.UploadFilesToCodeSession
+- uid: FoundationaLLM.Context.Interfaces.ICodeSessionService.UploadFilesToCodeSession(System.String,System.String,FoundationaLLM.Common.Models.CodeExecution.CodeSessionFileUploadRequest,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  commentId: M:FoundationaLLM.Context.Interfaces.ICodeSessionService.UploadFilesToCodeSession(System.String,System.String,FoundationaLLM.Common.Models.CodeExecution.CodeSessionFileUploadRequest,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  parent: FoundationaLLM.Context.Interfaces.ICodeSessionService
+  isExternal: true
+  href: FoundationaLLM.Context.Interfaces.ICodeSessionService.html#FoundationaLLM_Context_Interfaces_ICodeSessionService_UploadFilesToCodeSession_System_String_System_String_FoundationaLLM_Common_Models_CodeExecution_CodeSessionFileUploadRequest_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_
+  name: UploadFilesToCodeSession(string, string, CodeSessionFileUploadRequest, UnifiedUserIdentity)
+  nameWithType: ICodeSessionService.UploadFilesToCodeSession(string, string, CodeSessionFileUploadRequest, UnifiedUserIdentity)
+  fullName: FoundationaLLM.Context.Interfaces.ICodeSessionService.UploadFilesToCodeSession(string, string, FoundationaLLM.Common.Models.CodeExecution.CodeSessionFileUploadRequest, FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  nameWithType.vb: ICodeSessionService.UploadFilesToCodeSession(String, String, CodeSessionFileUploadRequest, UnifiedUserIdentity)
+  fullName.vb: FoundationaLLM.Context.Interfaces.ICodeSessionService.UploadFilesToCodeSession(String, String, FoundationaLLM.Common.Models.CodeExecution.CodeSessionFileUploadRequest, FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  name.vb: UploadFilesToCodeSession(String, String, CodeSessionFileUploadRequest, UnifiedUserIdentity)
+  spec.csharp:
+  - uid: FoundationaLLM.Context.Interfaces.ICodeSessionService.UploadFilesToCodeSession(System.String,System.String,FoundationaLLM.Common.Models.CodeExecution.CodeSessionFileUploadRequest,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+    name: UploadFilesToCodeSession
+    href: FoundationaLLM.Context.Interfaces.ICodeSessionService.html#FoundationaLLM_Context_Interfaces_ICodeSessionService_UploadFilesToCodeSession_System_String_System_String_FoundationaLLM_Common_Models_CodeExecution_CodeSessionFileUploadRequest_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: FoundationaLLM.Common.Models.CodeExecution.CodeSessionFileUploadRequest
+    name: CodeSessionFileUploadRequest
+    href: FoundationaLLM.Common.Models.CodeExecution.CodeSessionFileUploadRequest.html
+  - name: ','
+  - name: " "
+  - uid: FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity
+    name: UnifiedUserIdentity
+    href: FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity.html
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Context.Interfaces.ICodeSessionService.UploadFilesToCodeSession(System.String,System.String,FoundationaLLM.Common.Models.CodeExecution.CodeSessionFileUploadRequest,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+    name: UploadFilesToCodeSession
+    href: FoundationaLLM.Context.Interfaces.ICodeSessionService.html#FoundationaLLM_Context_Interfaces_ICodeSessionService_UploadFilesToCodeSession_System_String_System_String_FoundationaLLM_Common_Models_CodeExecution_CodeSessionFileUploadRequest_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: FoundationaLLM.Common.Models.CodeExecution.CodeSessionFileUploadRequest
+    name: CodeSessionFileUploadRequest
+    href: FoundationaLLM.Common.Models.CodeExecution.CodeSessionFileUploadRequest.html
+  - name: ','
+  - name: " "
+  - uid: FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity
+    name: UnifiedUserIdentity
+    href: FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity.html
+  - name: )
+- uid: System.Threading.Tasks.Task{FoundationaLLM.Common.Models.Services.Result{FoundationaLLM.Common.Models.CodeExecution.CodeSessionFileUploadResponse}}
+  commentId: T:System.Threading.Tasks.Task{FoundationaLLM.Common.Models.Services.Result{FoundationaLLM.Common.Models.CodeExecution.CodeSessionFileUploadResponse}}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<Result<CodeSessionFileUploadResponse>>
+  nameWithType: Task<Result<CodeSessionFileUploadResponse>>
+  fullName: System.Threading.Tasks.Task<FoundationaLLM.Common.Models.Services.Result<FoundationaLLM.Common.Models.CodeExecution.CodeSessionFileUploadResponse>>
+  nameWithType.vb: Task(Of Result(Of CodeSessionFileUploadResponse))
+  fullName.vb: System.Threading.Tasks.Task(Of FoundationaLLM.Common.Models.Services.Result(Of FoundationaLLM.Common.Models.CodeExecution.CodeSessionFileUploadResponse))
+  name.vb: Task(Of Result(Of CodeSessionFileUploadResponse))
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: FoundationaLLM.Common.Models.Services.Result`1
+    name: Result
+    href: FoundationaLLM.Common.Models.Services.Result-1.html
+  - name: <
+  - uid: FoundationaLLM.Common.Models.CodeExecution.CodeSessionFileUploadResponse
+    name: CodeSessionFileUploadResponse
+    href: FoundationaLLM.Common.Models.CodeExecution.CodeSessionFileUploadResponse.html
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FoundationaLLM.Common.Models.Services.Result`1
+    name: Result
+    href: FoundationaLLM.Common.Models.Services.Result-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FoundationaLLM.Common.Models.CodeExecution.CodeSessionFileUploadResponse
+    name: CodeSessionFileUploadResponse
+    href: FoundationaLLM.Common.Models.CodeExecution.CodeSessionFileUploadResponse.html
+  - name: )
+  - name: )
+- uid: FoundationaLLM.Common.Models.CodeExecution.CodeSessionFileDownloadResponse
+  commentId: T:FoundationaLLM.Common.Models.CodeExecution.CodeSessionFileDownloadResponse
+  href: FoundationaLLM.Common.Models.CodeExecution.CodeSessionFileDownloadResponse.html
+  name: CodeSessionFileDownloadResponse
+  nameWithType: CodeSessionFileDownloadResponse
+  fullName: FoundationaLLM.Common.Models.CodeExecution.CodeSessionFileDownloadResponse
+- uid: FoundationaLLM.Context.Services.CodeSessionService.DownloadFilesFromCodeSession*
+  commentId: Overload:FoundationaLLM.Context.Services.CodeSessionService.DownloadFilesFromCodeSession
+  href: FoundationaLLM.Context.Services.CodeSessionService.html#FoundationaLLM_Context_Services_CodeSessionService_DownloadFilesFromCodeSession_System_String_System_String_System_String_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_
+  name: DownloadFilesFromCodeSession
+  nameWithType: CodeSessionService.DownloadFilesFromCodeSession
+  fullName: FoundationaLLM.Context.Services.CodeSessionService.DownloadFilesFromCodeSession
+- uid: FoundationaLLM.Context.Interfaces.ICodeSessionService.DownloadFilesFromCodeSession(System.String,System.String,System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  commentId: M:FoundationaLLM.Context.Interfaces.ICodeSessionService.DownloadFilesFromCodeSession(System.String,System.String,System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  parent: FoundationaLLM.Context.Interfaces.ICodeSessionService
+  isExternal: true
+  href: FoundationaLLM.Context.Interfaces.ICodeSessionService.html#FoundationaLLM_Context_Interfaces_ICodeSessionService_DownloadFilesFromCodeSession_System_String_System_String_System_String_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_
+  name: DownloadFilesFromCodeSession(string, string, string, UnifiedUserIdentity)
+  nameWithType: ICodeSessionService.DownloadFilesFromCodeSession(string, string, string, UnifiedUserIdentity)
+  fullName: FoundationaLLM.Context.Interfaces.ICodeSessionService.DownloadFilesFromCodeSession(string, string, string, FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  nameWithType.vb: ICodeSessionService.DownloadFilesFromCodeSession(String, String, String, UnifiedUserIdentity)
+  fullName.vb: FoundationaLLM.Context.Interfaces.ICodeSessionService.DownloadFilesFromCodeSession(String, String, String, FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  name.vb: DownloadFilesFromCodeSession(String, String, String, UnifiedUserIdentity)
+  spec.csharp:
+  - uid: FoundationaLLM.Context.Interfaces.ICodeSessionService.DownloadFilesFromCodeSession(System.String,System.String,System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+    name: DownloadFilesFromCodeSession
+    href: FoundationaLLM.Context.Interfaces.ICodeSessionService.html#FoundationaLLM_Context_Interfaces_ICodeSessionService_DownloadFilesFromCodeSession_System_String_System_String_System_String_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity
+    name: UnifiedUserIdentity
+    href: FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity.html
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Context.Interfaces.ICodeSessionService.DownloadFilesFromCodeSession(System.String,System.String,System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+    name: DownloadFilesFromCodeSession
+    href: FoundationaLLM.Context.Interfaces.ICodeSessionService.html#FoundationaLLM_Context_Interfaces_ICodeSessionService_DownloadFilesFromCodeSession_System_String_System_String_System_String_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity
+    name: UnifiedUserIdentity
+    href: FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity.html
+  - name: )
+- uid: System.Threading.Tasks.Task{FoundationaLLM.Common.Models.Services.Result{FoundationaLLM.Common.Models.CodeExecution.CodeSessionFileDownloadResponse}}
+  commentId: T:System.Threading.Tasks.Task{FoundationaLLM.Common.Models.Services.Result{FoundationaLLM.Common.Models.CodeExecution.CodeSessionFileDownloadResponse}}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<Result<CodeSessionFileDownloadResponse>>
+  nameWithType: Task<Result<CodeSessionFileDownloadResponse>>
+  fullName: System.Threading.Tasks.Task<FoundationaLLM.Common.Models.Services.Result<FoundationaLLM.Common.Models.CodeExecution.CodeSessionFileDownloadResponse>>
+  nameWithType.vb: Task(Of Result(Of CodeSessionFileDownloadResponse))
+  fullName.vb: System.Threading.Tasks.Task(Of FoundationaLLM.Common.Models.Services.Result(Of FoundationaLLM.Common.Models.CodeExecution.CodeSessionFileDownloadResponse))
+  name.vb: Task(Of Result(Of CodeSessionFileDownloadResponse))
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: FoundationaLLM.Common.Models.Services.Result`1
+    name: Result
+    href: FoundationaLLM.Common.Models.Services.Result-1.html
+  - name: <
+  - uid: FoundationaLLM.Common.Models.CodeExecution.CodeSessionFileDownloadResponse
+    name: CodeSessionFileDownloadResponse
+    href: FoundationaLLM.Common.Models.CodeExecution.CodeSessionFileDownloadResponse.html
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FoundationaLLM.Common.Models.Services.Result`1
+    name: Result
+    href: FoundationaLLM.Common.Models.Services.Result-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FoundationaLLM.Common.Models.CodeExecution.CodeSessionFileDownloadResponse
+    name: CodeSessionFileDownloadResponse
+    href: FoundationaLLM.Common.Models.CodeExecution.CodeSessionFileDownloadResponse.html
+  - name: )
+  - name: )
+- uid: FoundationaLLM.Common.Models.CodeExecution.CodeSessionCodeExecuteResponse
+  commentId: T:FoundationaLLM.Common.Models.CodeExecution.CodeSessionCodeExecuteResponse
+  href: FoundationaLLM.Common.Models.CodeExecution.CodeSessionCodeExecuteResponse.html
+  name: CodeSessionCodeExecuteResponse
+  nameWithType: CodeSessionCodeExecuteResponse
+  fullName: FoundationaLLM.Common.Models.CodeExecution.CodeSessionCodeExecuteResponse
+- uid: FoundationaLLM.Context.Services.CodeSessionService.ExecuteCodeInCodeSession*
+  commentId: Overload:FoundationaLLM.Context.Services.CodeSessionService.ExecuteCodeInCodeSession
+  href: FoundationaLLM.Context.Services.CodeSessionService.html#FoundationaLLM_Context_Services_CodeSessionService_ExecuteCodeInCodeSession_System_String_System_String_System_String_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_
+  name: ExecuteCodeInCodeSession
+  nameWithType: CodeSessionService.ExecuteCodeInCodeSession
+  fullName: FoundationaLLM.Context.Services.CodeSessionService.ExecuteCodeInCodeSession
+- uid: FoundationaLLM.Context.Interfaces.ICodeSessionService.ExecuteCodeInCodeSession(System.String,System.String,System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  commentId: M:FoundationaLLM.Context.Interfaces.ICodeSessionService.ExecuteCodeInCodeSession(System.String,System.String,System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  parent: FoundationaLLM.Context.Interfaces.ICodeSessionService
+  isExternal: true
+  href: FoundationaLLM.Context.Interfaces.ICodeSessionService.html#FoundationaLLM_Context_Interfaces_ICodeSessionService_ExecuteCodeInCodeSession_System_String_System_String_System_String_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_
+  name: ExecuteCodeInCodeSession(string, string, string, UnifiedUserIdentity)
+  nameWithType: ICodeSessionService.ExecuteCodeInCodeSession(string, string, string, UnifiedUserIdentity)
+  fullName: FoundationaLLM.Context.Interfaces.ICodeSessionService.ExecuteCodeInCodeSession(string, string, string, FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  nameWithType.vb: ICodeSessionService.ExecuteCodeInCodeSession(String, String, String, UnifiedUserIdentity)
+  fullName.vb: FoundationaLLM.Context.Interfaces.ICodeSessionService.ExecuteCodeInCodeSession(String, String, String, FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  name.vb: ExecuteCodeInCodeSession(String, String, String, UnifiedUserIdentity)
+  spec.csharp:
+  - uid: FoundationaLLM.Context.Interfaces.ICodeSessionService.ExecuteCodeInCodeSession(System.String,System.String,System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+    name: ExecuteCodeInCodeSession
+    href: FoundationaLLM.Context.Interfaces.ICodeSessionService.html#FoundationaLLM_Context_Interfaces_ICodeSessionService_ExecuteCodeInCodeSession_System_String_System_String_System_String_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity
+    name: UnifiedUserIdentity
+    href: FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity.html
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Context.Interfaces.ICodeSessionService.ExecuteCodeInCodeSession(System.String,System.String,System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+    name: ExecuteCodeInCodeSession
+    href: FoundationaLLM.Context.Interfaces.ICodeSessionService.html#FoundationaLLM_Context_Interfaces_ICodeSessionService_ExecuteCodeInCodeSession_System_String_System_String_System_String_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity
+    name: UnifiedUserIdentity
+    href: FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity.html
+  - name: )
+- uid: System.Threading.Tasks.Task{FoundationaLLM.Common.Models.Services.Result{FoundationaLLM.Common.Models.CodeExecution.CodeSessionCodeExecuteResponse}}
+  commentId: T:System.Threading.Tasks.Task{FoundationaLLM.Common.Models.Services.Result{FoundationaLLM.Common.Models.CodeExecution.CodeSessionCodeExecuteResponse}}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<Result<CodeSessionCodeExecuteResponse>>
+  nameWithType: Task<Result<CodeSessionCodeExecuteResponse>>
+  fullName: System.Threading.Tasks.Task<FoundationaLLM.Common.Models.Services.Result<FoundationaLLM.Common.Models.CodeExecution.CodeSessionCodeExecuteResponse>>
+  nameWithType.vb: Task(Of Result(Of CodeSessionCodeExecuteResponse))
+  fullName.vb: System.Threading.Tasks.Task(Of FoundationaLLM.Common.Models.Services.Result(Of FoundationaLLM.Common.Models.CodeExecution.CodeSessionCodeExecuteResponse))
+  name.vb: Task(Of Result(Of CodeSessionCodeExecuteResponse))
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: FoundationaLLM.Common.Models.Services.Result`1
+    name: Result
+    href: FoundationaLLM.Common.Models.Services.Result-1.html
+  - name: <
+  - uid: FoundationaLLM.Common.Models.CodeExecution.CodeSessionCodeExecuteResponse
+    name: CodeSessionCodeExecuteResponse
+    href: FoundationaLLM.Common.Models.CodeExecution.CodeSessionCodeExecuteResponse.html
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FoundationaLLM.Common.Models.Services.Result`1
+    name: Result
+    href: FoundationaLLM.Common.Models.Services.Result-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FoundationaLLM.Common.Models.CodeExecution.CodeSessionCodeExecuteResponse
+    name: CodeSessionCodeExecuteResponse
+    href: FoundationaLLM.Common.Models.CodeExecution.CodeSessionCodeExecuteResponse.html
+  - name: )
+  - name: )

@@ -1,0 +1,993 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Common.Services.TextSplitters.TokenTextSplitterService
+  commentId: T:FoundationaLLM.Common.Services.TextSplitters.TokenTextSplitterService
+  id: TokenTextSplitterService
+  parent: FoundationaLLM.Common.Services.TextSplitters
+  children:
+  - FoundationaLLM.Common.Services.TextSplitters.TokenTextSplitterService.#ctor(FoundationaLLM.Common.Interfaces.ITokenizerService,Microsoft.Extensions.Options.IOptions{FoundationaLLM.Common.Models.Configuration.Text.TokenTextSplitterServiceSettings},Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Common.Services.TextSplitters.TokenTextSplitterService})
+  - FoundationaLLM.Common.Services.TextSplitters.TokenTextSplitterService.SplitPlainText(System.String)
+  langs:
+  - csharp
+  - vb
+  name: TokenTextSplitterService
+  nameWithType: TokenTextSplitterService
+  fullName: FoundationaLLM.Common.Services.TextSplitters.TokenTextSplitterService
+  type: Class
+  source:
+    remote:
+      path: src/dotnet/Common/Services/TextSplitters/TokenTextSplitterService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: TokenTextSplitterService
+    path: ../src/dotnet/Common/Services/TextSplitters/TokenTextSplitterService.cs
+    startLine: 16
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Services.TextSplitters
+  summary: Splits text based on number of tokens.
+  example: []
+  syntax:
+    content: 'public class TokenTextSplitterService : ITextSplitterService'
+    content.vb: Public Class TokenTextSplitterService Implements ITextSplitterService
+  inheritance:
+  - System.Object
+  implements:
+  - FoundationaLLM.Common.Interfaces.ITextSplitterService
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+  extensionMethods:
+  - System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+- uid: FoundationaLLM.Common.Services.TextSplitters.TokenTextSplitterService.#ctor(FoundationaLLM.Common.Interfaces.ITokenizerService,Microsoft.Extensions.Options.IOptions{FoundationaLLM.Common.Models.Configuration.Text.TokenTextSplitterServiceSettings},Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Common.Services.TextSplitters.TokenTextSplitterService})
+  commentId: M:FoundationaLLM.Common.Services.TextSplitters.TokenTextSplitterService.#ctor(FoundationaLLM.Common.Interfaces.ITokenizerService,Microsoft.Extensions.Options.IOptions{FoundationaLLM.Common.Models.Configuration.Text.TokenTextSplitterServiceSettings},Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Common.Services.TextSplitters.TokenTextSplitterService})
+  id: '#ctor(FoundationaLLM.Common.Interfaces.ITokenizerService,Microsoft.Extensions.Options.IOptions{FoundationaLLM.Common.Models.Configuration.Text.TokenTextSplitterServiceSettings},Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Common.Services.TextSplitters.TokenTextSplitterService})'
+  parent: FoundationaLLM.Common.Services.TextSplitters.TokenTextSplitterService
+  langs:
+  - csharp
+  - vb
+  name: TokenTextSplitterService(ITokenizerService, IOptions<TokenTextSplitterServiceSettings>, ILogger<TokenTextSplitterService>)
+  nameWithType: TokenTextSplitterService.TokenTextSplitterService(ITokenizerService, IOptions<TokenTextSplitterServiceSettings>, ILogger<TokenTextSplitterService>)
+  fullName: FoundationaLLM.Common.Services.TextSplitters.TokenTextSplitterService.TokenTextSplitterService(FoundationaLLM.Common.Interfaces.ITokenizerService, Microsoft.Extensions.Options.IOptions<FoundationaLLM.Common.Models.Configuration.Text.TokenTextSplitterServiceSettings>, Microsoft.Extensions.Logging.ILogger<FoundationaLLM.Common.Services.TextSplitters.TokenTextSplitterService>)
+  type: Constructor
+  source:
+    remote:
+      path: src/dotnet/Common/Services/TextSplitters/TokenTextSplitterService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: .ctor
+    path: ../src/dotnet/Common/Services/TextSplitters/TokenTextSplitterService.cs
+    startLine: 16
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Services.TextSplitters
+  summary: Splits text based on number of tokens.
+  example: []
+  syntax:
+    content: public TokenTextSplitterService(ITokenizerService tokenizerService, IOptions<TokenTextSplitterServiceSettings> options, ILogger<TokenTextSplitterService> logger)
+    parameters:
+    - id: tokenizerService
+      type: FoundationaLLM.Common.Interfaces.ITokenizerService
+      description: The <xref href="FoundationaLLM.Common.Interfaces.ITokenizerService" data-throw-if-not-resolved="false"></xref> used to tokenize the input text.
+    - id: options
+      type: Microsoft.Extensions.Options.IOptions{FoundationaLLM.Common.Models.Configuration.Text.TokenTextSplitterServiceSettings}
+      description: The <xref href="Microsoft.Extensions.Options.IOptions%601" data-throw-if-not-resolved="false"></xref> providing the settings for the service.
+    - id: logger
+      type: Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Common.Services.TextSplitters.TokenTextSplitterService}
+      description: The logger used for logging.
+    content.vb: Public Sub New(tokenizerService As ITokenizerService, options As IOptions(Of TokenTextSplitterServiceSettings), logger As ILogger(Of TokenTextSplitterService))
+  overload: FoundationaLLM.Common.Services.TextSplitters.TokenTextSplitterService.#ctor*
+  nameWithType.vb: TokenTextSplitterService.New(ITokenizerService, IOptions(Of TokenTextSplitterServiceSettings), ILogger(Of TokenTextSplitterService))
+  fullName.vb: FoundationaLLM.Common.Services.TextSplitters.TokenTextSplitterService.New(FoundationaLLM.Common.Interfaces.ITokenizerService, Microsoft.Extensions.Options.IOptions(Of FoundationaLLM.Common.Models.Configuration.Text.TokenTextSplitterServiceSettings), Microsoft.Extensions.Logging.ILogger(Of FoundationaLLM.Common.Services.TextSplitters.TokenTextSplitterService))
+  name.vb: New(ITokenizerService, IOptions(Of TokenTextSplitterServiceSettings), ILogger(Of TokenTextSplitterService))
+- uid: FoundationaLLM.Common.Services.TextSplitters.TokenTextSplitterService.SplitPlainText(System.String)
+  commentId: M:FoundationaLLM.Common.Services.TextSplitters.TokenTextSplitterService.SplitPlainText(System.String)
+  id: SplitPlainText(System.String)
+  parent: FoundationaLLM.Common.Services.TextSplitters.TokenTextSplitterService
+  langs:
+  - csharp
+  - vb
+  name: SplitPlainText(string)
+  nameWithType: TokenTextSplitterService.SplitPlainText(string)
+  fullName: FoundationaLLM.Common.Services.TextSplitters.TokenTextSplitterService.SplitPlainText(string)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Common/Services/TextSplitters/TokenTextSplitterService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: SplitPlainText
+    path: ../src/dotnet/Common/Services/TextSplitters/TokenTextSplitterService.cs
+    startLine: 26
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Services.TextSplitters
+  summary: Splits plain text into multiple chunks.
+  example: []
+  syntax:
+    content: public List<TextChunk> SplitPlainText(string text)
+    parameters:
+    - id: text
+      type: System.String
+      description: The plain text to split.
+    return:
+      type: System.Collections.Generic.List{FoundationaLLM.Common.Models.Vectorization.TextChunk}
+      description: A list of <xref href="FoundationaLLM.Common.Models.Vectorization.TextChunk" data-throw-if-not-resolved="false"></xref> items containing the text chunks and their sizes in tokens.
+    content.vb: Public Function SplitPlainText(text As String) As List(Of TextChunk)
+  overload: FoundationaLLM.Common.Services.TextSplitters.TokenTextSplitterService.SplitPlainText*
+  implements:
+  - FoundationaLLM.Common.Interfaces.ITextSplitterService.SplitPlainText(System.String)
+  nameWithType.vb: TokenTextSplitterService.SplitPlainText(String)
+  fullName.vb: FoundationaLLM.Common.Services.TextSplitters.TokenTextSplitterService.SplitPlainText(String)
+  name.vb: SplitPlainText(String)
+references:
+- uid: FoundationaLLM.Common.Interfaces.ITokenizerService
+  commentId: T:FoundationaLLM.Common.Interfaces.ITokenizerService
+  parent: FoundationaLLM.Common.Interfaces
+  href: FoundationaLLM.Common.Interfaces.ITokenizerService.html
+  name: ITokenizerService
+  nameWithType: ITokenizerService
+  fullName: FoundationaLLM.Common.Interfaces.ITokenizerService
+- uid: Microsoft.Extensions.Options.IOptions`1
+  commentId: T:Microsoft.Extensions.Options.IOptions`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.options.ioptions-1
+  name: IOptions<TOptions>
+  nameWithType: IOptions<TOptions>
+  fullName: Microsoft.Extensions.Options.IOptions<TOptions>
+  nameWithType.vb: IOptions(Of TOptions)
+  fullName.vb: Microsoft.Extensions.Options.IOptions(Of TOptions)
+  name.vb: IOptions(Of TOptions)
+  spec.csharp:
+  - uid: Microsoft.Extensions.Options.IOptions`1
+    name: IOptions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.options.ioptions-1
+  - name: <
+  - name: TOptions
+  - name: '>'
+  spec.vb:
+  - uid: Microsoft.Extensions.Options.IOptions`1
+    name: IOptions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.options.ioptions-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TOptions
+  - name: )
+- uid: FoundationaLLM.Common.Services.TextSplitters
+  commentId: N:FoundationaLLM.Common.Services.TextSplitters
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Services.TextSplitters
+  nameWithType: FoundationaLLM.Common.Services.TextSplitters
+  fullName: FoundationaLLM.Common.Services.TextSplitters
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Services
+    name: Services
+    href: FoundationaLLM.Common.Services.html
+  - name: .
+  - uid: FoundationaLLM.Common.Services.TextSplitters
+    name: TextSplitters
+    href: FoundationaLLM.Common.Services.TextSplitters.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Services
+    name: Services
+    href: FoundationaLLM.Common.Services.html
+  - name: .
+  - uid: FoundationaLLM.Common.Services.TextSplitters
+    name: TextSplitters
+    href: FoundationaLLM.Common.Services.TextSplitters.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: FoundationaLLM.Common.Interfaces.ITextSplitterService
+  commentId: T:FoundationaLLM.Common.Interfaces.ITextSplitterService
+  parent: FoundationaLLM.Common.Interfaces
+  href: FoundationaLLM.Common.Interfaces.ITextSplitterService.html
+  name: ITextSplitterService
+  nameWithType: ITextSplitterService
+  fullName: FoundationaLLM.Common.Interfaces.ITextSplitterService
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  parent: FoundationaLLM.Core.Utils.ObjectExtensions
+  definition: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: FoundationaLLM.Common.Interfaces
+  commentId: N:FoundationaLLM.Common.Interfaces
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Interfaces
+  nameWithType: FoundationaLLM.Common.Interfaces
+  fullName: FoundationaLLM.Common.Interfaces
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Interfaces
+    name: Interfaces
+    href: FoundationaLLM.Common.Interfaces.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Interfaces
+    name: Interfaces
+    href: FoundationaLLM.Common.Interfaces.html
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  isExternal: true
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions
+  commentId: T:FoundationaLLM.Core.Utils.ObjectExtensions
+  parent: FoundationaLLM.Core.Utils
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html
+  name: ObjectExtensions
+  nameWithType: ObjectExtensions
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions
+- uid: FoundationaLLM.Core.Utils
+  commentId: N:FoundationaLLM.Core.Utils
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Core.Utils
+  nameWithType: FoundationaLLM.Core.Utils
+  fullName: FoundationaLLM.Core.Utils
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+- uid: FoundationaLLM.Common.Services.TextSplitters.TokenTextSplitterService.#ctor*
+  commentId: Overload:FoundationaLLM.Common.Services.TextSplitters.TokenTextSplitterService.#ctor
+  href: FoundationaLLM.Common.Services.TextSplitters.TokenTextSplitterService.html#FoundationaLLM_Common_Services_TextSplitters_TokenTextSplitterService__ctor_FoundationaLLM_Common_Interfaces_ITokenizerService_Microsoft_Extensions_Options_IOptions_FoundationaLLM_Common_Models_Configuration_Text_TokenTextSplitterServiceSettings__Microsoft_Extensions_Logging_ILogger_FoundationaLLM_Common_Services_TextSplitters_TokenTextSplitterService__
+  name: TokenTextSplitterService
+  nameWithType: TokenTextSplitterService.TokenTextSplitterService
+  fullName: FoundationaLLM.Common.Services.TextSplitters.TokenTextSplitterService.TokenTextSplitterService
+  nameWithType.vb: TokenTextSplitterService.New
+  fullName.vb: FoundationaLLM.Common.Services.TextSplitters.TokenTextSplitterService.New
+  name.vb: New
+- uid: Microsoft.Extensions.Options.IOptions{FoundationaLLM.Common.Models.Configuration.Text.TokenTextSplitterServiceSettings}
+  commentId: T:Microsoft.Extensions.Options.IOptions{FoundationaLLM.Common.Models.Configuration.Text.TokenTextSplitterServiceSettings}
+  parent: Microsoft.Extensions.Options
+  definition: Microsoft.Extensions.Options.IOptions`1
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.options.ioptions-1
+  name: IOptions<TokenTextSplitterServiceSettings>
+  nameWithType: IOptions<TokenTextSplitterServiceSettings>
+  fullName: Microsoft.Extensions.Options.IOptions<FoundationaLLM.Common.Models.Configuration.Text.TokenTextSplitterServiceSettings>
+  nameWithType.vb: IOptions(Of TokenTextSplitterServiceSettings)
+  fullName.vb: Microsoft.Extensions.Options.IOptions(Of FoundationaLLM.Common.Models.Configuration.Text.TokenTextSplitterServiceSettings)
+  name.vb: IOptions(Of TokenTextSplitterServiceSettings)
+  spec.csharp:
+  - uid: Microsoft.Extensions.Options.IOptions`1
+    name: IOptions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.options.ioptions-1
+  - name: <
+  - uid: FoundationaLLM.Common.Models.Configuration.Text.TokenTextSplitterServiceSettings
+    name: TokenTextSplitterServiceSettings
+    href: FoundationaLLM.Common.Models.Configuration.Text.TokenTextSplitterServiceSettings.html
+  - name: '>'
+  spec.vb:
+  - uid: Microsoft.Extensions.Options.IOptions`1
+    name: IOptions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.options.ioptions-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FoundationaLLM.Common.Models.Configuration.Text.TokenTextSplitterServiceSettings
+    name: TokenTextSplitterServiceSettings
+    href: FoundationaLLM.Common.Models.Configuration.Text.TokenTextSplitterServiceSettings.html
+  - name: )
+- uid: Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Common.Services.TextSplitters.TokenTextSplitterService}
+  commentId: T:Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Common.Services.TextSplitters.TokenTextSplitterService}
+  parent: Microsoft.Extensions.Logging
+  definition: Microsoft.Extensions.Logging.ILogger`1
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  name: ILogger<TokenTextSplitterService>
+  nameWithType: ILogger<TokenTextSplitterService>
+  fullName: Microsoft.Extensions.Logging.ILogger<FoundationaLLM.Common.Services.TextSplitters.TokenTextSplitterService>
+  nameWithType.vb: ILogger(Of TokenTextSplitterService)
+  fullName.vb: Microsoft.Extensions.Logging.ILogger(Of FoundationaLLM.Common.Services.TextSplitters.TokenTextSplitterService)
+  name.vb: ILogger(Of TokenTextSplitterService)
+  spec.csharp:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: <
+  - uid: FoundationaLLM.Common.Services.TextSplitters.TokenTextSplitterService
+    name: TokenTextSplitterService
+    href: FoundationaLLM.Common.Services.TextSplitters.TokenTextSplitterService.html
+  - name: '>'
+  spec.vb:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FoundationaLLM.Common.Services.TextSplitters.TokenTextSplitterService
+    name: TokenTextSplitterService
+    href: FoundationaLLM.Common.Services.TextSplitters.TokenTextSplitterService.html
+  - name: )
+- uid: Microsoft.Extensions.Options
+  commentId: N:Microsoft.Extensions.Options
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft
+  name: Microsoft.Extensions.Options
+  nameWithType: Microsoft.Extensions.Options
+  fullName: Microsoft.Extensions.Options
+  spec.csharp:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Options
+    name: Options
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.options
+  spec.vb:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Options
+    name: Options
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.options
+- uid: Microsoft.Extensions.Logging.ILogger`1
+  commentId: T:Microsoft.Extensions.Logging.ILogger`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  name: ILogger<TCategoryName>
+  nameWithType: ILogger<TCategoryName>
+  fullName: Microsoft.Extensions.Logging.ILogger<TCategoryName>
+  nameWithType.vb: ILogger(Of TCategoryName)
+  fullName.vb: Microsoft.Extensions.Logging.ILogger(Of TCategoryName)
+  name.vb: ILogger(Of TCategoryName)
+  spec.csharp:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: <
+  - name: TCategoryName
+  - name: '>'
+  spec.vb:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TCategoryName
+  - name: )
+- uid: Microsoft.Extensions.Logging
+  commentId: N:Microsoft.Extensions.Logging
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft
+  name: Microsoft.Extensions.Logging
+  nameWithType: Microsoft.Extensions.Logging
+  fullName: Microsoft.Extensions.Logging
+  spec.csharp:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Logging
+    name: Logging
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging
+  spec.vb:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Logging
+    name: Logging
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging
+- uid: FoundationaLLM.Common.Models.Vectorization.TextChunk
+  commentId: T:FoundationaLLM.Common.Models.Vectorization.TextChunk
+  parent: FoundationaLLM.Common.Models.Vectorization
+  href: FoundationaLLM.Common.Models.Vectorization.TextChunk.html
+  name: TextChunk
+  nameWithType: TextChunk
+  fullName: FoundationaLLM.Common.Models.Vectorization.TextChunk
+- uid: FoundationaLLM.Common.Services.TextSplitters.TokenTextSplitterService.SplitPlainText*
+  commentId: Overload:FoundationaLLM.Common.Services.TextSplitters.TokenTextSplitterService.SplitPlainText
+  href: FoundationaLLM.Common.Services.TextSplitters.TokenTextSplitterService.html#FoundationaLLM_Common_Services_TextSplitters_TokenTextSplitterService_SplitPlainText_System_String_
+  name: SplitPlainText
+  nameWithType: TokenTextSplitterService.SplitPlainText
+  fullName: FoundationaLLM.Common.Services.TextSplitters.TokenTextSplitterService.SplitPlainText
+- uid: FoundationaLLM.Common.Interfaces.ITextSplitterService.SplitPlainText(System.String)
+  commentId: M:FoundationaLLM.Common.Interfaces.ITextSplitterService.SplitPlainText(System.String)
+  parent: FoundationaLLM.Common.Interfaces.ITextSplitterService
+  isExternal: true
+  href: FoundationaLLM.Common.Interfaces.ITextSplitterService.html#FoundationaLLM_Common_Interfaces_ITextSplitterService_SplitPlainText_System_String_
+  name: SplitPlainText(string)
+  nameWithType: ITextSplitterService.SplitPlainText(string)
+  fullName: FoundationaLLM.Common.Interfaces.ITextSplitterService.SplitPlainText(string)
+  nameWithType.vb: ITextSplitterService.SplitPlainText(String)
+  fullName.vb: FoundationaLLM.Common.Interfaces.ITextSplitterService.SplitPlainText(String)
+  name.vb: SplitPlainText(String)
+  spec.csharp:
+  - uid: FoundationaLLM.Common.Interfaces.ITextSplitterService.SplitPlainText(System.String)
+    name: SplitPlainText
+    href: FoundationaLLM.Common.Interfaces.ITextSplitterService.html#FoundationaLLM_Common_Interfaces_ITextSplitterService_SplitPlainText_System_String_
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Common.Interfaces.ITextSplitterService.SplitPlainText(System.String)
+    name: SplitPlainText
+    href: FoundationaLLM.Common.Interfaces.ITextSplitterService.html#FoundationaLLM_Common_Interfaces_ITextSplitterService_SplitPlainText_System_String_
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System.Collections.Generic.List{FoundationaLLM.Common.Models.Vectorization.TextChunk}
+  commentId: T:System.Collections.Generic.List{FoundationaLLM.Common.Models.Vectorization.TextChunk}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.List`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  name: List<TextChunk>
+  nameWithType: List<TextChunk>
+  fullName: System.Collections.Generic.List<FoundationaLLM.Common.Models.Vectorization.TextChunk>
+  nameWithType.vb: List(Of TextChunk)
+  fullName.vb: System.Collections.Generic.List(Of FoundationaLLM.Common.Models.Vectorization.TextChunk)
+  name.vb: List(Of TextChunk)
+  spec.csharp:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: FoundationaLLM.Common.Models.Vectorization.TextChunk
+    name: TextChunk
+    href: FoundationaLLM.Common.Models.Vectorization.TextChunk.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FoundationaLLM.Common.Models.Vectorization.TextChunk
+    name: TextChunk
+    href: FoundationaLLM.Common.Models.Vectorization.TextChunk.html
+  - name: )
+- uid: FoundationaLLM.Common.Models.Vectorization
+  commentId: N:FoundationaLLM.Common.Models.Vectorization
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.Vectorization
+  nameWithType: FoundationaLLM.Common.Models.Vectorization
+  fullName: FoundationaLLM.Common.Models.Vectorization
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Vectorization
+    name: Vectorization
+    href: FoundationaLLM.Common.Models.Vectorization.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Vectorization
+    name: Vectorization
+    href: FoundationaLLM.Common.Models.Vectorization.html
+- uid: System.Collections.Generic.List`1
+  commentId: T:System.Collections.Generic.List`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  name: List<T>
+  nameWithType: List<T>
+  fullName: System.Collections.Generic.List<T>
+  nameWithType.vb: List(Of T)
+  fullName.vb: System.Collections.Generic.List(Of T)
+  name.vb: List(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic

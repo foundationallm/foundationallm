@@ -1,0 +1,24 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.DataPipeline.Models
+  commentId: N:FoundationaLLM.DataPipeline.Models
+  id: Models
+  parent: FoundationaLLM.DataPipeline
+  children:
+  - FoundationaLLM.DataPipeline.Models.DataPipelineReference
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM.DataPipeline.Models
+  nameWithType: FoundationaLLM.DataPipeline.Models
+  fullName: FoundationaLLM.DataPipeline.Models
+  type: Namespace
+  assemblies:
+  - FoundationaLLM.DataPipeline
+references:
+- uid: FoundationaLLM.DataPipeline.Models.DataPipelineReference
+  commentId: T:FoundationaLLM.DataPipeline.Models.DataPipelineReference
+  href: FoundationaLLM.DataPipeline.Models.DataPipelineReference.html
+  name: DataPipelineReference
+  nameWithType: DataPipelineReference
+  fullName: FoundationaLLM.DataPipeline.Models.DataPipelineReference

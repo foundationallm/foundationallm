@@ -1,0 +1,24 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Common.Models.Infrastructure
+  commentId: N:FoundationaLLM.Common.Models.Infrastructure
+  id: Infrastructure
+  parent: FoundationaLLM.Common.Models
+  children:
+  - FoundationaLLM.Common.Models.Infrastructure.ServiceStatusInfo
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM.Common.Models.Infrastructure
+  nameWithType: FoundationaLLM.Common.Models.Infrastructure
+  fullName: FoundationaLLM.Common.Models.Infrastructure
+  type: Namespace
+  assemblies:
+  - FoundationaLLM.Common
+references:
+- uid: FoundationaLLM.Common.Models.Infrastructure.ServiceStatusInfo
+  commentId: T:FoundationaLLM.Common.Models.Infrastructure.ServiceStatusInfo
+  href: FoundationaLLM.Common.Models.Infrastructure.ServiceStatusInfo.html
+  name: ServiceStatusInfo
+  nameWithType: ServiceStatusInfo
+  fullName: FoundationaLLM.Common.Models.Infrastructure.ServiceStatusInfo

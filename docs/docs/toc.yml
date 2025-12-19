@@ -1,0 +1,32 @@
+- name: Overview
+- href: index.md
+
+- name: Chat User Portal
+  href: chat-user-portal/toc.yml
+  topicHref: chat-user-portal/index.md
+
+- name: Management Portal
+  href: management-portal/toc.yml
+  topicHref: management-portal/index.md
+
+- name: APIs & SDKs
+  href: apis-sdks/toc.yml
+  topicHref: apis-sdks/apis/core-api/index.md
+
+- name: Platform Operations
+  href: platform-operations/toc.yml
+  topicHref: platform-operations/deployment/index.md
+
+- name: Development
+  href: development/toc.yml
+  topicHref: development/index.md
+
+- name: Reference
+  href: documentation-generation.md
+  items:
+  - name: Documentation Generation
+    href: documentation-generation.md
+
+- name: Release Notes
+  href: release-notes/toc.yml
+  topicHref: release-notes/breaking-changes.md

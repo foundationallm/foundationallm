@@ -1,0 +1,404 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Agent
+  commentId: N:FoundationaLLM.Common.Models.ResourceProviders.Agent
+  id: Agent
+  parent: FoundationaLLM.Common.Models.ResourceProviders
+  children:
+  - FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentAccessTokens
+  - FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentBase
+  - FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentCacheSettings
+  - FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentConversationHistorySettings
+  - FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFiles
+  - FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentGatekeeperSettings
+  - FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentOrchestrationSettings
+  - FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentOwnerUpdateRequest
+  - FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentSemanticCacheSettings
+  - FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTemplates
+  - FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTextRewriteSettings
+  - FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTool
+  - FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTypes
+  - FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentUserPromptRewriteSettings
+  - FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentVectorizationSettings
+  - FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows
+  - FoundationaLLM.Common.Models.ResourceProviders.Agent.GenericAgent
+  - FoundationaLLM.Common.Models.ResourceProviders.Agent.KnowledgeSearchSettings
+  - FoundationaLLM.Common.Models.ResourceProviders.Agent.Tool
+  - FoundationaLLM.Common.Models.ResourceProviders.Agent.Workflow
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM.Common.Models.ResourceProviders.Agent
+  nameWithType: FoundationaLLM.Common.Models.ResourceProviders.Agent
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Agent
+  type: Namespace
+  assemblies:
+  - FoundationaLLM.Common
+references:
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentAccessTokens
+  commentId: N:FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentAccessTokens
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentAccessTokens
+  nameWithType: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentAccessTokens
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentAccessTokens
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders
+    name: ResourceProviders
+    href: FoundationaLLM.Common.Models.ResourceProviders.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.Agent
+    name: Agent
+    href: FoundationaLLM.Common.Models.ResourceProviders.Agent.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentAccessTokens
+    name: AgentAccessTokens
+    href: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentAccessTokens.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders
+    name: ResourceProviders
+    href: FoundationaLLM.Common.Models.ResourceProviders.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.Agent
+    name: Agent
+    href: FoundationaLLM.Common.Models.ResourceProviders.Agent.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentAccessTokens
+    name: AgentAccessTokens
+    href: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentAccessTokens.html
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFiles
+  commentId: N:FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFiles
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFiles
+  nameWithType: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFiles
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFiles
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders
+    name: ResourceProviders
+    href: FoundationaLLM.Common.Models.ResourceProviders.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.Agent
+    name: Agent
+    href: FoundationaLLM.Common.Models.ResourceProviders.Agent.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFiles
+    name: AgentFiles
+    href: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFiles.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders
+    name: ResourceProviders
+    href: FoundationaLLM.Common.Models.ResourceProviders.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.Agent
+    name: Agent
+    href: FoundationaLLM.Common.Models.ResourceProviders.Agent.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFiles
+    name: AgentFiles
+    href: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFiles.html
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTemplates
+  commentId: N:FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTemplates
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTemplates
+  nameWithType: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTemplates
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTemplates
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders
+    name: ResourceProviders
+    href: FoundationaLLM.Common.Models.ResourceProviders.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.Agent
+    name: Agent
+    href: FoundationaLLM.Common.Models.ResourceProviders.Agent.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTemplates
+    name: AgentTemplates
+    href: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTemplates.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders
+    name: ResourceProviders
+    href: FoundationaLLM.Common.Models.ResourceProviders.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.Agent
+    name: Agent
+    href: FoundationaLLM.Common.Models.ResourceProviders.Agent.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTemplates
+    name: AgentTemplates
+    href: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTemplates.html
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows
+  commentId: N:FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows
+  nameWithType: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders
+    name: ResourceProviders
+    href: FoundationaLLM.Common.Models.ResourceProviders.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.Agent
+    name: Agent
+    href: FoundationaLLM.Common.Models.ResourceProviders.Agent.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows
+    name: AgentWorkflows
+    href: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders
+    name: ResourceProviders
+    href: FoundationaLLM.Common.Models.ResourceProviders.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.Agent
+    name: Agent
+    href: FoundationaLLM.Common.Models.ResourceProviders.Agent.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows
+    name: AgentWorkflows
+    href: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows.html
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentBase
+  commentId: T:FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentBase
+  parent: FoundationaLLM.Common.Models.ResourceProviders.Agent
+  href: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentBase.html
+  name: AgentBase
+  nameWithType: AgentBase
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentBase
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentCacheSettings
+  commentId: T:FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentCacheSettings
+  parent: FoundationaLLM.Common.Models.ResourceProviders.Agent
+  href: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentCacheSettings.html
+  name: AgentCacheSettings
+  nameWithType: AgentCacheSettings
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentCacheSettings
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentConversationHistorySettings
+  commentId: T:FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentConversationHistorySettings
+  parent: FoundationaLLM.Common.Models.ResourceProviders.Agent
+  href: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentConversationHistorySettings.html
+  name: AgentConversationHistorySettings
+  nameWithType: AgentConversationHistorySettings
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentConversationHistorySettings
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentGatekeeperSettings
+  commentId: T:FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentGatekeeperSettings
+  parent: FoundationaLLM.Common.Models.ResourceProviders.Agent
+  href: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentGatekeeperSettings.html
+  name: AgentGatekeeperSettings
+  nameWithType: AgentGatekeeperSettings
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentGatekeeperSettings
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentOrchestrationSettings
+  commentId: T:FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentOrchestrationSettings
+  href: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentOrchestrationSettings.html
+  name: AgentOrchestrationSettings
+  nameWithType: AgentOrchestrationSettings
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentOrchestrationSettings
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentOwnerUpdateRequest
+  commentId: T:FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentOwnerUpdateRequest
+  href: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentOwnerUpdateRequest.html
+  name: AgentOwnerUpdateRequest
+  nameWithType: AgentOwnerUpdateRequest
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentOwnerUpdateRequest
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentSemanticCacheSettings
+  commentId: T:FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentSemanticCacheSettings
+  parent: FoundationaLLM.Common.Models.ResourceProviders.Agent
+  href: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentSemanticCacheSettings.html
+  name: AgentSemanticCacheSettings
+  nameWithType: AgentSemanticCacheSettings
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentSemanticCacheSettings
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTextRewriteSettings
+  commentId: T:FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTextRewriteSettings
+  parent: FoundationaLLM.Common.Models.ResourceProviders.Agent
+  href: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTextRewriteSettings.html
+  name: AgentTextRewriteSettings
+  nameWithType: AgentTextRewriteSettings
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTextRewriteSettings
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTool
+  commentId: T:FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTool
+  href: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTool.html
+  name: AgentTool
+  nameWithType: AgentTool
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTool
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTypes
+  commentId: T:FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTypes
+  href: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTypes.html
+  name: AgentTypes
+  nameWithType: AgentTypes
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTypes
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentUserPromptRewriteSettings
+  commentId: T:FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentUserPromptRewriteSettings
+  parent: FoundationaLLM.Common.Models.ResourceProviders.Agent
+  href: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentUserPromptRewriteSettings.html
+  name: AgentUserPromptRewriteSettings
+  nameWithType: AgentUserPromptRewriteSettings
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentUserPromptRewriteSettings
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentVectorizationSettings
+  commentId: T:FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentVectorizationSettings
+  href: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentVectorizationSettings.html
+  name: AgentVectorizationSettings
+  nameWithType: AgentVectorizationSettings
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentVectorizationSettings
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.GenericAgent
+  commentId: T:FoundationaLLM.Common.Models.ResourceProviders.Agent.GenericAgent
+  parent: FoundationaLLM.Common.Models.ResourceProviders.Agent
+  href: FoundationaLLM.Common.Models.ResourceProviders.Agent.GenericAgent.html
+  name: GenericAgent
+  nameWithType: GenericAgent
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Agent.GenericAgent
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.KnowledgeSearchSettings
+  commentId: T:FoundationaLLM.Common.Models.ResourceProviders.Agent.KnowledgeSearchSettings
+  parent: FoundationaLLM.Common.Models.ResourceProviders.Agent
+  href: FoundationaLLM.Common.Models.ResourceProviders.Agent.KnowledgeSearchSettings.html
+  name: KnowledgeSearchSettings
+  nameWithType: KnowledgeSearchSettings
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Agent.KnowledgeSearchSettings
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.Tool
+  commentId: T:FoundationaLLM.Common.Models.ResourceProviders.Agent.Tool
+  href: FoundationaLLM.Common.Models.ResourceProviders.Agent.Tool.html
+  name: Tool
+  nameWithType: Tool
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Agent.Tool
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.Workflow
+  commentId: T:FoundationaLLM.Common.Models.ResourceProviders.Agent.Workflow
+  href: FoundationaLLM.Common.Models.ResourceProviders.Agent.Workflow.html
+  name: Workflow
+  nameWithType: Workflow
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Agent.Workflow
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Agent
+  commentId: N:FoundationaLLM.Common.Models.ResourceProviders.Agent
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.ResourceProviders.Agent
+  nameWithType: FoundationaLLM.Common.Models.ResourceProviders.Agent
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Agent
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders
+    name: ResourceProviders
+    href: FoundationaLLM.Common.Models.ResourceProviders.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.Agent
+    name: Agent
+    href: FoundationaLLM.Common.Models.ResourceProviders.Agent.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders
+    name: ResourceProviders
+    href: FoundationaLLM.Common.Models.ResourceProviders.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.Agent
+    name: Agent
+    href: FoundationaLLM.Common.Models.ResourceProviders.Agent.html

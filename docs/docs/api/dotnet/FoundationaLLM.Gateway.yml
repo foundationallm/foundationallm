@@ -1,0 +1,214 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Gateway
+  id: Gateway
+  parent: FoundationaLLM
+  children:
+  - FoundationaLLM.Gateway.API.Controllers
+  - FoundationaLLM.Gateway.AdapterAPI.Controllers
+  - FoundationaLLM.Gateway.Exceptions
+  - FoundationaLLM.Gateway.Interfaces
+  - FoundationaLLM.Gateway.Models
+  - FoundationaLLM.Gateway.Services
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM.Gateway
+  type: Namespace
+references:
+- uid: FoundationaLLM.Gateway.Exceptions
+  commentId: N:FoundationaLLM.Gateway.Exceptions
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Gateway.Exceptions
+  nameWithType: FoundationaLLM.Gateway.Exceptions
+  fullName: FoundationaLLM.Gateway.Exceptions
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Gateway
+    name: Gateway
+    href: FoundationaLLM.Gateway.html
+  - name: .
+  - uid: FoundationaLLM.Gateway.Exceptions
+    name: Exceptions
+    href: FoundationaLLM.Gateway.Exceptions.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Gateway
+    name: Gateway
+    href: FoundationaLLM.Gateway.html
+  - name: .
+  - uid: FoundationaLLM.Gateway.Exceptions
+    name: Exceptions
+    href: FoundationaLLM.Gateway.Exceptions.html
+- uid: FoundationaLLM.Gateway.Interfaces
+  commentId: N:FoundationaLLM.Gateway.Interfaces
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Gateway.Interfaces
+  nameWithType: FoundationaLLM.Gateway.Interfaces
+  fullName: FoundationaLLM.Gateway.Interfaces
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Gateway
+    name: Gateway
+    href: FoundationaLLM.Gateway.html
+  - name: .
+  - uid: FoundationaLLM.Gateway.Interfaces
+    name: Interfaces
+    href: FoundationaLLM.Gateway.Interfaces.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Gateway
+    name: Gateway
+    href: FoundationaLLM.Gateway.html
+  - name: .
+  - uid: FoundationaLLM.Gateway.Interfaces
+    name: Interfaces
+    href: FoundationaLLM.Gateway.Interfaces.html
+- uid: FoundationaLLM.Gateway.Models
+  commentId: N:FoundationaLLM.Gateway.Models
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Gateway.Models
+  nameWithType: FoundationaLLM.Gateway.Models
+  fullName: FoundationaLLM.Gateway.Models
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Gateway
+    name: Gateway
+    href: FoundationaLLM.Gateway.html
+  - name: .
+  - uid: FoundationaLLM.Gateway.Models
+    name: Models
+    href: FoundationaLLM.Gateway.Models.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Gateway
+    name: Gateway
+    href: FoundationaLLM.Gateway.html
+  - name: .
+  - uid: FoundationaLLM.Gateway.Models
+    name: Models
+    href: FoundationaLLM.Gateway.Models.html
+- uid: FoundationaLLM.Gateway.Services
+  commentId: N:FoundationaLLM.Gateway.Services
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Gateway.Services
+  nameWithType: FoundationaLLM.Gateway.Services
+  fullName: FoundationaLLM.Gateway.Services
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Gateway
+    name: Gateway
+    href: FoundationaLLM.Gateway.html
+  - name: .
+  - uid: FoundationaLLM.Gateway.Services
+    name: Services
+    href: FoundationaLLM.Gateway.Services.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Gateway
+    name: Gateway
+    href: FoundationaLLM.Gateway.html
+  - name: .
+  - uid: FoundationaLLM.Gateway.Services
+    name: Services
+    href: FoundationaLLM.Gateway.Services.html
+- uid: FoundationaLLM.Gateway.API.Controllers
+  commentId: N:FoundationaLLM.Gateway.API.Controllers
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Gateway.API.Controllers
+  nameWithType: FoundationaLLM.Gateway.API.Controllers
+  fullName: FoundationaLLM.Gateway.API.Controllers
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Gateway
+    name: Gateway
+    href: FoundationaLLM.Gateway.html
+  - name: .
+  - uid: FoundationaLLM.Gateway.API
+    name: API
+    href: FoundationaLLM.Gateway.API.html
+  - name: .
+  - uid: FoundationaLLM.Gateway.API.Controllers
+    name: Controllers
+    href: FoundationaLLM.Gateway.API.Controllers.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Gateway
+    name: Gateway
+    href: FoundationaLLM.Gateway.html
+  - name: .
+  - uid: FoundationaLLM.Gateway.API
+    name: API
+    href: FoundationaLLM.Gateway.API.html
+  - name: .
+  - uid: FoundationaLLM.Gateway.API.Controllers
+    name: Controllers
+    href: FoundationaLLM.Gateway.API.Controllers.html
+- uid: FoundationaLLM.Gateway.AdapterAPI.Controllers
+  commentId: N:FoundationaLLM.Gateway.AdapterAPI.Controllers
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Gateway.AdapterAPI.Controllers
+  nameWithType: FoundationaLLM.Gateway.AdapterAPI.Controllers
+  fullName: FoundationaLLM.Gateway.AdapterAPI.Controllers
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Gateway
+    name: Gateway
+    href: FoundationaLLM.Gateway.html
+  - name: .
+  - uid: FoundationaLLM.Gateway.AdapterAPI
+    name: AdapterAPI
+    href: FoundationaLLM.Gateway.AdapterAPI.html
+  - name: .
+  - uid: FoundationaLLM.Gateway.AdapterAPI.Controllers
+    name: Controllers
+    href: FoundationaLLM.Gateway.AdapterAPI.Controllers.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Gateway
+    name: Gateway
+    href: FoundationaLLM.Gateway.html
+  - name: .
+  - uid: FoundationaLLM.Gateway.AdapterAPI
+    name: AdapterAPI
+    href: FoundationaLLM.Gateway.AdapterAPI.html
+  - name: .
+  - uid: FoundationaLLM.Gateway.AdapterAPI.Controllers
+    name: Controllers
+    href: FoundationaLLM.Gateway.AdapterAPI.Controllers.html

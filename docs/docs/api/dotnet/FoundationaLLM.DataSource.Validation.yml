@@ -1,0 +1,78 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.DataSource.Validation
+  commentId: N:FoundationaLLM.DataSource.Validation
+  id: Validation
+  parent: FoundationaLLM.DataSource
+  children:
+  - FoundationaLLM.DataSource.Validation.AzureDataLakeDataSourceValidator
+  - FoundationaLLM.DataSource.Validation.AzureSQLDatabaseDataSourceValidator
+  - FoundationaLLM.DataSource.Validation.DataSourceBaseValidator
+  - FoundationaLLM.DataSource.Validation.DataSourceValidator`1
+  - FoundationaLLM.DataSource.Validation.OneLakeDataSourceValidator
+  - FoundationaLLM.DataSource.Validation.SharePointOnlineSiteDataSourceValidator
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM.DataSource.Validation
+  nameWithType: FoundationaLLM.DataSource.Validation
+  fullName: FoundationaLLM.DataSource.Validation
+  type: Namespace
+  assemblies:
+  - FoundationaLLM.DataSource
+references:
+- uid: FoundationaLLM.DataSource.Validation.AzureDataLakeDataSourceValidator
+  commentId: T:FoundationaLLM.DataSource.Validation.AzureDataLakeDataSourceValidator
+  href: FoundationaLLM.DataSource.Validation.AzureDataLakeDataSourceValidator.html
+  name: AzureDataLakeDataSourceValidator
+  nameWithType: AzureDataLakeDataSourceValidator
+  fullName: FoundationaLLM.DataSource.Validation.AzureDataLakeDataSourceValidator
+- uid: FoundationaLLM.DataSource.Validation.AzureSQLDatabaseDataSourceValidator
+  commentId: T:FoundationaLLM.DataSource.Validation.AzureSQLDatabaseDataSourceValidator
+  href: FoundationaLLM.DataSource.Validation.AzureSQLDatabaseDataSourceValidator.html
+  name: AzureSQLDatabaseDataSourceValidator
+  nameWithType: AzureSQLDatabaseDataSourceValidator
+  fullName: FoundationaLLM.DataSource.Validation.AzureSQLDatabaseDataSourceValidator
+- uid: FoundationaLLM.DataSource.Validation.DataSourceBaseValidator
+  commentId: T:FoundationaLLM.DataSource.Validation.DataSourceBaseValidator
+  href: FoundationaLLM.DataSource.Validation.DataSourceBaseValidator.html
+  name: DataSourceBaseValidator
+  nameWithType: DataSourceBaseValidator
+  fullName: FoundationaLLM.DataSource.Validation.DataSourceBaseValidator
+- uid: FoundationaLLM.DataSource.Validation.DataSourceValidator`1
+  commentId: T:FoundationaLLM.DataSource.Validation.DataSourceValidator`1
+  href: FoundationaLLM.DataSource.Validation.DataSourceValidator-1.html
+  name: DataSourceValidator<T>
+  nameWithType: DataSourceValidator<T>
+  fullName: FoundationaLLM.DataSource.Validation.DataSourceValidator<T>
+  nameWithType.vb: DataSourceValidator(Of T)
+  fullName.vb: FoundationaLLM.DataSource.Validation.DataSourceValidator(Of T)
+  name.vb: DataSourceValidator(Of T)
+  spec.csharp:
+  - uid: FoundationaLLM.DataSource.Validation.DataSourceValidator`1
+    name: DataSourceValidator
+    href: FoundationaLLM.DataSource.Validation.DataSourceValidator-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: FoundationaLLM.DataSource.Validation.DataSourceValidator`1
+    name: DataSourceValidator
+    href: FoundationaLLM.DataSource.Validation.DataSourceValidator-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: FoundationaLLM.DataSource.Validation.OneLakeDataSourceValidator
+  commentId: T:FoundationaLLM.DataSource.Validation.OneLakeDataSourceValidator
+  href: FoundationaLLM.DataSource.Validation.OneLakeDataSourceValidator.html
+  name: OneLakeDataSourceValidator
+  nameWithType: OneLakeDataSourceValidator
+  fullName: FoundationaLLM.DataSource.Validation.OneLakeDataSourceValidator
+- uid: FoundationaLLM.DataSource.Validation.SharePointOnlineSiteDataSourceValidator
+  commentId: T:FoundationaLLM.DataSource.Validation.SharePointOnlineSiteDataSourceValidator
+  href: FoundationaLLM.DataSource.Validation.SharePointOnlineSiteDataSourceValidator.html
+  name: SharePointOnlineSiteDataSourceValidator
+  nameWithType: SharePointOnlineSiteDataSourceValidator
+  fullName: FoundationaLLM.DataSource.Validation.SharePointOnlineSiteDataSourceValidator

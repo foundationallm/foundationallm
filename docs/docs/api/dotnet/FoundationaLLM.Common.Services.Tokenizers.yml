@@ -1,0 +1,73 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Common.Services.Tokenizers
+  commentId: N:FoundationaLLM.Common.Services.Tokenizers
+  id: Tokenizers
+  parent: FoundationaLLM.Common.Services
+  children:
+  - FoundationaLLM.Common.Services.Tokenizers.LeasedTikTokenizer
+  - FoundationaLLM.Common.Services.Tokenizers.MicrosoftBPETokenizerService
+  - FoundationaLLM.Common.Services.Tokenizers.MicrosoftMLTokenizer
+  - FoundationaLLM.Common.Services.Tokenizers.TikTokenizerConfig
+  - FoundationaLLM.Common.Services.Tokenizers.TikTokenizerEncoders
+  - FoundationaLLM.Common.Services.Tokenizers.TikTokenizerTokens
+  - FoundationaLLM.Common.Services.Tokenizers.TokenizerServiceNames
+  - FoundationaLLM.Common.Services.Tokenizers.TryAGITokenizer
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM.Common.Services.Tokenizers
+  nameWithType: FoundationaLLM.Common.Services.Tokenizers
+  fullName: FoundationaLLM.Common.Services.Tokenizers
+  type: Namespace
+  assemblies:
+  - FoundationaLLM.Common
+references:
+- uid: FoundationaLLM.Common.Services.Tokenizers.LeasedTikTokenizer
+  commentId: T:FoundationaLLM.Common.Services.Tokenizers.LeasedTikTokenizer
+  href: FoundationaLLM.Common.Services.Tokenizers.LeasedTikTokenizer.html
+  name: LeasedTikTokenizer
+  nameWithType: LeasedTikTokenizer
+  fullName: FoundationaLLM.Common.Services.Tokenizers.LeasedTikTokenizer
+- uid: FoundationaLLM.Common.Services.Tokenizers.MicrosoftBPETokenizerService
+  commentId: T:FoundationaLLM.Common.Services.Tokenizers.MicrosoftBPETokenizerService
+  href: FoundationaLLM.Common.Services.Tokenizers.MicrosoftBPETokenizerService.html
+  name: MicrosoftBPETokenizerService
+  nameWithType: MicrosoftBPETokenizerService
+  fullName: FoundationaLLM.Common.Services.Tokenizers.MicrosoftBPETokenizerService
+- uid: FoundationaLLM.Common.Services.Tokenizers.MicrosoftMLTokenizer
+  commentId: T:FoundationaLLM.Common.Services.Tokenizers.MicrosoftMLTokenizer
+  href: FoundationaLLM.Common.Services.Tokenizers.MicrosoftMLTokenizer.html
+  name: MicrosoftMLTokenizer
+  nameWithType: MicrosoftMLTokenizer
+  fullName: FoundationaLLM.Common.Services.Tokenizers.MicrosoftMLTokenizer
+- uid: FoundationaLLM.Common.Services.Tokenizers.TikTokenizerConfig
+  commentId: T:FoundationaLLM.Common.Services.Tokenizers.TikTokenizerConfig
+  href: FoundationaLLM.Common.Services.Tokenizers.TikTokenizerConfig.html
+  name: TikTokenizerConfig
+  nameWithType: TikTokenizerConfig
+  fullName: FoundationaLLM.Common.Services.Tokenizers.TikTokenizerConfig
+- uid: FoundationaLLM.Common.Services.Tokenizers.TikTokenizerEncoders
+  commentId: T:FoundationaLLM.Common.Services.Tokenizers.TikTokenizerEncoders
+  href: FoundationaLLM.Common.Services.Tokenizers.TikTokenizerEncoders.html
+  name: TikTokenizerEncoders
+  nameWithType: TikTokenizerEncoders
+  fullName: FoundationaLLM.Common.Services.Tokenizers.TikTokenizerEncoders
+- uid: FoundationaLLM.Common.Services.Tokenizers.TikTokenizerTokens
+  commentId: T:FoundationaLLM.Common.Services.Tokenizers.TikTokenizerTokens
+  href: FoundationaLLM.Common.Services.Tokenizers.TikTokenizerTokens.html
+  name: TikTokenizerTokens
+  nameWithType: TikTokenizerTokens
+  fullName: FoundationaLLM.Common.Services.Tokenizers.TikTokenizerTokens
+- uid: FoundationaLLM.Common.Services.Tokenizers.TokenizerServiceNames
+  commentId: T:FoundationaLLM.Common.Services.Tokenizers.TokenizerServiceNames
+  href: FoundationaLLM.Common.Services.Tokenizers.TokenizerServiceNames.html
+  name: TokenizerServiceNames
+  nameWithType: TokenizerServiceNames
+  fullName: FoundationaLLM.Common.Services.Tokenizers.TokenizerServiceNames
+- uid: FoundationaLLM.Common.Services.Tokenizers.TryAGITokenizer
+  commentId: T:FoundationaLLM.Common.Services.Tokenizers.TryAGITokenizer
+  href: FoundationaLLM.Common.Services.Tokenizers.TryAGITokenizer.html
+  name: TryAGITokenizer
+  nameWithType: TryAGITokenizer
+  fullName: FoundationaLLM.Common.Services.Tokenizers.TryAGITokenizer

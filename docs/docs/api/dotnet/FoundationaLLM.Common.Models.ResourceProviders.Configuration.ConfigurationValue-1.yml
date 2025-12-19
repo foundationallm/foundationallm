@@ -1,0 +1,841 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValue`1
+  commentId: T:FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValue`1
+  id: ConfigurationValue`1
+  parent: FoundationaLLM.Common.Models.ResourceProviders.Configuration
+  children:
+  - FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValue`1.Deserialize(System.String)
+  - FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValue`1.Exceptions
+  - FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValue`1.GetValueForUser(System.String)
+  - FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValue`1.Value
+  langs:
+  - csharp
+  - vb
+  name: ConfigurationValue<T>
+  nameWithType: ConfigurationValue<T>
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValue<T>
+  type: Class
+  source:
+    remote:
+      path: src/dotnet/Common/Models/ResourceProviders/Configuration/ConfigurationValue`1.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: ConfigurationValue
+    path: ../src/dotnet/Common/Models/ResourceProviders/Configuration/ConfigurationValue`1.cs
+    startLine: 9
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.ResourceProviders.Configuration
+  summary: Provides a strongly typed configuration value with support for per-user exceptions.
+  example: []
+  syntax:
+    content: public class ConfigurationValue<T>
+    typeParameters:
+    - id: T
+      description: The type of the configuration value
+    content.vb: Public Class ConfigurationValue(Of T)
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+  extensionMethods:
+  - System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+  nameWithType.vb: ConfigurationValue(Of T)
+  fullName.vb: FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValue(Of T)
+  name.vb: ConfigurationValue(Of T)
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValue`1.Value
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValue`1.Value
+  id: Value
+  parent: FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValue`1
+  langs:
+  - csharp
+  - vb
+  name: Value
+  nameWithType: ConfigurationValue<T>.Value
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValue<T>.Value
+  type: Property
+  source:
+    remote:
+      path: src/dotnet/Common/Models/ResourceProviders/Configuration/ConfigurationValue`1.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: Value
+    path: ../src/dotnet/Common/Models/ResourceProviders/Configuration/ConfigurationValue`1.cs
+    startLine: 14
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.ResourceProviders.Configuration
+  summary: Gets or sets the value of the configuration entry.
+  example: []
+  syntax:
+    content: >-
+      [JsonPropertyName("value")]
+
+      public required T Value { get; set; }
+    parameters: []
+    return:
+      type: '{T}'
+    content.vb: >-
+      <JsonPropertyName("value")>
+
+      Public Property Value As T
+  overload: FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValue`1.Value*
+  attributes:
+  - type: System.Text.Json.Serialization.JsonPropertyNameAttribute
+    ctor: System.Text.Json.Serialization.JsonPropertyNameAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: value
+  nameWithType.vb: ConfigurationValue(Of T).Value
+  fullName.vb: FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValue(Of T).Value
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValue`1.Exceptions
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValue`1.Exceptions
+  id: Exceptions
+  parent: FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValue`1
+  langs:
+  - csharp
+  - vb
+  name: Exceptions
+  nameWithType: ConfigurationValue<T>.Exceptions
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValue<T>.Exceptions
+  type: Property
+  source:
+    remote:
+      path: src/dotnet/Common/Models/ResourceProviders/Configuration/ConfigurationValue`1.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: Exceptions
+    path: ../src/dotnet/Common/Models/ResourceProviders/Configuration/ConfigurationValue`1.cs
+    startLine: 20
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.ResourceProviders.Configuration
+  summary: Gets or sets the list of exceptions to the configuration value.
+  example: []
+  syntax:
+    content: >-
+      [JsonPropertyName("value_exceptions")]
+
+      public List<ConfigurationValueException<T>> Exceptions { get; set; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.List{FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValueException{{T}}}
+    content.vb: >-
+      <JsonPropertyName("value_exceptions")>
+
+      Public Property Exceptions As List(Of ConfigurationValueException(Of T))
+  overload: FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValue`1.Exceptions*
+  attributes:
+  - type: System.Text.Json.Serialization.JsonPropertyNameAttribute
+    ctor: System.Text.Json.Serialization.JsonPropertyNameAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: value_exceptions
+  nameWithType.vb: ConfigurationValue(Of T).Exceptions
+  fullName.vb: FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValue(Of T).Exceptions
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValue`1.GetValueForUser(System.String)
+  commentId: M:FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValue`1.GetValueForUser(System.String)
+  id: GetValueForUser(System.String)
+  parent: FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValue`1
+  langs:
+  - csharp
+  - vb
+  name: GetValueForUser(string)
+  nameWithType: ConfigurationValue<T>.GetValueForUser(string)
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValue<T>.GetValueForUser(string)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Common/Models/ResourceProviders/Configuration/ConfigurationValue`1.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: GetValueForUser
+    path: ../src/dotnet/Common/Models/ResourceProviders/Configuration/ConfigurationValue`1.cs
+    startLine: 32
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.ResourceProviders.Configuration
+  summary: Gets the value of the configuration entry for the specified user.
+  remarks: >-
+    The method returns the user-specific value if an active exception exists for the user.
+
+    If not, the method returns the default value.
+  example: []
+  syntax:
+    content: public T GetValueForUser(string userPrincipalName)
+    parameters:
+    - id: userPrincipalName
+      type: System.String
+      description: The user principal name (UPN) of the user.
+    return:
+      type: '{T}'
+      description: The configuration value.
+    content.vb: Public Function GetValueForUser(userPrincipalName As String) As T
+  overload: FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValue`1.GetValueForUser*
+  nameWithType.vb: ConfigurationValue(Of T).GetValueForUser(String)
+  fullName.vb: FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValue(Of T).GetValueForUser(String)
+  name.vb: GetValueForUser(String)
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValue`1.Deserialize(System.String)
+  commentId: M:FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValue`1.Deserialize(System.String)
+  id: Deserialize(System.String)
+  parent: FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValue`1
+  langs:
+  - csharp
+  - vb
+  name: Deserialize(string)
+  nameWithType: ConfigurationValue<T>.Deserialize(string)
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValue<T>.Deserialize(string)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Common/Models/ResourceProviders/Configuration/ConfigurationValue`1.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: Deserialize
+    path: ../src/dotnet/Common/Models/ResourceProviders/Configuration/ConfigurationValue`1.cs
+    startLine: 47
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.ResourceProviders.Configuration
+  summary: Deserializes a JSON string into a <xref href="FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValue%601" data-throw-if-not-resolved="false"></xref>.
+  example: []
+  syntax:
+    content: public static ConfigurationValue<T> Deserialize(string json)
+    parameters:
+    - id: json
+      type: System.String
+      description: The serialized representation of the configuration value.
+    return:
+      type: FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValue`1
+      description: A <xref href="FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValue%601" data-throw-if-not-resolved="false"></xref> providing the configuration value.
+    content.vb: Public Shared Function Deserialize(json As String) As ConfigurationValue(Of T)
+  overload: FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValue`1.Deserialize*
+  nameWithType.vb: ConfigurationValue(Of T).Deserialize(String)
+  fullName.vb: FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValue(Of T).Deserialize(String)
+  name.vb: Deserialize(String)
+references:
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Configuration
+  commentId: N:FoundationaLLM.Common.Models.ResourceProviders.Configuration
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.ResourceProviders.Configuration
+  nameWithType: FoundationaLLM.Common.Models.ResourceProviders.Configuration
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Configuration
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders
+    name: ResourceProviders
+    href: FoundationaLLM.Common.Models.ResourceProviders.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.Configuration
+    name: Configuration
+    href: FoundationaLLM.Common.Models.ResourceProviders.Configuration.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders
+    name: ResourceProviders
+    href: FoundationaLLM.Common.Models.ResourceProviders.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.Configuration
+    name: Configuration
+    href: FoundationaLLM.Common.Models.ResourceProviders.Configuration.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  parent: FoundationaLLM.Core.Utils.ObjectExtensions
+  definition: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  isExternal: true
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions
+  commentId: T:FoundationaLLM.Core.Utils.ObjectExtensions
+  parent: FoundationaLLM.Core.Utils
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html
+  name: ObjectExtensions
+  nameWithType: ObjectExtensions
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions
+- uid: FoundationaLLM.Core.Utils
+  commentId: N:FoundationaLLM.Core.Utils
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Core.Utils
+  nameWithType: FoundationaLLM.Core.Utils
+  fullName: FoundationaLLM.Core.Utils
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValue`1.Value*
+  commentId: Overload:FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValue`1.Value
+  href: FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValue-1.html#FoundationaLLM_Common_Models_ResourceProviders_Configuration_ConfigurationValue_1_Value
+  name: Value
+  nameWithType: ConfigurationValue<T>.Value
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValue<T>.Value
+  nameWithType.vb: ConfigurationValue(Of T).Value
+  fullName.vb: FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValue(Of T).Value
+- uid: '{T}'
+  commentId: '!:T'
+  definition: T
+  name: T
+  nameWithType: T
+  fullName: T
+- uid: T
+  name: T
+  nameWithType: T
+  fullName: T
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValue`1.Exceptions*
+  commentId: Overload:FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValue`1.Exceptions
+  href: FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValue-1.html#FoundationaLLM_Common_Models_ResourceProviders_Configuration_ConfigurationValue_1_Exceptions
+  name: Exceptions
+  nameWithType: ConfigurationValue<T>.Exceptions
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValue<T>.Exceptions
+  nameWithType.vb: ConfigurationValue(Of T).Exceptions
+  fullName.vb: FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValue(Of T).Exceptions
+- uid: System.Collections.Generic.List{FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValueException{{T}}}
+  commentId: T:System.Collections.Generic.List{FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValueException{`0}}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.List`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  name: List<ConfigurationValueException<T>>
+  nameWithType: List<ConfigurationValueException<T>>
+  fullName: System.Collections.Generic.List<FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValueException<T>>
+  nameWithType.vb: List(Of ConfigurationValueException(Of T))
+  fullName.vb: System.Collections.Generic.List(Of FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValueException(Of T))
+  name.vb: List(Of ConfigurationValueException(Of T))
+  spec.csharp:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValueException`1
+    name: ConfigurationValueException
+    href: FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValueException-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValueException`1
+    name: ConfigurationValueException
+    href: FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValueException-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: )
+- uid: System.Collections.Generic.List`1
+  commentId: T:System.Collections.Generic.List`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  name: List<T>
+  nameWithType: List<T>
+  fullName: System.Collections.Generic.List<T>
+  nameWithType.vb: List(Of T)
+  fullName.vb: System.Collections.Generic.List(Of T)
+  name.vb: List(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValue`1.GetValueForUser*
+  commentId: Overload:FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValue`1.GetValueForUser
+  href: FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValue-1.html#FoundationaLLM_Common_Models_ResourceProviders_Configuration_ConfigurationValue_1_GetValueForUser_System_String_
+  name: GetValueForUser
+  nameWithType: ConfigurationValue<T>.GetValueForUser
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValue<T>.GetValueForUser
+  nameWithType.vb: ConfigurationValue(Of T).GetValueForUser
+  fullName.vb: FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValue(Of T).GetValueForUser
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValue`1
+  commentId: T:FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValue`1
+  parent: FoundationaLLM.Common.Models.ResourceProviders.Configuration
+  href: FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValue-1.html
+  name: ConfigurationValue<T>
+  nameWithType: ConfigurationValue<T>
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValue<T>
+  nameWithType.vb: ConfigurationValue(Of T)
+  fullName.vb: FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValue(Of T)
+  name.vb: ConfigurationValue(Of T)
+  spec.csharp:
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValue`1
+    name: ConfigurationValue
+    href: FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValue-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValue`1
+    name: ConfigurationValue
+    href: FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValue-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValue`1.Deserialize*
+  commentId: Overload:FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValue`1.Deserialize
+  href: FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValue-1.html#FoundationaLLM_Common_Models_ResourceProviders_Configuration_ConfigurationValue_1_Deserialize_System_String_
+  name: Deserialize
+  nameWithType: ConfigurationValue<T>.Deserialize
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValue<T>.Deserialize
+  nameWithType.vb: ConfigurationValue(Of T).Deserialize
+  fullName.vb: FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValue(Of T).Deserialize

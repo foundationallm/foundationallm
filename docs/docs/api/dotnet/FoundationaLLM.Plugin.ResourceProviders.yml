@@ -1,0 +1,31 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Plugin.ResourceProviders
+  commentId: N:FoundationaLLM.Plugin.ResourceProviders
+  id: ResourceProviders
+  parent: FoundationaLLM.Plugin
+  children:
+  - FoundationaLLM.Plugin.ResourceProviders.PluginLoadContext
+  - FoundationaLLM.Plugin.ResourceProviders.PluginResourceProviderService
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM.Plugin.ResourceProviders
+  nameWithType: FoundationaLLM.Plugin.ResourceProviders
+  fullName: FoundationaLLM.Plugin.ResourceProviders
+  type: Namespace
+  assemblies:
+  - FoundationaLLM.Plugin
+references:
+- uid: FoundationaLLM.Plugin.ResourceProviders.PluginLoadContext
+  commentId: T:FoundationaLLM.Plugin.ResourceProviders.PluginLoadContext
+  href: FoundationaLLM.Plugin.ResourceProviders.PluginLoadContext.html
+  name: PluginLoadContext
+  nameWithType: PluginLoadContext
+  fullName: FoundationaLLM.Plugin.ResourceProviders.PluginLoadContext
+- uid: FoundationaLLM.Plugin.ResourceProviders.PluginResourceProviderService
+  commentId: T:FoundationaLLM.Plugin.ResourceProviders.PluginResourceProviderService
+  href: FoundationaLLM.Plugin.ResourceProviders.PluginResourceProviderService.html
+  name: PluginResourceProviderService
+  nameWithType: PluginResourceProviderService
+  fullName: FoundationaLLM.Plugin.ResourceProviders.PluginResourceProviderService

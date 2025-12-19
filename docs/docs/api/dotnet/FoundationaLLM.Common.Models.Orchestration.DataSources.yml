@@ -1,0 +1,103 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Common.Models.Orchestration.DataSources
+  commentId: N:FoundationaLLM.Common.Models.Orchestration.DataSources
+  id: DataSources
+  parent: FoundationaLLM.Common.Models.Orchestration
+  children:
+  - FoundationaLLM.Common.Models.Orchestration.DataSources.BlobStorageDataSource
+  - FoundationaLLM.Common.Models.Orchestration.DataSources.CXODataSource
+  - FoundationaLLM.Common.Models.Orchestration.DataSources.DataSourceBase
+  - FoundationaLLM.Common.Models.Orchestration.DataSources.SQLDatabaseDataSource
+  - FoundationaLLM.Common.Models.Orchestration.DataSources.SearchServiceDataSource
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM.Common.Models.Orchestration.DataSources
+  nameWithType: FoundationaLLM.Common.Models.Orchestration.DataSources
+  fullName: FoundationaLLM.Common.Models.Orchestration.DataSources
+  type: Namespace
+  assemblies:
+  - FoundationaLLM.Common
+references:
+- uid: FoundationaLLM.Common.Models.Orchestration.DataSources.BlobStorageDataSource
+  commentId: T:FoundationaLLM.Common.Models.Orchestration.DataSources.BlobStorageDataSource
+  parent: FoundationaLLM.Common.Models.Orchestration.DataSources
+  href: FoundationaLLM.Common.Models.Orchestration.DataSources.BlobStorageDataSource.html
+  name: BlobStorageDataSource
+  nameWithType: BlobStorageDataSource
+  fullName: FoundationaLLM.Common.Models.Orchestration.DataSources.BlobStorageDataSource
+- uid: FoundationaLLM.Common.Models.Orchestration.DataSources.CXODataSource
+  commentId: T:FoundationaLLM.Common.Models.Orchestration.DataSources.CXODataSource
+  parent: FoundationaLLM.Common.Models.Orchestration.DataSources
+  href: FoundationaLLM.Common.Models.Orchestration.DataSources.CXODataSource.html
+  name: CXODataSource
+  nameWithType: CXODataSource
+  fullName: FoundationaLLM.Common.Models.Orchestration.DataSources.CXODataSource
+- uid: FoundationaLLM.Common.Models.Orchestration.DataSources.DataSourceBase
+  commentId: T:FoundationaLLM.Common.Models.Orchestration.DataSources.DataSourceBase
+  parent: FoundationaLLM.Common.Models.Orchestration.DataSources
+  href: FoundationaLLM.Common.Models.Orchestration.DataSources.DataSourceBase.html
+  name: DataSourceBase
+  nameWithType: DataSourceBase
+  fullName: FoundationaLLM.Common.Models.Orchestration.DataSources.DataSourceBase
+- uid: FoundationaLLM.Common.Models.Orchestration.DataSources.SQLDatabaseDataSource
+  commentId: T:FoundationaLLM.Common.Models.Orchestration.DataSources.SQLDatabaseDataSource
+  parent: FoundationaLLM.Common.Models.Orchestration.DataSources
+  href: FoundationaLLM.Common.Models.Orchestration.DataSources.SQLDatabaseDataSource.html
+  name: SQLDatabaseDataSource
+  nameWithType: SQLDatabaseDataSource
+  fullName: FoundationaLLM.Common.Models.Orchestration.DataSources.SQLDatabaseDataSource
+- uid: FoundationaLLM.Common.Models.Orchestration.DataSources.SearchServiceDataSource
+  commentId: T:FoundationaLLM.Common.Models.Orchestration.DataSources.SearchServiceDataSource
+  parent: FoundationaLLM.Common.Models.Orchestration.DataSources
+  href: FoundationaLLM.Common.Models.Orchestration.DataSources.SearchServiceDataSource.html
+  name: SearchServiceDataSource
+  nameWithType: SearchServiceDataSource
+  fullName: FoundationaLLM.Common.Models.Orchestration.DataSources.SearchServiceDataSource
+- uid: FoundationaLLM.Common.Models.Orchestration.DataSources
+  commentId: N:FoundationaLLM.Common.Models.Orchestration.DataSources
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.Orchestration.DataSources
+  nameWithType: FoundationaLLM.Common.Models.Orchestration.DataSources
+  fullName: FoundationaLLM.Common.Models.Orchestration.DataSources
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Orchestration
+    name: Orchestration
+    href: FoundationaLLM.Common.Models.Orchestration.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Orchestration.DataSources
+    name: DataSources
+    href: FoundationaLLM.Common.Models.Orchestration.DataSources.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Orchestration
+    name: Orchestration
+    href: FoundationaLLM.Common.Models.Orchestration.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Orchestration.DataSources
+    name: DataSources
+    href: FoundationaLLM.Common.Models.Orchestration.DataSources.html

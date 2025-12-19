@@ -1,0 +1,1339 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Common.Models.Services.Result`1
+  commentId: T:FoundationaLLM.Common.Models.Services.Result`1
+  id: Result`1
+  parent: FoundationaLLM.Common.Models.Services
+  children:
+  - FoundationaLLM.Common.Models.Services.Result`1.Error
+  - FoundationaLLM.Common.Models.Services.Result`1.Failure(FoundationaLLM.Common.Models.Services.DomainError)
+  - FoundationaLLM.Common.Models.Services.Result`1.FailureFromErrorMessage(System.String,System.Int32,System.String)
+  - FoundationaLLM.Common.Models.Services.Result`1.FailureFromException(System.Exception,System.Int32,System.String)
+  - FoundationaLLM.Common.Models.Services.Result`1.FailureFromHttpResponse(System.Net.Http.HttpResponseMessage)
+  - FoundationaLLM.Common.Models.Services.Result`1.IsFailure
+  - FoundationaLLM.Common.Models.Services.Result`1.IsSuccess
+  - FoundationaLLM.Common.Models.Services.Result`1.Success(`0)
+  - FoundationaLLM.Common.Models.Services.Result`1.ToActionResult
+  - FoundationaLLM.Common.Models.Services.Result`1.TryGetValue(`0@)
+  - FoundationaLLM.Common.Models.Services.Result`1.Value
+  langs:
+  - csharp
+  - vb
+  name: Result<T>
+  nameWithType: Result<T>
+  fullName: FoundationaLLM.Common.Models.Services.Result<T>
+  type: Class
+  source:
+    remote:
+      path: src/dotnet/Common/Models/Services/Result`1.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: Result
+    path: ../src/dotnet/Common/Models/Services/Result`1.cs
+    startLine: 11
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.Services
+  summary: >-
+    Represents the result of an operation that can succeed with a value of a specified reference type or fail with a
+
+    domain error.
+  example: []
+  syntax:
+    content: 'public class Result<T> where T : class'
+    typeParameters:
+    - id: T
+      description: The type of the value returned when the operation is successful. Must be a reference type.
+    content.vb: Public Class Result(Of T As Class)
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+  extensionMethods:
+  - System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+  nameWithType.vb: Result(Of T)
+  fullName.vb: FoundationaLLM.Common.Models.Services.Result(Of T)
+  name.vb: Result(Of T)
+- uid: FoundationaLLM.Common.Models.Services.Result`1.IsSuccess
+  commentId: P:FoundationaLLM.Common.Models.Services.Result`1.IsSuccess
+  id: IsSuccess
+  parent: FoundationaLLM.Common.Models.Services.Result`1
+  langs:
+  - csharp
+  - vb
+  name: IsSuccess
+  nameWithType: Result<T>.IsSuccess
+  fullName: FoundationaLLM.Common.Models.Services.Result<T>.IsSuccess
+  type: Property
+  source:
+    remote:
+      path: src/dotnet/Common/Models/Services/Result`1.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: IsSuccess
+    path: ../src/dotnet/Common/Models/Services/Result`1.cs
+    startLine: 24
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.Services
+  summary: Gets a value indicating whether the result refers to a successful outcome.
+  example: []
+  syntax:
+    content: >-
+      [JsonPropertyName("is_success")]
+
+      public bool IsSuccess { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: >-
+      <JsonPropertyName("is_success")>
+
+      Public ReadOnly Property IsSuccess As Boolean
+  overload: FoundationaLLM.Common.Models.Services.Result`1.IsSuccess*
+  attributes:
+  - type: System.Text.Json.Serialization.JsonPropertyNameAttribute
+    ctor: System.Text.Json.Serialization.JsonPropertyNameAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: is_success
+  nameWithType.vb: Result(Of T).IsSuccess
+  fullName.vb: FoundationaLLM.Common.Models.Services.Result(Of T).IsSuccess
+- uid: FoundationaLLM.Common.Models.Services.Result`1.IsFailure
+  commentId: P:FoundationaLLM.Common.Models.Services.Result`1.IsFailure
+  id: IsFailure
+  parent: FoundationaLLM.Common.Models.Services.Result`1
+  langs:
+  - csharp
+  - vb
+  name: IsFailure
+  nameWithType: Result<T>.IsFailure
+  fullName: FoundationaLLM.Common.Models.Services.Result<T>.IsFailure
+  type: Property
+  source:
+    remote:
+      path: src/dotnet/Common/Models/Services/Result`1.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: IsFailure
+    path: ../src/dotnet/Common/Models/Services/Result`1.cs
+    startLine: 30
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.Services
+  summary: Gets a value indicating whether the result represents a failure state.
+  example: []
+  syntax:
+    content: >-
+      [JsonIgnore]
+
+      public bool IsFailure { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: >-
+      <JsonIgnore>
+
+      Public ReadOnly Property IsFailure As Boolean
+  overload: FoundationaLLM.Common.Models.Services.Result`1.IsFailure*
+  attributes:
+  - type: System.Text.Json.Serialization.JsonIgnoreAttribute
+    ctor: System.Text.Json.Serialization.JsonIgnoreAttribute.#ctor
+    arguments: []
+  nameWithType.vb: Result(Of T).IsFailure
+  fullName.vb: FoundationaLLM.Common.Models.Services.Result(Of T).IsFailure
+- uid: FoundationaLLM.Common.Models.Services.Result`1.Error
+  commentId: P:FoundationaLLM.Common.Models.Services.Result`1.Error
+  id: Error
+  parent: FoundationaLLM.Common.Models.Services.Result`1
+  langs:
+  - csharp
+  - vb
+  name: Error
+  nameWithType: Result<T>.Error
+  fullName: FoundationaLLM.Common.Models.Services.Result<T>.Error
+  type: Property
+  source:
+    remote:
+      path: src/dotnet/Common/Models/Services/Result`1.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: Error
+    path: ../src/dotnet/Common/Models/Services/Result`1.cs
+    startLine: 36
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.Services
+  summary: Gets the error associated with a failure result.
+  example: []
+  syntax:
+    content: >-
+      [JsonPropertyName("error")]
+
+      public DomainError? Error { get; }
+    parameters: []
+    return:
+      type: FoundationaLLM.Common.Models.Services.DomainError
+    content.vb: >-
+      <JsonPropertyName("error")>
+
+      Public ReadOnly Property [Error] As DomainError
+  overload: FoundationaLLM.Common.Models.Services.Result`1.Error*
+  attributes:
+  - type: System.Text.Json.Serialization.JsonPropertyNameAttribute
+    ctor: System.Text.Json.Serialization.JsonPropertyNameAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: error
+  nameWithType.vb: Result(Of T).Error
+  fullName.vb: FoundationaLLM.Common.Models.Services.Result(Of T).Error
+- uid: FoundationaLLM.Common.Models.Services.Result`1.Value
+  commentId: P:FoundationaLLM.Common.Models.Services.Result`1.Value
+  id: Value
+  parent: FoundationaLLM.Common.Models.Services.Result`1
+  langs:
+  - csharp
+  - vb
+  name: Value
+  nameWithType: Result<T>.Value
+  fullName: FoundationaLLM.Common.Models.Services.Result<T>.Value
+  type: Property
+  source:
+    remote:
+      path: src/dotnet/Common/Models/Services/Result`1.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: Value
+    path: ../src/dotnet/Common/Models/Services/Result`1.cs
+    startLine: 42
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.Services
+  summary: Gets the value associated with the result.
+  example: []
+  syntax:
+    content: >-
+      [JsonPropertyName("value")]
+
+      public T? Value { get; }
+    parameters: []
+    return:
+      type: '{T}'
+    content.vb: >-
+      <JsonPropertyName("value")>
+
+      Public ReadOnly Property Value As T
+  overload: FoundationaLLM.Common.Models.Services.Result`1.Value*
+  attributes:
+  - type: System.Text.Json.Serialization.JsonPropertyNameAttribute
+    ctor: System.Text.Json.Serialization.JsonPropertyNameAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: value
+  nameWithType.vb: Result(Of T).Value
+  fullName.vb: FoundationaLLM.Common.Models.Services.Result(Of T).Value
+- uid: FoundationaLLM.Common.Models.Services.Result`1.TryGetValue(`0@)
+  commentId: M:FoundationaLLM.Common.Models.Services.Result`1.TryGetValue(`0@)
+  id: TryGetValue(`0@)
+  parent: FoundationaLLM.Common.Models.Services.Result`1
+  langs:
+  - csharp
+  - vb
+  name: TryGetValue(out T)
+  nameWithType: Result<T>.TryGetValue(out T)
+  fullName: FoundationaLLM.Common.Models.Services.Result<T>.TryGetValue(out T)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Common/Models/Services/Result`1.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: TryGetValue
+    path: ../src/dotnet/Common/Models/Services/Result`1.cs
+    startLine: 51
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.Services
+  summary: Attempts to retrieve the stored value if the operation was successful.
+  example: []
+  syntax:
+    content: public bool TryGetValue(out T value)
+    parameters:
+    - id: value
+      type: '{T}'
+      description: >-
+        When this method returns, contains the value associated with a successful result; otherwise, the default
+            value for the type <code class="typeparamref">T</code>.
+    return:
+      type: System.Boolean
+      description: true if the operation was successful and a value is available; otherwise, false.
+    content.vb: Public Function TryGetValue(value As T) As Boolean
+  overload: FoundationaLLM.Common.Models.Services.Result`1.TryGetValue*
+  nameWithType.vb: Result(Of T).TryGetValue(T)
+  fullName.vb: FoundationaLLM.Common.Models.Services.Result(Of T).TryGetValue(T)
+  name.vb: TryGetValue(T)
+- uid: FoundationaLLM.Common.Models.Services.Result`1.ToActionResult
+  commentId: M:FoundationaLLM.Common.Models.Services.Result`1.ToActionResult
+  id: ToActionResult
+  parent: FoundationaLLM.Common.Models.Services.Result`1
+  langs:
+  - csharp
+  - vb
+  name: ToActionResult()
+  nameWithType: Result<T>.ToActionResult()
+  fullName: FoundationaLLM.Common.Models.Services.Result<T>.ToActionResult()
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Common/Models/Services/Result`1.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: ToActionResult
+    path: ../src/dotnet/Common/Models/Services/Result`1.cs
+    startLine: 66
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.Services
+  summary: >-
+    Converts the current result to an appropriate <xref href="Microsoft.AspNetCore.Mvc.ActionResult" data-throw-if-not-resolved="false"></xref> for use in ASP.NET Core MVC
+
+    controllers.
+  remarks: >-
+    Use this method to translate the result of an operation into a standardized HTTP
+        response for controller actions. The returned result can be returned directly from an action
+        method.
+  example: []
+  syntax:
+    content: public ActionResult ToActionResult()
+    return:
+      type: Microsoft.AspNetCore.Mvc.ActionResult
+      description: >-
+        An <xref href="Microsoft.AspNetCore.Mvc.OkResult" data-throw-if-not-resolved="false"></xref> if the operation was successful; otherwise, an <xref href="Microsoft.AspNetCore.Mvc.ObjectResult" data-throw-if-not-resolved="false"></xref>
+            containing the <xref href="Microsoft.AspNetCore.Mvc.ProblemDetails" data-throw-if-not-resolved="false"></xref> object with error information.
+    content.vb: Public Function ToActionResult() As ActionResult
+  overload: FoundationaLLM.Common.Models.Services.Result`1.ToActionResult*
+  nameWithType.vb: Result(Of T).ToActionResult()
+  fullName.vb: FoundationaLLM.Common.Models.Services.Result(Of T).ToActionResult()
+- uid: FoundationaLLM.Common.Models.Services.Result`1.Success(`0)
+  commentId: M:FoundationaLLM.Common.Models.Services.Result`1.Success(`0)
+  id: Success(`0)
+  parent: FoundationaLLM.Common.Models.Services.Result`1
+  langs:
+  - csharp
+  - vb
+  name: Success(T)
+  nameWithType: Result<T>.Success(T)
+  fullName: FoundationaLLM.Common.Models.Services.Result<T>.Success(T)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Common/Models/Services/Result`1.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: Success
+    path: ../src/dotnet/Common/Models/Services/Result`1.cs
+    startLine: 79
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.Services
+  summary: Creates a successful result containing the specified value.
+  example: []
+  syntax:
+    content: public static Result<T> Success(T value)
+    parameters:
+    - id: value
+      type: '{T}'
+      description: The value to be encapsulated in the successful result.
+    return:
+      type: FoundationaLLM.Common.Models.Services.Result`1
+      description: A new <xref href="FoundationaLLM.Common.Models.Services.Result%601" data-throw-if-not-resolved="false"></xref> instance representing a successful outcome with the specified value.
+    content.vb: Public Shared Function Success(value As T) As Result(Of T)
+  overload: FoundationaLLM.Common.Models.Services.Result`1.Success*
+  nameWithType.vb: Result(Of T).Success(T)
+  fullName.vb: FoundationaLLM.Common.Models.Services.Result(Of T).Success(T)
+- uid: FoundationaLLM.Common.Models.Services.Result`1.Failure(FoundationaLLM.Common.Models.Services.DomainError)
+  commentId: M:FoundationaLLM.Common.Models.Services.Result`1.Failure(FoundationaLLM.Common.Models.Services.DomainError)
+  id: Failure(FoundationaLLM.Common.Models.Services.DomainError)
+  parent: FoundationaLLM.Common.Models.Services.Result`1
+  langs:
+  - csharp
+  - vb
+  name: Failure(DomainError)
+  nameWithType: Result<T>.Failure(DomainError)
+  fullName: FoundationaLLM.Common.Models.Services.Result<T>.Failure(FoundationaLLM.Common.Models.Services.DomainError)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Common/Models/Services/Result`1.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: Failure
+    path: ../src/dotnet/Common/Models/Services/Result`1.cs
+    startLine: 89
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.Services
+  summary: Creates a failed result with the specified domain error.
+  example: []
+  syntax:
+    content: public static Result<T> Failure(DomainError error)
+    parameters:
+    - id: error
+      type: FoundationaLLM.Common.Models.Services.DomainError
+      description: The domain error that describes the reason for the failure. Cannot be null.
+    return:
+      type: FoundationaLLM.Common.Models.Services.Result`1
+      description: A failed result containing the specified domain error.
+    content.vb: Public Shared Function Failure([error] As DomainError) As Result(Of T)
+  overload: FoundationaLLM.Common.Models.Services.Result`1.Failure*
+  nameWithType.vb: Result(Of T).Failure(DomainError)
+  fullName.vb: FoundationaLLM.Common.Models.Services.Result(Of T).Failure(FoundationaLLM.Common.Models.Services.DomainError)
+- uid: FoundationaLLM.Common.Models.Services.Result`1.FailureFromHttpResponse(System.Net.Http.HttpResponseMessage)
+  commentId: M:FoundationaLLM.Common.Models.Services.Result`1.FailureFromHttpResponse(System.Net.Http.HttpResponseMessage)
+  id: FailureFromHttpResponse(System.Net.Http.HttpResponseMessage)
+  parent: FoundationaLLM.Common.Models.Services.Result`1
+  langs:
+  - csharp
+  - vb
+  name: FailureFromHttpResponse(HttpResponseMessage)
+  nameWithType: Result<T>.FailureFromHttpResponse(HttpResponseMessage)
+  fullName: FoundationaLLM.Common.Models.Services.Result<T>.FailureFromHttpResponse(System.Net.Http.HttpResponseMessage)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Common/Models/Services/Result`1.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: FailureFromHttpResponse
+    path: ../src/dotnet/Common/Models/Services/Result`1.cs
+    startLine: 100
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.Services
+  summary: Creates a failed result based on the specified HTTP response message.
+  example: []
+  syntax:
+    content: public static Task<Result<T>> FailureFromHttpResponse(HttpResponseMessage response)
+    parameters:
+    - id: response
+      type: System.Net.Http.HttpResponseMessage
+      description: The HTTP response message from which to extract error information.
+    return:
+      type: System.Threading.Tasks.Task{FoundationaLLM.Common.Models.Services.Result`1}
+      description: >-
+        A task that represents the asynchronous operation. The task result contains a failed result with error
+            details extracted from the HTTP response.
+    content.vb: Public Shared Function FailureFromHttpResponse(response As HttpResponseMessage) As Task(Of Result(Of T))
+  overload: FoundationaLLM.Common.Models.Services.Result`1.FailureFromHttpResponse*
+  nameWithType.vb: Result(Of T).FailureFromHttpResponse(HttpResponseMessage)
+  fullName.vb: FoundationaLLM.Common.Models.Services.Result(Of T).FailureFromHttpResponse(System.Net.Http.HttpResponseMessage)
+- uid: FoundationaLLM.Common.Models.Services.Result`1.FailureFromErrorMessage(System.String,System.Int32,System.String)
+  commentId: M:FoundationaLLM.Common.Models.Services.Result`1.FailureFromErrorMessage(System.String,System.Int32,System.String)
+  id: FailureFromErrorMessage(System.String,System.Int32,System.String)
+  parent: FoundationaLLM.Common.Models.Services.Result`1
+  langs:
+  - csharp
+  - vb
+  name: FailureFromErrorMessage(string, int, string?)
+  nameWithType: Result<T>.FailureFromErrorMessage(string, int, string?)
+  fullName: FoundationaLLM.Common.Models.Services.Result<T>.FailureFromErrorMessage(string, int, string?)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Common/Models/Services/Result`1.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: FailureFromErrorMessage
+    path: ../src/dotnet/Common/Models/Services/Result`1.cs
+    startLine: 114
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.Services
+  summary: Creates a failed result with the specified error message.
+  example: []
+  syntax:
+    content: public static Result<T> FailureFromErrorMessage(string errorMessage, int status = 500, string? instance = null)
+    parameters:
+    - id: errorMessage
+      type: System.String
+      description: The error message that describes the reason for the failure. Cannot be null or empty.
+    - id: status
+      type: System.Int32
+      description: The status code associated with the exception.
+    - id: instance
+      type: System.String
+      description: An optional instance identifier for the error.
+    return:
+      type: FoundationaLLM.Common.Models.Services.Result`1
+      description: A failed result containing the specified error message.
+    content.vb: Public Shared Function FailureFromErrorMessage(errorMessage As String, status As Integer = 500, instance As String = Nothing) As Result(Of T)
+  overload: FoundationaLLM.Common.Models.Services.Result`1.FailureFromErrorMessage*
+  nameWithType.vb: Result(Of T).FailureFromErrorMessage(String, Integer, String)
+  fullName.vb: FoundationaLLM.Common.Models.Services.Result(Of T).FailureFromErrorMessage(String, Integer, String)
+  name.vb: FailureFromErrorMessage(String, Integer, String)
+- uid: FoundationaLLM.Common.Models.Services.Result`1.FailureFromException(System.Exception,System.Int32,System.String)
+  commentId: M:FoundationaLLM.Common.Models.Services.Result`1.FailureFromException(System.Exception,System.Int32,System.String)
+  id: FailureFromException(System.Exception,System.Int32,System.String)
+  parent: FoundationaLLM.Common.Models.Services.Result`1
+  langs:
+  - csharp
+  - vb
+  name: FailureFromException(Exception, int, string?)
+  nameWithType: Result<T>.FailureFromException(Exception, int, string?)
+  fullName: FoundationaLLM.Common.Models.Services.Result<T>.FailureFromException(System.Exception, int, string?)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Common/Models/Services/Result`1.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: FailureFromException
+    path: ../src/dotnet/Common/Models/Services/Result`1.cs
+    startLine: 131
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.Services
+  summary: Creates a failed result from the specified exception.
+  example: []
+  syntax:
+    content: public static Result<T> FailureFromException(Exception exception, int status = 500, string? instance = null)
+    parameters:
+    - id: exception
+      type: System.Exception
+      description: The exception to convert into a failure result. Cannot be null.
+    - id: status
+      type: System.Int32
+      description: The status code associated with the exception.
+    - id: instance
+      type: System.String
+      description: An optional instance identifier for the error.
+    return:
+      type: FoundationaLLM.Common.Models.Services.Result`1
+      description: A failed result containing error information derived from the specified exception.
+    content.vb: Public Shared Function FailureFromException(exception As Exception, status As Integer = 500, instance As String = Nothing) As Result(Of T)
+  overload: FoundationaLLM.Common.Models.Services.Result`1.FailureFromException*
+  nameWithType.vb: Result(Of T).FailureFromException(Exception, Integer, String)
+  fullName.vb: FoundationaLLM.Common.Models.Services.Result(Of T).FailureFromException(System.Exception, Integer, String)
+  name.vb: FailureFromException(Exception, Integer, String)
+references:
+- uid: FoundationaLLM.Common.Models.Services
+  commentId: N:FoundationaLLM.Common.Models.Services
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.Services
+  nameWithType: FoundationaLLM.Common.Models.Services
+  fullName: FoundationaLLM.Common.Models.Services
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Services
+    name: Services
+    href: FoundationaLLM.Common.Models.Services.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Services
+    name: Services
+    href: FoundationaLLM.Common.Models.Services.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  parent: FoundationaLLM.Core.Utils.ObjectExtensions
+  definition: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  isExternal: true
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions
+  commentId: T:FoundationaLLM.Core.Utils.ObjectExtensions
+  parent: FoundationaLLM.Core.Utils
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html
+  name: ObjectExtensions
+  nameWithType: ObjectExtensions
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions
+- uid: FoundationaLLM.Core.Utils
+  commentId: N:FoundationaLLM.Core.Utils
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Core.Utils
+  nameWithType: FoundationaLLM.Core.Utils
+  fullName: FoundationaLLM.Core.Utils
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+- uid: FoundationaLLM.Common.Models.Services.Result`1.IsSuccess*
+  commentId: Overload:FoundationaLLM.Common.Models.Services.Result`1.IsSuccess
+  href: FoundationaLLM.Common.Models.Services.Result-1.html#FoundationaLLM_Common_Models_Services_Result_1_IsSuccess
+  name: IsSuccess
+  nameWithType: Result<T>.IsSuccess
+  fullName: FoundationaLLM.Common.Models.Services.Result<T>.IsSuccess
+  nameWithType.vb: Result(Of T).IsSuccess
+  fullName.vb: FoundationaLLM.Common.Models.Services.Result(Of T).IsSuccess
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: FoundationaLLM.Common.Models.Services.Result`1.IsFailure*
+  commentId: Overload:FoundationaLLM.Common.Models.Services.Result`1.IsFailure
+  href: FoundationaLLM.Common.Models.Services.Result-1.html#FoundationaLLM_Common_Models_Services_Result_1_IsFailure
+  name: IsFailure
+  nameWithType: Result<T>.IsFailure
+  fullName: FoundationaLLM.Common.Models.Services.Result<T>.IsFailure
+  nameWithType.vb: Result(Of T).IsFailure
+  fullName.vb: FoundationaLLM.Common.Models.Services.Result(Of T).IsFailure
+- uid: FoundationaLLM.Common.Models.Services.Result`1.Error*
+  commentId: Overload:FoundationaLLM.Common.Models.Services.Result`1.Error
+  href: FoundationaLLM.Common.Models.Services.Result-1.html#FoundationaLLM_Common_Models_Services_Result_1_Error
+  name: Error
+  nameWithType: Result<T>.Error
+  fullName: FoundationaLLM.Common.Models.Services.Result<T>.Error
+  nameWithType.vb: Result(Of T).Error
+  fullName.vb: FoundationaLLM.Common.Models.Services.Result(Of T).Error
+- uid: FoundationaLLM.Common.Models.Services.DomainError
+  commentId: T:FoundationaLLM.Common.Models.Services.DomainError
+  parent: FoundationaLLM.Common.Models.Services
+  href: FoundationaLLM.Common.Models.Services.DomainError.html
+  name: DomainError
+  nameWithType: DomainError
+  fullName: FoundationaLLM.Common.Models.Services.DomainError
+- uid: FoundationaLLM.Common.Models.Services.Result`1.Value*
+  commentId: Overload:FoundationaLLM.Common.Models.Services.Result`1.Value
+  href: FoundationaLLM.Common.Models.Services.Result-1.html#FoundationaLLM_Common_Models_Services_Result_1_Value
+  name: Value
+  nameWithType: Result<T>.Value
+  fullName: FoundationaLLM.Common.Models.Services.Result<T>.Value
+  nameWithType.vb: Result(Of T).Value
+  fullName.vb: FoundationaLLM.Common.Models.Services.Result(Of T).Value
+- uid: '{T}'
+  commentId: '!:T'
+  definition: T
+  name: T
+  nameWithType: T
+  fullName: T
+- uid: T
+  name: T
+  nameWithType: T
+  fullName: T
+- uid: FoundationaLLM.Common.Models.Services.Result`1.TryGetValue*
+  commentId: Overload:FoundationaLLM.Common.Models.Services.Result`1.TryGetValue
+  href: FoundationaLLM.Common.Models.Services.Result-1.html#FoundationaLLM_Common_Models_Services_Result_1_TryGetValue__0__
+  name: TryGetValue
+  nameWithType: Result<T>.TryGetValue
+  fullName: FoundationaLLM.Common.Models.Services.Result<T>.TryGetValue
+  nameWithType.vb: Result(Of T).TryGetValue
+  fullName.vb: FoundationaLLM.Common.Models.Services.Result(Of T).TryGetValue
+- uid: Microsoft.AspNetCore.Mvc.ActionResult
+  commentId: T:Microsoft.AspNetCore.Mvc.ActionResult
+  parent: Microsoft.AspNetCore.Mvc
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.mvc.actionresult
+  name: ActionResult
+  nameWithType: ActionResult
+  fullName: Microsoft.AspNetCore.Mvc.ActionResult
+- uid: Microsoft.AspNetCore.Mvc.OkResult
+  commentId: T:Microsoft.AspNetCore.Mvc.OkResult
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.mvc.okresult
+  name: OkResult
+  nameWithType: OkResult
+  fullName: Microsoft.AspNetCore.Mvc.OkResult
+- uid: Microsoft.AspNetCore.Mvc.ObjectResult
+  commentId: T:Microsoft.AspNetCore.Mvc.ObjectResult
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.mvc.objectresult
+  name: ObjectResult
+  nameWithType: ObjectResult
+  fullName: Microsoft.AspNetCore.Mvc.ObjectResult
+- uid: Microsoft.AspNetCore.Mvc.ProblemDetails
+  commentId: T:Microsoft.AspNetCore.Mvc.ProblemDetails
+  parent: Microsoft.AspNetCore.Mvc
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.mvc.problemdetails
+  name: ProblemDetails
+  nameWithType: ProblemDetails
+  fullName: Microsoft.AspNetCore.Mvc.ProblemDetails
+- uid: FoundationaLLM.Common.Models.Services.Result`1.ToActionResult*
+  commentId: Overload:FoundationaLLM.Common.Models.Services.Result`1.ToActionResult
+  href: FoundationaLLM.Common.Models.Services.Result-1.html#FoundationaLLM_Common_Models_Services_Result_1_ToActionResult
+  name: ToActionResult
+  nameWithType: Result<T>.ToActionResult
+  fullName: FoundationaLLM.Common.Models.Services.Result<T>.ToActionResult
+  nameWithType.vb: Result(Of T).ToActionResult
+  fullName.vb: FoundationaLLM.Common.Models.Services.Result(Of T).ToActionResult
+- uid: Microsoft.AspNetCore.Mvc
+  commentId: N:Microsoft.AspNetCore.Mvc
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft
+  name: Microsoft.AspNetCore.Mvc
+  nameWithType: Microsoft.AspNetCore.Mvc
+  fullName: Microsoft.AspNetCore.Mvc
+  spec.csharp:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.AspNetCore
+    name: AspNetCore
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore
+  - name: .
+  - uid: Microsoft.AspNetCore.Mvc
+    name: Mvc
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.mvc
+  spec.vb:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.AspNetCore
+    name: AspNetCore
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore
+  - name: .
+  - uid: Microsoft.AspNetCore.Mvc
+    name: Mvc
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.mvc
+- uid: FoundationaLLM.Common.Models.Services.Result`1
+  commentId: T:FoundationaLLM.Common.Models.Services.Result`1
+  parent: FoundationaLLM.Common.Models.Services
+  href: FoundationaLLM.Common.Models.Services.Result-1.html
+  name: Result<T>
+  nameWithType: Result<T>
+  fullName: FoundationaLLM.Common.Models.Services.Result<T>
+  nameWithType.vb: Result(Of T)
+  fullName.vb: FoundationaLLM.Common.Models.Services.Result(Of T)
+  name.vb: Result(Of T)
+  spec.csharp:
+  - uid: FoundationaLLM.Common.Models.Services.Result`1
+    name: Result
+    href: FoundationaLLM.Common.Models.Services.Result-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: FoundationaLLM.Common.Models.Services.Result`1
+    name: Result
+    href: FoundationaLLM.Common.Models.Services.Result-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: FoundationaLLM.Common.Models.Services.Result`1.Success*
+  commentId: Overload:FoundationaLLM.Common.Models.Services.Result`1.Success
+  href: FoundationaLLM.Common.Models.Services.Result-1.html#FoundationaLLM_Common_Models_Services_Result_1_Success__0_
+  name: Success
+  nameWithType: Result<T>.Success
+  fullName: FoundationaLLM.Common.Models.Services.Result<T>.Success
+  nameWithType.vb: Result(Of T).Success
+  fullName.vb: FoundationaLLM.Common.Models.Services.Result(Of T).Success
+- uid: FoundationaLLM.Common.Models.Services.Result`1.Failure*
+  commentId: Overload:FoundationaLLM.Common.Models.Services.Result`1.Failure
+  href: FoundationaLLM.Common.Models.Services.Result-1.html#FoundationaLLM_Common_Models_Services_Result_1_Failure_FoundationaLLM_Common_Models_Services_DomainError_
+  name: Failure
+  nameWithType: Result<T>.Failure
+  fullName: FoundationaLLM.Common.Models.Services.Result<T>.Failure
+  nameWithType.vb: Result(Of T).Failure
+  fullName.vb: FoundationaLLM.Common.Models.Services.Result(Of T).Failure
+- uid: FoundationaLLM.Common.Models.Services.Result`1.FailureFromHttpResponse*
+  commentId: Overload:FoundationaLLM.Common.Models.Services.Result`1.FailureFromHttpResponse
+  href: FoundationaLLM.Common.Models.Services.Result-1.html#FoundationaLLM_Common_Models_Services_Result_1_FailureFromHttpResponse_System_Net_Http_HttpResponseMessage_
+  name: FailureFromHttpResponse
+  nameWithType: Result<T>.FailureFromHttpResponse
+  fullName: FoundationaLLM.Common.Models.Services.Result<T>.FailureFromHttpResponse
+  nameWithType.vb: Result(Of T).FailureFromHttpResponse
+  fullName.vb: FoundationaLLM.Common.Models.Services.Result(Of T).FailureFromHttpResponse
+- uid: System.Net.Http.HttpResponseMessage
+  commentId: T:System.Net.Http.HttpResponseMessage
+  parent: System.Net.Http
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.net.http.httpresponsemessage
+  name: HttpResponseMessage
+  nameWithType: HttpResponseMessage
+  fullName: System.Net.Http.HttpResponseMessage
+- uid: System.Threading.Tasks.Task{FoundationaLLM.Common.Models.Services.Result`1}
+  commentId: T:System.Threading.Tasks.Task{FoundationaLLM.Common.Models.Services.Result`1}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<Result<T>>
+  nameWithType: Task<Result<T>>
+  fullName: System.Threading.Tasks.Task<FoundationaLLM.Common.Models.Services.Result<T>>
+  nameWithType.vb: Task(Of Result(Of T))
+  fullName.vb: System.Threading.Tasks.Task(Of FoundationaLLM.Common.Models.Services.Result(Of T))
+  name.vb: Task(Of Result(Of T))
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: FoundationaLLM.Common.Models.Services.Result`1
+    name: Result
+    href: FoundationaLLM.Common.Models.Services.Result-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FoundationaLLM.Common.Models.Services.Result`1
+    name: Result
+    href: FoundationaLLM.Common.Models.Services.Result-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: )
+- uid: System.Net.Http
+  commentId: N:System.Net.Http
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Net.Http
+  nameWithType: System.Net.Http
+  fullName: System.Net.Http
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Net
+    name: Net
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.net
+  - name: .
+  - uid: System.Net.Http
+    name: Http
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.net.http
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Net
+    name: Net
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.net
+  - name: .
+  - uid: System.Net.Http
+    name: Http
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.net.http
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: FoundationaLLM.Common.Models.Services.Result`1.FailureFromErrorMessage*
+  commentId: Overload:FoundationaLLM.Common.Models.Services.Result`1.FailureFromErrorMessage
+  href: FoundationaLLM.Common.Models.Services.Result-1.html#FoundationaLLM_Common_Models_Services_Result_1_FailureFromErrorMessage_System_String_System_Int32_System_String_
+  name: FailureFromErrorMessage
+  nameWithType: Result<T>.FailureFromErrorMessage
+  fullName: FoundationaLLM.Common.Models.Services.Result<T>.FailureFromErrorMessage
+  nameWithType.vb: Result(Of T).FailureFromErrorMessage
+  fullName.vb: FoundationaLLM.Common.Models.Services.Result(Of T).FailureFromErrorMessage
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: FoundationaLLM.Common.Models.Services.Result`1.FailureFromException*
+  commentId: Overload:FoundationaLLM.Common.Models.Services.Result`1.FailureFromException
+  href: FoundationaLLM.Common.Models.Services.Result-1.html#FoundationaLLM_Common_Models_Services_Result_1_FailureFromException_System_Exception_System_Int32_System_String_
+  name: FailureFromException
+  nameWithType: Result<T>.FailureFromException
+  fullName: FoundationaLLM.Common.Models.Services.Result<T>.FailureFromException
+  nameWithType.vb: Result(Of T).FailureFromException
+  fullName.vb: FoundationaLLM.Common.Models.Services.Result(Of T).FailureFromException
+- uid: System.Exception
+  commentId: T:System.Exception
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.exception
+  name: Exception
+  nameWithType: Exception
+  fullName: System.Exception

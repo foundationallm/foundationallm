@@ -1,0 +1,1118 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Common.Models.AzureAIService.AzureAIJobRequest
+  commentId: T:FoundationaLLM.Common.Models.AzureAIService.AzureAIJobRequest
+  id: AzureAIJobRequest
+  parent: FoundationaLLM.Common.Models.AzureAIService
+  children:
+  - FoundationaLLM.Common.Models.AzureAIService.AzureAIJobRequest.BatchDataInput
+  - FoundationaLLM.Common.Models.AzureAIService.AzureAIJobRequest.Connections
+  - FoundationaLLM.Common.Models.AzureAIService.AzureAIJobRequest.FlowDefinitionResourceId
+  - FoundationaLLM.Common.Models.AzureAIService.AzureAIJobRequest.InputsMapping
+  - FoundationaLLM.Common.Models.AzureAIService.AzureAIJobRequest.Properties
+  - FoundationaLLM.Common.Models.AzureAIService.AzureAIJobRequest.RunDisplayNameGenerationType
+  - FoundationaLLM.Common.Models.AzureAIService.AzureAIJobRequest.RunExperimentName
+  - FoundationaLLM.Common.Models.AzureAIService.AzureAIJobRequest.RunId
+  - FoundationaLLM.Common.Models.AzureAIService.AzureAIJobRequest.RuntimeName
+  - FoundationaLLM.Common.Models.AzureAIService.AzureAIJobRequest.SessionSetupMode
+  langs:
+  - csharp
+  - vb
+  name: AzureAIJobRequest
+  nameWithType: AzureAIJobRequest
+  fullName: FoundationaLLM.Common.Models.AzureAIService.AzureAIJobRequest
+  type: Class
+  source:
+    remote:
+      path: src/dotnet/Common/Models/AzureAIService/AzureAIJobRequest.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: AzureAIJobRequest
+    path: ../src/dotnet/Common/Models/AzureAIService/AzureAIJobRequest.cs
+    startLine: 7
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.AzureAIService
+  summary: Azure AI Evaluation Job Request
+  example: []
+  syntax:
+    content: public class AzureAIJobRequest
+    content.vb: Public Class AzureAIJobRequest
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+  extensionMethods:
+  - System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+- uid: FoundationaLLM.Common.Models.AzureAIService.AzureAIJobRequest.FlowDefinitionResourceId
+  commentId: P:FoundationaLLM.Common.Models.AzureAIService.AzureAIJobRequest.FlowDefinitionResourceId
+  id: FlowDefinitionResourceId
+  parent: FoundationaLLM.Common.Models.AzureAIService.AzureAIJobRequest
+  langs:
+  - csharp
+  - vb
+  name: FlowDefinitionResourceId
+  nameWithType: AzureAIJobRequest.FlowDefinitionResourceId
+  fullName: FoundationaLLM.Common.Models.AzureAIService.AzureAIJobRequest.FlowDefinitionResourceId
+  type: Property
+  source:
+    remote:
+      path: src/dotnet/Common/Models/AzureAIService/AzureAIJobRequest.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: FlowDefinitionResourceId
+    path: ../src/dotnet/Common/Models/AzureAIService/AzureAIJobRequest.cs
+    startLine: 12
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.AzureAIService
+  summary: The target flow to run against.
+  example: []
+  syntax:
+    content: >-
+      [JsonPropertyName("flowDefinitionResourceId")]
+
+      public string? FlowDefinitionResourceId { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: >-
+      <JsonPropertyName("flowDefinitionResourceId")>
+
+      Public Property FlowDefinitionResourceId As String
+  overload: FoundationaLLM.Common.Models.AzureAIService.AzureAIJobRequest.FlowDefinitionResourceId*
+  attributes:
+  - type: System.Text.Json.Serialization.JsonPropertyNameAttribute
+    ctor: System.Text.Json.Serialization.JsonPropertyNameAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: flowDefinitionResourceId
+- uid: FoundationaLLM.Common.Models.AzureAIService.AzureAIJobRequest.RunId
+  commentId: P:FoundationaLLM.Common.Models.AzureAIService.AzureAIJobRequest.RunId
+  id: RunId
+  parent: FoundationaLLM.Common.Models.AzureAIService.AzureAIJobRequest
+  langs:
+  - csharp
+  - vb
+  name: RunId
+  nameWithType: AzureAIJobRequest.RunId
+  fullName: FoundationaLLM.Common.Models.AzureAIService.AzureAIJobRequest.RunId
+  type: Property
+  source:
+    remote:
+      path: src/dotnet/Common/Models/AzureAIService/AzureAIJobRequest.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: RunId
+    path: ../src/dotnet/Common/Models/AzureAIService/AzureAIJobRequest.cs
+    startLine: 17
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.AzureAIService
+  summary: The user generated job id.
+  example: []
+  syntax:
+    content: >-
+      [JsonPropertyName("runId")]
+
+      public string? RunId { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: >-
+      <JsonPropertyName("runId")>
+
+      Public Property RunId As String
+  overload: FoundationaLLM.Common.Models.AzureAIService.AzureAIJobRequest.RunId*
+  attributes:
+  - type: System.Text.Json.Serialization.JsonPropertyNameAttribute
+    ctor: System.Text.Json.Serialization.JsonPropertyNameAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: runId
+- uid: FoundationaLLM.Common.Models.AzureAIService.AzureAIJobRequest.BatchDataInput
+  commentId: P:FoundationaLLM.Common.Models.AzureAIService.AzureAIJobRequest.BatchDataInput
+  id: BatchDataInput
+  parent: FoundationaLLM.Common.Models.AzureAIService.AzureAIJobRequest
+  langs:
+  - csharp
+  - vb
+  name: BatchDataInput
+  nameWithType: AzureAIJobRequest.BatchDataInput
+  fullName: FoundationaLLM.Common.Models.AzureAIService.AzureAIJobRequest.BatchDataInput
+  type: Property
+  source:
+    remote:
+      path: src/dotnet/Common/Models/AzureAIService/AzureAIJobRequest.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: BatchDataInput
+    path: ../src/dotnet/Common/Models/AzureAIService/AzureAIJobRequest.cs
+    startLine: 22
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.AzureAIService
+  summary: Uri to the data to test.
+  example: []
+  syntax:
+    content: >-
+      [JsonPropertyName("batchDataInput")]
+
+      public BatchDataInput? BatchDataInput { get; set; }
+    parameters: []
+    return:
+      type: FoundationaLLM.Common.Models.AzureAIService.BatchDataInput
+    content.vb: >-
+      <JsonPropertyName("batchDataInput")>
+
+      Public Property BatchDataInput As BatchDataInput
+  overload: FoundationaLLM.Common.Models.AzureAIService.AzureAIJobRequest.BatchDataInput*
+  attributes:
+  - type: System.Text.Json.Serialization.JsonPropertyNameAttribute
+    ctor: System.Text.Json.Serialization.JsonPropertyNameAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: batchDataInput
+- uid: FoundationaLLM.Common.Models.AzureAIService.AzureAIJobRequest.Connections
+  commentId: P:FoundationaLLM.Common.Models.AzureAIService.AzureAIJobRequest.Connections
+  id: Connections
+  parent: FoundationaLLM.Common.Models.AzureAIService.AzureAIJobRequest
+  langs:
+  - csharp
+  - vb
+  name: Connections
+  nameWithType: AzureAIJobRequest.Connections
+  fullName: FoundationaLLM.Common.Models.AzureAIService.AzureAIJobRequest.Connections
+  type: Property
+  source:
+    remote:
+      path: src/dotnet/Common/Models/AzureAIService/AzureAIJobRequest.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: Connections
+    path: ../src/dotnet/Common/Models/AzureAIService/AzureAIJobRequest.cs
+    startLine: 27
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.AzureAIService
+  summary: All model connection information for the various tests.
+  example: []
+  syntax:
+    content: >-
+      [JsonPropertyName("connections")]
+
+      public GptConnections? Connections { get; set; }
+    parameters: []
+    return:
+      type: FoundationaLLM.Common.Models.AzureAIService.GptConnections
+    content.vb: >-
+      <JsonPropertyName("connections")>
+
+      Public Property Connections As GptConnections
+  overload: FoundationaLLM.Common.Models.AzureAIService.AzureAIJobRequest.Connections*
+  attributes:
+  - type: System.Text.Json.Serialization.JsonPropertyNameAttribute
+    ctor: System.Text.Json.Serialization.JsonPropertyNameAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: connections
+- uid: FoundationaLLM.Common.Models.AzureAIService.AzureAIJobRequest.InputsMapping
+  commentId: P:FoundationaLLM.Common.Models.AzureAIService.AzureAIJobRequest.InputsMapping
+  id: InputsMapping
+  parent: FoundationaLLM.Common.Models.AzureAIService.AzureAIJobRequest
+  langs:
+  - csharp
+  - vb
+  name: InputsMapping
+  nameWithType: AzureAIJobRequest.InputsMapping
+  fullName: FoundationaLLM.Common.Models.AzureAIService.AzureAIJobRequest.InputsMapping
+  type: Property
+  source:
+    remote:
+      path: src/dotnet/Common/Models/AzureAIService/AzureAIJobRequest.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: InputsMapping
+    path: ../src/dotnet/Common/Models/AzureAIService/AzureAIJobRequest.cs
+    startLine: 32
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.AzureAIService
+  summary: How each of the input fields map to the testing fields.
+  example: []
+  syntax:
+    content: >-
+      [JsonPropertyName("inputsMapping")]
+
+      public InputsMapping? InputsMapping { get; set; }
+    parameters: []
+    return:
+      type: FoundationaLLM.Common.Models.AzureAIService.InputsMapping
+    content.vb: >-
+      <JsonPropertyName("inputsMapping")>
+
+      Public Property InputsMapping As InputsMapping
+  overload: FoundationaLLM.Common.Models.AzureAIService.AzureAIJobRequest.InputsMapping*
+  attributes:
+  - type: System.Text.Json.Serialization.JsonPropertyNameAttribute
+    ctor: System.Text.Json.Serialization.JsonPropertyNameAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: inputsMapping
+- uid: FoundationaLLM.Common.Models.AzureAIService.AzureAIJobRequest.RunExperimentName
+  commentId: P:FoundationaLLM.Common.Models.AzureAIService.AzureAIJobRequest.RunExperimentName
+  id: RunExperimentName
+  parent: FoundationaLLM.Common.Models.AzureAIService.AzureAIJobRequest
+  langs:
+  - csharp
+  - vb
+  name: RunExperimentName
+  nameWithType: AzureAIJobRequest.RunExperimentName
+  fullName: FoundationaLLM.Common.Models.AzureAIService.AzureAIJobRequest.RunExperimentName
+  type: Property
+  source:
+    remote:
+      path: src/dotnet/Common/Models/AzureAIService/AzureAIJobRequest.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: RunExperimentName
+    path: ../src/dotnet/Common/Models/AzureAIService/AzureAIJobRequest.cs
+    startLine: 37
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.AzureAIService
+  summary: A name for the job, can be the run Name.
+  example: []
+  syntax:
+    content: >-
+      [JsonPropertyName("runExpermimentName")]
+
+      public string? RunExperimentName { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: >-
+      <JsonPropertyName("runExpermimentName")>
+
+      Public Property RunExperimentName As String
+  overload: FoundationaLLM.Common.Models.AzureAIService.AzureAIJobRequest.RunExperimentName*
+  attributes:
+  - type: System.Text.Json.Serialization.JsonPropertyNameAttribute
+    ctor: System.Text.Json.Serialization.JsonPropertyNameAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: runExpermimentName
+- uid: FoundationaLLM.Common.Models.AzureAIService.AzureAIJobRequest.RuntimeName
+  commentId: P:FoundationaLLM.Common.Models.AzureAIService.AzureAIJobRequest.RuntimeName
+  id: RuntimeName
+  parent: FoundationaLLM.Common.Models.AzureAIService.AzureAIJobRequest
+  langs:
+  - csharp
+  - vb
+  name: RuntimeName
+  nameWithType: AzureAIJobRequest.RuntimeName
+  fullName: FoundationaLLM.Common.Models.AzureAIService.AzureAIJobRequest.RuntimeName
+  type: Property
+  source:
+    remote:
+      path: src/dotnet/Common/Models/AzureAIService/AzureAIJobRequest.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: RuntimeName
+    path: ../src/dotnet/Common/Models/AzureAIService/AzureAIJobRequest.cs
+    startLine: 42
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.AzureAIService
+  summary: The target run time for Azure AI studio.
+  example: []
+  syntax:
+    content: >-
+      [JsonPropertyName("runtimeName")]
+
+      public string? RuntimeName { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: >-
+      <JsonPropertyName("runtimeName")>
+
+      Public Property RuntimeName As String
+  overload: FoundationaLLM.Common.Models.AzureAIService.AzureAIJobRequest.RuntimeName*
+  attributes:
+  - type: System.Text.Json.Serialization.JsonPropertyNameAttribute
+    ctor: System.Text.Json.Serialization.JsonPropertyNameAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: runtimeName
+- uid: FoundationaLLM.Common.Models.AzureAIService.AzureAIJobRequest.RunDisplayNameGenerationType
+  commentId: P:FoundationaLLM.Common.Models.AzureAIService.AzureAIJobRequest.RunDisplayNameGenerationType
+  id: RunDisplayNameGenerationType
+  parent: FoundationaLLM.Common.Models.AzureAIService.AzureAIJobRequest
+  langs:
+  - csharp
+  - vb
+  name: RunDisplayNameGenerationType
+  nameWithType: AzureAIJobRequest.RunDisplayNameGenerationType
+  fullName: FoundationaLLM.Common.Models.AzureAIService.AzureAIJobRequest.RunDisplayNameGenerationType
+  type: Property
+  source:
+    remote:
+      path: src/dotnet/Common/Models/AzureAIService/AzureAIJobRequest.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: RunDisplayNameGenerationType
+    path: ../src/dotnet/Common/Models/AzureAIService/AzureAIJobRequest.cs
+    startLine: 47
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.AzureAIService
+  summary: The generation type name.
+  example: []
+  syntax:
+    content: >-
+      [JsonPropertyName("runDisplayNameGenerationType")]
+
+      public string? RunDisplayNameGenerationType { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: >-
+      <JsonPropertyName("runDisplayNameGenerationType")>
+
+      Public Property RunDisplayNameGenerationType As String
+  overload: FoundationaLLM.Common.Models.AzureAIService.AzureAIJobRequest.RunDisplayNameGenerationType*
+  attributes:
+  - type: System.Text.Json.Serialization.JsonPropertyNameAttribute
+    ctor: System.Text.Json.Serialization.JsonPropertyNameAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: runDisplayNameGenerationType
+- uid: FoundationaLLM.Common.Models.AzureAIService.AzureAIJobRequest.Properties
+  commentId: P:FoundationaLLM.Common.Models.AzureAIService.AzureAIJobRequest.Properties
+  id: Properties
+  parent: FoundationaLLM.Common.Models.AzureAIService.AzureAIJobRequest
+  langs:
+  - csharp
+  - vb
+  name: Properties
+  nameWithType: AzureAIJobRequest.Properties
+  fullName: FoundationaLLM.Common.Models.AzureAIService.AzureAIJobRequest.Properties
+  type: Property
+  source:
+    remote:
+      path: src/dotnet/Common/Models/AzureAIService/AzureAIJobRequest.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: Properties
+    path: ../src/dotnet/Common/Models/AzureAIService/AzureAIJobRequest.cs
+    startLine: 52
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.AzureAIService
+  summary: Any extra properties to pass to the job.
+  example: []
+  syntax:
+    content: >-
+      [JsonPropertyName("properties")]
+
+      public Dictionary<string, string>? Properties { get; set; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.Dictionary{System.String,System.String}
+    content.vb: >-
+      <JsonPropertyName("properties")>
+
+      Public Property Properties As Dictionary(Of String, String)
+  overload: FoundationaLLM.Common.Models.AzureAIService.AzureAIJobRequest.Properties*
+  attributes:
+  - type: System.Text.Json.Serialization.JsonPropertyNameAttribute
+    ctor: System.Text.Json.Serialization.JsonPropertyNameAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: properties
+- uid: FoundationaLLM.Common.Models.AzureAIService.AzureAIJobRequest.SessionSetupMode
+  commentId: P:FoundationaLLM.Common.Models.AzureAIService.AzureAIJobRequest.SessionSetupMode
+  id: SessionSetupMode
+  parent: FoundationaLLM.Common.Models.AzureAIService.AzureAIJobRequest
+  langs:
+  - csharp
+  - vb
+  name: SessionSetupMode
+  nameWithType: AzureAIJobRequest.SessionSetupMode
+  fullName: FoundationaLLM.Common.Models.AzureAIService.AzureAIJobRequest.SessionSetupMode
+  type: Property
+  source:
+    remote:
+      path: src/dotnet/Common/Models/AzureAIService/AzureAIJobRequest.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: SessionSetupMode
+    path: ../src/dotnet/Common/Models/AzureAIService/AzureAIJobRequest.cs
+    startLine: 57
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.AzureAIService
+  summary: The setup mode, typically "SystemWait".
+  example: []
+  syntax:
+    content: >-
+      [JsonPropertyName("sessionSetupMode")]
+
+      public string? SessionSetupMode { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: >-
+      <JsonPropertyName("sessionSetupMode")>
+
+      Public Property SessionSetupMode As String
+  overload: FoundationaLLM.Common.Models.AzureAIService.AzureAIJobRequest.SessionSetupMode*
+  attributes:
+  - type: System.Text.Json.Serialization.JsonPropertyNameAttribute
+    ctor: System.Text.Json.Serialization.JsonPropertyNameAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: sessionSetupMode
+references:
+- uid: FoundationaLLM.Common.Models.AzureAIService
+  commentId: N:FoundationaLLM.Common.Models.AzureAIService
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.AzureAIService
+  nameWithType: FoundationaLLM.Common.Models.AzureAIService
+  fullName: FoundationaLLM.Common.Models.AzureAIService
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.AzureAIService
+    name: AzureAIService
+    href: FoundationaLLM.Common.Models.AzureAIService.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.AzureAIService
+    name: AzureAIService
+    href: FoundationaLLM.Common.Models.AzureAIService.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  parent: FoundationaLLM.Core.Utils.ObjectExtensions
+  definition: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  isExternal: true
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions
+  commentId: T:FoundationaLLM.Core.Utils.ObjectExtensions
+  parent: FoundationaLLM.Core.Utils
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html
+  name: ObjectExtensions
+  nameWithType: ObjectExtensions
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions
+- uid: FoundationaLLM.Core.Utils
+  commentId: N:FoundationaLLM.Core.Utils
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Core.Utils
+  nameWithType: FoundationaLLM.Core.Utils
+  fullName: FoundationaLLM.Core.Utils
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+- uid: FoundationaLLM.Common.Models.AzureAIService.AzureAIJobRequest.FlowDefinitionResourceId*
+  commentId: Overload:FoundationaLLM.Common.Models.AzureAIService.AzureAIJobRequest.FlowDefinitionResourceId
+  href: FoundationaLLM.Common.Models.AzureAIService.AzureAIJobRequest.html#FoundationaLLM_Common_Models_AzureAIService_AzureAIJobRequest_FlowDefinitionResourceId
+  name: FlowDefinitionResourceId
+  nameWithType: AzureAIJobRequest.FlowDefinitionResourceId
+  fullName: FoundationaLLM.Common.Models.AzureAIService.AzureAIJobRequest.FlowDefinitionResourceId
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: FoundationaLLM.Common.Models.AzureAIService.AzureAIJobRequest.RunId*
+  commentId: Overload:FoundationaLLM.Common.Models.AzureAIService.AzureAIJobRequest.RunId
+  href: FoundationaLLM.Common.Models.AzureAIService.AzureAIJobRequest.html#FoundationaLLM_Common_Models_AzureAIService_AzureAIJobRequest_RunId
+  name: RunId
+  nameWithType: AzureAIJobRequest.RunId
+  fullName: FoundationaLLM.Common.Models.AzureAIService.AzureAIJobRequest.RunId
+- uid: FoundationaLLM.Common.Models.AzureAIService.AzureAIJobRequest.BatchDataInput*
+  commentId: Overload:FoundationaLLM.Common.Models.AzureAIService.AzureAIJobRequest.BatchDataInput
+  href: FoundationaLLM.Common.Models.AzureAIService.AzureAIJobRequest.html#FoundationaLLM_Common_Models_AzureAIService_AzureAIJobRequest_BatchDataInput
+  name: BatchDataInput
+  nameWithType: AzureAIJobRequest.BatchDataInput
+  fullName: FoundationaLLM.Common.Models.AzureAIService.AzureAIJobRequest.BatchDataInput
+- uid: FoundationaLLM.Common.Models.AzureAIService.BatchDataInput
+  commentId: T:FoundationaLLM.Common.Models.AzureAIService.BatchDataInput
+  parent: FoundationaLLM.Common.Models.AzureAIService
+  href: FoundationaLLM.Common.Models.AzureAIService.BatchDataInput.html
+  name: BatchDataInput
+  nameWithType: BatchDataInput
+  fullName: FoundationaLLM.Common.Models.AzureAIService.BatchDataInput
+- uid: FoundationaLLM.Common.Models.AzureAIService.AzureAIJobRequest.Connections*
+  commentId: Overload:FoundationaLLM.Common.Models.AzureAIService.AzureAIJobRequest.Connections
+  href: FoundationaLLM.Common.Models.AzureAIService.AzureAIJobRequest.html#FoundationaLLM_Common_Models_AzureAIService_AzureAIJobRequest_Connections
+  name: Connections
+  nameWithType: AzureAIJobRequest.Connections
+  fullName: FoundationaLLM.Common.Models.AzureAIService.AzureAIJobRequest.Connections
+- uid: FoundationaLLM.Common.Models.AzureAIService.GptConnections
+  commentId: T:FoundationaLLM.Common.Models.AzureAIService.GptConnections
+  parent: FoundationaLLM.Common.Models.AzureAIService
+  href: FoundationaLLM.Common.Models.AzureAIService.GptConnections.html
+  name: GptConnections
+  nameWithType: GptConnections
+  fullName: FoundationaLLM.Common.Models.AzureAIService.GptConnections
+- uid: FoundationaLLM.Common.Models.AzureAIService.AzureAIJobRequest.InputsMapping*
+  commentId: Overload:FoundationaLLM.Common.Models.AzureAIService.AzureAIJobRequest.InputsMapping
+  href: FoundationaLLM.Common.Models.AzureAIService.AzureAIJobRequest.html#FoundationaLLM_Common_Models_AzureAIService_AzureAIJobRequest_InputsMapping
+  name: InputsMapping
+  nameWithType: AzureAIJobRequest.InputsMapping
+  fullName: FoundationaLLM.Common.Models.AzureAIService.AzureAIJobRequest.InputsMapping
+- uid: FoundationaLLM.Common.Models.AzureAIService.InputsMapping
+  commentId: T:FoundationaLLM.Common.Models.AzureAIService.InputsMapping
+  parent: FoundationaLLM.Common.Models.AzureAIService
+  href: FoundationaLLM.Common.Models.AzureAIService.InputsMapping.html
+  name: InputsMapping
+  nameWithType: InputsMapping
+  fullName: FoundationaLLM.Common.Models.AzureAIService.InputsMapping
+- uid: FoundationaLLM.Common.Models.AzureAIService.AzureAIJobRequest.RunExperimentName*
+  commentId: Overload:FoundationaLLM.Common.Models.AzureAIService.AzureAIJobRequest.RunExperimentName
+  href: FoundationaLLM.Common.Models.AzureAIService.AzureAIJobRequest.html#FoundationaLLM_Common_Models_AzureAIService_AzureAIJobRequest_RunExperimentName
+  name: RunExperimentName
+  nameWithType: AzureAIJobRequest.RunExperimentName
+  fullName: FoundationaLLM.Common.Models.AzureAIService.AzureAIJobRequest.RunExperimentName
+- uid: FoundationaLLM.Common.Models.AzureAIService.AzureAIJobRequest.RuntimeName*
+  commentId: Overload:FoundationaLLM.Common.Models.AzureAIService.AzureAIJobRequest.RuntimeName
+  href: FoundationaLLM.Common.Models.AzureAIService.AzureAIJobRequest.html#FoundationaLLM_Common_Models_AzureAIService_AzureAIJobRequest_RuntimeName
+  name: RuntimeName
+  nameWithType: AzureAIJobRequest.RuntimeName
+  fullName: FoundationaLLM.Common.Models.AzureAIService.AzureAIJobRequest.RuntimeName
+- uid: FoundationaLLM.Common.Models.AzureAIService.AzureAIJobRequest.RunDisplayNameGenerationType*
+  commentId: Overload:FoundationaLLM.Common.Models.AzureAIService.AzureAIJobRequest.RunDisplayNameGenerationType
+  href: FoundationaLLM.Common.Models.AzureAIService.AzureAIJobRequest.html#FoundationaLLM_Common_Models_AzureAIService_AzureAIJobRequest_RunDisplayNameGenerationType
+  name: RunDisplayNameGenerationType
+  nameWithType: AzureAIJobRequest.RunDisplayNameGenerationType
+  fullName: FoundationaLLM.Common.Models.AzureAIService.AzureAIJobRequest.RunDisplayNameGenerationType
+- uid: FoundationaLLM.Common.Models.AzureAIService.AzureAIJobRequest.Properties*
+  commentId: Overload:FoundationaLLM.Common.Models.AzureAIService.AzureAIJobRequest.Properties
+  href: FoundationaLLM.Common.Models.AzureAIService.AzureAIJobRequest.html#FoundationaLLM_Common_Models_AzureAIService_AzureAIJobRequest_Properties
+  name: Properties
+  nameWithType: AzureAIJobRequest.Properties
+  fullName: FoundationaLLM.Common.Models.AzureAIService.AzureAIJobRequest.Properties
+- uid: System.Collections.Generic.Dictionary{System.String,System.String}
+  commentId: T:System.Collections.Generic.Dictionary{System.String,System.String}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.Dictionary`2
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  name: Dictionary<string, string>
+  nameWithType: Dictionary<string, string>
+  fullName: System.Collections.Generic.Dictionary<string, string>
+  nameWithType.vb: Dictionary(Of String, String)
+  fullName.vb: System.Collections.Generic.Dictionary(Of String, String)
+  name.vb: Dictionary(Of String, String)
+  spec.csharp:
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: System.Collections.Generic.Dictionary`2
+  commentId: T:System.Collections.Generic.Dictionary`2
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  name: Dictionary<TKey, TValue>
+  nameWithType: Dictionary<TKey, TValue>
+  fullName: System.Collections.Generic.Dictionary<TKey, TValue>
+  nameWithType.vb: Dictionary(Of TKey, TValue)
+  fullName.vb: System.Collections.Generic.Dictionary(Of TKey, TValue)
+  name.vb: Dictionary(Of TKey, TValue)
+  spec.csharp:
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  - name: <
+  - name: TKey
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TKey
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: FoundationaLLM.Common.Models.AzureAIService.AzureAIJobRequest.SessionSetupMode*
+  commentId: Overload:FoundationaLLM.Common.Models.AzureAIService.AzureAIJobRequest.SessionSetupMode
+  href: FoundationaLLM.Common.Models.AzureAIService.AzureAIJobRequest.html#FoundationaLLM_Common_Models_AzureAIService_AzureAIJobRequest_SessionSetupMode
+  name: SessionSetupMode
+  nameWithType: AzureAIJobRequest.SessionSetupMode
+  fullName: FoundationaLLM.Common.Models.AzureAIService.AzureAIJobRequest.SessionSetupMode

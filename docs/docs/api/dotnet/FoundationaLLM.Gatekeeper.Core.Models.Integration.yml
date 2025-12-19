@@ -1,0 +1,99 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Gatekeeper.Core.Models.Integration
+  commentId: N:FoundationaLLM.Gatekeeper.Core.Models.Integration
+  id: Integration
+  parent: FoundationaLLM.Gatekeeper.Core.Models
+  children:
+  - FoundationaLLM.Gatekeeper.Core.Models.Integration.AnalyzeRequest
+  - FoundationaLLM.Gatekeeper.Core.Models.Integration.AnalyzeResponse
+  - FoundationaLLM.Gatekeeper.Core.Models.Integration.AnonymizeResponse
+  - FoundationaLLM.Gatekeeper.Core.Models.Integration.PIIResult
+  - FoundationaLLM.Gatekeeper.Core.Models.Integration.PIIResultAnonymized
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM.Gatekeeper.Core.Models.Integration
+  nameWithType: FoundationaLLM.Gatekeeper.Core.Models.Integration
+  fullName: FoundationaLLM.Gatekeeper.Core.Models.Integration
+  type: Namespace
+  assemblies:
+  - FoundationaLLM.Gatekeeper.Core
+references:
+- uid: FoundationaLLM.Gatekeeper.Core.Models.Integration.AnalyzeRequest
+  commentId: T:FoundationaLLM.Gatekeeper.Core.Models.Integration.AnalyzeRequest
+  href: FoundationaLLM.Gatekeeper.Core.Models.Integration.AnalyzeRequest.html
+  name: AnalyzeRequest
+  nameWithType: AnalyzeRequest
+  fullName: FoundationaLLM.Gatekeeper.Core.Models.Integration.AnalyzeRequest
+- uid: FoundationaLLM.Gatekeeper.Core.Models.Integration.AnalyzeResponse
+  commentId: T:FoundationaLLM.Gatekeeper.Core.Models.Integration.AnalyzeResponse
+  href: FoundationaLLM.Gatekeeper.Core.Models.Integration.AnalyzeResponse.html
+  name: AnalyzeResponse
+  nameWithType: AnalyzeResponse
+  fullName: FoundationaLLM.Gatekeeper.Core.Models.Integration.AnalyzeResponse
+- uid: FoundationaLLM.Gatekeeper.Core.Models.Integration.AnonymizeResponse
+  commentId: T:FoundationaLLM.Gatekeeper.Core.Models.Integration.AnonymizeResponse
+  href: FoundationaLLM.Gatekeeper.Core.Models.Integration.AnonymizeResponse.html
+  name: AnonymizeResponse
+  nameWithType: AnonymizeResponse
+  fullName: FoundationaLLM.Gatekeeper.Core.Models.Integration.AnonymizeResponse
+- uid: FoundationaLLM.Gatekeeper.Core.Models.Integration.PIIResult
+  commentId: T:FoundationaLLM.Gatekeeper.Core.Models.Integration.PIIResult
+  parent: FoundationaLLM.Gatekeeper.Core.Models.Integration
+  href: FoundationaLLM.Gatekeeper.Core.Models.Integration.PIIResult.html
+  name: PIIResult
+  nameWithType: PIIResult
+  fullName: FoundationaLLM.Gatekeeper.Core.Models.Integration.PIIResult
+- uid: FoundationaLLM.Gatekeeper.Core.Models.Integration.PIIResultAnonymized
+  commentId: T:FoundationaLLM.Gatekeeper.Core.Models.Integration.PIIResultAnonymized
+  href: FoundationaLLM.Gatekeeper.Core.Models.Integration.PIIResultAnonymized.html
+  name: PIIResultAnonymized
+  nameWithType: PIIResultAnonymized
+  fullName: FoundationaLLM.Gatekeeper.Core.Models.Integration.PIIResultAnonymized
+- uid: FoundationaLLM.Gatekeeper.Core.Models.Integration
+  commentId: N:FoundationaLLM.Gatekeeper.Core.Models.Integration
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Gatekeeper.Core.Models.Integration
+  nameWithType: FoundationaLLM.Gatekeeper.Core.Models.Integration
+  fullName: FoundationaLLM.Gatekeeper.Core.Models.Integration
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Gatekeeper
+    name: Gatekeeper
+    href: FoundationaLLM.Gatekeeper.html
+  - name: .
+  - uid: FoundationaLLM.Gatekeeper.Core
+    name: Core
+    href: FoundationaLLM.Gatekeeper.Core.html
+  - name: .
+  - uid: FoundationaLLM.Gatekeeper.Core.Models
+    name: Models
+    href: FoundationaLLM.Gatekeeper.Core.Models.html
+  - name: .
+  - uid: FoundationaLLM.Gatekeeper.Core.Models.Integration
+    name: Integration
+    href: FoundationaLLM.Gatekeeper.Core.Models.Integration.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Gatekeeper
+    name: Gatekeeper
+    href: FoundationaLLM.Gatekeeper.html
+  - name: .
+  - uid: FoundationaLLM.Gatekeeper.Core
+    name: Core
+    href: FoundationaLLM.Gatekeeper.Core.html
+  - name: .
+  - uid: FoundationaLLM.Gatekeeper.Core.Models
+    name: Models
+    href: FoundationaLLM.Gatekeeper.Core.Models.html
+  - name: .
+  - uid: FoundationaLLM.Gatekeeper.Core.Models.Integration
+    name: Integration
+    href: FoundationaLLM.Gatekeeper.Core.Models.Integration.html

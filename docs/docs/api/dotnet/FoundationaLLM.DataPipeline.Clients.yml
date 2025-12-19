@@ -1,0 +1,24 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.DataPipeline.Clients
+  commentId: N:FoundationaLLM.DataPipeline.Clients
+  id: Clients
+  parent: FoundationaLLM.DataPipeline
+  children:
+  - FoundationaLLM.DataPipeline.Clients.RemoteDataPipelineServiceClient
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM.DataPipeline.Clients
+  nameWithType: FoundationaLLM.DataPipeline.Clients
+  fullName: FoundationaLLM.DataPipeline.Clients
+  type: Namespace
+  assemblies:
+  - FoundationaLLM.DataPipeline
+references:
+- uid: FoundationaLLM.DataPipeline.Clients.RemoteDataPipelineServiceClient
+  commentId: T:FoundationaLLM.DataPipeline.Clients.RemoteDataPipelineServiceClient
+  href: FoundationaLLM.DataPipeline.Clients.RemoteDataPipelineServiceClient.html
+  name: RemoteDataPipelineServiceClient
+  nameWithType: RemoteDataPipelineServiceClient
+  fullName: FoundationaLLM.DataPipeline.Clients.RemoteDataPipelineServiceClient

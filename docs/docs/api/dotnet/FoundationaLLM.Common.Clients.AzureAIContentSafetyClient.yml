@@ -1,0 +1,1221 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Common.Clients.AzureAIContentSafetyClient
+  commentId: T:FoundationaLLM.Common.Clients.AzureAIContentSafetyClient
+  id: AzureAIContentSafetyClient
+  parent: FoundationaLLM.Common.Clients
+  children:
+  - FoundationaLLM.Common.Clients.AzureAIContentSafetyClient.#ctor(System.Uri,Azure.AzureKeyCredential,FoundationaLLM.Common.Clients.Http.APIEndpointClientOptions,System.Boolean)
+  - FoundationaLLM.Common.Clients.AzureAIContentSafetyClient.AnalyzeText(FoundationaLLM.Common.Models.ContentSafety.AnalyzeTextRequest,System.Threading.CancellationToken)
+  - FoundationaLLM.Common.Clients.AzureAIContentSafetyClient.BuildClient(System.Collections.Generic.Dictionary{System.String,System.Object})
+  - FoundationaLLM.Common.Clients.AzureAIContentSafetyClient.ShieldPrompt(FoundationaLLM.Common.Models.ContentSafety.ShieldPromptRequest,System.Threading.CancellationToken)
+  langs:
+  - csharp
+  - vb
+  name: AzureAIContentSafetyClient
+  nameWithType: AzureAIContentSafetyClient
+  fullName: FoundationaLLM.Common.Clients.AzureAIContentSafetyClient
+  type: Class
+  source:
+    remote:
+      path: src/dotnet/Common/Clients/AzureAIContentSafetyClient.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: AzureAIContentSafetyClient
+    path: ../src/dotnet/Common/Clients/AzureAIContentSafetyClient.cs
+    startLine: 17
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Clients
+  summary: Provides methods for interacting with Azure AI Content Safety services.
+  example: []
+  syntax:
+    content: 'public class AzureAIContentSafetyClient : IAzureAIContentSafetyClient'
+    content.vb: Public Class AzureAIContentSafetyClient Implements IAzureAIContentSafetyClient
+  inheritance:
+  - System.Object
+  implements:
+  - FoundationaLLM.Common.Interfaces.IAzureAIContentSafetyClient
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+  extensionMethods:
+  - System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+- uid: FoundationaLLM.Common.Clients.AzureAIContentSafetyClient.#ctor(System.Uri,Azure.AzureKeyCredential,FoundationaLLM.Common.Clients.Http.APIEndpointClientOptions,System.Boolean)
+  commentId: M:FoundationaLLM.Common.Clients.AzureAIContentSafetyClient.#ctor(System.Uri,Azure.AzureKeyCredential,FoundationaLLM.Common.Clients.Http.APIEndpointClientOptions,System.Boolean)
+  id: '#ctor(System.Uri,Azure.AzureKeyCredential,FoundationaLLM.Common.Clients.Http.APIEndpointClientOptions,System.Boolean)'
+  parent: FoundationaLLM.Common.Clients.AzureAIContentSafetyClient
+  langs:
+  - csharp
+  - vb
+  name: AzureAIContentSafetyClient(Uri, AzureKeyCredential, APIEndpointClientOptions?, bool)
+  nameWithType: AzureAIContentSafetyClient.AzureAIContentSafetyClient(Uri, AzureKeyCredential, APIEndpointClientOptions?, bool)
+  fullName: FoundationaLLM.Common.Clients.AzureAIContentSafetyClient.AzureAIContentSafetyClient(System.Uri, Azure.AzureKeyCredential, FoundationaLLM.Common.Clients.Http.APIEndpointClientOptions?, bool)
+  type: Constructor
+  source:
+    remote:
+      path: src/dotnet/Common/Clients/AzureAIContentSafetyClient.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: .ctor
+    path: ../src/dotnet/Common/Clients/AzureAIContentSafetyClient.cs
+    startLine: 30
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Clients
+  summary: Initializes a new instance of the <xref href="FoundationaLLM.Common.Clients.AzureAIContentSafetyClient" data-throw-if-not-resolved="false"></xref> class.
+  example: []
+  syntax:
+    content: public AzureAIContentSafetyClient(Uri endpoint, AzureKeyCredential credential, APIEndpointClientOptions? options, bool enableRetry)
+    parameters:
+    - id: endpoint
+      type: System.Uri
+      description: The endpoint URI of the Azure AI Content Safety service.
+    - id: credential
+      type: Azure.AzureKeyCredential
+      description: The <xref href="Azure.AzureKeyCredential" data-throw-if-not-resolved="false"></xref> used to authenticate requests to the service.
+    - id: options
+      type: FoundationaLLM.Common.Clients.Http.APIEndpointClientOptions
+      description: Optional configuration settings for the client, such as retry policies and timeouts.
+    - id: enableRetry
+      type: System.Boolean
+      description: Indicates whether to enable retry logic for transient failures.
+    content.vb: Public Sub New(endpoint As Uri, credential As AzureKeyCredential, options As APIEndpointClientOptions, enableRetry As Boolean)
+  overload: FoundationaLLM.Common.Clients.AzureAIContentSafetyClient.#ctor*
+  nameWithType.vb: AzureAIContentSafetyClient.New(Uri, AzureKeyCredential, APIEndpointClientOptions, Boolean)
+  fullName.vb: FoundationaLLM.Common.Clients.AzureAIContentSafetyClient.New(System.Uri, Azure.AzureKeyCredential, FoundationaLLM.Common.Clients.Http.APIEndpointClientOptions, Boolean)
+  name.vb: New(Uri, AzureKeyCredential, APIEndpointClientOptions, Boolean)
+- uid: FoundationaLLM.Common.Clients.AzureAIContentSafetyClient.BuildClient(System.Collections.Generic.Dictionary{System.String,System.Object})
+  commentId: M:FoundationaLLM.Common.Clients.AzureAIContentSafetyClient.BuildClient(System.Collections.Generic.Dictionary{System.String,System.Object})
+  id: BuildClient(System.Collections.Generic.Dictionary{System.String,System.Object})
+  parent: FoundationaLLM.Common.Clients.AzureAIContentSafetyClient
+  langs:
+  - csharp
+  - vb
+  name: BuildClient(Dictionary<string, object>)
+  nameWithType: AzureAIContentSafetyClient.BuildClient(Dictionary<string, object>)
+  fullName: FoundationaLLM.Common.Clients.AzureAIContentSafetyClient.BuildClient(System.Collections.Generic.Dictionary<string, object>)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Common/Clients/AzureAIContentSafetyClient.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: BuildClient
+    path: ../src/dotnet/Common/Clients/AzureAIContentSafetyClient.cs
+    startLine: 61
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Clients
+  summary: Creates and configures a new instance of the <xref href="FoundationaLLM.Common.Clients.AzureAIContentSafetyClient" data-throw-if-not-resolved="false"></xref>.
+  example: []
+  syntax:
+    content: public static IAzureAIContentSafetyClient BuildClient(Dictionary<string, object> clientBuilderParameters)
+    parameters:
+    - id: clientBuilderParameters
+      type: System.Collections.Generic.Dictionary{System.String,System.Object}
+      description: A dictionary of parameters used to further configure the client.
+    return:
+      type: FoundationaLLM.Common.Interfaces.IAzureAIContentSafetyClient
+      description: >-
+        A new instance of the <xref href="FoundationaLLM.Common.Clients.AzureAIContentSafetyClient" data-throw-if-not-resolved="false"></xref> configured with the specified
+            <code class="paramref">clientBuilderParameters</code>.
+    content.vb: Public Shared Function BuildClient(clientBuilderParameters As Dictionary(Of String, Object)) As IAzureAIContentSafetyClient
+  overload: FoundationaLLM.Common.Clients.AzureAIContentSafetyClient.BuildClient*
+  nameWithType.vb: AzureAIContentSafetyClient.BuildClient(Dictionary(Of String, Object))
+  fullName.vb: FoundationaLLM.Common.Clients.AzureAIContentSafetyClient.BuildClient(System.Collections.Generic.Dictionary(Of String, Object))
+  name.vb: BuildClient(Dictionary(Of String, Object))
+- uid: FoundationaLLM.Common.Clients.AzureAIContentSafetyClient.AnalyzeText(FoundationaLLM.Common.Models.ContentSafety.AnalyzeTextRequest,System.Threading.CancellationToken)
+  commentId: M:FoundationaLLM.Common.Clients.AzureAIContentSafetyClient.AnalyzeText(FoundationaLLM.Common.Models.ContentSafety.AnalyzeTextRequest,System.Threading.CancellationToken)
+  id: AnalyzeText(FoundationaLLM.Common.Models.ContentSafety.AnalyzeTextRequest,System.Threading.CancellationToken)
+  parent: FoundationaLLM.Common.Clients.AzureAIContentSafetyClient
+  langs:
+  - csharp
+  - vb
+  name: AnalyzeText(AnalyzeTextRequest, CancellationToken)
+  nameWithType: AzureAIContentSafetyClient.AnalyzeText(AnalyzeTextRequest, CancellationToken)
+  fullName: FoundationaLLM.Common.Clients.AzureAIContentSafetyClient.AnalyzeText(FoundationaLLM.Common.Models.ContentSafety.AnalyzeTextRequest, System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Common/Clients/AzureAIContentSafetyClient.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: AnalyzeText
+    path: ../src/dotnet/Common/Clients/AzureAIContentSafetyClient.cs
+    startLine: 76
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Clients
+  summary: Analyzes the specified text and returns the results of the analysis.
+  example: []
+  syntax:
+    content: public Task<ClientResult<AnalyzeTextResult>> AnalyzeText(AnalyzeTextRequest request, CancellationToken cancellationToken = default)
+    parameters:
+    - id: request
+      type: FoundationaLLM.Common.Models.ContentSafety.AnalyzeTextRequest
+      description: The request containing the text to analyze.
+    - id: cancellationToken
+      type: System.Threading.CancellationToken
+      description: The optional cancellation token used to signal a cancellation request.
+    return:
+      type: System.Threading.Tasks.Task{System.ClientModel.ClientResult{FoundationaLLM.Common.Models.ContentSafety.AnalyzeTextResult}}
+      description: A task that represents the asynchronous operation. The task result contains an  <xref href="System.ClientModel.ClientResult" data-throw-if-not-resolved="false"></xref> object with the results of the analysis.
+    content.vb: Public Function AnalyzeText(request As AnalyzeTextRequest, cancellationToken As CancellationToken = Nothing) As Task(Of ClientResult(Of AnalyzeTextResult))
+  overload: FoundationaLLM.Common.Clients.AzureAIContentSafetyClient.AnalyzeText*
+  implements:
+  - FoundationaLLM.Common.Interfaces.IAzureAIContentSafetyClient.AnalyzeText(FoundationaLLM.Common.Models.ContentSafety.AnalyzeTextRequest,System.Threading.CancellationToken)
+- uid: FoundationaLLM.Common.Clients.AzureAIContentSafetyClient.ShieldPrompt(FoundationaLLM.Common.Models.ContentSafety.ShieldPromptRequest,System.Threading.CancellationToken)
+  commentId: M:FoundationaLLM.Common.Clients.AzureAIContentSafetyClient.ShieldPrompt(FoundationaLLM.Common.Models.ContentSafety.ShieldPromptRequest,System.Threading.CancellationToken)
+  id: ShieldPrompt(FoundationaLLM.Common.Models.ContentSafety.ShieldPromptRequest,System.Threading.CancellationToken)
+  parent: FoundationaLLM.Common.Clients.AzureAIContentSafetyClient
+  langs:
+  - csharp
+  - vb
+  name: ShieldPrompt(ShieldPromptRequest, CancellationToken)
+  nameWithType: AzureAIContentSafetyClient.ShieldPrompt(ShieldPromptRequest, CancellationToken)
+  fullName: FoundationaLLM.Common.Clients.AzureAIContentSafetyClient.ShieldPrompt(FoundationaLLM.Common.Models.ContentSafety.ShieldPromptRequest, System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Common/Clients/AzureAIContentSafetyClient.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: ShieldPrompt
+    path: ../src/dotnet/Common/Clients/AzureAIContentSafetyClient.cs
+    startLine: 108
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Clients
+  summary: Analyzes a user prompt and associated documents for various prompt attacks.
+  example: []
+  syntax:
+    content: public Task<ClientResult<ShieldPromptResult>> ShieldPrompt(ShieldPromptRequest request, CancellationToken cancellationToken = default)
+    parameters:
+    - id: request
+      type: FoundationaLLM.Common.Models.ContentSafety.ShieldPromptRequest
+      description: The request containing the user prompt and associated documents.
+    - id: cancellationToken
+      type: System.Threading.CancellationToken
+      description: The optional cancellation token used to signal a cancellation request.
+    return:
+      type: System.Threading.Tasks.Task{System.ClientModel.ClientResult{FoundationaLLM.Common.Models.ContentSafety.ShieldPromptResult}}
+      description: A task that represents the asynchronous operation. The task result contains an  <xref href="System.ClientModel.ClientResult" data-throw-if-not-resolved="false"></xref> object with the results of the analysis.
+    content.vb: Public Function ShieldPrompt(request As ShieldPromptRequest, cancellationToken As CancellationToken = Nothing) As Task(Of ClientResult(Of ShieldPromptResult))
+  overload: FoundationaLLM.Common.Clients.AzureAIContentSafetyClient.ShieldPrompt*
+  implements:
+  - FoundationaLLM.Common.Interfaces.IAzureAIContentSafetyClient.ShieldPrompt(FoundationaLLM.Common.Models.ContentSafety.ShieldPromptRequest,System.Threading.CancellationToken)
+references:
+- uid: FoundationaLLM.Common.Clients
+  commentId: N:FoundationaLLM.Common.Clients
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Clients
+  nameWithType: FoundationaLLM.Common.Clients
+  fullName: FoundationaLLM.Common.Clients
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Clients
+    name: Clients
+    href: FoundationaLLM.Common.Clients.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Clients
+    name: Clients
+    href: FoundationaLLM.Common.Clients.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: FoundationaLLM.Common.Interfaces.IAzureAIContentSafetyClient
+  commentId: T:FoundationaLLM.Common.Interfaces.IAzureAIContentSafetyClient
+  parent: FoundationaLLM.Common.Interfaces
+  href: FoundationaLLM.Common.Interfaces.IAzureAIContentSafetyClient.html
+  name: IAzureAIContentSafetyClient
+  nameWithType: IAzureAIContentSafetyClient
+  fullName: FoundationaLLM.Common.Interfaces.IAzureAIContentSafetyClient
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  parent: FoundationaLLM.Core.Utils.ObjectExtensions
+  definition: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: FoundationaLLM.Common.Interfaces
+  commentId: N:FoundationaLLM.Common.Interfaces
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Interfaces
+  nameWithType: FoundationaLLM.Common.Interfaces
+  fullName: FoundationaLLM.Common.Interfaces
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Interfaces
+    name: Interfaces
+    href: FoundationaLLM.Common.Interfaces.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Interfaces
+    name: Interfaces
+    href: FoundationaLLM.Common.Interfaces.html
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  isExternal: true
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions
+  commentId: T:FoundationaLLM.Core.Utils.ObjectExtensions
+  parent: FoundationaLLM.Core.Utils
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html
+  name: ObjectExtensions
+  nameWithType: ObjectExtensions
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions
+- uid: FoundationaLLM.Core.Utils
+  commentId: N:FoundationaLLM.Core.Utils
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Core.Utils
+  nameWithType: FoundationaLLM.Core.Utils
+  fullName: FoundationaLLM.Core.Utils
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+- uid: FoundationaLLM.Common.Clients.AzureAIContentSafetyClient
+  commentId: T:FoundationaLLM.Common.Clients.AzureAIContentSafetyClient
+  href: FoundationaLLM.Common.Clients.AzureAIContentSafetyClient.html
+  name: AzureAIContentSafetyClient
+  nameWithType: AzureAIContentSafetyClient
+  fullName: FoundationaLLM.Common.Clients.AzureAIContentSafetyClient
+- uid: Azure.AzureKeyCredential
+  commentId: T:Azure.AzureKeyCredential
+  parent: Azure
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/azure.azurekeycredential
+  name: AzureKeyCredential
+  nameWithType: AzureKeyCredential
+  fullName: Azure.AzureKeyCredential
+- uid: FoundationaLLM.Common.Clients.AzureAIContentSafetyClient.#ctor*
+  commentId: Overload:FoundationaLLM.Common.Clients.AzureAIContentSafetyClient.#ctor
+  href: FoundationaLLM.Common.Clients.AzureAIContentSafetyClient.html#FoundationaLLM_Common_Clients_AzureAIContentSafetyClient__ctor_System_Uri_Azure_AzureKeyCredential_FoundationaLLM_Common_Clients_Http_APIEndpointClientOptions_System_Boolean_
+  name: AzureAIContentSafetyClient
+  nameWithType: AzureAIContentSafetyClient.AzureAIContentSafetyClient
+  fullName: FoundationaLLM.Common.Clients.AzureAIContentSafetyClient.AzureAIContentSafetyClient
+  nameWithType.vb: AzureAIContentSafetyClient.New
+  fullName.vb: FoundationaLLM.Common.Clients.AzureAIContentSafetyClient.New
+  name.vb: New
+- uid: System.Uri
+  commentId: T:System.Uri
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.uri
+  name: Uri
+  nameWithType: Uri
+  fullName: System.Uri
+- uid: FoundationaLLM.Common.Clients.Http.APIEndpointClientOptions
+  commentId: T:FoundationaLLM.Common.Clients.Http.APIEndpointClientOptions
+  parent: FoundationaLLM.Common.Clients.Http
+  href: FoundationaLLM.Common.Clients.Http.APIEndpointClientOptions.html
+  name: APIEndpointClientOptions
+  nameWithType: APIEndpointClientOptions
+  fullName: FoundationaLLM.Common.Clients.Http.APIEndpointClientOptions
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: Azure
+  commentId: N:Azure
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/azure
+  name: Azure
+  nameWithType: Azure
+  fullName: Azure
+- uid: FoundationaLLM.Common.Clients.Http
+  commentId: N:FoundationaLLM.Common.Clients.Http
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Clients.Http
+  nameWithType: FoundationaLLM.Common.Clients.Http
+  fullName: FoundationaLLM.Common.Clients.Http
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Clients
+    name: Clients
+    href: FoundationaLLM.Common.Clients.html
+  - name: .
+  - uid: FoundationaLLM.Common.Clients.Http
+    name: Http
+    href: FoundationaLLM.Common.Clients.Http.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Clients
+    name: Clients
+    href: FoundationaLLM.Common.Clients.html
+  - name: .
+  - uid: FoundationaLLM.Common.Clients.Http
+    name: Http
+    href: FoundationaLLM.Common.Clients.Http.html
+- uid: FoundationaLLM.Common.Clients.AzureAIContentSafetyClient.BuildClient*
+  commentId: Overload:FoundationaLLM.Common.Clients.AzureAIContentSafetyClient.BuildClient
+  href: FoundationaLLM.Common.Clients.AzureAIContentSafetyClient.html#FoundationaLLM_Common_Clients_AzureAIContentSafetyClient_BuildClient_System_Collections_Generic_Dictionary_System_String_System_Object__
+  name: BuildClient
+  nameWithType: AzureAIContentSafetyClient.BuildClient
+  fullName: FoundationaLLM.Common.Clients.AzureAIContentSafetyClient.BuildClient
+- uid: System.Collections.Generic.Dictionary{System.String,System.Object}
+  commentId: T:System.Collections.Generic.Dictionary{System.String,System.Object}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.Dictionary`2
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  name: Dictionary<string, object>
+  nameWithType: Dictionary<string, object>
+  fullName: System.Collections.Generic.Dictionary<string, object>
+  nameWithType.vb: Dictionary(Of String, Object)
+  fullName.vb: System.Collections.Generic.Dictionary(Of String, Object)
+  name.vb: Dictionary(Of String, Object)
+  spec.csharp:
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Collections.Generic.Dictionary`2
+  commentId: T:System.Collections.Generic.Dictionary`2
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  name: Dictionary<TKey, TValue>
+  nameWithType: Dictionary<TKey, TValue>
+  fullName: System.Collections.Generic.Dictionary<TKey, TValue>
+  nameWithType.vb: Dictionary(Of TKey, TValue)
+  fullName.vb: System.Collections.Generic.Dictionary(Of TKey, TValue)
+  name.vb: Dictionary(Of TKey, TValue)
+  spec.csharp:
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  - name: <
+  - name: TKey
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TKey
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: System.ClientModel.ClientResult
+  commentId: T:System.ClientModel.ClientResult
+  isExternal: true
+  name: ClientResult
+  nameWithType: ClientResult
+  fullName: System.ClientModel.ClientResult
+- uid: FoundationaLLM.Common.Clients.AzureAIContentSafetyClient.AnalyzeText*
+  commentId: Overload:FoundationaLLM.Common.Clients.AzureAIContentSafetyClient.AnalyzeText
+  href: FoundationaLLM.Common.Clients.AzureAIContentSafetyClient.html#FoundationaLLM_Common_Clients_AzureAIContentSafetyClient_AnalyzeText_FoundationaLLM_Common_Models_ContentSafety_AnalyzeTextRequest_System_Threading_CancellationToken_
+  name: AnalyzeText
+  nameWithType: AzureAIContentSafetyClient.AnalyzeText
+  fullName: FoundationaLLM.Common.Clients.AzureAIContentSafetyClient.AnalyzeText
+- uid: FoundationaLLM.Common.Interfaces.IAzureAIContentSafetyClient.AnalyzeText(FoundationaLLM.Common.Models.ContentSafety.AnalyzeTextRequest,System.Threading.CancellationToken)
+  commentId: M:FoundationaLLM.Common.Interfaces.IAzureAIContentSafetyClient.AnalyzeText(FoundationaLLM.Common.Models.ContentSafety.AnalyzeTextRequest,System.Threading.CancellationToken)
+  parent: FoundationaLLM.Common.Interfaces.IAzureAIContentSafetyClient
+  isExternal: true
+  href: FoundationaLLM.Common.Interfaces.IAzureAIContentSafetyClient.html#FoundationaLLM_Common_Interfaces_IAzureAIContentSafetyClient_AnalyzeText_FoundationaLLM_Common_Models_ContentSafety_AnalyzeTextRequest_System_Threading_CancellationToken_
+  name: AnalyzeText(AnalyzeTextRequest, CancellationToken)
+  nameWithType: IAzureAIContentSafetyClient.AnalyzeText(AnalyzeTextRequest, CancellationToken)
+  fullName: FoundationaLLM.Common.Interfaces.IAzureAIContentSafetyClient.AnalyzeText(FoundationaLLM.Common.Models.ContentSafety.AnalyzeTextRequest, System.Threading.CancellationToken)
+  spec.csharp:
+  - uid: FoundationaLLM.Common.Interfaces.IAzureAIContentSafetyClient.AnalyzeText(FoundationaLLM.Common.Models.ContentSafety.AnalyzeTextRequest,System.Threading.CancellationToken)
+    name: AnalyzeText
+    href: FoundationaLLM.Common.Interfaces.IAzureAIContentSafetyClient.html#FoundationaLLM_Common_Interfaces_IAzureAIContentSafetyClient_AnalyzeText_FoundationaLLM_Common_Models_ContentSafety_AnalyzeTextRequest_System_Threading_CancellationToken_
+  - name: (
+  - uid: FoundationaLLM.Common.Models.ContentSafety.AnalyzeTextRequest
+    name: AnalyzeTextRequest
+    href: FoundationaLLM.Common.Models.ContentSafety.AnalyzeTextRequest.html
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Common.Interfaces.IAzureAIContentSafetyClient.AnalyzeText(FoundationaLLM.Common.Models.ContentSafety.AnalyzeTextRequest,System.Threading.CancellationToken)
+    name: AnalyzeText
+    href: FoundationaLLM.Common.Interfaces.IAzureAIContentSafetyClient.html#FoundationaLLM_Common_Interfaces_IAzureAIContentSafetyClient_AnalyzeText_FoundationaLLM_Common_Models_ContentSafety_AnalyzeTextRequest_System_Threading_CancellationToken_
+  - name: (
+  - uid: FoundationaLLM.Common.Models.ContentSafety.AnalyzeTextRequest
+    name: AnalyzeTextRequest
+    href: FoundationaLLM.Common.Models.ContentSafety.AnalyzeTextRequest.html
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: FoundationaLLM.Common.Models.ContentSafety.AnalyzeTextRequest
+  commentId: T:FoundationaLLM.Common.Models.ContentSafety.AnalyzeTextRequest
+  parent: FoundationaLLM.Common.Models.ContentSafety
+  href: FoundationaLLM.Common.Models.ContentSafety.AnalyzeTextRequest.html
+  name: AnalyzeTextRequest
+  nameWithType: AnalyzeTextRequest
+  fullName: FoundationaLLM.Common.Models.ContentSafety.AnalyzeTextRequest
+- uid: System.Threading.CancellationToken
+  commentId: T:System.Threading.CancellationToken
+  parent: System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  name: CancellationToken
+  nameWithType: CancellationToken
+  fullName: System.Threading.CancellationToken
+- uid: System.Threading.Tasks.Task{System.ClientModel.ClientResult{FoundationaLLM.Common.Models.ContentSafety.AnalyzeTextResult}}
+  commentId: T:System.Threading.Tasks.Task{System.ClientModel.ClientResult{FoundationaLLM.Common.Models.ContentSafety.AnalyzeTextResult}}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<ClientResult<AnalyzeTextResult>>
+  nameWithType: Task<ClientResult<AnalyzeTextResult>>
+  fullName: System.Threading.Tasks.Task<System.ClientModel.ClientResult<FoundationaLLM.Common.Models.ContentSafety.AnalyzeTextResult>>
+  nameWithType.vb: Task(Of ClientResult(Of AnalyzeTextResult))
+  fullName.vb: System.Threading.Tasks.Task(Of System.ClientModel.ClientResult(Of FoundationaLLM.Common.Models.ContentSafety.AnalyzeTextResult))
+  name.vb: Task(Of ClientResult(Of AnalyzeTextResult))
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.ClientModel.ClientResult`1
+    name: ClientResult
+    isExternal: true
+  - name: <
+  - uid: FoundationaLLM.Common.Models.ContentSafety.AnalyzeTextResult
+    name: AnalyzeTextResult
+    href: FoundationaLLM.Common.Models.ContentSafety.AnalyzeTextResult.html
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.ClientModel.ClientResult`1
+    name: ClientResult
+    isExternal: true
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FoundationaLLM.Common.Models.ContentSafety.AnalyzeTextResult
+    name: AnalyzeTextResult
+    href: FoundationaLLM.Common.Models.ContentSafety.AnalyzeTextResult.html
+  - name: )
+  - name: )
+- uid: FoundationaLLM.Common.Models.ContentSafety
+  commentId: N:FoundationaLLM.Common.Models.ContentSafety
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.ContentSafety
+  nameWithType: FoundationaLLM.Common.Models.ContentSafety
+  fullName: FoundationaLLM.Common.Models.ContentSafety
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ContentSafety
+    name: ContentSafety
+    href: FoundationaLLM.Common.Models.ContentSafety.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ContentSafety
+    name: ContentSafety
+    href: FoundationaLLM.Common.Models.ContentSafety.html
+- uid: System.Threading
+  commentId: N:System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading
+  nameWithType: System.Threading
+  fullName: System.Threading
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: FoundationaLLM.Common.Clients.AzureAIContentSafetyClient.ShieldPrompt*
+  commentId: Overload:FoundationaLLM.Common.Clients.AzureAIContentSafetyClient.ShieldPrompt
+  href: FoundationaLLM.Common.Clients.AzureAIContentSafetyClient.html#FoundationaLLM_Common_Clients_AzureAIContentSafetyClient_ShieldPrompt_FoundationaLLM_Common_Models_ContentSafety_ShieldPromptRequest_System_Threading_CancellationToken_
+  name: ShieldPrompt
+  nameWithType: AzureAIContentSafetyClient.ShieldPrompt
+  fullName: FoundationaLLM.Common.Clients.AzureAIContentSafetyClient.ShieldPrompt
+- uid: FoundationaLLM.Common.Interfaces.IAzureAIContentSafetyClient.ShieldPrompt(FoundationaLLM.Common.Models.ContentSafety.ShieldPromptRequest,System.Threading.CancellationToken)
+  commentId: M:FoundationaLLM.Common.Interfaces.IAzureAIContentSafetyClient.ShieldPrompt(FoundationaLLM.Common.Models.ContentSafety.ShieldPromptRequest,System.Threading.CancellationToken)
+  parent: FoundationaLLM.Common.Interfaces.IAzureAIContentSafetyClient
+  isExternal: true
+  href: FoundationaLLM.Common.Interfaces.IAzureAIContentSafetyClient.html#FoundationaLLM_Common_Interfaces_IAzureAIContentSafetyClient_ShieldPrompt_FoundationaLLM_Common_Models_ContentSafety_ShieldPromptRequest_System_Threading_CancellationToken_
+  name: ShieldPrompt(ShieldPromptRequest, CancellationToken)
+  nameWithType: IAzureAIContentSafetyClient.ShieldPrompt(ShieldPromptRequest, CancellationToken)
+  fullName: FoundationaLLM.Common.Interfaces.IAzureAIContentSafetyClient.ShieldPrompt(FoundationaLLM.Common.Models.ContentSafety.ShieldPromptRequest, System.Threading.CancellationToken)
+  spec.csharp:
+  - uid: FoundationaLLM.Common.Interfaces.IAzureAIContentSafetyClient.ShieldPrompt(FoundationaLLM.Common.Models.ContentSafety.ShieldPromptRequest,System.Threading.CancellationToken)
+    name: ShieldPrompt
+    href: FoundationaLLM.Common.Interfaces.IAzureAIContentSafetyClient.html#FoundationaLLM_Common_Interfaces_IAzureAIContentSafetyClient_ShieldPrompt_FoundationaLLM_Common_Models_ContentSafety_ShieldPromptRequest_System_Threading_CancellationToken_
+  - name: (
+  - uid: FoundationaLLM.Common.Models.ContentSafety.ShieldPromptRequest
+    name: ShieldPromptRequest
+    href: FoundationaLLM.Common.Models.ContentSafety.ShieldPromptRequest.html
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Common.Interfaces.IAzureAIContentSafetyClient.ShieldPrompt(FoundationaLLM.Common.Models.ContentSafety.ShieldPromptRequest,System.Threading.CancellationToken)
+    name: ShieldPrompt
+    href: FoundationaLLM.Common.Interfaces.IAzureAIContentSafetyClient.html#FoundationaLLM_Common_Interfaces_IAzureAIContentSafetyClient_ShieldPrompt_FoundationaLLM_Common_Models_ContentSafety_ShieldPromptRequest_System_Threading_CancellationToken_
+  - name: (
+  - uid: FoundationaLLM.Common.Models.ContentSafety.ShieldPromptRequest
+    name: ShieldPromptRequest
+    href: FoundationaLLM.Common.Models.ContentSafety.ShieldPromptRequest.html
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: FoundationaLLM.Common.Models.ContentSafety.ShieldPromptRequest
+  commentId: T:FoundationaLLM.Common.Models.ContentSafety.ShieldPromptRequest
+  parent: FoundationaLLM.Common.Models.ContentSafety
+  href: FoundationaLLM.Common.Models.ContentSafety.ShieldPromptRequest.html
+  name: ShieldPromptRequest
+  nameWithType: ShieldPromptRequest
+  fullName: FoundationaLLM.Common.Models.ContentSafety.ShieldPromptRequest
+- uid: System.Threading.Tasks.Task{System.ClientModel.ClientResult{FoundationaLLM.Common.Models.ContentSafety.ShieldPromptResult}}
+  commentId: T:System.Threading.Tasks.Task{System.ClientModel.ClientResult{FoundationaLLM.Common.Models.ContentSafety.ShieldPromptResult}}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<ClientResult<ShieldPromptResult>>
+  nameWithType: Task<ClientResult<ShieldPromptResult>>
+  fullName: System.Threading.Tasks.Task<System.ClientModel.ClientResult<FoundationaLLM.Common.Models.ContentSafety.ShieldPromptResult>>
+  nameWithType.vb: Task(Of ClientResult(Of ShieldPromptResult))
+  fullName.vb: System.Threading.Tasks.Task(Of System.ClientModel.ClientResult(Of FoundationaLLM.Common.Models.ContentSafety.ShieldPromptResult))
+  name.vb: Task(Of ClientResult(Of ShieldPromptResult))
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.ClientModel.ClientResult`1
+    name: ClientResult
+    isExternal: true
+  - name: <
+  - uid: FoundationaLLM.Common.Models.ContentSafety.ShieldPromptResult
+    name: ShieldPromptResult
+    href: FoundationaLLM.Common.Models.ContentSafety.ShieldPromptResult.html
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.ClientModel.ClientResult`1
+    name: ClientResult
+    isExternal: true
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FoundationaLLM.Common.Models.ContentSafety.ShieldPromptResult
+    name: ShieldPromptResult
+    href: FoundationaLLM.Common.Models.ContentSafety.ShieldPromptResult.html
+  - name: )
+  - name: )

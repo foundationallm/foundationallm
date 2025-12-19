@@ -1,0 +1,1822 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBServiceBase
+  commentId: T:FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBServiceBase
+  id: AzureCosmosDBServiceBase
+  parent: FoundationaLLM.Context.Services.CosmosDB
+  children:
+  - FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBServiceBase.#ctor(Microsoft.Extensions.Options.IOptions{FoundationaLLM.Common.Models.Configuration.CosmosDB.AzureCosmosDBSettings},Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBServiceBase})
+  - FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBServiceBase.ContextContainer
+  - FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBServiceBase.ItemExists``1(System.String,System.String,System.Func{``0,System.Boolean})
+  - FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBServiceBase.RetrieveItems``1(Microsoft.Azure.Cosmos.QueryDefinition)
+  - FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBServiceBase.UpsertItemAsync``1(System.String,``0,System.Threading.CancellationToken)
+  - FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBServiceBase._contextContainer
+  - FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBServiceBase._cosmosClient
+  - FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBServiceBase._logger
+  - FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBServiceBase._settings
+  langs:
+  - csharp
+  - vb
+  name: AzureCosmosDBServiceBase
+  nameWithType: AzureCosmosDBServiceBase
+  fullName: FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBServiceBase
+  type: Class
+  source:
+    remote:
+      path: src/dotnet/ContextEngine/Services/CosmosDB/AzureCosmosDBServiceBase.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: AzureCosmosDBServiceBase
+    path: ../src/dotnet/ContextEngine/Services/CosmosDB/AzureCosmosDBServiceBase.cs
+    startLine: 19
+  assemblies:
+  - FoundationaLLM.ContextEngine
+  namespace: FoundationaLLM.Context.Services.CosmosDB
+  summary: Provides the base implementation for the Azure Cosmos DB services.
+  example: []
+  syntax:
+    content: 'public class AzureCosmosDBServiceBase : IAzureCosmosDBServiceBase'
+    content.vb: Public Class AzureCosmosDBServiceBase Implements IAzureCosmosDBServiceBase
+  inheritance:
+  - System.Object
+  implements:
+  - FoundationaLLM.Context.Interfaces.IAzureCosmosDBServiceBase
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+  extensionMethods:
+  - System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+- uid: FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBServiceBase._settings
+  commentId: F:FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBServiceBase._settings
+  id: _settings
+  parent: FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBServiceBase
+  langs:
+  - csharp
+  - vb
+  name: _settings
+  nameWithType: AzureCosmosDBServiceBase._settings
+  fullName: FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBServiceBase._settings
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/ContextEngine/Services/CosmosDB/AzureCosmosDBServiceBase.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: _settings
+    path: ../src/dotnet/ContextEngine/Services/CosmosDB/AzureCosmosDBServiceBase.cs
+    startLine: 21
+  assemblies:
+  - FoundationaLLM.ContextEngine
+  namespace: FoundationaLLM.Context.Services.CosmosDB
+  syntax:
+    content: protected readonly AzureCosmosDBSettings _settings
+    return:
+      type: FoundationaLLM.Common.Models.Configuration.CosmosDB.AzureCosmosDBSettings
+    content.vb: Protected ReadOnly _settings As AzureCosmosDBSettings
+- uid: FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBServiceBase._logger
+  commentId: F:FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBServiceBase._logger
+  id: _logger
+  parent: FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBServiceBase
+  langs:
+  - csharp
+  - vb
+  name: _logger
+  nameWithType: AzureCosmosDBServiceBase._logger
+  fullName: FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBServiceBase._logger
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/ContextEngine/Services/CosmosDB/AzureCosmosDBServiceBase.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: _logger
+    path: ../src/dotnet/ContextEngine/Services/CosmosDB/AzureCosmosDBServiceBase.cs
+    startLine: 22
+  assemblies:
+  - FoundationaLLM.ContextEngine
+  namespace: FoundationaLLM.Context.Services.CosmosDB
+  syntax:
+    content: protected readonly ILogger<AzureCosmosDBServiceBase> _logger
+    return:
+      type: Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBServiceBase}
+    content.vb: Protected ReadOnly _logger As ILogger(Of AzureCosmosDBServiceBase)
+- uid: FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBServiceBase._cosmosClient
+  commentId: F:FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBServiceBase._cosmosClient
+  id: _cosmosClient
+  parent: FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBServiceBase
+  langs:
+  - csharp
+  - vb
+  name: _cosmosClient
+  nameWithType: AzureCosmosDBServiceBase._cosmosClient
+  fullName: FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBServiceBase._cosmosClient
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/ContextEngine/Services/CosmosDB/AzureCosmosDBServiceBase.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: _cosmosClient
+    path: ../src/dotnet/ContextEngine/Services/CosmosDB/AzureCosmosDBServiceBase.cs
+    startLine: 24
+  assemblies:
+  - FoundationaLLM.ContextEngine
+  namespace: FoundationaLLM.Context.Services.CosmosDB
+  syntax:
+    content: protected readonly CosmosClient _cosmosClient
+    return:
+      type: Microsoft.Azure.Cosmos.CosmosClient
+    content.vb: Protected ReadOnly _cosmosClient As CosmosClient
+- uid: FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBServiceBase._contextContainer
+  commentId: F:FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBServiceBase._contextContainer
+  id: _contextContainer
+  parent: FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBServiceBase
+  langs:
+  - csharp
+  - vb
+  name: _contextContainer
+  nameWithType: AzureCosmosDBServiceBase._contextContainer
+  fullName: FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBServiceBase._contextContainer
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/ContextEngine/Services/CosmosDB/AzureCosmosDBServiceBase.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: _contextContainer
+    path: ../src/dotnet/ContextEngine/Services/CosmosDB/AzureCosmosDBServiceBase.cs
+    startLine: 25
+  assemblies:
+  - FoundationaLLM.ContextEngine
+  namespace: FoundationaLLM.Context.Services.CosmosDB
+  syntax:
+    content: protected readonly Container _contextContainer
+    return:
+      type: Microsoft.Azure.Cosmos.Container
+    content.vb: Protected ReadOnly _contextContainer As Container
+- uid: FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBServiceBase.ContextContainer
+  commentId: P:FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBServiceBase.ContextContainer
+  id: ContextContainer
+  parent: FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBServiceBase
+  langs:
+  - csharp
+  - vb
+  name: ContextContainer
+  nameWithType: AzureCosmosDBServiceBase.ContextContainer
+  fullName: FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBServiceBase.ContextContainer
+  type: Property
+  source:
+    remote:
+      path: src/dotnet/ContextEngine/Services/CosmosDB/AzureCosmosDBServiceBase.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: ContextContainer
+    path: ../src/dotnet/ContextEngine/Services/CosmosDB/AzureCosmosDBServiceBase.cs
+    startLine: 28
+  assemblies:
+  - FoundationaLLM.ContextEngine
+  namespace: FoundationaLLM.Context.Services.CosmosDB
+  summary: Gets the context container for the Azure Cosmos DB service.
+  example: []
+  syntax:
+    content: public Container ContextContainer { get; }
+    parameters: []
+    return:
+      type: Microsoft.Azure.Cosmos.Container
+    content.vb: Public ReadOnly Property ContextContainer As Container
+  overload: FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBServiceBase.ContextContainer*
+  implements:
+  - FoundationaLLM.Context.Interfaces.IAzureCosmosDBServiceBase.ContextContainer
+- uid: FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBServiceBase.#ctor(Microsoft.Extensions.Options.IOptions{FoundationaLLM.Common.Models.Configuration.CosmosDB.AzureCosmosDBSettings},Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBServiceBase})
+  commentId: M:FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBServiceBase.#ctor(Microsoft.Extensions.Options.IOptions{FoundationaLLM.Common.Models.Configuration.CosmosDB.AzureCosmosDBSettings},Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBServiceBase})
+  id: '#ctor(Microsoft.Extensions.Options.IOptions{FoundationaLLM.Common.Models.Configuration.CosmosDB.AzureCosmosDBSettings},Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBServiceBase})'
+  parent: FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBServiceBase
+  langs:
+  - csharp
+  - vb
+  name: AzureCosmosDBServiceBase(IOptions<AzureCosmosDBSettings>, ILogger<AzureCosmosDBServiceBase>)
+  nameWithType: AzureCosmosDBServiceBase.AzureCosmosDBServiceBase(IOptions<AzureCosmosDBSettings>, ILogger<AzureCosmosDBServiceBase>)
+  fullName: FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBServiceBase.AzureCosmosDBServiceBase(Microsoft.Extensions.Options.IOptions<FoundationaLLM.Common.Models.Configuration.CosmosDB.AzureCosmosDBSettings>, Microsoft.Extensions.Logging.ILogger<FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBServiceBase>)
+  type: Constructor
+  source:
+    remote:
+      path: src/dotnet/ContextEngine/Services/CosmosDB/AzureCosmosDBServiceBase.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: .ctor
+    path: ../src/dotnet/ContextEngine/Services/CosmosDB/AzureCosmosDBServiceBase.cs
+    startLine: 35
+  assemblies:
+  - FoundationaLLM.ContextEngine
+  namespace: FoundationaLLM.Context.Services.CosmosDB
+  summary: Initializes a new instance of the <xref href="FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBServiceBase" data-throw-if-not-resolved="false"></xref> class.
+  example: []
+  syntax:
+    content: public AzureCosmosDBServiceBase(IOptions<AzureCosmosDBSettings> options, ILogger<AzureCosmosDBServiceBase> logger)
+    parameters:
+    - id: options
+      type: Microsoft.Extensions.Options.IOptions{FoundationaLLM.Common.Models.Configuration.CosmosDB.AzureCosmosDBSettings}
+      description: The IOptions providing the <xref href="FoundationaLLM.Common.Models.Configuration.CosmosDB.AzureCosmosDBSettings" data-throw-if-not-resolved="false"></xref>) with the Azure Cosmos DB settings.
+    - id: logger
+      type: Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBServiceBase}
+      description: The <xref href="Microsoft.Extensions.Logging.ILogger" data-throw-if-not-resolved="false"></xref> used for logging.
+    content.vb: Public Sub New(options As IOptions(Of AzureCosmosDBSettings), logger As ILogger(Of AzureCosmosDBServiceBase))
+  overload: FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBServiceBase.#ctor*
+  nameWithType.vb: AzureCosmosDBServiceBase.New(IOptions(Of AzureCosmosDBSettings), ILogger(Of AzureCosmosDBServiceBase))
+  fullName.vb: FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBServiceBase.New(Microsoft.Extensions.Options.IOptions(Of FoundationaLLM.Common.Models.Configuration.CosmosDB.AzureCosmosDBSettings), Microsoft.Extensions.Logging.ILogger(Of FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBServiceBase))
+  name.vb: New(IOptions(Of AzureCosmosDBSettings), ILogger(Of AzureCosmosDBServiceBase))
+- uid: FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBServiceBase.UpsertItemAsync``1(System.String,``0,System.Threading.CancellationToken)
+  commentId: M:FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBServiceBase.UpsertItemAsync``1(System.String,``0,System.Threading.CancellationToken)
+  id: UpsertItemAsync``1(System.String,``0,System.Threading.CancellationToken)
+  parent: FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBServiceBase
+  langs:
+  - csharp
+  - vb
+  name: UpsertItemAsync<T>(string, T, CancellationToken)
+  nameWithType: AzureCosmosDBServiceBase.UpsertItemAsync<T>(string, T, CancellationToken)
+  fullName: FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBServiceBase.UpsertItemAsync<T>(string, T, System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/ContextEngine/Services/CosmosDB/AzureCosmosDBServiceBase.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: UpsertItemAsync
+    path: ../src/dotnet/ContextEngine/Services/CosmosDB/AzureCosmosDBServiceBase.cs
+    startLine: 94
+  assemblies:
+  - FoundationaLLM.ContextEngine
+  namespace: FoundationaLLM.Context.Services.CosmosDB
+  summary: Upserts an item in Azure Cosmos DB.
+  example: []
+  syntax:
+    content: public Task<T> UpsertItemAsync<T>(string partitionKey, T item, CancellationToken cancellationToken = default)
+    parameters:
+    - id: partitionKey
+      type: System.String
+      description: The partition of the item to upsert.
+    - id: item
+      type: '{T}'
+      description: The item to upsert.
+    - id: cancellationToken
+      type: System.Threading.CancellationToken
+      description: The cancellation token used to signal a cancellation request.
+    typeParameters:
+    - id: T
+      description: The type of the item to upsert.
+    return:
+      type: System.Threading.Tasks.Task{{T}}
+      description: The upserted item.
+    content.vb: Public Function UpsertItemAsync(Of T)(partitionKey As String, item As T, cancellationToken As CancellationToken = Nothing) As Task(Of T)
+  overload: FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBServiceBase.UpsertItemAsync*
+  implements:
+  - FoundationaLLM.Context.Interfaces.IAzureCosmosDBServiceBase.UpsertItemAsync``1(System.String,{T},System.Threading.CancellationToken)
+  nameWithType.vb: AzureCosmosDBServiceBase.UpsertItemAsync(Of T)(String, T, CancellationToken)
+  fullName.vb: FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBServiceBase.UpsertItemAsync(Of T)(String, T, System.Threading.CancellationToken)
+  name.vb: UpsertItemAsync(Of T)(String, T, CancellationToken)
+- uid: FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBServiceBase.RetrieveItems``1(Microsoft.Azure.Cosmos.QueryDefinition)
+  commentId: M:FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBServiceBase.RetrieveItems``1(Microsoft.Azure.Cosmos.QueryDefinition)
+  id: RetrieveItems``1(Microsoft.Azure.Cosmos.QueryDefinition)
+  parent: FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBServiceBase
+  langs:
+  - csharp
+  - vb
+  name: RetrieveItems<T>(QueryDefinition)
+  nameWithType: AzureCosmosDBServiceBase.RetrieveItems<T>(QueryDefinition)
+  fullName: FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBServiceBase.RetrieveItems<T>(Microsoft.Azure.Cosmos.QueryDefinition)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/ContextEngine/Services/CosmosDB/AzureCosmosDBServiceBase.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: RetrieveItems
+    path: ../src/dotnet/ContextEngine/Services/CosmosDB/AzureCosmosDBServiceBase.cs
+    startLine: 108
+  assemblies:
+  - FoundationaLLM.ContextEngine
+  namespace: FoundationaLLM.Context.Services.CosmosDB
+  summary: Retrieves items from Azure Cosmos DB.
+  example: []
+  syntax:
+    content: public Task<List<T>> RetrieveItems<T>(QueryDefinition query)
+    parameters:
+    - id: query
+      type: Microsoft.Azure.Cosmos.QueryDefinition
+      description: The query definition used to retrieve the items.
+    typeParameters:
+    - id: T
+      description: The type of item to retrieve.
+    return:
+      type: System.Threading.Tasks.Task{System.Collections.Generic.List{{T}}}
+      description: The list of retrieved items.
+    content.vb: Public Function RetrieveItems(Of T)(query As QueryDefinition) As Task(Of List(Of T))
+  overload: FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBServiceBase.RetrieveItems*
+  implements:
+  - FoundationaLLM.Context.Interfaces.IAzureCosmosDBServiceBase.RetrieveItems``1(Microsoft.Azure.Cosmos.QueryDefinition)
+  nameWithType.vb: AzureCosmosDBServiceBase.RetrieveItems(Of T)(QueryDefinition)
+  fullName.vb: FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBServiceBase.RetrieveItems(Of T)(Microsoft.Azure.Cosmos.QueryDefinition)
+  name.vb: RetrieveItems(Of T)(QueryDefinition)
+- uid: FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBServiceBase.ItemExists``1(System.String,System.String,System.Func{``0,System.Boolean})
+  commentId: M:FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBServiceBase.ItemExists``1(System.String,System.String,System.Func{``0,System.Boolean})
+  id: ItemExists``1(System.String,System.String,System.Func{``0,System.Boolean})
+  parent: FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBServiceBase
+  langs:
+  - csharp
+  - vb
+  name: ItemExists<T>(string, string, Func<T, bool>?)
+  nameWithType: AzureCosmosDBServiceBase.ItemExists<T>(string, string, Func<T, bool>?)
+  fullName: FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBServiceBase.ItemExists<T>(string, string, System.Func<T, bool>?)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/ContextEngine/Services/CosmosDB/AzureCosmosDBServiceBase.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: ItemExists
+    path: ../src/dotnet/ContextEngine/Services/CosmosDB/AzureCosmosDBServiceBase.cs
+    startLine: 123
+  assemblies:
+  - FoundationaLLM.ContextEngine
+  namespace: FoundationaLLM.Context.Services.CosmosDB
+  summary: Determines whether an item with the specified partition key and identifier exists in the data store.
+  example: []
+  syntax:
+    content: public Task<bool> ItemExists<T>(string partitionKey, string id, Func<T, bool>? existencePredicate)
+    parameters:
+    - id: partitionKey
+      type: System.String
+      description: The partition key that identifies the logical partition containing the item. Cannot be null or empty.
+    - id: id
+      type: System.String
+      description: The unique identifier of the item within the specified partition. Cannot be null or empty.
+    - id: existencePredicate
+      type: System.Func{{T},System.Boolean}
+      description: An optional predicate function to further validate the existence of the item based on its properties.
+    typeParameters:
+    - id: T
+      description: The type of the item to check for existence.
+    return:
+      type: System.Threading.Tasks.Task{System.Boolean}
+      description: >-
+        A task that represents the asynchronous operation. The task result is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if the item
+            exists; otherwise, <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.
+    content.vb: Public Function ItemExists(Of T)(partitionKey As String, id As String, existencePredicate As Func(Of T, Boolean)) As Task(Of Boolean)
+  overload: FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBServiceBase.ItemExists*
+  implements:
+  - FoundationaLLM.Context.Interfaces.IAzureCosmosDBServiceBase.ItemExists``1(System.String,System.String,System.Func{{T},System.Boolean})
+  nameWithType.vb: AzureCosmosDBServiceBase.ItemExists(Of T)(String, String, Func(Of T, Boolean))
+  fullName.vb: FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBServiceBase.ItemExists(Of T)(String, String, System.Func(Of T, Boolean))
+  name.vb: ItemExists(Of T)(String, String, Func(Of T, Boolean))
+references:
+- uid: FoundationaLLM.Context.Services.CosmosDB
+  commentId: N:FoundationaLLM.Context.Services.CosmosDB
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Context.Services.CosmosDB
+  nameWithType: FoundationaLLM.Context.Services.CosmosDB
+  fullName: FoundationaLLM.Context.Services.CosmosDB
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Context
+    name: Context
+    href: FoundationaLLM.Context.html
+  - name: .
+  - uid: FoundationaLLM.Context.Services
+    name: Services
+    href: FoundationaLLM.Context.Services.html
+  - name: .
+  - uid: FoundationaLLM.Context.Services.CosmosDB
+    name: CosmosDB
+    href: FoundationaLLM.Context.Services.CosmosDB.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Context
+    name: Context
+    href: FoundationaLLM.Context.html
+  - name: .
+  - uid: FoundationaLLM.Context.Services
+    name: Services
+    href: FoundationaLLM.Context.Services.html
+  - name: .
+  - uid: FoundationaLLM.Context.Services.CosmosDB
+    name: CosmosDB
+    href: FoundationaLLM.Context.Services.CosmosDB.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: FoundationaLLM.Context.Interfaces.IAzureCosmosDBServiceBase
+  commentId: T:FoundationaLLM.Context.Interfaces.IAzureCosmosDBServiceBase
+  parent: FoundationaLLM.Context.Interfaces
+  href: FoundationaLLM.Context.Interfaces.IAzureCosmosDBServiceBase.html
+  name: IAzureCosmosDBServiceBase
+  nameWithType: IAzureCosmosDBServiceBase
+  fullName: FoundationaLLM.Context.Interfaces.IAzureCosmosDBServiceBase
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  parent: FoundationaLLM.Core.Utils.ObjectExtensions
+  definition: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: FoundationaLLM.Context.Interfaces
+  commentId: N:FoundationaLLM.Context.Interfaces
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Context.Interfaces
+  nameWithType: FoundationaLLM.Context.Interfaces
+  fullName: FoundationaLLM.Context.Interfaces
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Context
+    name: Context
+    href: FoundationaLLM.Context.html
+  - name: .
+  - uid: FoundationaLLM.Context.Interfaces
+    name: Interfaces
+    href: FoundationaLLM.Context.Interfaces.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Context
+    name: Context
+    href: FoundationaLLM.Context.html
+  - name: .
+  - uid: FoundationaLLM.Context.Interfaces
+    name: Interfaces
+    href: FoundationaLLM.Context.Interfaces.html
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  isExternal: true
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions
+  commentId: T:FoundationaLLM.Core.Utils.ObjectExtensions
+  parent: FoundationaLLM.Core.Utils
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html
+  name: ObjectExtensions
+  nameWithType: ObjectExtensions
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions
+- uid: FoundationaLLM.Core.Utils
+  commentId: N:FoundationaLLM.Core.Utils
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Core.Utils
+  nameWithType: FoundationaLLM.Core.Utils
+  fullName: FoundationaLLM.Core.Utils
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+- uid: FoundationaLLM.Common.Models.Configuration.CosmosDB.AzureCosmosDBSettings
+  commentId: T:FoundationaLLM.Common.Models.Configuration.CosmosDB.AzureCosmosDBSettings
+  parent: FoundationaLLM.Common.Models.Configuration.CosmosDB
+  href: FoundationaLLM.Common.Models.Configuration.CosmosDB.AzureCosmosDBSettings.html
+  name: AzureCosmosDBSettings
+  nameWithType: AzureCosmosDBSettings
+  fullName: FoundationaLLM.Common.Models.Configuration.CosmosDB.AzureCosmosDBSettings
+- uid: FoundationaLLM.Common.Models.Configuration.CosmosDB
+  commentId: N:FoundationaLLM.Common.Models.Configuration.CosmosDB
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.Configuration.CosmosDB
+  nameWithType: FoundationaLLM.Common.Models.Configuration.CosmosDB
+  fullName: FoundationaLLM.Common.Models.Configuration.CosmosDB
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Configuration
+    name: Configuration
+    href: FoundationaLLM.Common.Models.Configuration.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Configuration.CosmosDB
+    name: CosmosDB
+    href: FoundationaLLM.Common.Models.Configuration.CosmosDB.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Configuration
+    name: Configuration
+    href: FoundationaLLM.Common.Models.Configuration.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Configuration.CosmosDB
+    name: CosmosDB
+    href: FoundationaLLM.Common.Models.Configuration.CosmosDB.html
+- uid: Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBServiceBase}
+  commentId: T:Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBServiceBase}
+  parent: Microsoft.Extensions.Logging
+  definition: Microsoft.Extensions.Logging.ILogger`1
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  name: ILogger<AzureCosmosDBServiceBase>
+  nameWithType: ILogger<AzureCosmosDBServiceBase>
+  fullName: Microsoft.Extensions.Logging.ILogger<FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBServiceBase>
+  nameWithType.vb: ILogger(Of AzureCosmosDBServiceBase)
+  fullName.vb: Microsoft.Extensions.Logging.ILogger(Of FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBServiceBase)
+  name.vb: ILogger(Of AzureCosmosDBServiceBase)
+  spec.csharp:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: <
+  - uid: FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBServiceBase
+    name: AzureCosmosDBServiceBase
+    href: FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBServiceBase.html
+  - name: '>'
+  spec.vb:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBServiceBase
+    name: AzureCosmosDBServiceBase
+    href: FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBServiceBase.html
+  - name: )
+- uid: Microsoft.Extensions.Logging.ILogger`1
+  commentId: T:Microsoft.Extensions.Logging.ILogger`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  name: ILogger<TCategoryName>
+  nameWithType: ILogger<TCategoryName>
+  fullName: Microsoft.Extensions.Logging.ILogger<TCategoryName>
+  nameWithType.vb: ILogger(Of TCategoryName)
+  fullName.vb: Microsoft.Extensions.Logging.ILogger(Of TCategoryName)
+  name.vb: ILogger(Of TCategoryName)
+  spec.csharp:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: <
+  - name: TCategoryName
+  - name: '>'
+  spec.vb:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TCategoryName
+  - name: )
+- uid: Microsoft.Extensions.Logging
+  commentId: N:Microsoft.Extensions.Logging
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft
+  name: Microsoft.Extensions.Logging
+  nameWithType: Microsoft.Extensions.Logging
+  fullName: Microsoft.Extensions.Logging
+  spec.csharp:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Logging
+    name: Logging
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging
+  spec.vb:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Logging
+    name: Logging
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging
+- uid: Microsoft.Azure.Cosmos.CosmosClient
+  commentId: T:Microsoft.Azure.Cosmos.CosmosClient
+  parent: Microsoft.Azure.Cosmos
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.azure.cosmos.cosmosclient
+  name: CosmosClient
+  nameWithType: CosmosClient
+  fullName: Microsoft.Azure.Cosmos.CosmosClient
+- uid: Microsoft.Azure.Cosmos
+  commentId: N:Microsoft.Azure.Cosmos
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft
+  name: Microsoft.Azure.Cosmos
+  nameWithType: Microsoft.Azure.Cosmos
+  fullName: Microsoft.Azure.Cosmos
+  spec.csharp:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Azure
+    name: Azure
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.azure
+  - name: .
+  - uid: Microsoft.Azure.Cosmos
+    name: Cosmos
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.azure.cosmos
+  spec.vb:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Azure
+    name: Azure
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.azure
+  - name: .
+  - uid: Microsoft.Azure.Cosmos
+    name: Cosmos
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.azure.cosmos
+- uid: Microsoft.Azure.Cosmos.Container
+  commentId: T:Microsoft.Azure.Cosmos.Container
+  parent: Microsoft.Azure.Cosmos
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.azure.cosmos.container
+  name: Container
+  nameWithType: Container
+  fullName: Microsoft.Azure.Cosmos.Container
+- uid: FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBServiceBase.ContextContainer*
+  commentId: Overload:FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBServiceBase.ContextContainer
+  href: FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBServiceBase.html#FoundationaLLM_Context_Services_CosmosDB_AzureCosmosDBServiceBase_ContextContainer
+  name: ContextContainer
+  nameWithType: AzureCosmosDBServiceBase.ContextContainer
+  fullName: FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBServiceBase.ContextContainer
+- uid: FoundationaLLM.Context.Interfaces.IAzureCosmosDBServiceBase.ContextContainer
+  commentId: P:FoundationaLLM.Context.Interfaces.IAzureCosmosDBServiceBase.ContextContainer
+  parent: FoundationaLLM.Context.Interfaces.IAzureCosmosDBServiceBase
+  href: FoundationaLLM.Context.Interfaces.IAzureCosmosDBServiceBase.html#FoundationaLLM_Context_Interfaces_IAzureCosmosDBServiceBase_ContextContainer
+  name: ContextContainer
+  nameWithType: IAzureCosmosDBServiceBase.ContextContainer
+  fullName: FoundationaLLM.Context.Interfaces.IAzureCosmosDBServiceBase.ContextContainer
+- uid: FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBServiceBase
+  commentId: T:FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBServiceBase
+  href: FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBServiceBase.html
+  name: AzureCosmosDBServiceBase
+  nameWithType: AzureCosmosDBServiceBase
+  fullName: FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBServiceBase
+- uid: Microsoft.Extensions.Logging.ILogger
+  commentId: T:Microsoft.Extensions.Logging.ILogger
+  parent: Microsoft.Extensions.Logging
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger
+  name: ILogger
+  nameWithType: ILogger
+  fullName: Microsoft.Extensions.Logging.ILogger
+- uid: FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBServiceBase.#ctor*
+  commentId: Overload:FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBServiceBase.#ctor
+  href: FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBServiceBase.html#FoundationaLLM_Context_Services_CosmosDB_AzureCosmosDBServiceBase__ctor_Microsoft_Extensions_Options_IOptions_FoundationaLLM_Common_Models_Configuration_CosmosDB_AzureCosmosDBSettings__Microsoft_Extensions_Logging_ILogger_FoundationaLLM_Context_Services_CosmosDB_AzureCosmosDBServiceBase__
+  name: AzureCosmosDBServiceBase
+  nameWithType: AzureCosmosDBServiceBase.AzureCosmosDBServiceBase
+  fullName: FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBServiceBase.AzureCosmosDBServiceBase
+  nameWithType.vb: AzureCosmosDBServiceBase.New
+  fullName.vb: FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBServiceBase.New
+  name.vb: New
+- uid: Microsoft.Extensions.Options.IOptions{FoundationaLLM.Common.Models.Configuration.CosmosDB.AzureCosmosDBSettings}
+  commentId: T:Microsoft.Extensions.Options.IOptions{FoundationaLLM.Common.Models.Configuration.CosmosDB.AzureCosmosDBSettings}
+  parent: Microsoft.Extensions.Options
+  definition: Microsoft.Extensions.Options.IOptions`1
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.options.ioptions-1
+  name: IOptions<AzureCosmosDBSettings>
+  nameWithType: IOptions<AzureCosmosDBSettings>
+  fullName: Microsoft.Extensions.Options.IOptions<FoundationaLLM.Common.Models.Configuration.CosmosDB.AzureCosmosDBSettings>
+  nameWithType.vb: IOptions(Of AzureCosmosDBSettings)
+  fullName.vb: Microsoft.Extensions.Options.IOptions(Of FoundationaLLM.Common.Models.Configuration.CosmosDB.AzureCosmosDBSettings)
+  name.vb: IOptions(Of AzureCosmosDBSettings)
+  spec.csharp:
+  - uid: Microsoft.Extensions.Options.IOptions`1
+    name: IOptions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.options.ioptions-1
+  - name: <
+  - uid: FoundationaLLM.Common.Models.Configuration.CosmosDB.AzureCosmosDBSettings
+    name: AzureCosmosDBSettings
+    href: FoundationaLLM.Common.Models.Configuration.CosmosDB.AzureCosmosDBSettings.html
+  - name: '>'
+  spec.vb:
+  - uid: Microsoft.Extensions.Options.IOptions`1
+    name: IOptions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.options.ioptions-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FoundationaLLM.Common.Models.Configuration.CosmosDB.AzureCosmosDBSettings
+    name: AzureCosmosDBSettings
+    href: FoundationaLLM.Common.Models.Configuration.CosmosDB.AzureCosmosDBSettings.html
+  - name: )
+- uid: Microsoft.Extensions.Options.IOptions`1
+  commentId: T:Microsoft.Extensions.Options.IOptions`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.options.ioptions-1
+  name: IOptions<TOptions>
+  nameWithType: IOptions<TOptions>
+  fullName: Microsoft.Extensions.Options.IOptions<TOptions>
+  nameWithType.vb: IOptions(Of TOptions)
+  fullName.vb: Microsoft.Extensions.Options.IOptions(Of TOptions)
+  name.vb: IOptions(Of TOptions)
+  spec.csharp:
+  - uid: Microsoft.Extensions.Options.IOptions`1
+    name: IOptions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.options.ioptions-1
+  - name: <
+  - name: TOptions
+  - name: '>'
+  spec.vb:
+  - uid: Microsoft.Extensions.Options.IOptions`1
+    name: IOptions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.options.ioptions-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TOptions
+  - name: )
+- uid: Microsoft.Extensions.Options
+  commentId: N:Microsoft.Extensions.Options
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft
+  name: Microsoft.Extensions.Options
+  nameWithType: Microsoft.Extensions.Options
+  fullName: Microsoft.Extensions.Options
+  spec.csharp:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Options
+    name: Options
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.options
+  spec.vb:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Options
+    name: Options
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.options
+- uid: FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBServiceBase.UpsertItemAsync*
+  commentId: Overload:FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBServiceBase.UpsertItemAsync
+  href: FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBServiceBase.html#FoundationaLLM_Context_Services_CosmosDB_AzureCosmosDBServiceBase_UpsertItemAsync__1_System_String___0_System_Threading_CancellationToken_
+  name: UpsertItemAsync
+  nameWithType: AzureCosmosDBServiceBase.UpsertItemAsync
+  fullName: FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBServiceBase.UpsertItemAsync
+- uid: FoundationaLLM.Context.Interfaces.IAzureCosmosDBServiceBase.UpsertItemAsync``1(System.String,{T},System.Threading.CancellationToken)
+  commentId: M:FoundationaLLM.Context.Interfaces.IAzureCosmosDBServiceBase.UpsertItemAsync``1(System.String,``0,System.Threading.CancellationToken)
+  parent: FoundationaLLM.Context.Interfaces.IAzureCosmosDBServiceBase
+  definition: FoundationaLLM.Context.Interfaces.IAzureCosmosDBServiceBase.UpsertItemAsync``1(System.String,``0,System.Threading.CancellationToken)
+  href: FoundationaLLM.Context.Interfaces.IAzureCosmosDBServiceBase.html#FoundationaLLM_Context_Interfaces_IAzureCosmosDBServiceBase_UpsertItemAsync__1_System_String___0_System_Threading_CancellationToken_
+  name: UpsertItemAsync<T>(string, T, CancellationToken)
+  nameWithType: IAzureCosmosDBServiceBase.UpsertItemAsync<T>(string, T, CancellationToken)
+  fullName: FoundationaLLM.Context.Interfaces.IAzureCosmosDBServiceBase.UpsertItemAsync<T>(string, T, System.Threading.CancellationToken)
+  nameWithType.vb: IAzureCosmosDBServiceBase.UpsertItemAsync(Of T)(String, T, CancellationToken)
+  fullName.vb: FoundationaLLM.Context.Interfaces.IAzureCosmosDBServiceBase.UpsertItemAsync(Of T)(String, T, System.Threading.CancellationToken)
+  name.vb: UpsertItemAsync(Of T)(String, T, CancellationToken)
+  spec.csharp:
+  - uid: FoundationaLLM.Context.Interfaces.IAzureCosmosDBServiceBase.UpsertItemAsync``1(System.String,``0,System.Threading.CancellationToken)
+    name: UpsertItemAsync
+    href: FoundationaLLM.Context.Interfaces.IAzureCosmosDBServiceBase.html#FoundationaLLM_Context_Interfaces_IAzureCosmosDBServiceBase_UpsertItemAsync__1_System_String___0_System_Threading_CancellationToken_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Context.Interfaces.IAzureCosmosDBServiceBase.UpsertItemAsync``1(System.String,``0,System.Threading.CancellationToken)
+    name: UpsertItemAsync
+    href: FoundationaLLM.Context.Interfaces.IAzureCosmosDBServiceBase.html#FoundationaLLM_Context_Interfaces_IAzureCosmosDBServiceBase_UpsertItemAsync__1_System_String___0_System_Threading_CancellationToken_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: '{T}'
+  commentId: '!:T'
+  definition: T
+  name: T
+  nameWithType: T
+  fullName: T
+- uid: System.Threading.CancellationToken
+  commentId: T:System.Threading.CancellationToken
+  parent: System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  name: CancellationToken
+  nameWithType: CancellationToken
+  fullName: System.Threading.CancellationToken
+- uid: System.Threading.Tasks.Task{{T}}
+  commentId: T:System.Threading.Tasks.Task{``0}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<T>
+  nameWithType: Task<T>
+  fullName: System.Threading.Tasks.Task<T>
+  nameWithType.vb: Task(Of T)
+  fullName.vb: System.Threading.Tasks.Task(Of T)
+  name.vb: Task(Of T)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: FoundationaLLM.Context.Interfaces.IAzureCosmosDBServiceBase.UpsertItemAsync``1(System.String,``0,System.Threading.CancellationToken)
+  commentId: M:FoundationaLLM.Context.Interfaces.IAzureCosmosDBServiceBase.UpsertItemAsync``1(System.String,``0,System.Threading.CancellationToken)
+  isExternal: true
+  href: FoundationaLLM.Context.Interfaces.IAzureCosmosDBServiceBase.html#FoundationaLLM_Context_Interfaces_IAzureCosmosDBServiceBase_UpsertItemAsync__1_System_String___0_System_Threading_CancellationToken_
+  name: UpsertItemAsync<T>(string, T, CancellationToken)
+  nameWithType: IAzureCosmosDBServiceBase.UpsertItemAsync<T>(string, T, CancellationToken)
+  fullName: FoundationaLLM.Context.Interfaces.IAzureCosmosDBServiceBase.UpsertItemAsync<T>(string, T, System.Threading.CancellationToken)
+  nameWithType.vb: IAzureCosmosDBServiceBase.UpsertItemAsync(Of T)(String, T, CancellationToken)
+  fullName.vb: FoundationaLLM.Context.Interfaces.IAzureCosmosDBServiceBase.UpsertItemAsync(Of T)(String, T, System.Threading.CancellationToken)
+  name.vb: UpsertItemAsync(Of T)(String, T, CancellationToken)
+  spec.csharp:
+  - uid: FoundationaLLM.Context.Interfaces.IAzureCosmosDBServiceBase.UpsertItemAsync``1(System.String,``0,System.Threading.CancellationToken)
+    name: UpsertItemAsync
+    href: FoundationaLLM.Context.Interfaces.IAzureCosmosDBServiceBase.html#FoundationaLLM_Context_Interfaces_IAzureCosmosDBServiceBase_UpsertItemAsync__1_System_String___0_System_Threading_CancellationToken_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Context.Interfaces.IAzureCosmosDBServiceBase.UpsertItemAsync``1(System.String,``0,System.Threading.CancellationToken)
+    name: UpsertItemAsync
+    href: FoundationaLLM.Context.Interfaces.IAzureCosmosDBServiceBase.html#FoundationaLLM_Context_Interfaces_IAzureCosmosDBServiceBase_UpsertItemAsync__1_System_String___0_System_Threading_CancellationToken_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: T
+  name: T
+  nameWithType: T
+  fullName: T
+- uid: System.Threading
+  commentId: N:System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading
+  nameWithType: System.Threading
+  fullName: System.Threading
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBServiceBase.RetrieveItems*
+  commentId: Overload:FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBServiceBase.RetrieveItems
+  href: FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBServiceBase.html#FoundationaLLM_Context_Services_CosmosDB_AzureCosmosDBServiceBase_RetrieveItems__1_Microsoft_Azure_Cosmos_QueryDefinition_
+  name: RetrieveItems
+  nameWithType: AzureCosmosDBServiceBase.RetrieveItems
+  fullName: FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBServiceBase.RetrieveItems
+- uid: FoundationaLLM.Context.Interfaces.IAzureCosmosDBServiceBase.RetrieveItems``1(Microsoft.Azure.Cosmos.QueryDefinition)
+  commentId: M:FoundationaLLM.Context.Interfaces.IAzureCosmosDBServiceBase.RetrieveItems``1(Microsoft.Azure.Cosmos.QueryDefinition)
+  parent: FoundationaLLM.Context.Interfaces.IAzureCosmosDBServiceBase
+  isExternal: true
+  href: FoundationaLLM.Context.Interfaces.IAzureCosmosDBServiceBase.html#FoundationaLLM_Context_Interfaces_IAzureCosmosDBServiceBase_RetrieveItems__1_Microsoft_Azure_Cosmos_QueryDefinition_
+  name: RetrieveItems<T>(QueryDefinition)
+  nameWithType: IAzureCosmosDBServiceBase.RetrieveItems<T>(QueryDefinition)
+  fullName: FoundationaLLM.Context.Interfaces.IAzureCosmosDBServiceBase.RetrieveItems<T>(Microsoft.Azure.Cosmos.QueryDefinition)
+  nameWithType.vb: IAzureCosmosDBServiceBase.RetrieveItems(Of T)(QueryDefinition)
+  fullName.vb: FoundationaLLM.Context.Interfaces.IAzureCosmosDBServiceBase.RetrieveItems(Of T)(Microsoft.Azure.Cosmos.QueryDefinition)
+  name.vb: RetrieveItems(Of T)(QueryDefinition)
+  spec.csharp:
+  - uid: FoundationaLLM.Context.Interfaces.IAzureCosmosDBServiceBase.RetrieveItems``1(Microsoft.Azure.Cosmos.QueryDefinition)
+    name: RetrieveItems
+    href: FoundationaLLM.Context.Interfaces.IAzureCosmosDBServiceBase.html#FoundationaLLM_Context_Interfaces_IAzureCosmosDBServiceBase_RetrieveItems__1_Microsoft_Azure_Cosmos_QueryDefinition_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: Microsoft.Azure.Cosmos.QueryDefinition
+    name: QueryDefinition
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.azure.cosmos.querydefinition
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Context.Interfaces.IAzureCosmosDBServiceBase.RetrieveItems``1(Microsoft.Azure.Cosmos.QueryDefinition)
+    name: RetrieveItems
+    href: FoundationaLLM.Context.Interfaces.IAzureCosmosDBServiceBase.html#FoundationaLLM_Context_Interfaces_IAzureCosmosDBServiceBase_RetrieveItems__1_Microsoft_Azure_Cosmos_QueryDefinition_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: Microsoft.Azure.Cosmos.QueryDefinition
+    name: QueryDefinition
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.azure.cosmos.querydefinition
+  - name: )
+- uid: Microsoft.Azure.Cosmos.QueryDefinition
+  commentId: T:Microsoft.Azure.Cosmos.QueryDefinition
+  parent: Microsoft.Azure.Cosmos
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.azure.cosmos.querydefinition
+  name: QueryDefinition
+  nameWithType: QueryDefinition
+  fullName: Microsoft.Azure.Cosmos.QueryDefinition
+- uid: System.Threading.Tasks.Task{System.Collections.Generic.List{{T}}}
+  commentId: T:System.Threading.Tasks.Task{System.Collections.Generic.List{``0}}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<List<T>>
+  nameWithType: Task<List<T>>
+  fullName: System.Threading.Tasks.Task<System.Collections.Generic.List<T>>
+  nameWithType.vb: Task(Of List(Of T))
+  fullName.vb: System.Threading.Tasks.Task(Of System.Collections.Generic.List(Of T))
+  name.vb: Task(Of List(Of T))
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - name: T
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: )
+- uid: FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBServiceBase.ItemExists*
+  commentId: Overload:FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBServiceBase.ItemExists
+  href: FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBServiceBase.html#FoundationaLLM_Context_Services_CosmosDB_AzureCosmosDBServiceBase_ItemExists__1_System_String_System_String_System_Func___0_System_Boolean__
+  name: ItemExists
+  nameWithType: AzureCosmosDBServiceBase.ItemExists
+  fullName: FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBServiceBase.ItemExists
+- uid: FoundationaLLM.Context.Interfaces.IAzureCosmosDBServiceBase.ItemExists``1(System.String,System.String,System.Func{{T},System.Boolean})
+  commentId: M:FoundationaLLM.Context.Interfaces.IAzureCosmosDBServiceBase.ItemExists``1(System.String,System.String,System.Func{``0,System.Boolean})
+  parent: FoundationaLLM.Context.Interfaces.IAzureCosmosDBServiceBase
+  definition: FoundationaLLM.Context.Interfaces.IAzureCosmosDBServiceBase.ItemExists``1(System.String,System.String,System.Func{``0,System.Boolean})
+  href: FoundationaLLM.Context.Interfaces.IAzureCosmosDBServiceBase.html#FoundationaLLM_Context_Interfaces_IAzureCosmosDBServiceBase_ItemExists__1_System_String_System_String_System_Func___0_System_Boolean__
+  name: ItemExists<T>(string, string, Func<T, bool>)
+  nameWithType: IAzureCosmosDBServiceBase.ItemExists<T>(string, string, Func<T, bool>)
+  fullName: FoundationaLLM.Context.Interfaces.IAzureCosmosDBServiceBase.ItemExists<T>(string, string, System.Func<T, bool>)
+  nameWithType.vb: IAzureCosmosDBServiceBase.ItemExists(Of T)(String, String, Func(Of T, Boolean))
+  fullName.vb: FoundationaLLM.Context.Interfaces.IAzureCosmosDBServiceBase.ItemExists(Of T)(String, String, System.Func(Of T, Boolean))
+  name.vb: ItemExists(Of T)(String, String, Func(Of T, Boolean))
+  spec.csharp:
+  - uid: FoundationaLLM.Context.Interfaces.IAzureCosmosDBServiceBase.ItemExists``1(System.String,System.String,System.Func{``0,System.Boolean})
+    name: ItemExists
+    href: FoundationaLLM.Context.Interfaces.IAzureCosmosDBServiceBase.html#FoundationaLLM_Context_Interfaces_IAzureCosmosDBServiceBase_ItemExists__1_System_String_System_String_System_Func___0_System_Boolean__
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Context.Interfaces.IAzureCosmosDBServiceBase.ItemExists``1(System.String,System.String,System.Func{``0,System.Boolean})
+    name: ItemExists
+    href: FoundationaLLM.Context.Interfaces.IAzureCosmosDBServiceBase.html#FoundationaLLM_Context_Interfaces_IAzureCosmosDBServiceBase_ItemExists__1_System_String_System_String_System_Func___0_System_Boolean__
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  - name: )
+- uid: System.Func{{T},System.Boolean}
+  commentId: T:System.Func{`0,System.Boolean}
+  parent: System
+  definition: System.Func`2
+  href: https://learn.microsoft.com/dotnet/api/system.func-2
+  name: Func<T, bool>
+  nameWithType: Func<T, bool>
+  fullName: System.Func<T, bool>
+  nameWithType.vb: Func(Of T, Boolean)
+  fullName.vb: System.Func(Of T, Boolean)
+  name.vb: Func(Of T, Boolean)
+  spec.csharp:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: System.Threading.Tasks.Task{System.Boolean}
+  commentId: T:System.Threading.Tasks.Task{System.Boolean}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<bool>
+  nameWithType: Task<bool>
+  fullName: System.Threading.Tasks.Task<bool>
+  nameWithType.vb: Task(Of Boolean)
+  fullName.vb: System.Threading.Tasks.Task(Of Boolean)
+  name.vb: Task(Of Boolean)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: FoundationaLLM.Context.Interfaces.IAzureCosmosDBServiceBase.ItemExists``1(System.String,System.String,System.Func{``0,System.Boolean})
+  commentId: M:FoundationaLLM.Context.Interfaces.IAzureCosmosDBServiceBase.ItemExists``1(System.String,System.String,System.Func{``0,System.Boolean})
+  isExternal: true
+  href: FoundationaLLM.Context.Interfaces.IAzureCosmosDBServiceBase.html#FoundationaLLM_Context_Interfaces_IAzureCosmosDBServiceBase_ItemExists__1_System_String_System_String_System_Func___0_System_Boolean__
+  name: ItemExists<T>(string, string, Func<T, bool>)
+  nameWithType: IAzureCosmosDBServiceBase.ItemExists<T>(string, string, Func<T, bool>)
+  fullName: FoundationaLLM.Context.Interfaces.IAzureCosmosDBServiceBase.ItemExists<T>(string, string, System.Func<T, bool>)
+  nameWithType.vb: IAzureCosmosDBServiceBase.ItemExists(Of T)(String, String, Func(Of T, Boolean))
+  fullName.vb: FoundationaLLM.Context.Interfaces.IAzureCosmosDBServiceBase.ItemExists(Of T)(String, String, System.Func(Of T, Boolean))
+  name.vb: ItemExists(Of T)(String, String, Func(Of T, Boolean))
+  spec.csharp:
+  - uid: FoundationaLLM.Context.Interfaces.IAzureCosmosDBServiceBase.ItemExists``1(System.String,System.String,System.Func{``0,System.Boolean})
+    name: ItemExists
+    href: FoundationaLLM.Context.Interfaces.IAzureCosmosDBServiceBase.html#FoundationaLLM_Context_Interfaces_IAzureCosmosDBServiceBase_ItemExists__1_System_String_System_String_System_Func___0_System_Boolean__
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Context.Interfaces.IAzureCosmosDBServiceBase.ItemExists``1(System.String,System.String,System.Func{``0,System.Boolean})
+    name: ItemExists
+    href: FoundationaLLM.Context.Interfaces.IAzureCosmosDBServiceBase.html#FoundationaLLM_Context_Interfaces_IAzureCosmosDBServiceBase_ItemExists__1_System_String_System_String_System_Func___0_System_Boolean__
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  - name: )
+- uid: System.Func`2
+  commentId: T:System.Func`2
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.func-2
+  name: Func<T, TResult>
+  nameWithType: Func<T, TResult>
+  fullName: System.Func<T, TResult>
+  nameWithType.vb: Func(Of T, TResult)
+  fullName.vb: System.Func(Of T, TResult)
+  name.vb: Func(Of T, TResult)
+  spec.csharp:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TResult
+  - name: )

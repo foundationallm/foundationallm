@@ -1,0 +1,128 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Common.Models.ContentSafety
+  commentId: N:FoundationaLLM.Common.Models.ContentSafety
+  id: ContentSafety
+  parent: FoundationaLLM.Common.Models
+  children:
+  - FoundationaLLM.Common.Models.ContentSafety.AnalyzeTextRequest
+  - FoundationaLLM.Common.Models.ContentSafety.AnalyzeTextResult
+  - FoundationaLLM.Common.Models.ContentSafety.ContentSafetyAnalysisResult
+  - FoundationaLLM.Common.Models.ContentSafety.ContentSafetyDocument
+  - FoundationaLLM.Common.Models.ContentSafety.ContentSafetyDocumentAnalysisResult
+  - FoundationaLLM.Common.Models.ContentSafety.ShieldPromptDetails
+  - FoundationaLLM.Common.Models.ContentSafety.ShieldPromptRequest
+  - FoundationaLLM.Common.Models.ContentSafety.ShieldPromptResult
+  - FoundationaLLM.Common.Models.ContentSafety.TextCategory
+  - FoundationaLLM.Common.Models.ContentSafety.TextCategoryResult
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM.Common.Models.ContentSafety
+  nameWithType: FoundationaLLM.Common.Models.ContentSafety
+  fullName: FoundationaLLM.Common.Models.ContentSafety
+  type: Namespace
+  assemblies:
+  - FoundationaLLM.Common
+references:
+- uid: FoundationaLLM.Common.Models.ContentSafety.AnalyzeTextRequest
+  commentId: T:FoundationaLLM.Common.Models.ContentSafety.AnalyzeTextRequest
+  parent: FoundationaLLM.Common.Models.ContentSafety
+  href: FoundationaLLM.Common.Models.ContentSafety.AnalyzeTextRequest.html
+  name: AnalyzeTextRequest
+  nameWithType: AnalyzeTextRequest
+  fullName: FoundationaLLM.Common.Models.ContentSafety.AnalyzeTextRequest
+- uid: FoundationaLLM.Common.Models.ContentSafety.AnalyzeTextResult
+  commentId: T:FoundationaLLM.Common.Models.ContentSafety.AnalyzeTextResult
+  href: FoundationaLLM.Common.Models.ContentSafety.AnalyzeTextResult.html
+  name: AnalyzeTextResult
+  nameWithType: AnalyzeTextResult
+  fullName: FoundationaLLM.Common.Models.ContentSafety.AnalyzeTextResult
+- uid: FoundationaLLM.Common.Models.ContentSafety.ContentSafetyAnalysisResult
+  commentId: T:FoundationaLLM.Common.Models.ContentSafety.ContentSafetyAnalysisResult
+  href: FoundationaLLM.Common.Models.ContentSafety.ContentSafetyAnalysisResult.html
+  name: ContentSafetyAnalysisResult
+  nameWithType: ContentSafetyAnalysisResult
+  fullName: FoundationaLLM.Common.Models.ContentSafety.ContentSafetyAnalysisResult
+- uid: FoundationaLLM.Common.Models.ContentSafety.ContentSafetyDocument
+  commentId: T:FoundationaLLM.Common.Models.ContentSafety.ContentSafetyDocument
+  href: FoundationaLLM.Common.Models.ContentSafety.ContentSafetyDocument.html
+  name: ContentSafetyDocument
+  nameWithType: ContentSafetyDocument
+  fullName: FoundationaLLM.Common.Models.ContentSafety.ContentSafetyDocument
+- uid: FoundationaLLM.Common.Models.ContentSafety.ContentSafetyDocumentAnalysisResult
+  commentId: T:FoundationaLLM.Common.Models.ContentSafety.ContentSafetyDocumentAnalysisResult
+  href: FoundationaLLM.Common.Models.ContentSafety.ContentSafetyDocumentAnalysisResult.html
+  name: ContentSafetyDocumentAnalysisResult
+  nameWithType: ContentSafetyDocumentAnalysisResult
+  fullName: FoundationaLLM.Common.Models.ContentSafety.ContentSafetyDocumentAnalysisResult
+- uid: FoundationaLLM.Common.Models.ContentSafety.ShieldPromptDetails
+  commentId: T:FoundationaLLM.Common.Models.ContentSafety.ShieldPromptDetails
+  parent: FoundationaLLM.Common.Models.ContentSafety
+  href: FoundationaLLM.Common.Models.ContentSafety.ShieldPromptDetails.html
+  name: ShieldPromptDetails
+  nameWithType: ShieldPromptDetails
+  fullName: FoundationaLLM.Common.Models.ContentSafety.ShieldPromptDetails
+- uid: FoundationaLLM.Common.Models.ContentSafety.ShieldPromptRequest
+  commentId: T:FoundationaLLM.Common.Models.ContentSafety.ShieldPromptRequest
+  parent: FoundationaLLM.Common.Models.ContentSafety
+  href: FoundationaLLM.Common.Models.ContentSafety.ShieldPromptRequest.html
+  name: ShieldPromptRequest
+  nameWithType: ShieldPromptRequest
+  fullName: FoundationaLLM.Common.Models.ContentSafety.ShieldPromptRequest
+- uid: FoundationaLLM.Common.Models.ContentSafety.ShieldPromptResult
+  commentId: T:FoundationaLLM.Common.Models.ContentSafety.ShieldPromptResult
+  href: FoundationaLLM.Common.Models.ContentSafety.ShieldPromptResult.html
+  name: ShieldPromptResult
+  nameWithType: ShieldPromptResult
+  fullName: FoundationaLLM.Common.Models.ContentSafety.ShieldPromptResult
+- uid: FoundationaLLM.Common.Models.ContentSafety.TextCategory
+  commentId: T:FoundationaLLM.Common.Models.ContentSafety.TextCategory
+  href: FoundationaLLM.Common.Models.ContentSafety.TextCategory.html
+  name: TextCategory
+  nameWithType: TextCategory
+  fullName: FoundationaLLM.Common.Models.ContentSafety.TextCategory
+- uid: FoundationaLLM.Common.Models.ContentSafety.TextCategoryResult
+  commentId: T:FoundationaLLM.Common.Models.ContentSafety.TextCategoryResult
+  href: FoundationaLLM.Common.Models.ContentSafety.TextCategoryResult.html
+  name: TextCategoryResult
+  nameWithType: TextCategoryResult
+  fullName: FoundationaLLM.Common.Models.ContentSafety.TextCategoryResult
+- uid: FoundationaLLM.Common.Models.ContentSafety
+  commentId: N:FoundationaLLM.Common.Models.ContentSafety
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.ContentSafety
+  nameWithType: FoundationaLLM.Common.Models.ContentSafety
+  fullName: FoundationaLLM.Common.Models.ContentSafety
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ContentSafety
+    name: ContentSafety
+    href: FoundationaLLM.Common.Models.ContentSafety.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ContentSafety
+    name: ContentSafety
+    href: FoundationaLLM.Common.Models.ContentSafety.html

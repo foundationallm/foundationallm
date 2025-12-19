@@ -1,0 +1,151 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Client.Management.Interfaces
+  commentId: N:FoundationaLLM.Client.Management.Interfaces
+  id: Interfaces
+  parent: FoundationaLLM.Client.Management
+  children:
+  - FoundationaLLM.Client.Management.Interfaces.IAIModelManagementClient
+  - FoundationaLLM.Client.Management.Interfaces.IAgentManagementClient
+  - FoundationaLLM.Client.Management.Interfaces.IAttachmentManagementClient
+  - FoundationaLLM.Client.Management.Interfaces.IConfigurationManagementClient
+  - FoundationaLLM.Client.Management.Interfaces.IDataSourceManagementClient
+  - FoundationaLLM.Client.Management.Interfaces.IIdentityRESTClient
+  - FoundationaLLM.Client.Management.Interfaces.IManagementClient
+  - FoundationaLLM.Client.Management.Interfaces.IManagementRESTClient
+  - FoundationaLLM.Client.Management.Interfaces.IPromptManagementClient
+  - FoundationaLLM.Client.Management.Interfaces.IResourceRESTClient
+  - FoundationaLLM.Client.Management.Interfaces.IStatusRESTClient
+  - FoundationaLLM.Client.Management.Interfaces.IVectorizationManagementClient
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM.Client.Management.Interfaces
+  nameWithType: FoundationaLLM.Client.Management.Interfaces
+  fullName: FoundationaLLM.Client.Management.Interfaces
+  type: Namespace
+  assemblies:
+  - FoundationaLLM.Client.Management
+references:
+- uid: FoundationaLLM.Client.Management.Interfaces.IAIModelManagementClient
+  commentId: T:FoundationaLLM.Client.Management.Interfaces.IAIModelManagementClient
+  parent: FoundationaLLM.Client.Management.Interfaces
+  href: FoundationaLLM.Client.Management.Interfaces.IAIModelManagementClient.html
+  name: IAIModelManagementClient
+  nameWithType: IAIModelManagementClient
+  fullName: FoundationaLLM.Client.Management.Interfaces.IAIModelManagementClient
+- uid: FoundationaLLM.Client.Management.Interfaces.IAgentManagementClient
+  commentId: T:FoundationaLLM.Client.Management.Interfaces.IAgentManagementClient
+  parent: FoundationaLLM.Client.Management.Interfaces
+  href: FoundationaLLM.Client.Management.Interfaces.IAgentManagementClient.html
+  name: IAgentManagementClient
+  nameWithType: IAgentManagementClient
+  fullName: FoundationaLLM.Client.Management.Interfaces.IAgentManagementClient
+- uid: FoundationaLLM.Client.Management.Interfaces.IAttachmentManagementClient
+  commentId: T:FoundationaLLM.Client.Management.Interfaces.IAttachmentManagementClient
+  parent: FoundationaLLM.Client.Management.Interfaces
+  href: FoundationaLLM.Client.Management.Interfaces.IAttachmentManagementClient.html
+  name: IAttachmentManagementClient
+  nameWithType: IAttachmentManagementClient
+  fullName: FoundationaLLM.Client.Management.Interfaces.IAttachmentManagementClient
+- uid: FoundationaLLM.Client.Management.Interfaces.IConfigurationManagementClient
+  commentId: T:FoundationaLLM.Client.Management.Interfaces.IConfigurationManagementClient
+  parent: FoundationaLLM.Client.Management.Interfaces
+  href: FoundationaLLM.Client.Management.Interfaces.IConfigurationManagementClient.html
+  name: IConfigurationManagementClient
+  nameWithType: IConfigurationManagementClient
+  fullName: FoundationaLLM.Client.Management.Interfaces.IConfigurationManagementClient
+- uid: FoundationaLLM.Client.Management.Interfaces.IDataSourceManagementClient
+  commentId: T:FoundationaLLM.Client.Management.Interfaces.IDataSourceManagementClient
+  parent: FoundationaLLM.Client.Management.Interfaces
+  href: FoundationaLLM.Client.Management.Interfaces.IDataSourceManagementClient.html
+  name: IDataSourceManagementClient
+  nameWithType: IDataSourceManagementClient
+  fullName: FoundationaLLM.Client.Management.Interfaces.IDataSourceManagementClient
+- uid: FoundationaLLM.Client.Management.Interfaces.IIdentityRESTClient
+  commentId: T:FoundationaLLM.Client.Management.Interfaces.IIdentityRESTClient
+  parent: FoundationaLLM.Client.Management.Interfaces
+  href: FoundationaLLM.Client.Management.Interfaces.IIdentityRESTClient.html
+  name: IIdentityRESTClient
+  nameWithType: IIdentityRESTClient
+  fullName: FoundationaLLM.Client.Management.Interfaces.IIdentityRESTClient
+- uid: FoundationaLLM.Client.Management.Interfaces.IManagementClient
+  commentId: T:FoundationaLLM.Client.Management.Interfaces.IManagementClient
+  parent: FoundationaLLM.Client.Management.Interfaces
+  href: FoundationaLLM.Client.Management.Interfaces.IManagementClient.html
+  name: IManagementClient
+  nameWithType: IManagementClient
+  fullName: FoundationaLLM.Client.Management.Interfaces.IManagementClient
+- uid: FoundationaLLM.Client.Management.Interfaces.IManagementRESTClient
+  commentId: T:FoundationaLLM.Client.Management.Interfaces.IManagementRESTClient
+  parent: FoundationaLLM.Client.Management.Interfaces
+  href: FoundationaLLM.Client.Management.Interfaces.IManagementRESTClient.html
+  name: IManagementRESTClient
+  nameWithType: IManagementRESTClient
+  fullName: FoundationaLLM.Client.Management.Interfaces.IManagementRESTClient
+- uid: FoundationaLLM.Client.Management.Interfaces.IPromptManagementClient
+  commentId: T:FoundationaLLM.Client.Management.Interfaces.IPromptManagementClient
+  parent: FoundationaLLM.Client.Management.Interfaces
+  href: FoundationaLLM.Client.Management.Interfaces.IPromptManagementClient.html
+  name: IPromptManagementClient
+  nameWithType: IPromptManagementClient
+  fullName: FoundationaLLM.Client.Management.Interfaces.IPromptManagementClient
+- uid: FoundationaLLM.Client.Management.Interfaces.IResourceRESTClient
+  commentId: T:FoundationaLLM.Client.Management.Interfaces.IResourceRESTClient
+  parent: FoundationaLLM.Client.Management.Interfaces
+  href: FoundationaLLM.Client.Management.Interfaces.IResourceRESTClient.html
+  name: IResourceRESTClient
+  nameWithType: IResourceRESTClient
+  fullName: FoundationaLLM.Client.Management.Interfaces.IResourceRESTClient
+- uid: FoundationaLLM.Client.Management.Interfaces.IStatusRESTClient
+  commentId: T:FoundationaLLM.Client.Management.Interfaces.IStatusRESTClient
+  parent: FoundationaLLM.Client.Management.Interfaces
+  href: FoundationaLLM.Client.Management.Interfaces.IStatusRESTClient.html
+  name: IStatusRESTClient
+  nameWithType: IStatusRESTClient
+  fullName: FoundationaLLM.Client.Management.Interfaces.IStatusRESTClient
+- uid: FoundationaLLM.Client.Management.Interfaces.IVectorizationManagementClient
+  commentId: T:FoundationaLLM.Client.Management.Interfaces.IVectorizationManagementClient
+  parent: FoundationaLLM.Client.Management.Interfaces
+  href: FoundationaLLM.Client.Management.Interfaces.IVectorizationManagementClient.html
+  name: IVectorizationManagementClient
+  nameWithType: IVectorizationManagementClient
+  fullName: FoundationaLLM.Client.Management.Interfaces.IVectorizationManagementClient
+- uid: FoundationaLLM.Client.Management.Interfaces
+  commentId: N:FoundationaLLM.Client.Management.Interfaces
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Client.Management.Interfaces
+  nameWithType: FoundationaLLM.Client.Management.Interfaces
+  fullName: FoundationaLLM.Client.Management.Interfaces
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Client
+    name: Client
+    href: FoundationaLLM.Client.html
+  - name: .
+  - uid: FoundationaLLM.Client.Management
+    name: Management
+    href: FoundationaLLM.Client.Management.html
+  - name: .
+  - uid: FoundationaLLM.Client.Management.Interfaces
+    name: Interfaces
+    href: FoundationaLLM.Client.Management.Interfaces.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Client
+    name: Client
+    href: FoundationaLLM.Client.html
+  - name: .
+  - uid: FoundationaLLM.Client.Management
+    name: Management
+    href: FoundationaLLM.Client.Management.html
+  - name: .
+  - uid: FoundationaLLM.Client.Management.Interfaces
+    name: Interfaces
+    href: FoundationaLLM.Client.Management.Interfaces.html

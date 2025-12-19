@@ -1,0 +1,24 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Attachment.ResourceProviders
+  commentId: N:FoundationaLLM.Attachment.ResourceProviders
+  id: ResourceProviders
+  parent: FoundationaLLM.Attachment
+  children:
+  - FoundationaLLM.Attachment.ResourceProviders.AttachmentResourceProviderService
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM.Attachment.ResourceProviders
+  nameWithType: FoundationaLLM.Attachment.ResourceProviders
+  fullName: FoundationaLLM.Attachment.ResourceProviders
+  type: Namespace
+  assemblies:
+  - FoundationaLLM.Attachment
+references:
+- uid: FoundationaLLM.Attachment.ResourceProviders.AttachmentResourceProviderService
+  commentId: T:FoundationaLLM.Attachment.ResourceProviders.AttachmentResourceProviderService
+  href: FoundationaLLM.Attachment.ResourceProviders.AttachmentResourceProviderService.html
+  name: AttachmentResourceProviderService
+  nameWithType: AttachmentResourceProviderService
+  fullName: FoundationaLLM.Attachment.ResourceProviders.AttachmentResourceProviderService

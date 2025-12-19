@@ -1,0 +1,38 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.DataPipeline.Validation
+  commentId: N:FoundationaLLM.DataPipeline.Validation
+  id: Validation
+  parent: FoundationaLLM.DataPipeline
+  children:
+  - FoundationaLLM.DataPipeline.Validation.DataPipelineDefinitionValidator
+  - FoundationaLLM.DataPipeline.Validation.DataPipelineRunValidator
+  - FoundationaLLM.DataPipeline.Validation.DataPipelineTriggerValidator
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM.DataPipeline.Validation
+  nameWithType: FoundationaLLM.DataPipeline.Validation
+  fullName: FoundationaLLM.DataPipeline.Validation
+  type: Namespace
+  assemblies:
+  - FoundationaLLM.DataPipeline
+references:
+- uid: FoundationaLLM.DataPipeline.Validation.DataPipelineDefinitionValidator
+  commentId: T:FoundationaLLM.DataPipeline.Validation.DataPipelineDefinitionValidator
+  href: FoundationaLLM.DataPipeline.Validation.DataPipelineDefinitionValidator.html
+  name: DataPipelineDefinitionValidator
+  nameWithType: DataPipelineDefinitionValidator
+  fullName: FoundationaLLM.DataPipeline.Validation.DataPipelineDefinitionValidator
+- uid: FoundationaLLM.DataPipeline.Validation.DataPipelineRunValidator
+  commentId: T:FoundationaLLM.DataPipeline.Validation.DataPipelineRunValidator
+  href: FoundationaLLM.DataPipeline.Validation.DataPipelineRunValidator.html
+  name: DataPipelineRunValidator
+  nameWithType: DataPipelineRunValidator
+  fullName: FoundationaLLM.DataPipeline.Validation.DataPipelineRunValidator
+- uid: FoundationaLLM.DataPipeline.Validation.DataPipelineTriggerValidator
+  commentId: T:FoundationaLLM.DataPipeline.Validation.DataPipelineTriggerValidator
+  href: FoundationaLLM.DataPipeline.Validation.DataPipelineTriggerValidator.html
+  name: DataPipelineTriggerValidator
+  nameWithType: DataPipelineTriggerValidator
+  fullName: FoundationaLLM.DataPipeline.Validation.DataPipelineTriggerValidator

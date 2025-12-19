@@ -1,0 +1,1248 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.DataPipelineEngine.Services.Queueing.ProcessingPayloadsRegistry`1
+  commentId: T:FoundationaLLM.DataPipelineEngine.Services.Queueing.ProcessingPayloadsRegistry`1
+  id: ProcessingPayloadsRegistry`1
+  parent: FoundationaLLM.DataPipelineEngine.Services.Queueing
+  children:
+  - FoundationaLLM.DataPipelineEngine.Services.Queueing.ProcessingPayloadsRegistry`1.#ctor(FoundationaLLM.DataPipelineEngine.Interfaces.IMessageQueueService{`0},Microsoft.Extensions.Logging.ILogger)
+  - FoundationaLLM.DataPipelineEngine.Services.Queueing.ProcessingPayloadsRegistry`1.ExtendPayloadsProcessingTime(System.Collections.Generic.IEnumerable{System.String},System.Boolean)
+  - FoundationaLLM.DataPipelineEngine.Services.Queueing.ProcessingPayloadsRegistry`1.IgnorePayloads(System.Collections.Generic.IEnumerable{System.String})
+  - FoundationaLLM.DataPipelineEngine.Services.Queueing.ProcessingPayloadsRegistry`1.NewPayloadsAvailable
+  - FoundationaLLM.DataPipelineEngine.Services.Queueing.ProcessingPayloadsRegistry`1.ReceivePayloadsForProcessing(System.Int32,System.Func{`0,System.String})
+  - FoundationaLLM.DataPipelineEngine.Services.Queueing.ProcessingPayloadsRegistry`1.RemovePayload(System.String,System.Boolean)
+  langs:
+  - csharp
+  - vb
+  name: ProcessingPayloadsRegistry<T>
+  nameWithType: ProcessingPayloadsRegistry<T>
+  fullName: FoundationaLLM.DataPipelineEngine.Services.Queueing.ProcessingPayloadsRegistry<T>
+  type: Class
+  source:
+    remote:
+      path: src/dotnet/DataPipelineEngine/Services/Queueing/ProcessingPayloadsRegistry`1.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: ProcessingPayloadsRegistry
+    path: ../src/dotnet/DataPipelineEngine/Services/Queueing/ProcessingPayloadsRegistry`1.cs
+    startLine: 11
+  assemblies:
+  - FoundationaLLM.DataPipelineEngine
+  namespace: FoundationaLLM.DataPipelineEngine.Services.Queueing
+  summary: Maintains a registry of payloads that are currently being processed.
+  example: []
+  syntax:
+    content: public class ProcessingPayloadsRegistry<T>
+    typeParameters:
+    - id: T
+    content.vb: Public Class ProcessingPayloadsRegistry(Of T)
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+  extensionMethods:
+  - System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+  nameWithType.vb: ProcessingPayloadsRegistry(Of T)
+  fullName.vb: FoundationaLLM.DataPipelineEngine.Services.Queueing.ProcessingPayloadsRegistry(Of T)
+  name.vb: ProcessingPayloadsRegistry(Of T)
+- uid: FoundationaLLM.DataPipelineEngine.Services.Queueing.ProcessingPayloadsRegistry`1.#ctor(FoundationaLLM.DataPipelineEngine.Interfaces.IMessageQueueService{`0},Microsoft.Extensions.Logging.ILogger)
+  commentId: M:FoundationaLLM.DataPipelineEngine.Services.Queueing.ProcessingPayloadsRegistry`1.#ctor(FoundationaLLM.DataPipelineEngine.Interfaces.IMessageQueueService{`0},Microsoft.Extensions.Logging.ILogger)
+  id: '#ctor(FoundationaLLM.DataPipelineEngine.Interfaces.IMessageQueueService{`0},Microsoft.Extensions.Logging.ILogger)'
+  parent: FoundationaLLM.DataPipelineEngine.Services.Queueing.ProcessingPayloadsRegistry`1
+  langs:
+  - csharp
+  - vb
+  name: ProcessingPayloadsRegistry(IMessageQueueService<T>, ILogger)
+  nameWithType: ProcessingPayloadsRegistry<T>.ProcessingPayloadsRegistry(IMessageQueueService<T>, ILogger)
+  fullName: FoundationaLLM.DataPipelineEngine.Services.Queueing.ProcessingPayloadsRegistry<T>.ProcessingPayloadsRegistry(FoundationaLLM.DataPipelineEngine.Interfaces.IMessageQueueService<T>, Microsoft.Extensions.Logging.ILogger)
+  type: Constructor
+  source:
+    remote:
+      path: src/dotnet/DataPipelineEngine/Services/Queueing/ProcessingPayloadsRegistry`1.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: .ctor
+    path: ../src/dotnet/DataPipelineEngine/Services/Queueing/ProcessingPayloadsRegistry`1.cs
+    startLine: 11
+  assemblies:
+  - FoundationaLLM.DataPipelineEngine
+  namespace: FoundationaLLM.DataPipelineEngine.Services.Queueing
+  summary: Maintains a registry of payloads that are currently being processed.
+  example: []
+  syntax:
+    content: public ProcessingPayloadsRegistry(IMessageQueueService<T> messageQueueService, ILogger logger)
+    parameters:
+    - id: messageQueueService
+      type: FoundationaLLM.DataPipelineEngine.Interfaces.IMessageQueueService{{T}}
+      description: The message queue service providing queueing capabilities.
+    - id: logger
+      type: Microsoft.Extensions.Logging.ILogger
+      description: The logger used for logging.
+    content.vb: Public Sub New(messageQueueService As IMessageQueueService(Of T), logger As ILogger)
+  overload: FoundationaLLM.DataPipelineEngine.Services.Queueing.ProcessingPayloadsRegistry`1.#ctor*
+  nameWithType.vb: ProcessingPayloadsRegistry(Of T).New(IMessageQueueService(Of T), ILogger)
+  fullName.vb: FoundationaLLM.DataPipelineEngine.Services.Queueing.ProcessingPayloadsRegistry(Of T).New(FoundationaLLM.DataPipelineEngine.Interfaces.IMessageQueueService(Of T), Microsoft.Extensions.Logging.ILogger)
+  name.vb: New(IMessageQueueService(Of T), ILogger)
+- uid: FoundationaLLM.DataPipelineEngine.Services.Queueing.ProcessingPayloadsRegistry`1.NewPayloadsAvailable
+  commentId: M:FoundationaLLM.DataPipelineEngine.Services.Queueing.ProcessingPayloadsRegistry`1.NewPayloadsAvailable
+  id: NewPayloadsAvailable
+  parent: FoundationaLLM.DataPipelineEngine.Services.Queueing.ProcessingPayloadsRegistry`1
+  langs:
+  - csharp
+  - vb
+  name: NewPayloadsAvailable()
+  nameWithType: ProcessingPayloadsRegistry<T>.NewPayloadsAvailable()
+  fullName: FoundationaLLM.DataPipelineEngine.Services.Queueing.ProcessingPayloadsRegistry<T>.NewPayloadsAvailable()
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/DataPipelineEngine/Services/Queueing/ProcessingPayloadsRegistry`1.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: NewPayloadsAvailable
+    path: ../src/dotnet/DataPipelineEngine/Services/Queueing/ProcessingPayloadsRegistry`1.cs
+    startLine: 25
+  assemblies:
+  - FoundationaLLM.DataPipelineEngine
+  namespace: FoundationaLLM.DataPipelineEngine.Services.Queueing
+  summary: Indicates whether there are new payloads available for processing.
+  example: []
+  syntax:
+    content: public Task<bool> NewPayloadsAvailable()
+    return:
+      type: System.Threading.Tasks.Task{System.Boolean}
+      description: <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if there are payloads available, <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a> otherwise.
+    content.vb: Public Function NewPayloadsAvailable() As Task(Of Boolean)
+  overload: FoundationaLLM.DataPipelineEngine.Services.Queueing.ProcessingPayloadsRegistry`1.NewPayloadsAvailable*
+  nameWithType.vb: ProcessingPayloadsRegistry(Of T).NewPayloadsAvailable()
+  fullName.vb: FoundationaLLM.DataPipelineEngine.Services.Queueing.ProcessingPayloadsRegistry(Of T).NewPayloadsAvailable()
+- uid: FoundationaLLM.DataPipelineEngine.Services.Queueing.ProcessingPayloadsRegistry`1.ExtendPayloadsProcessingTime(System.Collections.Generic.IEnumerable{System.String},System.Boolean)
+  commentId: M:FoundationaLLM.DataPipelineEngine.Services.Queueing.ProcessingPayloadsRegistry`1.ExtendPayloadsProcessingTime(System.Collections.Generic.IEnumerable{System.String},System.Boolean)
+  id: ExtendPayloadsProcessingTime(System.Collections.Generic.IEnumerable{System.String},System.Boolean)
+  parent: FoundationaLLM.DataPipelineEngine.Services.Queueing.ProcessingPayloadsRegistry`1
+  langs:
+  - csharp
+  - vb
+  name: ExtendPayloadsProcessingTime(IEnumerable<string>, bool)
+  nameWithType: ProcessingPayloadsRegistry<T>.ExtendPayloadsProcessingTime(IEnumerable<string>, bool)
+  fullName: FoundationaLLM.DataPipelineEngine.Services.Queueing.ProcessingPayloadsRegistry<T>.ExtendPayloadsProcessingTime(System.Collections.Generic.IEnumerable<string>, bool)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/DataPipelineEngine/Services/Queueing/ProcessingPayloadsRegistry`1.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: ExtendPayloadsProcessingTime
+    path: ../src/dotnet/DataPipelineEngine/Services/Queueing/ProcessingPayloadsRegistry`1.cs
+    startLine: 39
+  assemblies:
+  - FoundationaLLM.DataPipelineEngine
+  namespace: FoundationaLLM.DataPipelineEngine.Services.Queueing
+  summary: Extends the processing time for the specified payloads.
+  remarks: >-
+    This operation ensures that the specified payloads can continue to be processed without
+
+    running the risk of being dequeued due to timeout and generating a processing race condition.
+  example: []
+  syntax:
+    content: public Task ExtendPayloadsProcessingTime(IEnumerable<string> payloadIds, bool recoverFromError = false)
+    parameters:
+    - id: payloadIds
+      type: System.Collections.Generic.IEnumerable{System.String}
+      description: The list of payload identifiers for which processing time is extended.
+    - id: recoverFromError
+      type: System.Boolean
+      description: Indicates whether the extension is required to attempt to recover from an error.
+    return:
+      type: System.Threading.Tasks.Task
+      description: ''
+    content.vb: Public Function ExtendPayloadsProcessingTime(payloadIds As IEnumerable(Of String), recoverFromError As Boolean = False) As Task
+  overload: FoundationaLLM.DataPipelineEngine.Services.Queueing.ProcessingPayloadsRegistry`1.ExtendPayloadsProcessingTime*
+  nameWithType.vb: ProcessingPayloadsRegistry(Of T).ExtendPayloadsProcessingTime(IEnumerable(Of String), Boolean)
+  fullName.vb: FoundationaLLM.DataPipelineEngine.Services.Queueing.ProcessingPayloadsRegistry(Of T).ExtendPayloadsProcessingTime(System.Collections.Generic.IEnumerable(Of String), Boolean)
+  name.vb: ExtendPayloadsProcessingTime(IEnumerable(Of String), Boolean)
+- uid: FoundationaLLM.DataPipelineEngine.Services.Queueing.ProcessingPayloadsRegistry`1.ReceivePayloadsForProcessing(System.Int32,System.Func{`0,System.String})
+  commentId: M:FoundationaLLM.DataPipelineEngine.Services.Queueing.ProcessingPayloadsRegistry`1.ReceivePayloadsForProcessing(System.Int32,System.Func{`0,System.String})
+  id: ReceivePayloadsForProcessing(System.Int32,System.Func{`0,System.String})
+  parent: FoundationaLLM.DataPipelineEngine.Services.Queueing.ProcessingPayloadsRegistry`1
+  langs:
+  - csharp
+  - vb
+  name: ReceivePayloadsForProcessing(int, Func<T, string>)
+  nameWithType: ProcessingPayloadsRegistry<T>.ReceivePayloadsForProcessing(int, Func<T, string>)
+  fullName: FoundationaLLM.DataPipelineEngine.Services.Queueing.ProcessingPayloadsRegistry<T>.ReceivePayloadsForProcessing(int, System.Func<T, string>)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/DataPipelineEngine/Services/Queueing/ProcessingPayloadsRegistry`1.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: ReceivePayloadsForProcessing
+    path: ../src/dotnet/DataPipelineEngine/Services/Queueing/ProcessingPayloadsRegistry`1.cs
+    startLine: 82
+  assemblies:
+  - FoundationaLLM.DataPipelineEngine
+  namespace: FoundationaLLM.DataPipelineEngine.Services.Queueing
+  summary: Receives a specified number of payloads for processing.
+  example: []
+  syntax:
+    content: public Task<IEnumerable<T>> ReceivePayloadsForProcessing(int payloadsCount, Func<T, string> idSelector)
+    parameters:
+    - id: payloadsCount
+      type: System.Int32
+      description: The maximum number of payloads to receive.
+    - id: idSelector
+      type: System.Func{{T},System.String}
+      description: The identifier selector for a payload.
+    return:
+      type: System.Threading.Tasks.Task{System.Collections.Generic.IEnumerable{{T}}}
+      description: A list containing the received payloads.
+    content.vb: Public Function ReceivePayloadsForProcessing(payloadsCount As Integer, idSelector As Func(Of T, String)) As Task(Of IEnumerable(Of T))
+  overload: FoundationaLLM.DataPipelineEngine.Services.Queueing.ProcessingPayloadsRegistry`1.ReceivePayloadsForProcessing*
+  nameWithType.vb: ProcessingPayloadsRegistry(Of T).ReceivePayloadsForProcessing(Integer, Func(Of T, String))
+  fullName.vb: FoundationaLLM.DataPipelineEngine.Services.Queueing.ProcessingPayloadsRegistry(Of T).ReceivePayloadsForProcessing(Integer, System.Func(Of T, String))
+  name.vb: ReceivePayloadsForProcessing(Integer, Func(Of T, String))
+- uid: FoundationaLLM.DataPipelineEngine.Services.Queueing.ProcessingPayloadsRegistry`1.RemovePayload(System.String,System.Boolean)
+  commentId: M:FoundationaLLM.DataPipelineEngine.Services.Queueing.ProcessingPayloadsRegistry`1.RemovePayload(System.String,System.Boolean)
+  id: RemovePayload(System.String,System.Boolean)
+  parent: FoundationaLLM.DataPipelineEngine.Services.Queueing.ProcessingPayloadsRegistry`1
+  langs:
+  - csharp
+  - vb
+  name: RemovePayload(string, bool)
+  nameWithType: ProcessingPayloadsRegistry<T>.RemovePayload(string, bool)
+  fullName: FoundationaLLM.DataPipelineEngine.Services.Queueing.ProcessingPayloadsRegistry<T>.RemovePayload(string, bool)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/DataPipelineEngine/Services/Queueing/ProcessingPayloadsRegistry`1.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: RemovePayload
+    path: ../src/dotnet/DataPipelineEngine/Services/Queueing/ProcessingPayloadsRegistry`1.cs
+    startLine: 126
+  assemblies:
+  - FoundationaLLM.DataPipelineEngine
+  namespace: FoundationaLLM.DataPipelineEngine.Services.Queueing
+  summary: Removes a payload.
+  example: []
+  syntax:
+    content: public Task RemovePayload(string payloadId, bool deleteMessage = true)
+    parameters:
+    - id: payloadId
+      type: System.String
+      description: The identifier of the payload to remove.
+    - id: deleteMessage
+      type: System.Boolean
+      description: Indicates whether the underlying message should be deleted as well.
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Public Function RemovePayload(payloadId As String, deleteMessage As Boolean = True) As Task
+  overload: FoundationaLLM.DataPipelineEngine.Services.Queueing.ProcessingPayloadsRegistry`1.RemovePayload*
+  nameWithType.vb: ProcessingPayloadsRegistry(Of T).RemovePayload(String, Boolean)
+  fullName.vb: FoundationaLLM.DataPipelineEngine.Services.Queueing.ProcessingPayloadsRegistry(Of T).RemovePayload(String, Boolean)
+  name.vb: RemovePayload(String, Boolean)
+- uid: FoundationaLLM.DataPipelineEngine.Services.Queueing.ProcessingPayloadsRegistry`1.IgnorePayloads(System.Collections.Generic.IEnumerable{System.String})
+  commentId: M:FoundationaLLM.DataPipelineEngine.Services.Queueing.ProcessingPayloadsRegistry`1.IgnorePayloads(System.Collections.Generic.IEnumerable{System.String})
+  id: IgnorePayloads(System.Collections.Generic.IEnumerable{System.String})
+  parent: FoundationaLLM.DataPipelineEngine.Services.Queueing.ProcessingPayloadsRegistry`1
+  langs:
+  - csharp
+  - vb
+  name: IgnorePayloads(IEnumerable<string>)
+  nameWithType: ProcessingPayloadsRegistry<T>.IgnorePayloads(IEnumerable<string>)
+  fullName: FoundationaLLM.DataPipelineEngine.Services.Queueing.ProcessingPayloadsRegistry<T>.IgnorePayloads(System.Collections.Generic.IEnumerable<string>)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/DataPipelineEngine/Services/Queueing/ProcessingPayloadsRegistry`1.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: IgnorePayloads
+    path: ../src/dotnet/DataPipelineEngine/Services/Queueing/ProcessingPayloadsRegistry`1.cs
+    startLine: 160
+  assemblies:
+  - FoundationaLLM.DataPipelineEngine
+  namespace: FoundationaLLM.DataPipelineEngine.Services.Queueing
+  summary: Ignores a list of payloads.
+  example: []
+  syntax:
+    content: public Task IgnorePayloads(IEnumerable<string> payloadIds)
+    parameters:
+    - id: payloadIds
+      type: System.Collections.Generic.IEnumerable{System.String}
+      description: The list of payload identifiers to ignore.
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Public Function IgnorePayloads(payloadIds As IEnumerable(Of String)) As Task
+  overload: FoundationaLLM.DataPipelineEngine.Services.Queueing.ProcessingPayloadsRegistry`1.IgnorePayloads*
+  nameWithType.vb: ProcessingPayloadsRegistry(Of T).IgnorePayloads(IEnumerable(Of String))
+  fullName.vb: FoundationaLLM.DataPipelineEngine.Services.Queueing.ProcessingPayloadsRegistry(Of T).IgnorePayloads(System.Collections.Generic.IEnumerable(Of String))
+  name.vb: IgnorePayloads(IEnumerable(Of String))
+references:
+- uid: FoundationaLLM.DataPipelineEngine.Services.Queueing
+  commentId: N:FoundationaLLM.DataPipelineEngine.Services.Queueing
+  href: FoundationaLLM.html
+  name: FoundationaLLM.DataPipelineEngine.Services.Queueing
+  nameWithType: FoundationaLLM.DataPipelineEngine.Services.Queueing
+  fullName: FoundationaLLM.DataPipelineEngine.Services.Queueing
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.DataPipelineEngine
+    name: DataPipelineEngine
+    href: FoundationaLLM.DataPipelineEngine.html
+  - name: .
+  - uid: FoundationaLLM.DataPipelineEngine.Services
+    name: Services
+    href: FoundationaLLM.DataPipelineEngine.Services.html
+  - name: .
+  - uid: FoundationaLLM.DataPipelineEngine.Services.Queueing
+    name: Queueing
+    href: FoundationaLLM.DataPipelineEngine.Services.Queueing.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.DataPipelineEngine
+    name: DataPipelineEngine
+    href: FoundationaLLM.DataPipelineEngine.html
+  - name: .
+  - uid: FoundationaLLM.DataPipelineEngine.Services
+    name: Services
+    href: FoundationaLLM.DataPipelineEngine.Services.html
+  - name: .
+  - uid: FoundationaLLM.DataPipelineEngine.Services.Queueing
+    name: Queueing
+    href: FoundationaLLM.DataPipelineEngine.Services.Queueing.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  parent: FoundationaLLM.Core.Utils.ObjectExtensions
+  definition: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  isExternal: true
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions
+  commentId: T:FoundationaLLM.Core.Utils.ObjectExtensions
+  parent: FoundationaLLM.Core.Utils
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html
+  name: ObjectExtensions
+  nameWithType: ObjectExtensions
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions
+- uid: FoundationaLLM.Core.Utils
+  commentId: N:FoundationaLLM.Core.Utils
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Core.Utils
+  nameWithType: FoundationaLLM.Core.Utils
+  fullName: FoundationaLLM.Core.Utils
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+- uid: FoundationaLLM.DataPipelineEngine.Services.Queueing.ProcessingPayloadsRegistry`1.#ctor*
+  commentId: Overload:FoundationaLLM.DataPipelineEngine.Services.Queueing.ProcessingPayloadsRegistry`1.#ctor
+  href: FoundationaLLM.DataPipelineEngine.Services.Queueing.ProcessingPayloadsRegistry-1.html#FoundationaLLM_DataPipelineEngine_Services_Queueing_ProcessingPayloadsRegistry_1__ctor_FoundationaLLM_DataPipelineEngine_Interfaces_IMessageQueueService__0__Microsoft_Extensions_Logging_ILogger_
+  name: ProcessingPayloadsRegistry
+  nameWithType: ProcessingPayloadsRegistry<T>.ProcessingPayloadsRegistry
+  fullName: FoundationaLLM.DataPipelineEngine.Services.Queueing.ProcessingPayloadsRegistry<T>.ProcessingPayloadsRegistry
+  nameWithType.vb: ProcessingPayloadsRegistry(Of T).New
+  fullName.vb: FoundationaLLM.DataPipelineEngine.Services.Queueing.ProcessingPayloadsRegistry(Of T).New
+  name.vb: New
+- uid: FoundationaLLM.DataPipelineEngine.Interfaces.IMessageQueueService{{T}}
+  commentId: T:FoundationaLLM.DataPipelineEngine.Interfaces.IMessageQueueService{`0}
+  parent: FoundationaLLM.DataPipelineEngine.Interfaces
+  definition: FoundationaLLM.DataPipelineEngine.Interfaces.IMessageQueueService`1
+  href: FoundationaLLM.DataPipelineEngine.Interfaces.IMessageQueueService-1.html
+  name: IMessageQueueService<T>
+  nameWithType: IMessageQueueService<T>
+  fullName: FoundationaLLM.DataPipelineEngine.Interfaces.IMessageQueueService<T>
+  nameWithType.vb: IMessageQueueService(Of T)
+  fullName.vb: FoundationaLLM.DataPipelineEngine.Interfaces.IMessageQueueService(Of T)
+  name.vb: IMessageQueueService(Of T)
+  spec.csharp:
+  - uid: FoundationaLLM.DataPipelineEngine.Interfaces.IMessageQueueService`1
+    name: IMessageQueueService
+    href: FoundationaLLM.DataPipelineEngine.Interfaces.IMessageQueueService-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: FoundationaLLM.DataPipelineEngine.Interfaces.IMessageQueueService`1
+    name: IMessageQueueService
+    href: FoundationaLLM.DataPipelineEngine.Interfaces.IMessageQueueService-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: Microsoft.Extensions.Logging.ILogger
+  commentId: T:Microsoft.Extensions.Logging.ILogger
+  parent: Microsoft.Extensions.Logging
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger
+  name: ILogger
+  nameWithType: ILogger
+  fullName: Microsoft.Extensions.Logging.ILogger
+- uid: FoundationaLLM.DataPipelineEngine.Interfaces.IMessageQueueService`1
+  commentId: T:FoundationaLLM.DataPipelineEngine.Interfaces.IMessageQueueService`1
+  href: FoundationaLLM.DataPipelineEngine.Interfaces.IMessageQueueService-1.html
+  name: IMessageQueueService<T>
+  nameWithType: IMessageQueueService<T>
+  fullName: FoundationaLLM.DataPipelineEngine.Interfaces.IMessageQueueService<T>
+  nameWithType.vb: IMessageQueueService(Of T)
+  fullName.vb: FoundationaLLM.DataPipelineEngine.Interfaces.IMessageQueueService(Of T)
+  name.vb: IMessageQueueService(Of T)
+  spec.csharp:
+  - uid: FoundationaLLM.DataPipelineEngine.Interfaces.IMessageQueueService`1
+    name: IMessageQueueService
+    href: FoundationaLLM.DataPipelineEngine.Interfaces.IMessageQueueService-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: FoundationaLLM.DataPipelineEngine.Interfaces.IMessageQueueService`1
+    name: IMessageQueueService
+    href: FoundationaLLM.DataPipelineEngine.Interfaces.IMessageQueueService-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: FoundationaLLM.DataPipelineEngine.Interfaces
+  commentId: N:FoundationaLLM.DataPipelineEngine.Interfaces
+  href: FoundationaLLM.html
+  name: FoundationaLLM.DataPipelineEngine.Interfaces
+  nameWithType: FoundationaLLM.DataPipelineEngine.Interfaces
+  fullName: FoundationaLLM.DataPipelineEngine.Interfaces
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.DataPipelineEngine
+    name: DataPipelineEngine
+    href: FoundationaLLM.DataPipelineEngine.html
+  - name: .
+  - uid: FoundationaLLM.DataPipelineEngine.Interfaces
+    name: Interfaces
+    href: FoundationaLLM.DataPipelineEngine.Interfaces.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.DataPipelineEngine
+    name: DataPipelineEngine
+    href: FoundationaLLM.DataPipelineEngine.html
+  - name: .
+  - uid: FoundationaLLM.DataPipelineEngine.Interfaces
+    name: Interfaces
+    href: FoundationaLLM.DataPipelineEngine.Interfaces.html
+- uid: Microsoft.Extensions.Logging
+  commentId: N:Microsoft.Extensions.Logging
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft
+  name: Microsoft.Extensions.Logging
+  nameWithType: Microsoft.Extensions.Logging
+  fullName: Microsoft.Extensions.Logging
+  spec.csharp:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Logging
+    name: Logging
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging
+  spec.vb:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Logging
+    name: Logging
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging
+- uid: FoundationaLLM.DataPipelineEngine.Services.Queueing.ProcessingPayloadsRegistry`1.NewPayloadsAvailable*
+  commentId: Overload:FoundationaLLM.DataPipelineEngine.Services.Queueing.ProcessingPayloadsRegistry`1.NewPayloadsAvailable
+  href: FoundationaLLM.DataPipelineEngine.Services.Queueing.ProcessingPayloadsRegistry-1.html#FoundationaLLM_DataPipelineEngine_Services_Queueing_ProcessingPayloadsRegistry_1_NewPayloadsAvailable
+  name: NewPayloadsAvailable
+  nameWithType: ProcessingPayloadsRegistry<T>.NewPayloadsAvailable
+  fullName: FoundationaLLM.DataPipelineEngine.Services.Queueing.ProcessingPayloadsRegistry<T>.NewPayloadsAvailable
+  nameWithType.vb: ProcessingPayloadsRegistry(Of T).NewPayloadsAvailable
+  fullName.vb: FoundationaLLM.DataPipelineEngine.Services.Queueing.ProcessingPayloadsRegistry(Of T).NewPayloadsAvailable
+- uid: System.Threading.Tasks.Task{System.Boolean}
+  commentId: T:System.Threading.Tasks.Task{System.Boolean}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<bool>
+  nameWithType: Task<bool>
+  fullName: System.Threading.Tasks.Task<bool>
+  nameWithType.vb: Task(Of Boolean)
+  fullName.vb: System.Threading.Tasks.Task(Of Boolean)
+  name.vb: Task(Of Boolean)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: FoundationaLLM.DataPipelineEngine.Services.Queueing.ProcessingPayloadsRegistry`1.ExtendPayloadsProcessingTime*
+  commentId: Overload:FoundationaLLM.DataPipelineEngine.Services.Queueing.ProcessingPayloadsRegistry`1.ExtendPayloadsProcessingTime
+  href: FoundationaLLM.DataPipelineEngine.Services.Queueing.ProcessingPayloadsRegistry-1.html#FoundationaLLM_DataPipelineEngine_Services_Queueing_ProcessingPayloadsRegistry_1_ExtendPayloadsProcessingTime_System_Collections_Generic_IEnumerable_System_String__System_Boolean_
+  name: ExtendPayloadsProcessingTime
+  nameWithType: ProcessingPayloadsRegistry<T>.ExtendPayloadsProcessingTime
+  fullName: FoundationaLLM.DataPipelineEngine.Services.Queueing.ProcessingPayloadsRegistry<T>.ExtendPayloadsProcessingTime
+  nameWithType.vb: ProcessingPayloadsRegistry(Of T).ExtendPayloadsProcessingTime
+  fullName.vb: FoundationaLLM.DataPipelineEngine.Services.Queueing.ProcessingPayloadsRegistry(Of T).ExtendPayloadsProcessingTime
+- uid: System.Collections.Generic.IEnumerable{System.String}
+  commentId: T:System.Collections.Generic.IEnumerable{System.String}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IEnumerable`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<string>
+  nameWithType: IEnumerable<string>
+  fullName: System.Collections.Generic.IEnumerable<string>
+  nameWithType.vb: IEnumerable(Of String)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of String)
+  name.vb: IEnumerable(Of String)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: System.Threading.Tasks.Task
+  commentId: T:System.Threading.Tasks.Task
+  parent: System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  name: Task
+  nameWithType: Task
+  fullName: System.Threading.Tasks.Task
+- uid: System.Collections.Generic.IEnumerable`1
+  commentId: T:System.Collections.Generic.IEnumerable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<T>
+  nameWithType: IEnumerable<T>
+  fullName: System.Collections.Generic.IEnumerable<T>
+  nameWithType.vb: IEnumerable(Of T)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of T)
+  name.vb: IEnumerable(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: FoundationaLLM.DataPipelineEngine.Services.Queueing.ProcessingPayloadsRegistry`1.ReceivePayloadsForProcessing*
+  commentId: Overload:FoundationaLLM.DataPipelineEngine.Services.Queueing.ProcessingPayloadsRegistry`1.ReceivePayloadsForProcessing
+  href: FoundationaLLM.DataPipelineEngine.Services.Queueing.ProcessingPayloadsRegistry-1.html#FoundationaLLM_DataPipelineEngine_Services_Queueing_ProcessingPayloadsRegistry_1_ReceivePayloadsForProcessing_System_Int32_System_Func__0_System_String__
+  name: ReceivePayloadsForProcessing
+  nameWithType: ProcessingPayloadsRegistry<T>.ReceivePayloadsForProcessing
+  fullName: FoundationaLLM.DataPipelineEngine.Services.Queueing.ProcessingPayloadsRegistry<T>.ReceivePayloadsForProcessing
+  nameWithType.vb: ProcessingPayloadsRegistry(Of T).ReceivePayloadsForProcessing
+  fullName.vb: FoundationaLLM.DataPipelineEngine.Services.Queueing.ProcessingPayloadsRegistry(Of T).ReceivePayloadsForProcessing
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: System.Func{{T},System.String}
+  commentId: T:System.Func{`0,System.String}
+  parent: System
+  definition: System.Func`2
+  href: https://learn.microsoft.com/dotnet/api/system.func-2
+  name: Func<T, string>
+  nameWithType: Func<T, string>
+  fullName: System.Func<T, string>
+  nameWithType.vb: Func(Of T, String)
+  fullName.vb: System.Func(Of T, String)
+  name.vb: Func(Of T, String)
+  spec.csharp:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: System.Threading.Tasks.Task{System.Collections.Generic.IEnumerable{{T}}}
+  commentId: T:System.Threading.Tasks.Task{System.Collections.Generic.IEnumerable{``0}}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<IEnumerable<T>>
+  nameWithType: Task<IEnumerable<T>>
+  fullName: System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<T>>
+  nameWithType.vb: Task(Of IEnumerable(Of T))
+  fullName.vb: System.Threading.Tasks.Task(Of System.Collections.Generic.IEnumerable(Of T))
+  name.vb: Task(Of IEnumerable(Of T))
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - name: T
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: )
+- uid: System.Func`2
+  commentId: T:System.Func`2
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.func-2
+  name: Func<T, TResult>
+  nameWithType: Func<T, TResult>
+  fullName: System.Func<T, TResult>
+  nameWithType.vb: Func(Of T, TResult)
+  fullName.vb: System.Func(Of T, TResult)
+  name.vb: Func(Of T, TResult)
+  spec.csharp:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: FoundationaLLM.DataPipelineEngine.Services.Queueing.ProcessingPayloadsRegistry`1.RemovePayload*
+  commentId: Overload:FoundationaLLM.DataPipelineEngine.Services.Queueing.ProcessingPayloadsRegistry`1.RemovePayload
+  href: FoundationaLLM.DataPipelineEngine.Services.Queueing.ProcessingPayloadsRegistry-1.html#FoundationaLLM_DataPipelineEngine_Services_Queueing_ProcessingPayloadsRegistry_1_RemovePayload_System_String_System_Boolean_
+  name: RemovePayload
+  nameWithType: ProcessingPayloadsRegistry<T>.RemovePayload
+  fullName: FoundationaLLM.DataPipelineEngine.Services.Queueing.ProcessingPayloadsRegistry<T>.RemovePayload
+  nameWithType.vb: ProcessingPayloadsRegistry(Of T).RemovePayload
+  fullName.vb: FoundationaLLM.DataPipelineEngine.Services.Queueing.ProcessingPayloadsRegistry(Of T).RemovePayload
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: FoundationaLLM.DataPipelineEngine.Services.Queueing.ProcessingPayloadsRegistry`1.IgnorePayloads*
+  commentId: Overload:FoundationaLLM.DataPipelineEngine.Services.Queueing.ProcessingPayloadsRegistry`1.IgnorePayloads
+  href: FoundationaLLM.DataPipelineEngine.Services.Queueing.ProcessingPayloadsRegistry-1.html#FoundationaLLM_DataPipelineEngine_Services_Queueing_ProcessingPayloadsRegistry_1_IgnorePayloads_System_Collections_Generic_IEnumerable_System_String__
+  name: IgnorePayloads
+  nameWithType: ProcessingPayloadsRegistry<T>.IgnorePayloads
+  fullName: FoundationaLLM.DataPipelineEngine.Services.Queueing.ProcessingPayloadsRegistry<T>.IgnorePayloads
+  nameWithType.vb: ProcessingPayloadsRegistry(Of T).IgnorePayloads
+  fullName.vb: FoundationaLLM.DataPipelineEngine.Services.Queueing.ProcessingPayloadsRegistry(Of T).IgnorePayloads

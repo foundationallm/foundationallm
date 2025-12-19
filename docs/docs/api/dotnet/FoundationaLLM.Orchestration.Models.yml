@@ -1,0 +1,24 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Orchestration.Models
+  commentId: N:FoundationaLLM.Orchestration.Models
+  id: Models
+  parent: FoundationaLLM.Orchestration
+  children:
+  - FoundationaLLM.Orchestration.Models.SemanticCacheItem
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM.Orchestration.Models
+  nameWithType: FoundationaLLM.Orchestration.Models
+  fullName: FoundationaLLM.Orchestration.Models
+  type: Namespace
+  assemblies:
+  - FoundationaLLM.Orchestration.Core
+references:
+- uid: FoundationaLLM.Orchestration.Models.SemanticCacheItem
+  commentId: T:FoundationaLLM.Orchestration.Models.SemanticCacheItem
+  href: FoundationaLLM.Orchestration.Models.SemanticCacheItem.html
+  name: SemanticCacheItem
+  nameWithType: SemanticCacheItem
+  fullName: FoundationaLLM.Orchestration.Models.SemanticCacheItem

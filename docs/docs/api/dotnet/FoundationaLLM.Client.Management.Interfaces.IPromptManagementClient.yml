@@ -1,0 +1,953 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Client.Management.Interfaces.IPromptManagementClient
+  commentId: T:FoundationaLLM.Client.Management.Interfaces.IPromptManagementClient
+  id: IPromptManagementClient
+  parent: FoundationaLLM.Client.Management.Interfaces
+  children:
+  - FoundationaLLM.Client.Management.Interfaces.IPromptManagementClient.CheckPromptNameAsync(FoundationaLLM.Common.Models.ResourceProviders.ResourceName)
+  - FoundationaLLM.Client.Management.Interfaces.IPromptManagementClient.DeletePromptAsync(System.String)
+  - FoundationaLLM.Client.Management.Interfaces.IPromptManagementClient.GetPromptAsync(System.String)
+  - FoundationaLLM.Client.Management.Interfaces.IPromptManagementClient.GetPromptsAsync
+  - FoundationaLLM.Client.Management.Interfaces.IPromptManagementClient.PurgePromptAsync(System.String)
+  - FoundationaLLM.Client.Management.Interfaces.IPromptManagementClient.UpsertPromptAsync(FoundationaLLM.Common.Models.ResourceProviders.Prompt.PromptBase)
+  langs:
+  - csharp
+  - vb
+  name: IPromptManagementClient
+  nameWithType: IPromptManagementClient
+  fullName: FoundationaLLM.Client.Management.Interfaces.IPromptManagementClient
+  type: Interface
+  source:
+    remote:
+      path: src/dotnet/ManagementClient/Interfaces/IPromptManagementClient.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: IPromptManagementClient
+    path: ../src/dotnet/ManagementClient/Interfaces/IPromptManagementClient.cs
+    startLine: 8
+  assemblies:
+  - FoundationaLLM.Client.Management
+  namespace: FoundationaLLM.Client.Management.Interfaces
+  summary: Provides methods to manage prompt resources.
+  example: []
+  syntax:
+    content: public interface IPromptManagementClient
+    content.vb: Public Interface IPromptManagementClient
+  extensionMethods:
+  - System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+- uid: FoundationaLLM.Client.Management.Interfaces.IPromptManagementClient.GetPromptsAsync
+  commentId: M:FoundationaLLM.Client.Management.Interfaces.IPromptManagementClient.GetPromptsAsync
+  id: GetPromptsAsync
+  parent: FoundationaLLM.Client.Management.Interfaces.IPromptManagementClient
+  langs:
+  - csharp
+  - vb
+  name: GetPromptsAsync()
+  nameWithType: IPromptManagementClient.GetPromptsAsync()
+  fullName: FoundationaLLM.Client.Management.Interfaces.IPromptManagementClient.GetPromptsAsync()
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/ManagementClient/Interfaces/IPromptManagementClient.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: GetPromptsAsync
+    path: ../src/dotnet/ManagementClient/Interfaces/IPromptManagementClient.cs
+    startLine: 14
+  assemblies:
+  - FoundationaLLM.Client.Management
+  namespace: FoundationaLLM.Client.Management.Interfaces
+  summary: Retrieves all prompt resources.
+  example: []
+  syntax:
+    content: Task<List<ResourceProviderGetResult<PromptBase>>> GetPromptsAsync()
+    return:
+      type: System.Threading.Tasks.Task{System.Collections.Generic.List{FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderGetResult{FoundationaLLM.Common.Models.ResourceProviders.Prompt.PromptBase}}}
+      description: All prompt resources to which the caller has access and which have not been marked as deleted.
+    content.vb: Function GetPromptsAsync() As Task(Of List(Of ResourceProviderGetResult(Of PromptBase)))
+  overload: FoundationaLLM.Client.Management.Interfaces.IPromptManagementClient.GetPromptsAsync*
+- uid: FoundationaLLM.Client.Management.Interfaces.IPromptManagementClient.GetPromptAsync(System.String)
+  commentId: M:FoundationaLLM.Client.Management.Interfaces.IPromptManagementClient.GetPromptAsync(System.String)
+  id: GetPromptAsync(System.String)
+  parent: FoundationaLLM.Client.Management.Interfaces.IPromptManagementClient
+  langs:
+  - csharp
+  - vb
+  name: GetPromptAsync(string)
+  nameWithType: IPromptManagementClient.GetPromptAsync(string)
+  fullName: FoundationaLLM.Client.Management.Interfaces.IPromptManagementClient.GetPromptAsync(string)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/ManagementClient/Interfaces/IPromptManagementClient.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: GetPromptAsync
+    path: ../src/dotnet/ManagementClient/Interfaces/IPromptManagementClient.cs
+    startLine: 21
+  assemblies:
+  - FoundationaLLM.Client.Management
+  namespace: FoundationaLLM.Client.Management.Interfaces
+  summary: Retrieves a specific prompt by name.
+  example: []
+  syntax:
+    content: Task<ResourceProviderGetResult<PromptBase>> GetPromptAsync(string promptName)
+    parameters:
+    - id: promptName
+      type: System.String
+      description: The name of the prompt resource to retrieve.
+    return:
+      type: System.Threading.Tasks.Task{FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderGetResult{FoundationaLLM.Common.Models.ResourceProviders.Prompt.PromptBase}}
+      description: ''
+    content.vb: Function GetPromptAsync(promptName As String) As Task(Of ResourceProviderGetResult(Of PromptBase))
+  overload: FoundationaLLM.Client.Management.Interfaces.IPromptManagementClient.GetPromptAsync*
+  nameWithType.vb: IPromptManagementClient.GetPromptAsync(String)
+  fullName.vb: FoundationaLLM.Client.Management.Interfaces.IPromptManagementClient.GetPromptAsync(String)
+  name.vb: GetPromptAsync(String)
+- uid: FoundationaLLM.Client.Management.Interfaces.IPromptManagementClient.CheckPromptNameAsync(FoundationaLLM.Common.Models.ResourceProviders.ResourceName)
+  commentId: M:FoundationaLLM.Client.Management.Interfaces.IPromptManagementClient.CheckPromptNameAsync(FoundationaLLM.Common.Models.ResourceProviders.ResourceName)
+  id: CheckPromptNameAsync(FoundationaLLM.Common.Models.ResourceProviders.ResourceName)
+  parent: FoundationaLLM.Client.Management.Interfaces.IPromptManagementClient
+  langs:
+  - csharp
+  - vb
+  name: CheckPromptNameAsync(ResourceName)
+  nameWithType: IPromptManagementClient.CheckPromptNameAsync(ResourceName)
+  fullName: FoundationaLLM.Client.Management.Interfaces.IPromptManagementClient.CheckPromptNameAsync(FoundationaLLM.Common.Models.ResourceProviders.ResourceName)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/ManagementClient/Interfaces/IPromptManagementClient.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: CheckPromptNameAsync
+    path: ../src/dotnet/ManagementClient/Interfaces/IPromptManagementClient.cs
+    startLine: 35
+  assemblies:
+  - FoundationaLLM.Client.Management
+  namespace: FoundationaLLM.Client.Management.Interfaces
+  summary: >-
+    Checks the availability of a resource name for a prompt. If the name is available, the
+
+    <xref href="FoundationaLLM.Common.Models.ResourceProviders.ResourceNameCheckResult.Status" data-throw-if-not-resolved="false"></xref> value will be "Allowed". If the name is
+
+    not available, the <xref href="FoundationaLLM.Common.Models.ResourceProviders.ResourceNameCheckResult.Status" data-throw-if-not-resolved="false"></xref> value will be "Denied" and
+
+    the <xref href="FoundationaLLM.Common.Models.ResourceProviders.ResourceNameCheckResult.Message" data-throw-if-not-resolved="false"></xref> will explain the reason why. Typically,
+
+    a denied name is due to a name conflict with an existing prompt or a prompt that was
+
+    deleted but not purged.
+  example: []
+  syntax:
+    content: Task<ResourceNameCheckResult> CheckPromptNameAsync(ResourceName resourceName)
+    parameters:
+    - id: resourceName
+      type: FoundationaLLM.Common.Models.ResourceProviders.ResourceName
+      description: Contains the name of the resource to check.
+    return:
+      type: System.Threading.Tasks.Task{FoundationaLLM.Common.Models.ResourceProviders.ResourceNameCheckResult}
+      description: ''
+    content.vb: Function CheckPromptNameAsync(resourceName As ResourceName) As Task(Of ResourceNameCheckResult)
+  overload: FoundationaLLM.Client.Management.Interfaces.IPromptManagementClient.CheckPromptNameAsync*
+  exceptions:
+  - type: System.ArgumentException
+    commentId: T:System.ArgumentException
+    description: >-
+      Thrown when the required properties within the argument
+          are empty or missing.
+- uid: FoundationaLLM.Client.Management.Interfaces.IPromptManagementClient.PurgePromptAsync(System.String)
+  commentId: M:FoundationaLLM.Client.Management.Interfaces.IPromptManagementClient.PurgePromptAsync(System.String)
+  id: PurgePromptAsync(System.String)
+  parent: FoundationaLLM.Client.Management.Interfaces.IPromptManagementClient
+  langs:
+  - csharp
+  - vb
+  name: PurgePromptAsync(string)
+  nameWithType: IPromptManagementClient.PurgePromptAsync(string)
+  fullName: FoundationaLLM.Client.Management.Interfaces.IPromptManagementClient.PurgePromptAsync(string)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/ManagementClient/Interfaces/IPromptManagementClient.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: PurgePromptAsync
+    path: ../src/dotnet/ManagementClient/Interfaces/IPromptManagementClient.cs
+    startLine: 42
+  assemblies:
+  - FoundationaLLM.Client.Management
+  namespace: FoundationaLLM.Client.Management.Interfaces
+  summary: Purges a deleted prompt by its name. This action is irreversible.
+  example: []
+  syntax:
+    content: Task<ResourceProviderActionResult> PurgePromptAsync(string promptName)
+    parameters:
+    - id: promptName
+      type: System.String
+      description: The name of the prompt to purge.
+    return:
+      type: System.Threading.Tasks.Task{FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderActionResult}
+      description: ''
+    content.vb: Function PurgePromptAsync(promptName As String) As Task(Of ResourceProviderActionResult)
+  overload: FoundationaLLM.Client.Management.Interfaces.IPromptManagementClient.PurgePromptAsync*
+  nameWithType.vb: IPromptManagementClient.PurgePromptAsync(String)
+  fullName.vb: FoundationaLLM.Client.Management.Interfaces.IPromptManagementClient.PurgePromptAsync(String)
+  name.vb: PurgePromptAsync(String)
+- uid: FoundationaLLM.Client.Management.Interfaces.IPromptManagementClient.UpsertPromptAsync(FoundationaLLM.Common.Models.ResourceProviders.Prompt.PromptBase)
+  commentId: M:FoundationaLLM.Client.Management.Interfaces.IPromptManagementClient.UpsertPromptAsync(FoundationaLLM.Common.Models.ResourceProviders.Prompt.PromptBase)
+  id: UpsertPromptAsync(FoundationaLLM.Common.Models.ResourceProviders.Prompt.PromptBase)
+  parent: FoundationaLLM.Client.Management.Interfaces.IPromptManagementClient
+  langs:
+  - csharp
+  - vb
+  name: UpsertPromptAsync(PromptBase)
+  nameWithType: IPromptManagementClient.UpsertPromptAsync(PromptBase)
+  fullName: FoundationaLLM.Client.Management.Interfaces.IPromptManagementClient.UpsertPromptAsync(FoundationaLLM.Common.Models.ResourceProviders.Prompt.PromptBase)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/ManagementClient/Interfaces/IPromptManagementClient.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: UpsertPromptAsync
+    path: ../src/dotnet/ManagementClient/Interfaces/IPromptManagementClient.cs
+    startLine: 51
+  assemblies:
+  - FoundationaLLM.Client.Management
+  namespace: FoundationaLLM.Client.Management.Interfaces
+  summary: >-
+    Upserts a prompt resource. If a prompt does not exist, it will be created. If a prompt
+
+    does exist, it will be updated.
+  example: []
+  syntax:
+    content: Task<ResourceProviderUpsertResult> UpsertPromptAsync(PromptBase prompt)
+    parameters:
+    - id: prompt
+      type: FoundationaLLM.Common.Models.ResourceProviders.Prompt.PromptBase
+      description: The prompt resource to create or update.
+    return:
+      type: System.Threading.Tasks.Task{FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderUpsertResult}
+      description: >-
+        Returns a <xref href="FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderUpsertResult" data-throw-if-not-resolved="false"></xref>, which contains the
+            Object ID of the resource.
+    content.vb: Function UpsertPromptAsync(prompt As PromptBase) As Task(Of ResourceProviderUpsertResult)
+  overload: FoundationaLLM.Client.Management.Interfaces.IPromptManagementClient.UpsertPromptAsync*
+- uid: FoundationaLLM.Client.Management.Interfaces.IPromptManagementClient.DeletePromptAsync(System.String)
+  commentId: M:FoundationaLLM.Client.Management.Interfaces.IPromptManagementClient.DeletePromptAsync(System.String)
+  id: DeletePromptAsync(System.String)
+  parent: FoundationaLLM.Client.Management.Interfaces.IPromptManagementClient
+  langs:
+  - csharp
+  - vb
+  name: DeletePromptAsync(string)
+  nameWithType: IPromptManagementClient.DeletePromptAsync(string)
+  fullName: FoundationaLLM.Client.Management.Interfaces.IPromptManagementClient.DeletePromptAsync(string)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/ManagementClient/Interfaces/IPromptManagementClient.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: DeletePromptAsync
+    path: ../src/dotnet/ManagementClient/Interfaces/IPromptManagementClient.cs
+    startLine: 60
+  assemblies:
+  - FoundationaLLM.Client.Management
+  namespace: FoundationaLLM.Client.Management.Interfaces
+  summary: >-
+    Deletes a prompt resource by name. Please note that all deletes are soft deletes. The
+
+    resource will be marked as deleted but not purged. To permanently remove a resource,
+
+    execute the <xref href="FoundationaLLM.Client.Management.Interfaces.IPromptManagementClient.PurgePromptAsync(System.String)" data-throw-if-not-resolved="false"></xref> method with the same name.
+  example: []
+  syntax:
+    content: Task DeletePromptAsync(string promptName)
+    parameters:
+    - id: promptName
+      type: System.String
+      description: The name of the prompt resource to delete.
+    return:
+      type: System.Threading.Tasks.Task
+      description: ''
+    content.vb: Function DeletePromptAsync(promptName As String) As Task
+  overload: FoundationaLLM.Client.Management.Interfaces.IPromptManagementClient.DeletePromptAsync*
+  nameWithType.vb: IPromptManagementClient.DeletePromptAsync(String)
+  fullName.vb: FoundationaLLM.Client.Management.Interfaces.IPromptManagementClient.DeletePromptAsync(String)
+  name.vb: DeletePromptAsync(String)
+references:
+- uid: FoundationaLLM.Client.Management.Interfaces
+  commentId: N:FoundationaLLM.Client.Management.Interfaces
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Client.Management.Interfaces
+  nameWithType: FoundationaLLM.Client.Management.Interfaces
+  fullName: FoundationaLLM.Client.Management.Interfaces
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Client
+    name: Client
+    href: FoundationaLLM.Client.html
+  - name: .
+  - uid: FoundationaLLM.Client.Management
+    name: Management
+    href: FoundationaLLM.Client.Management.html
+  - name: .
+  - uid: FoundationaLLM.Client.Management.Interfaces
+    name: Interfaces
+    href: FoundationaLLM.Client.Management.Interfaces.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Client
+    name: Client
+    href: FoundationaLLM.Client.html
+  - name: .
+  - uid: FoundationaLLM.Client.Management
+    name: Management
+    href: FoundationaLLM.Client.Management.html
+  - name: .
+  - uid: FoundationaLLM.Client.Management.Interfaces
+    name: Interfaces
+    href: FoundationaLLM.Client.Management.Interfaces.html
+- uid: System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  parent: FoundationaLLM.Core.Utils.ObjectExtensions
+  definition: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  isExternal: true
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions
+  commentId: T:FoundationaLLM.Core.Utils.ObjectExtensions
+  parent: FoundationaLLM.Core.Utils
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html
+  name: ObjectExtensions
+  nameWithType: ObjectExtensions
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions
+- uid: FoundationaLLM.Core.Utils
+  commentId: N:FoundationaLLM.Core.Utils
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Core.Utils
+  nameWithType: FoundationaLLM.Core.Utils
+  fullName: FoundationaLLM.Core.Utils
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+- uid: FoundationaLLM.Client.Management.Interfaces.IPromptManagementClient.GetPromptsAsync*
+  commentId: Overload:FoundationaLLM.Client.Management.Interfaces.IPromptManagementClient.GetPromptsAsync
+  href: FoundationaLLM.Client.Management.Interfaces.IPromptManagementClient.html#FoundationaLLM_Client_Management_Interfaces_IPromptManagementClient_GetPromptsAsync
+  name: GetPromptsAsync
+  nameWithType: IPromptManagementClient.GetPromptsAsync
+  fullName: FoundationaLLM.Client.Management.Interfaces.IPromptManagementClient.GetPromptsAsync
+- uid: System.Threading.Tasks.Task{System.Collections.Generic.List{FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderGetResult{FoundationaLLM.Common.Models.ResourceProviders.Prompt.PromptBase}}}
+  commentId: T:System.Threading.Tasks.Task{System.Collections.Generic.List{FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderGetResult{FoundationaLLM.Common.Models.ResourceProviders.Prompt.PromptBase}}}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<List<ResourceProviderGetResult<PromptBase>>>
+  nameWithType: Task<List<ResourceProviderGetResult<PromptBase>>>
+  fullName: System.Threading.Tasks.Task<System.Collections.Generic.List<FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderGetResult<FoundationaLLM.Common.Models.ResourceProviders.Prompt.PromptBase>>>
+  nameWithType.vb: Task(Of List(Of ResourceProviderGetResult(Of PromptBase)))
+  fullName.vb: System.Threading.Tasks.Task(Of System.Collections.Generic.List(Of FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderGetResult(Of FoundationaLLM.Common.Models.ResourceProviders.Prompt.PromptBase)))
+  name.vb: Task(Of List(Of ResourceProviderGetResult(Of PromptBase)))
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderGetResult`1
+    name: ResourceProviderGetResult
+    href: FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderGetResult-1.html
+  - name: <
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.Prompt.PromptBase
+    name: PromptBase
+    href: FoundationaLLM.Common.Models.ResourceProviders.Prompt.PromptBase.html
+  - name: '>'
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderGetResult`1
+    name: ResourceProviderGetResult
+    href: FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderGetResult-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.Prompt.PromptBase
+    name: PromptBase
+    href: FoundationaLLM.Common.Models.ResourceProviders.Prompt.PromptBase.html
+  - name: )
+  - name: )
+  - name: )
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: FoundationaLLM.Client.Management.Interfaces.IPromptManagementClient.GetPromptAsync*
+  commentId: Overload:FoundationaLLM.Client.Management.Interfaces.IPromptManagementClient.GetPromptAsync
+  href: FoundationaLLM.Client.Management.Interfaces.IPromptManagementClient.html#FoundationaLLM_Client_Management_Interfaces_IPromptManagementClient_GetPromptAsync_System_String_
+  name: GetPromptAsync
+  nameWithType: IPromptManagementClient.GetPromptAsync
+  fullName: FoundationaLLM.Client.Management.Interfaces.IPromptManagementClient.GetPromptAsync
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System.Threading.Tasks.Task{FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderGetResult{FoundationaLLM.Common.Models.ResourceProviders.Prompt.PromptBase}}
+  commentId: T:System.Threading.Tasks.Task{FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderGetResult{FoundationaLLM.Common.Models.ResourceProviders.Prompt.PromptBase}}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<ResourceProviderGetResult<PromptBase>>
+  nameWithType: Task<ResourceProviderGetResult<PromptBase>>
+  fullName: System.Threading.Tasks.Task<FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderGetResult<FoundationaLLM.Common.Models.ResourceProviders.Prompt.PromptBase>>
+  nameWithType.vb: Task(Of ResourceProviderGetResult(Of PromptBase))
+  fullName.vb: System.Threading.Tasks.Task(Of FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderGetResult(Of FoundationaLLM.Common.Models.ResourceProviders.Prompt.PromptBase))
+  name.vb: Task(Of ResourceProviderGetResult(Of PromptBase))
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderGetResult`1
+    name: ResourceProviderGetResult
+    href: FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderGetResult-1.html
+  - name: <
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.Prompt.PromptBase
+    name: PromptBase
+    href: FoundationaLLM.Common.Models.ResourceProviders.Prompt.PromptBase.html
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderGetResult`1
+    name: ResourceProviderGetResult
+    href: FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderGetResult-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.Prompt.PromptBase
+    name: PromptBase
+    href: FoundationaLLM.Common.Models.ResourceProviders.Prompt.PromptBase.html
+  - name: )
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceNameCheckResult.Status
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.ResourceNameCheckResult.Status
+  href: FoundationaLLM.Common.Models.ResourceProviders.ResourceNameCheckResult.html#FoundationaLLM_Common_Models_ResourceProviders_ResourceNameCheckResult_Status
+  name: Status
+  nameWithType: ResourceNameCheckResult.Status
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.ResourceNameCheckResult.Status
+- uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceNameCheckResult.Message
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.ResourceNameCheckResult.Message
+  href: FoundationaLLM.Common.Models.ResourceProviders.ResourceNameCheckResult.html#FoundationaLLM_Common_Models_ResourceProviders_ResourceNameCheckResult_Message
+  name: Message
+  nameWithType: ResourceNameCheckResult.Message
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.ResourceNameCheckResult.Message
+- uid: System.ArgumentException
+  commentId: T:System.ArgumentException
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.argumentexception
+  name: ArgumentException
+  nameWithType: ArgumentException
+  fullName: System.ArgumentException
+- uid: FoundationaLLM.Client.Management.Interfaces.IPromptManagementClient.CheckPromptNameAsync*
+  commentId: Overload:FoundationaLLM.Client.Management.Interfaces.IPromptManagementClient.CheckPromptNameAsync
+  href: FoundationaLLM.Client.Management.Interfaces.IPromptManagementClient.html#FoundationaLLM_Client_Management_Interfaces_IPromptManagementClient_CheckPromptNameAsync_FoundationaLLM_Common_Models_ResourceProviders_ResourceName_
+  name: CheckPromptNameAsync
+  nameWithType: IPromptManagementClient.CheckPromptNameAsync
+  fullName: FoundationaLLM.Client.Management.Interfaces.IPromptManagementClient.CheckPromptNameAsync
+- uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceName
+  commentId: T:FoundationaLLM.Common.Models.ResourceProviders.ResourceName
+  parent: FoundationaLLM.Common.Models.ResourceProviders
+  href: FoundationaLLM.Common.Models.ResourceProviders.ResourceName.html
+  name: ResourceName
+  nameWithType: ResourceName
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.ResourceName
+- uid: System.Threading.Tasks.Task{FoundationaLLM.Common.Models.ResourceProviders.ResourceNameCheckResult}
+  commentId: T:System.Threading.Tasks.Task{FoundationaLLM.Common.Models.ResourceProviders.ResourceNameCheckResult}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<ResourceNameCheckResult>
+  nameWithType: Task<ResourceNameCheckResult>
+  fullName: System.Threading.Tasks.Task<FoundationaLLM.Common.Models.ResourceProviders.ResourceNameCheckResult>
+  nameWithType.vb: Task(Of ResourceNameCheckResult)
+  fullName.vb: System.Threading.Tasks.Task(Of FoundationaLLM.Common.Models.ResourceProviders.ResourceNameCheckResult)
+  name.vb: Task(Of ResourceNameCheckResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceNameCheckResult
+    name: ResourceNameCheckResult
+    href: FoundationaLLM.Common.Models.ResourceProviders.ResourceNameCheckResult.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceNameCheckResult
+    name: ResourceNameCheckResult
+    href: FoundationaLLM.Common.Models.ResourceProviders.ResourceNameCheckResult.html
+  - name: )
+- uid: FoundationaLLM.Common.Models.ResourceProviders
+  commentId: N:FoundationaLLM.Common.Models.ResourceProviders
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.ResourceProviders
+  nameWithType: FoundationaLLM.Common.Models.ResourceProviders
+  fullName: FoundationaLLM.Common.Models.ResourceProviders
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders
+    name: ResourceProviders
+    href: FoundationaLLM.Common.Models.ResourceProviders.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders
+    name: ResourceProviders
+    href: FoundationaLLM.Common.Models.ResourceProviders.html
+- uid: FoundationaLLM.Client.Management.Interfaces.IPromptManagementClient.PurgePromptAsync*
+  commentId: Overload:FoundationaLLM.Client.Management.Interfaces.IPromptManagementClient.PurgePromptAsync
+  href: FoundationaLLM.Client.Management.Interfaces.IPromptManagementClient.html#FoundationaLLM_Client_Management_Interfaces_IPromptManagementClient_PurgePromptAsync_System_String_
+  name: PurgePromptAsync
+  nameWithType: IPromptManagementClient.PurgePromptAsync
+  fullName: FoundationaLLM.Client.Management.Interfaces.IPromptManagementClient.PurgePromptAsync
+- uid: System.Threading.Tasks.Task{FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderActionResult}
+  commentId: T:System.Threading.Tasks.Task{FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderActionResult}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<ResourceProviderActionResult>
+  nameWithType: Task<ResourceProviderActionResult>
+  fullName: System.Threading.Tasks.Task<FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderActionResult>
+  nameWithType.vb: Task(Of ResourceProviderActionResult)
+  fullName.vb: System.Threading.Tasks.Task(Of FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderActionResult)
+  name.vb: Task(Of ResourceProviderActionResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderActionResult
+    name: ResourceProviderActionResult
+    href: FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderActionResult.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderActionResult
+    name: ResourceProviderActionResult
+    href: FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderActionResult.html
+  - name: )
+- uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderUpsertResult
+  commentId: T:FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderUpsertResult
+  parent: FoundationaLLM.Common.Models.ResourceProviders
+  href: FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderUpsertResult.html
+  name: ResourceProviderUpsertResult
+  nameWithType: ResourceProviderUpsertResult
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderUpsertResult
+- uid: FoundationaLLM.Client.Management.Interfaces.IPromptManagementClient.UpsertPromptAsync*
+  commentId: Overload:FoundationaLLM.Client.Management.Interfaces.IPromptManagementClient.UpsertPromptAsync
+  href: FoundationaLLM.Client.Management.Interfaces.IPromptManagementClient.html#FoundationaLLM_Client_Management_Interfaces_IPromptManagementClient_UpsertPromptAsync_FoundationaLLM_Common_Models_ResourceProviders_Prompt_PromptBase_
+  name: UpsertPromptAsync
+  nameWithType: IPromptManagementClient.UpsertPromptAsync
+  fullName: FoundationaLLM.Client.Management.Interfaces.IPromptManagementClient.UpsertPromptAsync
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Prompt.PromptBase
+  commentId: T:FoundationaLLM.Common.Models.ResourceProviders.Prompt.PromptBase
+  parent: FoundationaLLM.Common.Models.ResourceProviders.Prompt
+  href: FoundationaLLM.Common.Models.ResourceProviders.Prompt.PromptBase.html
+  name: PromptBase
+  nameWithType: PromptBase
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Prompt.PromptBase
+- uid: System.Threading.Tasks.Task{FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderUpsertResult}
+  commentId: T:System.Threading.Tasks.Task{FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderUpsertResult}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<ResourceProviderUpsertResult>
+  nameWithType: Task<ResourceProviderUpsertResult>
+  fullName: System.Threading.Tasks.Task<FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderUpsertResult>
+  nameWithType.vb: Task(Of ResourceProviderUpsertResult)
+  fullName.vb: System.Threading.Tasks.Task(Of FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderUpsertResult)
+  name.vb: Task(Of ResourceProviderUpsertResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderUpsertResult
+    name: ResourceProviderUpsertResult
+    href: FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderUpsertResult.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderUpsertResult
+    name: ResourceProviderUpsertResult
+    href: FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderUpsertResult.html
+  - name: )
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Prompt
+  commentId: N:FoundationaLLM.Common.Models.ResourceProviders.Prompt
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.ResourceProviders.Prompt
+  nameWithType: FoundationaLLM.Common.Models.ResourceProviders.Prompt
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Prompt
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders
+    name: ResourceProviders
+    href: FoundationaLLM.Common.Models.ResourceProviders.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.Prompt
+    name: Prompt
+    href: FoundationaLLM.Common.Models.ResourceProviders.Prompt.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders
+    name: ResourceProviders
+    href: FoundationaLLM.Common.Models.ResourceProviders.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.Prompt
+    name: Prompt
+    href: FoundationaLLM.Common.Models.ResourceProviders.Prompt.html
+- uid: FoundationaLLM.Client.Management.Interfaces.IPromptManagementClient.PurgePromptAsync(System.String)
+  commentId: M:FoundationaLLM.Client.Management.Interfaces.IPromptManagementClient.PurgePromptAsync(System.String)
+  isExternal: true
+  href: FoundationaLLM.Client.Management.Interfaces.IPromptManagementClient.html#FoundationaLLM_Client_Management_Interfaces_IPromptManagementClient_PurgePromptAsync_System_String_
+  name: PurgePromptAsync(string)
+  nameWithType: IPromptManagementClient.PurgePromptAsync(string)
+  fullName: FoundationaLLM.Client.Management.Interfaces.IPromptManagementClient.PurgePromptAsync(string)
+  nameWithType.vb: IPromptManagementClient.PurgePromptAsync(String)
+  fullName.vb: FoundationaLLM.Client.Management.Interfaces.IPromptManagementClient.PurgePromptAsync(String)
+  name.vb: PurgePromptAsync(String)
+  spec.csharp:
+  - uid: FoundationaLLM.Client.Management.Interfaces.IPromptManagementClient.PurgePromptAsync(System.String)
+    name: PurgePromptAsync
+    href: FoundationaLLM.Client.Management.Interfaces.IPromptManagementClient.html#FoundationaLLM_Client_Management_Interfaces_IPromptManagementClient_PurgePromptAsync_System_String_
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Client.Management.Interfaces.IPromptManagementClient.PurgePromptAsync(System.String)
+    name: PurgePromptAsync
+    href: FoundationaLLM.Client.Management.Interfaces.IPromptManagementClient.html#FoundationaLLM_Client_Management_Interfaces_IPromptManagementClient_PurgePromptAsync_System_String_
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: FoundationaLLM.Client.Management.Interfaces.IPromptManagementClient.DeletePromptAsync*
+  commentId: Overload:FoundationaLLM.Client.Management.Interfaces.IPromptManagementClient.DeletePromptAsync
+  href: FoundationaLLM.Client.Management.Interfaces.IPromptManagementClient.html#FoundationaLLM_Client_Management_Interfaces_IPromptManagementClient_DeletePromptAsync_System_String_
+  name: DeletePromptAsync
+  nameWithType: IPromptManagementClient.DeletePromptAsync
+  fullName: FoundationaLLM.Client.Management.Interfaces.IPromptManagementClient.DeletePromptAsync
+- uid: System.Threading.Tasks.Task
+  commentId: T:System.Threading.Tasks.Task
+  parent: System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  name: Task
+  nameWithType: Task
+  fullName: System.Threading.Tasks.Task

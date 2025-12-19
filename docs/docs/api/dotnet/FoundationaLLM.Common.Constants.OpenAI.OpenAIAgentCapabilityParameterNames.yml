@@ -1,0 +1,965 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Common.Constants.OpenAI.OpenAIAgentCapabilityParameterNames
+  commentId: T:FoundationaLLM.Common.Constants.OpenAI.OpenAIAgentCapabilityParameterNames
+  id: OpenAIAgentCapabilityParameterNames
+  parent: FoundationaLLM.Common.Constants.OpenAI
+  children:
+  - FoundationaLLM.Common.Constants.OpenAI.OpenAIAgentCapabilityParameterNames.AddOpenAIFileToCodeInterpreter
+  - FoundationaLLM.Common.Constants.OpenAI.OpenAIAgentCapabilityParameterNames.AddOpenAIFileToVectorStore
+  - FoundationaLLM.Common.Constants.OpenAI.OpenAIAgentCapabilityParameterNames.AgentFileObjectId
+  - FoundationaLLM.Common.Constants.OpenAI.OpenAIAgentCapabilityParameterNames.AttachmentObjectId
+  - FoundationaLLM.Common.Constants.OpenAI.OpenAIAgentCapabilityParameterNames.CreateOpenAIAssistant
+  - FoundationaLLM.Common.Constants.OpenAI.OpenAIAgentCapabilityParameterNames.CreateOpenAIAssistantThread
+  - FoundationaLLM.Common.Constants.OpenAI.OpenAIAgentCapabilityParameterNames.CreateOpenAIAssistantVectorStore
+  - FoundationaLLM.Common.Constants.OpenAI.OpenAIAgentCapabilityParameterNames.CreateOpenAIFile
+  - FoundationaLLM.Common.Constants.OpenAI.OpenAIAgentCapabilityParameterNames.OpenAIAssistantId
+  - FoundationaLLM.Common.Constants.OpenAI.OpenAIAgentCapabilityParameterNames.OpenAIAssistantPrompt
+  - FoundationaLLM.Common.Constants.OpenAI.OpenAIAgentCapabilityParameterNames.OpenAIAssistantThreadId
+  - FoundationaLLM.Common.Constants.OpenAI.OpenAIAgentCapabilityParameterNames.OpenAIEndpoint
+  - FoundationaLLM.Common.Constants.OpenAI.OpenAIAgentCapabilityParameterNames.OpenAIFileActionOnCodeInterpreterSuccess
+  - FoundationaLLM.Common.Constants.OpenAI.OpenAIAgentCapabilityParameterNames.OpenAIFileActionOnVectorStoreSuccess
+  - FoundationaLLM.Common.Constants.OpenAI.OpenAIAgentCapabilityParameterNames.OpenAIFileId
+  - FoundationaLLM.Common.Constants.OpenAI.OpenAIAgentCapabilityParameterNames.OpenAIModelDeploymentName
+  - FoundationaLLM.Common.Constants.OpenAI.OpenAIAgentCapabilityParameterNames.OpenAIVectorStoreId
+  - FoundationaLLM.Common.Constants.OpenAI.OpenAIAgentCapabilityParameterNames.RemoveOpenAIFileFromCodeInterpreter
+  - FoundationaLLM.Common.Constants.OpenAI.OpenAIAgentCapabilityParameterNames.RemoveOpenAIFileFromVectorStore
+  - FoundationaLLM.Common.Constants.OpenAI.OpenAIAgentCapabilityParameterNames.UpdateOpenAIAssistantInstructions
+  langs:
+  - csharp
+  - vb
+  name: OpenAIAgentCapabilityParameterNames
+  nameWithType: OpenAIAgentCapabilityParameterNames
+  fullName: FoundationaLLM.Common.Constants.OpenAI.OpenAIAgentCapabilityParameterNames
+  type: Class
+  source:
+    remote:
+      path: src/dotnet/Common/Constants/OpenAI/OpenAIAgentCapabilityParameterNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: OpenAIAgentCapabilityParameterNames
+    path: ../src/dotnet/Common/Constants/OpenAI/OpenAIAgentCapabilityParameterNames.cs
+    startLine: 10
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.OpenAI
+  summary: Provides the names of the parameters that can be used to create OpenAI agent capabilities.
+  remarks: The constants are used by the callers of the <xref href="FoundationaLLM.Common.Clients.GatewayServiceClient" data-throw-if-not-resolved="false"></xref> implementations.
+  example: []
+  syntax:
+    content: public static class OpenAIAgentCapabilityParameterNames
+    content.vb: Public Module OpenAIAgentCapabilityParameterNames
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: FoundationaLLM.Common.Constants.OpenAI.OpenAIAgentCapabilityParameterNames.CreateOpenAIAssistant
+  commentId: F:FoundationaLLM.Common.Constants.OpenAI.OpenAIAgentCapabilityParameterNames.CreateOpenAIAssistant
+  id: CreateOpenAIAssistant
+  parent: FoundationaLLM.Common.Constants.OpenAI.OpenAIAgentCapabilityParameterNames
+  langs:
+  - csharp
+  - vb
+  name: CreateOpenAIAssistant
+  nameWithType: OpenAIAgentCapabilityParameterNames.CreateOpenAIAssistant
+  fullName: FoundationaLLM.Common.Constants.OpenAI.OpenAIAgentCapabilityParameterNames.CreateOpenAIAssistant
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Constants/OpenAI/OpenAIAgentCapabilityParameterNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: CreateOpenAIAssistant
+    path: ../src/dotnet/Common/Constants/OpenAI/OpenAIAgentCapabilityParameterNames.cs
+    startLine: 17
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.OpenAI
+  summary: Indicates the need to create a new OpenAI assistant.
+  example: []
+  syntax:
+    content: public const string CreateOpenAIAssistant = "OpenAI.Assistants.Assistant.Create"
+    return:
+      type: System.String
+    content.vb: Public Const CreateOpenAIAssistant As String = "OpenAI.Assistants.Assistant.Create"
+- uid: FoundationaLLM.Common.Constants.OpenAI.OpenAIAgentCapabilityParameterNames.CreateOpenAIAssistantVectorStore
+  commentId: F:FoundationaLLM.Common.Constants.OpenAI.OpenAIAgentCapabilityParameterNames.CreateOpenAIAssistantVectorStore
+  id: CreateOpenAIAssistantVectorStore
+  parent: FoundationaLLM.Common.Constants.OpenAI.OpenAIAgentCapabilityParameterNames
+  langs:
+  - csharp
+  - vb
+  name: CreateOpenAIAssistantVectorStore
+  nameWithType: OpenAIAgentCapabilityParameterNames.CreateOpenAIAssistantVectorStore
+  fullName: FoundationaLLM.Common.Constants.OpenAI.OpenAIAgentCapabilityParameterNames.CreateOpenAIAssistantVectorStore
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Constants/OpenAI/OpenAIAgentCapabilityParameterNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: CreateOpenAIAssistantVectorStore
+    path: ../src/dotnet/Common/Constants/OpenAI/OpenAIAgentCapabilityParameterNames.cs
+    startLine: 22
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.OpenAI
+  summary: Indicates the need to create a vector store for an existing OpenAI assistant.
+  example: []
+  syntax:
+    content: public const string CreateOpenAIAssistantVectorStore = "OpenAI.Assistants.Assistant.VectorStore.Create"
+    return:
+      type: System.String
+    content.vb: Public Const CreateOpenAIAssistantVectorStore As String = "OpenAI.Assistants.Assistant.VectorStore.Create"
+- uid: FoundationaLLM.Common.Constants.OpenAI.OpenAIAgentCapabilityParameterNames.CreateOpenAIAssistantThread
+  commentId: F:FoundationaLLM.Common.Constants.OpenAI.OpenAIAgentCapabilityParameterNames.CreateOpenAIAssistantThread
+  id: CreateOpenAIAssistantThread
+  parent: FoundationaLLM.Common.Constants.OpenAI.OpenAIAgentCapabilityParameterNames
+  langs:
+  - csharp
+  - vb
+  name: CreateOpenAIAssistantThread
+  nameWithType: OpenAIAgentCapabilityParameterNames.CreateOpenAIAssistantThread
+  fullName: FoundationaLLM.Common.Constants.OpenAI.OpenAIAgentCapabilityParameterNames.CreateOpenAIAssistantThread
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Constants/OpenAI/OpenAIAgentCapabilityParameterNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: CreateOpenAIAssistantThread
+    path: ../src/dotnet/Common/Constants/OpenAI/OpenAIAgentCapabilityParameterNames.cs
+    startLine: 27
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.OpenAI
+  summary: Indicates the need to create a new OpenAI assistant thread.
+  example: []
+  syntax:
+    content: public const string CreateOpenAIAssistantThread = "OpenAI.Assistants.Thread.Create"
+    return:
+      type: System.String
+    content.vb: Public Const CreateOpenAIAssistantThread As String = "OpenAI.Assistants.Thread.Create"
+- uid: FoundationaLLM.Common.Constants.OpenAI.OpenAIAgentCapabilityParameterNames.CreateOpenAIFile
+  commentId: F:FoundationaLLM.Common.Constants.OpenAI.OpenAIAgentCapabilityParameterNames.CreateOpenAIFile
+  id: CreateOpenAIFile
+  parent: FoundationaLLM.Common.Constants.OpenAI.OpenAIAgentCapabilityParameterNames
+  langs:
+  - csharp
+  - vb
+  name: CreateOpenAIFile
+  nameWithType: OpenAIAgentCapabilityParameterNames.CreateOpenAIFile
+  fullName: FoundationaLLM.Common.Constants.OpenAI.OpenAIAgentCapabilityParameterNames.CreateOpenAIFile
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Constants/OpenAI/OpenAIAgentCapabilityParameterNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: CreateOpenAIFile
+    path: ../src/dotnet/Common/Constants/OpenAI/OpenAIAgentCapabilityParameterNames.cs
+    startLine: 32
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.OpenAI
+  summary: Indicates the need to create a new OpenAI assistant file.
+  example: []
+  syntax:
+    content: public const string CreateOpenAIFile = "OpenAI.File.Create"
+    return:
+      type: System.String
+    content.vb: Public Const CreateOpenAIFile As String = "OpenAI.File.Create"
+- uid: FoundationaLLM.Common.Constants.OpenAI.OpenAIAgentCapabilityParameterNames.AddOpenAIFileToVectorStore
+  commentId: F:FoundationaLLM.Common.Constants.OpenAI.OpenAIAgentCapabilityParameterNames.AddOpenAIFileToVectorStore
+  id: AddOpenAIFileToVectorStore
+  parent: FoundationaLLM.Common.Constants.OpenAI.OpenAIAgentCapabilityParameterNames
+  langs:
+  - csharp
+  - vb
+  name: AddOpenAIFileToVectorStore
+  nameWithType: OpenAIAgentCapabilityParameterNames.AddOpenAIFileToVectorStore
+  fullName: FoundationaLLM.Common.Constants.OpenAI.OpenAIAgentCapabilityParameterNames.AddOpenAIFileToVectorStore
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Constants/OpenAI/OpenAIAgentCapabilityParameterNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: AddOpenAIFileToVectorStore
+    path: ../src/dotnet/Common/Constants/OpenAI/OpenAIAgentCapabilityParameterNames.cs
+    startLine: 37
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.OpenAI
+  summary: Indicates the need to add an existing OpenAI assistant file to an OpenAI assistant vector store.
+  example: []
+  syntax:
+    content: public const string AddOpenAIFileToVectorStore = "OpenAI.File.AddToVectorStore"
+    return:
+      type: System.String
+    content.vb: Public Const AddOpenAIFileToVectorStore As String = "OpenAI.File.AddToVectorStore"
+- uid: FoundationaLLM.Common.Constants.OpenAI.OpenAIAgentCapabilityParameterNames.RemoveOpenAIFileFromVectorStore
+  commentId: F:FoundationaLLM.Common.Constants.OpenAI.OpenAIAgentCapabilityParameterNames.RemoveOpenAIFileFromVectorStore
+  id: RemoveOpenAIFileFromVectorStore
+  parent: FoundationaLLM.Common.Constants.OpenAI.OpenAIAgentCapabilityParameterNames
+  langs:
+  - csharp
+  - vb
+  name: RemoveOpenAIFileFromVectorStore
+  nameWithType: OpenAIAgentCapabilityParameterNames.RemoveOpenAIFileFromVectorStore
+  fullName: FoundationaLLM.Common.Constants.OpenAI.OpenAIAgentCapabilityParameterNames.RemoveOpenAIFileFromVectorStore
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Constants/OpenAI/OpenAIAgentCapabilityParameterNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: RemoveOpenAIFileFromVectorStore
+    path: ../src/dotnet/Common/Constants/OpenAI/OpenAIAgentCapabilityParameterNames.cs
+    startLine: 42
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.OpenAI
+  summary: Indicates the need to remove an existing OpenAI assistant file from an OpenAI assistant vector store.
+  example: []
+  syntax:
+    content: public const string RemoveOpenAIFileFromVectorStore = "OpenAI.File.RemoveFromVectorStore"
+    return:
+      type: System.String
+    content.vb: Public Const RemoveOpenAIFileFromVectorStore As String = "OpenAI.File.RemoveFromVectorStore"
+- uid: FoundationaLLM.Common.Constants.OpenAI.OpenAIAgentCapabilityParameterNames.AddOpenAIFileToCodeInterpreter
+  commentId: F:FoundationaLLM.Common.Constants.OpenAI.OpenAIAgentCapabilityParameterNames.AddOpenAIFileToCodeInterpreter
+  id: AddOpenAIFileToCodeInterpreter
+  parent: FoundationaLLM.Common.Constants.OpenAI.OpenAIAgentCapabilityParameterNames
+  langs:
+  - csharp
+  - vb
+  name: AddOpenAIFileToCodeInterpreter
+  nameWithType: OpenAIAgentCapabilityParameterNames.AddOpenAIFileToCodeInterpreter
+  fullName: FoundationaLLM.Common.Constants.OpenAI.OpenAIAgentCapabilityParameterNames.AddOpenAIFileToCodeInterpreter
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Constants/OpenAI/OpenAIAgentCapabilityParameterNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: AddOpenAIFileToCodeInterpreter
+    path: ../src/dotnet/Common/Constants/OpenAI/OpenAIAgentCapabilityParameterNames.cs
+    startLine: 47
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.OpenAI
+  summary: Indicates the need to add an existing OpenAI assistant file to an OpenAI assistant code interpreter tool.
+  example: []
+  syntax:
+    content: public const string AddOpenAIFileToCodeInterpreter = "OpenAI.File.AddToCodeInterpreter"
+    return:
+      type: System.String
+    content.vb: Public Const AddOpenAIFileToCodeInterpreter As String = "OpenAI.File.AddToCodeInterpreter"
+- uid: FoundationaLLM.Common.Constants.OpenAI.OpenAIAgentCapabilityParameterNames.RemoveOpenAIFileFromCodeInterpreter
+  commentId: F:FoundationaLLM.Common.Constants.OpenAI.OpenAIAgentCapabilityParameterNames.RemoveOpenAIFileFromCodeInterpreter
+  id: RemoveOpenAIFileFromCodeInterpreter
+  parent: FoundationaLLM.Common.Constants.OpenAI.OpenAIAgentCapabilityParameterNames
+  langs:
+  - csharp
+  - vb
+  name: RemoveOpenAIFileFromCodeInterpreter
+  nameWithType: OpenAIAgentCapabilityParameterNames.RemoveOpenAIFileFromCodeInterpreter
+  fullName: FoundationaLLM.Common.Constants.OpenAI.OpenAIAgentCapabilityParameterNames.RemoveOpenAIFileFromCodeInterpreter
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Constants/OpenAI/OpenAIAgentCapabilityParameterNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: RemoveOpenAIFileFromCodeInterpreter
+    path: ../src/dotnet/Common/Constants/OpenAI/OpenAIAgentCapabilityParameterNames.cs
+    startLine: 52
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.OpenAI
+  summary: Indicates the need to remove an existing OpenAI assistant file from an OpenAI assistant code interpreter tool.
+  example: []
+  syntax:
+    content: public const string RemoveOpenAIFileFromCodeInterpreter = "OpenAI.File.RemoveFromCodeInterpreter"
+    return:
+      type: System.String
+    content.vb: Public Const RemoveOpenAIFileFromCodeInterpreter As String = "OpenAI.File.RemoveFromCodeInterpreter"
+- uid: FoundationaLLM.Common.Constants.OpenAI.OpenAIAgentCapabilityParameterNames.UpdateOpenAIAssistantInstructions
+  commentId: F:FoundationaLLM.Common.Constants.OpenAI.OpenAIAgentCapabilityParameterNames.UpdateOpenAIAssistantInstructions
+  id: UpdateOpenAIAssistantInstructions
+  parent: FoundationaLLM.Common.Constants.OpenAI.OpenAIAgentCapabilityParameterNames
+  langs:
+  - csharp
+  - vb
+  name: UpdateOpenAIAssistantInstructions
+  nameWithType: OpenAIAgentCapabilityParameterNames.UpdateOpenAIAssistantInstructions
+  fullName: FoundationaLLM.Common.Constants.OpenAI.OpenAIAgentCapabilityParameterNames.UpdateOpenAIAssistantInstructions
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Constants/OpenAI/OpenAIAgentCapabilityParameterNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: UpdateOpenAIAssistantInstructions
+    path: ../src/dotnet/Common/Constants/OpenAI/OpenAIAgentCapabilityParameterNames.cs
+    startLine: 57
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.OpenAI
+  summary: Indicates the need to update the instructions of an existing OpenAI assistant.
+  example: []
+  syntax:
+    content: public const string UpdateOpenAIAssistantInstructions = "OpenAI.Assistants.Assistant.UpdateInstructions"
+    return:
+      type: System.String
+    content.vb: Public Const UpdateOpenAIAssistantInstructions As String = "OpenAI.Assistants.Assistant.UpdateInstructions"
+- uid: FoundationaLLM.Common.Constants.OpenAI.OpenAIAgentCapabilityParameterNames.OpenAIAssistantPrompt
+  commentId: F:FoundationaLLM.Common.Constants.OpenAI.OpenAIAgentCapabilityParameterNames.OpenAIAssistantPrompt
+  id: OpenAIAssistantPrompt
+  parent: FoundationaLLM.Common.Constants.OpenAI.OpenAIAgentCapabilityParameterNames
+  langs:
+  - csharp
+  - vb
+  name: OpenAIAssistantPrompt
+  nameWithType: OpenAIAgentCapabilityParameterNames.OpenAIAssistantPrompt
+  fullName: FoundationaLLM.Common.Constants.OpenAI.OpenAIAgentCapabilityParameterNames.OpenAIAssistantPrompt
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Constants/OpenAI/OpenAIAgentCapabilityParameterNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: OpenAIAssistantPrompt
+    path: ../src/dotnet/Common/Constants/OpenAI/OpenAIAgentCapabilityParameterNames.cs
+    startLine: 66
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.OpenAI
+  summary: Provides the prompt used by the OpenAI assistant.
+  example: []
+  syntax:
+    content: public const string OpenAIAssistantPrompt = "OpenAI.Assistants.Assistant.Prompt"
+    return:
+      type: System.String
+    content.vb: Public Const OpenAIAssistantPrompt As String = "OpenAI.Assistants.Assistant.Prompt"
+- uid: FoundationaLLM.Common.Constants.OpenAI.OpenAIAgentCapabilityParameterNames.OpenAIEndpoint
+  commentId: F:FoundationaLLM.Common.Constants.OpenAI.OpenAIAgentCapabilityParameterNames.OpenAIEndpoint
+  id: OpenAIEndpoint
+  parent: FoundationaLLM.Common.Constants.OpenAI.OpenAIAgentCapabilityParameterNames
+  langs:
+  - csharp
+  - vb
+  name: OpenAIEndpoint
+  nameWithType: OpenAIAgentCapabilityParameterNames.OpenAIEndpoint
+  fullName: FoundationaLLM.Common.Constants.OpenAI.OpenAIAgentCapabilityParameterNames.OpenAIEndpoint
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Constants/OpenAI/OpenAIAgentCapabilityParameterNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: OpenAIEndpoint
+    path: ../src/dotnet/Common/Constants/OpenAI/OpenAIAgentCapabilityParameterNames.cs
+    startLine: 71
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.OpenAI
+  summary: Provides the Azure OpenAI endpoint used to manage Open AI assistants.
+  example: []
+  syntax:
+    content: public const string OpenAIEndpoint = "OpenAI.Endpoint"
+    return:
+      type: System.String
+    content.vb: Public Const OpenAIEndpoint As String = "OpenAI.Endpoint"
+- uid: FoundationaLLM.Common.Constants.OpenAI.OpenAIAgentCapabilityParameterNames.OpenAIModelDeploymentName
+  commentId: F:FoundationaLLM.Common.Constants.OpenAI.OpenAIAgentCapabilityParameterNames.OpenAIModelDeploymentName
+  id: OpenAIModelDeploymentName
+  parent: FoundationaLLM.Common.Constants.OpenAI.OpenAIAgentCapabilityParameterNames
+  langs:
+  - csharp
+  - vb
+  name: OpenAIModelDeploymentName
+  nameWithType: OpenAIAgentCapabilityParameterNames.OpenAIModelDeploymentName
+  fullName: FoundationaLLM.Common.Constants.OpenAI.OpenAIAgentCapabilityParameterNames.OpenAIModelDeploymentName
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Constants/OpenAI/OpenAIAgentCapabilityParameterNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: OpenAIModelDeploymentName
+    path: ../src/dotnet/Common/Constants/OpenAI/OpenAIAgentCapabilityParameterNames.cs
+    startLine: 76
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.OpenAI
+  summary: Provides the model deployment name used by the OpenAI assistant.
+  example: []
+  syntax:
+    content: public const string OpenAIModelDeploymentName = "OpenAI.ModelDeploymentName"
+    return:
+      type: System.String
+    content.vb: Public Const OpenAIModelDeploymentName As String = "OpenAI.ModelDeploymentName"
+- uid: FoundationaLLM.Common.Constants.OpenAI.OpenAIAgentCapabilityParameterNames.AttachmentObjectId
+  commentId: F:FoundationaLLM.Common.Constants.OpenAI.OpenAIAgentCapabilityParameterNames.AttachmentObjectId
+  id: AttachmentObjectId
+  parent: FoundationaLLM.Common.Constants.OpenAI.OpenAIAgentCapabilityParameterNames
+  langs:
+  - csharp
+  - vb
+  name: AttachmentObjectId
+  nameWithType: OpenAIAgentCapabilityParameterNames.AttachmentObjectId
+  fullName: FoundationaLLM.Common.Constants.OpenAI.OpenAIAgentCapabilityParameterNames.AttachmentObjectId
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Constants/OpenAI/OpenAIAgentCapabilityParameterNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: AttachmentObjectId
+    path: ../src/dotnet/Common/Constants/OpenAI/OpenAIAgentCapabilityParameterNames.cs
+    startLine: 81
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.OpenAI
+  summary: The object identifier of the FoundationaLLM attachment resource.
+  example: []
+  syntax:
+    content: public const string AttachmentObjectId = "FoundationaLLM.Attachment.ObjectId"
+    return:
+      type: System.String
+    content.vb: Public Const AttachmentObjectId As String = "FoundationaLLM.Attachment.ObjectId"
+- uid: FoundationaLLM.Common.Constants.OpenAI.OpenAIAgentCapabilityParameterNames.AgentFileObjectId
+  commentId: F:FoundationaLLM.Common.Constants.OpenAI.OpenAIAgentCapabilityParameterNames.AgentFileObjectId
+  id: AgentFileObjectId
+  parent: FoundationaLLM.Common.Constants.OpenAI.OpenAIAgentCapabilityParameterNames
+  langs:
+  - csharp
+  - vb
+  name: AgentFileObjectId
+  nameWithType: OpenAIAgentCapabilityParameterNames.AgentFileObjectId
+  fullName: FoundationaLLM.Common.Constants.OpenAI.OpenAIAgentCapabilityParameterNames.AgentFileObjectId
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Constants/OpenAI/OpenAIAgentCapabilityParameterNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: AgentFileObjectId
+    path: ../src/dotnet/Common/Constants/OpenAI/OpenAIAgentCapabilityParameterNames.cs
+    startLine: 86
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.OpenAI
+  summary: The object identifier of the FoundationaLLM agent file resource.
+  example: []
+  syntax:
+    content: public const string AgentFileObjectId = "FoundationaLLM.Agent.File.ObjectId"
+    return:
+      type: System.String
+    content.vb: Public Const AgentFileObjectId As String = "FoundationaLLM.Agent.File.ObjectId"
+- uid: FoundationaLLM.Common.Constants.OpenAI.OpenAIAgentCapabilityParameterNames.OpenAIAssistantId
+  commentId: F:FoundationaLLM.Common.Constants.OpenAI.OpenAIAgentCapabilityParameterNames.OpenAIAssistantId
+  id: OpenAIAssistantId
+  parent: FoundationaLLM.Common.Constants.OpenAI.OpenAIAgentCapabilityParameterNames
+  langs:
+  - csharp
+  - vb
+  name: OpenAIAssistantId
+  nameWithType: OpenAIAgentCapabilityParameterNames.OpenAIAssistantId
+  fullName: FoundationaLLM.Common.Constants.OpenAI.OpenAIAgentCapabilityParameterNames.OpenAIAssistantId
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Constants/OpenAI/OpenAIAgentCapabilityParameterNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: OpenAIAssistantId
+    path: ../src/dotnet/Common/Constants/OpenAI/OpenAIAgentCapabilityParameterNames.cs
+    startLine: 95
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.OpenAI
+  summary: Provides the identifier of an existing OpenAI assistant.
+  example: []
+  syntax:
+    content: public const string OpenAIAssistantId = "OpenAI.Assistants.Assistant.Id"
+    return:
+      type: System.String
+    content.vb: Public Const OpenAIAssistantId As String = "OpenAI.Assistants.Assistant.Id"
+- uid: FoundationaLLM.Common.Constants.OpenAI.OpenAIAgentCapabilityParameterNames.OpenAIAssistantThreadId
+  commentId: F:FoundationaLLM.Common.Constants.OpenAI.OpenAIAgentCapabilityParameterNames.OpenAIAssistantThreadId
+  id: OpenAIAssistantThreadId
+  parent: FoundationaLLM.Common.Constants.OpenAI.OpenAIAgentCapabilityParameterNames
+  langs:
+  - csharp
+  - vb
+  name: OpenAIAssistantThreadId
+  nameWithType: OpenAIAgentCapabilityParameterNames.OpenAIAssistantThreadId
+  fullName: FoundationaLLM.Common.Constants.OpenAI.OpenAIAgentCapabilityParameterNames.OpenAIAssistantThreadId
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Constants/OpenAI/OpenAIAgentCapabilityParameterNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: OpenAIAssistantThreadId
+    path: ../src/dotnet/Common/Constants/OpenAI/OpenAIAgentCapabilityParameterNames.cs
+    startLine: 100
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.OpenAI
+  summary: Provides the identifier of an existing OpenAI assistant thread.
+  example: []
+  syntax:
+    content: public const string OpenAIAssistantThreadId = "OpenAI.Assistants.Thread.Id"
+    return:
+      type: System.String
+    content.vb: Public Const OpenAIAssistantThreadId As String = "OpenAI.Assistants.Thread.Id"
+- uid: FoundationaLLM.Common.Constants.OpenAI.OpenAIAgentCapabilityParameterNames.OpenAIFileId
+  commentId: F:FoundationaLLM.Common.Constants.OpenAI.OpenAIAgentCapabilityParameterNames.OpenAIFileId
+  id: OpenAIFileId
+  parent: FoundationaLLM.Common.Constants.OpenAI.OpenAIAgentCapabilityParameterNames
+  langs:
+  - csharp
+  - vb
+  name: OpenAIFileId
+  nameWithType: OpenAIAgentCapabilityParameterNames.OpenAIFileId
+  fullName: FoundationaLLM.Common.Constants.OpenAI.OpenAIAgentCapabilityParameterNames.OpenAIFileId
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Constants/OpenAI/OpenAIAgentCapabilityParameterNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: OpenAIFileId
+    path: ../src/dotnet/Common/Constants/OpenAI/OpenAIAgentCapabilityParameterNames.cs
+    startLine: 105
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.OpenAI
+  summary: Provides the identifier of an existing OpenAI assistant file.
+  example: []
+  syntax:
+    content: public const string OpenAIFileId = "OpenAI.Files.Id"
+    return:
+      type: System.String
+    content.vb: Public Const OpenAIFileId As String = "OpenAI.Files.Id"
+- uid: FoundationaLLM.Common.Constants.OpenAI.OpenAIAgentCapabilityParameterNames.OpenAIVectorStoreId
+  commentId: F:FoundationaLLM.Common.Constants.OpenAI.OpenAIAgentCapabilityParameterNames.OpenAIVectorStoreId
+  id: OpenAIVectorStoreId
+  parent: FoundationaLLM.Common.Constants.OpenAI.OpenAIAgentCapabilityParameterNames
+  langs:
+  - csharp
+  - vb
+  name: OpenAIVectorStoreId
+  nameWithType: OpenAIAgentCapabilityParameterNames.OpenAIVectorStoreId
+  fullName: FoundationaLLM.Common.Constants.OpenAI.OpenAIAgentCapabilityParameterNames.OpenAIVectorStoreId
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Constants/OpenAI/OpenAIAgentCapabilityParameterNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: OpenAIVectorStoreId
+    path: ../src/dotnet/Common/Constants/OpenAI/OpenAIAgentCapabilityParameterNames.cs
+    startLine: 110
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.OpenAI
+  summary: Provides the identifier of an existing OpenAI assistant vector store.
+  example: []
+  syntax:
+    content: public const string OpenAIVectorStoreId = "OpenAI.VectorStore.Id"
+    return:
+      type: System.String
+    content.vb: Public Const OpenAIVectorStoreId As String = "OpenAI.VectorStore.Id"
+- uid: FoundationaLLM.Common.Constants.OpenAI.OpenAIAgentCapabilityParameterNames.OpenAIFileActionOnVectorStoreSuccess
+  commentId: F:FoundationaLLM.Common.Constants.OpenAI.OpenAIAgentCapabilityParameterNames.OpenAIFileActionOnVectorStoreSuccess
+  id: OpenAIFileActionOnVectorStoreSuccess
+  parent: FoundationaLLM.Common.Constants.OpenAI.OpenAIAgentCapabilityParameterNames
+  langs:
+  - csharp
+  - vb
+  name: OpenAIFileActionOnVectorStoreSuccess
+  nameWithType: OpenAIAgentCapabilityParameterNames.OpenAIFileActionOnVectorStoreSuccess
+  fullName: FoundationaLLM.Common.Constants.OpenAI.OpenAIAgentCapabilityParameterNames.OpenAIFileActionOnVectorStoreSuccess
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Constants/OpenAI/OpenAIAgentCapabilityParameterNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: OpenAIFileActionOnVectorStoreSuccess
+    path: ../src/dotnet/Common/Constants/OpenAI/OpenAIAgentCapabilityParameterNames.cs
+    startLine: 115
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.OpenAI
+  summary: Indicates whether the Open AI assistant file vectorization or file removal process completed successfully.
+  example: []
+  syntax:
+    content: public const string OpenAIFileActionOnVectorStoreSuccess = "OpenAI.File.FileActionOnVectorStoreSuccess"
+    return:
+      type: System.String
+    content.vb: Public Const OpenAIFileActionOnVectorStoreSuccess As String = "OpenAI.File.FileActionOnVectorStoreSuccess"
+- uid: FoundationaLLM.Common.Constants.OpenAI.OpenAIAgentCapabilityParameterNames.OpenAIFileActionOnCodeInterpreterSuccess
+  commentId: F:FoundationaLLM.Common.Constants.OpenAI.OpenAIAgentCapabilityParameterNames.OpenAIFileActionOnCodeInterpreterSuccess
+  id: OpenAIFileActionOnCodeInterpreterSuccess
+  parent: FoundationaLLM.Common.Constants.OpenAI.OpenAIAgentCapabilityParameterNames
+  langs:
+  - csharp
+  - vb
+  name: OpenAIFileActionOnCodeInterpreterSuccess
+  nameWithType: OpenAIAgentCapabilityParameterNames.OpenAIFileActionOnCodeInterpreterSuccess
+  fullName: FoundationaLLM.Common.Constants.OpenAI.OpenAIAgentCapabilityParameterNames.OpenAIFileActionOnCodeInterpreterSuccess
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Constants/OpenAI/OpenAIAgentCapabilityParameterNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: OpenAIFileActionOnCodeInterpreterSuccess
+    path: ../src/dotnet/Common/Constants/OpenAI/OpenAIAgentCapabilityParameterNames.cs
+    startLine: 120
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.OpenAI
+  summary: Indicates whether the Open AI assistant file addition or file removal for the code interpreter completed successfully.
+  example: []
+  syntax:
+    content: public const string OpenAIFileActionOnCodeInterpreterSuccess = "OpenAI.File.FileActionOnCodeInterpreterSuccess"
+    return:
+      type: System.String
+    content.vb: Public Const OpenAIFileActionOnCodeInterpreterSuccess As String = "OpenAI.File.FileActionOnCodeInterpreterSuccess"
+references:
+- uid: FoundationaLLM.Common.Clients.GatewayServiceClient
+  commentId: T:FoundationaLLM.Common.Clients.GatewayServiceClient
+  parent: FoundationaLLM.Common.Clients
+  href: FoundationaLLM.Common.Clients.GatewayServiceClient.html
+  name: GatewayServiceClient
+  nameWithType: GatewayServiceClient
+  fullName: FoundationaLLM.Common.Clients.GatewayServiceClient
+- uid: FoundationaLLM.Common.Constants.OpenAI
+  commentId: N:FoundationaLLM.Common.Constants.OpenAI
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Constants.OpenAI
+  nameWithType: FoundationaLLM.Common.Constants.OpenAI
+  fullName: FoundationaLLM.Common.Constants.OpenAI
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Constants
+    name: Constants
+    href: FoundationaLLM.Common.Constants.html
+  - name: .
+  - uid: FoundationaLLM.Common.Constants.OpenAI
+    name: OpenAI
+    href: FoundationaLLM.Common.Constants.OpenAI.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Constants
+    name: Constants
+    href: FoundationaLLM.Common.Constants.html
+  - name: .
+  - uid: FoundationaLLM.Common.Constants.OpenAI
+    name: OpenAI
+    href: FoundationaLLM.Common.Constants.OpenAI.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: FoundationaLLM.Common.Clients
+  commentId: N:FoundationaLLM.Common.Clients
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Clients
+  nameWithType: FoundationaLLM.Common.Clients
+  fullName: FoundationaLLM.Common.Clients
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Clients
+    name: Clients
+    href: FoundationaLLM.Common.Clients.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Clients
+    name: Clients
+    href: FoundationaLLM.Common.Clients.html
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String

@@ -1,0 +1,636 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Common.Utils.FileUtils
+  commentId: T:FoundationaLLM.Common.Utils.FileUtils
+  id: FileUtils
+  parent: FoundationaLLM.Common.Utils
+  children:
+  - FoundationaLLM.Common.Utils.FileUtils.GetFileContentType(System.String,System.BinaryData)
+  - FoundationaLLM.Common.Utils.FileUtils.GetMessageContentFileType(System.String,System.String)
+  langs:
+  - csharp
+  - vb
+  name: FileUtils
+  nameWithType: FileUtils
+  fullName: FoundationaLLM.Common.Utils.FileUtils
+  type: Class
+  source:
+    remote:
+      path: src/dotnet/Common/Utils/FileUtils.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: FileUtils
+    path: ../src/dotnet/Common/Utils/FileUtils.cs
+    startLine: 12
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Utils
+  summary: Contains methods for working with files.
+  example: []
+  syntax:
+    content: public class FileUtils
+    content.vb: Public Class FileUtils
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+  extensionMethods:
+  - System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+- uid: FoundationaLLM.Common.Utils.FileUtils.GetMessageContentFileType(System.String,System.String)
+  commentId: M:FoundationaLLM.Common.Utils.FileUtils.GetMessageContentFileType(System.String,System.String)
+  id: GetMessageContentFileType(System.String,System.String)
+  parent: FoundationaLLM.Common.Utils.FileUtils
+  langs:
+  - csharp
+  - vb
+  name: GetMessageContentFileType(string?, string?)
+  nameWithType: FileUtils.GetMessageContentFileType(string?, string?)
+  fullName: FoundationaLLM.Common.Utils.FileUtils.GetMessageContentFileType(string?, string?)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Common/Utils/FileUtils.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: GetMessageContentFileType
+    path: ../src/dotnet/Common/Utils/FileUtils.cs
+    startLine: 58
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Utils
+  summary: Returns the type of the message content based on the file name.
+  example: []
+  syntax:
+    content: public static string GetMessageContentFileType(string? fileName, string? fallbackValue)
+    parameters:
+    - id: fileName
+      type: System.String
+      description: The file name to evaluate.
+    - id: fallbackValue
+      type: System.String
+      description: >-
+        If populated, defines the fallback type value
+            if a mapping cannot be determined from the passed in file name. Otherwise,
+            the default value is <xref href="FoundationaLLM.Common.Constants.Orchestration.MessageContentItemTypes.FilePath" data-throw-if-not-resolved="false"></xref>.
+    return:
+      type: System.String
+      description: ''
+    content.vb: Public Shared Function GetMessageContentFileType(fileName As String, fallbackValue As String) As String
+  overload: FoundationaLLM.Common.Utils.FileUtils.GetMessageContentFileType*
+  nameWithType.vb: FileUtils.GetMessageContentFileType(String, String)
+  fullName.vb: FoundationaLLM.Common.Utils.FileUtils.GetMessageContentFileType(String, String)
+  name.vb: GetMessageContentFileType(String, String)
+- uid: FoundationaLLM.Common.Utils.FileUtils.GetFileContentType(System.String,System.BinaryData)
+  commentId: M:FoundationaLLM.Common.Utils.FileUtils.GetFileContentType(System.String,System.BinaryData)
+  id: GetFileContentType(System.String,System.BinaryData)
+  parent: FoundationaLLM.Common.Utils.FileUtils
+  langs:
+  - csharp
+  - vb
+  name: GetFileContentType(string, BinaryData)
+  nameWithType: FileUtils.GetFileContentType(string, BinaryData)
+  fullName: FoundationaLLM.Common.Utils.FileUtils.GetFileContentType(string, System.BinaryData)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Common/Utils/FileUtils.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: GetFileContentType
+    path: ../src/dotnet/Common/Utils/FileUtils.cs
+    startLine: 80
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Utils
+  summary: Determines the MIME content type of a file based on its name and binary content.
+  remarks: >-
+    If the content type cannot be determined from the file's content, the method falls
+        back to using the file extension. If neither can be determined, 'application/octet-stream' is returned as a
+        default. The method attempts to resolve discrepancies between the file's content and its extension, favoring
+        the extension for plain text files when appropriate.
+  example: []
+  syntax:
+    content: public static FileContentTypeResult GetFileContentType(string fileName, BinaryData fileContent)
+    parameters:
+    - id: fileName
+      type: System.String
+      description: The name of the file, including its extension. Used to infer the expected content type.
+    - id: fileContent
+      type: System.BinaryData
+      description: The binary data representing the contents of the file. Used to inspect and detect the actual content type.
+    return:
+      type: FoundationaLLM.Common.Models.Files.FileContentTypeResult
+      description: >-
+        A FileContentTypeResult containing the detected MIME type, a value indicating whether the type is supported,
+            and whether the detected type matches the file extension.
+    content.vb: Public Shared Function GetFileContentType(fileName As String, fileContent As BinaryData) As FileContentTypeResult
+  overload: FoundationaLLM.Common.Utils.FileUtils.GetFileContentType*
+  nameWithType.vb: FileUtils.GetFileContentType(String, BinaryData)
+  fullName.vb: FoundationaLLM.Common.Utils.FileUtils.GetFileContentType(String, System.BinaryData)
+  name.vb: GetFileContentType(String, BinaryData)
+references:
+- uid: FoundationaLLM.Common.Utils
+  commentId: N:FoundationaLLM.Common.Utils
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Utils
+  nameWithType: FoundationaLLM.Common.Utils
+  fullName: FoundationaLLM.Common.Utils
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Utils
+    name: Utils
+    href: FoundationaLLM.Common.Utils.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Utils
+    name: Utils
+    href: FoundationaLLM.Common.Utils.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  parent: FoundationaLLM.Core.Utils.ObjectExtensions
+  definition: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  isExternal: true
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions
+  commentId: T:FoundationaLLM.Core.Utils.ObjectExtensions
+  parent: FoundationaLLM.Core.Utils
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html
+  name: ObjectExtensions
+  nameWithType: ObjectExtensions
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions
+- uid: FoundationaLLM.Core.Utils
+  commentId: N:FoundationaLLM.Core.Utils
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Core.Utils
+  nameWithType: FoundationaLLM.Core.Utils
+  fullName: FoundationaLLM.Core.Utils
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+- uid: FoundationaLLM.Common.Constants.Orchestration.MessageContentItemTypes.FilePath
+  commentId: F:FoundationaLLM.Common.Constants.Orchestration.MessageContentItemTypes.FilePath
+  href: FoundationaLLM.Common.Constants.Orchestration.MessageContentItemTypes.html#FoundationaLLM_Common_Constants_Orchestration_MessageContentItemTypes_FilePath
+  name: FilePath
+  nameWithType: MessageContentItemTypes.FilePath
+  fullName: FoundationaLLM.Common.Constants.Orchestration.MessageContentItemTypes.FilePath
+- uid: FoundationaLLM.Common.Utils.FileUtils.GetMessageContentFileType*
+  commentId: Overload:FoundationaLLM.Common.Utils.FileUtils.GetMessageContentFileType
+  href: FoundationaLLM.Common.Utils.FileUtils.html#FoundationaLLM_Common_Utils_FileUtils_GetMessageContentFileType_System_String_System_String_
+  name: GetMessageContentFileType
+  nameWithType: FileUtils.GetMessageContentFileType
+  fullName: FoundationaLLM.Common.Utils.FileUtils.GetMessageContentFileType
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: FoundationaLLM.Common.Utils.FileUtils.GetFileContentType*
+  commentId: Overload:FoundationaLLM.Common.Utils.FileUtils.GetFileContentType
+  href: FoundationaLLM.Common.Utils.FileUtils.html#FoundationaLLM_Common_Utils_FileUtils_GetFileContentType_System_String_System_BinaryData_
+  name: GetFileContentType
+  nameWithType: FileUtils.GetFileContentType
+  fullName: FoundationaLLM.Common.Utils.FileUtils.GetFileContentType
+- uid: System.BinaryData
+  commentId: T:System.BinaryData
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.binarydata
+  name: BinaryData
+  nameWithType: BinaryData
+  fullName: System.BinaryData
+- uid: FoundationaLLM.Common.Models.Files.FileContentTypeResult
+  commentId: T:FoundationaLLM.Common.Models.Files.FileContentTypeResult
+  parent: FoundationaLLM.Common.Models.Files
+  href: FoundationaLLM.Common.Models.Files.FileContentTypeResult.html
+  name: FileContentTypeResult
+  nameWithType: FileContentTypeResult
+  fullName: FoundationaLLM.Common.Models.Files.FileContentTypeResult
+- uid: FoundationaLLM.Common.Models.Files
+  commentId: N:FoundationaLLM.Common.Models.Files
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.Files
+  nameWithType: FoundationaLLM.Common.Models.Files
+  fullName: FoundationaLLM.Common.Models.Files
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Files
+    name: Files
+    href: FoundationaLLM.Common.Models.Files.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Files
+    name: Files
+    href: FoundationaLLM.Common.Models.Files.html

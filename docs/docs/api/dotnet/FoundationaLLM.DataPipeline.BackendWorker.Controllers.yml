@@ -1,0 +1,24 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.DataPipeline.BackendWorker.Controllers
+  commentId: N:FoundationaLLM.DataPipeline.BackendWorker.Controllers
+  id: BackendWorker.Controllers
+  parent: FoundationaLLM.DataPipeline
+  children:
+  - FoundationaLLM.DataPipeline.BackendWorker.Controllers.StatusController
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM.DataPipeline.BackendWorker.Controllers
+  nameWithType: FoundationaLLM.DataPipeline.BackendWorker.Controllers
+  fullName: FoundationaLLM.DataPipeline.BackendWorker.Controllers
+  type: Namespace
+  assemblies:
+  - FoundationaLLM.DataPipeline.BackendWorker
+references:
+- uid: FoundationaLLM.DataPipeline.BackendWorker.Controllers.StatusController
+  commentId: T:FoundationaLLM.DataPipeline.BackendWorker.Controllers.StatusController
+  href: FoundationaLLM.DataPipeline.BackendWorker.Controllers.StatusController.html
+  name: StatusController
+  nameWithType: StatusController
+  fullName: FoundationaLLM.DataPipeline.BackendWorker.Controllers.StatusController

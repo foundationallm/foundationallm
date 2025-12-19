@@ -1,0 +1,2666 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService
+  commentId: T:FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService
+  id: AzureCosmosDBDataPipelineService
+  parent: FoundationaLLM.DataPipelineEngine.Services.CosmosDB
+  children:
+  - FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService.#ctor(Microsoft.Extensions.Options.IOptions{FoundationaLLM.Common.Models.Configuration.CosmosDB.AzureCosmosDBSettings},Microsoft.Extensions.Logging.ILogger{FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService})
+  - FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService.GetDataPipelineContentItem(System.String,System.String)
+  - FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService.GetDataPipelineRuns(FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRunFilter)
+  - FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService.PatchDataPipelineRunWorkItemsStatusAsync(System.Collections.Generic.List{FoundationaLLM.Common.Models.DataPipelines.DataPipelineRunWorkItem})
+  - FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService.PatchItemPropertiesAsync``1(System.String,System.String,System.Collections.Generic.Dictionary{System.String,System.Object},System.Threading.CancellationToken)
+  - FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService.RetrieveItem``1(System.String,System.String)
+  - FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService.RetrieveItemsAsync``1(Microsoft.Azure.Cosmos.QueryDefinition)
+  - FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService.StartChangeFeedProcessorAsync(System.Func{FoundationaLLM.Common.Models.DataPipelines.DataPipelineRunWorkItem,System.Threading.Tasks.Task})
+  - FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService.StopChangeFeedProcessorAsync
+  - FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService.UpsertDataPipelineRunBatchAsync(System.Object[])
+  - FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService.UpsertItemAsync``1(System.String,``0,System.Threading.CancellationToken)
+  - FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService._cosmosClient
+  - FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService._dataPipelineContainer
+  - FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService._leasesContainer
+  - FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService._logger
+  - FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService._settings
+  langs:
+  - csharp
+  - vb
+  name: AzureCosmosDBDataPipelineService
+  nameWithType: AzureCosmosDBDataPipelineService
+  fullName: FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService
+  type: Class
+  source:
+    remote:
+      path: src/dotnet/DataPipelineEngine/Services/CosmosDB/AzureCosmosDBDataPipelineService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: AzureCosmosDBDataPipelineService
+    path: ../src/dotnet/DataPipelineEngine/Services/CosmosDB/AzureCosmosDBDataPipelineService.cs
+    startLine: 23
+  assemblies:
+  - FoundationaLLM.DataPipelineEngine
+  namespace: FoundationaLLM.DataPipelineEngine.Services.CosmosDB
+  summary: Provides the implementation for the Azure Cosmos DB data pipeline service.
+  example: []
+  syntax:
+    content: 'public class AzureCosmosDBDataPipelineService : IAzureCosmosDBDataPipelineService'
+    content.vb: Public Class AzureCosmosDBDataPipelineService Implements IAzureCosmosDBDataPipelineService
+  inheritance:
+  - System.Object
+  implements:
+  - FoundationaLLM.DataPipelineEngine.Interfaces.IAzureCosmosDBDataPipelineService
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+  extensionMethods:
+  - System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+- uid: FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService._settings
+  commentId: F:FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService._settings
+  id: _settings
+  parent: FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService
+  langs:
+  - csharp
+  - vb
+  name: _settings
+  nameWithType: AzureCosmosDBDataPipelineService._settings
+  fullName: FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService._settings
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/DataPipelineEngine/Services/CosmosDB/AzureCosmosDBDataPipelineService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: _settings
+    path: ../src/dotnet/DataPipelineEngine/Services/CosmosDB/AzureCosmosDBDataPipelineService.cs
+    startLine: 25
+  assemblies:
+  - FoundationaLLM.DataPipelineEngine
+  namespace: FoundationaLLM.DataPipelineEngine.Services.CosmosDB
+  syntax:
+    content: protected readonly AzureCosmosDBSettings _settings
+    return:
+      type: FoundationaLLM.Common.Models.Configuration.CosmosDB.AzureCosmosDBSettings
+    content.vb: Protected ReadOnly _settings As AzureCosmosDBSettings
+- uid: FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService._logger
+  commentId: F:FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService._logger
+  id: _logger
+  parent: FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService
+  langs:
+  - csharp
+  - vb
+  name: _logger
+  nameWithType: AzureCosmosDBDataPipelineService._logger
+  fullName: FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService._logger
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/DataPipelineEngine/Services/CosmosDB/AzureCosmosDBDataPipelineService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: _logger
+    path: ../src/dotnet/DataPipelineEngine/Services/CosmosDB/AzureCosmosDBDataPipelineService.cs
+    startLine: 26
+  assemblies:
+  - FoundationaLLM.DataPipelineEngine
+  namespace: FoundationaLLM.DataPipelineEngine.Services.CosmosDB
+  syntax:
+    content: protected readonly ILogger<AzureCosmosDBDataPipelineService> _logger
+    return:
+      type: Microsoft.Extensions.Logging.ILogger{FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService}
+    content.vb: Protected ReadOnly _logger As ILogger(Of AzureCosmosDBDataPipelineService)
+- uid: FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService._cosmosClient
+  commentId: F:FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService._cosmosClient
+  id: _cosmosClient
+  parent: FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService
+  langs:
+  - csharp
+  - vb
+  name: _cosmosClient
+  nameWithType: AzureCosmosDBDataPipelineService._cosmosClient
+  fullName: FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService._cosmosClient
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/DataPipelineEngine/Services/CosmosDB/AzureCosmosDBDataPipelineService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: _cosmosClient
+    path: ../src/dotnet/DataPipelineEngine/Services/CosmosDB/AzureCosmosDBDataPipelineService.cs
+    startLine: 28
+  assemblies:
+  - FoundationaLLM.DataPipelineEngine
+  namespace: FoundationaLLM.DataPipelineEngine.Services.CosmosDB
+  syntax:
+    content: protected readonly CosmosClient _cosmosClient
+    return:
+      type: Microsoft.Azure.Cosmos.CosmosClient
+    content.vb: Protected ReadOnly _cosmosClient As CosmosClient
+- uid: FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService._dataPipelineContainer
+  commentId: F:FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService._dataPipelineContainer
+  id: _dataPipelineContainer
+  parent: FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService
+  langs:
+  - csharp
+  - vb
+  name: _dataPipelineContainer
+  nameWithType: AzureCosmosDBDataPipelineService._dataPipelineContainer
+  fullName: FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService._dataPipelineContainer
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/DataPipelineEngine/Services/CosmosDB/AzureCosmosDBDataPipelineService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: _dataPipelineContainer
+    path: ../src/dotnet/DataPipelineEngine/Services/CosmosDB/AzureCosmosDBDataPipelineService.cs
+    startLine: 29
+  assemblies:
+  - FoundationaLLM.DataPipelineEngine
+  namespace: FoundationaLLM.DataPipelineEngine.Services.CosmosDB
+  syntax:
+    content: protected readonly Container _dataPipelineContainer
+    return:
+      type: Microsoft.Azure.Cosmos.Container
+    content.vb: Protected ReadOnly _dataPipelineContainer As Container
+- uid: FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService._leasesContainer
+  commentId: F:FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService._leasesContainer
+  id: _leasesContainer
+  parent: FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService
+  langs:
+  - csharp
+  - vb
+  name: _leasesContainer
+  nameWithType: AzureCosmosDBDataPipelineService._leasesContainer
+  fullName: FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService._leasesContainer
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/DataPipelineEngine/Services/CosmosDB/AzureCosmosDBDataPipelineService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: _leasesContainer
+    path: ../src/dotnet/DataPipelineEngine/Services/CosmosDB/AzureCosmosDBDataPipelineService.cs
+    startLine: 30
+  assemblies:
+  - FoundationaLLM.DataPipelineEngine
+  namespace: FoundationaLLM.DataPipelineEngine.Services.CosmosDB
+  syntax:
+    content: protected readonly Container _leasesContainer
+    return:
+      type: Microsoft.Azure.Cosmos.Container
+    content.vb: Protected ReadOnly _leasesContainer As Container
+- uid: FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService.#ctor(Microsoft.Extensions.Options.IOptions{FoundationaLLM.Common.Models.Configuration.CosmosDB.AzureCosmosDBSettings},Microsoft.Extensions.Logging.ILogger{FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService})
+  commentId: M:FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService.#ctor(Microsoft.Extensions.Options.IOptions{FoundationaLLM.Common.Models.Configuration.CosmosDB.AzureCosmosDBSettings},Microsoft.Extensions.Logging.ILogger{FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService})
+  id: '#ctor(Microsoft.Extensions.Options.IOptions{FoundationaLLM.Common.Models.Configuration.CosmosDB.AzureCosmosDBSettings},Microsoft.Extensions.Logging.ILogger{FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService})'
+  parent: FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService
+  langs:
+  - csharp
+  - vb
+  name: AzureCosmosDBDataPipelineService(IOptions<AzureCosmosDBSettings>, ILogger<AzureCosmosDBDataPipelineService>)
+  nameWithType: AzureCosmosDBDataPipelineService.AzureCosmosDBDataPipelineService(IOptions<AzureCosmosDBSettings>, ILogger<AzureCosmosDBDataPipelineService>)
+  fullName: FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService.AzureCosmosDBDataPipelineService(Microsoft.Extensions.Options.IOptions<FoundationaLLM.Common.Models.Configuration.CosmosDB.AzureCosmosDBSettings>, Microsoft.Extensions.Logging.ILogger<FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService>)
+  type: Constructor
+  source:
+    remote:
+      path: src/dotnet/DataPipelineEngine/Services/CosmosDB/AzureCosmosDBDataPipelineService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: .ctor
+    path: ../src/dotnet/DataPipelineEngine/Services/CosmosDB/AzureCosmosDBDataPipelineService.cs
+    startLine: 41
+  assemblies:
+  - FoundationaLLM.DataPipelineEngine
+  namespace: FoundationaLLM.DataPipelineEngine.Services.CosmosDB
+  summary: Initializes a new instance of the <xref href="FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService" data-throw-if-not-resolved="false"></xref> class.
+  example: []
+  syntax:
+    content: public AzureCosmosDBDataPipelineService(IOptions<AzureCosmosDBSettings> options, ILogger<AzureCosmosDBDataPipelineService> logger)
+    parameters:
+    - id: options
+      type: Microsoft.Extensions.Options.IOptions{FoundationaLLM.Common.Models.Configuration.CosmosDB.AzureCosmosDBSettings}
+      description: The IOptions providing the <xref href="FoundationaLLM.Common.Models.Configuration.CosmosDB.AzureCosmosDBSettings" data-throw-if-not-resolved="false"></xref>) with the Azure Cosmos DB settings.
+    - id: logger
+      type: Microsoft.Extensions.Logging.ILogger{FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService}
+      description: The <xref href="Microsoft.Extensions.Logging.ILogger" data-throw-if-not-resolved="false"></xref> used for logging.
+    content.vb: Public Sub New(options As IOptions(Of AzureCosmosDBSettings), logger As ILogger(Of AzureCosmosDBDataPipelineService))
+  overload: FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService.#ctor*
+  nameWithType.vb: AzureCosmosDBDataPipelineService.New(IOptions(Of AzureCosmosDBSettings), ILogger(Of AzureCosmosDBDataPipelineService))
+  fullName.vb: FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService.New(Microsoft.Extensions.Options.IOptions(Of FoundationaLLM.Common.Models.Configuration.CosmosDB.AzureCosmosDBSettings), Microsoft.Extensions.Logging.ILogger(Of FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService))
+  name.vb: New(IOptions(Of AzureCosmosDBSettings), ILogger(Of AzureCosmosDBDataPipelineService))
+- uid: FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService.UpsertItemAsync``1(System.String,``0,System.Threading.CancellationToken)
+  commentId: M:FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService.UpsertItemAsync``1(System.String,``0,System.Threading.CancellationToken)
+  id: UpsertItemAsync``1(System.String,``0,System.Threading.CancellationToken)
+  parent: FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService
+  langs:
+  - csharp
+  - vb
+  name: UpsertItemAsync<T>(string, T, CancellationToken)
+  nameWithType: AzureCosmosDBDataPipelineService.UpsertItemAsync<T>(string, T, CancellationToken)
+  fullName: FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService.UpsertItemAsync<T>(string, T, System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/DataPipelineEngine/Services/CosmosDB/AzureCosmosDBDataPipelineService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: UpsertItemAsync
+    path: ../src/dotnet/DataPipelineEngine/Services/CosmosDB/AzureCosmosDBDataPipelineService.cs
+    startLine: 100
+  assemblies:
+  - FoundationaLLM.DataPipelineEngine
+  namespace: FoundationaLLM.DataPipelineEngine.Services.CosmosDB
+  summary: Upserts an item in Azure Cosmos DB.
+  example: []
+  syntax:
+    content: public Task<T> UpsertItemAsync<T>(string partitionKey, T item, CancellationToken cancellationToken = default)
+    parameters:
+    - id: partitionKey
+      type: System.String
+      description: The partition of the item to upsert.
+    - id: item
+      type: '{T}'
+      description: The item to upsert.
+    - id: cancellationToken
+      type: System.Threading.CancellationToken
+      description: The cancellation token used to signal a cancellation request.
+    typeParameters:
+    - id: T
+      description: The type of the item to upsert.
+    return:
+      type: System.Threading.Tasks.Task{{T}}
+      description: The upserted item.
+    content.vb: Public Function UpsertItemAsync(Of T)(partitionKey As String, item As T, cancellationToken As CancellationToken = Nothing) As Task(Of T)
+  overload: FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService.UpsertItemAsync*
+  implements:
+  - FoundationaLLM.DataPipelineEngine.Interfaces.IAzureCosmosDBDataPipelineService.UpsertItemAsync``1(System.String,{T},System.Threading.CancellationToken)
+  nameWithType.vb: AzureCosmosDBDataPipelineService.UpsertItemAsync(Of T)(String, T, CancellationToken)
+  fullName.vb: FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService.UpsertItemAsync(Of T)(String, T, System.Threading.CancellationToken)
+  name.vb: UpsertItemAsync(Of T)(String, T, CancellationToken)
+- uid: FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService.PatchItemPropertiesAsync``1(System.String,System.String,System.Collections.Generic.Dictionary{System.String,System.Object},System.Threading.CancellationToken)
+  commentId: M:FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService.PatchItemPropertiesAsync``1(System.String,System.String,System.Collections.Generic.Dictionary{System.String,System.Object},System.Threading.CancellationToken)
+  id: PatchItemPropertiesAsync``1(System.String,System.String,System.Collections.Generic.Dictionary{System.String,System.Object},System.Threading.CancellationToken)
+  parent: FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService
+  langs:
+  - csharp
+  - vb
+  name: PatchItemPropertiesAsync<T>(string, string, Dictionary<string, object?>, CancellationToken)
+  nameWithType: AzureCosmosDBDataPipelineService.PatchItemPropertiesAsync<T>(string, string, Dictionary<string, object?>, CancellationToken)
+  fullName: FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService.PatchItemPropertiesAsync<T>(string, string, System.Collections.Generic.Dictionary<string, object?>, System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/DataPipelineEngine/Services/CosmosDB/AzureCosmosDBDataPipelineService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: PatchItemPropertiesAsync
+    path: ../src/dotnet/DataPipelineEngine/Services/CosmosDB/AzureCosmosDBDataPipelineService.cs
+    startLine: 115
+  assemblies:
+  - FoundationaLLM.DataPipelineEngine
+  namespace: FoundationaLLM.DataPipelineEngine.Services.CosmosDB
+  summary: Patches the specified properties of an item in Azure Cosmos DB.
+  example: []
+  syntax:
+    content: public Task<T> PatchItemPropertiesAsync<T>(string partitionKey, string id, Dictionary<string, object?> propertyValues, CancellationToken cancellationToken = default)
+    parameters:
+    - id: partitionKey
+      type: System.String
+      description: The partition key of the item.
+    - id: id
+      type: System.String
+      description: The identifier of the item.
+    - id: propertyValues
+      type: System.Collections.Generic.Dictionary{System.String,System.Object}
+      description: Dictionary of the property names and values to patch.
+    - id: cancellationToken
+      type: System.Threading.CancellationToken
+      description: Cancellation token for async calls.
+    typeParameters:
+    - id: T
+      description: The type of the item to patch.
+    return:
+      type: System.Threading.Tasks.Task{{T}}
+      description: The patched object of type <typeparam name="T"></typeparam>.
+    content.vb: Public Function PatchItemPropertiesAsync(Of T)(partitionKey As String, id As String, propertyValues As Dictionary(Of String, Object), cancellationToken As CancellationToken = Nothing) As Task(Of T)
+  overload: FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService.PatchItemPropertiesAsync*
+  implements:
+  - FoundationaLLM.DataPipelineEngine.Interfaces.IAzureCosmosDBDataPipelineService.PatchItemPropertiesAsync``1(System.String,System.String,System.Collections.Generic.Dictionary{System.String,System.Object},System.Threading.CancellationToken)
+  nameWithType.vb: AzureCosmosDBDataPipelineService.PatchItemPropertiesAsync(Of T)(String, String, Dictionary(Of String, Object), CancellationToken)
+  fullName.vb: FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService.PatchItemPropertiesAsync(Of T)(String, String, System.Collections.Generic.Dictionary(Of String, Object), System.Threading.CancellationToken)
+  name.vb: PatchItemPropertiesAsync(Of T)(String, String, Dictionary(Of String, Object), CancellationToken)
+- uid: FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService.RetrieveItemsAsync``1(Microsoft.Azure.Cosmos.QueryDefinition)
+  commentId: M:FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService.RetrieveItemsAsync``1(Microsoft.Azure.Cosmos.QueryDefinition)
+  id: RetrieveItemsAsync``1(Microsoft.Azure.Cosmos.QueryDefinition)
+  parent: FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService
+  langs:
+  - csharp
+  - vb
+  name: RetrieveItemsAsync<T>(QueryDefinition)
+  nameWithType: AzureCosmosDBDataPipelineService.RetrieveItemsAsync<T>(QueryDefinition)
+  fullName: FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService.RetrieveItemsAsync<T>(Microsoft.Azure.Cosmos.QueryDefinition)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/DataPipelineEngine/Services/CosmosDB/AzureCosmosDBDataPipelineService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: RetrieveItemsAsync
+    path: ../src/dotnet/DataPipelineEngine/Services/CosmosDB/AzureCosmosDBDataPipelineService.cs
+    startLine: 133
+  assemblies:
+  - FoundationaLLM.DataPipelineEngine
+  namespace: FoundationaLLM.DataPipelineEngine.Services.CosmosDB
+  summary: Retrieves items from Azure Cosmos DB.
+  example: []
+  syntax:
+    content: public Task<List<T>> RetrieveItemsAsync<T>(QueryDefinition query)
+    parameters:
+    - id: query
+      type: Microsoft.Azure.Cosmos.QueryDefinition
+      description: The query definition used to retrieve the items.
+    typeParameters:
+    - id: T
+      description: The type of the items to retrieve.
+    return:
+      type: System.Threading.Tasks.Task{System.Collections.Generic.List{{T}}}
+      description: The list of retrieved items.
+    content.vb: Public Function RetrieveItemsAsync(Of T)(query As QueryDefinition) As Task(Of List(Of T))
+  overload: FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService.RetrieveItemsAsync*
+  implements:
+  - FoundationaLLM.DataPipelineEngine.Interfaces.IAzureCosmosDBDataPipelineService.RetrieveItemsAsync``1(Microsoft.Azure.Cosmos.QueryDefinition)
+  nameWithType.vb: AzureCosmosDBDataPipelineService.RetrieveItemsAsync(Of T)(QueryDefinition)
+  fullName.vb: FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService.RetrieveItemsAsync(Of T)(Microsoft.Azure.Cosmos.QueryDefinition)
+  name.vb: RetrieveItemsAsync(Of T)(QueryDefinition)
+- uid: FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService.RetrieveItem``1(System.String,System.String)
+  commentId: M:FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService.RetrieveItem``1(System.String,System.String)
+  id: RetrieveItem``1(System.String,System.String)
+  parent: FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService
+  langs:
+  - csharp
+  - vb
+  name: RetrieveItem<T>(string, string)
+  nameWithType: AzureCosmosDBDataPipelineService.RetrieveItem<T>(string, string)
+  fullName: FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService.RetrieveItem<T>(string, string)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/DataPipelineEngine/Services/CosmosDB/AzureCosmosDBDataPipelineService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: RetrieveItem
+    path: ../src/dotnet/DataPipelineEngine/Services/CosmosDB/AzureCosmosDBDataPipelineService.cs
+    startLine: 149
+  assemblies:
+  - FoundationaLLM.DataPipelineEngine
+  namespace: FoundationaLLM.DataPipelineEngine.Services.CosmosDB
+  summary: Retrieves an item from Azure Cosmos DB.
+  example: []
+  syntax:
+    content: public Task<T> RetrieveItem<T>(string id, string partitionKey)
+    parameters:
+    - id: id
+      type: System.String
+      description: The identifier of the item.
+    - id: partitionKey
+      type: System.String
+      description: The partition key of the item.
+    typeParameters:
+    - id: T
+      description: The type of the item to retrieve.
+    return:
+      type: System.Threading.Tasks.Task{{T}}
+      description: ''
+    content.vb: Public Function RetrieveItem(Of T)(id As String, partitionKey As String) As Task(Of T)
+  overload: FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService.RetrieveItem*
+  implements:
+  - FoundationaLLM.DataPipelineEngine.Interfaces.IAzureCosmosDBDataPipelineService.RetrieveItem``1(System.String,System.String)
+  nameWithType.vb: AzureCosmosDBDataPipelineService.RetrieveItem(Of T)(String, String)
+  fullName.vb: FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService.RetrieveItem(Of T)(String, String)
+  name.vb: RetrieveItem(Of T)(String, String)
+- uid: FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService.UpsertDataPipelineRunBatchAsync(System.Object[])
+  commentId: M:FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService.UpsertDataPipelineRunBatchAsync(System.Object[])
+  id: UpsertDataPipelineRunBatchAsync(System.Object[])
+  parent: FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService
+  langs:
+  - csharp
+  - vb
+  name: UpsertDataPipelineRunBatchAsync(params dynamic[])
+  nameWithType: AzureCosmosDBDataPipelineService.UpsertDataPipelineRunBatchAsync(params dynamic[])
+  fullName: FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService.UpsertDataPipelineRunBatchAsync(params dynamic[])
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/DataPipelineEngine/Services/CosmosDB/AzureCosmosDBDataPipelineService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: UpsertDataPipelineRunBatchAsync
+    path: ../src/dotnet/DataPipelineEngine/Services/CosmosDB/AzureCosmosDBDataPipelineService.cs
+    startLine: 157
+  assemblies:
+  - FoundationaLLM.DataPipelineEngine
+  namespace: FoundationaLLM.DataPipelineEngine.Services.CosmosDB
+  summary: Batch create or update data pipeline run items.
+  example: []
+  syntax:
+    content: public Task<bool> UpsertDataPipelineRunBatchAsync(params dynamic[] dataPipelineRunItems)
+    parameters:
+    - id: dataPipelineRunItems
+      type: dynamic[]
+      description: Data pipeline run items to create or replace.
+    return:
+      type: System.Threading.Tasks.Task{System.Boolean}
+      description: <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if the batch is successfully processed.
+    content.vb: Public Function UpsertDataPipelineRunBatchAsync(ParamArray dataPipelineRunItems As Object()) As Task(Of Boolean)
+  overload: FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService.UpsertDataPipelineRunBatchAsync*
+  implements:
+  - FoundationaLLM.DataPipelineEngine.Interfaces.IAzureCosmosDBDataPipelineService.UpsertDataPipelineRunBatchAsync(System.Object[])
+  nameWithType.vb: AzureCosmosDBDataPipelineService.UpsertDataPipelineRunBatchAsync(ParamArray Object())
+  fullName.vb: FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService.UpsertDataPipelineRunBatchAsync(ParamArray Object())
+  name.vb: UpsertDataPipelineRunBatchAsync(ParamArray Object())
+- uid: FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService.PatchDataPipelineRunWorkItemsStatusAsync(System.Collections.Generic.List{FoundationaLLM.Common.Models.DataPipelines.DataPipelineRunWorkItem})
+  commentId: M:FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService.PatchDataPipelineRunWorkItemsStatusAsync(System.Collections.Generic.List{FoundationaLLM.Common.Models.DataPipelines.DataPipelineRunWorkItem})
+  id: PatchDataPipelineRunWorkItemsStatusAsync(System.Collections.Generic.List{FoundationaLLM.Common.Models.DataPipelines.DataPipelineRunWorkItem})
+  parent: FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService
+  langs:
+  - csharp
+  - vb
+  name: PatchDataPipelineRunWorkItemsStatusAsync(List<DataPipelineRunWorkItem>)
+  nameWithType: AzureCosmosDBDataPipelineService.PatchDataPipelineRunWorkItemsStatusAsync(List<DataPipelineRunWorkItem>)
+  fullName: FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService.PatchDataPipelineRunWorkItemsStatusAsync(System.Collections.Generic.List<FoundationaLLM.Common.Models.DataPipelines.DataPipelineRunWorkItem>)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/DataPipelineEngine/Services/CosmosDB/AzureCosmosDBDataPipelineService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: PatchDataPipelineRunWorkItemsStatusAsync
+    path: ../src/dotnet/DataPipelineEngine/Services/CosmosDB/AzureCosmosDBDataPipelineService.cs
+    startLine: 195
+  assemblies:
+  - FoundationaLLM.DataPipelineEngine
+  namespace: FoundationaLLM.DataPipelineEngine.Services.CosmosDB
+  summary: Patches the status of data pipeline run work items in Azure Cosmos DB.
+  example: []
+  syntax:
+    content: public Task<bool> PatchDataPipelineRunWorkItemsStatusAsync(List<DataPipelineRunWorkItem> workItems)
+    parameters:
+    - id: workItems
+      type: System.Collections.Generic.List{FoundationaLLM.Common.Models.DataPipelines.DataPipelineRunWorkItem}
+      description: The list of data pipeline work items that need the status update.
+    return:
+      type: System.Threading.Tasks.Task{System.Boolean}
+      description: <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if the batch is successfully processed.
+    content.vb: Public Function PatchDataPipelineRunWorkItemsStatusAsync(workItems As List(Of DataPipelineRunWorkItem)) As Task(Of Boolean)
+  overload: FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService.PatchDataPipelineRunWorkItemsStatusAsync*
+  implements:
+  - FoundationaLLM.DataPipelineEngine.Interfaces.IAzureCosmosDBDataPipelineService.PatchDataPipelineRunWorkItemsStatusAsync(System.Collections.Generic.List{FoundationaLLM.Common.Models.DataPipelines.DataPipelineRunWorkItem})
+  nameWithType.vb: AzureCosmosDBDataPipelineService.PatchDataPipelineRunWorkItemsStatusAsync(List(Of DataPipelineRunWorkItem))
+  fullName.vb: FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService.PatchDataPipelineRunWorkItemsStatusAsync(System.Collections.Generic.List(Of FoundationaLLM.Common.Models.DataPipelines.DataPipelineRunWorkItem))
+  name.vb: PatchDataPipelineRunWorkItemsStatusAsync(List(Of DataPipelineRunWorkItem))
+- uid: FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService.GetDataPipelineRuns(FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRunFilter)
+  commentId: M:FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService.GetDataPipelineRuns(FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRunFilter)
+  id: GetDataPipelineRuns(FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRunFilter)
+  parent: FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService
+  langs:
+  - csharp
+  - vb
+  name: GetDataPipelineRuns(DataPipelineRunFilter)
+  nameWithType: AzureCosmosDBDataPipelineService.GetDataPipelineRuns(DataPipelineRunFilter)
+  fullName: FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService.GetDataPipelineRuns(FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRunFilter)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/DataPipelineEngine/Services/CosmosDB/AzureCosmosDBDataPipelineService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: GetDataPipelineRuns
+    path: ../src/dotnet/DataPipelineEngine/Services/CosmosDB/AzureCosmosDBDataPipelineService.cs
+    startLine: 220
+  assemblies:
+  - FoundationaLLM.DataPipelineEngine
+  namespace: FoundationaLLM.DataPipelineEngine.Services.CosmosDB
+  summary: Gets a list of data pipeline runs filtered by the provided filter criteria.
+  example: []
+  syntax:
+    content: public Task<DataPipelineRunFilterResponse> GetDataPipelineRuns(DataPipelineRunFilter dataPipelineRunFilter)
+    parameters:
+    - id: dataPipelineRunFilter
+      type: FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRunFilter
+      description: The filter criteria used to filter data pipeline runs.
+    return:
+      type: System.Threading.Tasks.Task{FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRunFilterResponse}
+      description: The list of requests data pipeline runs.
+    content.vb: Public Function GetDataPipelineRuns(dataPipelineRunFilter As DataPipelineRunFilter) As Task(Of DataPipelineRunFilterResponse)
+  overload: FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService.GetDataPipelineRuns*
+  implements:
+  - FoundationaLLM.DataPipelineEngine.Interfaces.IAzureCosmosDBDataPipelineService.GetDataPipelineRuns(FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRunFilter)
+- uid: FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService.GetDataPipelineContentItem(System.String,System.String)
+  commentId: M:FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService.GetDataPipelineContentItem(System.String,System.String)
+  id: GetDataPipelineContentItem(System.String,System.String)
+  parent: FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService
+  langs:
+  - csharp
+  - vb
+  name: GetDataPipelineContentItem(string, string)
+  nameWithType: AzureCosmosDBDataPipelineService.GetDataPipelineContentItem(string, string)
+  fullName: FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService.GetDataPipelineContentItem(string, string)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/DataPipelineEngine/Services/CosmosDB/AzureCosmosDBDataPipelineService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: GetDataPipelineContentItem
+    path: ../src/dotnet/DataPipelineEngine/Services/CosmosDB/AzureCosmosDBDataPipelineService.cs
+    startLine: 297
+  assemblies:
+  - FoundationaLLM.DataPipelineEngine
+  namespace: FoundationaLLM.DataPipelineEngine.Services.CosmosDB
+  summary: Get a data pipeline content item by its canonical identifier.
+  example: []
+  syntax:
+    content: public Task<DataPipelineContentItem> GetDataPipelineContentItem(string dataPipelineRunId, string contentItemCanonicalId)
+    parameters:
+    - id: dataPipelineRunId
+      type: System.String
+      description: Thje data pipeine run identifier.
+    - id: contentItemCanonicalId
+      type: System.String
+      description: The canonical identifier of the content item run.
+    return:
+      type: System.Threading.Tasks.Task{FoundationaLLM.Common.Models.DataPipelines.DataPipelineContentItem}
+      description: ''
+    content.vb: Public Function GetDataPipelineContentItem(dataPipelineRunId As String, contentItemCanonicalId As String) As Task(Of DataPipelineContentItem)
+  overload: FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService.GetDataPipelineContentItem*
+  implements:
+  - FoundationaLLM.DataPipelineEngine.Interfaces.IAzureCosmosDBDataPipelineService.GetDataPipelineContentItem(System.String,System.String)
+  nameWithType.vb: AzureCosmosDBDataPipelineService.GetDataPipelineContentItem(String, String)
+  fullName.vb: FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService.GetDataPipelineContentItem(String, String)
+  name.vb: GetDataPipelineContentItem(String, String)
+- uid: FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService.StartChangeFeedProcessorAsync(System.Func{FoundationaLLM.Common.Models.DataPipelines.DataPipelineRunWorkItem,System.Threading.Tasks.Task})
+  commentId: M:FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService.StartChangeFeedProcessorAsync(System.Func{FoundationaLLM.Common.Models.DataPipelines.DataPipelineRunWorkItem,System.Threading.Tasks.Task})
+  id: StartChangeFeedProcessorAsync(System.Func{FoundationaLLM.Common.Models.DataPipelines.DataPipelineRunWorkItem,System.Threading.Tasks.Task})
+  parent: FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService
+  langs:
+  - csharp
+  - vb
+  name: StartChangeFeedProcessorAsync(Func<DataPipelineRunWorkItem, Task>)
+  nameWithType: AzureCosmosDBDataPipelineService.StartChangeFeedProcessorAsync(Func<DataPipelineRunWorkItem, Task>)
+  fullName: FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService.StartChangeFeedProcessorAsync(System.Func<FoundationaLLM.Common.Models.DataPipelines.DataPipelineRunWorkItem, System.Threading.Tasks.Task>)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/DataPipelineEngine/Services/CosmosDB/AzureCosmosDBDataPipelineService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: StartChangeFeedProcessorAsync
+    path: ../src/dotnet/DataPipelineEngine/Services/CosmosDB/AzureCosmosDBDataPipelineService.cs
+    startLine: 317
+  assemblies:
+  - FoundationaLLM.DataPipelineEngine
+  namespace: FoundationaLLM.DataPipelineEngine.Services.CosmosDB
+  summary: Starts the change feed processor for the data pipeline run work items.
+  example: []
+  syntax:
+    content: public Task<bool> StartChangeFeedProcessorAsync(Func<DataPipelineRunWorkItem, Task> dataPipelineRunWorkItemProcessor)
+    parameters:
+    - id: dataPipelineRunWorkItemProcessor
+      type: System.Func{FoundationaLLM.Common.Models.DataPipelines.DataPipelineRunWorkItem,System.Threading.Tasks.Task}
+      description: The asynchronous delegate that is invoked for each data pipeline run work item.
+    return:
+      type: System.Threading.Tasks.Task{System.Boolean}
+      description: <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if the change feed processor is successfully started.
+    content.vb: Public Function StartChangeFeedProcessorAsync(dataPipelineRunWorkItemProcessor As Func(Of DataPipelineRunWorkItem, Task)) As Task(Of Boolean)
+  overload: FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService.StartChangeFeedProcessorAsync*
+  implements:
+  - FoundationaLLM.DataPipelineEngine.Interfaces.IAzureCosmosDBDataPipelineService.StartChangeFeedProcessorAsync(System.Func{FoundationaLLM.Common.Models.DataPipelines.DataPipelineRunWorkItem,System.Threading.Tasks.Task})
+  nameWithType.vb: AzureCosmosDBDataPipelineService.StartChangeFeedProcessorAsync(Func(Of DataPipelineRunWorkItem, Task))
+  fullName.vb: FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService.StartChangeFeedProcessorAsync(System.Func(Of FoundationaLLM.Common.Models.DataPipelines.DataPipelineRunWorkItem, System.Threading.Tasks.Task))
+  name.vb: StartChangeFeedProcessorAsync(Func(Of DataPipelineRunWorkItem, Task))
+- uid: FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService.StopChangeFeedProcessorAsync
+  commentId: M:FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService.StopChangeFeedProcessorAsync
+  id: StopChangeFeedProcessorAsync
+  parent: FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService
+  langs:
+  - csharp
+  - vb
+  name: StopChangeFeedProcessorAsync()
+  nameWithType: AzureCosmosDBDataPipelineService.StopChangeFeedProcessorAsync()
+  fullName: FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService.StopChangeFeedProcessorAsync()
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/DataPipelineEngine/Services/CosmosDB/AzureCosmosDBDataPipelineService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: StopChangeFeedProcessorAsync
+    path: ../src/dotnet/DataPipelineEngine/Services/CosmosDB/AzureCosmosDBDataPipelineService.cs
+    startLine: 348
+  assemblies:
+  - FoundationaLLM.DataPipelineEngine
+  namespace: FoundationaLLM.DataPipelineEngine.Services.CosmosDB
+  summary: Stops the change feed processor for the data pipeline run work items.
+  example: []
+  syntax:
+    content: public Task StopChangeFeedProcessorAsync()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Public Function StopChangeFeedProcessorAsync() As Task
+  overload: FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService.StopChangeFeedProcessorAsync*
+  implements:
+  - FoundationaLLM.DataPipelineEngine.Interfaces.IAzureCosmosDBDataPipelineService.StopChangeFeedProcessorAsync
+references:
+- uid: FoundationaLLM.DataPipelineEngine.Services.CosmosDB
+  commentId: N:FoundationaLLM.DataPipelineEngine.Services.CosmosDB
+  href: FoundationaLLM.html
+  name: FoundationaLLM.DataPipelineEngine.Services.CosmosDB
+  nameWithType: FoundationaLLM.DataPipelineEngine.Services.CosmosDB
+  fullName: FoundationaLLM.DataPipelineEngine.Services.CosmosDB
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.DataPipelineEngine
+    name: DataPipelineEngine
+    href: FoundationaLLM.DataPipelineEngine.html
+  - name: .
+  - uid: FoundationaLLM.DataPipelineEngine.Services
+    name: Services
+    href: FoundationaLLM.DataPipelineEngine.Services.html
+  - name: .
+  - uid: FoundationaLLM.DataPipelineEngine.Services.CosmosDB
+    name: CosmosDB
+    href: FoundationaLLM.DataPipelineEngine.Services.CosmosDB.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.DataPipelineEngine
+    name: DataPipelineEngine
+    href: FoundationaLLM.DataPipelineEngine.html
+  - name: .
+  - uid: FoundationaLLM.DataPipelineEngine.Services
+    name: Services
+    href: FoundationaLLM.DataPipelineEngine.Services.html
+  - name: .
+  - uid: FoundationaLLM.DataPipelineEngine.Services.CosmosDB
+    name: CosmosDB
+    href: FoundationaLLM.DataPipelineEngine.Services.CosmosDB.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: FoundationaLLM.DataPipelineEngine.Interfaces.IAzureCosmosDBDataPipelineService
+  commentId: T:FoundationaLLM.DataPipelineEngine.Interfaces.IAzureCosmosDBDataPipelineService
+  parent: FoundationaLLM.DataPipelineEngine.Interfaces
+  href: FoundationaLLM.DataPipelineEngine.Interfaces.IAzureCosmosDBDataPipelineService.html
+  name: IAzureCosmosDBDataPipelineService
+  nameWithType: IAzureCosmosDBDataPipelineService
+  fullName: FoundationaLLM.DataPipelineEngine.Interfaces.IAzureCosmosDBDataPipelineService
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  parent: FoundationaLLM.Core.Utils.ObjectExtensions
+  definition: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: FoundationaLLM.DataPipelineEngine.Interfaces
+  commentId: N:FoundationaLLM.DataPipelineEngine.Interfaces
+  href: FoundationaLLM.html
+  name: FoundationaLLM.DataPipelineEngine.Interfaces
+  nameWithType: FoundationaLLM.DataPipelineEngine.Interfaces
+  fullName: FoundationaLLM.DataPipelineEngine.Interfaces
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.DataPipelineEngine
+    name: DataPipelineEngine
+    href: FoundationaLLM.DataPipelineEngine.html
+  - name: .
+  - uid: FoundationaLLM.DataPipelineEngine.Interfaces
+    name: Interfaces
+    href: FoundationaLLM.DataPipelineEngine.Interfaces.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.DataPipelineEngine
+    name: DataPipelineEngine
+    href: FoundationaLLM.DataPipelineEngine.html
+  - name: .
+  - uid: FoundationaLLM.DataPipelineEngine.Interfaces
+    name: Interfaces
+    href: FoundationaLLM.DataPipelineEngine.Interfaces.html
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  isExternal: true
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions
+  commentId: T:FoundationaLLM.Core.Utils.ObjectExtensions
+  parent: FoundationaLLM.Core.Utils
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html
+  name: ObjectExtensions
+  nameWithType: ObjectExtensions
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions
+- uid: FoundationaLLM.Core.Utils
+  commentId: N:FoundationaLLM.Core.Utils
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Core.Utils
+  nameWithType: FoundationaLLM.Core.Utils
+  fullName: FoundationaLLM.Core.Utils
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+- uid: FoundationaLLM.Common.Models.Configuration.CosmosDB.AzureCosmosDBSettings
+  commentId: T:FoundationaLLM.Common.Models.Configuration.CosmosDB.AzureCosmosDBSettings
+  parent: FoundationaLLM.Common.Models.Configuration.CosmosDB
+  href: FoundationaLLM.Common.Models.Configuration.CosmosDB.AzureCosmosDBSettings.html
+  name: AzureCosmosDBSettings
+  nameWithType: AzureCosmosDBSettings
+  fullName: FoundationaLLM.Common.Models.Configuration.CosmosDB.AzureCosmosDBSettings
+- uid: FoundationaLLM.Common.Models.Configuration.CosmosDB
+  commentId: N:FoundationaLLM.Common.Models.Configuration.CosmosDB
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.Configuration.CosmosDB
+  nameWithType: FoundationaLLM.Common.Models.Configuration.CosmosDB
+  fullName: FoundationaLLM.Common.Models.Configuration.CosmosDB
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Configuration
+    name: Configuration
+    href: FoundationaLLM.Common.Models.Configuration.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Configuration.CosmosDB
+    name: CosmosDB
+    href: FoundationaLLM.Common.Models.Configuration.CosmosDB.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Configuration
+    name: Configuration
+    href: FoundationaLLM.Common.Models.Configuration.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Configuration.CosmosDB
+    name: CosmosDB
+    href: FoundationaLLM.Common.Models.Configuration.CosmosDB.html
+- uid: Microsoft.Extensions.Logging.ILogger{FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService}
+  commentId: T:Microsoft.Extensions.Logging.ILogger{FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService}
+  parent: Microsoft.Extensions.Logging
+  definition: Microsoft.Extensions.Logging.ILogger`1
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  name: ILogger<AzureCosmosDBDataPipelineService>
+  nameWithType: ILogger<AzureCosmosDBDataPipelineService>
+  fullName: Microsoft.Extensions.Logging.ILogger<FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService>
+  nameWithType.vb: ILogger(Of AzureCosmosDBDataPipelineService)
+  fullName.vb: Microsoft.Extensions.Logging.ILogger(Of FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService)
+  name.vb: ILogger(Of AzureCosmosDBDataPipelineService)
+  spec.csharp:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: <
+  - uid: FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService
+    name: AzureCosmosDBDataPipelineService
+    href: FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService.html
+  - name: '>'
+  spec.vb:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService
+    name: AzureCosmosDBDataPipelineService
+    href: FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService.html
+  - name: )
+- uid: Microsoft.Extensions.Logging.ILogger`1
+  commentId: T:Microsoft.Extensions.Logging.ILogger`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  name: ILogger<TCategoryName>
+  nameWithType: ILogger<TCategoryName>
+  fullName: Microsoft.Extensions.Logging.ILogger<TCategoryName>
+  nameWithType.vb: ILogger(Of TCategoryName)
+  fullName.vb: Microsoft.Extensions.Logging.ILogger(Of TCategoryName)
+  name.vb: ILogger(Of TCategoryName)
+  spec.csharp:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: <
+  - name: TCategoryName
+  - name: '>'
+  spec.vb:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TCategoryName
+  - name: )
+- uid: Microsoft.Extensions.Logging
+  commentId: N:Microsoft.Extensions.Logging
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft
+  name: Microsoft.Extensions.Logging
+  nameWithType: Microsoft.Extensions.Logging
+  fullName: Microsoft.Extensions.Logging
+  spec.csharp:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Logging
+    name: Logging
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging
+  spec.vb:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Logging
+    name: Logging
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging
+- uid: Microsoft.Azure.Cosmos.CosmosClient
+  commentId: T:Microsoft.Azure.Cosmos.CosmosClient
+  parent: Microsoft.Azure.Cosmos
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.azure.cosmos.cosmosclient
+  name: CosmosClient
+  nameWithType: CosmosClient
+  fullName: Microsoft.Azure.Cosmos.CosmosClient
+- uid: Microsoft.Azure.Cosmos
+  commentId: N:Microsoft.Azure.Cosmos
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft
+  name: Microsoft.Azure.Cosmos
+  nameWithType: Microsoft.Azure.Cosmos
+  fullName: Microsoft.Azure.Cosmos
+  spec.csharp:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Azure
+    name: Azure
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.azure
+  - name: .
+  - uid: Microsoft.Azure.Cosmos
+    name: Cosmos
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.azure.cosmos
+  spec.vb:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Azure
+    name: Azure
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.azure
+  - name: .
+  - uid: Microsoft.Azure.Cosmos
+    name: Cosmos
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.azure.cosmos
+- uid: Microsoft.Azure.Cosmos.Container
+  commentId: T:Microsoft.Azure.Cosmos.Container
+  parent: Microsoft.Azure.Cosmos
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.azure.cosmos.container
+  name: Container
+  nameWithType: Container
+  fullName: Microsoft.Azure.Cosmos.Container
+- uid: FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService
+  commentId: T:FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService
+  href: FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService.html
+  name: AzureCosmosDBDataPipelineService
+  nameWithType: AzureCosmosDBDataPipelineService
+  fullName: FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService
+- uid: Microsoft.Extensions.Logging.ILogger
+  commentId: T:Microsoft.Extensions.Logging.ILogger
+  parent: Microsoft.Extensions.Logging
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger
+  name: ILogger
+  nameWithType: ILogger
+  fullName: Microsoft.Extensions.Logging.ILogger
+- uid: FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService.#ctor*
+  commentId: Overload:FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService.#ctor
+  href: FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService.html#FoundationaLLM_DataPipelineEngine_Services_CosmosDB_AzureCosmosDBDataPipelineService__ctor_Microsoft_Extensions_Options_IOptions_FoundationaLLM_Common_Models_Configuration_CosmosDB_AzureCosmosDBSettings__Microsoft_Extensions_Logging_ILogger_FoundationaLLM_DataPipelineEngine_Services_CosmosDB_AzureCosmosDBDataPipelineService__
+  name: AzureCosmosDBDataPipelineService
+  nameWithType: AzureCosmosDBDataPipelineService.AzureCosmosDBDataPipelineService
+  fullName: FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService.AzureCosmosDBDataPipelineService
+  nameWithType.vb: AzureCosmosDBDataPipelineService.New
+  fullName.vb: FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService.New
+  name.vb: New
+- uid: Microsoft.Extensions.Options.IOptions{FoundationaLLM.Common.Models.Configuration.CosmosDB.AzureCosmosDBSettings}
+  commentId: T:Microsoft.Extensions.Options.IOptions{FoundationaLLM.Common.Models.Configuration.CosmosDB.AzureCosmosDBSettings}
+  parent: Microsoft.Extensions.Options
+  definition: Microsoft.Extensions.Options.IOptions`1
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.options.ioptions-1
+  name: IOptions<AzureCosmosDBSettings>
+  nameWithType: IOptions<AzureCosmosDBSettings>
+  fullName: Microsoft.Extensions.Options.IOptions<FoundationaLLM.Common.Models.Configuration.CosmosDB.AzureCosmosDBSettings>
+  nameWithType.vb: IOptions(Of AzureCosmosDBSettings)
+  fullName.vb: Microsoft.Extensions.Options.IOptions(Of FoundationaLLM.Common.Models.Configuration.CosmosDB.AzureCosmosDBSettings)
+  name.vb: IOptions(Of AzureCosmosDBSettings)
+  spec.csharp:
+  - uid: Microsoft.Extensions.Options.IOptions`1
+    name: IOptions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.options.ioptions-1
+  - name: <
+  - uid: FoundationaLLM.Common.Models.Configuration.CosmosDB.AzureCosmosDBSettings
+    name: AzureCosmosDBSettings
+    href: FoundationaLLM.Common.Models.Configuration.CosmosDB.AzureCosmosDBSettings.html
+  - name: '>'
+  spec.vb:
+  - uid: Microsoft.Extensions.Options.IOptions`1
+    name: IOptions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.options.ioptions-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FoundationaLLM.Common.Models.Configuration.CosmosDB.AzureCosmosDBSettings
+    name: AzureCosmosDBSettings
+    href: FoundationaLLM.Common.Models.Configuration.CosmosDB.AzureCosmosDBSettings.html
+  - name: )
+- uid: Microsoft.Extensions.Options.IOptions`1
+  commentId: T:Microsoft.Extensions.Options.IOptions`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.options.ioptions-1
+  name: IOptions<TOptions>
+  nameWithType: IOptions<TOptions>
+  fullName: Microsoft.Extensions.Options.IOptions<TOptions>
+  nameWithType.vb: IOptions(Of TOptions)
+  fullName.vb: Microsoft.Extensions.Options.IOptions(Of TOptions)
+  name.vb: IOptions(Of TOptions)
+  spec.csharp:
+  - uid: Microsoft.Extensions.Options.IOptions`1
+    name: IOptions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.options.ioptions-1
+  - name: <
+  - name: TOptions
+  - name: '>'
+  spec.vb:
+  - uid: Microsoft.Extensions.Options.IOptions`1
+    name: IOptions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.options.ioptions-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TOptions
+  - name: )
+- uid: Microsoft.Extensions.Options
+  commentId: N:Microsoft.Extensions.Options
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft
+  name: Microsoft.Extensions.Options
+  nameWithType: Microsoft.Extensions.Options
+  fullName: Microsoft.Extensions.Options
+  spec.csharp:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Options
+    name: Options
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.options
+  spec.vb:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Options
+    name: Options
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.options
+- uid: FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService.UpsertItemAsync*
+  commentId: Overload:FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService.UpsertItemAsync
+  href: FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService.html#FoundationaLLM_DataPipelineEngine_Services_CosmosDB_AzureCosmosDBDataPipelineService_UpsertItemAsync__1_System_String___0_System_Threading_CancellationToken_
+  name: UpsertItemAsync
+  nameWithType: AzureCosmosDBDataPipelineService.UpsertItemAsync
+  fullName: FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService.UpsertItemAsync
+- uid: FoundationaLLM.DataPipelineEngine.Interfaces.IAzureCosmosDBDataPipelineService.UpsertItemAsync``1(System.String,{T},System.Threading.CancellationToken)
+  commentId: M:FoundationaLLM.DataPipelineEngine.Interfaces.IAzureCosmosDBDataPipelineService.UpsertItemAsync``1(System.String,``0,System.Threading.CancellationToken)
+  parent: FoundationaLLM.DataPipelineEngine.Interfaces.IAzureCosmosDBDataPipelineService
+  definition: FoundationaLLM.DataPipelineEngine.Interfaces.IAzureCosmosDBDataPipelineService.UpsertItemAsync``1(System.String,``0,System.Threading.CancellationToken)
+  href: FoundationaLLM.DataPipelineEngine.Interfaces.IAzureCosmosDBDataPipelineService.html#FoundationaLLM_DataPipelineEngine_Interfaces_IAzureCosmosDBDataPipelineService_UpsertItemAsync__1_System_String___0_System_Threading_CancellationToken_
+  name: UpsertItemAsync<T>(string, T, CancellationToken)
+  nameWithType: IAzureCosmosDBDataPipelineService.UpsertItemAsync<T>(string, T, CancellationToken)
+  fullName: FoundationaLLM.DataPipelineEngine.Interfaces.IAzureCosmosDBDataPipelineService.UpsertItemAsync<T>(string, T, System.Threading.CancellationToken)
+  nameWithType.vb: IAzureCosmosDBDataPipelineService.UpsertItemAsync(Of T)(String, T, CancellationToken)
+  fullName.vb: FoundationaLLM.DataPipelineEngine.Interfaces.IAzureCosmosDBDataPipelineService.UpsertItemAsync(Of T)(String, T, System.Threading.CancellationToken)
+  name.vb: UpsertItemAsync(Of T)(String, T, CancellationToken)
+  spec.csharp:
+  - uid: FoundationaLLM.DataPipelineEngine.Interfaces.IAzureCosmosDBDataPipelineService.UpsertItemAsync``1(System.String,``0,System.Threading.CancellationToken)
+    name: UpsertItemAsync
+    href: FoundationaLLM.DataPipelineEngine.Interfaces.IAzureCosmosDBDataPipelineService.html#FoundationaLLM_DataPipelineEngine_Interfaces_IAzureCosmosDBDataPipelineService_UpsertItemAsync__1_System_String___0_System_Threading_CancellationToken_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.DataPipelineEngine.Interfaces.IAzureCosmosDBDataPipelineService.UpsertItemAsync``1(System.String,``0,System.Threading.CancellationToken)
+    name: UpsertItemAsync
+    href: FoundationaLLM.DataPipelineEngine.Interfaces.IAzureCosmosDBDataPipelineService.html#FoundationaLLM_DataPipelineEngine_Interfaces_IAzureCosmosDBDataPipelineService_UpsertItemAsync__1_System_String___0_System_Threading_CancellationToken_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: '{T}'
+  commentId: '!:T'
+  definition: T
+  name: T
+  nameWithType: T
+  fullName: T
+- uid: System.Threading.CancellationToken
+  commentId: T:System.Threading.CancellationToken
+  parent: System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  name: CancellationToken
+  nameWithType: CancellationToken
+  fullName: System.Threading.CancellationToken
+- uid: System.Threading.Tasks.Task{{T}}
+  commentId: T:System.Threading.Tasks.Task{``0}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<T>
+  nameWithType: Task<T>
+  fullName: System.Threading.Tasks.Task<T>
+  nameWithType.vb: Task(Of T)
+  fullName.vb: System.Threading.Tasks.Task(Of T)
+  name.vb: Task(Of T)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: FoundationaLLM.DataPipelineEngine.Interfaces.IAzureCosmosDBDataPipelineService.UpsertItemAsync``1(System.String,``0,System.Threading.CancellationToken)
+  commentId: M:FoundationaLLM.DataPipelineEngine.Interfaces.IAzureCosmosDBDataPipelineService.UpsertItemAsync``1(System.String,``0,System.Threading.CancellationToken)
+  isExternal: true
+  href: FoundationaLLM.DataPipelineEngine.Interfaces.IAzureCosmosDBDataPipelineService.html#FoundationaLLM_DataPipelineEngine_Interfaces_IAzureCosmosDBDataPipelineService_UpsertItemAsync__1_System_String___0_System_Threading_CancellationToken_
+  name: UpsertItemAsync<T>(string, T, CancellationToken)
+  nameWithType: IAzureCosmosDBDataPipelineService.UpsertItemAsync<T>(string, T, CancellationToken)
+  fullName: FoundationaLLM.DataPipelineEngine.Interfaces.IAzureCosmosDBDataPipelineService.UpsertItemAsync<T>(string, T, System.Threading.CancellationToken)
+  nameWithType.vb: IAzureCosmosDBDataPipelineService.UpsertItemAsync(Of T)(String, T, CancellationToken)
+  fullName.vb: FoundationaLLM.DataPipelineEngine.Interfaces.IAzureCosmosDBDataPipelineService.UpsertItemAsync(Of T)(String, T, System.Threading.CancellationToken)
+  name.vb: UpsertItemAsync(Of T)(String, T, CancellationToken)
+  spec.csharp:
+  - uid: FoundationaLLM.DataPipelineEngine.Interfaces.IAzureCosmosDBDataPipelineService.UpsertItemAsync``1(System.String,``0,System.Threading.CancellationToken)
+    name: UpsertItemAsync
+    href: FoundationaLLM.DataPipelineEngine.Interfaces.IAzureCosmosDBDataPipelineService.html#FoundationaLLM_DataPipelineEngine_Interfaces_IAzureCosmosDBDataPipelineService_UpsertItemAsync__1_System_String___0_System_Threading_CancellationToken_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.DataPipelineEngine.Interfaces.IAzureCosmosDBDataPipelineService.UpsertItemAsync``1(System.String,``0,System.Threading.CancellationToken)
+    name: UpsertItemAsync
+    href: FoundationaLLM.DataPipelineEngine.Interfaces.IAzureCosmosDBDataPipelineService.html#FoundationaLLM_DataPipelineEngine_Interfaces_IAzureCosmosDBDataPipelineService_UpsertItemAsync__1_System_String___0_System_Threading_CancellationToken_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: T
+  name: T
+  nameWithType: T
+  fullName: T
+- uid: System.Threading
+  commentId: N:System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading
+  nameWithType: System.Threading
+  fullName: System.Threading
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService.PatchItemPropertiesAsync*
+  commentId: Overload:FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService.PatchItemPropertiesAsync
+  href: FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService.html#FoundationaLLM_DataPipelineEngine_Services_CosmosDB_AzureCosmosDBDataPipelineService_PatchItemPropertiesAsync__1_System_String_System_String_System_Collections_Generic_Dictionary_System_String_System_Object__System_Threading_CancellationToken_
+  name: PatchItemPropertiesAsync
+  nameWithType: AzureCosmosDBDataPipelineService.PatchItemPropertiesAsync
+  fullName: FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService.PatchItemPropertiesAsync
+- uid: FoundationaLLM.DataPipelineEngine.Interfaces.IAzureCosmosDBDataPipelineService.PatchItemPropertiesAsync``1(System.String,System.String,System.Collections.Generic.Dictionary{System.String,System.Object},System.Threading.CancellationToken)
+  commentId: M:FoundationaLLM.DataPipelineEngine.Interfaces.IAzureCosmosDBDataPipelineService.PatchItemPropertiesAsync``1(System.String,System.String,System.Collections.Generic.Dictionary{System.String,System.Object},System.Threading.CancellationToken)
+  parent: FoundationaLLM.DataPipelineEngine.Interfaces.IAzureCosmosDBDataPipelineService
+  isExternal: true
+  href: FoundationaLLM.DataPipelineEngine.Interfaces.IAzureCosmosDBDataPipelineService.html#FoundationaLLM_DataPipelineEngine_Interfaces_IAzureCosmosDBDataPipelineService_PatchItemPropertiesAsync__1_System_String_System_String_System_Collections_Generic_Dictionary_System_String_System_Object__System_Threading_CancellationToken_
+  name: PatchItemPropertiesAsync<T>(string, string, Dictionary<string, object>, CancellationToken)
+  nameWithType: IAzureCosmosDBDataPipelineService.PatchItemPropertiesAsync<T>(string, string, Dictionary<string, object>, CancellationToken)
+  fullName: FoundationaLLM.DataPipelineEngine.Interfaces.IAzureCosmosDBDataPipelineService.PatchItemPropertiesAsync<T>(string, string, System.Collections.Generic.Dictionary<string, object>, System.Threading.CancellationToken)
+  nameWithType.vb: IAzureCosmosDBDataPipelineService.PatchItemPropertiesAsync(Of T)(String, String, Dictionary(Of String, Object), CancellationToken)
+  fullName.vb: FoundationaLLM.DataPipelineEngine.Interfaces.IAzureCosmosDBDataPipelineService.PatchItemPropertiesAsync(Of T)(String, String, System.Collections.Generic.Dictionary(Of String, Object), System.Threading.CancellationToken)
+  name.vb: PatchItemPropertiesAsync(Of T)(String, String, Dictionary(Of String, Object), CancellationToken)
+  spec.csharp:
+  - uid: FoundationaLLM.DataPipelineEngine.Interfaces.IAzureCosmosDBDataPipelineService.PatchItemPropertiesAsync``1(System.String,System.String,System.Collections.Generic.Dictionary{System.String,System.Object},System.Threading.CancellationToken)
+    name: PatchItemPropertiesAsync
+    href: FoundationaLLM.DataPipelineEngine.Interfaces.IAzureCosmosDBDataPipelineService.html#FoundationaLLM_DataPipelineEngine_Interfaces_IAzureCosmosDBDataPipelineService_PatchItemPropertiesAsync__1_System_String_System_String_System_Collections_Generic_Dictionary_System_String_System_Object__System_Threading_CancellationToken_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.DataPipelineEngine.Interfaces.IAzureCosmosDBDataPipelineService.PatchItemPropertiesAsync``1(System.String,System.String,System.Collections.Generic.Dictionary{System.String,System.Object},System.Threading.CancellationToken)
+    name: PatchItemPropertiesAsync
+    href: FoundationaLLM.DataPipelineEngine.Interfaces.IAzureCosmosDBDataPipelineService.html#FoundationaLLM_DataPipelineEngine_Interfaces_IAzureCosmosDBDataPipelineService_PatchItemPropertiesAsync__1_System_String_System_String_System_Collections_Generic_Dictionary_System_String_System_Object__System_Threading_CancellationToken_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: System.Collections.Generic.Dictionary{System.String,System.Object}
+  commentId: T:System.Collections.Generic.Dictionary{System.String,System.Object}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.Dictionary`2
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  name: Dictionary<string, object>
+  nameWithType: Dictionary<string, object>
+  fullName: System.Collections.Generic.Dictionary<string, object>
+  nameWithType.vb: Dictionary(Of String, Object)
+  fullName.vb: System.Collections.Generic.Dictionary(Of String, Object)
+  name.vb: Dictionary(Of String, Object)
+  spec.csharp:
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Collections.Generic.Dictionary`2
+  commentId: T:System.Collections.Generic.Dictionary`2
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  name: Dictionary<TKey, TValue>
+  nameWithType: Dictionary<TKey, TValue>
+  fullName: System.Collections.Generic.Dictionary<TKey, TValue>
+  nameWithType.vb: Dictionary(Of TKey, TValue)
+  fullName.vb: System.Collections.Generic.Dictionary(Of TKey, TValue)
+  name.vb: Dictionary(Of TKey, TValue)
+  spec.csharp:
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  - name: <
+  - name: TKey
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TKey
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService.RetrieveItemsAsync*
+  commentId: Overload:FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService.RetrieveItemsAsync
+  href: FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService.html#FoundationaLLM_DataPipelineEngine_Services_CosmosDB_AzureCosmosDBDataPipelineService_RetrieveItemsAsync__1_Microsoft_Azure_Cosmos_QueryDefinition_
+  name: RetrieveItemsAsync
+  nameWithType: AzureCosmosDBDataPipelineService.RetrieveItemsAsync
+  fullName: FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService.RetrieveItemsAsync
+- uid: FoundationaLLM.DataPipelineEngine.Interfaces.IAzureCosmosDBDataPipelineService.RetrieveItemsAsync``1(Microsoft.Azure.Cosmos.QueryDefinition)
+  commentId: M:FoundationaLLM.DataPipelineEngine.Interfaces.IAzureCosmosDBDataPipelineService.RetrieveItemsAsync``1(Microsoft.Azure.Cosmos.QueryDefinition)
+  parent: FoundationaLLM.DataPipelineEngine.Interfaces.IAzureCosmosDBDataPipelineService
+  isExternal: true
+  href: FoundationaLLM.DataPipelineEngine.Interfaces.IAzureCosmosDBDataPipelineService.html#FoundationaLLM_DataPipelineEngine_Interfaces_IAzureCosmosDBDataPipelineService_RetrieveItemsAsync__1_Microsoft_Azure_Cosmos_QueryDefinition_
+  name: RetrieveItemsAsync<T>(QueryDefinition)
+  nameWithType: IAzureCosmosDBDataPipelineService.RetrieveItemsAsync<T>(QueryDefinition)
+  fullName: FoundationaLLM.DataPipelineEngine.Interfaces.IAzureCosmosDBDataPipelineService.RetrieveItemsAsync<T>(Microsoft.Azure.Cosmos.QueryDefinition)
+  nameWithType.vb: IAzureCosmosDBDataPipelineService.RetrieveItemsAsync(Of T)(QueryDefinition)
+  fullName.vb: FoundationaLLM.DataPipelineEngine.Interfaces.IAzureCosmosDBDataPipelineService.RetrieveItemsAsync(Of T)(Microsoft.Azure.Cosmos.QueryDefinition)
+  name.vb: RetrieveItemsAsync(Of T)(QueryDefinition)
+  spec.csharp:
+  - uid: FoundationaLLM.DataPipelineEngine.Interfaces.IAzureCosmosDBDataPipelineService.RetrieveItemsAsync``1(Microsoft.Azure.Cosmos.QueryDefinition)
+    name: RetrieveItemsAsync
+    href: FoundationaLLM.DataPipelineEngine.Interfaces.IAzureCosmosDBDataPipelineService.html#FoundationaLLM_DataPipelineEngine_Interfaces_IAzureCosmosDBDataPipelineService_RetrieveItemsAsync__1_Microsoft_Azure_Cosmos_QueryDefinition_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: Microsoft.Azure.Cosmos.QueryDefinition
+    name: QueryDefinition
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.azure.cosmos.querydefinition
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.DataPipelineEngine.Interfaces.IAzureCosmosDBDataPipelineService.RetrieveItemsAsync``1(Microsoft.Azure.Cosmos.QueryDefinition)
+    name: RetrieveItemsAsync
+    href: FoundationaLLM.DataPipelineEngine.Interfaces.IAzureCosmosDBDataPipelineService.html#FoundationaLLM_DataPipelineEngine_Interfaces_IAzureCosmosDBDataPipelineService_RetrieveItemsAsync__1_Microsoft_Azure_Cosmos_QueryDefinition_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: Microsoft.Azure.Cosmos.QueryDefinition
+    name: QueryDefinition
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.azure.cosmos.querydefinition
+  - name: )
+- uid: Microsoft.Azure.Cosmos.QueryDefinition
+  commentId: T:Microsoft.Azure.Cosmos.QueryDefinition
+  parent: Microsoft.Azure.Cosmos
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.azure.cosmos.querydefinition
+  name: QueryDefinition
+  nameWithType: QueryDefinition
+  fullName: Microsoft.Azure.Cosmos.QueryDefinition
+- uid: System.Threading.Tasks.Task{System.Collections.Generic.List{{T}}}
+  commentId: T:System.Threading.Tasks.Task{System.Collections.Generic.List{``0}}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<List<T>>
+  nameWithType: Task<List<T>>
+  fullName: System.Threading.Tasks.Task<System.Collections.Generic.List<T>>
+  nameWithType.vb: Task(Of List(Of T))
+  fullName.vb: System.Threading.Tasks.Task(Of System.Collections.Generic.List(Of T))
+  name.vb: Task(Of List(Of T))
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - name: T
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: )
+- uid: FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService.RetrieveItem*
+  commentId: Overload:FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService.RetrieveItem
+  href: FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService.html#FoundationaLLM_DataPipelineEngine_Services_CosmosDB_AzureCosmosDBDataPipelineService_RetrieveItem__1_System_String_System_String_
+  name: RetrieveItem
+  nameWithType: AzureCosmosDBDataPipelineService.RetrieveItem
+  fullName: FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService.RetrieveItem
+- uid: FoundationaLLM.DataPipelineEngine.Interfaces.IAzureCosmosDBDataPipelineService.RetrieveItem``1(System.String,System.String)
+  commentId: M:FoundationaLLM.DataPipelineEngine.Interfaces.IAzureCosmosDBDataPipelineService.RetrieveItem``1(System.String,System.String)
+  parent: FoundationaLLM.DataPipelineEngine.Interfaces.IAzureCosmosDBDataPipelineService
+  isExternal: true
+  href: FoundationaLLM.DataPipelineEngine.Interfaces.IAzureCosmosDBDataPipelineService.html#FoundationaLLM_DataPipelineEngine_Interfaces_IAzureCosmosDBDataPipelineService_RetrieveItem__1_System_String_System_String_
+  name: RetrieveItem<T>(string, string)
+  nameWithType: IAzureCosmosDBDataPipelineService.RetrieveItem<T>(string, string)
+  fullName: FoundationaLLM.DataPipelineEngine.Interfaces.IAzureCosmosDBDataPipelineService.RetrieveItem<T>(string, string)
+  nameWithType.vb: IAzureCosmosDBDataPipelineService.RetrieveItem(Of T)(String, String)
+  fullName.vb: FoundationaLLM.DataPipelineEngine.Interfaces.IAzureCosmosDBDataPipelineService.RetrieveItem(Of T)(String, String)
+  name.vb: RetrieveItem(Of T)(String, String)
+  spec.csharp:
+  - uid: FoundationaLLM.DataPipelineEngine.Interfaces.IAzureCosmosDBDataPipelineService.RetrieveItem``1(System.String,System.String)
+    name: RetrieveItem
+    href: FoundationaLLM.DataPipelineEngine.Interfaces.IAzureCosmosDBDataPipelineService.html#FoundationaLLM_DataPipelineEngine_Interfaces_IAzureCosmosDBDataPipelineService_RetrieveItem__1_System_String_System_String_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.DataPipelineEngine.Interfaces.IAzureCosmosDBDataPipelineService.RetrieveItem``1(System.String,System.String)
+    name: RetrieveItem
+    href: FoundationaLLM.DataPipelineEngine.Interfaces.IAzureCosmosDBDataPipelineService.html#FoundationaLLM_DataPipelineEngine_Interfaces_IAzureCosmosDBDataPipelineService_RetrieveItem__1_System_String_System_String_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService.UpsertDataPipelineRunBatchAsync*
+  commentId: Overload:FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService.UpsertDataPipelineRunBatchAsync
+  href: FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService.html#FoundationaLLM_DataPipelineEngine_Services_CosmosDB_AzureCosmosDBDataPipelineService_UpsertDataPipelineRunBatchAsync_System_Object___
+  name: UpsertDataPipelineRunBatchAsync
+  nameWithType: AzureCosmosDBDataPipelineService.UpsertDataPipelineRunBatchAsync
+  fullName: FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService.UpsertDataPipelineRunBatchAsync
+- uid: FoundationaLLM.DataPipelineEngine.Interfaces.IAzureCosmosDBDataPipelineService.UpsertDataPipelineRunBatchAsync(System.Object[])
+  commentId: M:FoundationaLLM.DataPipelineEngine.Interfaces.IAzureCosmosDBDataPipelineService.UpsertDataPipelineRunBatchAsync(System.Object[])
+  parent: FoundationaLLM.DataPipelineEngine.Interfaces.IAzureCosmosDBDataPipelineService
+  isExternal: true
+  href: FoundationaLLM.DataPipelineEngine.Interfaces.IAzureCosmosDBDataPipelineService.html#FoundationaLLM_DataPipelineEngine_Interfaces_IAzureCosmosDBDataPipelineService_UpsertDataPipelineRunBatchAsync_System_Object___
+  name: UpsertDataPipelineRunBatchAsync(params dynamic[])
+  nameWithType: IAzureCosmosDBDataPipelineService.UpsertDataPipelineRunBatchAsync(params dynamic[])
+  fullName: FoundationaLLM.DataPipelineEngine.Interfaces.IAzureCosmosDBDataPipelineService.UpsertDataPipelineRunBatchAsync(params dynamic[])
+  nameWithType.vb: IAzureCosmosDBDataPipelineService.UpsertDataPipelineRunBatchAsync(ParamArray Object())
+  fullName.vb: FoundationaLLM.DataPipelineEngine.Interfaces.IAzureCosmosDBDataPipelineService.UpsertDataPipelineRunBatchAsync(ParamArray Object())
+  name.vb: UpsertDataPipelineRunBatchAsync(ParamArray Object())
+  spec.csharp:
+  - uid: FoundationaLLM.DataPipelineEngine.Interfaces.IAzureCosmosDBDataPipelineService.UpsertDataPipelineRunBatchAsync(System.Object[])
+    name: UpsertDataPipelineRunBatchAsync
+    href: FoundationaLLM.DataPipelineEngine.Interfaces.IAzureCosmosDBDataPipelineService.html#FoundationaLLM_DataPipelineEngine_Interfaces_IAzureCosmosDBDataPipelineService_UpsertDataPipelineRunBatchAsync_System_Object___
+  - name: (
+  - name: params
+  - name: " "
+  - uid: dynamic
+    name: dynamic
+    isExternal: true
+  - name: '['
+  - name: ']'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.DataPipelineEngine.Interfaces.IAzureCosmosDBDataPipelineService.UpsertDataPipelineRunBatchAsync(System.Object[])
+    name: UpsertDataPipelineRunBatchAsync
+    href: FoundationaLLM.DataPipelineEngine.Interfaces.IAzureCosmosDBDataPipelineService.html#FoundationaLLM_DataPipelineEngine_Interfaces_IAzureCosmosDBDataPipelineService_UpsertDataPipelineRunBatchAsync_System_Object___
+  - name: (
+  - name: ParamArray
+  - name: " "
+  - name: Object
+  - name: (
+  - name: )
+  - name: )
+- uid: dynamic[]
+  isExternal: true
+  name: dynamic[]
+  nameWithType: dynamic[]
+  fullName: dynamic[]
+  nameWithType.vb: Object()
+  fullName.vb: Object()
+  name.vb: Object()
+  spec.csharp:
+  - uid: dynamic
+    name: dynamic
+    isExternal: true
+  - name: '['
+  - name: ']'
+  spec.vb:
+  - name: Object
+  - name: (
+  - name: )
+- uid: System.Threading.Tasks.Task{System.Boolean}
+  commentId: T:System.Threading.Tasks.Task{System.Boolean}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<bool>
+  nameWithType: Task<bool>
+  fullName: System.Threading.Tasks.Task<bool>
+  nameWithType.vb: Task(Of Boolean)
+  fullName.vb: System.Threading.Tasks.Task(Of Boolean)
+  name.vb: Task(Of Boolean)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService.PatchDataPipelineRunWorkItemsStatusAsync*
+  commentId: Overload:FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService.PatchDataPipelineRunWorkItemsStatusAsync
+  href: FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService.html#FoundationaLLM_DataPipelineEngine_Services_CosmosDB_AzureCosmosDBDataPipelineService_PatchDataPipelineRunWorkItemsStatusAsync_System_Collections_Generic_List_FoundationaLLM_Common_Models_DataPipelines_DataPipelineRunWorkItem__
+  name: PatchDataPipelineRunWorkItemsStatusAsync
+  nameWithType: AzureCosmosDBDataPipelineService.PatchDataPipelineRunWorkItemsStatusAsync
+  fullName: FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService.PatchDataPipelineRunWorkItemsStatusAsync
+- uid: FoundationaLLM.DataPipelineEngine.Interfaces.IAzureCosmosDBDataPipelineService.PatchDataPipelineRunWorkItemsStatusAsync(System.Collections.Generic.List{FoundationaLLM.Common.Models.DataPipelines.DataPipelineRunWorkItem})
+  commentId: M:FoundationaLLM.DataPipelineEngine.Interfaces.IAzureCosmosDBDataPipelineService.PatchDataPipelineRunWorkItemsStatusAsync(System.Collections.Generic.List{FoundationaLLM.Common.Models.DataPipelines.DataPipelineRunWorkItem})
+  parent: FoundationaLLM.DataPipelineEngine.Interfaces.IAzureCosmosDBDataPipelineService
+  isExternal: true
+  href: FoundationaLLM.DataPipelineEngine.Interfaces.IAzureCosmosDBDataPipelineService.html#FoundationaLLM_DataPipelineEngine_Interfaces_IAzureCosmosDBDataPipelineService_PatchDataPipelineRunWorkItemsStatusAsync_System_Collections_Generic_List_FoundationaLLM_Common_Models_DataPipelines_DataPipelineRunWorkItem__
+  name: PatchDataPipelineRunWorkItemsStatusAsync(List<DataPipelineRunWorkItem>)
+  nameWithType: IAzureCosmosDBDataPipelineService.PatchDataPipelineRunWorkItemsStatusAsync(List<DataPipelineRunWorkItem>)
+  fullName: FoundationaLLM.DataPipelineEngine.Interfaces.IAzureCosmosDBDataPipelineService.PatchDataPipelineRunWorkItemsStatusAsync(System.Collections.Generic.List<FoundationaLLM.Common.Models.DataPipelines.DataPipelineRunWorkItem>)
+  nameWithType.vb: IAzureCosmosDBDataPipelineService.PatchDataPipelineRunWorkItemsStatusAsync(List(Of DataPipelineRunWorkItem))
+  fullName.vb: FoundationaLLM.DataPipelineEngine.Interfaces.IAzureCosmosDBDataPipelineService.PatchDataPipelineRunWorkItemsStatusAsync(System.Collections.Generic.List(Of FoundationaLLM.Common.Models.DataPipelines.DataPipelineRunWorkItem))
+  name.vb: PatchDataPipelineRunWorkItemsStatusAsync(List(Of DataPipelineRunWorkItem))
+  spec.csharp:
+  - uid: FoundationaLLM.DataPipelineEngine.Interfaces.IAzureCosmosDBDataPipelineService.PatchDataPipelineRunWorkItemsStatusAsync(System.Collections.Generic.List{FoundationaLLM.Common.Models.DataPipelines.DataPipelineRunWorkItem})
+    name: PatchDataPipelineRunWorkItemsStatusAsync
+    href: FoundationaLLM.DataPipelineEngine.Interfaces.IAzureCosmosDBDataPipelineService.html#FoundationaLLM_DataPipelineEngine_Interfaces_IAzureCosmosDBDataPipelineService_PatchDataPipelineRunWorkItemsStatusAsync_System_Collections_Generic_List_FoundationaLLM_Common_Models_DataPipelines_DataPipelineRunWorkItem__
+  - name: (
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: FoundationaLLM.Common.Models.DataPipelines.DataPipelineRunWorkItem
+    name: DataPipelineRunWorkItem
+    href: FoundationaLLM.Common.Models.DataPipelines.DataPipelineRunWorkItem.html
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.DataPipelineEngine.Interfaces.IAzureCosmosDBDataPipelineService.PatchDataPipelineRunWorkItemsStatusAsync(System.Collections.Generic.List{FoundationaLLM.Common.Models.DataPipelines.DataPipelineRunWorkItem})
+    name: PatchDataPipelineRunWorkItemsStatusAsync
+    href: FoundationaLLM.DataPipelineEngine.Interfaces.IAzureCosmosDBDataPipelineService.html#FoundationaLLM_DataPipelineEngine_Interfaces_IAzureCosmosDBDataPipelineService_PatchDataPipelineRunWorkItemsStatusAsync_System_Collections_Generic_List_FoundationaLLM_Common_Models_DataPipelines_DataPipelineRunWorkItem__
+  - name: (
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FoundationaLLM.Common.Models.DataPipelines.DataPipelineRunWorkItem
+    name: DataPipelineRunWorkItem
+    href: FoundationaLLM.Common.Models.DataPipelines.DataPipelineRunWorkItem.html
+  - name: )
+  - name: )
+- uid: System.Collections.Generic.List{FoundationaLLM.Common.Models.DataPipelines.DataPipelineRunWorkItem}
+  commentId: T:System.Collections.Generic.List{FoundationaLLM.Common.Models.DataPipelines.DataPipelineRunWorkItem}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.List`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  name: List<DataPipelineRunWorkItem>
+  nameWithType: List<DataPipelineRunWorkItem>
+  fullName: System.Collections.Generic.List<FoundationaLLM.Common.Models.DataPipelines.DataPipelineRunWorkItem>
+  nameWithType.vb: List(Of DataPipelineRunWorkItem)
+  fullName.vb: System.Collections.Generic.List(Of FoundationaLLM.Common.Models.DataPipelines.DataPipelineRunWorkItem)
+  name.vb: List(Of DataPipelineRunWorkItem)
+  spec.csharp:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: FoundationaLLM.Common.Models.DataPipelines.DataPipelineRunWorkItem
+    name: DataPipelineRunWorkItem
+    href: FoundationaLLM.Common.Models.DataPipelines.DataPipelineRunWorkItem.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FoundationaLLM.Common.Models.DataPipelines.DataPipelineRunWorkItem
+    name: DataPipelineRunWorkItem
+    href: FoundationaLLM.Common.Models.DataPipelines.DataPipelineRunWorkItem.html
+  - name: )
+- uid: System.Collections.Generic.List`1
+  commentId: T:System.Collections.Generic.List`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  name: List<T>
+  nameWithType: List<T>
+  fullName: System.Collections.Generic.List<T>
+  nameWithType.vb: List(Of T)
+  fullName.vb: System.Collections.Generic.List(Of T)
+  name.vb: List(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService.GetDataPipelineRuns*
+  commentId: Overload:FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService.GetDataPipelineRuns
+  href: FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService.html#FoundationaLLM_DataPipelineEngine_Services_CosmosDB_AzureCosmosDBDataPipelineService_GetDataPipelineRuns_FoundationaLLM_Common_Models_ResourceProviders_DataPipeline_DataPipelineRunFilter_
+  name: GetDataPipelineRuns
+  nameWithType: AzureCosmosDBDataPipelineService.GetDataPipelineRuns
+  fullName: FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService.GetDataPipelineRuns
+- uid: FoundationaLLM.DataPipelineEngine.Interfaces.IAzureCosmosDBDataPipelineService.GetDataPipelineRuns(FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRunFilter)
+  commentId: M:FoundationaLLM.DataPipelineEngine.Interfaces.IAzureCosmosDBDataPipelineService.GetDataPipelineRuns(FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRunFilter)
+  parent: FoundationaLLM.DataPipelineEngine.Interfaces.IAzureCosmosDBDataPipelineService
+  href: FoundationaLLM.DataPipelineEngine.Interfaces.IAzureCosmosDBDataPipelineService.html#FoundationaLLM_DataPipelineEngine_Interfaces_IAzureCosmosDBDataPipelineService_GetDataPipelineRuns_FoundationaLLM_Common_Models_ResourceProviders_DataPipeline_DataPipelineRunFilter_
+  name: GetDataPipelineRuns(DataPipelineRunFilter)
+  nameWithType: IAzureCosmosDBDataPipelineService.GetDataPipelineRuns(DataPipelineRunFilter)
+  fullName: FoundationaLLM.DataPipelineEngine.Interfaces.IAzureCosmosDBDataPipelineService.GetDataPipelineRuns(FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRunFilter)
+  spec.csharp:
+  - uid: FoundationaLLM.DataPipelineEngine.Interfaces.IAzureCosmosDBDataPipelineService.GetDataPipelineRuns(FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRunFilter)
+    name: GetDataPipelineRuns
+    href: FoundationaLLM.DataPipelineEngine.Interfaces.IAzureCosmosDBDataPipelineService.html#FoundationaLLM_DataPipelineEngine_Interfaces_IAzureCosmosDBDataPipelineService_GetDataPipelineRuns_FoundationaLLM_Common_Models_ResourceProviders_DataPipeline_DataPipelineRunFilter_
+  - name: (
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRunFilter
+    name: DataPipelineRunFilter
+    href: FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRunFilter.html
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.DataPipelineEngine.Interfaces.IAzureCosmosDBDataPipelineService.GetDataPipelineRuns(FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRunFilter)
+    name: GetDataPipelineRuns
+    href: FoundationaLLM.DataPipelineEngine.Interfaces.IAzureCosmosDBDataPipelineService.html#FoundationaLLM_DataPipelineEngine_Interfaces_IAzureCosmosDBDataPipelineService_GetDataPipelineRuns_FoundationaLLM_Common_Models_ResourceProviders_DataPipeline_DataPipelineRunFilter_
+  - name: (
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRunFilter
+    name: DataPipelineRunFilter
+    href: FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRunFilter.html
+  - name: )
+- uid: FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRunFilter
+  commentId: T:FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRunFilter
+  parent: FoundationaLLM.Common.Models.ResourceProviders.DataPipeline
+  href: FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRunFilter.html
+  name: DataPipelineRunFilter
+  nameWithType: DataPipelineRunFilter
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRunFilter
+- uid: System.Threading.Tasks.Task{FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRunFilterResponse}
+  commentId: T:System.Threading.Tasks.Task{FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRunFilterResponse}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<DataPipelineRunFilterResponse>
+  nameWithType: Task<DataPipelineRunFilterResponse>
+  fullName: System.Threading.Tasks.Task<FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRunFilterResponse>
+  nameWithType.vb: Task(Of DataPipelineRunFilterResponse)
+  fullName.vb: System.Threading.Tasks.Task(Of FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRunFilterResponse)
+  name.vb: Task(Of DataPipelineRunFilterResponse)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRunFilterResponse
+    name: DataPipelineRunFilterResponse
+    href: FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRunFilterResponse.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRunFilterResponse
+    name: DataPipelineRunFilterResponse
+    href: FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRunFilterResponse.html
+  - name: )
+- uid: FoundationaLLM.Common.Models.ResourceProviders.DataPipeline
+  commentId: N:FoundationaLLM.Common.Models.ResourceProviders.DataPipeline
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.ResourceProviders.DataPipeline
+  nameWithType: FoundationaLLM.Common.Models.ResourceProviders.DataPipeline
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.DataPipeline
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders
+    name: ResourceProviders
+    href: FoundationaLLM.Common.Models.ResourceProviders.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.DataPipeline
+    name: DataPipeline
+    href: FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders
+    name: ResourceProviders
+    href: FoundationaLLM.Common.Models.ResourceProviders.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.DataPipeline
+    name: DataPipeline
+    href: FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.html
+- uid: FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService.GetDataPipelineContentItem*
+  commentId: Overload:FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService.GetDataPipelineContentItem
+  href: FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService.html#FoundationaLLM_DataPipelineEngine_Services_CosmosDB_AzureCosmosDBDataPipelineService_GetDataPipelineContentItem_System_String_System_String_
+  name: GetDataPipelineContentItem
+  nameWithType: AzureCosmosDBDataPipelineService.GetDataPipelineContentItem
+  fullName: FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService.GetDataPipelineContentItem
+- uid: FoundationaLLM.DataPipelineEngine.Interfaces.IAzureCosmosDBDataPipelineService.GetDataPipelineContentItem(System.String,System.String)
+  commentId: M:FoundationaLLM.DataPipelineEngine.Interfaces.IAzureCosmosDBDataPipelineService.GetDataPipelineContentItem(System.String,System.String)
+  parent: FoundationaLLM.DataPipelineEngine.Interfaces.IAzureCosmosDBDataPipelineService
+  isExternal: true
+  href: FoundationaLLM.DataPipelineEngine.Interfaces.IAzureCosmosDBDataPipelineService.html#FoundationaLLM_DataPipelineEngine_Interfaces_IAzureCosmosDBDataPipelineService_GetDataPipelineContentItem_System_String_System_String_
+  name: GetDataPipelineContentItem(string, string)
+  nameWithType: IAzureCosmosDBDataPipelineService.GetDataPipelineContentItem(string, string)
+  fullName: FoundationaLLM.DataPipelineEngine.Interfaces.IAzureCosmosDBDataPipelineService.GetDataPipelineContentItem(string, string)
+  nameWithType.vb: IAzureCosmosDBDataPipelineService.GetDataPipelineContentItem(String, String)
+  fullName.vb: FoundationaLLM.DataPipelineEngine.Interfaces.IAzureCosmosDBDataPipelineService.GetDataPipelineContentItem(String, String)
+  name.vb: GetDataPipelineContentItem(String, String)
+  spec.csharp:
+  - uid: FoundationaLLM.DataPipelineEngine.Interfaces.IAzureCosmosDBDataPipelineService.GetDataPipelineContentItem(System.String,System.String)
+    name: GetDataPipelineContentItem
+    href: FoundationaLLM.DataPipelineEngine.Interfaces.IAzureCosmosDBDataPipelineService.html#FoundationaLLM_DataPipelineEngine_Interfaces_IAzureCosmosDBDataPipelineService_GetDataPipelineContentItem_System_String_System_String_
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.DataPipelineEngine.Interfaces.IAzureCosmosDBDataPipelineService.GetDataPipelineContentItem(System.String,System.String)
+    name: GetDataPipelineContentItem
+    href: FoundationaLLM.DataPipelineEngine.Interfaces.IAzureCosmosDBDataPipelineService.html#FoundationaLLM_DataPipelineEngine_Interfaces_IAzureCosmosDBDataPipelineService_GetDataPipelineContentItem_System_String_System_String_
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: System.Threading.Tasks.Task{FoundationaLLM.Common.Models.DataPipelines.DataPipelineContentItem}
+  commentId: T:System.Threading.Tasks.Task{FoundationaLLM.Common.Models.DataPipelines.DataPipelineContentItem}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<DataPipelineContentItem>
+  nameWithType: Task<DataPipelineContentItem>
+  fullName: System.Threading.Tasks.Task<FoundationaLLM.Common.Models.DataPipelines.DataPipelineContentItem>
+  nameWithType.vb: Task(Of DataPipelineContentItem)
+  fullName.vb: System.Threading.Tasks.Task(Of FoundationaLLM.Common.Models.DataPipelines.DataPipelineContentItem)
+  name.vb: Task(Of DataPipelineContentItem)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: FoundationaLLM.Common.Models.DataPipelines.DataPipelineContentItem
+    name: DataPipelineContentItem
+    href: FoundationaLLM.Common.Models.DataPipelines.DataPipelineContentItem.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FoundationaLLM.Common.Models.DataPipelines.DataPipelineContentItem
+    name: DataPipelineContentItem
+    href: FoundationaLLM.Common.Models.DataPipelines.DataPipelineContentItem.html
+  - name: )
+- uid: FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService.StartChangeFeedProcessorAsync*
+  commentId: Overload:FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService.StartChangeFeedProcessorAsync
+  href: FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService.html#FoundationaLLM_DataPipelineEngine_Services_CosmosDB_AzureCosmosDBDataPipelineService_StartChangeFeedProcessorAsync_System_Func_FoundationaLLM_Common_Models_DataPipelines_DataPipelineRunWorkItem_System_Threading_Tasks_Task__
+  name: StartChangeFeedProcessorAsync
+  nameWithType: AzureCosmosDBDataPipelineService.StartChangeFeedProcessorAsync
+  fullName: FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService.StartChangeFeedProcessorAsync
+- uid: FoundationaLLM.DataPipelineEngine.Interfaces.IAzureCosmosDBDataPipelineService.StartChangeFeedProcessorAsync(System.Func{FoundationaLLM.Common.Models.DataPipelines.DataPipelineRunWorkItem,System.Threading.Tasks.Task})
+  commentId: M:FoundationaLLM.DataPipelineEngine.Interfaces.IAzureCosmosDBDataPipelineService.StartChangeFeedProcessorAsync(System.Func{FoundationaLLM.Common.Models.DataPipelines.DataPipelineRunWorkItem,System.Threading.Tasks.Task})
+  parent: FoundationaLLM.DataPipelineEngine.Interfaces.IAzureCosmosDBDataPipelineService
+  isExternal: true
+  href: FoundationaLLM.DataPipelineEngine.Interfaces.IAzureCosmosDBDataPipelineService.html#FoundationaLLM_DataPipelineEngine_Interfaces_IAzureCosmosDBDataPipelineService_StartChangeFeedProcessorAsync_System_Func_FoundationaLLM_Common_Models_DataPipelines_DataPipelineRunWorkItem_System_Threading_Tasks_Task__
+  name: StartChangeFeedProcessorAsync(Func<DataPipelineRunWorkItem, Task>)
+  nameWithType: IAzureCosmosDBDataPipelineService.StartChangeFeedProcessorAsync(Func<DataPipelineRunWorkItem, Task>)
+  fullName: FoundationaLLM.DataPipelineEngine.Interfaces.IAzureCosmosDBDataPipelineService.StartChangeFeedProcessorAsync(System.Func<FoundationaLLM.Common.Models.DataPipelines.DataPipelineRunWorkItem, System.Threading.Tasks.Task>)
+  nameWithType.vb: IAzureCosmosDBDataPipelineService.StartChangeFeedProcessorAsync(Func(Of DataPipelineRunWorkItem, Task))
+  fullName.vb: FoundationaLLM.DataPipelineEngine.Interfaces.IAzureCosmosDBDataPipelineService.StartChangeFeedProcessorAsync(System.Func(Of FoundationaLLM.Common.Models.DataPipelines.DataPipelineRunWorkItem, System.Threading.Tasks.Task))
+  name.vb: StartChangeFeedProcessorAsync(Func(Of DataPipelineRunWorkItem, Task))
+  spec.csharp:
+  - uid: FoundationaLLM.DataPipelineEngine.Interfaces.IAzureCosmosDBDataPipelineService.StartChangeFeedProcessorAsync(System.Func{FoundationaLLM.Common.Models.DataPipelines.DataPipelineRunWorkItem,System.Threading.Tasks.Task})
+    name: StartChangeFeedProcessorAsync
+    href: FoundationaLLM.DataPipelineEngine.Interfaces.IAzureCosmosDBDataPipelineService.html#FoundationaLLM_DataPipelineEngine_Interfaces_IAzureCosmosDBDataPipelineService_StartChangeFeedProcessorAsync_System_Func_FoundationaLLM_Common_Models_DataPipelines_DataPipelineRunWorkItem_System_Threading_Tasks_Task__
+  - name: (
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - uid: FoundationaLLM.Common.Models.DataPipelines.DataPipelineRunWorkItem
+    name: DataPipelineRunWorkItem
+    href: FoundationaLLM.Common.Models.DataPipelines.DataPipelineRunWorkItem.html
+  - name: ','
+  - name: " "
+  - uid: System.Threading.Tasks.Task
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.DataPipelineEngine.Interfaces.IAzureCosmosDBDataPipelineService.StartChangeFeedProcessorAsync(System.Func{FoundationaLLM.Common.Models.DataPipelines.DataPipelineRunWorkItem,System.Threading.Tasks.Task})
+    name: StartChangeFeedProcessorAsync
+    href: FoundationaLLM.DataPipelineEngine.Interfaces.IAzureCosmosDBDataPipelineService.html#FoundationaLLM_DataPipelineEngine_Interfaces_IAzureCosmosDBDataPipelineService_StartChangeFeedProcessorAsync_System_Func_FoundationaLLM_Common_Models_DataPipelines_DataPipelineRunWorkItem_System_Threading_Tasks_Task__
+  - name: (
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FoundationaLLM.Common.Models.DataPipelines.DataPipelineRunWorkItem
+    name: DataPipelineRunWorkItem
+    href: FoundationaLLM.Common.Models.DataPipelines.DataPipelineRunWorkItem.html
+  - name: ','
+  - name: " "
+  - uid: System.Threading.Tasks.Task
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  - name: )
+  - name: )
+- uid: System.Func{FoundationaLLM.Common.Models.DataPipelines.DataPipelineRunWorkItem,System.Threading.Tasks.Task}
+  commentId: T:System.Func{FoundationaLLM.Common.Models.DataPipelines.DataPipelineRunWorkItem,System.Threading.Tasks.Task}
+  parent: System
+  definition: System.Func`2
+  href: https://learn.microsoft.com/dotnet/api/system.func-2
+  name: Func<DataPipelineRunWorkItem, Task>
+  nameWithType: Func<DataPipelineRunWorkItem, Task>
+  fullName: System.Func<FoundationaLLM.Common.Models.DataPipelines.DataPipelineRunWorkItem, System.Threading.Tasks.Task>
+  nameWithType.vb: Func(Of DataPipelineRunWorkItem, Task)
+  fullName.vb: System.Func(Of FoundationaLLM.Common.Models.DataPipelines.DataPipelineRunWorkItem, System.Threading.Tasks.Task)
+  name.vb: Func(Of DataPipelineRunWorkItem, Task)
+  spec.csharp:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - uid: FoundationaLLM.Common.Models.DataPipelines.DataPipelineRunWorkItem
+    name: DataPipelineRunWorkItem
+    href: FoundationaLLM.Common.Models.DataPipelines.DataPipelineRunWorkItem.html
+  - name: ','
+  - name: " "
+  - uid: System.Threading.Tasks.Task
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FoundationaLLM.Common.Models.DataPipelines.DataPipelineRunWorkItem
+    name: DataPipelineRunWorkItem
+    href: FoundationaLLM.Common.Models.DataPipelines.DataPipelineRunWorkItem.html
+  - name: ','
+  - name: " "
+  - uid: System.Threading.Tasks.Task
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  - name: )
+- uid: System.Func`2
+  commentId: T:System.Func`2
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.func-2
+  name: Func<T, TResult>
+  nameWithType: Func<T, TResult>
+  fullName: System.Func<T, TResult>
+  nameWithType.vb: Func(Of T, TResult)
+  fullName.vb: System.Func(Of T, TResult)
+  name.vb: Func(Of T, TResult)
+  spec.csharp:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService.StopChangeFeedProcessorAsync*
+  commentId: Overload:FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService.StopChangeFeedProcessorAsync
+  href: FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService.html#FoundationaLLM_DataPipelineEngine_Services_CosmosDB_AzureCosmosDBDataPipelineService_StopChangeFeedProcessorAsync
+  name: StopChangeFeedProcessorAsync
+  nameWithType: AzureCosmosDBDataPipelineService.StopChangeFeedProcessorAsync
+  fullName: FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService.StopChangeFeedProcessorAsync
+- uid: FoundationaLLM.DataPipelineEngine.Interfaces.IAzureCosmosDBDataPipelineService.StopChangeFeedProcessorAsync
+  commentId: M:FoundationaLLM.DataPipelineEngine.Interfaces.IAzureCosmosDBDataPipelineService.StopChangeFeedProcessorAsync
+  parent: FoundationaLLM.DataPipelineEngine.Interfaces.IAzureCosmosDBDataPipelineService
+  href: FoundationaLLM.DataPipelineEngine.Interfaces.IAzureCosmosDBDataPipelineService.html#FoundationaLLM_DataPipelineEngine_Interfaces_IAzureCosmosDBDataPipelineService_StopChangeFeedProcessorAsync
+  name: StopChangeFeedProcessorAsync()
+  nameWithType: IAzureCosmosDBDataPipelineService.StopChangeFeedProcessorAsync()
+  fullName: FoundationaLLM.DataPipelineEngine.Interfaces.IAzureCosmosDBDataPipelineService.StopChangeFeedProcessorAsync()
+  spec.csharp:
+  - uid: FoundationaLLM.DataPipelineEngine.Interfaces.IAzureCosmosDBDataPipelineService.StopChangeFeedProcessorAsync
+    name: StopChangeFeedProcessorAsync
+    href: FoundationaLLM.DataPipelineEngine.Interfaces.IAzureCosmosDBDataPipelineService.html#FoundationaLLM_DataPipelineEngine_Interfaces_IAzureCosmosDBDataPipelineService_StopChangeFeedProcessorAsync
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.DataPipelineEngine.Interfaces.IAzureCosmosDBDataPipelineService.StopChangeFeedProcessorAsync
+    name: StopChangeFeedProcessorAsync
+    href: FoundationaLLM.DataPipelineEngine.Interfaces.IAzureCosmosDBDataPipelineService.html#FoundationaLLM_DataPipelineEngine_Interfaces_IAzureCosmosDBDataPipelineService_StopChangeFeedProcessorAsync
+  - name: (
+  - name: )
+- uid: System.Threading.Tasks.Task
+  commentId: T:System.Threading.Tasks.Task
+  parent: System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  name: Task
+  nameWithType: Task
+  fullName: System.Threading.Tasks.Task

@@ -1,0 +1,63 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Gateway.Interfaces
+  commentId: N:FoundationaLLM.Gateway.Interfaces
+  id: Interfaces
+  parent: FoundationaLLM.Gateway
+  children:
+  - FoundationaLLM.Gateway.Interfaces.IGatewayCore
+  - FoundationaLLM.Gateway.Interfaces.ITextOperationService
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM.Gateway.Interfaces
+  nameWithType: FoundationaLLM.Gateway.Interfaces
+  fullName: FoundationaLLM.Gateway.Interfaces
+  type: Namespace
+  assemblies:
+  - FoundationaLLM.Gateway
+references:
+- uid: FoundationaLLM.Gateway.Interfaces.IGatewayCore
+  commentId: T:FoundationaLLM.Gateway.Interfaces.IGatewayCore
+  parent: FoundationaLLM.Gateway.Interfaces
+  href: FoundationaLLM.Gateway.Interfaces.IGatewayCore.html
+  name: IGatewayCore
+  nameWithType: IGatewayCore
+  fullName: FoundationaLLM.Gateway.Interfaces.IGatewayCore
+- uid: FoundationaLLM.Gateway.Interfaces.ITextOperationService
+  commentId: T:FoundationaLLM.Gateway.Interfaces.ITextOperationService
+  parent: FoundationaLLM.Gateway.Interfaces
+  href: FoundationaLLM.Gateway.Interfaces.ITextOperationService.html
+  name: ITextOperationService
+  nameWithType: ITextOperationService
+  fullName: FoundationaLLM.Gateway.Interfaces.ITextOperationService
+- uid: FoundationaLLM.Gateway.Interfaces
+  commentId: N:FoundationaLLM.Gateway.Interfaces
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Gateway.Interfaces
+  nameWithType: FoundationaLLM.Gateway.Interfaces
+  fullName: FoundationaLLM.Gateway.Interfaces
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Gateway
+    name: Gateway
+    href: FoundationaLLM.Gateway.html
+  - name: .
+  - uid: FoundationaLLM.Gateway.Interfaces
+    name: Interfaces
+    href: FoundationaLLM.Gateway.Interfaces.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Gateway
+    name: Gateway
+    href: FoundationaLLM.Gateway.html
+  - name: .
+  - uid: FoundationaLLM.Gateway.Interfaces
+    name: Interfaces
+    href: FoundationaLLM.Gateway.Interfaces.html

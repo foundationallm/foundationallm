@@ -1,0 +1,95 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Common.Models.ResourceProviders.AIModel
+  commentId: N:FoundationaLLM.Common.Models.ResourceProviders.AIModel
+  id: AIModel
+  parent: FoundationaLLM.Common.Models.ResourceProviders
+  children:
+  - FoundationaLLM.Common.Models.ResourceProviders.AIModel.AIModelBase
+  - FoundationaLLM.Common.Models.ResourceProviders.AIModel.CompletionAIModel
+  - FoundationaLLM.Common.Models.ResourceProviders.AIModel.EmbeddingAIModel
+  - FoundationaLLM.Common.Models.ResourceProviders.AIModel.ImageGenerationAIModel
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM.Common.Models.ResourceProviders.AIModel
+  nameWithType: FoundationaLLM.Common.Models.ResourceProviders.AIModel
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.AIModel
+  type: Namespace
+  assemblies:
+  - FoundationaLLM.Common
+references:
+- uid: FoundationaLLM.Common.Models.ResourceProviders.AIModel.AIModelBase
+  commentId: T:FoundationaLLM.Common.Models.ResourceProviders.AIModel.AIModelBase
+  parent: FoundationaLLM.Common.Models.ResourceProviders.AIModel
+  href: FoundationaLLM.Common.Models.ResourceProviders.AIModel.AIModelBase.html
+  name: AIModelBase
+  nameWithType: AIModelBase
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.AIModel.AIModelBase
+- uid: FoundationaLLM.Common.Models.ResourceProviders.AIModel.CompletionAIModel
+  commentId: T:FoundationaLLM.Common.Models.ResourceProviders.AIModel.CompletionAIModel
+  parent: FoundationaLLM.Common.Models.ResourceProviders.AIModel
+  href: FoundationaLLM.Common.Models.ResourceProviders.AIModel.CompletionAIModel.html
+  name: CompletionAIModel
+  nameWithType: CompletionAIModel
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.AIModel.CompletionAIModel
+- uid: FoundationaLLM.Common.Models.ResourceProviders.AIModel.EmbeddingAIModel
+  commentId: T:FoundationaLLM.Common.Models.ResourceProviders.AIModel.EmbeddingAIModel
+  parent: FoundationaLLM.Common.Models.ResourceProviders.AIModel
+  href: FoundationaLLM.Common.Models.ResourceProviders.AIModel.EmbeddingAIModel.html
+  name: EmbeddingAIModel
+  nameWithType: EmbeddingAIModel
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.AIModel.EmbeddingAIModel
+- uid: FoundationaLLM.Common.Models.ResourceProviders.AIModel.ImageGenerationAIModel
+  commentId: T:FoundationaLLM.Common.Models.ResourceProviders.AIModel.ImageGenerationAIModel
+  parent: FoundationaLLM.Common.Models.ResourceProviders.AIModel
+  href: FoundationaLLM.Common.Models.ResourceProviders.AIModel.ImageGenerationAIModel.html
+  name: ImageGenerationAIModel
+  nameWithType: ImageGenerationAIModel
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.AIModel.ImageGenerationAIModel
+- uid: FoundationaLLM.Common.Models.ResourceProviders.AIModel
+  commentId: N:FoundationaLLM.Common.Models.ResourceProviders.AIModel
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.ResourceProviders.AIModel
+  nameWithType: FoundationaLLM.Common.Models.ResourceProviders.AIModel
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.AIModel
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders
+    name: ResourceProviders
+    href: FoundationaLLM.Common.Models.ResourceProviders.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.AIModel
+    name: AIModel
+    href: FoundationaLLM.Common.Models.ResourceProviders.AIModel.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders
+    name: ResourceProviders
+    href: FoundationaLLM.Common.Models.ResourceProviders.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.AIModel
+    name: AIModel
+    href: FoundationaLLM.Common.Models.ResourceProviders.AIModel.html

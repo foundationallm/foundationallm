@@ -1,0 +1,2524 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest
+  commentId: T:FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest
+  id: VectorizationRequest
+  parent: FoundationaLLM.Common.Models.ResourceProviders.Vectorization
+  children:
+  - FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.#ctor
+  - FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.Complete
+  - FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.CompletedSteps
+  - FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.ContentIdentifier
+  - FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.CurrentStep
+  - FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.ErrorCount
+  - FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.ErrorMessages
+  - FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.ExecutionEnd
+  - FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.ExecutionStart
+  - FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.Expired
+  - FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.GetDate(System.String)
+  - FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.GetDateFromName
+  - FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.Item(System.String)
+  - FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.LastSuccessfulStepTime
+  - FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.MoveToNextStep
+  - FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.PipelineExecutionId
+  - FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.PipelineExecutionStart
+  - FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.PipelineName
+  - FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.PipelineObjectId
+  - FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.ProcessingState
+  - FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.ProcessingType
+  - FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.RemainingSteps
+  - FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.ResourceFilePath
+  - FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.RunningOperations
+  - FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.Steps
+  langs:
+  - csharp
+  - vb
+  name: VectorizationRequest
+  nameWithType: VectorizationRequest
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest
+  type: Class
+  source:
+    remote:
+      path: src/dotnet/Common/Models/ResourceProviders/Vectorization/VectorizationRequest.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: VectorizationRequest
+    path: ../src/dotnet/Common/Models/ResourceProviders/Vectorization/VectorizationRequest.cs
+    startLine: 9
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.ResourceProviders.Vectorization
+  summary: Represents a vectorization request.
+  example: []
+  syntax:
+    content: 'public class VectorizationRequest : ResourceBase'
+    content.vb: Public Class VectorizationRequest Inherits ResourceBase
+  inheritance:
+  - System.Object
+  - FoundationaLLM.Common.Models.ResourceProviders.ResourceName
+  - FoundationaLLM.Common.Models.ResourceProviders.ResourceBase
+  inheritedMembers:
+  - FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.ObjectId
+  - FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.ResourcePath
+  - FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.DisplayName
+  - FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.Description
+  - FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.CostCenter
+  - FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.Properties
+  - FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.CreatedOn
+  - FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.UpdatedOn
+  - FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.CreatedBy
+  - FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.UpdatedBy
+  - FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.Deleted
+  - FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.ExpirationDate
+  - FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.InheritableAuthorizableActions
+  - FoundationaLLM.Common.Models.ResourceProviders.ResourceName.Type
+  - FoundationaLLM.Common.Models.ResourceProviders.ResourceName.Name
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+  extensionMethods:
+  - System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.ResourceFilePath
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.ResourceFilePath
+  id: ResourceFilePath
+  parent: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest
+  langs:
+  - csharp
+  - vb
+  name: ResourceFilePath
+  nameWithType: VectorizationRequest.ResourceFilePath
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.ResourceFilePath
+  type: Property
+  source:
+    remote:
+      path: src/dotnet/Common/Models/ResourceProviders/Vectorization/VectorizationRequest.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: ResourceFilePath
+    path: ../src/dotnet/Common/Models/ResourceProviders/Vectorization/VectorizationRequest.cs
+    startLine: 14
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.ResourceProviders.Vectorization
+  summary: Path to the vectorization request resource file.
+  example: []
+  syntax:
+    content: >-
+      [JsonPropertyOrder(1)]
+
+      [JsonPropertyName("resource_filepath")]
+
+      public string? ResourceFilePath { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: >-
+      <JsonPropertyOrder(1)>
+
+      <JsonPropertyName("resource_filepath")>
+
+      Public Property ResourceFilePath As String
+  overload: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.ResourceFilePath*
+  attributes:
+  - type: System.Text.Json.Serialization.JsonPropertyOrderAttribute
+    ctor: System.Text.Json.Serialization.JsonPropertyOrderAttribute.#ctor(System.Int32)
+    arguments:
+    - type: System.Int32
+      value: 1
+  - type: System.Text.Json.Serialization.JsonPropertyNameAttribute
+    ctor: System.Text.Json.Serialization.JsonPropertyNameAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: resource_filepath
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.ContentIdentifier
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.ContentIdentifier
+  id: ContentIdentifier
+  parent: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest
+  langs:
+  - csharp
+  - vb
+  name: ContentIdentifier
+  nameWithType: VectorizationRequest.ContentIdentifier
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.ContentIdentifier
+  type: Property
+  source:
+    remote:
+      path: src/dotnet/Common/Models/ResourceProviders/Vectorization/VectorizationRequest.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: ContentIdentifier
+    path: ../src/dotnet/Common/Models/ResourceProviders/Vectorization/VectorizationRequest.cs
+    startLine: 21
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.ResourceProviders.Vectorization
+  summary: The <xref href="FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.ContentIdentifier" data-throw-if-not-resolved="false"></xref> object identifying the content being vectorized.
+  example: []
+  syntax:
+    content: >-
+      [JsonPropertyOrder(2)]
+
+      [JsonPropertyName("content_identifier")]
+
+      public required ContentIdentifier ContentIdentifier { get; set; }
+    parameters: []
+    return:
+      type: FoundationaLLM.Common.Models.Vectorization.ContentIdentifier
+    content.vb: >-
+      <JsonPropertyOrder(2)>
+
+      <JsonPropertyName("content_identifier")>
+
+      Public Property ContentIdentifier As ContentIdentifier
+  overload: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.ContentIdentifier*
+  attributes:
+  - type: System.Text.Json.Serialization.JsonPropertyOrderAttribute
+    ctor: System.Text.Json.Serialization.JsonPropertyOrderAttribute.#ctor(System.Int32)
+    arguments:
+    - type: System.Int32
+      value: 2
+  - type: System.Text.Json.Serialization.JsonPropertyNameAttribute
+    ctor: System.Text.Json.Serialization.JsonPropertyNameAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: content_identifier
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.ProcessingType
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.ProcessingType
+  id: ProcessingType
+  parent: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest
+  langs:
+  - csharp
+  - vb
+  name: ProcessingType
+  nameWithType: VectorizationRequest.ProcessingType
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.ProcessingType
+  type: Property
+  source:
+    remote:
+      path: src/dotnet/Common/Models/ResourceProviders/Vectorization/VectorizationRequest.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: ProcessingType
+    path: ../src/dotnet/Common/Models/ResourceProviders/Vectorization/VectorizationRequest.cs
+    startLine: 28
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.ResourceProviders.Vectorization
+  summary: The <xref href="FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationProcessingType" data-throw-if-not-resolved="false"></xref> indicating how should the request be processed.
+  example: []
+  syntax:
+    content: >-
+      [JsonPropertyOrder(3)]
+
+      [JsonPropertyName("processing_type")]
+
+      [JsonConverter(typeof(JsonStringEnumConverter))]
+
+      public required VectorizationProcessingType ProcessingType { get; set; }
+    parameters: []
+    return:
+      type: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationProcessingType
+    content.vb: >-
+      <JsonPropertyOrder(3)>
+
+      <JsonPropertyName("processing_type")>
+
+      <JsonConverter(GetType(JsonStringEnumConverter))>
+
+      Public Property ProcessingType As VectorizationProcessingType
+  overload: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.ProcessingType*
+  attributes:
+  - type: System.Text.Json.Serialization.JsonPropertyOrderAttribute
+    ctor: System.Text.Json.Serialization.JsonPropertyOrderAttribute.#ctor(System.Int32)
+    arguments:
+    - type: System.Int32
+      value: 3
+  - type: System.Text.Json.Serialization.JsonPropertyNameAttribute
+    ctor: System.Text.Json.Serialization.JsonPropertyNameAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: processing_type
+  - type: System.Text.Json.Serialization.JsonConverterAttribute
+    ctor: System.Text.Json.Serialization.JsonConverterAttribute.#ctor(System.Type)
+    arguments:
+    - type: System.Type
+      value: System.Text.Json.Serialization.JsonStringEnumConverter
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.PipelineObjectId
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.PipelineObjectId
+  id: PipelineObjectId
+  parent: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest
+  langs:
+  - csharp
+  - vb
+  name: PipelineObjectId
+  nameWithType: VectorizationRequest.PipelineObjectId
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.PipelineObjectId
+  type: Property
+  source:
+    remote:
+      path: src/dotnet/Common/Models/ResourceProviders/Vectorization/VectorizationRequest.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: PipelineObjectId
+    path: ../src/dotnet/Common/Models/ResourceProviders/Vectorization/VectorizationRequest.cs
+    startLine: 36
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.ResourceProviders.Vectorization
+  summary: If run in the context of a pipeline, the object id of the pipeline resource being executed.
+  example: []
+  syntax:
+    content: >-
+      [JsonPropertyOrder(50)]
+
+      [JsonPropertyName("pipeline_object_id")]
+
+      public string? PipelineObjectId { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: >-
+      <JsonPropertyOrder(50)>
+
+      <JsonPropertyName("pipeline_object_id")>
+
+      Public Property PipelineObjectId As String
+  overload: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.PipelineObjectId*
+  attributes:
+  - type: System.Text.Json.Serialization.JsonPropertyOrderAttribute
+    ctor: System.Text.Json.Serialization.JsonPropertyOrderAttribute.#ctor(System.Int32)
+    arguments:
+    - type: System.Int32
+      value: 50
+  - type: System.Text.Json.Serialization.JsonPropertyNameAttribute
+    ctor: System.Text.Json.Serialization.JsonPropertyNameAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: pipeline_object_id
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.PipelineName
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.PipelineName
+  id: PipelineName
+  parent: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest
+  langs:
+  - csharp
+  - vb
+  name: PipelineName
+  nameWithType: VectorizationRequest.PipelineName
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.PipelineName
+  type: Property
+  source:
+    remote:
+      path: src/dotnet/Common/Models/ResourceProviders/Vectorization/VectorizationRequest.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: PipelineName
+    path: ../src/dotnet/Common/Models/ResourceProviders/Vectorization/VectorizationRequest.cs
+    startLine: 43
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.ResourceProviders.Vectorization
+  summary: If run in the context of a pipeline, the name of the pipeline resource being executed.
+  example: []
+  syntax:
+    content: >-
+      [JsonPropertyOrder(51)]
+
+      [JsonPropertyName("pipeline_name")]
+
+      public string? PipelineName { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: >-
+      <JsonPropertyOrder(51)>
+
+      <JsonPropertyName("pipeline_name")>
+
+      Public Property PipelineName As String
+  overload: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.PipelineName*
+  attributes:
+  - type: System.Text.Json.Serialization.JsonPropertyOrderAttribute
+    ctor: System.Text.Json.Serialization.JsonPropertyOrderAttribute.#ctor(System.Int32)
+    arguments:
+    - type: System.Int32
+      value: 51
+  - type: System.Text.Json.Serialization.JsonPropertyNameAttribute
+    ctor: System.Text.Json.Serialization.JsonPropertyNameAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: pipeline_name
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.PipelineExecutionId
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.PipelineExecutionId
+  id: PipelineExecutionId
+  parent: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest
+  langs:
+  - csharp
+  - vb
+  name: PipelineExecutionId
+  nameWithType: VectorizationRequest.PipelineExecutionId
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.PipelineExecutionId
+  type: Property
+  source:
+    remote:
+      path: src/dotnet/Common/Models/ResourceProviders/Vectorization/VectorizationRequest.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: PipelineExecutionId
+    path: ../src/dotnet/Common/Models/ResourceProviders/Vectorization/VectorizationRequest.cs
+    startLine: 50
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.ResourceProviders.Vectorization
+  summary: If run in the context of a pipeline, the unique identifier of the pipeline execution.
+  example: []
+  syntax:
+    content: >-
+      [JsonPropertyOrder(52)]
+
+      [JsonPropertyName("pipeline_execution_id")]
+
+      public string? PipelineExecutionId { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: >-
+      <JsonPropertyOrder(52)>
+
+      <JsonPropertyName("pipeline_execution_id")>
+
+      Public Property PipelineExecutionId As String
+  overload: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.PipelineExecutionId*
+  attributes:
+  - type: System.Text.Json.Serialization.JsonPropertyOrderAttribute
+    ctor: System.Text.Json.Serialization.JsonPropertyOrderAttribute.#ctor(System.Int32)
+    arguments:
+    - type: System.Int32
+      value: 52
+  - type: System.Text.Json.Serialization.JsonPropertyNameAttribute
+    ctor: System.Text.Json.Serialization.JsonPropertyNameAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: pipeline_execution_id
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.PipelineExecutionStart
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.PipelineExecutionStart
+  id: PipelineExecutionStart
+  parent: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest
+  langs:
+  - csharp
+  - vb
+  name: PipelineExecutionStart
+  nameWithType: VectorizationRequest.PipelineExecutionStart
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.PipelineExecutionStart
+  type: Property
+  source:
+    remote:
+      path: src/dotnet/Common/Models/ResourceProviders/Vectorization/VectorizationRequest.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: PipelineExecutionStart
+    path: ../src/dotnet/Common/Models/ResourceProviders/Vectorization/VectorizationRequest.cs
+    startLine: 57
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.ResourceProviders.Vectorization
+  summary: Gets or sets the time when the pipeline execution started.
+  example: []
+  syntax:
+    content: >-
+      [JsonPropertyOrder(53)]
+
+      [JsonPropertyName("pipeline_execution_start")]
+
+      public DateTimeOffset? PipelineExecutionStart { get; set; }
+    parameters: []
+    return:
+      type: System.Nullable{System.DateTimeOffset}
+    content.vb: >-
+      <JsonPropertyOrder(53)>
+
+      <JsonPropertyName("pipeline_execution_start")>
+
+      Public Property PipelineExecutionStart As DateTimeOffset?
+  overload: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.PipelineExecutionStart*
+  attributes:
+  - type: System.Text.Json.Serialization.JsonPropertyOrderAttribute
+    ctor: System.Text.Json.Serialization.JsonPropertyOrderAttribute.#ctor(System.Int32)
+    arguments:
+    - type: System.Int32
+      value: 53
+  - type: System.Text.Json.Serialization.JsonPropertyNameAttribute
+    ctor: System.Text.Json.Serialization.JsonPropertyNameAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: pipeline_execution_start
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.ProcessingState
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.ProcessingState
+  id: ProcessingState
+  parent: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest
+  langs:
+  - csharp
+  - vb
+  name: ProcessingState
+  nameWithType: VectorizationRequest.ProcessingState
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.ProcessingState
+  type: Property
+  source:
+    remote:
+      path: src/dotnet/Common/Models/ResourceProviders/Vectorization/VectorizationRequest.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: ProcessingState
+    path: ../src/dotnet/Common/Models/ResourceProviders/Vectorization/VectorizationRequest.cs
+    startLine: 64
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.ResourceProviders.Vectorization
+  summary: The <xref href="FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationProcessingState" data-throw-if-not-resolved="false"></xref> indicating the current state of the vectorization request.
+  example: []
+  syntax:
+    content: >-
+      [JsonPropertyOrder(100)]
+
+      [JsonPropertyName("processing_state")]
+
+      [JsonConverter(typeof(JsonStringEnumConverter))]
+
+      public VectorizationProcessingState ProcessingState { get; set; }
+    parameters: []
+    return:
+      type: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationProcessingState
+    content.vb: >-
+      <JsonPropertyOrder(100)>
+
+      <JsonPropertyName("processing_state")>
+
+      <JsonConverter(GetType(JsonStringEnumConverter))>
+
+      Public Property ProcessingState As VectorizationProcessingState
+  overload: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.ProcessingState*
+  attributes:
+  - type: System.Text.Json.Serialization.JsonPropertyOrderAttribute
+    ctor: System.Text.Json.Serialization.JsonPropertyOrderAttribute.#ctor(System.Int32)
+    arguments:
+    - type: System.Int32
+      value: 100
+  - type: System.Text.Json.Serialization.JsonPropertyNameAttribute
+    ctor: System.Text.Json.Serialization.JsonPropertyNameAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: processing_state
+  - type: System.Text.Json.Serialization.JsonConverterAttribute
+    ctor: System.Text.Json.Serialization.JsonConverterAttribute.#ctor(System.Type)
+    arguments:
+    - type: System.Type
+      value: System.Text.Json.Serialization.JsonStringEnumConverter
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.ExecutionStart
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.ExecutionStart
+  id: ExecutionStart
+  parent: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest
+  langs:
+  - csharp
+  - vb
+  name: ExecutionStart
+  nameWithType: VectorizationRequest.ExecutionStart
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.ExecutionStart
+  type: Property
+  source:
+    remote:
+      path: src/dotnet/Common/Models/ResourceProviders/Vectorization/VectorizationRequest.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: ExecutionStart
+    path: ../src/dotnet/Common/Models/ResourceProviders/Vectorization/VectorizationRequest.cs
+    startLine: 72
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.ResourceProviders.Vectorization
+  summary: The time when the vectorization request started being processed.
+  example: []
+  syntax:
+    content: >-
+      [JsonPropertyOrder(101)]
+
+      [JsonPropertyName("execution_start")]
+
+      public DateTime? ExecutionStart { get; set; }
+    parameters: []
+    return:
+      type: System.Nullable{System.DateTime}
+    content.vb: >-
+      <JsonPropertyOrder(101)>
+
+      <JsonPropertyName("execution_start")>
+
+      Public Property ExecutionStart As Date?
+  overload: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.ExecutionStart*
+  attributes:
+  - type: System.Text.Json.Serialization.JsonPropertyOrderAttribute
+    ctor: System.Text.Json.Serialization.JsonPropertyOrderAttribute.#ctor(System.Int32)
+    arguments:
+    - type: System.Int32
+      value: 101
+  - type: System.Text.Json.Serialization.JsonPropertyNameAttribute
+    ctor: System.Text.Json.Serialization.JsonPropertyNameAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: execution_start
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.ExecutionEnd
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.ExecutionEnd
+  id: ExecutionEnd
+  parent: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest
+  langs:
+  - csharp
+  - vb
+  name: ExecutionEnd
+  nameWithType: VectorizationRequest.ExecutionEnd
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.ExecutionEnd
+  type: Property
+  source:
+    remote:
+      path: src/dotnet/Common/Models/ResourceProviders/Vectorization/VectorizationRequest.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: ExecutionEnd
+    path: ../src/dotnet/Common/Models/ResourceProviders/Vectorization/VectorizationRequest.cs
+    startLine: 79
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.ResourceProviders.Vectorization
+  summary: The time when the vectorization request finished being processed.
+  example: []
+  syntax:
+    content: >-
+      [JsonPropertyOrder(102)]
+
+      [JsonPropertyName("execution_end")]
+
+      public DateTime? ExecutionEnd { get; set; }
+    parameters: []
+    return:
+      type: System.Nullable{System.DateTime}
+    content.vb: >-
+      <JsonPropertyOrder(102)>
+
+      <JsonPropertyName("execution_end")>
+
+      Public Property ExecutionEnd As Date?
+  overload: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.ExecutionEnd*
+  attributes:
+  - type: System.Text.Json.Serialization.JsonPropertyOrderAttribute
+    ctor: System.Text.Json.Serialization.JsonPropertyOrderAttribute.#ctor(System.Int32)
+    arguments:
+    - type: System.Int32
+      value: 102
+  - type: System.Text.Json.Serialization.JsonPropertyNameAttribute
+    ctor: System.Text.Json.Serialization.JsonPropertyNameAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: execution_end
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.ErrorMessages
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.ErrorMessages
+  id: ErrorMessages
+  parent: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest
+  langs:
+  - csharp
+  - vb
+  name: ErrorMessages
+  nameWithType: VectorizationRequest.ErrorMessages
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.ErrorMessages
+  type: Property
+  source:
+    remote:
+      path: src/dotnet/Common/Models/ResourceProviders/Vectorization/VectorizationRequest.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: ErrorMessages
+    path: ../src/dotnet/Common/Models/ResourceProviders/Vectorization/VectorizationRequest.cs
+    startLine: 86
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.ResourceProviders.Vectorization
+  summary: Error messages that occurred during the processing of the vectorization request.
+  example: []
+  syntax:
+    content: >-
+      [JsonPropertyOrder(103)]
+
+      [JsonPropertyName("error_messages")]
+
+      public List<string> ErrorMessages { get; set; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.List{System.String}
+    content.vb: >-
+      <JsonPropertyOrder(103)>
+
+      <JsonPropertyName("error_messages")>
+
+      Public Property ErrorMessages As List(Of String)
+  overload: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.ErrorMessages*
+  attributes:
+  - type: System.Text.Json.Serialization.JsonPropertyOrderAttribute
+    ctor: System.Text.Json.Serialization.JsonPropertyOrderAttribute.#ctor(System.Int32)
+    arguments:
+    - type: System.Int32
+      value: 103
+  - type: System.Text.Json.Serialization.JsonPropertyNameAttribute
+    ctor: System.Text.Json.Serialization.JsonPropertyNameAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: error_messages
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.Steps
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.Steps
+  id: Steps
+  parent: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest
+  langs:
+  - csharp
+  - vb
+  name: Steps
+  nameWithType: VectorizationRequest.Steps
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.Steps
+  type: Property
+  source:
+    remote:
+      path: src/dotnet/Common/Models/ResourceProviders/Vectorization/VectorizationRequest.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: Steps
+    path: ../src/dotnet/Common/Models/ResourceProviders/Vectorization/VectorizationRequest.cs
+    startLine: 94
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.ResourceProviders.Vectorization
+  summary: >-
+    The list of vectorization steps requested by the vectorization request.
+
+    Vectorization steps are identified by unique names like "extract", "partition", "embed", "index", etc.
+  example: []
+  syntax:
+    content: >-
+      [JsonPropertyOrder(200)]
+
+      [JsonPropertyName("steps")]
+
+      public required List<VectorizationStep> Steps { get; set; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.List{FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationStep}
+    content.vb: >-
+      <JsonPropertyOrder(200)>
+
+      <JsonPropertyName("steps")>
+
+      Public Property Steps As List(Of VectorizationStep)
+  overload: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.Steps*
+  attributes:
+  - type: System.Text.Json.Serialization.JsonPropertyOrderAttribute
+    ctor: System.Text.Json.Serialization.JsonPropertyOrderAttribute.#ctor(System.Int32)
+    arguments:
+    - type: System.Int32
+      value: 200
+  - type: System.Text.Json.Serialization.JsonPropertyNameAttribute
+    ctor: System.Text.Json.Serialization.JsonPropertyNameAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: steps
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.CompletedSteps
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.CompletedSteps
+  id: CompletedSteps
+  parent: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest
+  langs:
+  - csharp
+  - vb
+  name: CompletedSteps
+  nameWithType: VectorizationRequest.CompletedSteps
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.CompletedSteps
+  type: Property
+  source:
+    remote:
+      path: src/dotnet/Common/Models/ResourceProviders/Vectorization/VectorizationRequest.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: CompletedSteps
+    path: ../src/dotnet/Common/Models/ResourceProviders/Vectorization/VectorizationRequest.cs
+    startLine: 101
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.ResourceProviders.Vectorization
+  summary: The ordered list of the names of the vectorization steps that were already completed.
+  example: []
+  syntax:
+    content: >-
+      [JsonPropertyOrder(201)]
+
+      [JsonPropertyName("completed_steps")]
+
+      public List<string> CompletedSteps { get; set; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.List{System.String}
+    content.vb: >-
+      <JsonPropertyOrder(201)>
+
+      <JsonPropertyName("completed_steps")>
+
+      Public Property CompletedSteps As List(Of String)
+  overload: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.CompletedSteps*
+  attributes:
+  - type: System.Text.Json.Serialization.JsonPropertyOrderAttribute
+    ctor: System.Text.Json.Serialization.JsonPropertyOrderAttribute.#ctor(System.Int32)
+    arguments:
+    - type: System.Int32
+      value: 201
+  - type: System.Text.Json.Serialization.JsonPropertyNameAttribute
+    ctor: System.Text.Json.Serialization.JsonPropertyNameAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: completed_steps
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.RemainingSteps
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.RemainingSteps
+  id: RemainingSteps
+  parent: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest
+  langs:
+  - csharp
+  - vb
+  name: RemainingSteps
+  nameWithType: VectorizationRequest.RemainingSteps
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.RemainingSteps
+  type: Property
+  source:
+    remote:
+      path: src/dotnet/Common/Models/ResourceProviders/Vectorization/VectorizationRequest.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: RemainingSteps
+    path: ../src/dotnet/Common/Models/ResourceProviders/Vectorization/VectorizationRequest.cs
+    startLine: 108
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.ResourceProviders.Vectorization
+  summary: The ordered list of the names of the vectorization steps that still need to be executed.
+  example: []
+  syntax:
+    content: >-
+      [JsonPropertyOrder(202)]
+
+      [JsonPropertyName("remaining_steps")]
+
+      public List<string> RemainingSteps { get; set; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.List{System.String}
+    content.vb: >-
+      <JsonPropertyOrder(202)>
+
+      <JsonPropertyName("remaining_steps")>
+
+      Public Property RemainingSteps As List(Of String)
+  overload: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.RemainingSteps*
+  attributes:
+  - type: System.Text.Json.Serialization.JsonPropertyOrderAttribute
+    ctor: System.Text.Json.Serialization.JsonPropertyOrderAttribute.#ctor(System.Int32)
+    arguments:
+    - type: System.Int32
+      value: 202
+  - type: System.Text.Json.Serialization.JsonPropertyNameAttribute
+    ctor: System.Text.Json.Serialization.JsonPropertyNameAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: remaining_steps
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.CurrentStep
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.CurrentStep
+  id: CurrentStep
+  parent: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest
+  langs:
+  - csharp
+  - vb
+  name: CurrentStep
+  nameWithType: VectorizationRequest.CurrentStep
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.CurrentStep
+  type: Property
+  source:
+    remote:
+      path: src/dotnet/Common/Models/ResourceProviders/Vectorization/VectorizationRequest.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: CurrentStep
+    path: ../src/dotnet/Common/Models/ResourceProviders/Vectorization/VectorizationRequest.cs
+    startLine: 115
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.ResourceProviders.Vectorization
+  summary: The current step of the vectorization request.
+  example: []
+  syntax:
+    content: >-
+      [JsonPropertyOrder(203)]
+
+      [JsonPropertyName("current_step")]
+
+      public string? CurrentStep { get; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: >-
+      <JsonPropertyOrder(203)>
+
+      <JsonPropertyName("current_step")>
+
+      Public ReadOnly Property CurrentStep As String
+  overload: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.CurrentStep*
+  attributes:
+  - type: System.Text.Json.Serialization.JsonPropertyOrderAttribute
+    ctor: System.Text.Json.Serialization.JsonPropertyOrderAttribute.#ctor(System.Int32)
+    arguments:
+    - type: System.Int32
+      value: 203
+  - type: System.Text.Json.Serialization.JsonPropertyNameAttribute
+    ctor: System.Text.Json.Serialization.JsonPropertyNameAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: current_step
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.ErrorCount
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.ErrorCount
+  id: ErrorCount
+  parent: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest
+  langs:
+  - csharp
+  - vb
+  name: ErrorCount
+  nameWithType: VectorizationRequest.ErrorCount
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.ErrorCount
+  type: Property
+  source:
+    remote:
+      path: src/dotnet/Common/Models/ResourceProviders/Vectorization/VectorizationRequest.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: ErrorCount
+    path: ../src/dotnet/Common/Models/ResourceProviders/Vectorization/VectorizationRequest.cs
+    startLine: 124
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.ResourceProviders.Vectorization
+  summary: The number of times the processing of the current step resulted in an error.
+  example: []
+  syntax:
+    content: >-
+      [JsonPropertyOrder(204)]
+
+      [JsonPropertyName("error_count")]
+
+      public int ErrorCount { get; set; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: >-
+      <JsonPropertyOrder(204)>
+
+      <JsonPropertyName("error_count")>
+
+      Public Property ErrorCount As Integer
+  overload: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.ErrorCount*
+  attributes:
+  - type: System.Text.Json.Serialization.JsonPropertyOrderAttribute
+    ctor: System.Text.Json.Serialization.JsonPropertyOrderAttribute.#ctor(System.Int32)
+    arguments:
+    - type: System.Int32
+      value: 204
+  - type: System.Text.Json.Serialization.JsonPropertyNameAttribute
+    ctor: System.Text.Json.Serialization.JsonPropertyNameAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: error_count
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.RunningOperations
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.RunningOperations
+  id: RunningOperations
+  parent: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest
+  langs:
+  - csharp
+  - vb
+  name: RunningOperations
+  nameWithType: VectorizationRequest.RunningOperations
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.RunningOperations
+  type: Property
+  source:
+    remote:
+      path: src/dotnet/Common/Models/ResourceProviders/Vectorization/VectorizationRequest.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: RunningOperations
+    path: ../src/dotnet/Common/Models/ResourceProviders/Vectorization/VectorizationRequest.cs
+    startLine: 132
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.ResourceProviders.Vectorization
+  summary: >-
+    A dictionary of running operation identifiers indexed by step name.
+
+    Some steps can be executed via long-running operations that required the persistence of operation identifiers.
+  example: []
+  syntax:
+    content: >-
+      [JsonPropertyOrder(205)]
+
+      [JsonPropertyName("running_operations")]
+
+      public Dictionary<string, VectorizationLongRunningOperation> RunningOperations { get; set; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.Dictionary{System.String,FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationLongRunningOperation}
+    content.vb: >-
+      <JsonPropertyOrder(205)>
+
+      <JsonPropertyName("running_operations")>
+
+      Public Property RunningOperations As Dictionary(Of String, VectorizationLongRunningOperation)
+  overload: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.RunningOperations*
+  attributes:
+  - type: System.Text.Json.Serialization.JsonPropertyOrderAttribute
+    ctor: System.Text.Json.Serialization.JsonPropertyOrderAttribute.#ctor(System.Int32)
+    arguments:
+    - type: System.Int32
+      value: 205
+  - type: System.Text.Json.Serialization.JsonPropertyNameAttribute
+    ctor: System.Text.Json.Serialization.JsonPropertyNameAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: running_operations
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.LastSuccessfulStepTime
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.LastSuccessfulStepTime
+  id: LastSuccessfulStepTime
+  parent: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest
+  langs:
+  - csharp
+  - vb
+  name: LastSuccessfulStepTime
+  nameWithType: VectorizationRequest.LastSuccessfulStepTime
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.LastSuccessfulStepTime
+  type: Property
+  source:
+    remote:
+      path: src/dotnet/Common/Models/ResourceProviders/Vectorization/VectorizationRequest.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: LastSuccessfulStepTime
+    path: ../src/dotnet/Common/Models/ResourceProviders/Vectorization/VectorizationRequest.cs
+    startLine: 139
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.ResourceProviders.Vectorization
+  summary: The time of the last successful processing of a step.
+  example: []
+  syntax:
+    content: >-
+      [JsonPropertyOrder(206)]
+
+      [JsonPropertyName("last_successful_step_time")]
+
+      public DateTime LastSuccessfulStepTime { get; set; }
+    parameters: []
+    return:
+      type: System.DateTime
+    content.vb: >-
+      <JsonPropertyOrder(206)>
+
+      <JsonPropertyName("last_successful_step_time")>
+
+      Public Property LastSuccessfulStepTime As Date
+  overload: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.LastSuccessfulStepTime*
+  attributes:
+  - type: System.Text.Json.Serialization.JsonPropertyOrderAttribute
+    ctor: System.Text.Json.Serialization.JsonPropertyOrderAttribute.#ctor(System.Int32)
+    arguments:
+    - type: System.Int32
+      value: 206
+  - type: System.Text.Json.Serialization.JsonPropertyNameAttribute
+    ctor: System.Text.Json.Serialization.JsonPropertyNameAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: last_successful_step_time
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.Complete
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.Complete
+  id: Complete
+  parent: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest
+  langs:
+  - csharp
+  - vb
+  name: Complete
+  nameWithType: VectorizationRequest.Complete
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.Complete
+  type: Property
+  source:
+    remote:
+      path: src/dotnet/Common/Models/ResourceProviders/Vectorization/VectorizationRequest.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: Complete
+    path: ../src/dotnet/Common/Models/ResourceProviders/Vectorization/VectorizationRequest.cs
+    startLine: 146
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.ResourceProviders.Vectorization
+  summary: Indicates whether the vectorization process is complete or not.
+  example: []
+  syntax:
+    content: >-
+      [JsonIgnore]
+
+      public bool Complete { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: >-
+      <JsonIgnore>
+
+      Public ReadOnly Property Complete As Boolean
+  overload: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.Complete*
+  attributes:
+  - type: System.Text.Json.Serialization.JsonIgnoreAttribute
+    ctor: System.Text.Json.Serialization.JsonIgnoreAttribute.#ctor
+    arguments: []
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.MoveToNextStep
+  commentId: M:FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.MoveToNextStep
+  id: MoveToNextStep
+  parent: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest
+  langs:
+  - csharp
+  - vb
+  name: MoveToNextStep()
+  nameWithType: VectorizationRequest.MoveToNextStep()
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.MoveToNextStep()
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Common/Models/ResourceProviders/Vectorization/VectorizationRequest.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: MoveToNextStep
+    path: ../src/dotnet/Common/Models/ResourceProviders/Vectorization/VectorizationRequest.cs
+    startLine: 155
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.ResourceProviders.Vectorization
+  summary: >-
+    Advances the vectorization pipeline to the next step.
+
+    The newly set current step is used to choose the next request source to which the vectorization request will be added.
+  example: []
+  syntax:
+    content: public (string PreviousStep, string? CurrentStep) MoveToNextStep()
+    return:
+      type: System.ValueTuple{System.String,System.String}
+      description: >-
+        A tuple containing the name of the previous step and the name of the next step to execute if there are steps left to execute or null if the processing
+            of the vectorization request is complete.
+    content.vb: Public Function MoveToNextStep() As (PreviousStep As String, CurrentStep As String)
+  overload: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.MoveToNextStep*
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.Item(System.String)
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.Item(System.String)
+  id: Item(System.String)
+  parent: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest
+  langs:
+  - csharp
+  - vb
+  name: this[string]
+  nameWithType: VectorizationRequest.this[string]
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.this[string]
+  type: Property
+  source:
+    remote:
+      path: src/dotnet/Common/Models/ResourceProviders/Vectorization/VectorizationRequest.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: this[]
+    path: ../src/dotnet/Common/Models/ResourceProviders/Vectorization/VectorizationRequest.cs
+    startLine: 178
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.ResourceProviders.Vectorization
+  summary: Gets the vectorization pipeline step that has a specific identifier.
+  example: []
+  syntax:
+    content: public VectorizationStep? this[string step] { get; }
+    parameters:
+    - id: step
+      type: System.String
+      description: The identifier of the vectorization pipeline step.
+    return:
+      type: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationStep
+      description: An instances of the <xref href="FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationStep" data-throw-if-not-resolved="false"></xref> class with the details required by the step handler.
+    content.vb: Public ReadOnly Default Property this[]([step] As String) As VectorizationStep
+  overload: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.Item*
+  nameWithType.vb: VectorizationRequest.this[](String)
+  fullName.vb: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.this[](String)
+  name.vb: this[](String)
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.Expired
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.Expired
+  id: Expired
+  parent: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest
+  langs:
+  - csharp
+  - vb
+  name: Expired
+  nameWithType: VectorizationRequest.Expired
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.Expired
+  type: Property
+  source:
+    remote:
+      path: src/dotnet/Common/Models/ResourceProviders/Vectorization/VectorizationRequest.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: Expired
+    path: ../src/dotnet/Common/Models/ResourceProviders/Vectorization/VectorizationRequest.cs
+    startLine: 185
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.ResourceProviders.Vectorization
+  summary: >-
+    Identifies whether the request is expired or not.
+
+    Vectorization requests that had no successful step executions in the last 10 days are considered expired.
+  example: []
+  syntax:
+    content: public bool Expired { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public ReadOnly Property Expired As Boolean
+  overload: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.Expired*
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.GetDateFromName
+  commentId: M:FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.GetDateFromName
+  id: GetDateFromName
+  parent: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest
+  langs:
+  - csharp
+  - vb
+  name: GetDateFromName()
+  nameWithType: VectorizationRequest.GetDateFromName()
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.GetDateFromName()
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Common/Models/ResourceProviders/Vectorization/VectorizationRequest.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: GetDateFromName
+    path: ../src/dotnet/Common/Models/ResourceProviders/Vectorization/VectorizationRequest.cs
+    startLine: 192
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.ResourceProviders.Vectorization
+  summary: Gets the date from the name of the vectorization request.
+  example: []
+  syntax:
+    content: public DateOnly GetDateFromName()
+    return:
+      type: System.DateOnly
+      description: The date parsed from the name.
+    content.vb: Public Function GetDateFromName() As DateOnly
+  overload: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.GetDateFromName*
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.#ctor
+  commentId: M:FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.#ctor
+  id: '#ctor'
+  parent: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest
+  langs:
+  - csharp
+  - vb
+  name: VectorizationRequest()
+  nameWithType: VectorizationRequest.VectorizationRequest()
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.VectorizationRequest()
+  type: Constructor
+  source:
+    remote:
+      path: src/dotnet/Common/Models/ResourceProviders/Vectorization/VectorizationRequest.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: .ctor
+    path: ../src/dotnet/Common/Models/ResourceProviders/Vectorization/VectorizationRequest.cs
+    startLine: 197
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.ResourceProviders.Vectorization
+  summary: Set default property values.
+  example: []
+  syntax:
+    content: public VectorizationRequest()
+    content.vb: Public Sub New()
+  overload: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.#ctor*
+  nameWithType.vb: VectorizationRequest.New()
+  fullName.vb: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.New()
+  name.vb: New()
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.GetDate(System.String)
+  commentId: M:FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.GetDate(System.String)
+  id: GetDate(System.String)
+  parent: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest
+  langs:
+  - csharp
+  - vb
+  name: GetDate(string)
+  nameWithType: VectorizationRequest.GetDate(string)
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.GetDate(string)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Common/Models/ResourceProviders/Vectorization/VectorizationRequest.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: GetDate
+    path: ../src/dotnet/Common/Models/ResourceProviders/Vectorization/VectorizationRequest.cs
+    startLine: 208
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.ResourceProviders.Vectorization
+  summary: Gets the date from the name of the vectorization request.
+  remarks: The required format of the vectorization request name is "yyyyMMdd-..." (e.g., "20250502-abc").
+  example: []
+  syntax:
+    content: public static DateOnly GetDate(string vectorizationRequestName)
+    parameters:
+    - id: vectorizationRequestName
+      type: System.String
+      description: The name of the vectorization request.
+    return:
+      type: System.DateOnly
+      description: The date parsed from the name.
+    content.vb: Public Shared Function GetDate(vectorizationRequestName As String) As DateOnly
+  overload: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.GetDate*
+  nameWithType.vb: VectorizationRequest.GetDate(String)
+  fullName.vb: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.GetDate(String)
+  name.vb: GetDate(String)
+references:
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Vectorization
+  commentId: N:FoundationaLLM.Common.Models.ResourceProviders.Vectorization
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.ResourceProviders.Vectorization
+  nameWithType: FoundationaLLM.Common.Models.ResourceProviders.Vectorization
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Vectorization
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders
+    name: ResourceProviders
+    href: FoundationaLLM.Common.Models.ResourceProviders.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.Vectorization
+    name: Vectorization
+    href: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders
+    name: ResourceProviders
+    href: FoundationaLLM.Common.Models.ResourceProviders.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.Vectorization
+    name: Vectorization
+    href: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceName
+  commentId: T:FoundationaLLM.Common.Models.ResourceProviders.ResourceName
+  parent: FoundationaLLM.Common.Models.ResourceProviders
+  href: FoundationaLLM.Common.Models.ResourceProviders.ResourceName.html
+  name: ResourceName
+  nameWithType: ResourceName
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.ResourceName
+- uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase
+  commentId: T:FoundationaLLM.Common.Models.ResourceProviders.ResourceBase
+  parent: FoundationaLLM.Common.Models.ResourceProviders
+  href: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.html
+  name: ResourceBase
+  nameWithType: ResourceBase
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase
+- uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.ObjectId
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.ObjectId
+  parent: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase
+  href: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.html#FoundationaLLM_Common_Models_ResourceProviders_ResourceBase_ObjectId
+  name: ObjectId
+  nameWithType: ResourceBase.ObjectId
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.ObjectId
+- uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.ResourcePath
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.ResourcePath
+  parent: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase
+  href: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.html#FoundationaLLM_Common_Models_ResourceProviders_ResourceBase_ResourcePath
+  name: ResourcePath
+  nameWithType: ResourceBase.ResourcePath
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.ResourcePath
+- uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.DisplayName
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.DisplayName
+  parent: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase
+  href: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.html#FoundationaLLM_Common_Models_ResourceProviders_ResourceBase_DisplayName
+  name: DisplayName
+  nameWithType: ResourceBase.DisplayName
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.DisplayName
+- uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.Description
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.Description
+  parent: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase
+  href: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.html#FoundationaLLM_Common_Models_ResourceProviders_ResourceBase_Description
+  name: Description
+  nameWithType: ResourceBase.Description
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.Description
+- uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.CostCenter
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.CostCenter
+  parent: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase
+  href: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.html#FoundationaLLM_Common_Models_ResourceProviders_ResourceBase_CostCenter
+  name: CostCenter
+  nameWithType: ResourceBase.CostCenter
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.CostCenter
+- uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.Properties
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.Properties
+  parent: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase
+  href: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.html#FoundationaLLM_Common_Models_ResourceProviders_ResourceBase_Properties
+  name: Properties
+  nameWithType: ResourceBase.Properties
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.Properties
+- uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.CreatedOn
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.CreatedOn
+  parent: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase
+  href: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.html#FoundationaLLM_Common_Models_ResourceProviders_ResourceBase_CreatedOn
+  name: CreatedOn
+  nameWithType: ResourceBase.CreatedOn
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.CreatedOn
+- uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.UpdatedOn
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.UpdatedOn
+  parent: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase
+  href: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.html#FoundationaLLM_Common_Models_ResourceProviders_ResourceBase_UpdatedOn
+  name: UpdatedOn
+  nameWithType: ResourceBase.UpdatedOn
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.UpdatedOn
+- uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.CreatedBy
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.CreatedBy
+  parent: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase
+  href: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.html#FoundationaLLM_Common_Models_ResourceProviders_ResourceBase_CreatedBy
+  name: CreatedBy
+  nameWithType: ResourceBase.CreatedBy
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.CreatedBy
+- uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.UpdatedBy
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.UpdatedBy
+  parent: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase
+  href: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.html#FoundationaLLM_Common_Models_ResourceProviders_ResourceBase_UpdatedBy
+  name: UpdatedBy
+  nameWithType: ResourceBase.UpdatedBy
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.UpdatedBy
+- uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.Deleted
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.Deleted
+  parent: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase
+  href: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.html#FoundationaLLM_Common_Models_ResourceProviders_ResourceBase_Deleted
+  name: Deleted
+  nameWithType: ResourceBase.Deleted
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.Deleted
+- uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.ExpirationDate
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.ExpirationDate
+  parent: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase
+  href: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.html#FoundationaLLM_Common_Models_ResourceProviders_ResourceBase_ExpirationDate
+  name: ExpirationDate
+  nameWithType: ResourceBase.ExpirationDate
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.ExpirationDate
+- uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.InheritableAuthorizableActions
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.InheritableAuthorizableActions
+  parent: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase
+  href: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.html#FoundationaLLM_Common_Models_ResourceProviders_ResourceBase_InheritableAuthorizableActions
+  name: InheritableAuthorizableActions
+  nameWithType: ResourceBase.InheritableAuthorizableActions
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.InheritableAuthorizableActions
+- uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceName.Type
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.ResourceName.Type
+  parent: FoundationaLLM.Common.Models.ResourceProviders.ResourceName
+  href: FoundationaLLM.Common.Models.ResourceProviders.ResourceName.html#FoundationaLLM_Common_Models_ResourceProviders_ResourceName_Type
+  name: Type
+  nameWithType: ResourceName.Type
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.ResourceName.Type
+- uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceName.Name
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.ResourceName.Name
+  parent: FoundationaLLM.Common.Models.ResourceProviders.ResourceName
+  href: FoundationaLLM.Common.Models.ResourceProviders.ResourceName.html#FoundationaLLM_Common_Models_ResourceProviders_ResourceName_Name
+  name: Name
+  nameWithType: ResourceName.Name
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.ResourceName.Name
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  parent: FoundationaLLM.Core.Utils.ObjectExtensions
+  definition: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: FoundationaLLM.Common.Models.ResourceProviders
+  commentId: N:FoundationaLLM.Common.Models.ResourceProviders
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.ResourceProviders
+  nameWithType: FoundationaLLM.Common.Models.ResourceProviders
+  fullName: FoundationaLLM.Common.Models.ResourceProviders
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders
+    name: ResourceProviders
+    href: FoundationaLLM.Common.Models.ResourceProviders.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders
+    name: ResourceProviders
+    href: FoundationaLLM.Common.Models.ResourceProviders.html
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  isExternal: true
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions
+  commentId: T:FoundationaLLM.Core.Utils.ObjectExtensions
+  parent: FoundationaLLM.Core.Utils
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html
+  name: ObjectExtensions
+  nameWithType: ObjectExtensions
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions
+- uid: FoundationaLLM.Core.Utils
+  commentId: N:FoundationaLLM.Core.Utils
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Core.Utils
+  nameWithType: FoundationaLLM.Core.Utils
+  fullName: FoundationaLLM.Core.Utils
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.ResourceFilePath*
+  commentId: Overload:FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.ResourceFilePath
+  href: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.html#FoundationaLLM_Common_Models_ResourceProviders_Vectorization_VectorizationRequest_ResourceFilePath
+  name: ResourceFilePath
+  nameWithType: VectorizationRequest.ResourceFilePath
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.ResourceFilePath
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.ContentIdentifier
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.ContentIdentifier
+  href: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.html#FoundationaLLM_Common_Models_ResourceProviders_Vectorization_VectorizationRequest_ContentIdentifier
+  name: ContentIdentifier
+  nameWithType: VectorizationRequest.ContentIdentifier
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.ContentIdentifier
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.ContentIdentifier*
+  commentId: Overload:FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.ContentIdentifier
+  href: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.html#FoundationaLLM_Common_Models_ResourceProviders_Vectorization_VectorizationRequest_ContentIdentifier
+  name: ContentIdentifier
+  nameWithType: VectorizationRequest.ContentIdentifier
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.ContentIdentifier
+- uid: FoundationaLLM.Common.Models.Vectorization.ContentIdentifier
+  commentId: T:FoundationaLLM.Common.Models.Vectorization.ContentIdentifier
+  parent: FoundationaLLM.Common.Models.Vectorization
+  href: FoundationaLLM.Common.Models.Vectorization.ContentIdentifier.html
+  name: ContentIdentifier
+  nameWithType: ContentIdentifier
+  fullName: FoundationaLLM.Common.Models.Vectorization.ContentIdentifier
+- uid: FoundationaLLM.Common.Models.Vectorization
+  commentId: N:FoundationaLLM.Common.Models.Vectorization
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.Vectorization
+  nameWithType: FoundationaLLM.Common.Models.Vectorization
+  fullName: FoundationaLLM.Common.Models.Vectorization
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Vectorization
+    name: Vectorization
+    href: FoundationaLLM.Common.Models.Vectorization.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Vectorization
+    name: Vectorization
+    href: FoundationaLLM.Common.Models.Vectorization.html
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationProcessingType
+  commentId: T:FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationProcessingType
+  parent: FoundationaLLM.Common.Models.ResourceProviders.Vectorization
+  href: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationProcessingType.html
+  name: VectorizationProcessingType
+  nameWithType: VectorizationProcessingType
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationProcessingType
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.ProcessingType*
+  commentId: Overload:FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.ProcessingType
+  href: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.html#FoundationaLLM_Common_Models_ResourceProviders_Vectorization_VectorizationRequest_ProcessingType
+  name: ProcessingType
+  nameWithType: VectorizationRequest.ProcessingType
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.ProcessingType
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.PipelineObjectId*
+  commentId: Overload:FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.PipelineObjectId
+  href: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.html#FoundationaLLM_Common_Models_ResourceProviders_Vectorization_VectorizationRequest_PipelineObjectId
+  name: PipelineObjectId
+  nameWithType: VectorizationRequest.PipelineObjectId
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.PipelineObjectId
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.PipelineName*
+  commentId: Overload:FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.PipelineName
+  href: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.html#FoundationaLLM_Common_Models_ResourceProviders_Vectorization_VectorizationRequest_PipelineName
+  name: PipelineName
+  nameWithType: VectorizationRequest.PipelineName
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.PipelineName
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.PipelineExecutionId*
+  commentId: Overload:FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.PipelineExecutionId
+  href: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.html#FoundationaLLM_Common_Models_ResourceProviders_Vectorization_VectorizationRequest_PipelineExecutionId
+  name: PipelineExecutionId
+  nameWithType: VectorizationRequest.PipelineExecutionId
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.PipelineExecutionId
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.PipelineExecutionStart*
+  commentId: Overload:FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.PipelineExecutionStart
+  href: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.html#FoundationaLLM_Common_Models_ResourceProviders_Vectorization_VectorizationRequest_PipelineExecutionStart
+  name: PipelineExecutionStart
+  nameWithType: VectorizationRequest.PipelineExecutionStart
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.PipelineExecutionStart
+- uid: System.Nullable{System.DateTimeOffset}
+  commentId: T:System.Nullable{System.DateTimeOffset}
+  parent: System
+  definition: System.Nullable`1
+  href: https://learn.microsoft.com/dotnet/api/system.datetimeoffset
+  name: DateTimeOffset?
+  nameWithType: DateTimeOffset?
+  fullName: System.DateTimeOffset?
+  spec.csharp:
+  - uid: System.DateTimeOffset
+    name: DateTimeOffset
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.datetimeoffset
+  - name: '?'
+  spec.vb:
+  - uid: System.DateTimeOffset
+    name: DateTimeOffset
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.datetimeoffset
+  - name: '?'
+- uid: System.Nullable`1
+  commentId: T:System.Nullable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  name: Nullable<T>
+  nameWithType: Nullable<T>
+  fullName: System.Nullable<T>
+  nameWithType.vb: Nullable(Of T)
+  fullName.vb: System.Nullable(Of T)
+  name.vb: Nullable(Of T)
+  spec.csharp:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationProcessingState
+  commentId: T:FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationProcessingState
+  parent: FoundationaLLM.Common.Models.ResourceProviders.Vectorization
+  href: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationProcessingState.html
+  name: VectorizationProcessingState
+  nameWithType: VectorizationProcessingState
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationProcessingState
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.ProcessingState*
+  commentId: Overload:FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.ProcessingState
+  href: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.html#FoundationaLLM_Common_Models_ResourceProviders_Vectorization_VectorizationRequest_ProcessingState
+  name: ProcessingState
+  nameWithType: VectorizationRequest.ProcessingState
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.ProcessingState
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.ExecutionStart*
+  commentId: Overload:FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.ExecutionStart
+  href: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.html#FoundationaLLM_Common_Models_ResourceProviders_Vectorization_VectorizationRequest_ExecutionStart
+  name: ExecutionStart
+  nameWithType: VectorizationRequest.ExecutionStart
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.ExecutionStart
+- uid: System.Nullable{System.DateTime}
+  commentId: T:System.Nullable{System.DateTime}
+  parent: System
+  definition: System.Nullable`1
+  href: https://learn.microsoft.com/dotnet/api/system.datetime
+  name: DateTime?
+  nameWithType: DateTime?
+  fullName: System.DateTime?
+  nameWithType.vb: Date?
+  fullName.vb: Date?
+  name.vb: Date?
+  spec.csharp:
+  - uid: System.DateTime
+    name: DateTime
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.datetime
+  - name: '?'
+  spec.vb:
+  - uid: System.DateTime
+    name: Date
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.datetime
+  - name: '?'
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.ExecutionEnd*
+  commentId: Overload:FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.ExecutionEnd
+  href: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.html#FoundationaLLM_Common_Models_ResourceProviders_Vectorization_VectorizationRequest_ExecutionEnd
+  name: ExecutionEnd
+  nameWithType: VectorizationRequest.ExecutionEnd
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.ExecutionEnd
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.ErrorMessages*
+  commentId: Overload:FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.ErrorMessages
+  href: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.html#FoundationaLLM_Common_Models_ResourceProviders_Vectorization_VectorizationRequest_ErrorMessages
+  name: ErrorMessages
+  nameWithType: VectorizationRequest.ErrorMessages
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.ErrorMessages
+- uid: System.Collections.Generic.List{System.String}
+  commentId: T:System.Collections.Generic.List{System.String}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.List`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  name: List<string>
+  nameWithType: List<string>
+  fullName: System.Collections.Generic.List<string>
+  nameWithType.vb: List(Of String)
+  fullName.vb: System.Collections.Generic.List(Of String)
+  name.vb: List(Of String)
+  spec.csharp:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: System.Collections.Generic.List`1
+  commentId: T:System.Collections.Generic.List`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  name: List<T>
+  nameWithType: List<T>
+  fullName: System.Collections.Generic.List<T>
+  nameWithType.vb: List(Of T)
+  fullName.vb: System.Collections.Generic.List(Of T)
+  name.vb: List(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.Steps*
+  commentId: Overload:FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.Steps
+  href: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.html#FoundationaLLM_Common_Models_ResourceProviders_Vectorization_VectorizationRequest_Steps
+  name: Steps
+  nameWithType: VectorizationRequest.Steps
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.Steps
+- uid: System.Collections.Generic.List{FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationStep}
+  commentId: T:System.Collections.Generic.List{FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationStep}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.List`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  name: List<VectorizationStep>
+  nameWithType: List<VectorizationStep>
+  fullName: System.Collections.Generic.List<FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationStep>
+  nameWithType.vb: List(Of VectorizationStep)
+  fullName.vb: System.Collections.Generic.List(Of FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationStep)
+  name.vb: List(Of VectorizationStep)
+  spec.csharp:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationStep
+    name: VectorizationStep
+    href: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationStep.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationStep
+    name: VectorizationStep
+    href: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationStep.html
+  - name: )
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.CompletedSteps*
+  commentId: Overload:FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.CompletedSteps
+  href: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.html#FoundationaLLM_Common_Models_ResourceProviders_Vectorization_VectorizationRequest_CompletedSteps
+  name: CompletedSteps
+  nameWithType: VectorizationRequest.CompletedSteps
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.CompletedSteps
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.RemainingSteps*
+  commentId: Overload:FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.RemainingSteps
+  href: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.html#FoundationaLLM_Common_Models_ResourceProviders_Vectorization_VectorizationRequest_RemainingSteps
+  name: RemainingSteps
+  nameWithType: VectorizationRequest.RemainingSteps
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.RemainingSteps
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.CurrentStep*
+  commentId: Overload:FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.CurrentStep
+  href: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.html#FoundationaLLM_Common_Models_ResourceProviders_Vectorization_VectorizationRequest_CurrentStep
+  name: CurrentStep
+  nameWithType: VectorizationRequest.CurrentStep
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.CurrentStep
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.ErrorCount*
+  commentId: Overload:FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.ErrorCount
+  href: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.html#FoundationaLLM_Common_Models_ResourceProviders_Vectorization_VectorizationRequest_ErrorCount
+  name: ErrorCount
+  nameWithType: VectorizationRequest.ErrorCount
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.ErrorCount
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.RunningOperations*
+  commentId: Overload:FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.RunningOperations
+  href: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.html#FoundationaLLM_Common_Models_ResourceProviders_Vectorization_VectorizationRequest_RunningOperations
+  name: RunningOperations
+  nameWithType: VectorizationRequest.RunningOperations
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.RunningOperations
+- uid: System.Collections.Generic.Dictionary{System.String,FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationLongRunningOperation}
+  commentId: T:System.Collections.Generic.Dictionary{System.String,FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationLongRunningOperation}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.Dictionary`2
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  name: Dictionary<string, VectorizationLongRunningOperation>
+  nameWithType: Dictionary<string, VectorizationLongRunningOperation>
+  fullName: System.Collections.Generic.Dictionary<string, FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationLongRunningOperation>
+  nameWithType.vb: Dictionary(Of String, VectorizationLongRunningOperation)
+  fullName.vb: System.Collections.Generic.Dictionary(Of String, FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationLongRunningOperation)
+  name.vb: Dictionary(Of String, VectorizationLongRunningOperation)
+  spec.csharp:
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationLongRunningOperation
+    name: VectorizationLongRunningOperation
+    href: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationLongRunningOperation.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationLongRunningOperation
+    name: VectorizationLongRunningOperation
+    href: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationLongRunningOperation.html
+  - name: )
+- uid: System.Collections.Generic.Dictionary`2
+  commentId: T:System.Collections.Generic.Dictionary`2
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  name: Dictionary<TKey, TValue>
+  nameWithType: Dictionary<TKey, TValue>
+  fullName: System.Collections.Generic.Dictionary<TKey, TValue>
+  nameWithType.vb: Dictionary(Of TKey, TValue)
+  fullName.vb: System.Collections.Generic.Dictionary(Of TKey, TValue)
+  name.vb: Dictionary(Of TKey, TValue)
+  spec.csharp:
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  - name: <
+  - name: TKey
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TKey
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: )
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.LastSuccessfulStepTime*
+  commentId: Overload:FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.LastSuccessfulStepTime
+  href: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.html#FoundationaLLM_Common_Models_ResourceProviders_Vectorization_VectorizationRequest_LastSuccessfulStepTime
+  name: LastSuccessfulStepTime
+  nameWithType: VectorizationRequest.LastSuccessfulStepTime
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.LastSuccessfulStepTime
+- uid: System.DateTime
+  commentId: T:System.DateTime
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.datetime
+  name: DateTime
+  nameWithType: DateTime
+  fullName: System.DateTime
+  nameWithType.vb: Date
+  fullName.vb: Date
+  name.vb: Date
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.Complete*
+  commentId: Overload:FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.Complete
+  href: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.html#FoundationaLLM_Common_Models_ResourceProviders_Vectorization_VectorizationRequest_Complete
+  name: Complete
+  nameWithType: VectorizationRequest.Complete
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.Complete
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.MoveToNextStep*
+  commentId: Overload:FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.MoveToNextStep
+  href: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.html#FoundationaLLM_Common_Models_ResourceProviders_Vectorization_VectorizationRequest_MoveToNextStep
+  name: MoveToNextStep
+  nameWithType: VectorizationRequest.MoveToNextStep
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.MoveToNextStep
+- uid: System.ValueTuple{System.String,System.String}
+  commentId: T:System.ValueTuple{System.String,System.String}
+  parent: System
+  definition: System.ValueTuple`2
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: (string PreviousStep, string CurrentStep)
+  nameWithType: (string PreviousStep, string CurrentStep)
+  fullName: (string PreviousStep, string CurrentStep)
+  nameWithType.vb: (PreviousStep As String, CurrentStep As String)
+  fullName.vb: (PreviousStep As String, CurrentStep As String)
+  name.vb: (PreviousStep As String, CurrentStep As String)
+  spec.csharp:
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: " "
+  - uid: System.ValueTuple{System.String,System.String}.PreviousStep
+    name: PreviousStep
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.string,system.string-.previousstep
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: " "
+  - uid: System.ValueTuple{System.String,System.String}.CurrentStep
+    name: CurrentStep
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.string,system.string-.currentstep
+  - name: )
+  spec.vb:
+  - name: (
+  - uid: System.ValueTuple{System.String,System.String}.PreviousStep
+    name: PreviousStep
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.string,system.string-.previousstep
+  - name: " "
+  - name: As
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.ValueTuple{System.String,System.String}.CurrentStep
+    name: CurrentStep
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.string,system.string-.currentstep
+  - name: " "
+  - name: As
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: System.ValueTuple`2
+  commentId: T:System.ValueTuple`2
+  name: (T1, T2)
+  nameWithType: (T1, T2)
+  fullName: (T1, T2)
+  spec.csharp:
+  - name: (
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: )
+  spec.vb:
+  - name: (
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: )
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationStep
+  commentId: T:FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationStep
+  parent: FoundationaLLM.Common.Models.ResourceProviders.Vectorization
+  href: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationStep.html
+  name: VectorizationStep
+  nameWithType: VectorizationStep
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationStep
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.Item*
+  commentId: Overload:FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.Item
+  href: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.html#FoundationaLLM_Common_Models_ResourceProviders_Vectorization_VectorizationRequest_Item_System_String_
+  name: this
+  nameWithType: VectorizationRequest.this
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.this
+  nameWithType.vb: VectorizationRequest.this[]
+  fullName.vb: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.this[]
+  name.vb: this[]
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.Expired*
+  commentId: Overload:FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.Expired
+  href: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.html#FoundationaLLM_Common_Models_ResourceProviders_Vectorization_VectorizationRequest_Expired
+  name: Expired
+  nameWithType: VectorizationRequest.Expired
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.Expired
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.GetDateFromName*
+  commentId: Overload:FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.GetDateFromName
+  href: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.html#FoundationaLLM_Common_Models_ResourceProviders_Vectorization_VectorizationRequest_GetDateFromName
+  name: GetDateFromName
+  nameWithType: VectorizationRequest.GetDateFromName
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.GetDateFromName
+- uid: System.DateOnly
+  commentId: T:System.DateOnly
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.dateonly
+  name: DateOnly
+  nameWithType: DateOnly
+  fullName: System.DateOnly
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.#ctor*
+  commentId: Overload:FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.#ctor
+  href: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.html#FoundationaLLM_Common_Models_ResourceProviders_Vectorization_VectorizationRequest__ctor
+  name: VectorizationRequest
+  nameWithType: VectorizationRequest.VectorizationRequest
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.VectorizationRequest
+  nameWithType.vb: VectorizationRequest.New
+  fullName.vb: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.New
+  name.vb: New
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.GetDate*
+  commentId: Overload:FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.GetDate
+  href: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.html#FoundationaLLM_Common_Models_ResourceProviders_Vectorization_VectorizationRequest_GetDate_System_String_
+  name: GetDate
+  nameWithType: VectorizationRequest.GetDate
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest.GetDate

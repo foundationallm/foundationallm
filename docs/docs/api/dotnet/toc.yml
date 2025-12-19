@@ -1,0 +1,4152 @@
+### YamlMime:TableOfContent
+items:
+- uid: AzureAI
+  name: AzureAI
+  type: Namespace
+  items:
+  - uid: AzureAI.Models.Resources
+    name: Models.Resources
+    type: Namespace
+    items:
+    - uid: AzureAI.Models.Resources.AzureAIReference
+      name: AzureAIReference
+      type: Class
+  - uid: AzureAI.ResourceProviders
+    name: ResourceProviders
+    type: Namespace
+    items:
+    - uid: AzureAI.ResourceProviders.AzureAIResourceProviderService
+      name: AzureAIResourceProviderService
+      type: Class
+- uid: FoundationaLLM
+  name: FoundationaLLM
+  type: Namespace
+  items:
+  - uid: FoundationaLLM.AIModel
+    name: AIModel
+    type: Namespace
+    items:
+    - uid: FoundationaLLM.AIModel.Models
+      name: Models
+      type: Namespace
+      items:
+      - uid: FoundationaLLM.AIModel.Models.AIModelReference
+        name: AIModelReference
+        type: Class
+    - uid: FoundationaLLM.AIModel.ResourceProviders
+      name: ResourceProviders
+      type: Namespace
+      items:
+      - uid: FoundationaLLM.AIModel.ResourceProviders.AIModelResourceProviderService
+        name: AIModelResourceProviderService
+        type: Class
+    - uid: FoundationaLLM.AIModel.Validation
+      name: Validation
+      type: Namespace
+      items:
+      - uid: FoundationaLLM.AIModel.Validation.AIModelBaseValidator
+        name: AIModelBaseValidator
+        type: Class
+  - uid: FoundationaLLM.Agent
+    name: Agent
+    type: Namespace
+    items:
+    - uid: FoundationaLLM.Agent.Models.Resources
+      name: Models.Resources
+      type: Namespace
+      items:
+      - uid: FoundationaLLM.Agent.Models.Resources.AgentReference
+        name: AgentReference
+        type: Class
+    - uid: FoundationaLLM.Agent.ResourceProviders
+      name: ResourceProviders
+      type: Namespace
+      items:
+      - uid: FoundationaLLM.Agent.ResourceProviders.AgentResourceProviderService
+        name: AgentResourceProviderService
+        type: Class
+    - uid: FoundationaLLM.Agent.Validation.Metadata
+      name: Validation.Metadata
+      type: Namespace
+      items:
+      - uid: FoundationaLLM.Agent.Validation.Metadata.AgentBaseValidator
+        name: AgentBaseValidator
+        type: Class
+      - uid: FoundationaLLM.Agent.Validation.Metadata.GenericAgentValidator
+        name: GenericAgentValidator
+        type: Class
+      - uid: FoundationaLLM.Agent.Validation.Metadata.ToolValidator
+        name: ToolValidator
+        type: Class
+      - uid: FoundationaLLM.Agent.Validation.Metadata.WorkflowValidator
+        name: WorkflowValidator
+        type: Class
+  - uid: FoundationaLLM.Attachment
+    name: Attachment
+    type: Namespace
+    items:
+    - uid: FoundationaLLM.Attachment.ResourceProviders
+      name: ResourceProviders
+      type: Namespace
+      items:
+      - uid: FoundationaLLM.Attachment.ResourceProviders.AttachmentResourceProviderService
+        name: AttachmentResourceProviderService
+        type: Class
+    - uid: FoundationaLLM.Attachment.Validation
+      name: Validation
+      type: Namespace
+      items:
+      - uid: FoundationaLLM.Attachment.Validation.AttachmentFileValidator
+        name: AttachmentFileValidator
+        type: Class
+      - uid: FoundationaLLM.Attachment.Validation.AttachmentValidator`1
+        name: AttachmentValidator<T>
+        type: Class
+  - uid: FoundationaLLM.Authorization
+    name: Authorization
+    type: Namespace
+    items:
+    - uid: FoundationaLLM.Authorization.API.Controllers
+      name: API.Controllers
+      type: Namespace
+      items:
+      - uid: FoundationaLLM.Authorization.API.Controllers.AuthorizeController
+        name: AuthorizeController
+        type: Class
+      - uid: FoundationaLLM.Authorization.API.Controllers.RoleAssignmentsController
+        name: RoleAssignmentsController
+        type: Class
+      - uid: FoundationaLLM.Authorization.API.Controllers.SecretKeysController
+        name: SecretKeysController
+        type: Class
+      - uid: FoundationaLLM.Authorization.API.Controllers.StatusController
+        name: StatusController
+        type: Class
+    - uid: FoundationaLLM.Authorization.ResourceProviders
+      name: ResourceProviders
+      type: Namespace
+      items:
+      - uid: FoundationaLLM.Authorization.ResourceProviders.AuthorizationResourceProviderService
+        name: AuthorizationResourceProviderService
+        type: Class
+    - uid: FoundationaLLM.Authorization.Validation
+      name: Validation
+      type: Namespace
+      items:
+      - uid: FoundationaLLM.Authorization.Validation.RoleAssignmentValidator
+        name: RoleAssignmentValidator
+        type: Class
+      - uid: FoundationaLLM.Authorization.Validation.SecurityPrincipalQueryParametersValidator
+        name: SecurityPrincipalQueryParametersValidator
+        type: Class
+  - uid: FoundationaLLM.AuthorizationEngine
+    name: AuthorizationEngine
+    type: Namespace
+    items:
+    - uid: FoundationaLLM.AuthorizationEngine.Interfaces
+      name: Interfaces
+      type: Namespace
+      items:
+      - uid: FoundationaLLM.AuthorizationEngine.Interfaces.IAuthorizationCore
+        name: IAuthorizationCore
+        type: Interface
+    - uid: FoundationaLLM.AuthorizationEngine.Middleware
+      name: Middleware
+      type: Namespace
+      items:
+      - uid: FoundationaLLM.AuthorizationEngine.Middleware.AuthorizationAPIMiddleware
+        name: AuthorizationAPIMiddleware
+        type: Class
+    - uid: FoundationaLLM.AuthorizationEngine.Models
+      name: Models
+      type: Namespace
+      items:
+      - uid: FoundationaLLM.AuthorizationEngine.Models.Configuration
+        name: Configuration
+        type: Namespace
+        items:
+        - uid: FoundationaLLM.AuthorizationEngine.Models.Configuration.AuthorizationCoreSettings
+          name: AuthorizationCoreSettings
+          type: Class
+      - uid: FoundationaLLM.AuthorizationEngine.Models.PolicyAssignmentStore
+        name: PolicyAssignmentStore
+        type: Class
+      - uid: FoundationaLLM.AuthorizationEngine.Models.RoleAssignmentStore
+        name: RoleAssignmentStore
+        type: Class
+      - uid: FoundationaLLM.AuthorizationEngine.Models.SecretKeyStore
+        name: SecretKeyStore
+        type: Class
+    - uid: FoundationaLLM.AuthorizationEngine.Services
+      name: Services
+      type: Namespace
+      items:
+      - uid: FoundationaLLM.AuthorizationEngine.Services.AuthorizationCore
+        name: AuthorizationCore
+        type: Class
+      - uid: FoundationaLLM.AuthorizationEngine.Services.PolicyAssignmentCache
+        name: PolicyAssignmentCache
+        type: Class
+      - uid: FoundationaLLM.AuthorizationEngine.Services.RoleAssignmentCache
+        name: RoleAssignmentCache
+        type: Class
+      - uid: FoundationaLLM.AuthorizationEngine.Services.SecretKeyCache
+        name: SecretKeyCache
+        type: Class
+    - uid: FoundationaLLM.AuthorizationEngine.Validation
+      name: Validation
+      type: Namespace
+      items:
+      - uid: FoundationaLLM.AuthorizationEngine.Validation.ActionAuthorizationRequestValidator
+        name: ActionAuthorizationRequestValidator
+        type: Class
+  - uid: FoundationaLLM.AzureOpenAI.ResourceProviders
+    name: AzureOpenAI.ResourceProviders
+    type: Namespace
+    items:
+    - uid: FoundationaLLM.AzureOpenAI.ResourceProviders.AzureOpenAIResourceProviderService
+      name: AzureOpenAIResourceProviderService
+      type: Class
+  - uid: FoundationaLLM.CSharpCodeSession.API
+    name: CSharpCodeSession.API
+    type: Namespace
+    items:
+    - uid: FoundationaLLM.CSharpCodeSession.API.Controllers
+      name: Controllers
+      type: Namespace
+      items:
+      - uid: FoundationaLLM.CSharpCodeSession.API.Controllers.CodeController
+        name: CodeController
+        type: Class
+      - uid: FoundationaLLM.CSharpCodeSession.API.Controllers.FilesController
+        name: FilesController
+        type: Class
+      - uid: FoundationaLLM.CSharpCodeSession.API.Controllers.StatusController
+        name: StatusController
+        type: Class
+    - uid: FoundationaLLM.CSharpCodeSession.API.Models
+      name: Models
+      type: Namespace
+      items:
+      - uid: FoundationaLLM.CSharpCodeSession.API.Models.CodeExecutionRequest
+        name: CodeExecutionRequest
+        type: Class
+      - uid: FoundationaLLM.CSharpCodeSession.API.Models.CodeExecutionResponse
+        name: CodeExecutionResponse
+        type: Class
+      - uid: FoundationaLLM.CSharpCodeSession.API.Models.DownloadFileRequest
+        name: DownloadFileRequest
+        type: Class
+      - uid: FoundationaLLM.CSharpCodeSession.API.Models.ListFilesResponse
+        name: ListFilesResponse
+        type: Class
+      - uid: FoundationaLLM.CSharpCodeSession.API.Models.StatusResponse
+        name: StatusResponse
+        type: Class
+      - uid: FoundationaLLM.CSharpCodeSession.API.Models.UploadFileResponse
+        name: UploadFileResponse
+        type: Class
+  - uid: FoundationaLLM.Client
+    name: Client
+    type: Namespace
+    items:
+    - uid: FoundationaLLM.Client.Core
+      name: Core
+      type: Namespace
+      items:
+      - uid: FoundationaLLM.Client.Core.Interfaces
+        name: Interfaces
+        type: Namespace
+        items:
+        - uid: FoundationaLLM.Client.Core.Interfaces.IAttachmentRESTClient
+          name: IAttachmentRESTClient
+          type: Interface
+        - uid: FoundationaLLM.Client.Core.Interfaces.IBrandingRESTClient
+          name: IBrandingRESTClient
+          type: Interface
+        - uid: FoundationaLLM.Client.Core.Interfaces.ICompletionRESTClient
+          name: ICompletionRESTClient
+          type: Interface
+        - uid: FoundationaLLM.Client.Core.Interfaces.ICoreClient
+          name: ICoreClient
+          type: Interface
+        - uid: FoundationaLLM.Client.Core.Interfaces.ICoreRESTClient
+          name: ICoreRESTClient
+          type: Interface
+        - uid: FoundationaLLM.Client.Core.Interfaces.ISessionRESTClient
+          name: ISessionRESTClient
+          type: Interface
+        - uid: FoundationaLLM.Client.Core.Interfaces.IStatusRESTClient
+          name: IStatusRESTClient
+          type: Interface
+        - uid: FoundationaLLM.Client.Core.Interfaces.IUserProfileRESTClient
+          name: IUserProfileRESTClient
+          type: Interface
+      - uid: FoundationaLLM.Client.Core.CoreClient
+        name: CoreClient
+        type: Class
+      - uid: FoundationaLLM.Client.Core.CoreRESTClient
+        name: CoreRESTClient
+        type: Class
+    - uid: FoundationaLLM.Client.Management
+      name: Management
+      type: Namespace
+      items:
+      - uid: FoundationaLLM.Client.Management.Interfaces
+        name: Interfaces
+        type: Namespace
+        items:
+        - uid: FoundationaLLM.Client.Management.Interfaces.IAIModelManagementClient
+          name: IAIModelManagementClient
+          type: Interface
+        - uid: FoundationaLLM.Client.Management.Interfaces.IAgentManagementClient
+          name: IAgentManagementClient
+          type: Interface
+        - uid: FoundationaLLM.Client.Management.Interfaces.IAttachmentManagementClient
+          name: IAttachmentManagementClient
+          type: Interface
+        - uid: FoundationaLLM.Client.Management.Interfaces.IConfigurationManagementClient
+          name: IConfigurationManagementClient
+          type: Interface
+        - uid: FoundationaLLM.Client.Management.Interfaces.IDataSourceManagementClient
+          name: IDataSourceManagementClient
+          type: Interface
+        - uid: FoundationaLLM.Client.Management.Interfaces.IIdentityRESTClient
+          name: IIdentityRESTClient
+          type: Interface
+        - uid: FoundationaLLM.Client.Management.Interfaces.IManagementClient
+          name: IManagementClient
+          type: Interface
+        - uid: FoundationaLLM.Client.Management.Interfaces.IManagementRESTClient
+          name: IManagementRESTClient
+          type: Interface
+        - uid: FoundationaLLM.Client.Management.Interfaces.IPromptManagementClient
+          name: IPromptManagementClient
+          type: Interface
+        - uid: FoundationaLLM.Client.Management.Interfaces.IResourceRESTClient
+          name: IResourceRESTClient
+          type: Interface
+        - uid: FoundationaLLM.Client.Management.Interfaces.IStatusRESTClient
+          name: IStatusRESTClient
+          type: Interface
+        - uid: FoundationaLLM.Client.Management.Interfaces.IVectorizationManagementClient
+          name: IVectorizationManagementClient
+          type: Interface
+      - uid: FoundationaLLM.Client.Management.ManagementClient
+        name: ManagementClient
+        type: Class
+      - uid: FoundationaLLM.Client.Management.ManagementRESTClient
+        name: ManagementRESTClient
+        type: Class
+  - uid: FoundationaLLM.Common
+    name: Common
+    type: Namespace
+    items:
+    - uid: FoundationaLLM.Common.Authentication
+      name: Authentication
+      type: Namespace
+      items:
+      - uid: FoundationaLLM.Common.Authentication.APIKeyAuthenticationAttribute
+        name: APIKeyAuthenticationAttribute
+        type: Class
+      - uid: FoundationaLLM.Common.Authentication.APIKeyAuthenticationFilter
+        name: APIKeyAuthenticationFilter
+        type: Class
+      - uid: FoundationaLLM.Common.Authentication.APIKeyValidationService
+        name: APIKeyValidationService
+        type: Class
+      - uid: FoundationaLLM.Common.Authentication.APIKeyValidationSettings
+        name: APIKeyValidationSettings
+        type: Class
+      - uid: FoundationaLLM.Common.Authentication.AgentAccessTokenAuthenticationHandler
+        name: AgentAccessTokenAuthenticationHandler
+        type: Class
+      - uid: FoundationaLLM.Common.Authentication.AgentAccessTokenDefaults
+        name: AgentAccessTokenDefaults
+        type: Class
+      - uid: FoundationaLLM.Common.Authentication.AgentAccessTokenOptions
+        name: AgentAccessTokenOptions
+        type: Class
+      - uid: FoundationaLLM.Common.Authentication.ServiceContext
+        name: ServiceContext
+        type: Class
+    - uid: FoundationaLLM.Common.Clients
+      name: Clients
+      type: Namespace
+      items:
+      - uid: FoundationaLLM.Common.Clients.Http
+        name: Http
+        type: Namespace
+        items:
+        - uid: FoundationaLLM.Common.Clients.Http.APIEndpointClientOptions
+          name: APIEndpointClientOptions
+          type: Class
+        - uid: FoundationaLLM.Common.Clients.Http.HttpPipelineInterceptPolicy
+          name: HttpPipelineInterceptPolicy
+          type: Class
+      - uid: FoundationaLLM.Common.Clients.AuthorizationServiceClient
+        name: AuthorizationServiceClient
+        type: Class
+      - uid: FoundationaLLM.Common.Clients.AzureAIContentSafetyClient
+        name: AzureAIContentSafetyClient
+        type: Class
+      - uid: FoundationaLLM.Common.Clients.ContextServiceClient
+        name: ContextServiceClient
+        type: Class
+      - uid: FoundationaLLM.Common.Clients.GatewayServiceClient
+        name: GatewayServiceClient
+        type: Class
+      - uid: FoundationaLLM.Common.Clients.NullAuthorizationServiceClient
+        name: NullAuthorizationServiceClient
+        type: Class
+      - uid: FoundationaLLM.Common.Clients.PollingHttpClient`2
+        name: PollingHttpClient<TRequest, TResponse>
+        type: Class
+      - uid: FoundationaLLM.Common.Clients.PollingResourceRunner`1
+        name: PollingResourceRunner<TResource>
+        type: Class
+      - uid: FoundationaLLM.Common.Clients.StateServiceClient
+        name: StateServiceClient
+        type: Class
+    - uid: FoundationaLLM.Common.Constants
+      name: Constants
+      type: Namespace
+      items:
+      - uid: FoundationaLLM.Common.Constants.Agents
+        name: Agents
+        type: Namespace
+        items:
+        - uid: FoundationaLLM.Common.Constants.Agents.AgentCapabilityCategoryNames
+          name: AgentCapabilityCategoryNames
+          type: Class
+        - uid: FoundationaLLM.Common.Constants.Agents.AgentParametersKeys
+          name: AgentParametersKeys
+          type: Class
+        - uid: FoundationaLLM.Common.Constants.Agents.AgentPropertyNames
+          name: AgentPropertyNames
+          type: Class
+        - uid: FoundationaLLM.Common.Constants.Agents.AgentTemplateParameterNames
+          name: AgentTemplateParameterNames
+          type: Class
+        - uid: FoundationaLLM.Common.Constants.Agents.AgentToolCategories
+          name: AgentToolCategories
+          type: Class
+        - uid: FoundationaLLM.Common.Constants.Agents.AgentToolNames
+          name: AgentToolNames
+          type: Class
+        - uid: FoundationaLLM.Common.Constants.Agents.AgentToolPropertyNames
+          name: AgentToolPropertyNames
+          type: Class
+        - uid: FoundationaLLM.Common.Constants.Agents.AgentToolPropertyValueSources
+          name: AgentToolPropertyValueSources
+          type: Class
+        - uid: FoundationaLLM.Common.Constants.Agents.AgentWorkflowNames
+          name: AgentWorkflowNames
+          type: Class
+        - uid: FoundationaLLM.Common.Constants.Agents.CompletionRequestObjectsKeys
+          name: CompletionRequestObjectsKeys
+          type: Class
+        - uid: FoundationaLLM.Common.Constants.Agents.InputMessageRoles
+          name: InputMessageRoles
+          type: Class
+        - uid: FoundationaLLM.Common.Constants.Agents.ModelParametersKeys
+          name: ModelParametersKeys
+          type: Class
+        - uid: FoundationaLLM.Common.Constants.Agents.OperationTypes
+          name: OperationTypes
+          type: Class
+      - uid: FoundationaLLM.Common.Constants.Authentication
+        name: Authentication
+        type: Namespace
+        items:
+        - uid: FoundationaLLM.Common.Constants.Authentication.AuthenticationParametersKeys
+          name: AuthenticationParametersKeys
+          type: Class
+        - uid: FoundationaLLM.Common.Constants.Authentication.AuthenticationTypes
+          name: AuthenticationTypes
+          type: Enum
+        - uid: FoundationaLLM.Common.Constants.Authentication.EntraUserClaimConstants
+          name: EntraUserClaimConstants
+          type: Class
+        - uid: FoundationaLLM.Common.Constants.Authentication.GroupIDs
+          name: GroupIDs
+          type: Class
+        - uid: FoundationaLLM.Common.Constants.Authentication.RoleAssignmentResultReasons
+          name: RoleAssignmentResultReasons
+          type: Class
+        - uid: FoundationaLLM.Common.Constants.Authentication.ScopeURIs
+          name: ScopeURIs
+          type: Class
+        - uid: FoundationaLLM.Common.Constants.Authentication.SecurityPrincipalTypes
+          name: SecurityPrincipalTypes
+          type: Class
+      - uid: FoundationaLLM.Common.Constants.Authorization
+        name: Authorization
+        type: Namespace
+        items:
+        - uid: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames
+          name: AuthorizableActionNames
+          type: Class
+        - uid: FoundationaLLM.Common.Constants.Authorization.AuthorizableOperations
+          name: AuthorizableOperations
+          type: Class
+        - uid: FoundationaLLM.Common.Constants.Authorization.AuthorizationPolicyNames
+          name: AuthorizationPolicyNames
+          type: Class
+        - uid: FoundationaLLM.Common.Constants.Authorization.RoleDefinitionIds
+          name: RoleDefinitionIds
+          type: Class
+        - uid: FoundationaLLM.Common.Constants.Authorization.RoleDefinitionNames
+          name: RoleDefinitionNames
+          type: Class
+        - uid: FoundationaLLM.Common.Constants.Authorization.SecurityPrincipalVariableNames
+          name: SecurityPrincipalVariableNames
+          type: Class
+        - uid: FoundationaLLM.Common.Constants.Authorization.UserIdentityPropertyNames
+          name: UserIdentityPropertyNames
+          type: Class
+      - uid: FoundationaLLM.Common.Constants.AzureAI
+        name: AzureAI
+        type: Namespace
+        items:
+        - uid: FoundationaLLM.Common.Constants.AzureAI.AzureAIAgentServiceCapabilityParameterNames
+          name: AzureAIAgentServiceCapabilityParameterNames
+          type: Class
+      - uid: FoundationaLLM.Common.Constants.Configuration
+        name: Configuration
+        type: Namespace
+        items:
+        - uid: FoundationaLLM.Common.Constants.Configuration.APIEndpointProviders
+          name: APIEndpointProviders
+          type: Class
+        - uid: FoundationaLLM.Common.Constants.Configuration.AppConfigurationKeyFilters
+          name: AppConfigurationKeyFilters
+          type: Class
+        - uid: FoundationaLLM.Common.Constants.Configuration.AppConfigurationKeySections
+          name: AppConfigurationKeySections
+          type: Class
+        - uid: FoundationaLLM.Common.Constants.Configuration.AppConfigurationKeys
+          name: AppConfigurationKeys
+          type: Class
+        - uid: FoundationaLLM.Common.Constants.Configuration.AuthorizationDependencyInjectionKeys
+          name: AuthorizationDependencyInjectionKeys
+          type: Class
+        - uid: FoundationaLLM.Common.Constants.Configuration.AuthorizationKeyVaultSecretNames
+          name: AuthorizationKeyVaultSecretNames
+          type: Class
+        - uid: FoundationaLLM.Common.Constants.Configuration.ConfigurationOptions
+          name: ConfigurationOptions
+          type: Class
+        - uid: FoundationaLLM.Common.Constants.Configuration.DependencyInjectionKeys
+          name: DependencyInjectionKeys
+          type: Class
+        - uid: FoundationaLLM.Common.Constants.Configuration.EnvironmentTypes
+          name: EnvironmentTypes
+          type: Class
+        - uid: FoundationaLLM.Common.Constants.Configuration.EnvironmentVariables
+          name: EnvironmentVariables
+          type: Class
+        - uid: FoundationaLLM.Common.Constants.Configuration.KeyVaultSecretNames
+          name: KeyVaultSecretNames
+          type: Class
+        - uid: FoundationaLLM.Common.Constants.Configuration.WellKnownAppConfigurationSetNames
+          name: WellKnownAppConfigurationSetNames
+          type: Class
+        - uid: FoundationaLLM.Common.Constants.Configuration.WellKnownAppConfigurationSets
+          name: WellKnownAppConfigurationSets
+          type: Class
+      - uid: FoundationaLLM.Common.Constants.Context
+        name: Context
+        type: Namespace
+        items:
+        - uid: FoundationaLLM.Common.Constants.Context.CodeSessionLanguages
+          name: CodeSessionLanguages
+          type: Class
+        - uid: FoundationaLLM.Common.Constants.Context.ContextFileRecordMetadataPropertyNames
+          name: ContextFileRecordMetadataPropertyNames
+          type: Class
+        - uid: FoundationaLLM.Common.Constants.Context.ContextRecordOrigins
+          name: ContextRecordOrigins
+          type: Class
+        - uid: FoundationaLLM.Common.Constants.Context.ContextRecordTypeNames
+          name: ContextRecordTypeNames
+          type: Class
+        - uid: FoundationaLLM.Common.Constants.Context.FileProcessingTypes
+          name: FileProcessingTypes
+          type: Class
+      - uid: FoundationaLLM.Common.Constants.DataPipelines
+        name: DataPipelines
+        type: Namespace
+        items:
+        - uid: FoundationaLLM.Common.Constants.DataPipelines.ContentItemActions
+          name: ContentItemActions
+          type: Class
+        - uid: FoundationaLLM.Common.Constants.DataPipelines.DataPipelineRunProcessors
+          name: DataPipelineRunProcessors
+          type: Class
+        - uid: FoundationaLLM.Common.Constants.DataPipelines.DataPipelineStateFileNames
+          name: DataPipelineStateFileNames
+          type: Class
+        - uid: FoundationaLLM.Common.Constants.DataPipelines.DataPipelineTriggerNames
+          name: DataPipelineTriggerNames
+          type: Class
+        - uid: FoundationaLLM.Common.Constants.DataPipelines.DataPipelineTriggerParameterNames
+          name: DataPipelineTriggerParameterNames
+          type: Class
+        - uid: FoundationaLLM.Common.Constants.DataPipelines.WellKnownDataPipelineNames
+          name: WellKnownDataPipelineNames
+          type: Class
+      - uid: FoundationaLLM.Common.Constants.DataSource
+        name: DataSource
+        type: Namespace
+        items:
+        - uid: FoundationaLLM.Common.Constants.DataSource.DataSourceConfigurationReferenceKeys
+          name: DataSourceConfigurationReferenceKeys
+          type: Class
+      - uid: FoundationaLLM.Common.Constants.Events
+        name: Events
+        type: Namespace
+        items:
+        - uid: FoundationaLLM.Common.Constants.Events.EventGridTopics
+          name: EventGridTopics
+          type: Class
+        - uid: FoundationaLLM.Common.Constants.Events.EventTypes
+          name: EventTypes
+          type: Class
+      - uid: FoundationaLLM.Common.Constants.Gateway
+        name: Gateway
+        type: Namespace
+        items:
+        - uid: FoundationaLLM.Common.Constants.Gateway.TextOperationModelParameterNames
+          name: TextOperationModelParameterNames
+          type: Class
+      - uid: FoundationaLLM.Common.Constants.Instance
+        name: Instance
+        type: Namespace
+        items:
+        - uid: FoundationaLLM.Common.Constants.Instance.SecurityGroupRetrievalStrategies
+          name: SecurityGroupRetrievalStrategies
+          type: Class
+      - uid: FoundationaLLM.Common.Constants.OpenAI
+        name: OpenAI
+        type: Namespace
+        items:
+        - uid: FoundationaLLM.Common.Constants.OpenAI.OpenAIAgentCapabilityParameterNames
+          name: OpenAIAgentCapabilityParameterNames
+          type: Class
+      - uid: FoundationaLLM.Common.Constants.Orchestration
+        name: Orchestration
+        type: Namespace
+        items:
+        - uid: FoundationaLLM.Common.Constants.Orchestration.LongRunningOperationTypes
+          name: LongRunningOperationTypes
+          type: Class
+        - uid: FoundationaLLM.Common.Constants.Orchestration.MessageContentItemTypes
+          name: MessageContentItemTypes
+          type: Class
+      - uid: FoundationaLLM.Common.Constants.Plugins
+        name: Plugins
+        type: Namespace
+        items:
+        - uid: FoundationaLLM.Common.Constants.Plugins.PluginCategoryNames
+          name: PluginCategoryNames
+          type: Class
+        - uid: FoundationaLLM.Common.Constants.Plugins.PluginDependencySelectionTypes
+          name: PluginDependencySelectionTypes
+          type: Enum
+        - uid: FoundationaLLM.Common.Constants.Plugins.PluginPackagePlatform
+          name: PluginPackagePlatform
+          type: Enum
+        - uid: FoundationaLLM.Common.Constants.Plugins.PluginParameterTypes
+          name: PluginParameterTypes
+          type: Class
+      - uid: FoundationaLLM.Common.Constants.Quota
+        name: Quota
+        type: Namespace
+        items:
+        - uid: FoundationaLLM.Common.Constants.Quota.QuotaMetricPartitionType
+          name: QuotaMetricPartitionType
+          type: Enum
+        - uid: FoundationaLLM.Common.Constants.Quota.QuotaType
+          name: QuotaType
+          type: Enum
+      - uid: FoundationaLLM.Common.Constants.ResourceProviders
+        name: ResourceProviders
+        type: Namespace
+        items:
+        - uid: FoundationaLLM.Common.Constants.ResourceProviders.AIModelResourceProviderMetadata
+          name: AIModelResourceProviderMetadata
+          type: Class
+        - uid: FoundationaLLM.Common.Constants.ResourceProviders.AIModelResourceTypeNames
+          name: AIModelResourceTypeNames
+          type: Class
+        - uid: FoundationaLLM.Common.Constants.ResourceProviders.AIModelTypes
+          name: AIModelTypes
+          type: Class
+        - uid: FoundationaLLM.Common.Constants.ResourceProviders.AgentResourceProviderMetadata
+          name: AgentResourceProviderMetadata
+          type: Class
+        - uid: FoundationaLLM.Common.Constants.ResourceProviders.AgentResourceTypeNames
+          name: AgentResourceTypeNames
+          type: Class
+        - uid: FoundationaLLM.Common.Constants.ResourceProviders.AttachmentResourceProviderMetadata
+          name: AttachmentResourceProviderMetadata
+          type: Class
+        - uid: FoundationaLLM.Common.Constants.ResourceProviders.AttachmentResourceTypeNames
+          name: AttachmentResourceTypeNames
+          type: Class
+        - uid: FoundationaLLM.Common.Constants.ResourceProviders.AttachmentTypes
+          name: AttachmentTypes
+          type: Class
+        - uid: FoundationaLLM.Common.Constants.ResourceProviders.AuthorizationResourceProviderMetadata
+          name: AuthorizationResourceProviderMetadata
+          type: Class
+        - uid: FoundationaLLM.Common.Constants.ResourceProviders.AuthorizationResourceTypeNames
+          name: AuthorizationResourceTypeNames
+          type: Class
+        - uid: FoundationaLLM.Common.Constants.ResourceProviders.AzureAIResourceProviderMetadata
+          name: AzureAIResourceProviderMetadata
+          type: Class
+        - uid: FoundationaLLM.Common.Constants.ResourceProviders.AzureAIResourceProviderUpsertParameterNames
+          name: AzureAIResourceProviderUpsertParameterNames
+          type: Class
+        - uid: FoundationaLLM.Common.Constants.ResourceProviders.AzureAIResourceTypeNames
+          name: AzureAIResourceTypeNames
+          type: Class
+        - uid: FoundationaLLM.Common.Constants.ResourceProviders.AzureAITypes
+          name: AzureAITypes
+          type: Class
+        - uid: FoundationaLLM.Common.Constants.ResourceProviders.AzureOpenAIResourceProviderMetadata
+          name: AzureOpenAIResourceProviderMetadata
+          type: Class
+        - uid: FoundationaLLM.Common.Constants.ResourceProviders.AzureOpenAIResourceProviderUpsertParameterNames
+          name: AzureOpenAIResourceProviderUpsertParameterNames
+          type: Class
+        - uid: FoundationaLLM.Common.Constants.ResourceProviders.AzureOpenAIResourceTypeNames
+          name: AzureOpenAIResourceTypeNames
+          type: Class
+        - uid: FoundationaLLM.Common.Constants.ResourceProviders.AzureOpenAITypes
+          name: AzureOpenAITypes
+          type: Class
+        - uid: FoundationaLLM.Common.Constants.ResourceProviders.ConfigurationResourceProviderMetadata
+          name: ConfigurationResourceProviderMetadata
+          type: Class
+        - uid: FoundationaLLM.Common.Constants.ResourceProviders.ConfigurationResourceTypeNames
+          name: ConfigurationResourceTypeNames
+          type: Class
+        - uid: FoundationaLLM.Common.Constants.ResourceProviders.ConfigurationTypes
+          name: ConfigurationTypes
+          type: Class
+        - uid: FoundationaLLM.Common.Constants.ResourceProviders.ContextResourceProviderMetadata
+          name: ContextResourceProviderMetadata
+          type: Class
+        - uid: FoundationaLLM.Common.Constants.ResourceProviders.ContextResourceTypeNames
+          name: ContextResourceTypeNames
+          type: Class
+        - uid: FoundationaLLM.Common.Constants.ResourceProviders.ContextTypes
+          name: ContextTypes
+          type: Class
+        - uid: FoundationaLLM.Common.Constants.ResourceProviders.ConversationResourceProviderGetParameterNames
+          name: ConversationResourceProviderGetParameterNames
+          type: Class
+        - uid: FoundationaLLM.Common.Constants.ResourceProviders.ConversationResourceProviderMetadata
+          name: ConversationResourceProviderMetadata
+          type: Class
+        - uid: FoundationaLLM.Common.Constants.ResourceProviders.ConversationResourceTypeNames
+          name: ConversationResourceTypeNames
+          type: Class
+        - uid: FoundationaLLM.Common.Constants.ResourceProviders.ConversationTypes
+          name: ConversationTypes
+          type: Class
+        - uid: FoundationaLLM.Common.Constants.ResourceProviders.DataPipelineResourceProviderMetadata
+          name: DataPipelineResourceProviderMetadata
+          type: Class
+        - uid: FoundationaLLM.Common.Constants.ResourceProviders.DataPipelineResourceTypeNames
+          name: DataPipelineResourceTypeNames
+          type: Class
+        - uid: FoundationaLLM.Common.Constants.ResourceProviders.DataPipelineTypes
+          name: DataPipelineTypes
+          type: Class
+        - uid: FoundationaLLM.Common.Constants.ResourceProviders.DataSourceResourceProviderMetadata
+          name: DataSourceResourceProviderMetadata
+          type: Class
+        - uid: FoundationaLLM.Common.Constants.ResourceProviders.DataSourceResourceTypeNames
+          name: DataSourceResourceTypeNames
+          type: Class
+        - uid: FoundationaLLM.Common.Constants.ResourceProviders.DataSourceTypes
+          name: DataSourceTypes
+          type: Class
+        - uid: FoundationaLLM.Common.Constants.ResourceProviders.PluginResourceProviderMetadata
+          name: PluginResourceProviderMetadata
+          type: Class
+        - uid: FoundationaLLM.Common.Constants.ResourceProviders.PluginResourceTypeNames
+          name: PluginResourceTypeNames
+          type: Class
+        - uid: FoundationaLLM.Common.Constants.ResourceProviders.PluginTypes
+          name: PluginTypes
+          type: Class
+        - uid: FoundationaLLM.Common.Constants.ResourceProviders.PromptResourceProviderMetadata
+          name: PromptResourceProviderMetadata
+          type: Class
+        - uid: FoundationaLLM.Common.Constants.ResourceProviders.PromptResourceTypeNames
+          name: PromptResourceTypeNames
+          type: Class
+        - uid: FoundationaLLM.Common.Constants.ResourceProviders.PromptTypes
+          name: PromptTypes
+          type: Class
+        - uid: FoundationaLLM.Common.Constants.ResourceProviders.ResourceObjectIdPropertyNames
+          name: ResourceObjectIdPropertyNames
+          type: Class
+        - uid: FoundationaLLM.Common.Constants.ResourceProviders.ResourceObjectIdPropertyValues
+          name: ResourceObjectIdPropertyValues
+          type: Class
+        - uid: FoundationaLLM.Common.Constants.ResourceProviders.ResourcePropertyNames
+          name: ResourcePropertyNames
+          type: Class
+        - uid: FoundationaLLM.Common.Constants.ResourceProviders.ResourceProviderActions
+          name: ResourceProviderActions
+          type: Class
+        - uid: FoundationaLLM.Common.Constants.ResourceProviders.ResourceProviderFormPayloadKeys
+          name: ResourceProviderFormPayloadKeys
+          type: Class
+        - uid: FoundationaLLM.Common.Constants.ResourceProviders.ResourceProviderMetadata
+          name: ResourceProviderMetadata
+          type: Class
+        - uid: FoundationaLLM.Common.Constants.ResourceProviders.ResourceProviderNames
+          name: ResourceProviderNames
+          type: Class
+        - uid: FoundationaLLM.Common.Constants.ResourceProviders.SharedResourceProviderMetadata
+          name: SharedResourceProviderMetadata
+          type: Class
+        - uid: FoundationaLLM.Common.Constants.ResourceProviders.SharedResourceTypeNames
+          name: SharedResourceTypeNames
+          type: Class
+        - uid: FoundationaLLM.Common.Constants.ResourceProviders.VectorResourceProviderMetadata
+          name: VectorResourceProviderMetadata
+          type: Class
+        - uid: FoundationaLLM.Common.Constants.ResourceProviders.VectorResourceTypeNames
+          name: VectorResourceTypeNames
+          type: Class
+        - uid: FoundationaLLM.Common.Constants.ResourceProviders.VectorTypes
+          name: VectorTypes
+          type: Class
+        - uid: FoundationaLLM.Common.Constants.ResourceProviders.VectorizationResourceProviderActions
+          name: VectorizationResourceProviderActions
+          type: Class
+        - uid: FoundationaLLM.Common.Constants.ResourceProviders.VectorizationResourceProviderMetadata
+          name: VectorizationResourceProviderMetadata
+          type: Class
+        - uid: FoundationaLLM.Common.Constants.ResourceProviders.VectorizationResourceTypeNames
+          name: VectorizationResourceTypeNames
+          type: Class
+        - uid: FoundationaLLM.Common.Constants.ResourceProviders.VectorizationSettingsNames
+          name: VectorizationSettingsNames
+          type: Class
+        - uid: FoundationaLLM.Common.Constants.ResourceProviders.WellKnownResourceIdentifiers
+          name: WellKnownResourceIdentifiers
+          type: Class
+      - uid: FoundationaLLM.Common.Constants.Telemetry
+        name: Telemetry
+        type: Namespace
+        items:
+        - uid: FoundationaLLM.Common.Constants.Telemetry.TelemetryActivityNames
+          name: TelemetryActivityNames
+          type: Class
+        - uid: FoundationaLLM.Common.Constants.Telemetry.TelemetryActivityTagNames
+          name: TelemetryActivityTagNames
+          type: Class
+      - uid: FoundationaLLM.Common.Constants.Templates
+        name: Templates
+        type: Namespace
+        items:
+        - uid: FoundationaLLM.Common.Constants.Templates.TemplateVariables
+          name: TemplateVariables
+          type: Class
+      - uid: FoundationaLLM.Common.Constants.AuthorizationClaims
+        name: AuthorizationClaims
+        type: Class
+      - uid: FoundationaLLM.Common.Constants.AzureCosmosDBContainers
+        name: AzureCosmosDBContainers
+        type: Class
+      - uid: FoundationaLLM.Common.Constants.ContentTypeMappings
+        name: ContentTypeMappings
+        type: Class
+      - uid: FoundationaLLM.Common.Constants.CorsPolicyNames
+        name: CorsPolicyNames
+        type: Class
+      - uid: FoundationaLLM.Common.Constants.FileExtensions
+        name: FileExtensions
+        type: Class
+      - uid: FoundationaLLM.Common.Constants.GatekeeperOptionNames
+        name: GatekeeperOptionNames
+        type: Class
+      - uid: FoundationaLLM.Common.Constants.HttpClientFactoryServiceKeyNames
+        name: HttpClientFactoryServiceKeyNames
+        type: Class
+      - uid: FoundationaLLM.Common.Constants.HttpClientNames
+        name: HttpClientNames
+        type: Class
+      - uid: FoundationaLLM.Common.Constants.HttpFormDataKeys
+        name: HttpFormDataKeys
+        type: Class
+      - uid: FoundationaLLM.Common.Constants.HttpHeaders
+        name: HttpHeaders
+        type: Class
+      - uid: FoundationaLLM.Common.Constants.LLMOrchestrationServiceNames
+        name: LLMOrchestrationServiceNames
+        type: Class
+      - uid: FoundationaLLM.Common.Constants.Participants
+        name: Participants
+        type: Enum
+      - uid: FoundationaLLM.Common.Constants.PrincipalTypes
+        name: PrincipalTypes
+        type: Class
+      - uid: FoundationaLLM.Common.Constants.ServiceNames
+        name: ServiceNames
+        type: Class
+      - uid: FoundationaLLM.Common.Constants.ServiceStatuses
+        name: ServiceStatuses
+        type: Class
+      - uid: FoundationaLLM.Common.Constants.StorageNames
+        name: StorageNames
+        type: Class
+      - uid: FoundationaLLM.Common.Constants.Swagger
+        name: Swagger
+        type: Class
+      - uid: FoundationaLLM.Common.Constants.UserProfileFlags
+        name: UserProfileFlags
+        type: Class
+      - uid: FoundationaLLM.Common.Constants.VectorizationSteps
+        name: VectorizationSteps
+        type: Class
+    - uid: FoundationaLLM.Common.Exceptions
+      name: Exceptions
+      type: Namespace
+      items:
+      - uid: FoundationaLLM.Common.Exceptions.AuthorizationException
+        name: AuthorizationException
+        type: Class
+      - uid: FoundationaLLM.Common.Exceptions.ConfigurationValidationException
+        name: ConfigurationValidationException
+        type: Class
+      - uid: FoundationaLLM.Common.Exceptions.ConfigurationValueException
+        name: ConfigurationValueException
+        type: Class
+      - uid: FoundationaLLM.Common.Exceptions.ContentException
+        name: ContentException
+        type: Class
+      - uid: FoundationaLLM.Common.Exceptions.ContentIdentifierException
+        name: ContentIdentifierException
+        type: Class
+      - uid: FoundationaLLM.Common.Exceptions.ContentSafetyException
+        name: ContentSafetyException
+        type: Class
+      - uid: FoundationaLLM.Common.Exceptions.CoreServiceException
+        name: CoreServiceException
+        type: Class
+      - uid: FoundationaLLM.Common.Exceptions.DataPipelineException
+        name: DataPipelineException
+        type: Class
+      - uid: FoundationaLLM.Common.Exceptions.EventException
+        name: EventException
+        type: Class
+      - uid: FoundationaLLM.Common.Exceptions.GatewayException
+        name: GatewayException
+        type: Class
+      - uid: FoundationaLLM.Common.Exceptions.HttpStatusCodeException
+        name: HttpStatusCodeException
+        type: Class
+      - uid: FoundationaLLM.Common.Exceptions.OrchestrationException
+        name: OrchestrationException
+        type: Class
+      - uid: FoundationaLLM.Common.Exceptions.PluginException
+        name: PluginException
+        type: Class
+      - uid: FoundationaLLM.Common.Exceptions.QuotaException
+        name: QuotaException
+        type: Class
+      - uid: FoundationaLLM.Common.Exceptions.ResourcePathException
+        name: ResourcePathException
+        type: Class
+      - uid: FoundationaLLM.Common.Exceptions.ResourceProviderException
+        name: ResourceProviderException
+        type: Class
+      - uid: FoundationaLLM.Common.Exceptions.SemanticCacheException
+        name: SemanticCacheException
+        type: Class
+      - uid: FoundationaLLM.Common.Exceptions.StorageException
+        name: StorageException
+        type: Class
+      - uid: FoundationaLLM.Common.Exceptions.TextProcessingException
+        name: TextProcessingException
+        type: Class
+      - uid: FoundationaLLM.Common.Exceptions.UserPromptRewriteException
+        name: UserPromptRewriteException
+        type: Class
+      - uid: FoundationaLLM.Common.Exceptions.ValidationException
+        name: ValidationException
+        type: Class
+      - uid: FoundationaLLM.Common.Exceptions.VectorizationException
+        name: VectorizationException
+        type: Class
+    - uid: FoundationaLLM.Common.Extensions
+      name: Extensions
+      type: Namespace
+      items:
+      - uid: FoundationaLLM.Common.Extensions.BlobStorageExtensions
+        name: BlobStorageExtensions
+        type: Class
+      - uid: FoundationaLLM.Common.Extensions.DictionaryExtensions
+        name: DictionaryExtensions
+        type: Class
+      - uid: FoundationaLLM.Common.Extensions.GuidExtensions
+        name: GuidExtensions
+        type: Class
+      - uid: FoundationaLLM.Common.Extensions.HttpClientExtensions
+        name: HttpClientExtensions
+        type: Class
+      - uid: FoundationaLLM.Common.Extensions.JsonElementExtensions
+        name: JsonElementExtensions
+        type: Class
+      - uid: FoundationaLLM.Common.Extensions.PipelineResponseExtensions
+        name: PipelineResponseExtensions
+        type: Class
+      - uid: FoundationaLLM.Common.Extensions.StringExtensions
+        name: StringExtensions
+        type: Class
+      - uid: FoundationaLLM.Common.Extensions.SwaggerGenOptionsExtensions
+        name: SwaggerGenOptionsExtensions
+        type: Class
+      - uid: FoundationaLLM.Common.Extensions.UrlExtensions
+        name: UrlExtensions
+        type: Class
+    - uid: FoundationaLLM.Common.Interfaces
+      name: Interfaces
+      type: Namespace
+      items:
+      - uid: FoundationaLLM.Common.Interfaces.Plugins
+        name: Plugins
+        type: Namespace
+        items:
+        - uid: FoundationaLLM.Common.Interfaces.Plugins.IContentTextExtractionPlugin
+          name: IContentTextExtractionPlugin
+          type: Interface
+        - uid: FoundationaLLM.Common.Interfaces.Plugins.IContentTextPartitioningPlugin
+          name: IContentTextPartitioningPlugin
+          type: Interface
+        - uid: FoundationaLLM.Common.Interfaces.Plugins.IDataPipelineStagePlugin
+          name: IDataPipelineStagePlugin
+          type: Interface
+        - uid: FoundationaLLM.Common.Interfaces.Plugins.IDataSourcePlugin
+          name: IDataSourcePlugin
+          type: Interface
+        - uid: FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManager
+          name: IPluginPackageManager
+          type: Interface
+        - uid: FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManagerResolver
+          name: IPluginPackageManagerResolver
+          type: Interface
+        - uid: FoundationaLLM.Common.Interfaces.Plugins.IPluginService
+          name: IPluginService
+          type: Interface
+      - uid: FoundationaLLM.Common.Interfaces.IAPIKeyValidationService
+        name: IAPIKeyValidationService
+        type: Interface
+      - uid: FoundationaLLM.Common.Interfaces.IAgentTemplateService
+        name: IAgentTemplateService
+        type: Interface
+      - uid: FoundationaLLM.Common.Interfaces.IAuthorizationServiceClient
+        name: IAuthorizationServiceClient
+        type: Interface
+      - uid: FoundationaLLM.Common.Interfaces.IAuthorizationServiceClientCacheService
+        name: IAuthorizationServiceClientCacheService
+        type: Interface
+      - uid: FoundationaLLM.Common.Interfaces.IAzureAIContentSafetyClient
+        name: IAzureAIContentSafetyClient
+        type: Interface
+      - uid: FoundationaLLM.Common.Interfaces.IAzureAISearchService
+        name: IAzureAISearchService
+        type: Interface
+      - uid: FoundationaLLM.Common.Interfaces.IAzureAIService
+        name: IAzureAIService
+        type: Interface
+      - uid: FoundationaLLM.Common.Interfaces.IAzureCosmosDBService
+        name: IAzureCosmosDBService
+        type: Interface
+      - uid: FoundationaLLM.Common.Interfaces.IAzureResourceManagerService
+        name: IAzureResourceManagerService
+        type: Interface
+      - uid: FoundationaLLM.Common.Interfaces.ICacheControlAPIService
+        name: ICacheControlAPIService
+        type: Interface
+      - uid: FoundationaLLM.Common.Interfaces.ICacheService
+        name: ICacheService
+        type: Interface
+      - uid: FoundationaLLM.Common.Interfaces.IClientFactoryService
+        name: IClientFactoryService
+        type: Interface
+      - uid: FoundationaLLM.Common.Interfaces.IContentSafetyService
+        name: IContentSafetyService
+        type: Interface
+      - uid: FoundationaLLM.Common.Interfaces.IContextServiceClient
+        name: IContextServiceClient
+        type: Interface
+      - uid: FoundationaLLM.Common.Interfaces.IDataPipelineStateService
+        name: IDataPipelineStateService
+        type: Interface
+      - uid: FoundationaLLM.Common.Interfaces.IDownstreamAPIService
+        name: IDownstreamAPIService
+        type: Interface
+      - uid: FoundationaLLM.Common.Interfaces.IEventService
+        name: IEventService
+        type: Interface
+      - uid: FoundationaLLM.Common.Interfaces.IHttpClientFactoryService
+        name: IHttpClientFactoryService
+        type: Interface
+      - uid: FoundationaLLM.Common.Interfaces.IHubAPIService
+        name: IHubAPIService
+        type: Interface
+      - uid: FoundationaLLM.Common.Interfaces.IIdentityManagementService
+        name: IIdentityManagementService
+        type: Interface
+      - uid: FoundationaLLM.Common.Interfaces.IIndexingService
+        name: IIndexingService
+        type: Interface
+      - uid: FoundationaLLM.Common.Interfaces.IManagementCapabilitiesService
+        name: IManagementCapabilitiesService
+        type: Interface
+      - uid: FoundationaLLM.Common.Interfaces.IManagementProviderService
+        name: IManagementProviderService
+        type: Interface
+      - uid: FoundationaLLM.Common.Interfaces.IOrchestrationContext
+        name: IOrchestrationContext
+        type: Interface
+      - uid: FoundationaLLM.Common.Interfaces.IQuotaService
+        name: IQuotaService
+        type: Interface
+      - uid: FoundationaLLM.Common.Interfaces.IResourceProviderClient
+        name: IResourceProviderClient
+        type: Interface
+      - uid: FoundationaLLM.Common.Interfaces.IResourceProviderResourceCacheService
+        name: IResourceProviderResourceCacheService
+        type: Interface
+      - uid: FoundationaLLM.Common.Interfaces.IResourceProviderService
+        name: IResourceProviderService
+        type: Interface
+      - uid: FoundationaLLM.Common.Interfaces.IResourceValidatorFactory
+        name: IResourceValidatorFactory
+        type: Interface
+      - uid: FoundationaLLM.Common.Interfaces.IRunnableResource
+        name: IRunnableResource
+        type: Interface
+      - uid: FoundationaLLM.Common.Interfaces.IStateServiceClient
+        name: IStateServiceClient
+        type: Interface
+      - uid: FoundationaLLM.Common.Interfaces.IStorageService
+        name: IStorageService
+        type: Interface
+      - uid: FoundationaLLM.Common.Interfaces.ITemplatingService
+        name: ITemplatingService
+        type: Interface
+      - uid: FoundationaLLM.Common.Interfaces.ITextEmbeddingService
+        name: ITextEmbeddingService
+        type: Interface
+      - uid: FoundationaLLM.Common.Interfaces.ITextSplitterService
+        name: ITextSplitterService
+        type: Interface
+      - uid: FoundationaLLM.Common.Interfaces.ITokenizerService
+        name: ITokenizerService
+        type: Interface
+      - uid: FoundationaLLM.Common.Interfaces.IUserClaimsProviderService
+        name: IUserClaimsProviderService
+        type: Interface
+      - uid: FoundationaLLM.Common.Interfaces.IUserProfileService
+        name: IUserProfileService
+        type: Interface
+    - uid: FoundationaLLM.Common.Middleware
+      name: Middleware
+      type: Namespace
+      items:
+      - uid: FoundationaLLM.Common.Middleware.CallContextMiddleware
+        name: CallContextMiddleware
+        type: Class
+      - uid: FoundationaLLM.Common.Middleware.QuotaMiddleware
+        name: QuotaMiddleware
+        type: Class
+    - uid: FoundationaLLM.Common.Models
+      name: Models
+      type: Namespace
+      items:
+      - uid: FoundationaLLM.Common.Models.Authentication
+        name: Authentication
+        type: Namespace
+        items:
+        - uid: FoundationaLLM.Common.Models.Authentication.ObjectQueryParameters
+          name: ObjectQueryParameters
+          type: Class
+        - uid: FoundationaLLM.Common.Models.Authentication.ObjectQueryResult
+          name: ObjectQueryResult
+          type: Class
+        - uid: FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity
+          name: UnifiedUserIdentity
+          type: Class
+      - uid: FoundationaLLM.Common.Models.Authorization
+        name: Authorization
+        type: Namespace
+        items:
+        - uid: FoundationaLLM.Common.Models.Authorization.ActionAuthorizationRequest
+          name: ActionAuthorizationRequest
+          type: Class
+        - uid: FoundationaLLM.Common.Models.Authorization.ActionAuthorizationResult
+          name: ActionAuthorizationResult
+          type: Class
+        - uid: FoundationaLLM.Common.Models.Authorization.AuthorizableAction
+          name: AuthorizableAction
+          type: Class
+        - uid: FoundationaLLM.Common.Models.Authorization.AuthorizableActions
+          name: AuthorizableActions
+          type: Class
+        - uid: FoundationaLLM.Common.Models.Authorization.ClientSecretKey
+          name: ClientSecretKey
+          type: Class
+        - uid: FoundationaLLM.Common.Models.Authorization.PersistedSecretKey
+          name: PersistedSecretKey
+          type: Class
+        - uid: FoundationaLLM.Common.Models.Authorization.PolicyAssignment
+          name: PolicyAssignment
+          type: Class
+        - uid: FoundationaLLM.Common.Models.Authorization.PolicyDefinition
+          name: PolicyDefinition
+          type: Class
+        - uid: FoundationaLLM.Common.Models.Authorization.PolicyDefinitions
+          name: PolicyDefinitions
+          type: Class
+        - uid: FoundationaLLM.Common.Models.Authorization.PolicyMatchingStrategy
+          name: PolicyMatchingStrategy
+          type: Class
+        - uid: FoundationaLLM.Common.Models.Authorization.ResourcePathAuthorizationResult
+          name: ResourcePathAuthorizationResult
+          type: Class
+        - uid: FoundationaLLM.Common.Models.Authorization.RoleAssignmentCreateRequest
+          name: RoleAssignmentCreateRequest
+          type: Class
+        - uid: FoundationaLLM.Common.Models.Authorization.RoleAssignmentDeleteRequest
+          name: RoleAssignmentDeleteRequest
+          type: Class
+        - uid: FoundationaLLM.Common.Models.Authorization.RoleAssignmentOperationResult
+          name: RoleAssignmentOperationResult
+          type: Class
+        - uid: FoundationaLLM.Common.Models.Authorization.RoleAssignmentQueryParameters
+          name: RoleAssignmentQueryParameters
+          type: Class
+        - uid: FoundationaLLM.Common.Models.Authorization.RoleAssignmentsWithActionsRequest
+          name: RoleAssignmentsWithActionsRequest
+          type: Class
+        - uid: FoundationaLLM.Common.Models.Authorization.RoleAssignmentsWithActionsResult
+          name: RoleAssignmentsWithActionsResult
+          type: Class
+        - uid: FoundationaLLM.Common.Models.Authorization.RoleDefinitions
+          name: RoleDefinitions
+          type: Class
+        - uid: FoundationaLLM.Common.Models.Authorization.SecretKey
+          name: SecretKey
+          type: Class
+        - uid: FoundationaLLM.Common.Models.Authorization.SecretKeyValidationResult
+          name: SecretKeyValidationResult
+          type: Class
+        - uid: FoundationaLLM.Common.Models.Authorization.SecurityPrincipalQueryParameters
+          name: SecurityPrincipalQueryParameters
+          type: Class
+        - uid: FoundationaLLM.Common.Models.Authorization.UserAuthorizationContext
+          name: UserAuthorizationContext
+          type: Class
+      - uid: FoundationaLLM.Common.Models.Azure
+        name: Azure
+        type: Namespace
+        items:
+        - uid: FoundationaLLM.Common.Models.Azure.CosmosDB
+          name: CosmosDB
+          type: Namespace
+          items:
+          - uid: FoundationaLLM.Common.Models.Azure.CosmosDB.IPatchOperationItem
+            name: IPatchOperationItem
+            type: Interface
+          - uid: FoundationaLLM.Common.Models.Azure.CosmosDB.PatchOperationItem`1
+            name: PatchOperationItem<T>
+            type: Class
+        - uid: FoundationaLLM.Common.Models.Azure.AzureOpenAIAccount
+          name: AzureOpenAIAccount
+          type: Class
+        - uid: FoundationaLLM.Common.Models.Azure.AzureOpenAIAccountDeployment
+          name: AzureOpenAIAccountDeployment
+          type: Class
+      - uid: FoundationaLLM.Common.Models.AzureAIService
+        name: AzureAIService
+        type: Namespace
+        items:
+        - uid: FoundationaLLM.Common.Models.AzureAIService.AzureAIJobRequest
+          name: AzureAIJobRequest
+          type: Class
+        - uid: FoundationaLLM.Common.Models.AzureAIService.BatchDataInput
+          name: BatchDataInput
+          type: Class
+        - uid: FoundationaLLM.Common.Models.AzureAIService.CreatedBy
+          name: CreatedBy
+          type: Class
+        - uid: FoundationaLLM.Common.Models.AzureAIService.DataVersion
+          name: DataVersion
+          type: Class
+        - uid: FoundationaLLM.Common.Models.AzureAIService.DataVersionResponse
+          name: DataVersionResponse
+          type: Class
+        - uid: FoundationaLLM.Common.Models.AzureAIService.DatasetVersionRequest
+          name: DatasetVersionRequest
+          type: Class
+        - uid: FoundationaLLM.Common.Models.AzureAIService.EntityMetadata
+          name: EntityMetadata
+          type: Class
+        - uid: FoundationaLLM.Common.Models.AzureAIService.GptConnection
+          name: GptConnection
+          type: Class
+        - uid: FoundationaLLM.Common.Models.AzureAIService.GptConnections
+          name: GptConnections
+          type: Class
+        - uid: FoundationaLLM.Common.Models.AzureAIService.InputsMapping
+          name: InputsMapping
+          type: Class
+        - uid: FoundationaLLM.Common.Models.AzureAIService.MutableProps
+          name: MutableProps
+          type: Class
+      - uid: FoundationaLLM.Common.Models.Cache
+        name: Cache
+        type: Namespace
+        items:
+        - uid: FoundationaLLM.Common.Models.Cache.APICacheRefreshResult
+          name: APICacheRefreshResult
+          type: Class
+        - uid: FoundationaLLM.Common.Models.Cache.CacheItem
+          name: CacheItem
+          type: Class
+        - uid: FoundationaLLM.Common.Models.Cache.CacheKey
+          name: CacheKey
+          type: Class
+        - uid: FoundationaLLM.Common.Models.Cache.CacheSettings
+          name: CacheSettings
+          type: Class
+      - uid: FoundationaLLM.Common.Models.CodeExecution
+        name: CodeExecution
+        type: Namespace
+        items:
+        - uid: FoundationaLLM.Common.Models.CodeExecution.CodeSessionCodeExecuteRequest
+          name: CodeSessionCodeExecuteRequest
+          type: Class
+        - uid: FoundationaLLM.Common.Models.CodeExecution.CodeSessionCodeExecuteResponse
+          name: CodeSessionCodeExecuteResponse
+          type: Class
+        - uid: FoundationaLLM.Common.Models.CodeExecution.CodeSessionFileDownloadRequest
+          name: CodeSessionFileDownloadRequest
+          type: Class
+        - uid: FoundationaLLM.Common.Models.CodeExecution.CodeSessionFileDownloadRequestValidator
+          name: CodeSessionFileDownloadRequestValidator
+          type: Class
+        - uid: FoundationaLLM.Common.Models.CodeExecution.CodeSessionFileDownloadResponse
+          name: CodeSessionFileDownloadResponse
+          type: Class
+        - uid: FoundationaLLM.Common.Models.CodeExecution.CodeSessionFileUploadRequest
+          name: CodeSessionFileUploadRequest
+          type: Class
+        - uid: FoundationaLLM.Common.Models.CodeExecution.CodeSessionFileUploadRequestValidator
+          name: CodeSessionFileUploadRequestValidator
+          type: Class
+        - uid: FoundationaLLM.Common.Models.CodeExecution.CodeSessionFileUploadResponse
+          name: CodeSessionFileUploadResponse
+          type: Class
+        - uid: FoundationaLLM.Common.Models.CodeExecution.CreateCodeSessionRequest
+          name: CreateCodeSessionRequest
+          type: Class
+        - uid: FoundationaLLM.Common.Models.CodeExecution.CreateCodeSessionRequestValidator
+          name: CreateCodeSessionRequestValidator
+          type: Class
+        - uid: FoundationaLLM.Common.Models.CodeExecution.CreateCodeSessionResponse
+          name: CreateCodeSessionResponse
+          type: Class
+      - uid: FoundationaLLM.Common.Models.Collections
+        name: Collections
+        type: Namespace
+        items:
+        - uid: FoundationaLLM.Common.Models.Collections.PagedResponse`1
+          name: PagedResponse<T>
+          type: Class
+      - uid: FoundationaLLM.Common.Models.Configuration
+        name: Configuration
+        type: Namespace
+        items:
+        - uid: FoundationaLLM.Common.Models.Configuration.API
+          name: API
+          type: Namespace
+          items:
+          - uid: FoundationaLLM.Common.Models.Configuration.API.APIClientSettings
+            name: APIClientSettings
+            type: Class
+        - uid: FoundationaLLM.Common.Models.Configuration.AppConfiguration
+          name: AppConfiguration
+          type: Namespace
+          items:
+          - uid: FoundationaLLM.Common.Models.Configuration.AppConfiguration.AppConfigurationEntry
+            name: AppConfigurationEntry
+            type: Class
+          - uid: FoundationaLLM.Common.Models.Configuration.AppConfiguration.AppConfigurationEventData
+            name: AppConfigurationEventData
+            type: Class
+          - uid: FoundationaLLM.Common.Models.Configuration.AppConfiguration.AppConfigurationKeyVaultUri
+            name: AppConfigurationKeyVaultUri
+            type: Class
+        - uid: FoundationaLLM.Common.Models.Configuration.Authentication
+          name: Authentication
+          type: Namespace
+          items:
+          - uid: FoundationaLLM.Common.Models.Configuration.Authentication.EntraSettings
+            name: EntraSettings
+            type: Class
+        - uid: FoundationaLLM.Common.Models.Configuration.Authorization
+          name: Authorization
+          type: Namespace
+          items:
+          - uid: FoundationaLLM.Common.Models.Configuration.Authorization.AuthorizationServiceClientSettings
+            name: AuthorizationServiceClientSettings
+            type: Class
+        - uid: FoundationaLLM.Common.Models.Configuration.AzureAI
+          name: AzureAI
+          type: Namespace
+          items:
+          - uid: FoundationaLLM.Common.Models.Configuration.AzureAI.AzureAISettings
+            name: AzureAISettings
+            type: Class
+        - uid: FoundationaLLM.Common.Models.Configuration.Branding
+          name: Branding
+          type: Namespace
+          items:
+          - uid: FoundationaLLM.Common.Models.Configuration.Branding.ClientBrandingConfiguration
+            name: ClientBrandingConfiguration
+            type: Class
+        - uid: FoundationaLLM.Common.Models.Configuration.ContentSafety
+          name: ContentSafety
+          type: Namespace
+          items:
+          - uid: FoundationaLLM.Common.Models.Configuration.ContentSafety.AzureContentSafetySettings
+            name: AzureContentSafetySettings
+            type: Class
+        - uid: FoundationaLLM.Common.Models.Configuration.CosmosDB
+          name: CosmosDB
+          type: Namespace
+          items:
+          - uid: FoundationaLLM.Common.Models.Configuration.CosmosDB.AzureCosmosDBSettings
+            name: AzureCosmosDBSettings
+            type: Class
+        - uid: FoundationaLLM.Common.Models.Configuration.Environment
+          name: Environment
+          type: Namespace
+          items:
+          - uid: FoundationaLLM.Common.Models.Configuration.Environment.DependencyInjectionContainerSettings
+            name: DependencyInjectionContainerSettings
+            type: Class
+          - uid: FoundationaLLM.Common.Models.Configuration.Environment.EnvironmentVariableEntry
+            name: EnvironmentVariableEntry
+            type: Class
+        - uid: FoundationaLLM.Common.Models.Configuration.Events
+          name: Events
+          type: Namespace
+          items:
+          - uid: FoundationaLLM.Common.Models.Configuration.Events.AzureEventGridEventServiceProfile
+            name: AzureEventGridEventServiceProfile
+            type: Class
+          - uid: FoundationaLLM.Common.Models.Configuration.Events.AzureEventGridEventServiceSettings
+            name: AzureEventGridEventServiceSettings
+            type: Class
+          - uid: FoundationaLLM.Common.Models.Configuration.Events.EventGridTopicProfile
+            name: EventGridTopicProfile
+            type: Class
+          - uid: FoundationaLLM.Common.Models.Configuration.Events.LocalEventServiceSettings
+            name: LocalEventServiceSettings
+            type: Class
+        - uid: FoundationaLLM.Common.Models.Configuration.Instance
+          name: Instance
+          type: Namespace
+          items:
+          - uid: FoundationaLLM.Common.Models.Configuration.Instance.InstanceSettings
+            name: InstanceSettings
+            type: Class
+        - uid: FoundationaLLM.Common.Models.Configuration.KeyVault
+          name: KeyVault
+          type: Namespace
+          items:
+          - uid: FoundationaLLM.Common.Models.Configuration.KeyVault.KeyVaultSecretEntry
+            name: KeyVaultSecretEntry
+            type: Class
+        - uid: FoundationaLLM.Common.Models.Configuration.ResourceProviders
+          name: ResourceProviders
+          type: Namespace
+          items:
+          - uid: FoundationaLLM.Common.Models.Configuration.ResourceProviders.ResourceProviderCacheSettings
+            name: ResourceProviderCacheSettings
+            type: Class
+        - uid: FoundationaLLM.Common.Models.Configuration.Security
+          name: Security
+          type: Namespace
+          items:
+          - uid: FoundationaLLM.Common.Models.Configuration.Security.MicrosoftGraphIdentityManagementServiceSettings
+            name: MicrosoftGraphIdentityManagementServiceSettings
+            type: Class
+        - uid: FoundationaLLM.Common.Models.Configuration.Storage
+          name: Storage
+          type: Namespace
+          items:
+          - uid: FoundationaLLM.Common.Models.Configuration.Storage.BlobStorageServiceSettings
+            name: BlobStorageServiceSettings
+            type: Class
+          - uid: FoundationaLLM.Common.Models.Configuration.Storage.BlobStorageSettings
+            name: BlobStorageSettings
+            type: Class
+        - uid: FoundationaLLM.Common.Models.Configuration.Text
+          name: Text
+          type: Namespace
+          items:
+          - uid: FoundationaLLM.Common.Models.Configuration.Text.TokenTextSplitterServiceSettings
+            name: TokenTextSplitterServiceSettings
+            type: Class
+        - uid: FoundationaLLM.Common.Models.Configuration.Users
+          name: Users
+          type: Namespace
+          items:
+          - uid: FoundationaLLM.Common.Models.Configuration.Users.UserProfile
+            name: UserProfile
+            type: Class
+          - uid: FoundationaLLM.Common.Models.Configuration.Users.UserProfileUpdateRequest
+            name: UserProfileUpdateRequest
+            type: Class
+      - uid: FoundationaLLM.Common.Models.ContentSafety
+        name: ContentSafety
+        type: Namespace
+        items:
+        - uid: FoundationaLLM.Common.Models.ContentSafety.AnalyzeTextRequest
+          name: AnalyzeTextRequest
+          type: Class
+        - uid: FoundationaLLM.Common.Models.ContentSafety.AnalyzeTextResult
+          name: AnalyzeTextResult
+          type: Class
+        - uid: FoundationaLLM.Common.Models.ContentSafety.ContentSafetyAnalysisResult
+          name: ContentSafetyAnalysisResult
+          type: Class
+        - uid: FoundationaLLM.Common.Models.ContentSafety.ContentSafetyDocument
+          name: ContentSafetyDocument
+          type: Class
+        - uid: FoundationaLLM.Common.Models.ContentSafety.ContentSafetyDocumentAnalysisResult
+          name: ContentSafetyDocumentAnalysisResult
+          type: Class
+        - uid: FoundationaLLM.Common.Models.ContentSafety.ShieldPromptDetails
+          name: ShieldPromptDetails
+          type: Class
+        - uid: FoundationaLLM.Common.Models.ContentSafety.ShieldPromptRequest
+          name: ShieldPromptRequest
+          type: Class
+        - uid: FoundationaLLM.Common.Models.ContentSafety.ShieldPromptResult
+          name: ShieldPromptResult
+          type: Class
+        - uid: FoundationaLLM.Common.Models.ContentSafety.TextCategory
+          name: TextCategory
+          type: Class
+        - uid: FoundationaLLM.Common.Models.ContentSafety.TextCategoryResult
+          name: TextCategoryResult
+          type: Class
+      - uid: FoundationaLLM.Common.Models.Context
+        name: Context
+        type: Namespace
+        items:
+        - uid: FoundationaLLM.Common.Models.Context.Knowledge
+          name: Knowledge
+          type: Namespace
+          items:
+          - uid: FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeGraphQuery
+            name: ContextKnowledgeGraphQuery
+            type: Class
+          - uid: FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeGraphResponse
+            name: ContextKnowledgeGraphResponse
+            type: Class
+          - uid: FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeResourceListRequest
+            name: ContextKnowledgeResourceListRequest
+            type: Class
+          - uid: FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeSourceQueryRequest
+            name: ContextKnowledgeSourceQueryRequest
+            type: Class
+          - uid: FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeSourceQueryResponse
+            name: ContextKnowledgeSourceQueryResponse
+            type: Class
+          - uid: FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeUnitRenderGraphResponse
+            name: ContextKnowledgeUnitRenderGraphResponse
+            type: Class
+          - uid: FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeUnitSetGraphRequest
+            name: ContextKnowledgeUnitSetGraphRequest
+            type: Class
+          - uid: FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeUnitVectorStoreFilter
+            name: ContextKnowledgeUnitVectorStoreFilter
+            type: Class
+          - uid: FoundationaLLM.Common.Models.Context.Knowledge.ContextVectorStoreQuery
+            name: ContextVectorStoreQuery
+            type: Class
+          - uid: FoundationaLLM.Common.Models.Context.Knowledge.ContextVectorStoreResponse
+            name: ContextVectorStoreResponse
+            type: Class
+          - uid: FoundationaLLM.Common.Models.Context.Knowledge.KnowledgeGraph
+            name: KnowledgeGraph
+            type: Class
+          - uid: FoundationaLLM.Common.Models.Context.Knowledge.KnowledgeGraphRenderingNode
+            name: KnowledgeGraphRenderingNode
+            type: Class
+        - uid: FoundationaLLM.Common.Models.Context.ContextCodeSessionFileUploadRecord
+          name: ContextCodeSessionFileUploadRecord
+          type: Class
+        - uid: FoundationaLLM.Common.Models.Context.ContextCodeSessionRecord
+          name: ContextCodeSessionRecord
+          type: Class
+        - uid: FoundationaLLM.Common.Models.Context.ContextFileContent
+          name: ContextFileContent
+          type: Class
+        - uid: FoundationaLLM.Common.Models.Context.ContextFileRecord
+          name: ContextFileRecord
+          type: Class
+        - uid: FoundationaLLM.Common.Models.Context.ContextRecord
+          name: ContextRecord
+          type: Class
+        - uid: FoundationaLLM.Common.Models.Context.ContextTextChunk
+          name: ContextTextChunk
+          type: Class
+      - uid: FoundationaLLM.Common.Models.Conversation
+        name: Conversation
+        type: Namespace
+        items:
+        - uid: FoundationaLLM.Common.Models.Conversation.AgentGatekeeperOverrideOption
+          name: AgentGatekeeperOverrideOption
+          type: Enum
+        - uid: FoundationaLLM.Common.Models.Conversation.AttachmentDetail
+          name: AttachmentDetail
+          type: Class
+        - uid: FoundationaLLM.Common.Models.Conversation.CompletionPrompt
+          name: CompletionPrompt
+          type: Class
+        - uid: FoundationaLLM.Common.Models.Conversation.Conversation
+          name: Conversation
+          type: Class
+        - uid: FoundationaLLM.Common.Models.Conversation.ConversationProperties
+          name: ConversationProperties
+          type: Class
+        - uid: FoundationaLLM.Common.Models.Conversation.Message
+          name: Message
+          type: Class
+        - uid: FoundationaLLM.Common.Models.Conversation.MessageContent
+          name: MessageContent
+          type: Class
+        - uid: FoundationaLLM.Common.Models.Conversation.MessageHistoryItem
+          name: MessageHistoryItem
+          type: Class
+        - uid: FoundationaLLM.Common.Models.Conversation.MessageRatingRequest
+          name: MessageRatingRequest
+          type: Class
+      - uid: FoundationaLLM.Common.Models.DataPipelines
+        name: DataPipelines
+        type: Namespace
+        items:
+        - uid: FoundationaLLM.Common.Models.DataPipelines.ContentIdentifier
+          name: ContentIdentifier
+          type: Class
+        - uid: FoundationaLLM.Common.Models.DataPipelines.ContentItemsRegistry
+          name: ContentItemsRegistry
+          type: Class
+        - uid: FoundationaLLM.Common.Models.DataPipelines.ContentItemsRegistryEntry
+          name: ContentItemsRegistryEntry
+          type: Class
+        - uid: FoundationaLLM.Common.Models.DataPipelines.DataPipelineContentItem
+          name: DataPipelineContentItem
+          type: Class
+        - uid: FoundationaLLM.Common.Models.DataPipelines.DataPipelineContentItemContentPart
+          name: DataPipelineContentItemContentPart
+          type: Class
+        - uid: FoundationaLLM.Common.Models.DataPipelines.DataPipelineContentItemKnowledgePart
+          name: DataPipelineContentItemKnowledgePart
+          type: Class
+        - uid: FoundationaLLM.Common.Models.DataPipelines.DataPipelineContentItemPartBase
+          name: DataPipelineContentItemPartBase
+          type: Class
+        - uid: FoundationaLLM.Common.Models.DataPipelines.DataPipelineItemBase
+          name: DataPipelineItemBase
+          type: Class
+        - uid: FoundationaLLM.Common.Models.DataPipelines.DataPipelineRunWorkItem
+          name: DataPipelineRunWorkItem
+          type: Class
+        - uid: FoundationaLLM.Common.Models.DataPipelines.DataPipelineStateArtifact
+          name: DataPipelineStateArtifact
+          type: Class
+        - uid: FoundationaLLM.Common.Models.DataPipelines.DataPipelineStateArtifactChangeLog
+          name: DataPipelineStateArtifactChangeLog
+          type: Class
+        - uid: FoundationaLLM.Common.Models.DataPipelines.DataPipelineStateArtifactChangeLog.DataPipelineStateArtifactChangeLogEntry
+          name: DataPipelineStateArtifactChangeLog.DataPipelineStateArtifactChangeLogEntry
+          type: Class
+      - uid: FoundationaLLM.Common.Models.Events
+        name: Events
+        type: Namespace
+        items:
+        - uid: FoundationaLLM.Common.Models.Events.EventTypeEventArgs
+          name: EventTypeEventArgs
+          type: Class
+        - uid: FoundationaLLM.Common.Models.Events.EventTypeEventDelegate
+          name: EventTypeEventDelegate
+          type: Delegate
+        - uid: FoundationaLLM.Common.Models.Events.ResourceProviderEventData
+          name: ResourceProviderEventData
+          type: Class
+      - uid: FoundationaLLM.Common.Models.Files
+        name: Files
+        type: Namespace
+        items:
+        - uid: FoundationaLLM.Common.Models.Files.FileContentTypeResult
+          name: FileContentTypeResult
+          type: Class
+      - uid: FoundationaLLM.Common.Models.Gateway
+        name: Gateway
+        type: Namespace
+        items:
+        - uid: FoundationaLLM.Common.Models.Gateway.AgentCapabilityRequest
+          name: AgentCapabilityRequest
+          type: Class
+      - uid: FoundationaLLM.Common.Models.Infrastructure
+        name: Infrastructure
+        type: Namespace
+        items:
+        - uid: FoundationaLLM.Common.Models.Infrastructure.ServiceStatusInfo
+          name: ServiceStatusInfo
+          type: Class
+      - uid: FoundationaLLM.Common.Models.Knowledge
+        name: Knowledge
+        type: Namespace
+        items:
+        - uid: FoundationaLLM.Common.Models.Knowledge.ExtractedKnowledgeEntity
+          name: ExtractedKnowledgeEntity
+          type: Class
+        - uid: FoundationaLLM.Common.Models.Knowledge.ExtractedKnowledgeRelationship
+          name: ExtractedKnowledgeRelationship
+          type: Class
+        - uid: FoundationaLLM.Common.Models.Knowledge.KnowledgeBucketsRegistry
+          name: KnowledgeBucketsRegistry
+          type: Class
+        - uid: FoundationaLLM.Common.Models.Knowledge.KnowledgeBucketsRegistryEntry
+          name: KnowledgeBucketsRegistryEntry
+          type: Class
+        - uid: FoundationaLLM.Common.Models.Knowledge.KnowledgeEntity
+          name: KnowledgeEntity
+          type: Class
+        - uid: FoundationaLLM.Common.Models.Knowledge.KnowledgeEntityBase
+          name: KnowledgeEntityBase
+          type: Class
+        - uid: FoundationaLLM.Common.Models.Knowledge.KnowledgeEntityEmbedding
+          name: KnowledgeEntityEmbedding
+          type: Class
+        - uid: FoundationaLLM.Common.Models.Knowledge.KnowledgeEntityRelationshipCollection`2
+          name: KnowledgeEntityRelationshipCollection<TEntity, TRelationship>
+          type: Class
+        - uid: FoundationaLLM.Common.Models.Knowledge.KnowledgeItemBase
+          name: KnowledgeItemBase
+          type: Class
+        - uid: FoundationaLLM.Common.Models.Knowledge.KnowledgeRelationship
+          name: KnowledgeRelationship
+          type: Class
+        - uid: FoundationaLLM.Common.Models.Knowledge.KnowledgeRelationshipBase
+          name: KnowledgeRelationshipBase
+          type: Class
+        - uid: FoundationaLLM.Common.Models.Knowledge.KnowledgeRelationshipEmbedding
+          name: KnowledgeRelationshipEmbedding
+          type: Class
+      - uid: FoundationaLLM.Common.Models.Metadata
+        name: Metadata
+        type: Namespace
+        items:
+        - uid: FoundationaLLM.Common.Models.Metadata.EmbeddingModel
+          name: EmbeddingModel
+          type: Class
+        - uid: FoundationaLLM.Common.Models.Metadata.MetadataBase
+          name: MetadataBase
+          type: Class
+      - uid: FoundationaLLM.Common.Models.Orchestration
+        name: Orchestration
+        type: Namespace
+        items:
+        - uid: FoundationaLLM.Common.Models.Orchestration.DataSourceConfigurations
+          name: DataSourceConfigurations
+          type: Namespace
+          items:
+          - uid: FoundationaLLM.Common.Models.Orchestration.DataSourceConfigurations.BlobStorageConfiguration
+            name: BlobStorageConfiguration
+            type: Class
+          - uid: FoundationaLLM.Common.Models.Orchestration.DataSourceConfigurations.CXOConfiguration
+            name: CXOConfiguration
+            type: Class
+          - uid: FoundationaLLM.Common.Models.Orchestration.DataSourceConfigurations.SQLDatabaseConfiguration
+            name: SQLDatabaseConfiguration
+            type: Class
+          - uid: FoundationaLLM.Common.Models.Orchestration.DataSourceConfigurations.SearchServiceConfiguration
+            name: SearchServiceConfiguration
+            type: Class
+        - uid: FoundationaLLM.Common.Models.Orchestration.DataSources
+          name: DataSources
+          type: Namespace
+          items:
+          - uid: FoundationaLLM.Common.Models.Orchestration.DataSources.BlobStorageDataSource
+            name: BlobStorageDataSource
+            type: Class
+          - uid: FoundationaLLM.Common.Models.Orchestration.DataSources.CXODataSource
+            name: CXODataSource
+            type: Class
+          - uid: FoundationaLLM.Common.Models.Orchestration.DataSources.DataSourceBase
+            name: DataSourceBase
+            type: Class
+          - uid: FoundationaLLM.Common.Models.Orchestration.DataSources.SQLDatabaseDataSource
+            name: SQLDatabaseDataSource
+            type: Class
+          - uid: FoundationaLLM.Common.Models.Orchestration.DataSources.SearchServiceDataSource
+            name: SearchServiceDataSource
+            type: Class
+        - uid: FoundationaLLM.Common.Models.Orchestration.Direct
+          name: Direct
+          type: Namespace
+          items:
+          - uid: FoundationaLLM.Common.Models.Orchestration.Direct.AssistantCompletionMessage
+            name: AssistantCompletionMessage
+            type: Class
+          - uid: FoundationaLLM.Common.Models.Orchestration.Direct.AzureAICompletionInputData
+            name: AzureAICompletionInputData
+            type: Class
+          - uid: FoundationaLLM.Common.Models.Orchestration.Direct.AzureAICompletionParameters
+            name: AzureAICompletionParameters
+            type: Class
+          - uid: FoundationaLLM.Common.Models.Orchestration.Direct.AzureAICompletionRequest
+            name: AzureAICompletionRequest
+            type: Class
+          - uid: FoundationaLLM.Common.Models.Orchestration.Direct.AzureAICompletionResponse
+            name: AzureAICompletionResponse
+            type: Class
+          - uid: FoundationaLLM.Common.Models.Orchestration.Direct.AzureOpenAICompletionParameters
+            name: AzureOpenAICompletionParameters
+            type: Class
+          - uid: FoundationaLLM.Common.Models.Orchestration.Direct.AzureOpenAICompletionRequest
+            name: AzureOpenAICompletionRequest
+            type: Class
+          - uid: FoundationaLLM.Common.Models.Orchestration.Direct.AzureOpenAICompletionResponse
+            name: AzureOpenAICompletionResponse
+            type: Class
+          - uid: FoundationaLLM.Common.Models.Orchestration.Direct.AzureOpenAICompletionResponseChoice
+            name: AzureOpenAICompletionResponseChoice
+            type: Class
+          - uid: FoundationaLLM.Common.Models.Orchestration.Direct.CompletionMessage
+            name: CompletionMessage
+            type: Class
+          - uid: FoundationaLLM.Common.Models.Orchestration.Direct.CompletionUsage
+            name: CompletionUsage
+            type: Class
+          - uid: FoundationaLLM.Common.Models.Orchestration.Direct.LogitBias
+            name: LogitBias
+            type: Class
+          - uid: FoundationaLLM.Common.Models.Orchestration.Direct.SystemCompletionMessage
+            name: SystemCompletionMessage
+            type: Class
+          - uid: FoundationaLLM.Common.Models.Orchestration.Direct.ToolCompletionMessage
+            name: ToolCompletionMessage
+            type: Class
+          - uid: FoundationaLLM.Common.Models.Orchestration.Direct.UserCompletionMessage
+            name: UserCompletionMessage
+            type: Class
+        - uid: FoundationaLLM.Common.Models.Orchestration.Request
+          name: Request
+          type: Namespace
+          items:
+          - uid: FoundationaLLM.Common.Models.Orchestration.Request.AttachmentProperties
+            name: AttachmentProperties
+            type: Class
+          - uid: FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequest
+            name: CompletionRequest
+            type: Class
+          - uid: FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequestBase
+            name: CompletionRequestBase
+            type: Class
+          - uid: FoundationaLLM.Common.Models.Orchestration.Request.FileHistoryItem
+            name: FileHistoryItem
+            type: Class
+          - uid: FoundationaLLM.Common.Models.Orchestration.Request.LLMCompletionRequest
+            name: LLMCompletionRequest
+            type: Class
+          - uid: FoundationaLLM.Common.Models.Orchestration.Request.OrchestrationSettings
+            name: OrchestrationSettings
+            type: Class
+        - uid: FoundationaLLM.Common.Models.Orchestration.Response
+          name: Response
+          type: Namespace
+          items:
+          - uid: FoundationaLLM.Common.Models.Orchestration.Response.AnalysisResult
+            name: AnalysisResult
+            type: Class
+          - uid: FoundationaLLM.Common.Models.Orchestration.Response.CompletionResponse
+            name: CompletionResponse
+            type: Class
+          - uid: FoundationaLLM.Common.Models.Orchestration.Response.CompletionResponseBase
+            name: CompletionResponseBase
+            type: Class
+          - uid: FoundationaLLM.Common.Models.Orchestration.Response.ContentArtifact
+            name: ContentArtifact
+            type: Class
+          - uid: FoundationaLLM.Common.Models.Orchestration.Response.FilePathContentItem
+            name: FilePathContentItem
+            type: Class
+          - uid: FoundationaLLM.Common.Models.Orchestration.Response.ImageFileMessageContentItem
+            name: ImageFileMessageContentItem
+            type: Class
+          - uid: FoundationaLLM.Common.Models.Orchestration.Response.LLMCompletionResponse
+            name: LLMCompletionResponse
+            type: Class
+          - uid: FoundationaLLM.Common.Models.Orchestration.Response.MessageContentItemBase
+            name: MessageContentItemBase
+            type: Class
+          - uid: FoundationaLLM.Common.Models.Orchestration.Response.TextMessageContentItem
+            name: TextMessageContentItem
+            type: Class
+        - uid: FoundationaLLM.Common.Models.Orchestration.LongRunningOperation
+          name: LongRunningOperation
+          type: Class
+        - uid: FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext
+          name: LongRunningOperationContext
+          type: Class
+        - uid: FoundationaLLM.Common.Models.Orchestration.LongRunningOperationLogEntry
+          name: LongRunningOperationLogEntry
+          type: Class
+        - uid: FoundationaLLM.Common.Models.Orchestration.OperationStatus
+          name: OperationStatus
+          type: Enum
+        - uid: FoundationaLLM.Common.Models.Orchestration.OrchestrationContext
+          name: OrchestrationContext
+          type: Class
+        - uid: FoundationaLLM.Common.Models.Orchestration.SummaryResponse
+          name: SummaryResponse
+          type: Class
+      - uid: FoundationaLLM.Common.Models.Plugins
+        name: Plugins
+        type: Namespace
+        items:
+        - uid: FoundationaLLM.Common.Models.Plugins.Metadata
+          name: Metadata
+          type: Namespace
+          items:
+          - uid: FoundationaLLM.Common.Models.Plugins.Metadata.PluginDependencyMetadata
+            name: PluginDependencyMetadata
+            type: Class
+          - uid: FoundationaLLM.Common.Models.Plugins.Metadata.PluginMetadata
+            name: PluginMetadata
+            type: Class
+          - uid: FoundationaLLM.Common.Models.Plugins.Metadata.PluginPackageMetadata
+            name: PluginPackageMetadata
+            type: Class
+          - uid: FoundationaLLM.Common.Models.Plugins.Metadata.PluginParameterSelectionHint
+            name: PluginParameterSelectionHint
+            type: Class
+        - uid: FoundationaLLM.Common.Models.Plugins.ContentItemRawContent
+          name: ContentItemRawContent
+          type: Class
+        - uid: FoundationaLLM.Common.Models.Plugins.PluginComponent
+          name: PluginComponent
+          type: Class
+        - uid: FoundationaLLM.Common.Models.Plugins.PluginConfiguration
+          name: PluginConfiguration
+          type: Class
+        - uid: FoundationaLLM.Common.Models.Plugins.PluginConfigurationParameter
+          name: PluginConfigurationParameter
+          type: Class
+        - uid: FoundationaLLM.Common.Models.Plugins.PluginParameterMetadata
+          name: PluginParameterMetadata
+          type: Class
+        - uid: FoundationaLLM.Common.Models.Plugins.PluginResult
+          name: PluginResult
+          type: Class
+        - uid: FoundationaLLM.Common.Models.Plugins.PluginResult`1
+          name: PluginResult<T>
+          type: Class
+      - uid: FoundationaLLM.Common.Models.Quota
+        name: Quota
+        type: Namespace
+        items:
+        - uid: FoundationaLLM.Common.Models.Quota.DistributedQuotaEnforcementEventData
+          name: DistributedQuotaEnforcementEventData
+          type: Class
+        - uid: FoundationaLLM.Common.Models.Quota.QuotaDefinition
+          name: QuotaDefinition
+          type: Class
+        - uid: FoundationaLLM.Common.Models.Quota.QuotaMetricPartitionState
+          name: QuotaMetricPartitionState
+          type: Class
+      - uid: FoundationaLLM.Common.Models.ResourceProviders
+        name: ResourceProviders
+        type: Namespace
+        items:
+        - uid: FoundationaLLM.Common.Models.ResourceProviders.AIModel
+          name: AIModel
+          type: Namespace
+          items:
+          - uid: FoundationaLLM.Common.Models.ResourceProviders.AIModel.AIModelBase
+            name: AIModelBase
+            type: Class
+          - uid: FoundationaLLM.Common.Models.ResourceProviders.AIModel.CompletionAIModel
+            name: CompletionAIModel
+            type: Class
+          - uid: FoundationaLLM.Common.Models.ResourceProviders.AIModel.EmbeddingAIModel
+            name: EmbeddingAIModel
+            type: Class
+          - uid: FoundationaLLM.Common.Models.ResourceProviders.AIModel.ImageGenerationAIModel
+            name: ImageGenerationAIModel
+            type: Class
+        - uid: FoundationaLLM.Common.Models.ResourceProviders.Agent
+          name: Agent
+          type: Namespace
+          items:
+          - uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentAccessTokens
+            name: AgentAccessTokens
+            type: Namespace
+            items:
+            - uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentAccessTokens.AgentAccessToken
+              name: AgentAccessToken
+              type: Class
+            - uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentAccessTokens.AgentAccessTokenValidationRequest
+              name: AgentAccessTokenValidationRequest
+              type: Class
+            - uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentAccessTokens.AgentAccessTokenValidationResult
+              name: AgentAccessTokenValidationResult
+              type: Class
+            - uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentAccessTokens.AgentClientSecretKey
+              name: AgentClientSecretKey
+              type: Class
+          - uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFiles
+            name: AgentFiles
+            type: Namespace
+            items:
+            - uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFiles.AgentFile
+              name: AgentFile
+              type: Class
+            - uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFiles.AgentFileReference
+              name: AgentFileReference
+              type: Class
+            - uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFiles.AgentFileToolAssociation
+              name: AgentFileToolAssociation
+              type: Class
+            - uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFiles.AgentFileToolAssociationError
+              name: AgentFileToolAssociationError
+              type: Class
+            - uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFiles.AgentFileToolAssociationRequest
+              name: AgentFileToolAssociationRequest
+              type: Class
+            - uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFiles.AgentFileToolAssociationResult
+              name: AgentFileToolAssociationResult
+              type: Class
+          - uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTemplates
+            name: AgentTemplates
+            type: Namespace
+            items:
+            - uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTemplates.AgentCreationFromTemplateRequest
+              name: AgentCreationFromTemplateRequest
+              type: Class
+            - uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTemplates.AgentTemplate
+              name: AgentTemplate
+              type: Class
+          - uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows
+            name: AgentWorkflows
+            type: Namespace
+            items:
+            - uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows.AgentWorkflowAIModel
+              name: AgentWorkflowAIModel
+              type: Class
+            - uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows.AgentWorkflowBase
+              name: AgentWorkflowBase
+              type: Class
+            - uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows.AgentWorkflowTypes
+              name: AgentWorkflowTypes
+              type: Class
+            - uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows.AzureAIAgentServiceAgentWorkflow
+              name: AzureAIAgentServiceAgentWorkflow
+              type: Class
+            - uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows.AzureOpenAIAssistantsAgentWorkflow
+              name: AzureOpenAIAssistantsAgentWorkflow
+              type: Class
+            - uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows.ExternalAgentWorkflow
+              name: ExternalAgentWorkflow
+              type: Class
+            - uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows.GenericAgentWorkflow
+              name: GenericAgentWorkflow
+              type: Class
+            - uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows.LangChainAgentWorkflow
+              name: LangChainAgentWorkflow
+              type: Class
+            - uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows.LangChainExpressionLanguageAgentWorkflow
+              name: LangChainExpressionLanguageAgentWorkflow
+              type: Class
+            - uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows.LangGraphReactAgentWorkflow
+              name: LangGraphReactAgentWorkflow
+              type: Class
+          - uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentBase
+            name: AgentBase
+            type: Class
+          - uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentCacheSettings
+            name: AgentCacheSettings
+            type: Class
+          - uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentConversationHistorySettings
+            name: AgentConversationHistorySettings
+            type: Class
+          - uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentGatekeeperSettings
+            name: AgentGatekeeperSettings
+            type: Class
+          - uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentOrchestrationSettings
+            name: AgentOrchestrationSettings
+            type: Class
+          - uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentOwnerUpdateRequest
+            name: AgentOwnerUpdateRequest
+            type: Class
+          - uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentSemanticCacheSettings
+            name: AgentSemanticCacheSettings
+            type: Class
+          - uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTextRewriteSettings
+            name: AgentTextRewriteSettings
+            type: Class
+          - uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTool
+            name: AgentTool
+            type: Class
+          - uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTypes
+            name: AgentTypes
+            type: Class
+          - uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentUserPromptRewriteSettings
+            name: AgentUserPromptRewriteSettings
+            type: Class
+          - uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentVectorizationSettings
+            name: AgentVectorizationSettings
+            type: Class
+          - uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.GenericAgent
+            name: GenericAgent
+            type: Class
+          - uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.KnowledgeSearchSettings
+            name: KnowledgeSearchSettings
+            type: Class
+          - uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.Tool
+            name: Tool
+            type: Class
+          - uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.Workflow
+            name: Workflow
+            type: Class
+        - uid: FoundationaLLM.Common.Models.ResourceProviders.Attachment
+          name: Attachment
+          type: Namespace
+          items:
+          - uid: FoundationaLLM.Common.Models.ResourceProviders.Attachment.AttachmentFile
+            name: AttachmentFile
+            type: Class
+          - uid: FoundationaLLM.Common.Models.ResourceProviders.Attachment.AttachmentReference
+            name: AttachmentReference
+            type: Class
+        - uid: FoundationaLLM.Common.Models.ResourceProviders.Authorization
+          name: Authorization
+          type: Namespace
+          items:
+          - uid: FoundationaLLM.Common.Models.ResourceProviders.Authorization.AssignmentBase
+            name: AssignmentBase
+            type: Class
+          - uid: FoundationaLLM.Common.Models.ResourceProviders.Authorization.RoleAssignment
+            name: RoleAssignment
+            type: Class
+          - uid: FoundationaLLM.Common.Models.ResourceProviders.Authorization.RoleDefinition
+            name: RoleDefinition
+            type: Class
+          - uid: FoundationaLLM.Common.Models.ResourceProviders.Authorization.RoleDefinitionPermissions
+            name: RoleDefinitionPermissions
+            type: Class
+          - uid: FoundationaLLM.Common.Models.ResourceProviders.Authorization.SecurityPrincipal
+            name: SecurityPrincipal
+            type: Class
+        - uid: FoundationaLLM.Common.Models.ResourceProviders.AzureAI
+          name: AzureAI
+          type: Namespace
+          items:
+          - uid: FoundationaLLM.Common.Models.ResourceProviders.AzureAI.AzureAIAgentConversationMapping
+            name: AzureAIAgentConversationMapping
+            type: Class
+          - uid: FoundationaLLM.Common.Models.ResourceProviders.AzureAI.AzureAIAgentConversationMappingUpsertResult
+            name: AzureAIAgentConversationMappingUpsertResult
+            type: Class
+          - uid: FoundationaLLM.Common.Models.ResourceProviders.AzureAI.AzureAIAgentFileMapping
+            name: AzureAIAgentFileMapping
+            type: Class
+          - uid: FoundationaLLM.Common.Models.ResourceProviders.AzureAI.AzureAIAgentResourceBase
+            name: AzureAIAgentResourceBase
+            type: Class
+          - uid: FoundationaLLM.Common.Models.ResourceProviders.AzureAI.AzureAIProject
+            name: AzureAIProject
+            type: Class
+        - uid: FoundationaLLM.Common.Models.ResourceProviders.AzureOpenAI
+          name: AzureOpenAI
+          type: Namespace
+          items:
+          - uid: FoundationaLLM.Common.Models.ResourceProviders.AzureOpenAI.AzureOpenAIAssistant
+            name: AzureOpenAIAssistant
+            type: Class
+          - uid: FoundationaLLM.Common.Models.ResourceProviders.AzureOpenAI.AzureOpenAIConversationMapping
+            name: AzureOpenAIConversationMapping
+            type: Class
+          - uid: FoundationaLLM.Common.Models.ResourceProviders.AzureOpenAI.AzureOpenAIConversationMappingUpsertResult
+            name: AzureOpenAIConversationMappingUpsertResult
+            type: Class
+          - uid: FoundationaLLM.Common.Models.ResourceProviders.AzureOpenAI.AzureOpenAIFileMapping
+            name: AzureOpenAIFileMapping
+            type: Class
+          - uid: FoundationaLLM.Common.Models.ResourceProviders.AzureOpenAI.AzureOpenAIResourceBase
+            name: AzureOpenAIResourceBase
+            type: Class
+        - uid: FoundationaLLM.Common.Models.ResourceProviders.Configuration
+          name: Configuration
+          type: Namespace
+          items:
+          - uid: FoundationaLLM.Common.Models.ResourceProviders.Configuration.APIEndpointCategory
+            name: APIEndpointCategory
+            type: Enum
+          - uid: FoundationaLLM.Common.Models.ResourceProviders.Configuration.APIEndpointConfiguration
+            name: APIEndpointConfiguration
+            type: Class
+          - uid: FoundationaLLM.Common.Models.ResourceProviders.Configuration.APIEndpointConfigurationFilter
+            name: APIEndpointConfigurationFilter
+            type: Class
+          - uid: FoundationaLLM.Common.Models.ResourceProviders.Configuration.APIEndpointSubcategory
+            name: APIEndpointSubcategory
+            type: Enum
+          - uid: FoundationaLLM.Common.Models.ResourceProviders.Configuration.AppConfigurationKeyBase
+            name: AppConfigurationKeyBase
+            type: Class
+          - uid: FoundationaLLM.Common.Models.ResourceProviders.Configuration.AppConfigurationKeyValue
+            name: AppConfigurationKeyValue
+            type: Class
+          - uid: FoundationaLLM.Common.Models.ResourceProviders.Configuration.AppConfigurationKeyVaultReference
+            name: AppConfigurationKeyVaultReference
+            type: Class
+          - uid: FoundationaLLM.Common.Models.ResourceProviders.Configuration.AppConfigurationSet
+            name: AppConfigurationSet
+            type: Class
+          - uid: FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValueException`1
+            name: ConfigurationValueException<T>
+            type: Class
+          - uid: FoundationaLLM.Common.Models.ResourceProviders.Configuration.ConfigurationValue`1
+            name: ConfigurationValue<T>
+            type: Class
+          - uid: FoundationaLLM.Common.Models.ResourceProviders.Configuration.UrlException
+            name: UrlException
+            type: Class
+        - uid: FoundationaLLM.Common.Models.ResourceProviders.Context
+          name: Context
+          type: Namespace
+          items:
+          - uid: FoundationaLLM.Common.Models.ResourceProviders.Context.KnowledgeSource
+            name: KnowledgeSource
+            type: Class
+          - uid: FoundationaLLM.Common.Models.ResourceProviders.Context.KnowledgeUnit
+            name: KnowledgeUnit
+            type: Class
+        - uid: FoundationaLLM.Common.Models.ResourceProviders.DataPipeline
+          name: DataPipeline
+          type: Namespace
+          items:
+          - uid: FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineDataSource
+            name: DataPipelineDataSource
+            type: Class
+          - uid: FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineDefinition
+            name: DataPipelineDefinition
+            type: Class
+          - uid: FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineDefinitionSnapshot
+            name: DataPipelineDefinitionSnapshot
+            type: Class
+          - uid: FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRun
+            name: DataPipelineRun
+            type: Class
+          - uid: FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRunCanonicalComparer
+            name: DataPipelineRunCanonicalComparer
+            type: Class
+          - uid: FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRunFilter
+            name: DataPipelineRunFilter
+            type: Class
+          - uid: FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRunFilterResponse
+            name: DataPipelineRunFilterResponse
+            type: Class
+          - uid: FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineStage
+            name: DataPipelineStage
+            type: Class
+          - uid: FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineStageMetrics
+            name: DataPipelineStageMetrics
+            type: Class
+          - uid: FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineTrigger
+            name: DataPipelineTrigger
+            type: Class
+          - uid: FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineTriggerRequest
+            name: DataPipelineTriggerRequest
+            type: Class
+          - uid: FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineTriggerType
+            name: DataPipelineTriggerType
+            type: Enum
+        - uid: FoundationaLLM.Common.Models.ResourceProviders.DataSource
+          name: DataSource
+          type: Namespace
+          items:
+          - uid: FoundationaLLM.Common.Models.ResourceProviders.DataSource.AzureDataLakeDataSource
+            name: AzureDataLakeDataSource
+            type: Class
+          - uid: FoundationaLLM.Common.Models.ResourceProviders.DataSource.AzureSQLDatabaseDataSource
+            name: AzureSQLDatabaseDataSource
+            type: Class
+          - uid: FoundationaLLM.Common.Models.ResourceProviders.DataSource.DataSourceBase
+            name: DataSourceBase
+            type: Class
+          - uid: FoundationaLLM.Common.Models.ResourceProviders.DataSource.OneLakeDataSource
+            name: OneLakeDataSource
+            type: Class
+          - uid: FoundationaLLM.Common.Models.ResourceProviders.DataSource.SharePointOnlineSiteDataSource
+            name: SharePointOnlineSiteDataSource
+            type: Class
+          - uid: FoundationaLLM.Common.Models.ResourceProviders.DataSource.WebSiteDataSource
+            name: WebSiteDataSource
+            type: Class
+        - uid: FoundationaLLM.Common.Models.ResourceProviders.Global
+          name: Global
+          type: Namespace
+          items:
+          - uid: FoundationaLLM.Common.Models.ResourceProviders.Global.ResourceProviderManagementAction
+            name: ResourceProviderManagementAction
+            type: Class
+          - uid: FoundationaLLM.Common.Models.ResourceProviders.Global.ResourceProviderManagementActionTypes
+            name: ResourceProviderManagementActionTypes
+            type: Class
+          - uid: FoundationaLLM.Common.Models.ResourceProviders.Global.ResourceProviderSendEventAction
+            name: ResourceProviderSendEventAction
+            type: Class
+        - uid: FoundationaLLM.Common.Models.ResourceProviders.Plugin
+          name: Plugin
+          type: Namespace
+          items:
+          - uid: FoundationaLLM.Common.Models.ResourceProviders.Plugin.PluginDefinition
+            name: PluginDefinition
+            type: Class
+          - uid: FoundationaLLM.Common.Models.ResourceProviders.Plugin.PluginFilter
+            name: PluginFilter
+            type: Class
+          - uid: FoundationaLLM.Common.Models.ResourceProviders.Plugin.PluginPackageDefinition
+            name: PluginPackageDefinition
+            type: Class
+          - uid: FoundationaLLM.Common.Models.ResourceProviders.Plugin.PluginPackageManagerInstance
+            name: PluginPackageManagerInstance
+            type: Class
+        - uid: FoundationaLLM.Common.Models.ResourceProviders.Prompt
+          name: Prompt
+          type: Namespace
+          items:
+          - uid: FoundationaLLM.Common.Models.ResourceProviders.Prompt.MultipartPrompt
+            name: MultipartPrompt
+            type: Class
+          - uid: FoundationaLLM.Common.Models.ResourceProviders.Prompt.PromptBase
+            name: PromptBase
+            type: Class
+          - uid: FoundationaLLM.Common.Models.ResourceProviders.Prompt.PromptCategory
+            name: PromptCategory
+            type: Enum
+        - uid: FoundationaLLM.Common.Models.ResourceProviders.Vector
+          name: Vector
+          type: Namespace
+          items:
+          - uid: FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabase
+            name: VectorDatabase
+            type: Class
+          - uid: FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorDatabaseType
+            name: VectorDatabaseType
+            type: Enum
+          - uid: FoundationaLLM.Common.Models.ResourceProviders.Vector.VectorStore
+            name: VectorStore
+            type: Class
+        - uid: FoundationaLLM.Common.Models.ResourceProviders.Vectorization
+          name: Vectorization
+          type: Namespace
+          items:
+          - uid: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.IndexerType
+            name: IndexerType
+            type: Enum
+          - uid: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.IndexingProfile
+            name: IndexingProfile
+            type: Class
+          - uid: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.TextEmbeddingProfile
+            name: TextEmbeddingProfile
+            type: Class
+          - uid: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.TextEmbeddingType
+            name: TextEmbeddingType
+            type: Enum
+          - uid: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.TextPartitioningProfile
+            name: TextPartitioningProfile
+            type: Class
+          - uid: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.TextSplitterType
+            name: TextSplitterType
+            type: Enum
+          - uid: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationLongRunningOperation
+            name: VectorizationLongRunningOperation
+            type: Class
+          - uid: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationProcessingState
+            name: VectorizationProcessingState
+            type: Enum
+          - uid: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationProcessingType
+            name: VectorizationProcessingType
+            type: Enum
+          - uid: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationProfileBase
+            name: VectorizationProfileBase
+            type: Class
+          - uid: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationRequest
+            name: VectorizationRequest
+            type: Class
+          - uid: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationResult
+            name: VectorizationResult
+            type: Class
+          - uid: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationStep
+            name: VectorizationStep
+            type: Class
+        - uid: FoundationaLLM.Common.Models.ResourceProviders.AzureCosmosDBResource
+          name: AzureCosmosDBResource
+          type: Class
+        - uid: FoundationaLLM.Common.Models.ResourceProviders.FileContent
+          name: FileContent
+          type: Class
+        - uid: FoundationaLLM.Common.Models.ResourceProviders.FileReference
+          name: FileReference
+          type: Class
+        - uid: FoundationaLLM.Common.Models.ResourceProviders.IFileMapping
+          name: IFileMapping
+          type: Interface
+        - uid: FoundationaLLM.Common.Models.ResourceProviders.NameCheckResultType
+          name: NameCheckResultType
+          type: Enum
+        - uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase
+          name: ResourceBase
+          type: Class
+        - uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceCollection`1
+          name: ResourceCollection<T>
+          type: Class
+        - uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceFilter
+          name: ResourceFilter
+          type: Class
+        - uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceName
+          name: ResourceName
+          type: Class
+        - uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceNameCheckResult
+          name: ResourceNameCheckResult
+          type: Class
+        - uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceObjectIdProperties
+          name: ResourceObjectIdProperties
+          type: Class
+        - uid: FoundationaLLM.Common.Models.ResourceProviders.ResourcePath
+          name: ResourcePath
+          type: Class
+        - uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderActionResult
+          name: ResourceProviderActionResult
+          type: Class
+        - uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderActionResult`1
+          name: ResourceProviderActionResult<T>
+          type: Class
+        - uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderCacheWarmupConfiguration
+          name: ResourceProviderCacheWarmupConfiguration
+          type: Class
+        - uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderDeleteResult
+          name: ResourceProviderDeleteResult
+          type: Class
+        - uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderFormFile
+          name: ResourceProviderFormFile
+          type: Class
+        - uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderGetOptions
+          name: ResourceProviderGetOptions
+          type: Class
+        - uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderGetResult`1
+          name: ResourceProviderGetResult<T>
+          type: Class
+        - uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderOperationOptionsBase
+          name: ResourceProviderOperationOptionsBase
+          type: Class
+        - uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderUpsertOptions
+          name: ResourceProviderUpsertOptions
+          type: Class
+        - uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderUpsertResult
+          name: ResourceProviderUpsertResult
+          type: Class
+        - uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderUpsertResult`1
+          name: ResourceProviderUpsertResult<T>
+          type: Class
+        - uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceReference
+          name: ResourceReference
+          type: Class
+        - uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceReferenceListSchemaUpgrade`1
+          name: ResourceReferenceListSchemaUpgrade<T>
+          type: Class
+        - uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceReferenceList`1
+          name: ResourceReferenceList<T>
+          type: Class
+        - uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceTypeAction
+          name: ResourceTypeAction
+          type: Class
+        - uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceTypeAllowedTypes
+          name: ResourceTypeAllowedTypes
+          type: Class
+        - uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceTypeAvailability
+          name: ResourceTypeAvailability
+          type: Class
+        - uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceTypeDescriptor
+          name: ResourceTypeDescriptor
+          type: Class
+        - uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceTypeInstance
+          name: ResourceTypeInstance
+          type: Class
+      - uid: FoundationaLLM.Common.Models.Services
+        name: Services
+        type: Namespace
+        items:
+        - uid: FoundationaLLM.Common.Models.Services.DomainError
+          name: DomainError
+          type: Class
+        - uid: FoundationaLLM.Common.Models.Services.Result
+          name: Result
+          type: Class
+        - uid: FoundationaLLM.Common.Models.Services.Result`1
+          name: Result<T>
+          type: Class
+      - uid: FoundationaLLM.Common.Models.Vectorization
+        name: Vectorization
+        type: Namespace
+        items:
+        - uid: FoundationaLLM.Common.Models.Vectorization.ContentIdentifier
+          name: ContentIdentifier
+          type: Class
+        - uid: FoundationaLLM.Common.Models.Vectorization.EmbeddedContent
+          name: EmbeddedContent
+          type: Class
+        - uid: FoundationaLLM.Common.Models.Vectorization.EmbeddedContentPart
+          name: EmbeddedContentPart
+          type: Class
+        - uid: FoundationaLLM.Common.Models.Vectorization.Embedding
+          name: Embedding
+          type: Struct
+        - uid: FoundationaLLM.Common.Models.Vectorization.Embedding.JsonConverter
+          name: Embedding.JsonConverter
+          type: Class
+        - uid: FoundationaLLM.Common.Models.Vectorization.TextChunk
+          name: TextChunk
+          type: Class
+        - uid: FoundationaLLM.Common.Models.Vectorization.TextCompletionRequest
+          name: TextCompletionRequest
+          type: Class
+        - uid: FoundationaLLM.Common.Models.Vectorization.TextEmbeddingRequest
+          name: TextEmbeddingRequest
+          type: Class
+        - uid: FoundationaLLM.Common.Models.Vectorization.TextOperationResult
+          name: TextOperationResult
+          type: Class
+        - uid: FoundationaLLM.Common.Models.Vectorization.VectorizationPipeline
+          name: VectorizationPipeline
+          type: Class
+        - uid: FoundationaLLM.Common.Models.Vectorization.VectorizationPipelineExecution
+          name: VectorizationPipelineExecution
+          type: Class
+        - uid: FoundationaLLM.Common.Models.Vectorization.VectorizationPipelineExecutionDetail
+          name: VectorizationPipelineExecutionDetail
+          type: Class
+        - uid: FoundationaLLM.Common.Models.Vectorization.VectorizationPipelineTriggerType
+          name: VectorizationPipelineTriggerType
+          type: Enum
+    - uid: FoundationaLLM.Common.OpenAPI
+      name: OpenAPI
+      type: Namespace
+      items:
+      - uid: FoundationaLLM.Common.OpenAPI.ConfigureSwaggerOptions
+        name: ConfigureSwaggerOptions
+        type: Class
+      - uid: FoundationaLLM.Common.OpenAPI.SwaggerDefaultValues
+        name: SwaggerDefaultValues
+        type: Class
+    - uid: FoundationaLLM.Common.Services
+      name: Services
+      type: Namespace
+      items:
+      - uid: FoundationaLLM.Common.Services.API
+        name: API
+        type: Namespace
+        items:
+        - uid: FoundationaLLM.Common.Services.API.ClientFactoryService
+          name: ClientFactoryService
+          type: Class
+        - uid: FoundationaLLM.Common.Services.API.DownstreamAPIService
+          name: DownstreamAPIService
+          type: Class
+        - uid: FoundationaLLM.Common.Services.API.HttpClientFactoryService
+          name: HttpClientFactoryService
+          type: Class
+      - uid: FoundationaLLM.Common.Services.Azure
+        name: Azure
+        type: Namespace
+        items:
+        - uid: FoundationaLLM.Common.Services.Azure.AzureAISearchService
+          name: AzureAISearchService
+          type: Class
+        - uid: FoundationaLLM.Common.Services.Azure.AzureAIService
+          name: AzureAIService
+          type: Class
+        - uid: FoundationaLLM.Common.Services.Azure.AzureAppConfigurationService
+          name: AzureAppConfigurationService
+          type: Class
+        - uid: FoundationaLLM.Common.Services.Azure.AzureCosmosDBService
+          name: AzureCosmosDBService
+          type: Class
+        - uid: FoundationaLLM.Common.Services.Azure.AzureKeyVaultService
+          name: AzureKeyVaultService
+          type: Class
+        - uid: FoundationaLLM.Common.Services.Azure.AzureResourceManagerService
+          name: AzureResourceManagerService
+          type: Class
+      - uid: FoundationaLLM.Common.Services.Cache
+        name: Cache
+        type: Namespace
+        items:
+        - uid: FoundationaLLM.Common.Services.Cache.AuthorizationServiceClientCacheService
+          name: AuthorizationServiceClientCacheService
+          type: Class
+        - uid: FoundationaLLM.Common.Services.Cache.MemoryCacheService
+          name: MemoryCacheService
+          type: Class
+        - uid: FoundationaLLM.Common.Services.Cache.ResourceProviderResourceCacheService
+          name: ResourceProviderResourceCacheService
+          type: Class
+      - uid: FoundationaLLM.Common.Services.Events
+        name: Events
+        type: Namespace
+        items:
+        - uid: FoundationaLLM.Common.Services.Events.AzureEventGridEventService
+          name: AzureEventGridEventService
+          type: Class
+        - uid: FoundationaLLM.Common.Services.Events.EventsWorker
+          name: EventsWorker
+          type: Class
+        - uid: FoundationaLLM.Common.Services.Events.LocalEventService
+          name: LocalEventService
+          type: Class
+      - uid: FoundationaLLM.Common.Services.Plugins
+        name: Plugins
+        type: Namespace
+        items:
+        - uid: FoundationaLLM.Common.Services.Plugins.DataPipelineStagePluginBase
+          name: DataPipelineStagePluginBase
+          type: Class
+        - uid: FoundationaLLM.Common.Services.Plugins.PluginBase
+          name: PluginBase
+          type: Class
+        - uid: FoundationaLLM.Common.Services.Plugins.PluginPackageManagerResolver
+          name: PluginPackageManagerResolver
+          type: Class
+        - uid: FoundationaLLM.Common.Services.Plugins.PluginService
+          name: PluginService
+          type: Class
+      - uid: FoundationaLLM.Common.Services.Quota
+        name: Quota
+        type: Namespace
+        items:
+        - uid: FoundationaLLM.Common.Services.Quota.QuotaContextBase
+          name: QuotaContextBase
+          type: Class
+        - uid: FoundationaLLM.Common.Services.Quota.QuotaMetricPartition
+          name: QuotaMetricPartition
+          type: Class
+        - uid: FoundationaLLM.Common.Services.Quota.QuotaService
+          name: QuotaService
+          type: Class
+        - uid: FoundationaLLM.Common.Services.Quota.SinglePartitionQuotaContext
+          name: SinglePartitionQuotaContext
+          type: Class
+        - uid: FoundationaLLM.Common.Services.Quota.UserIdentifierQuotaContext
+          name: UserIdentifierQuotaContext
+          type: Class
+        - uid: FoundationaLLM.Common.Services.Quota.UserPrincipalNameQuotaContext
+          name: UserPrincipalNameQuotaContext
+          type: Class
+      - uid: FoundationaLLM.Common.Services.ResourceProviders
+        name: ResourceProviders
+        type: Namespace
+        items:
+        - uid: FoundationaLLM.Common.Services.ResourceProviders.Agent
+          name: Agent
+          type: Namespace
+          items:
+          - uid: FoundationaLLM.Common.Services.ResourceProviders.Agent.AgentTemplateService
+            name: AgentTemplateService
+            type: Class
+        - uid: FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderResourceReferenceStore`1
+          name: ResourceProviderResourceReferenceStore<T>
+          type: Class
+        - uid: FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase`1
+          name: ResourceProviderServiceBase<TResourceReference>
+          type: Class
+      - uid: FoundationaLLM.Common.Services.Security
+        name: Security
+        type: Namespace
+        items:
+        - uid: FoundationaLLM.Common.Services.Security.EntraUserClaimsProviderService
+          name: EntraUserClaimsProviderService
+          type: Class
+        - uid: FoundationaLLM.Common.Services.Security.MicrosoftGraphIdentityManagementService
+          name: MicrosoftGraphIdentityManagementService
+          type: Class
+        - uid: FoundationaLLM.Common.Services.Security.NoOpUserClaimsProviderService
+          name: NoOpUserClaimsProviderService
+          type: Class
+      - uid: FoundationaLLM.Common.Services.Storage
+        name: Storage
+        type: Namespace
+        items:
+        - uid: FoundationaLLM.Common.Services.Storage.BlobStorageService
+          name: BlobStorageService
+          type: Class
+        - uid: FoundationaLLM.Common.Services.Storage.DataLakeStorageService
+          name: DataLakeStorageService
+          type: Class
+        - uid: FoundationaLLM.Common.Services.Storage.NullStorageService
+          name: NullStorageService
+          type: Class
+        - uid: FoundationaLLM.Common.Services.Storage.StorageServiceBase
+          name: StorageServiceBase
+          type: Class
+      - uid: FoundationaLLM.Common.Services.Templates
+        name: Templates
+        type: Namespace
+        items:
+        - uid: FoundationaLLM.Common.Services.Templates.RegexTemplatingService
+          name: RegexTemplatingService
+          type: Class
+      - uid: FoundationaLLM.Common.Services.TextSplitters
+        name: TextSplitters
+        type: Namespace
+        items:
+        - uid: FoundationaLLM.Common.Services.TextSplitters.TokenTextSplitterService
+          name: TokenTextSplitterService
+          type: Class
+      - uid: FoundationaLLM.Common.Services.Tokenizers
+        name: Tokenizers
+        type: Namespace
+        items:
+        - uid: FoundationaLLM.Common.Services.Tokenizers.LeasedTikTokenizer
+          name: LeasedTikTokenizer
+          type: Class
+        - uid: FoundationaLLM.Common.Services.Tokenizers.MicrosoftBPETokenizerService
+          name: MicrosoftBPETokenizerService
+          type: Class
+        - uid: FoundationaLLM.Common.Services.Tokenizers.MicrosoftMLTokenizer
+          name: MicrosoftMLTokenizer
+          type: Class
+        - uid: FoundationaLLM.Common.Services.Tokenizers.TikTokenizerConfig
+          name: TikTokenizerConfig
+          type: Class
+        - uid: FoundationaLLM.Common.Services.Tokenizers.TikTokenizerEncoders
+          name: TikTokenizerEncoders
+          type: Class
+        - uid: FoundationaLLM.Common.Services.Tokenizers.TikTokenizerTokens
+          name: TikTokenizerTokens
+          type: Class
+        - uid: FoundationaLLM.Common.Services.Tokenizers.TokenizerServiceNames
+          name: TokenizerServiceNames
+          type: Class
+        - uid: FoundationaLLM.Common.Services.Tokenizers.TryAGITokenizer
+          name: TryAGITokenizer
+          type: Class
+      - uid: FoundationaLLM.Common.Services.Users
+        name: Users
+        type: Namespace
+        items:
+        - uid: FoundationaLLM.Common.Services.Users.UserProfileService
+          name: UserProfileService
+          type: Class
+      - uid: FoundationaLLM.Common.Services.AzureContentSafetyService
+        name: AzureContentSafetyService
+        type: Class
+      - uid: FoundationaLLM.Common.Services.IAzureAppConfigurationService
+        name: IAzureAppConfigurationService
+        type: Interface
+      - uid: FoundationaLLM.Common.Services.IAzureKeyVaultService
+        name: IAzureKeyVaultService
+        type: Interface
+    - uid: FoundationaLLM.Common.Settings
+      name: Settings
+      type: Namespace
+      items:
+      - uid: FoundationaLLM.Common.Settings.CommonHttpRetryStrategyOptions
+        name: CommonHttpRetryStrategyOptions
+        type: Class
+      - uid: FoundationaLLM.Common.Settings.CommonJsonSerializerOptions
+        name: CommonJsonSerializerOptions
+        type: Class
+      - uid: FoundationaLLM.Common.Settings.CoreConfiguration
+        name: CoreConfiguration
+        type: Class
+    - uid: FoundationaLLM.Common.Tasks
+      name: Tasks
+      type: Namespace
+      items:
+      - uid: FoundationaLLM.Common.Tasks.ConcurrentTaskPool
+        name: ConcurrentTaskPool
+        type: Class
+      - uid: FoundationaLLM.Common.Tasks.TaskInfo
+        name: TaskInfo
+        type: Class
+      - uid: FoundationaLLM.Common.Tasks.TaskPool
+        name: TaskPool
+        type: Class
+      - uid: FoundationaLLM.Common.Tasks.TaskPoolException
+        name: TaskPoolException
+        type: Class
+    - uid: FoundationaLLM.Common.Telemetry
+      name: Telemetry
+      type: Namespace
+      items:
+      - uid: FoundationaLLM.Common.Telemetry.TelemetryActivitySources
+        name: TelemetryActivitySources
+        type: Class
+    - uid: FoundationaLLM.Common.Text
+      name: Text
+      type: Namespace
+      items:
+      - uid: FoundationaLLM.Common.Text.CosmosSystemTextJsonSerializer
+        name: CosmosSystemTextJsonSerializer
+        type: Class
+    - uid: FoundationaLLM.Common.Utils
+      name: Utils
+      type: Namespace
+      items:
+      - uid: FoundationaLLM.Common.Utils.Base58
+        name: Base58
+        type: Class
+      - uid: FoundationaLLM.Common.Utils.FileUtils
+        name: FileUtils
+        type: Class
+      - uid: FoundationaLLM.Common.Utils.JsonStringSemanticVersionConverter
+        name: JsonStringSemanticVersionConverter
+        type: Class
+      - uid: FoundationaLLM.Common.Utils.ResourcePathUtils
+        name: ResourcePathUtils
+        type: Class
+      - uid: FoundationaLLM.Common.Utils.RetryHelper
+        name: RetryHelper
+        type: Class
+    - uid: FoundationaLLM.Common.Validation
+      name: Validation
+      type: Namespace
+      items:
+      - uid: FoundationaLLM.Common.Validation.Plugins
+        name: Plugins
+        type: Namespace
+        items:
+        - uid: FoundationaLLM.Common.Validation.Plugins.PluginComponentValidator
+          name: PluginComponentValidator
+          type: Class
+      - uid: FoundationaLLM.Common.Validation.ResourceProvider
+        name: ResourceProvider
+        type: Namespace
+        items:
+        - uid: FoundationaLLM.Common.Validation.ResourceProvider.AzureCosmosDBResourceValidator
+          name: AzureCosmosDBResourceValidator
+          type: Class
+        - uid: FoundationaLLM.Common.Validation.ResourceProvider.ResourceBaseValidator
+          name: ResourceBaseValidator
+          type: Class
+      - uid: FoundationaLLM.Common.Validation.ResourceValidatorFactory
+        name: ResourceValidatorFactory
+        type: Class
+      - uid: FoundationaLLM.Common.Validation.StandardValidator
+        name: StandardValidator
+        type: Class
+      - uid: FoundationaLLM.Common.Validation.ValidationUtils
+        name: ValidationUtils
+        type: Class
+  - uid: FoundationaLLM.Configuration
+    name: Configuration
+    type: Namespace
+    items:
+    - uid: FoundationaLLM.Configuration.Catalog
+      name: Catalog
+      type: Namespace
+      items:
+      - uid: FoundationaLLM.Configuration.Catalog.AppConfigurationCatalog
+        name: AppConfigurationCatalog
+        type: Class
+      - uid: FoundationaLLM.Configuration.Catalog.EnvironmentVariablesCatalog
+        name: EnvironmentVariablesCatalog
+        type: Class
+      - uid: FoundationaLLM.Configuration.Catalog.KeyVaultSecretsCatalog
+        name: KeyVaultSecretsCatalog
+        type: Class
+    - uid: FoundationaLLM.Configuration.Interfaces
+      name: Interfaces
+      type: Namespace
+      items:
+      - uid: FoundationaLLM.Configuration.Interfaces.IConfigurationHealthChecks
+        name: IConfigurationHealthChecks
+        type: Interface
+    - uid: FoundationaLLM.Configuration.Models
+      name: Models
+      type: Namespace
+      items:
+      - uid: FoundationaLLM.Configuration.Models.APIEndpointReference
+        name: APIEndpointReference
+        type: Class
+    - uid: FoundationaLLM.Configuration.Services
+      name: Services
+      type: Namespace
+      items:
+      - uid: FoundationaLLM.Configuration.Services.ConfigurationHealthCheckService
+        name: ConfigurationHealthCheckService
+        type: Class
+      - uid: FoundationaLLM.Configuration.Services.ConfigurationResourceProviderService
+        name: ConfigurationResourceProviderService
+        type: Class
+    - uid: FoundationaLLM.Configuration.Validation
+      name: Validation
+      type: Namespace
+      items:
+      - uid: FoundationaLLM.Configuration.Validation.ConfigurationHealthChecks
+        name: ConfigurationHealthChecks
+        type: Class
+  - uid: FoundationaLLM.Context
+    name: Context
+    type: Namespace
+    items:
+    - uid: FoundationaLLM.Context.API.Controllers
+      name: API.Controllers
+      type: Namespace
+      items:
+      - uid: FoundationaLLM.Context.API.Controllers.CodeSessionsController
+        name: CodeSessionsController
+        type: Class
+      - uid: FoundationaLLM.Context.API.Controllers.FilesController
+        name: FilesController
+        type: Class
+      - uid: FoundationaLLM.Context.API.Controllers.KnowledgeController
+        name: KnowledgeController
+        type: Class
+      - uid: FoundationaLLM.Context.API.Controllers.StatusController
+        name: StatusController
+        type: Class
+    - uid: FoundationaLLM.Context.Constants
+      name: Constants
+      type: Namespace
+      items:
+      - uid: FoundationaLLM.Context.Constants.CodeSessionProviderNames
+        name: CodeSessionProviderNames
+        type: Class
+    - uid: FoundationaLLM.Context.Exceptions
+      name: Exceptions
+      type: Namespace
+      items:
+      - uid: FoundationaLLM.Context.Exceptions.ContextServiceException
+        name: ContextServiceException
+        type: Class
+    - uid: FoundationaLLM.Context.Interfaces
+      name: Interfaces
+      type: Namespace
+      items:
+      - uid: FoundationaLLM.Context.Interfaces.IAzureCosmosDBCodeSessionService
+        name: IAzureCosmosDBCodeSessionService
+        type: Interface
+      - uid: FoundationaLLM.Context.Interfaces.IAzureCosmosDBFileService
+        name: IAzureCosmosDBFileService
+        type: Interface
+      - uid: FoundationaLLM.Context.Interfaces.IAzureCosmosDBServiceBase
+        name: IAzureCosmosDBServiceBase
+        type: Interface
+      - uid: FoundationaLLM.Context.Interfaces.ICodeSessionProviderService
+        name: ICodeSessionProviderService
+        type: Interface
+      - uid: FoundationaLLM.Context.Interfaces.ICodeSessionService
+        name: ICodeSessionService
+        type: Interface
+      - uid: FoundationaLLM.Context.Interfaces.IFileService
+        name: IFileService
+        type: Interface
+      - uid: FoundationaLLM.Context.Interfaces.IKnowledgeService
+        name: IKnowledgeService
+        type: Interface
+    - uid: FoundationaLLM.Context.Models
+      name: Models
+      type: Namespace
+      items:
+      - uid: FoundationaLLM.Context.Models.Configuration
+        name: Configuration
+        type: Namespace
+        items:
+        - uid: FoundationaLLM.Context.Models.Configuration.AzureContainerAppsCodeInterpreterServiceSettings
+          name: AzureContainerAppsCodeInterpreterServiceSettings
+          type: Class
+        - uid: FoundationaLLM.Context.Models.Configuration.AzureContainerAppsCustomContainerServiceSettings
+          name: AzureContainerAppsCustomContainerServiceSettings
+          type: Class
+        - uid: FoundationaLLM.Context.Models.Configuration.AzureContainerAppsServiceSettings
+          name: AzureContainerAppsServiceSettings
+          type: Class
+        - uid: FoundationaLLM.Context.Models.Configuration.ContextServiceSettings
+          name: ContextServiceSettings
+          type: Class
+        - uid: FoundationaLLM.Context.Models.Configuration.EmbeddingSettings
+          name: EmbeddingSettings
+          type: Class
+        - uid: FoundationaLLM.Context.Models.Configuration.FileServiceSettings
+          name: FileServiceSettings
+          type: Class
+        - uid: FoundationaLLM.Context.Models.Configuration.KnowledgeServiceSettings
+          name: KnowledgeServiceSettings
+          type: Class
+      - uid: FoundationaLLM.Context.Models.CachedKnowledgeUnit
+        name: CachedKnowledgeUnit
+        type: Class
+      - uid: FoundationaLLM.Context.Models.CodeSessionFileStore
+        name: CodeSessionFileStore
+        type: Class
+      - uid: FoundationaLLM.Context.Models.CodeSessionFileStoreItem
+        name: CodeSessionFileStoreItem
+        type: Class
+      - uid: FoundationaLLM.Context.Models.ContextReference
+        name: ContextReference
+        type: Class
+      - uid: FoundationaLLM.Context.Models.IndexedKnowledgeGraph
+        name: IndexedKnowledgeGraph
+        type: Class
+      - uid: FoundationaLLM.Context.Models.KnowledgeGraphIndex
+        name: KnowledgeGraphIndex
+        type: Class
+      - uid: FoundationaLLM.Context.Models.KnowledgeGraphIndexNode
+        name: KnowledgeGraphIndexNode
+        type: Class
+      - uid: FoundationaLLM.Context.Models.KnowledgeGraphIndexRelatedNode
+        name: KnowledgeGraphIndexRelatedNode
+        type: Class
+      - uid: FoundationaLLM.Context.Models.KnowledgeGraphIndexRelatedNodeComparer
+        name: KnowledgeGraphIndexRelatedNodeComparer
+        type: Class
+    - uid: FoundationaLLM.Context.ResourceProviders
+      name: ResourceProviders
+      type: Namespace
+      items:
+      - uid: FoundationaLLM.Context.ResourceProviders.ContextResourceProviderService
+        name: ContextResourceProviderService
+        type: Class
+    - uid: FoundationaLLM.Context.Services
+      name: Services
+      type: Namespace
+      items:
+      - uid: FoundationaLLM.Context.Services.CosmosDB
+        name: CosmosDB
+        type: Namespace
+        items:
+        - uid: FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBCodeSessionService
+          name: AzureCosmosDBCodeSessionService
+          type: Class
+        - uid: FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBFileService
+          name: AzureCosmosDBFileService
+          type: Class
+        - uid: FoundationaLLM.Context.Services.CosmosDB.AzureCosmosDBServiceBase
+          name: AzureCosmosDBServiceBase
+          type: Class
+      - uid: FoundationaLLM.Context.Services.AzureContainerAppsCodeInterpreterService
+        name: AzureContainerAppsCodeInterpreterService
+        type: Class
+      - uid: FoundationaLLM.Context.Services.AzureContainerAppsCustomContainerService
+        name: AzureContainerAppsCustomContainerService
+        type: Class
+      - uid: FoundationaLLM.Context.Services.AzureContainerAppsServiceBase
+        name: AzureContainerAppsServiceBase
+        type: Class
+      - uid: FoundationaLLM.Context.Services.CodeSessionService
+        name: CodeSessionService
+        type: Class
+      - uid: FoundationaLLM.Context.Services.FileService
+        name: FileService
+        type: Class
+      - uid: FoundationaLLM.Context.Services.KnowledgeService
+        name: KnowledgeService
+        type: Class
+      - uid: FoundationaLLM.Context.Services.KnowledgeSourceQueryEngine
+        name: KnowledgeSourceQueryEngine
+        type: Class
+      - uid: FoundationaLLM.Context.Services.KnowledgeUnitQueryEngine
+        name: KnowledgeUnitQueryEngine
+        type: Class
+    - uid: FoundationaLLM.Context.Validation
+      name: Validation
+      type: Namespace
+      items:
+      - uid: FoundationaLLM.Context.Validation.KnowledgeSourceValidator
+        name: KnowledgeSourceValidator
+        type: Class
+      - uid: FoundationaLLM.Context.Validation.KnowledgeUnitValidator
+        name: KnowledgeUnitValidator
+        type: Class
+  - uid: FoundationaLLM.Conversation.ResourceProviders
+    name: Conversation.ResourceProviders
+    type: Namespace
+    items:
+    - uid: FoundationaLLM.Conversation.ResourceProviders.ConversationResourceProviderService
+      name: ConversationResourceProviderService
+      type: Class
+  - uid: FoundationaLLM.Core
+    name: Core
+    type: Namespace
+    items:
+    - uid: FoundationaLLM.Core.API
+      name: API
+      type: Namespace
+      items:
+      - uid: FoundationaLLM.Core.API.Controllers
+        name: Controllers
+        type: Namespace
+        items:
+        - uid: FoundationaLLM.Core.API.Controllers.BrandingController
+          name: BrandingController
+          type: Class
+        - uid: FoundationaLLM.Core.API.Controllers.CompletionsController
+          name: CompletionsController
+          type: Class
+        - uid: FoundationaLLM.Core.API.Controllers.CompletionsStatusController
+          name: CompletionsStatusController
+          type: Class
+        - uid: FoundationaLLM.Core.API.Controllers.ConfigurationController
+          name: ConfigurationController
+          type: Class
+        - uid: FoundationaLLM.Core.API.Controllers.FilesController
+          name: FilesController
+          type: Class
+        - uid: FoundationaLLM.Core.API.Controllers.OneDriveWorkSchoolController
+          name: OneDriveWorkSchoolController
+          type: Class
+        - uid: FoundationaLLM.Core.API.Controllers.ResourceController
+          name: ResourceController
+          type: Class
+        - uid: FoundationaLLM.Core.API.Controllers.SessionsController
+          name: SessionsController
+          type: Class
+        - uid: FoundationaLLM.Core.API.Controllers.StatusController
+          name: StatusController
+          type: Class
+        - uid: FoundationaLLM.Core.API.Controllers.UserProfilesController
+          name: UserProfilesController
+          type: Class
+      - uid: FoundationaLLM.Core.API.Program
+        name: Program
+        type: Class
+    - uid: FoundationaLLM.Core.Interfaces
+      name: Interfaces
+      type: Namespace
+      items:
+      - uid: FoundationaLLM.Core.Interfaces.ICoreService
+        name: ICoreService
+        type: Interface
+      - uid: FoundationaLLM.Core.Interfaces.ICosmosDbChangeFeedService
+        name: ICosmosDbChangeFeedService
+        type: Interface
+      - uid: FoundationaLLM.Core.Interfaces.IGatekeeperAPIService
+        name: IGatekeeperAPIService
+        type: Interface
+      - uid: FoundationaLLM.Core.Interfaces.IOneDriveWorkSchoolService
+        name: IOneDriveWorkSchoolService
+        type: Interface
+    - uid: FoundationaLLM.Core.Models
+      name: Models
+      type: Namespace
+      items:
+      - uid: FoundationaLLM.Core.Models.Configuration
+        name: Configuration
+        type: Namespace
+        items:
+        - uid: FoundationaLLM.Core.Models.Configuration.ChatSessionNameSummarizationType
+          name: ChatSessionNameSummarizationType
+          type: Enum
+        - uid: FoundationaLLM.Core.Models.Configuration.CoreServiceSettings
+          name: CoreServiceSettings
+          type: Class
+        - uid: FoundationaLLM.Core.Models.Configuration.OneDriveWorkSchoolFile
+          name: OneDriveWorkSchoolFile
+          type: Class
+      - uid: FoundationaLLM.Core.Models.OneDriveWorkSchoolItem
+        name: OneDriveWorkSchoolItem
+        type: Class
+    - uid: FoundationaLLM.Core.Services
+      name: Services
+      type: Namespace
+      items:
+      - uid: FoundationaLLM.Core.Services.AzureCosmosDBChangeFeedService
+        name: AzureCosmosDBChangeFeedService
+        type: Class
+      - uid: FoundationaLLM.Core.Services.CoreManagementCapabilitiesService
+        name: CoreManagementCapabilitiesService
+        type: Class
+      - uid: FoundationaLLM.Core.Services.CoreService
+        name: CoreService
+        type: Class
+      - uid: FoundationaLLM.Core.Services.GatekeeperAPIService
+        name: GatekeeperAPIService
+        type: Class
+      - uid: FoundationaLLM.Core.Services.OneDriveWorkSchoolService
+        name: OneDriveWorkSchoolService
+        type: Class
+    - uid: FoundationaLLM.Core.Utils
+      name: Utils
+      type: Namespace
+      items:
+      - uid: FoundationaLLM.Core.Utils.ObjectExtensions
+        name: ObjectExtensions
+        type: Class
+    - uid: FoundationaLLM.Core.Worker
+      name: Worker
+      type: Namespace
+      items:
+      - uid: FoundationaLLM.Core.Worker.ChangeFeedWorker
+        name: ChangeFeedWorker
+        type: Class
+  - uid: FoundationaLLM.DataPipeline
+    name: DataPipeline
+    type: Namespace
+    items:
+    - uid: FoundationaLLM.DataPipeline.API.Controllers
+      name: API.Controllers
+      type: Namespace
+      items:
+      - uid: FoundationaLLM.DataPipeline.API.Controllers.DataPipelineRunsController
+        name: DataPipelineRunsController
+        type: Class
+      - uid: FoundationaLLM.DataPipeline.API.Controllers.StatusController
+        name: StatusController
+        type: Class
+    - uid: FoundationaLLM.DataPipeline.BackendWorker.Controllers
+      name: BackendWorker.Controllers
+      type: Namespace
+      items:
+      - uid: FoundationaLLM.DataPipeline.BackendWorker.Controllers.StatusController
+        name: StatusController
+        type: Class
+    - uid: FoundationaLLM.DataPipeline.Clients
+      name: Clients
+      type: Namespace
+      items:
+      - uid: FoundationaLLM.DataPipeline.Clients.RemoteDataPipelineServiceClient
+        name: RemoteDataPipelineServiceClient
+        type: Class
+    - uid: FoundationaLLM.DataPipeline.FrontendWorker.Controllers
+      name: FrontendWorker.Controllers
+      type: Namespace
+      items:
+      - uid: FoundationaLLM.DataPipeline.FrontendWorker.Controllers.StatusController
+        name: StatusController
+        type: Class
+    - uid: FoundationaLLM.DataPipeline.Interfaces
+      name: Interfaces
+      type: Namespace
+      items:
+      - uid: FoundationaLLM.DataPipeline.Interfaces.IDataPipelineServiceClient
+        name: IDataPipelineServiceClient
+        type: Interface
+    - uid: FoundationaLLM.DataPipeline.Models
+      name: Models
+      type: Namespace
+      items:
+      - uid: FoundationaLLM.DataPipeline.Models.DataPipelineReference
+        name: DataPipelineReference
+        type: Class
+    - uid: FoundationaLLM.DataPipeline.ResourceProviders
+      name: ResourceProviders
+      type: Namespace
+      items:
+      - uid: FoundationaLLM.DataPipeline.ResourceProviders.DataPipelineResourceProviderService
+        name: DataPipelineResourceProviderService
+        type: Class
+    - uid: FoundationaLLM.DataPipeline.Validation
+      name: Validation
+      type: Namespace
+      items:
+      - uid: FoundationaLLM.DataPipeline.Validation.DataPipelineDefinitionValidator
+        name: DataPipelineDefinitionValidator
+        type: Class
+      - uid: FoundationaLLM.DataPipeline.Validation.DataPipelineRunValidator
+        name: DataPipelineRunValidator
+        type: Class
+      - uid: FoundationaLLM.DataPipeline.Validation.DataPipelineTriggerValidator
+        name: DataPipelineTriggerValidator
+        type: Class
+  - uid: FoundationaLLM.DataPipelineEngine
+    name: DataPipelineEngine
+    type: Namespace
+    items:
+    - uid: FoundationaLLM.DataPipelineEngine.Clients
+      name: Clients
+      type: Namespace
+      items:
+      - uid: FoundationaLLM.DataPipelineEngine.Clients.LocalDataPipelineServiceClient
+        name: LocalDataPipelineServiceClient
+        type: Class
+      - uid: FoundationaLLM.DataPipelineEngine.Clients.NullDataPipelineServiceClient
+        name: NullDataPipelineServiceClient
+        type: Class
+    - uid: FoundationaLLM.DataPipelineEngine.Exceptions
+      name: Exceptions
+      type: Namespace
+      items:
+      - uid: FoundationaLLM.DataPipelineEngine.Exceptions.DataPipelineServiceException
+        name: DataPipelineServiceException
+        type: Class
+    - uid: FoundationaLLM.DataPipelineEngine.Interfaces
+      name: Interfaces
+      type: Namespace
+      items:
+      - uid: FoundationaLLM.DataPipelineEngine.Interfaces.IAzureCosmosDBDataPipelineService
+        name: IAzureCosmosDBDataPipelineService
+        type: Interface
+      - uid: FoundationaLLM.DataPipelineEngine.Interfaces.IDataPipelineRunnerService
+        name: IDataPipelineRunnerService
+        type: Interface
+      - uid: FoundationaLLM.DataPipelineEngine.Interfaces.IDataPipelineService
+        name: IDataPipelineService
+        type: Interface
+      - uid: FoundationaLLM.DataPipelineEngine.Interfaces.IDataPipelineTriggerService
+        name: IDataPipelineTriggerService
+        type: Interface
+      - uid: FoundationaLLM.DataPipelineEngine.Interfaces.IMessageQueueService`1
+        name: IMessageQueueService<T>
+        type: Interface
+    - uid: FoundationaLLM.DataPipelineEngine.Models
+      name: Models
+      type: Namespace
+      items:
+      - uid: FoundationaLLM.DataPipelineEngine.Models.Configuration
+        name: Configuration
+        type: Namespace
+        items:
+        - uid: FoundationaLLM.DataPipelineEngine.Models.Configuration.DataPipelineServiceSettings
+          name: DataPipelineServiceSettings
+          type: Class
+        - uid: FoundationaLLM.DataPipelineEngine.Models.Configuration.DataPipelineServiceSettingsBase
+          name: DataPipelineServiceSettingsBase
+          type: Class
+        - uid: FoundationaLLM.DataPipelineEngine.Models.Configuration.DataPipelineStateServiceSettings
+          name: DataPipelineStateServiceSettings
+          type: Class
+        - uid: FoundationaLLM.DataPipelineEngine.Models.Configuration.DataPipelineWorkerServiceSettings
+          name: DataPipelineWorkerServiceSettings
+          type: Class
+      - uid: FoundationaLLM.DataPipelineEngine.Models.DataPipelineRunWorkItemMessage
+        name: DataPipelineRunWorkItemMessage
+        type: Class
+      - uid: FoundationaLLM.DataPipelineEngine.Models.DequeuedMessage`1
+        name: DequeuedMessage<T>
+        type: Class
+    - uid: FoundationaLLM.DataPipelineEngine.Services
+      name: Services
+      type: Namespace
+      items:
+      - uid: FoundationaLLM.DataPipelineEngine.Services.CosmosDB
+        name: CosmosDB
+        type: Namespace
+        items:
+        - uid: FoundationaLLM.DataPipelineEngine.Services.CosmosDB.AzureCosmosDBDataPipelineService
+          name: AzureCosmosDBDataPipelineService
+          type: Class
+      - uid: FoundationaLLM.DataPipelineEngine.Services.Queueing
+        name: Queueing
+        type: Namespace
+        items:
+        - uid: FoundationaLLM.DataPipelineEngine.Services.Queueing.AzureStorageQueueService`1
+          name: AzureStorageQueueService<T>
+          type: Class
+        - uid: FoundationaLLM.DataPipelineEngine.Services.Queueing.ProcessingPayloadsRegistry`1
+          name: ProcessingPayloadsRegistry<T>
+          type: Class
+      - uid: FoundationaLLM.DataPipelineEngine.Services.Runners
+        name: Runners
+        type: Namespace
+        items:
+        - uid: FoundationaLLM.DataPipelineEngine.Services.Runners.DataPipelineRunWorkItemStatus
+          name: DataPipelineRunWorkItemStatus
+          type: Class
+        - uid: FoundationaLLM.DataPipelineEngine.Services.Runners.DataPipelineRunner
+          name: DataPipelineRunner
+          type: Class
+        - uid: FoundationaLLM.DataPipelineEngine.Services.Runners.DataPipelineStageRunner
+          name: DataPipelineStageRunner
+          type: Class
+      - uid: FoundationaLLM.DataPipelineEngine.Services.DataPipelineBackgroundService
+        name: DataPipelineBackgroundService
+        type: Class
+      - uid: FoundationaLLM.DataPipelineEngine.Services.DataPipelineRunnerService
+        name: DataPipelineRunnerService
+        type: Class
+      - uid: FoundationaLLM.DataPipelineEngine.Services.DataPipelineService
+        name: DataPipelineService
+        type: Class
+      - uid: FoundationaLLM.DataPipelineEngine.Services.DataPipelineStateService
+        name: DataPipelineStateService
+        type: Class
+      - uid: FoundationaLLM.DataPipelineEngine.Services.DataPipelineTriggerService
+        name: DataPipelineTriggerService
+        type: Class
+      - uid: FoundationaLLM.DataPipelineEngine.Services.DataPipelineWorkerService
+        name: DataPipelineWorkerService
+        type: Class
+  - uid: FoundationaLLM.DataSource
+    name: DataSource
+    type: Namespace
+    items:
+    - uid: FoundationaLLM.DataSource.Models
+      name: Models
+      type: Namespace
+      items:
+      - uid: FoundationaLLM.DataSource.Models.DataSourceReference
+        name: DataSourceReference
+        type: Class
+    - uid: FoundationaLLM.DataSource.ResourceProviders
+      name: ResourceProviders
+      type: Namespace
+      items:
+      - uid: FoundationaLLM.DataSource.ResourceProviders.DataSourceResourceProviderService
+        name: DataSourceResourceProviderService
+        type: Class
+    - uid: FoundationaLLM.DataSource.Validation
+      name: Validation
+      type: Namespace
+      items:
+      - uid: FoundationaLLM.DataSource.Validation.AzureDataLakeDataSourceValidator
+        name: AzureDataLakeDataSourceValidator
+        type: Class
+      - uid: FoundationaLLM.DataSource.Validation.AzureSQLDatabaseDataSourceValidator
+        name: AzureSQLDatabaseDataSourceValidator
+        type: Class
+      - uid: FoundationaLLM.DataSource.Validation.DataSourceBaseValidator
+        name: DataSourceBaseValidator
+        type: Class
+      - uid: FoundationaLLM.DataSource.Validation.DataSourceValidator`1
+        name: DataSourceValidator<T>
+        type: Class
+      - uid: FoundationaLLM.DataSource.Validation.OneLakeDataSourceValidator
+        name: OneLakeDataSourceValidator
+        type: Class
+      - uid: FoundationaLLM.DataSource.Validation.SharePointOnlineSiteDataSourceValidator
+        name: SharePointOnlineSiteDataSourceValidator
+        type: Class
+  - uid: FoundationaLLM.Gatekeeper
+    name: Gatekeeper
+    type: Namespace
+    items:
+    - uid: FoundationaLLM.Gatekeeper.API
+      name: API
+      type: Namespace
+      items:
+      - uid: FoundationaLLM.Gatekeeper.API.Controllers
+        name: Controllers
+        type: Namespace
+        items:
+        - uid: FoundationaLLM.Gatekeeper.API.Controllers.CompletionsController
+          name: CompletionsController
+          type: Class
+        - uid: FoundationaLLM.Gatekeeper.API.Controllers.StatusController
+          name: StatusController
+          type: Class
+      - uid: FoundationaLLM.Gatekeeper.API.Program
+        name: Program
+        type: Class
+    - uid: FoundationaLLM.Gatekeeper.Core
+      name: Core
+      type: Namespace
+      items:
+      - uid: FoundationaLLM.Gatekeeper.Core.Interfaces
+        name: Interfaces
+        type: Namespace
+        items:
+        - uid: FoundationaLLM.Gatekeeper.Core.Interfaces.IEnkryptGuardrailsService
+          name: IEnkryptGuardrailsService
+          type: Interface
+        - uid: FoundationaLLM.Gatekeeper.Core.Interfaces.IGatekeeperIntegrationAPIService
+          name: IGatekeeperIntegrationAPIService
+          type: Interface
+        - uid: FoundationaLLM.Gatekeeper.Core.Interfaces.IGatekeeperService
+          name: IGatekeeperService
+          type: Interface
+        - uid: FoundationaLLM.Gatekeeper.Core.Interfaces.ILakeraGuardService
+          name: ILakeraGuardService
+          type: Interface
+      - uid: FoundationaLLM.Gatekeeper.Core.Models
+        name: Models
+        type: Namespace
+        items:
+        - uid: FoundationaLLM.Gatekeeper.Core.Models.ConfigurationOptions
+          name: ConfigurationOptions
+          type: Namespace
+          items:
+          - uid: FoundationaLLM.Gatekeeper.Core.Models.ConfigurationOptions.EnkryptGuardrailsServiceSettings
+            name: EnkryptGuardrailsServiceSettings
+            type: Class
+          - uid: FoundationaLLM.Gatekeeper.Core.Models.ConfigurationOptions.GatekeeperServiceSettings
+            name: GatekeeperServiceSettings
+            type: Class
+          - uid: FoundationaLLM.Gatekeeper.Core.Models.ConfigurationOptions.LakeraGuardServiceSettings
+            name: LakeraGuardServiceSettings
+            type: Class
+        - uid: FoundationaLLM.Gatekeeper.Core.Models.EnkryptGuardrails
+          name: EnkryptGuardrails
+          type: Namespace
+          items:
+          - uid: FoundationaLLM.Gatekeeper.Core.Models.EnkryptGuardrails.DetectDetails
+            name: DetectDetails
+            type: Class
+          - uid: FoundationaLLM.Gatekeeper.Core.Models.EnkryptGuardrails.DetectResult
+            name: DetectResult
+            type: Class
+          - uid: FoundationaLLM.Gatekeeper.Core.Models.EnkryptGuardrails.DetectSummary
+            name: DetectSummary
+            type: Class
+          - uid: FoundationaLLM.Gatekeeper.Core.Models.EnkryptGuardrails.InjectionAttack
+            name: InjectionAttack
+            type: Class
+        - uid: FoundationaLLM.Gatekeeper.Core.Models.Integration
+          name: Integration
+          type: Namespace
+          items:
+          - uid: FoundationaLLM.Gatekeeper.Core.Models.Integration.AnalyzeRequest
+            name: AnalyzeRequest
+            type: Class
+          - uid: FoundationaLLM.Gatekeeper.Core.Models.Integration.AnalyzeResponse
+            name: AnalyzeResponse
+            type: Class
+          - uid: FoundationaLLM.Gatekeeper.Core.Models.Integration.AnonymizeResponse
+            name: AnonymizeResponse
+            type: Class
+          - uid: FoundationaLLM.Gatekeeper.Core.Models.Integration.PIIResult
+            name: PIIResult
+            type: Class
+          - uid: FoundationaLLM.Gatekeeper.Core.Models.Integration.PIIResultAnonymized
+            name: PIIResultAnonymized
+            type: Class
+        - uid: FoundationaLLM.Gatekeeper.Core.Models.LakeraGuard
+          name: LakeraGuard
+          type: Namespace
+          items:
+          - uid: FoundationaLLM.Gatekeeper.Core.Models.LakeraGuard.AnalyzePromptInjectionResult
+            name: AnalyzePromptInjectionResult
+            type: Class
+          - uid: FoundationaLLM.Gatekeeper.Core.Models.LakeraGuard.PromptInjectionResult
+            name: PromptInjectionResult
+            type: Class
+      - uid: FoundationaLLM.Gatekeeper.Core.Services
+        name: Services
+        type: Namespace
+        items:
+        - uid: FoundationaLLM.Gatekeeper.Core.Services.EnkryptGuardrailsService
+          name: EnkryptGuardrailsService
+          type: Class
+        - uid: FoundationaLLM.Gatekeeper.Core.Services.GatekeeperIntegrationAPIService
+          name: GatekeeperIntegrationAPIService
+          type: Class
+        - uid: FoundationaLLM.Gatekeeper.Core.Services.GatekeeperService
+          name: GatekeeperService
+          type: Class
+        - uid: FoundationaLLM.Gatekeeper.Core.Services.LakeraGuardService
+          name: LakeraGuardService
+          type: Class
+  - uid: FoundationaLLM.Gateway
+    name: Gateway
+    type: Namespace
+    items:
+    - uid: FoundationaLLM.Gateway.API.Controllers
+      name: API.Controllers
+      type: Namespace
+      items:
+      - uid: FoundationaLLM.Gateway.API.Controllers.AgentCapabilitiesController
+        name: AgentCapabilitiesController
+        type: Class
+      - uid: FoundationaLLM.Gateway.API.Controllers.CompletionsController
+        name: CompletionsController
+        type: Class
+      - uid: FoundationaLLM.Gateway.API.Controllers.EmbeddingsController
+        name: EmbeddingsController
+        type: Class
+      - uid: FoundationaLLM.Gateway.API.Controllers.StatusController
+        name: StatusController
+        type: Class
+    - uid: FoundationaLLM.Gateway.AdapterAPI.Controllers
+      name: AdapterAPI.Controllers
+      type: Namespace
+      items:
+      - uid: FoundationaLLM.Gateway.AdapterAPI.Controllers.StatusController
+        name: StatusController
+        type: Class
+    - uid: FoundationaLLM.Gateway.Exceptions
+      name: Exceptions
+      type: Namespace
+      items:
+      - uid: FoundationaLLM.Gateway.Exceptions.GatewayExceptionHandler
+        name: GatewayExceptionHandler
+        type: Class
+    - uid: FoundationaLLM.Gateway.Interfaces
+      name: Interfaces
+      type: Namespace
+      items:
+      - uid: FoundationaLLM.Gateway.Interfaces.IGatewayCore
+        name: IGatewayCore
+        type: Interface
+      - uid: FoundationaLLM.Gateway.Interfaces.ITextOperationService
+        name: ITextOperationService
+        type: Interface
+    - uid: FoundationaLLM.Gateway.Models
+      name: Models
+      type: Namespace
+      items:
+      - uid: FoundationaLLM.Gateway.Models.Configuration
+        name: Configuration
+        type: Namespace
+        items:
+        - uid: FoundationaLLM.Gateway.Models.Configuration.GatewayCoreSettings
+          name: GatewayCoreSettings
+          type: Class
+      - uid: FoundationaLLM.Gateway.Models.InternalTextOperationRequest
+        name: InternalTextOperationRequest
+        type: Class
+      - uid: FoundationaLLM.Gateway.Models.InternalTextOperationResult
+        name: InternalTextOperationResult
+        type: Class
+      - uid: FoundationaLLM.Gateway.Models.TextOperationContext
+        name: TextOperationContext
+        type: Class
+    - uid: FoundationaLLM.Gateway.Services
+      name: Services
+      type: Namespace
+      items:
+      - uid: FoundationaLLM.Gateway.Services.AzureOpenAITextCompletionService
+        name: AzureOpenAITextCompletionService
+        type: Class
+      - uid: FoundationaLLM.Gateway.Services.AzureOpenAITextEmbeddingService
+        name: AzureOpenAITextEmbeddingService
+        type: Class
+      - uid: FoundationaLLM.Gateway.Services.GatewayCore
+        name: GatewayCore
+        type: Class
+      - uid: FoundationaLLM.Gateway.Services.GatewayMetrics
+        name: GatewayMetrics
+        type: Class
+      - uid: FoundationaLLM.Gateway.Services.GatewayWorker
+        name: GatewayWorker
+        type: Class
+      - uid: FoundationaLLM.Gateway.Services.ModelContext
+        name: ModelContext
+        type: Class
+      - uid: FoundationaLLM.Gateway.Services.ModelDeploymentContext
+        name: ModelDeploymentContext
+        type: Class
+  - uid: FoundationaLLM.Management.API
+    name: Management.API
+    type: Namespace
+    items:
+    - uid: FoundationaLLM.Management.API.Controllers
+      name: Controllers
+      type: Namespace
+      items:
+      - uid: FoundationaLLM.Management.API.Controllers.IdentityManagementController
+        name: IdentityManagementController
+        type: Class
+      - uid: FoundationaLLM.Management.API.Controllers.ResourceController
+        name: ResourceController
+        type: Class
+      - uid: FoundationaLLM.Management.API.Controllers.StatusController
+        name: StatusController
+        type: Class
+    - uid: FoundationaLLM.Management.API.Program
+      name: Program
+      type: Class
+  - uid: FoundationaLLM.Orchestration
+    name: Orchestration
+    type: Namespace
+    items:
+    - uid: FoundationaLLM.Orchestration.API
+      name: API
+      type: Namespace
+      items:
+      - uid: FoundationaLLM.Orchestration.API.Controllers
+        name: Controllers
+        type: Namespace
+        items:
+        - uid: FoundationaLLM.Orchestration.API.Controllers.CompletionsController
+          name: CompletionsController
+          type: Class
+        - uid: FoundationaLLM.Orchestration.API.Controllers.StatusController
+          name: StatusController
+          type: Class
+      - uid: FoundationaLLM.Orchestration.API.Program
+        name: Program
+        type: Class
+    - uid: FoundationaLLM.Orchestration.Core
+      name: Core
+      type: Namespace
+      items:
+      - uid: FoundationaLLM.Orchestration.Core.Interfaces
+        name: Interfaces
+        type: Namespace
+        items:
+        - uid: FoundationaLLM.Orchestration.Core.Interfaces.IAzureAIDirectService
+          name: IAzureAIDirectService
+          type: Interface
+        - uid: FoundationaLLM.Orchestration.Core.Interfaces.IAzureOpenAIDirectService
+          name: IAzureOpenAIDirectService
+          type: Interface
+        - uid: FoundationaLLM.Orchestration.Core.Interfaces.ILLMOrchestrationService
+          name: ILLMOrchestrationService
+          type: Interface
+        - uid: FoundationaLLM.Orchestration.Core.Interfaces.ILLMOrchestrationServiceManager
+          name: ILLMOrchestrationServiceManager
+          type: Interface
+        - uid: FoundationaLLM.Orchestration.Core.Interfaces.ILangChainService
+          name: ILangChainService
+          type: Interface
+        - uid: FoundationaLLM.Orchestration.Core.Interfaces.IOrchestrationService
+          name: IOrchestrationService
+          type: Interface
+        - uid: FoundationaLLM.Orchestration.Core.Interfaces.ISemanticCacheService
+          name: ISemanticCacheService
+          type: Interface
+        - uid: FoundationaLLM.Orchestration.Core.Interfaces.ISemanticKernelService
+          name: ISemanticKernelService
+          type: Interface
+        - uid: FoundationaLLM.Orchestration.Core.Interfaces.IUserPromptRewriteService
+          name: IUserPromptRewriteService
+          type: Interface
+      - uid: FoundationaLLM.Orchestration.Core.Models
+        name: Models
+        type: Namespace
+        items:
+        - uid: FoundationaLLM.Orchestration.Core.Models.ConfigurationOptions
+          name: ConfigurationOptions
+          type: Namespace
+          items:
+          - uid: FoundationaLLM.Orchestration.Core.Models.ConfigurationOptions.LangChainServiceSettings
+            name: LangChainServiceSettings
+            type: Class
+          - uid: FoundationaLLM.Orchestration.Core.Models.ConfigurationOptions.OrchestrationServiceSettings
+            name: OrchestrationServiceSettings
+            type: Class
+          - uid: FoundationaLLM.Orchestration.Core.Models.ConfigurationOptions.SemanticKernelServiceSettings
+            name: SemanticKernelServiceSettings
+            type: Class
+        - uid: FoundationaLLM.Orchestration.Core.Models.AgentConversationStep
+          name: AgentConversationStep
+          type: Class
+        - uid: FoundationaLLM.Orchestration.Core.Models.AgentSemanticCache
+          name: AgentSemanticCache
+          type: Class
+        - uid: FoundationaLLM.Orchestration.Core.Models.AgentUserPromptRewriter
+          name: AgentUserPromptRewriter
+          type: Class
+      - uid: FoundationaLLM.Orchestration.Core.Orchestration
+        name: Orchestration
+        type: Namespace
+        items:
+        - uid: FoundationaLLM.Orchestration.Core.Orchestration.AgentOrchestration
+          name: AgentOrchestration
+          type: Class
+        - uid: FoundationaLLM.Orchestration.Core.Orchestration.ExplodedObjectsManager
+          name: ExplodedObjectsManager
+          type: Class
+        - uid: FoundationaLLM.Orchestration.Core.Orchestration.OrchestrationBase
+          name: OrchestrationBase
+          type: Class
+        - uid: FoundationaLLM.Orchestration.Core.Orchestration.OrchestrationBuilder
+          name: OrchestrationBuilder
+          type: Class
+      - uid: FoundationaLLM.Orchestration.Core.Services
+        name: Services
+        type: Namespace
+        items:
+        - uid: FoundationaLLM.Orchestration.Core.Services.AzureAIDirectService
+          name: AzureAIDirectService
+          type: Class
+        - uid: FoundationaLLM.Orchestration.Core.Services.AzureOpenAIDirectService
+          name: AzureOpenAIDirectService
+          type: Class
+        - uid: FoundationaLLM.Orchestration.Core.Services.LLMOrchestrationService
+          name: LLMOrchestrationService
+          type: Class
+        - uid: FoundationaLLM.Orchestration.Core.Services.LLMOrchestrationServiceManager
+          name: LLMOrchestrationServiceManager
+          type: Class
+        - uid: FoundationaLLM.Orchestration.Core.Services.LangChainService
+          name: LangChainService
+          type: Class
+        - uid: FoundationaLLM.Orchestration.Core.Services.OrchestrationService
+          name: OrchestrationService
+          type: Class
+        - uid: FoundationaLLM.Orchestration.Core.Services.SemanticCacheService
+          name: SemanticCacheService
+          type: Class
+        - uid: FoundationaLLM.Orchestration.Core.Services.SemanticKernelService
+          name: SemanticKernelService
+          type: Class
+        - uid: FoundationaLLM.Orchestration.Core.Services.UserPromptRewriteService
+          name: UserPromptRewriteService
+          type: Class
+    - uid: FoundationaLLM.Orchestration.Models
+      name: Models
+      type: Namespace
+      items:
+      - uid: FoundationaLLM.Orchestration.Models.SemanticCacheItem
+        name: SemanticCacheItem
+        type: Class
+  - uid: FoundationaLLM.Plugin
+    name: Plugin
+    type: Namespace
+    items:
+    - uid: FoundationaLLM.Plugin.Models
+      name: Models
+      type: Namespace
+      items:
+      - uid: FoundationaLLM.Plugin.Models.PluginReference
+        name: PluginReference
+        type: Class
+      - uid: FoundationaLLM.Plugin.Models.VectorReference
+        name: VectorReference
+        type: Class
+    - uid: FoundationaLLM.Plugin.ResourceProviders
+      name: ResourceProviders
+      type: Namespace
+      items:
+      - uid: FoundationaLLM.Plugin.ResourceProviders.PluginLoadContext
+        name: PluginLoadContext
+        type: Class
+      - uid: FoundationaLLM.Plugin.ResourceProviders.PluginResourceProviderService
+        name: PluginResourceProviderService
+        type: Class
+    - uid: FoundationaLLM.Plugin.Validation
+      name: Validation
+      type: Namespace
+      items:
+      - uid: FoundationaLLM.Plugin.Validation.PluginDefinitionValidator
+        name: PluginDefinitionValidator
+        type: Class
+      - uid: FoundationaLLM.Plugin.Validation.PluginPackageDefinitionValidator
+        name: PluginPackageDefinitionValidator
+        type: Class
+      - uid: FoundationaLLM.Plugin.Validation.VectorDatabaseValidator
+        name: VectorDatabaseValidator
+        type: Class
+  - uid: FoundationaLLM.Plugins.DataPipeline
+    name: Plugins.DataPipeline
+    type: Namespace
+    items:
+    - uid: FoundationaLLM.Plugins.DataPipeline.Constants
+      name: Constants
+      type: Namespace
+      items:
+      - uid: FoundationaLLM.Plugins.DataPipeline.Constants.KnowledgeGraphBuildingSteps
+        name: KnowledgeGraphBuildingSteps
+        type: Class
+    - uid: FoundationaLLM.Plugins.DataPipeline.Plugins
+      name: Plugins
+      type: Namespace
+      items:
+      - uid: FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextExtraction
+        name: ContentTextExtraction
+        type: Namespace
+        items:
+        - uid: FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextExtraction.DOCXContentTextExtractionPlugin
+          name: DOCXContentTextExtractionPlugin
+          type: Class
+        - uid: FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextExtraction.ImageContentTextExtractionPlugin
+          name: ImageContentTextExtractionPlugin
+          type: Class
+        - uid: FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextExtraction.ImageMetadataTextExtractionPlugin
+          name: ImageMetadataTextExtractionPlugin
+          type: Class
+        - uid: FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextExtraction.PDFContentTextExtractionPlugin
+          name: PDFContentTextExtractionPlugin
+          type: Class
+        - uid: FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextExtraction.PPTXContentTextExtractionPlugin
+          name: PPTXContentTextExtractionPlugin
+          type: Class
+        - uid: FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextExtraction.XLSXContentTextExtractionPlugin
+          name: XLSXContentTextExtractionPlugin
+          type: Class
+      - uid: FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextPartitioning
+        name: ContentTextPartitioning
+        type: Namespace
+        items:
+        - uid: FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextPartitioning.SemanticContentTextPartitioningPlugin
+          name: SemanticContentTextPartitioningPlugin
+          type: Class
+        - uid: FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextPartitioning.TokenContentTextPartitioningPlugin
+          name: TokenContentTextPartitioningPlugin
+          type: Class
+      - uid: FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
+        name: DataPipelineStage
+        type: Namespace
+        items:
+        - uid: FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.AzureAIContentSafetyShieldingDataPipelineStagePlugin
+          name: AzureAIContentSafetyShieldingDataPipelineStagePlugin
+          type: Class
+        - uid: FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.AzureAISearchIndexingDataPipelineStagePlugin
+          name: AzureAISearchIndexingDataPipelineStagePlugin
+          type: Class
+        - uid: FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.AzureAISearchRemovalDataPipelineStagePlugin
+          name: AzureAISearchRemovalDataPipelineStagePlugin
+          type: Class
+        - uid: FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.GatewayTextEmbeddingDataPipelineStagePlugin
+          name: GatewayTextEmbeddingDataPipelineStagePlugin
+          type: Class
+        - uid: FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.KnowledgeExtractionDataPipelineStagePlugin
+          name: KnowledgeExtractionDataPipelineStagePlugin
+          type: Class
+        - uid: FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.KnowledgeGraphConsolidationDataPipelineStagePlugin
+          name: KnowledgeGraphConsolidationDataPipelineStagePlugin
+          type: Class
+        - uid: FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.KnowledgeGraphDataPipelineStagePluginBase
+          name: KnowledgeGraphDataPipelineStagePluginBase
+          type: Class
+        - uid: FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.KnowledgeGraphEmbeddingDataPipelineStagePlugin
+          name: KnowledgeGraphEmbeddingDataPipelineStagePlugin
+          type: Class
+        - uid: FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.KnowledgeGraphIndexingDataPipelineStagePlugin
+          name: KnowledgeGraphIndexingDataPipelineStagePlugin
+          type: Class
+        - uid: FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.KnowledgeGraphPublishingDataPipelineStagePlugin
+          name: KnowledgeGraphPublishingDataPipelineStagePlugin
+          type: Class
+        - uid: FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.KnowledgeGraphSummarizationDataPipelineStagePlugin
+          name: KnowledgeGraphSummarizationDataPipelineStagePlugin
+          type: Class
+        - uid: FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.TextExtractionDataPipelineStagePlugin
+          name: TextExtractionDataPipelineStagePlugin
+          type: Class
+        - uid: FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.TextPartitioningDataPipelineStagePlugin
+          name: TextPartitioningDataPipelineStagePlugin
+          type: Class
+      - uid: FoundationaLLM.Plugins.DataPipeline.Plugins.DataSource
+        name: DataSource
+        type: Namespace
+        items:
+        - uid: FoundationaLLM.Plugins.DataPipeline.Plugins.DataSource.AzureDataLakeDataSourcePlugin
+          name: AzureDataLakeDataSourcePlugin
+          type: Class
+        - uid: FoundationaLLM.Plugins.DataPipeline.Plugins.DataSource.ContextFileDataSourcePlugin
+          name: ContextFileDataSourcePlugin
+          type: Class
+        - uid: FoundationaLLM.Plugins.DataPipeline.Plugins.DataSource.SharePointOnlineDataSourcePlugin
+          name: SharePointOnlineDataSourcePlugin
+          type: Class
+    - uid: FoundationaLLM.Plugins.DataPipeline.PluginNames
+      name: PluginNames
+      type: Class
+    - uid: FoundationaLLM.Plugins.DataPipeline.PluginPackageManager
+      name: PluginPackageManager
+      type: Class
+    - uid: FoundationaLLM.Plugins.DataPipeline.PluginParameterNames
+      name: PluginParameterNames
+      type: Class
+  - uid: FoundationaLLM.Prompt
+    name: Prompt
+    type: Namespace
+    items:
+    - uid: FoundationaLLM.Prompt.Models
+      name: Models
+      type: Namespace
+      items:
+      - uid: FoundationaLLM.Prompt.Models.PromptReference
+        name: PromptReference
+        type: Class
+    - uid: FoundationaLLM.Prompt.ResourceProviders
+      name: ResourceProviders
+      type: Namespace
+      items:
+      - uid: FoundationaLLM.Prompt.ResourceProviders.PromptResourceProviderService
+        name: PromptResourceProviderService
+        type: Class
+  - uid: FoundationaLLM.SemanticKernel
+    name: SemanticKernel
+    type: Namespace
+    items:
+    - uid: FoundationaLLM.SemanticKernel.API
+      name: API
+      type: Namespace
+      items:
+      - uid: FoundationaLLM.SemanticKernel.API.Controllers
+        name: Controllers
+        type: Namespace
+        items:
+        - uid: FoundationaLLM.SemanticKernel.API.Controllers.CompletionsController
+          name: CompletionsController
+          type: Class
+        - uid: FoundationaLLM.SemanticKernel.API.Controllers.StatusController
+          name: StatusController
+          type: Class
+      - uid: FoundationaLLM.SemanticKernel.API.Program
+        name: Program
+        type: Class
+    - uid: FoundationaLLM.SemanticKernel.Core
+      name: Core
+      type: Namespace
+      items:
+      - uid: FoundationaLLM.SemanticKernel.Core.Agents
+        name: Agents
+        type: Namespace
+        items:
+        - uid: FoundationaLLM.SemanticKernel.Core.Agents.SemanticKernelAgentBase
+          name: SemanticKernelAgentBase
+          type: Class
+        - uid: FoundationaLLM.SemanticKernel.Core.Agents.SemanticKernelKnowledgeManagementAgent
+          name: SemanticKernelKnowledgeManagementAgent
+          type: Class
+      - uid: FoundationaLLM.SemanticKernel.Core.Exceptions
+        name: Exceptions
+        type: Namespace
+        items:
+        - uid: FoundationaLLM.SemanticKernel.Core.Exceptions.SemanticKernelException
+          name: SemanticKernelException
+          type: Class
+        - uid: FoundationaLLM.SemanticKernel.Core.Exceptions.SemanticKernelExceptionHandler
+          name: SemanticKernelExceptionHandler
+          type: Class
+      - uid: FoundationaLLM.SemanticKernel.Core.Filters
+        name: Filters
+        type: Namespace
+        items:
+        - uid: FoundationaLLM.SemanticKernel.Core.Filters.DefaultPromptFilter
+          name: DefaultPromptFilter
+          type: Class
+      - uid: FoundationaLLM.SemanticKernel.Core.Interfaces
+        name: Interfaces
+        type: Namespace
+        items:
+        - uid: FoundationaLLM.SemanticKernel.Core.Interfaces.ISemanticKernelService
+          name: ISemanticKernelService
+          type: Interface
+      - uid: FoundationaLLM.SemanticKernel.Core.Models.Configuration
+        name: Models.Configuration
+        type: Namespace
+        items:
+        - uid: FoundationaLLM.SemanticKernel.Core.Models.Configuration.AzureAISearchIndexingServiceSettings
+          name: AzureAISearchIndexingServiceSettings
+          type: Class
+        - uid: FoundationaLLM.SemanticKernel.Core.Models.Configuration.AzureCosmosDBNoSQLIndexingServiceSettings
+          name: AzureCosmosDBNoSQLIndexingServiceSettings
+          type: Class
+        - uid: FoundationaLLM.SemanticKernel.Core.Models.Configuration.PostgresIndexingServiceSettings
+          name: PostgresIndexingServiceSettings
+          type: Class
+        - uid: FoundationaLLM.SemanticKernel.Core.Models.Configuration.SemanticKernelServiceSettings
+          name: SemanticKernelServiceSettings
+          type: Class
+        - uid: FoundationaLLM.SemanticKernel.Core.Models.Configuration.SemanticKernelTextEmbeddingServiceSettings
+          name: SemanticKernelTextEmbeddingServiceSettings
+          type: Class
+      - uid: FoundationaLLM.SemanticKernel.Core.Plugins
+        name: Plugins
+        type: Namespace
+        items:
+        - uid: FoundationaLLM.SemanticKernel.Core.Plugins.AgentConversationPlugin
+          name: AgentConversationPlugin
+          type: Class
+        - uid: FoundationaLLM.SemanticKernel.Core.Plugins.KnowledgeManagementContextPlugin
+          name: KnowledgeManagementContextPlugin
+          type: Class
+      - uid: FoundationaLLM.SemanticKernel.Core.Services
+        name: Services
+        type: Namespace
+        items:
+        - uid: FoundationaLLM.SemanticKernel.Core.Services.Indexing
+          name: Indexing
+          type: Namespace
+          items:
+          - uid: FoundationaLLM.SemanticKernel.Core.Services.Indexing.AzureAISearchIndexingService
+            name: AzureAISearchIndexingService
+            type: Class
+          - uid: FoundationaLLM.SemanticKernel.Core.Services.Indexing.AzureCosmosDBNoSQLIndexingService
+            name: AzureCosmosDBNoSQLIndexingService
+            type: Class
+          - uid: FoundationaLLM.SemanticKernel.Core.Services.Indexing.PostgresIndexingService
+            name: PostgresIndexingService
+            type: Class
+        - uid: FoundationaLLM.SemanticKernel.Core.Services.SemanticKernelService
+          name: SemanticKernelService
+          type: Class
+        - uid: FoundationaLLM.SemanticKernel.Core.Services.SemanticKernelTextEmbeddingService
+          name: SemanticKernelTextEmbeddingService
+          type: Class
+  - uid: FoundationaLLM.State
+    name: State
+    type: Namespace
+    items:
+    - uid: FoundationaLLM.State.API.Controllers
+      name: API.Controllers
+      type: Namespace
+      items:
+      - uid: FoundationaLLM.State.API.Controllers.OperationsController
+        name: OperationsController
+        type: Class
+      - uid: FoundationaLLM.State.API.Controllers.StatusController
+        name: StatusController
+        type: Class
+    - uid: FoundationaLLM.State.Exceptions
+      name: Exceptions
+      type: Namespace
+      items:
+      - uid: FoundationaLLM.State.Exceptions.StateException
+        name: StateException
+        type: Class
+      - uid: FoundationaLLM.State.Exceptions.StateExceptionHandler
+        name: StateExceptionHandler
+        type: Class
+    - uid: FoundationaLLM.State.Interfaces
+      name: Interfaces
+      type: Namespace
+      items:
+      - uid: FoundationaLLM.State.Interfaces.IStateCosmosDBService
+        name: IStateCosmosDBService
+        type: Interface
+      - uid: FoundationaLLM.State.Interfaces.IStateService
+        name: IStateService
+        type: Interface
+    - uid: FoundationaLLM.State.Models.Configuration
+      name: Models.Configuration
+      type: Namespace
+      items:
+      - uid: FoundationaLLM.State.Models.Configuration.StateServiceSettings
+        name: StateServiceSettings
+        type: Class
+    - uid: FoundationaLLM.State.Services
+      name: Services
+      type: Namespace
+      items:
+      - uid: FoundationaLLM.State.Services.StateCosmosDBService
+        name: StateCosmosDBService
+        type: Class
+      - uid: FoundationaLLM.State.Services.StateService
+        name: StateService
+        type: Class
+  - uid: FoundationaLLM.Vector.ResourceProviders
+    name: Vector.ResourceProviders
+    type: Namespace
+    items:
+    - uid: FoundationaLLM.Vector.ResourceProviders.VectorResourceProviderService
+      name: VectorResourceProviderService
+      type: Class
+  - uid: FoundationaLLM.DependencyInjection
+    name: DependencyInjection
+    type: Class
+  - uid: FoundationaLLM.ValidatedEnvironment
+    name: ValidatedEnvironment
+    type: Class
+memberLayout: SamePage

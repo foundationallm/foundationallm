@@ -1,0 +1,71 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Common.Models.Configuration.CosmosDB
+  commentId: N:FoundationaLLM.Common.Models.Configuration.CosmosDB
+  id: CosmosDB
+  parent: FoundationaLLM.Common.Models.Configuration
+  children:
+  - FoundationaLLM.Common.Models.Configuration.CosmosDB.AzureCosmosDBSettings
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM.Common.Models.Configuration.CosmosDB
+  nameWithType: FoundationaLLM.Common.Models.Configuration.CosmosDB
+  fullName: FoundationaLLM.Common.Models.Configuration.CosmosDB
+  type: Namespace
+  assemblies:
+  - FoundationaLLM.Common
+references:
+- uid: FoundationaLLM.Common.Models.Configuration.CosmosDB.AzureCosmosDBSettings
+  commentId: T:FoundationaLLM.Common.Models.Configuration.CosmosDB.AzureCosmosDBSettings
+  parent: FoundationaLLM.Common.Models.Configuration.CosmosDB
+  href: FoundationaLLM.Common.Models.Configuration.CosmosDB.AzureCosmosDBSettings.html
+  name: AzureCosmosDBSettings
+  nameWithType: AzureCosmosDBSettings
+  fullName: FoundationaLLM.Common.Models.Configuration.CosmosDB.AzureCosmosDBSettings
+- uid: FoundationaLLM.Common.Models.Configuration.CosmosDB
+  commentId: N:FoundationaLLM.Common.Models.Configuration.CosmosDB
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.Configuration.CosmosDB
+  nameWithType: FoundationaLLM.Common.Models.Configuration.CosmosDB
+  fullName: FoundationaLLM.Common.Models.Configuration.CosmosDB
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Configuration
+    name: Configuration
+    href: FoundationaLLM.Common.Models.Configuration.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Configuration.CosmosDB
+    name: CosmosDB
+    href: FoundationaLLM.Common.Models.Configuration.CosmosDB.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Configuration
+    name: Configuration
+    href: FoundationaLLM.Common.Models.Configuration.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Configuration.CosmosDB
+    name: CosmosDB
+    href: FoundationaLLM.Common.Models.Configuration.CosmosDB.html
