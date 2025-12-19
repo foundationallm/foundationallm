@@ -1,0 +1,70 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Client.Management
+  commentId: N:FoundationaLLM.Client.Management
+  id: Management
+  parent: FoundationaLLM.Client
+  children:
+  - FoundationaLLM.Client.Management.Interfaces
+  - FoundationaLLM.Client.Management.ManagementClient
+  - FoundationaLLM.Client.Management.ManagementRESTClient
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM.Client.Management
+  nameWithType: FoundationaLLM.Client.Management
+  fullName: FoundationaLLM.Client.Management
+  type: Namespace
+  assemblies:
+  - FoundationaLLM.Client.Management
+references:
+- uid: FoundationaLLM.Client.Management.Interfaces
+  commentId: N:FoundationaLLM.Client.Management.Interfaces
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Client.Management.Interfaces
+  nameWithType: FoundationaLLM.Client.Management.Interfaces
+  fullName: FoundationaLLM.Client.Management.Interfaces
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Client
+    name: Client
+    href: FoundationaLLM.Client.html
+  - name: .
+  - uid: FoundationaLLM.Client.Management
+    name: Management
+    href: FoundationaLLM.Client.Management.html
+  - name: .
+  - uid: FoundationaLLM.Client.Management.Interfaces
+    name: Interfaces
+    href: FoundationaLLM.Client.Management.Interfaces.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Client
+    name: Client
+    href: FoundationaLLM.Client.html
+  - name: .
+  - uid: FoundationaLLM.Client.Management
+    name: Management
+    href: FoundationaLLM.Client.Management.html
+  - name: .
+  - uid: FoundationaLLM.Client.Management.Interfaces
+    name: Interfaces
+    href: FoundationaLLM.Client.Management.Interfaces.html
+- uid: FoundationaLLM.Client.Management.ManagementClient
+  commentId: T:FoundationaLLM.Client.Management.ManagementClient
+  href: FoundationaLLM.Client.Management.ManagementClient.html
+  name: ManagementClient
+  nameWithType: ManagementClient
+  fullName: FoundationaLLM.Client.Management.ManagementClient
+- uid: FoundationaLLM.Client.Management.ManagementRESTClient
+  commentId: T:FoundationaLLM.Client.Management.ManagementRESTClient
+  href: FoundationaLLM.Client.Management.ManagementRESTClient.html
+  name: ManagementRESTClient
+  nameWithType: ManagementRESTClient
+  fullName: FoundationaLLM.Client.Management.ManagementRESTClient

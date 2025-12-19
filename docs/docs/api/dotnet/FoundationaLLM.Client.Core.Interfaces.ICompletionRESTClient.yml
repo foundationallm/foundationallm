@@ -1,0 +1,518 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Client.Core.Interfaces.ICompletionRESTClient
+  commentId: T:FoundationaLLM.Client.Core.Interfaces.ICompletionRESTClient
+  id: ICompletionRESTClient
+  parent: FoundationaLLM.Client.Core.Interfaces
+  children:
+  - FoundationaLLM.Client.Core.Interfaces.ICompletionRESTClient.GetAgentsAsync
+  - FoundationaLLM.Client.Core.Interfaces.ICompletionRESTClient.GetChatCompletionAsync(FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequest)
+  langs:
+  - csharp
+  - vb
+  name: ICompletionRESTClient
+  nameWithType: ICompletionRESTClient
+  fullName: FoundationaLLM.Client.Core.Interfaces.ICompletionRESTClient
+  type: Interface
+  source:
+    remote:
+      path: src/dotnet/CoreClient/Interfaces/ICompletionRESTClient.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: ICompletionRESTClient
+    path: ../src/dotnet/CoreClient/Interfaces/ICompletionRESTClient.cs
+    startLine: 10
+  assemblies:
+  - FoundationaLLM.Client.Core
+  namespace: FoundationaLLM.Client.Core.Interfaces
+  summary: Provides methods to manage calls to the Core API's completions endpoints.
+  example: []
+  syntax:
+    content: public interface ICompletionRESTClient
+    content.vb: Public Interface ICompletionRESTClient
+  extensionMethods:
+  - System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+- uid: FoundationaLLM.Client.Core.Interfaces.ICompletionRESTClient.GetChatCompletionAsync(FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequest)
+  commentId: M:FoundationaLLM.Client.Core.Interfaces.ICompletionRESTClient.GetChatCompletionAsync(FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequest)
+  id: GetChatCompletionAsync(FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequest)
+  parent: FoundationaLLM.Client.Core.Interfaces.ICompletionRESTClient
+  langs:
+  - csharp
+  - vb
+  name: GetChatCompletionAsync(CompletionRequest)
+  nameWithType: ICompletionRESTClient.GetChatCompletionAsync(CompletionRequest)
+  fullName: FoundationaLLM.Client.Core.Interfaces.ICompletionRESTClient.GetChatCompletionAsync(FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequest)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/CoreClient/Interfaces/ICompletionRESTClient.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: GetChatCompletionAsync
+    path: ../src/dotnet/CoreClient/Interfaces/ICompletionRESTClient.cs
+    startLine: 20
+  assemblies:
+  - FoundationaLLM.Client.Core
+  namespace: FoundationaLLM.Client.Core.Interfaces
+  summary: >-
+    Performs a completion request to the Core API. For session-based requests, set the
+
+    CompletionRequest.SessionId property to the unique identifier for the session.
+
+    Set the property to <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> or empty for non-session-based requests.
+
+    Session-less completion requests do not maintain message history or data retention in Cosmos DB.
+  example: []
+  syntax:
+    content: Task<Message> GetChatCompletionAsync(CompletionRequest completionRequest)
+    parameters:
+    - id: completionRequest
+      type: FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequest
+      description: The completion request data sent to the endpoint.
+    return:
+      type: System.Threading.Tasks.Task{FoundationaLLM.Common.Models.Conversation.Message}
+      description: ''
+    content.vb: Function GetChatCompletionAsync(completionRequest As CompletionRequest) As Task(Of Message)
+  overload: FoundationaLLM.Client.Core.Interfaces.ICompletionRESTClient.GetChatCompletionAsync*
+- uid: FoundationaLLM.Client.Core.Interfaces.ICompletionRESTClient.GetAgentsAsync
+  commentId: M:FoundationaLLM.Client.Core.Interfaces.ICompletionRESTClient.GetAgentsAsync
+  id: GetAgentsAsync
+  parent: FoundationaLLM.Client.Core.Interfaces.ICompletionRESTClient
+  langs:
+  - csharp
+  - vb
+  name: GetAgentsAsync()
+  nameWithType: ICompletionRESTClient.GetAgentsAsync()
+  fullName: FoundationaLLM.Client.Core.Interfaces.ICompletionRESTClient.GetAgentsAsync()
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/CoreClient/Interfaces/ICompletionRESTClient.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: GetAgentsAsync
+    path: ../src/dotnet/CoreClient/Interfaces/ICompletionRESTClient.cs
+    startLine: 26
+  assemblies:
+  - FoundationaLLM.Client.Core
+  namespace: FoundationaLLM.Client.Core.Interfaces
+  summary: Retrieves agents available to the user for orchestration and session-based requests.
+  example: []
+  syntax:
+    content: Task<IEnumerable<ResourceProviderGetResult<AgentBase>>> GetAgentsAsync()
+    return:
+      type: System.Threading.Tasks.Task{System.Collections.Generic.IEnumerable{FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderGetResult{FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentBase}}}
+      description: ''
+    content.vb: Function GetAgentsAsync() As Task(Of IEnumerable(Of ResourceProviderGetResult(Of AgentBase)))
+  overload: FoundationaLLM.Client.Core.Interfaces.ICompletionRESTClient.GetAgentsAsync*
+references:
+- uid: FoundationaLLM.Client.Core.Interfaces
+  commentId: N:FoundationaLLM.Client.Core.Interfaces
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Client.Core.Interfaces
+  nameWithType: FoundationaLLM.Client.Core.Interfaces
+  fullName: FoundationaLLM.Client.Core.Interfaces
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Client
+    name: Client
+    href: FoundationaLLM.Client.html
+  - name: .
+  - uid: FoundationaLLM.Client.Core
+    name: Core
+    href: FoundationaLLM.Client.Core.html
+  - name: .
+  - uid: FoundationaLLM.Client.Core.Interfaces
+    name: Interfaces
+    href: FoundationaLLM.Client.Core.Interfaces.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Client
+    name: Client
+    href: FoundationaLLM.Client.html
+  - name: .
+  - uid: FoundationaLLM.Client.Core
+    name: Core
+    href: FoundationaLLM.Client.Core.html
+  - name: .
+  - uid: FoundationaLLM.Client.Core.Interfaces
+    name: Interfaces
+    href: FoundationaLLM.Client.Core.Interfaces.html
+- uid: System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  parent: FoundationaLLM.Core.Utils.ObjectExtensions
+  definition: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  isExternal: true
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions
+  commentId: T:FoundationaLLM.Core.Utils.ObjectExtensions
+  parent: FoundationaLLM.Core.Utils
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html
+  name: ObjectExtensions
+  nameWithType: ObjectExtensions
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions
+- uid: FoundationaLLM.Core.Utils
+  commentId: N:FoundationaLLM.Core.Utils
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Core.Utils
+  nameWithType: FoundationaLLM.Core.Utils
+  fullName: FoundationaLLM.Core.Utils
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+- uid: FoundationaLLM.Client.Core.Interfaces.ICompletionRESTClient.GetChatCompletionAsync*
+  commentId: Overload:FoundationaLLM.Client.Core.Interfaces.ICompletionRESTClient.GetChatCompletionAsync
+  href: FoundationaLLM.Client.Core.Interfaces.ICompletionRESTClient.html#FoundationaLLM_Client_Core_Interfaces_ICompletionRESTClient_GetChatCompletionAsync_FoundationaLLM_Common_Models_Orchestration_Request_CompletionRequest_
+  name: GetChatCompletionAsync
+  nameWithType: ICompletionRESTClient.GetChatCompletionAsync
+  fullName: FoundationaLLM.Client.Core.Interfaces.ICompletionRESTClient.GetChatCompletionAsync
+- uid: FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequest
+  commentId: T:FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequest
+  parent: FoundationaLLM.Common.Models.Orchestration.Request
+  href: FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequest.html
+  name: CompletionRequest
+  nameWithType: CompletionRequest
+  fullName: FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequest
+- uid: System.Threading.Tasks.Task{FoundationaLLM.Common.Models.Conversation.Message}
+  commentId: T:System.Threading.Tasks.Task{FoundationaLLM.Common.Models.Conversation.Message}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<Message>
+  nameWithType: Task<Message>
+  fullName: System.Threading.Tasks.Task<FoundationaLLM.Common.Models.Conversation.Message>
+  nameWithType.vb: Task(Of Message)
+  fullName.vb: System.Threading.Tasks.Task(Of FoundationaLLM.Common.Models.Conversation.Message)
+  name.vb: Task(Of Message)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: FoundationaLLM.Common.Models.Conversation.Message
+    name: Message
+    href: FoundationaLLM.Common.Models.Conversation.Message.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FoundationaLLM.Common.Models.Conversation.Message
+    name: Message
+    href: FoundationaLLM.Common.Models.Conversation.Message.html
+  - name: )
+- uid: FoundationaLLM.Common.Models.Orchestration.Request
+  commentId: N:FoundationaLLM.Common.Models.Orchestration.Request
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.Orchestration.Request
+  nameWithType: FoundationaLLM.Common.Models.Orchestration.Request
+  fullName: FoundationaLLM.Common.Models.Orchestration.Request
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Orchestration
+    name: Orchestration
+    href: FoundationaLLM.Common.Models.Orchestration.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Orchestration.Request
+    name: Request
+    href: FoundationaLLM.Common.Models.Orchestration.Request.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Orchestration
+    name: Orchestration
+    href: FoundationaLLM.Common.Models.Orchestration.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Orchestration.Request
+    name: Request
+    href: FoundationaLLM.Common.Models.Orchestration.Request.html
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: FoundationaLLM.Client.Core.Interfaces.ICompletionRESTClient.GetAgentsAsync*
+  commentId: Overload:FoundationaLLM.Client.Core.Interfaces.ICompletionRESTClient.GetAgentsAsync
+  href: FoundationaLLM.Client.Core.Interfaces.ICompletionRESTClient.html#FoundationaLLM_Client_Core_Interfaces_ICompletionRESTClient_GetAgentsAsync
+  name: GetAgentsAsync
+  nameWithType: ICompletionRESTClient.GetAgentsAsync
+  fullName: FoundationaLLM.Client.Core.Interfaces.ICompletionRESTClient.GetAgentsAsync
+- uid: System.Threading.Tasks.Task{System.Collections.Generic.IEnumerable{FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderGetResult{FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentBase}}}
+  commentId: T:System.Threading.Tasks.Task{System.Collections.Generic.IEnumerable{FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderGetResult{FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentBase}}}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<IEnumerable<ResourceProviderGetResult<AgentBase>>>
+  nameWithType: Task<IEnumerable<ResourceProviderGetResult<AgentBase>>>
+  fullName: System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderGetResult<FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentBase>>>
+  nameWithType.vb: Task(Of IEnumerable(Of ResourceProviderGetResult(Of AgentBase)))
+  fullName.vb: System.Threading.Tasks.Task(Of System.Collections.Generic.IEnumerable(Of FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderGetResult(Of FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentBase)))
+  name.vb: Task(Of IEnumerable(Of ResourceProviderGetResult(Of AgentBase)))
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderGetResult`1
+    name: ResourceProviderGetResult
+    href: FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderGetResult-1.html
+  - name: <
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentBase
+    name: AgentBase
+    href: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentBase.html
+  - name: '>'
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderGetResult`1
+    name: ResourceProviderGetResult
+    href: FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderGetResult-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentBase
+    name: AgentBase
+    href: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentBase.html
+  - name: )
+  - name: )
+  - name: )

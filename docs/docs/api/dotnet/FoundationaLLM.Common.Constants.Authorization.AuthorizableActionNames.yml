@@ -1,0 +1,3507 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames
+  commentId: T:FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames
+  id: AuthorizableActionNames
+  parent: FoundationaLLM.Common.Constants.Authorization
+  children:
+  - FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_AIModel_AIModels_Delete
+  - FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_AIModel_AIModels_Read
+  - FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_AIModel_AIModels_Write
+  - FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_AIModel_Management_Write
+  - FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Agent_Agents_Delete
+  - FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Agent_Agents_Read
+  - FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Agent_Agents_Write
+  - FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Agent_Management_Write
+  - FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Agent_Templates_Delete
+  - FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Agent_Templates_Read
+  - FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Agent_Templates_Write
+  - FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Agent_Tools_Delete
+  - FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Agent_Tools_Read
+  - FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Agent_Tools_Write
+  - FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Agent_Workflows_Delete
+  - FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Agent_Workflows_Read
+  - FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Agent_Workflows_Write
+  - FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Attachment_Attachments_Delete
+  - FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Attachment_Attachments_Read
+  - FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Attachment_Attachments_Write
+  - FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Authorization_Management_Write
+  - FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Authorization_RoleAssignments_Delete
+  - FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Authorization_RoleAssignments_Read
+  - FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Authorization_RoleAssignments_Write
+  - FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Authorization_RoleDefinitions_Read
+  - FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Authorization_SecurityPrincipals_Read
+  - FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_AzureAI_AgentConversationMappings_Read
+  - FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_AzureAI_AgentConversationMappings_Write
+  - FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_AzureAI_AgentFileMappings_Delete
+  - FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_AzureAI_AgentFileMappings_Read
+  - FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_AzureAI_AgentFileMappings_Write
+  - FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_AzureAI_ConversationMappings_Delete
+  - FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_AzureAI_Management_Write
+  - FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_AzureAI_Projects_Delete
+  - FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_AzureAI_Projects_Read
+  - FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_AzureAI_Projects_Write
+  - FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_AzureOpenAI_ConversationMappings_Delete
+  - FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_AzureOpenAI_ConversationMappings_Read
+  - FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_AzureOpenAI_ConversationMappings_Write
+  - FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_AzureOpenAI_FileMappings_Delete
+  - FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_AzureOpenAI_FileMappings_Read
+  - FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_AzureOpenAI_FileMappings_Write
+  - FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_AzureOpenAI_Management_Write
+  - FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Configuration_APIEndpoinConfigurations_Delete
+  - FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Configuration_APIEndpointConfigurations_Read
+  - FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Configuration_APIEndpointConfigurations_Write
+  - FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Configuration_AppConfigurationSets_Read
+  - FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Configuration_AppConfigurations_Delete
+  - FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Configuration_AppConfigurations_Read
+  - FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Configuration_AppConfigurations_Write
+  - FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Configuration_KeyVaultSecrets_Delete
+  - FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Configuration_KeyVaultSecrets_Read
+  - FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Configuration_KeyVaultSecrets_Write
+  - FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Configuration_Management_Write
+  - FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Context_KnowledgeSources_Delete
+  - FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Context_KnowledgeSources_Read
+  - FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Context_KnowledgeSources_Write
+  - FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Context_KnowledgeUnits_Delete
+  - FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Context_KnowledgeUnits_Read
+  - FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Context_KnowledgeUnits_Write
+  - FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Context_Management_Write
+  - FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Conversation_Conversations_Delete
+  - FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Conversation_Conversations_Read
+  - FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Conversation_Conversations_Write
+  - FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Conversation_Management_Write
+  - FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_DataPipeline_DataPipelines_Delete
+  - FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_DataPipeline_DataPipelines_Read
+  - FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_DataPipeline_DataPipelines_Write
+  - FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_DataPipeline_Management_Write
+  - FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_DataSource_DataSources_Delete
+  - FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_DataSource_DataSources_Read
+  - FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_DataSource_DataSources_Write
+  - FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_DataSource_Management_Write
+  - FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Plugin_Management_Write
+  - FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Plugin_PluginPackages_Delete
+  - FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Plugin_PluginPackages_Read
+  - FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Plugin_PluginPackages_Write
+  - FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Plugin_Plugins_Delete
+  - FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Plugin_Plugins_Read
+  - FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Plugin_Plugins_Write
+  - FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Prompt_Management_Write
+  - FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Prompt_Prompts_Delete
+  - FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Prompt_Prompts_Read
+  - FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Prompt_Prompts_Write
+  - FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Vector_Management_Write
+  - FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Vector_VectorDatabases_Delete
+  - FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Vector_VectorDatabases_Read
+  - FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Vector_VectorDatabases_Write
+  - FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Vectorization_ContentSourceProfiles_Delete
+  - FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Vectorization_ContentSourceProfiles_Read
+  - FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Vectorization_ContentSourceProfiles_Write
+  - FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Vectorization_IndexingProfiles_Delete
+  - FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Vectorization_IndexingProfiles_Read
+  - FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Vectorization_IndexingProfiles_Write
+  - FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Vectorization_TextEmbeddingProfiles_Delete
+  - FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Vectorization_TextEmbeddingProfiles_Read
+  - FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Vectorization_TextEmbeddingProfiles_Write
+  - FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Vectorization_TextPartitioningProfiles_Delete
+  - FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Vectorization_TextPartitioningProfiles_Read
+  - FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Vectorization_TextPartitioningProfiles_Write
+  - FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Vectorization_VectorizationPipelines_Delete
+  - FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Vectorization_VectorizationPipelines_Read
+  - FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Vectorization_VectorizationPipelines_Write
+  - FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Vectorization_VectorizationRequests_Delete
+  - FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Vectorization_VectorizationRequests_Read
+  - FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Vectorization_VectorizationRequests_Write
+  langs:
+  - csharp
+  - vb
+  name: AuthorizableActionNames
+  nameWithType: AuthorizableActionNames
+  fullName: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames
+  type: Class
+  source:
+    remote:
+      path: src/dotnet/Common/Templates/AuthorizableActionNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: AuthorizableActionNames
+    path: ../src/dotnet/Common/Templates/AuthorizableActionNames.cs
+    startLine: 5
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.Authorization
+  summary: Provides the names of the authorizable actions managed by the FoundationaLLM.Authorization provider.
+  example: []
+  syntax:
+    content: public static class AuthorizableActionNames
+    content.vb: Public Module AuthorizableActionNames
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Authorization_RoleAssignments_Read
+  commentId: F:FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Authorization_RoleAssignments_Read
+  id: FoundationaLLM_Authorization_RoleAssignments_Read
+  parent: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM_Authorization_RoleAssignments_Read
+  nameWithType: AuthorizableActionNames.FoundationaLLM_Authorization_RoleAssignments_Read
+  fullName: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Authorization_RoleAssignments_Read
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Templates/AuthorizableActionNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: FoundationaLLM_Authorization_RoleAssignments_Read
+    path: ../src/dotnet/Common/Templates/AuthorizableActionNames.cs
+    startLine: 12
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.Authorization
+  summary: Read role assignments.
+  example: []
+  syntax:
+    content: public const string FoundationaLLM_Authorization_RoleAssignments_Read = "FoundationaLLM.Authorization/roleAssignments/read"
+    return:
+      type: System.String
+    content.vb: Public Const FoundationaLLM_Authorization_RoleAssignments_Read As String = "FoundationaLLM.Authorization/roleAssignments/read"
+- uid: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Authorization_RoleAssignments_Write
+  commentId: F:FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Authorization_RoleAssignments_Write
+  id: FoundationaLLM_Authorization_RoleAssignments_Write
+  parent: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM_Authorization_RoleAssignments_Write
+  nameWithType: AuthorizableActionNames.FoundationaLLM_Authorization_RoleAssignments_Write
+  fullName: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Authorization_RoleAssignments_Write
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Templates/AuthorizableActionNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: FoundationaLLM_Authorization_RoleAssignments_Write
+    path: ../src/dotnet/Common/Templates/AuthorizableActionNames.cs
+    startLine: 17
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.Authorization
+  summary: Create or update role assignments.
+  example: []
+  syntax:
+    content: public const string FoundationaLLM_Authorization_RoleAssignments_Write = "FoundationaLLM.Authorization/roleAssignments/write"
+    return:
+      type: System.String
+    content.vb: Public Const FoundationaLLM_Authorization_RoleAssignments_Write As String = "FoundationaLLM.Authorization/roleAssignments/write"
+- uid: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Authorization_RoleAssignments_Delete
+  commentId: F:FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Authorization_RoleAssignments_Delete
+  id: FoundationaLLM_Authorization_RoleAssignments_Delete
+  parent: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM_Authorization_RoleAssignments_Delete
+  nameWithType: AuthorizableActionNames.FoundationaLLM_Authorization_RoleAssignments_Delete
+  fullName: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Authorization_RoleAssignments_Delete
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Templates/AuthorizableActionNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: FoundationaLLM_Authorization_RoleAssignments_Delete
+    path: ../src/dotnet/Common/Templates/AuthorizableActionNames.cs
+    startLine: 22
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.Authorization
+  summary: Delete role assignments.
+  example: []
+  syntax:
+    content: public const string FoundationaLLM_Authorization_RoleAssignments_Delete = "FoundationaLLM.Authorization/roleAssignments/delete"
+    return:
+      type: System.String
+    content.vb: Public Const FoundationaLLM_Authorization_RoleAssignments_Delete As String = "FoundationaLLM.Authorization/roleAssignments/delete"
+- uid: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Authorization_RoleDefinitions_Read
+  commentId: F:FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Authorization_RoleDefinitions_Read
+  id: FoundationaLLM_Authorization_RoleDefinitions_Read
+  parent: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM_Authorization_RoleDefinitions_Read
+  nameWithType: AuthorizableActionNames.FoundationaLLM_Authorization_RoleDefinitions_Read
+  fullName: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Authorization_RoleDefinitions_Read
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Templates/AuthorizableActionNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: FoundationaLLM_Authorization_RoleDefinitions_Read
+    path: ../src/dotnet/Common/Templates/AuthorizableActionNames.cs
+    startLine: 27
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.Authorization
+  summary: Read role definitions.
+  example: []
+  syntax:
+    content: public const string FoundationaLLM_Authorization_RoleDefinitions_Read = "FoundationaLLM.Authorization/roleDefinitions/read"
+    return:
+      type: System.String
+    content.vb: Public Const FoundationaLLM_Authorization_RoleDefinitions_Read As String = "FoundationaLLM.Authorization/roleDefinitions/read"
+- uid: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Authorization_SecurityPrincipals_Read
+  commentId: F:FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Authorization_SecurityPrincipals_Read
+  id: FoundationaLLM_Authorization_SecurityPrincipals_Read
+  parent: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM_Authorization_SecurityPrincipals_Read
+  nameWithType: AuthorizableActionNames.FoundationaLLM_Authorization_SecurityPrincipals_Read
+  fullName: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Authorization_SecurityPrincipals_Read
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Templates/AuthorizableActionNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: FoundationaLLM_Authorization_SecurityPrincipals_Read
+    path: ../src/dotnet/Common/Templates/AuthorizableActionNames.cs
+    startLine: 32
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.Authorization
+  summary: Security principals (users, groups, service principals).
+  example: []
+  syntax:
+    content: public const string FoundationaLLM_Authorization_SecurityPrincipals_Read = "FoundationaLLM.Authorization/securityPrincipals/read"
+    return:
+      type: System.String
+    content.vb: Public Const FoundationaLLM_Authorization_SecurityPrincipals_Read As String = "FoundationaLLM.Authorization/securityPrincipals/read"
+- uid: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Authorization_Management_Write
+  commentId: F:FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Authorization_Management_Write
+  id: FoundationaLLM_Authorization_Management_Write
+  parent: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM_Authorization_Management_Write
+  nameWithType: AuthorizableActionNames.FoundationaLLM_Authorization_Management_Write
+  fullName: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Authorization_Management_Write
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Templates/AuthorizableActionNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: FoundationaLLM_Authorization_Management_Write
+    path: ../src/dotnet/Common/Templates/AuthorizableActionNames.cs
+    startLine: 37
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.Authorization
+  summary: Execute management actions.
+  example: []
+  syntax:
+    content: public const string FoundationaLLM_Authorization_Management_Write = "FoundationaLLM.Authorization/management/write"
+    return:
+      type: System.String
+    content.vb: Public Const FoundationaLLM_Authorization_Management_Write As String = "FoundationaLLM.Authorization/management/write"
+- uid: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Agent_Agents_Read
+  commentId: F:FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Agent_Agents_Read
+  id: FoundationaLLM_Agent_Agents_Read
+  parent: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM_Agent_Agents_Read
+  nameWithType: AuthorizableActionNames.FoundationaLLM_Agent_Agents_Read
+  fullName: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Agent_Agents_Read
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Templates/AuthorizableActionNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: FoundationaLLM_Agent_Agents_Read
+    path: ../src/dotnet/Common/Templates/AuthorizableActionNames.cs
+    startLine: 46
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.Authorization
+  summary: Read agents.
+  example: []
+  syntax:
+    content: public const string FoundationaLLM_Agent_Agents_Read = "FoundationaLLM.Agent/agents/read"
+    return:
+      type: System.String
+    content.vb: Public Const FoundationaLLM_Agent_Agents_Read As String = "FoundationaLLM.Agent/agents/read"
+- uid: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Agent_Agents_Write
+  commentId: F:FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Agent_Agents_Write
+  id: FoundationaLLM_Agent_Agents_Write
+  parent: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM_Agent_Agents_Write
+  nameWithType: AuthorizableActionNames.FoundationaLLM_Agent_Agents_Write
+  fullName: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Agent_Agents_Write
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Templates/AuthorizableActionNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: FoundationaLLM_Agent_Agents_Write
+    path: ../src/dotnet/Common/Templates/AuthorizableActionNames.cs
+    startLine: 51
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.Authorization
+  summary: Create or update agents.
+  example: []
+  syntax:
+    content: public const string FoundationaLLM_Agent_Agents_Write = "FoundationaLLM.Agent/agents/write"
+    return:
+      type: System.String
+    content.vb: Public Const FoundationaLLM_Agent_Agents_Write As String = "FoundationaLLM.Agent/agents/write"
+- uid: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Agent_Agents_Delete
+  commentId: F:FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Agent_Agents_Delete
+  id: FoundationaLLM_Agent_Agents_Delete
+  parent: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM_Agent_Agents_Delete
+  nameWithType: AuthorizableActionNames.FoundationaLLM_Agent_Agents_Delete
+  fullName: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Agent_Agents_Delete
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Templates/AuthorizableActionNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: FoundationaLLM_Agent_Agents_Delete
+    path: ../src/dotnet/Common/Templates/AuthorizableActionNames.cs
+    startLine: 56
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.Authorization
+  summary: Delete agents.
+  example: []
+  syntax:
+    content: public const string FoundationaLLM_Agent_Agents_Delete = "FoundationaLLM.Agent/agents/delete"
+    return:
+      type: System.String
+    content.vb: Public Const FoundationaLLM_Agent_Agents_Delete As String = "FoundationaLLM.Agent/agents/delete"
+- uid: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Agent_Workflows_Read
+  commentId: F:FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Agent_Workflows_Read
+  id: FoundationaLLM_Agent_Workflows_Read
+  parent: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM_Agent_Workflows_Read
+  nameWithType: AuthorizableActionNames.FoundationaLLM_Agent_Workflows_Read
+  fullName: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Agent_Workflows_Read
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Templates/AuthorizableActionNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: FoundationaLLM_Agent_Workflows_Read
+    path: ../src/dotnet/Common/Templates/AuthorizableActionNames.cs
+    startLine: 61
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.Authorization
+  summary: Read workflows.
+  example: []
+  syntax:
+    content: public const string FoundationaLLM_Agent_Workflows_Read = "FoundationaLLM.Agent/workflows/read"
+    return:
+      type: System.String
+    content.vb: Public Const FoundationaLLM_Agent_Workflows_Read As String = "FoundationaLLM.Agent/workflows/read"
+- uid: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Agent_Workflows_Write
+  commentId: F:FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Agent_Workflows_Write
+  id: FoundationaLLM_Agent_Workflows_Write
+  parent: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM_Agent_Workflows_Write
+  nameWithType: AuthorizableActionNames.FoundationaLLM_Agent_Workflows_Write
+  fullName: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Agent_Workflows_Write
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Templates/AuthorizableActionNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: FoundationaLLM_Agent_Workflows_Write
+    path: ../src/dotnet/Common/Templates/AuthorizableActionNames.cs
+    startLine: 66
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.Authorization
+  summary: Create or update workflows.
+  example: []
+  syntax:
+    content: public const string FoundationaLLM_Agent_Workflows_Write = "FoundationaLLM.Agent/workflows/write"
+    return:
+      type: System.String
+    content.vb: Public Const FoundationaLLM_Agent_Workflows_Write As String = "FoundationaLLM.Agent/workflows/write"
+- uid: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Agent_Workflows_Delete
+  commentId: F:FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Agent_Workflows_Delete
+  id: FoundationaLLM_Agent_Workflows_Delete
+  parent: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM_Agent_Workflows_Delete
+  nameWithType: AuthorizableActionNames.FoundationaLLM_Agent_Workflows_Delete
+  fullName: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Agent_Workflows_Delete
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Templates/AuthorizableActionNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: FoundationaLLM_Agent_Workflows_Delete
+    path: ../src/dotnet/Common/Templates/AuthorizableActionNames.cs
+    startLine: 71
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.Authorization
+  summary: Delete workflows.
+  example: []
+  syntax:
+    content: public const string FoundationaLLM_Agent_Workflows_Delete = "FoundationaLLM.Agent/workflows/delete"
+    return:
+      type: System.String
+    content.vb: Public Const FoundationaLLM_Agent_Workflows_Delete As String = "FoundationaLLM.Agent/workflows/delete"
+- uid: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Agent_Tools_Read
+  commentId: F:FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Agent_Tools_Read
+  id: FoundationaLLM_Agent_Tools_Read
+  parent: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM_Agent_Tools_Read
+  nameWithType: AuthorizableActionNames.FoundationaLLM_Agent_Tools_Read
+  fullName: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Agent_Tools_Read
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Templates/AuthorizableActionNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: FoundationaLLM_Agent_Tools_Read
+    path: ../src/dotnet/Common/Templates/AuthorizableActionNames.cs
+    startLine: 76
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.Authorization
+  summary: Read tools.
+  example: []
+  syntax:
+    content: public const string FoundationaLLM_Agent_Tools_Read = "FoundationaLLM.Agent/tools/read"
+    return:
+      type: System.String
+    content.vb: Public Const FoundationaLLM_Agent_Tools_Read As String = "FoundationaLLM.Agent/tools/read"
+- uid: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Agent_Tools_Write
+  commentId: F:FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Agent_Tools_Write
+  id: FoundationaLLM_Agent_Tools_Write
+  parent: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM_Agent_Tools_Write
+  nameWithType: AuthorizableActionNames.FoundationaLLM_Agent_Tools_Write
+  fullName: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Agent_Tools_Write
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Templates/AuthorizableActionNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: FoundationaLLM_Agent_Tools_Write
+    path: ../src/dotnet/Common/Templates/AuthorizableActionNames.cs
+    startLine: 81
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.Authorization
+  summary: Create or update tools.
+  example: []
+  syntax:
+    content: public const string FoundationaLLM_Agent_Tools_Write = "FoundationaLLM.Agent/tools/write"
+    return:
+      type: System.String
+    content.vb: Public Const FoundationaLLM_Agent_Tools_Write As String = "FoundationaLLM.Agent/tools/write"
+- uid: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Agent_Tools_Delete
+  commentId: F:FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Agent_Tools_Delete
+  id: FoundationaLLM_Agent_Tools_Delete
+  parent: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM_Agent_Tools_Delete
+  nameWithType: AuthorizableActionNames.FoundationaLLM_Agent_Tools_Delete
+  fullName: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Agent_Tools_Delete
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Templates/AuthorizableActionNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: FoundationaLLM_Agent_Tools_Delete
+    path: ../src/dotnet/Common/Templates/AuthorizableActionNames.cs
+    startLine: 86
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.Authorization
+  summary: Delete tools.
+  example: []
+  syntax:
+    content: public const string FoundationaLLM_Agent_Tools_Delete = "FoundationaLLM.Agent/tools/delete"
+    return:
+      type: System.String
+    content.vb: Public Const FoundationaLLM_Agent_Tools_Delete As String = "FoundationaLLM.Agent/tools/delete"
+- uid: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Agent_Management_Write
+  commentId: F:FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Agent_Management_Write
+  id: FoundationaLLM_Agent_Management_Write
+  parent: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM_Agent_Management_Write
+  nameWithType: AuthorizableActionNames.FoundationaLLM_Agent_Management_Write
+  fullName: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Agent_Management_Write
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Templates/AuthorizableActionNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: FoundationaLLM_Agent_Management_Write
+    path: ../src/dotnet/Common/Templates/AuthorizableActionNames.cs
+    startLine: 91
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.Authorization
+  summary: Execute management actions.
+  example: []
+  syntax:
+    content: public const string FoundationaLLM_Agent_Management_Write = "FoundationaLLM.Agent/management/write"
+    return:
+      type: System.String
+    content.vb: Public Const FoundationaLLM_Agent_Management_Write As String = "FoundationaLLM.Agent/management/write"
+- uid: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Agent_Templates_Read
+  commentId: F:FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Agent_Templates_Read
+  id: FoundationaLLM_Agent_Templates_Read
+  parent: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM_Agent_Templates_Read
+  nameWithType: AuthorizableActionNames.FoundationaLLM_Agent_Templates_Read
+  fullName: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Agent_Templates_Read
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Templates/AuthorizableActionNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: FoundationaLLM_Agent_Templates_Read
+    path: ../src/dotnet/Common/Templates/AuthorizableActionNames.cs
+    startLine: 96
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.Authorization
+  summary: Read agent templates.
+  example: []
+  syntax:
+    content: public const string FoundationaLLM_Agent_Templates_Read = "FoundationaLLM.Agent/agentTemplates/read"
+    return:
+      type: System.String
+    content.vb: Public Const FoundationaLLM_Agent_Templates_Read As String = "FoundationaLLM.Agent/agentTemplates/read"
+- uid: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Agent_Templates_Write
+  commentId: F:FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Agent_Templates_Write
+  id: FoundationaLLM_Agent_Templates_Write
+  parent: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM_Agent_Templates_Write
+  nameWithType: AuthorizableActionNames.FoundationaLLM_Agent_Templates_Write
+  fullName: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Agent_Templates_Write
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Templates/AuthorizableActionNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: FoundationaLLM_Agent_Templates_Write
+    path: ../src/dotnet/Common/Templates/AuthorizableActionNames.cs
+    startLine: 101
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.Authorization
+  summary: Create or update agent templates.
+  example: []
+  syntax:
+    content: public const string FoundationaLLM_Agent_Templates_Write = "FoundationaLLM.Agent/agentTemplates/write"
+    return:
+      type: System.String
+    content.vb: Public Const FoundationaLLM_Agent_Templates_Write As String = "FoundationaLLM.Agent/agentTemplates/write"
+- uid: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Agent_Templates_Delete
+  commentId: F:FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Agent_Templates_Delete
+  id: FoundationaLLM_Agent_Templates_Delete
+  parent: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM_Agent_Templates_Delete
+  nameWithType: AuthorizableActionNames.FoundationaLLM_Agent_Templates_Delete
+  fullName: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Agent_Templates_Delete
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Templates/AuthorizableActionNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: FoundationaLLM_Agent_Templates_Delete
+    path: ../src/dotnet/Common/Templates/AuthorizableActionNames.cs
+    startLine: 106
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.Authorization
+  summary: Delete agent templates.
+  example: []
+  syntax:
+    content: public const string FoundationaLLM_Agent_Templates_Delete = "FoundationaLLM.Agent/agentTemplates/delete"
+    return:
+      type: System.String
+    content.vb: Public Const FoundationaLLM_Agent_Templates_Delete As String = "FoundationaLLM.Agent/agentTemplates/delete"
+- uid: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_AzureAI_AgentConversationMappings_Read
+  commentId: F:FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_AzureAI_AgentConversationMappings_Read
+  id: FoundationaLLM_AzureAI_AgentConversationMappings_Read
+  parent: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM_AzureAI_AgentConversationMappings_Read
+  nameWithType: AuthorizableActionNames.FoundationaLLM_AzureAI_AgentConversationMappings_Read
+  fullName: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_AzureAI_AgentConversationMappings_Read
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Templates/AuthorizableActionNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: FoundationaLLM_AzureAI_AgentConversationMappings_Read
+    path: ../src/dotnet/Common/Templates/AuthorizableActionNames.cs
+    startLine: 115
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.Authorization
+  summary: Read Azure AI Agent Service conversation mappings.
+  example: []
+  syntax:
+    content: public const string FoundationaLLM_AzureAI_AgentConversationMappings_Read = "FoundationaLLM.AzureAI/agentConversationMappings/read"
+    return:
+      type: System.String
+    content.vb: Public Const FoundationaLLM_AzureAI_AgentConversationMappings_Read As String = "FoundationaLLM.AzureAI/agentConversationMappings/read"
+- uid: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_AzureAI_AgentConversationMappings_Write
+  commentId: F:FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_AzureAI_AgentConversationMappings_Write
+  id: FoundationaLLM_AzureAI_AgentConversationMappings_Write
+  parent: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM_AzureAI_AgentConversationMappings_Write
+  nameWithType: AuthorizableActionNames.FoundationaLLM_AzureAI_AgentConversationMappings_Write
+  fullName: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_AzureAI_AgentConversationMappings_Write
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Templates/AuthorizableActionNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: FoundationaLLM_AzureAI_AgentConversationMappings_Write
+    path: ../src/dotnet/Common/Templates/AuthorizableActionNames.cs
+    startLine: 120
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.Authorization
+  summary: Create or update Azure AI Agent Service conversation mappings.
+  example: []
+  syntax:
+    content: public const string FoundationaLLM_AzureAI_AgentConversationMappings_Write = "FoundationaLLM.AzureAI/agentConversationMappings/write"
+    return:
+      type: System.String
+    content.vb: Public Const FoundationaLLM_AzureAI_AgentConversationMappings_Write As String = "FoundationaLLM.AzureAI/agentConversationMappings/write"
+- uid: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_AzureAI_ConversationMappings_Delete
+  commentId: F:FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_AzureAI_ConversationMappings_Delete
+  id: FoundationaLLM_AzureAI_ConversationMappings_Delete
+  parent: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM_AzureAI_ConversationMappings_Delete
+  nameWithType: AuthorizableActionNames.FoundationaLLM_AzureAI_ConversationMappings_Delete
+  fullName: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_AzureAI_ConversationMappings_Delete
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Templates/AuthorizableActionNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: FoundationaLLM_AzureAI_ConversationMappings_Delete
+    path: ../src/dotnet/Common/Templates/AuthorizableActionNames.cs
+    startLine: 125
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.Authorization
+  summary: Delete Azure AI Agent Service conversation mappings.
+  example: []
+  syntax:
+    content: public const string FoundationaLLM_AzureAI_ConversationMappings_Delete = "FoundationaLLM.AzureAI/agentConversationMappings/delete"
+    return:
+      type: System.String
+    content.vb: Public Const FoundationaLLM_AzureAI_ConversationMappings_Delete As String = "FoundationaLLM.AzureAI/agentConversationMappings/delete"
+- uid: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_AzureAI_AgentFileMappings_Read
+  commentId: F:FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_AzureAI_AgentFileMappings_Read
+  id: FoundationaLLM_AzureAI_AgentFileMappings_Read
+  parent: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM_AzureAI_AgentFileMappings_Read
+  nameWithType: AuthorizableActionNames.FoundationaLLM_AzureAI_AgentFileMappings_Read
+  fullName: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_AzureAI_AgentFileMappings_Read
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Templates/AuthorizableActionNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: FoundationaLLM_AzureAI_AgentFileMappings_Read
+    path: ../src/dotnet/Common/Templates/AuthorizableActionNames.cs
+    startLine: 130
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.Authorization
+  summary: Read Azure AI Agent Service file mappings.
+  example: []
+  syntax:
+    content: public const string FoundationaLLM_AzureAI_AgentFileMappings_Read = "FoundationaLLM.AzureAI/agentFileMappings/read"
+    return:
+      type: System.String
+    content.vb: Public Const FoundationaLLM_AzureAI_AgentFileMappings_Read As String = "FoundationaLLM.AzureAI/agentFileMappings/read"
+- uid: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_AzureAI_AgentFileMappings_Write
+  commentId: F:FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_AzureAI_AgentFileMappings_Write
+  id: FoundationaLLM_AzureAI_AgentFileMappings_Write
+  parent: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM_AzureAI_AgentFileMappings_Write
+  nameWithType: AuthorizableActionNames.FoundationaLLM_AzureAI_AgentFileMappings_Write
+  fullName: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_AzureAI_AgentFileMappings_Write
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Templates/AuthorizableActionNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: FoundationaLLM_AzureAI_AgentFileMappings_Write
+    path: ../src/dotnet/Common/Templates/AuthorizableActionNames.cs
+    startLine: 135
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.Authorization
+  summary: Create or update Azure AI Agent Service file mappings.
+  example: []
+  syntax:
+    content: public const string FoundationaLLM_AzureAI_AgentFileMappings_Write = "FoundationaLLM.AzureAI/agentFileMappings/write"
+    return:
+      type: System.String
+    content.vb: Public Const FoundationaLLM_AzureAI_AgentFileMappings_Write As String = "FoundationaLLM.AzureAI/agentFileMappings/write"
+- uid: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_AzureAI_AgentFileMappings_Delete
+  commentId: F:FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_AzureAI_AgentFileMappings_Delete
+  id: FoundationaLLM_AzureAI_AgentFileMappings_Delete
+  parent: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM_AzureAI_AgentFileMappings_Delete
+  nameWithType: AuthorizableActionNames.FoundationaLLM_AzureAI_AgentFileMappings_Delete
+  fullName: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_AzureAI_AgentFileMappings_Delete
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Templates/AuthorizableActionNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: FoundationaLLM_AzureAI_AgentFileMappings_Delete
+    path: ../src/dotnet/Common/Templates/AuthorizableActionNames.cs
+    startLine: 140
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.Authorization
+  summary: Delete Azure AI Agent Service file mappings.
+  example: []
+  syntax:
+    content: public const string FoundationaLLM_AzureAI_AgentFileMappings_Delete = "FoundationaLLM.AzureAI/agentFileMappings/delete"
+    return:
+      type: System.String
+    content.vb: Public Const FoundationaLLM_AzureAI_AgentFileMappings_Delete As String = "FoundationaLLM.AzureAI/agentFileMappings/delete"
+- uid: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_AzureAI_Projects_Read
+  commentId: F:FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_AzureAI_Projects_Read
+  id: FoundationaLLM_AzureAI_Projects_Read
+  parent: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM_AzureAI_Projects_Read
+  nameWithType: AuthorizableActionNames.FoundationaLLM_AzureAI_Projects_Read
+  fullName: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_AzureAI_Projects_Read
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Templates/AuthorizableActionNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: FoundationaLLM_AzureAI_Projects_Read
+    path: ../src/dotnet/Common/Templates/AuthorizableActionNames.cs
+    startLine: 145
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.Authorization
+  summary: Read Azure AI Agent Service project resources.
+  example: []
+  syntax:
+    content: public const string FoundationaLLM_AzureAI_Projects_Read = "FoundationaLLM.AzureAI/projects/read"
+    return:
+      type: System.String
+    content.vb: Public Const FoundationaLLM_AzureAI_Projects_Read As String = "FoundationaLLM.AzureAI/projects/read"
+- uid: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_AzureAI_Projects_Write
+  commentId: F:FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_AzureAI_Projects_Write
+  id: FoundationaLLM_AzureAI_Projects_Write
+  parent: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM_AzureAI_Projects_Write
+  nameWithType: AuthorizableActionNames.FoundationaLLM_AzureAI_Projects_Write
+  fullName: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_AzureAI_Projects_Write
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Templates/AuthorizableActionNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: FoundationaLLM_AzureAI_Projects_Write
+    path: ../src/dotnet/Common/Templates/AuthorizableActionNames.cs
+    startLine: 150
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.Authorization
+  summary: Create or update Azure AI project resource.
+  example: []
+  syntax:
+    content: public const string FoundationaLLM_AzureAI_Projects_Write = "FoundationaLLM.AzureAI/projects/write"
+    return:
+      type: System.String
+    content.vb: Public Const FoundationaLLM_AzureAI_Projects_Write As String = "FoundationaLLM.AzureAI/projects/write"
+- uid: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_AzureAI_Projects_Delete
+  commentId: F:FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_AzureAI_Projects_Delete
+  id: FoundationaLLM_AzureAI_Projects_Delete
+  parent: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM_AzureAI_Projects_Delete
+  nameWithType: AuthorizableActionNames.FoundationaLLM_AzureAI_Projects_Delete
+  fullName: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_AzureAI_Projects_Delete
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Templates/AuthorizableActionNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: FoundationaLLM_AzureAI_Projects_Delete
+    path: ../src/dotnet/Common/Templates/AuthorizableActionNames.cs
+    startLine: 155
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.Authorization
+  summary: Delete Azure AI project resources.
+  example: []
+  syntax:
+    content: public const string FoundationaLLM_AzureAI_Projects_Delete = "FoundationaLLM.AzureAI/projects/delete"
+    return:
+      type: System.String
+    content.vb: Public Const FoundationaLLM_AzureAI_Projects_Delete As String = "FoundationaLLM.AzureAI/projects/delete"
+- uid: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_AzureAI_Management_Write
+  commentId: F:FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_AzureAI_Management_Write
+  id: FoundationaLLM_AzureAI_Management_Write
+  parent: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM_AzureAI_Management_Write
+  nameWithType: AuthorizableActionNames.FoundationaLLM_AzureAI_Management_Write
+  fullName: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_AzureAI_Management_Write
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Templates/AuthorizableActionNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: FoundationaLLM_AzureAI_Management_Write
+    path: ../src/dotnet/Common/Templates/AuthorizableActionNames.cs
+    startLine: 160
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.Authorization
+  summary: Execute management actions.
+  example: []
+  syntax:
+    content: public const string FoundationaLLM_AzureAI_Management_Write = "FoundationaLLM.AzureAI/management/write"
+    return:
+      type: System.String
+    content.vb: Public Const FoundationaLLM_AzureAI_Management_Write As String = "FoundationaLLM.AzureAI/management/write"
+- uid: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_AzureOpenAI_ConversationMappings_Read
+  commentId: F:FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_AzureOpenAI_ConversationMappings_Read
+  id: FoundationaLLM_AzureOpenAI_ConversationMappings_Read
+  parent: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM_AzureOpenAI_ConversationMappings_Read
+  nameWithType: AuthorizableActionNames.FoundationaLLM_AzureOpenAI_ConversationMappings_Read
+  fullName: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_AzureOpenAI_ConversationMappings_Read
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Templates/AuthorizableActionNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: FoundationaLLM_AzureOpenAI_ConversationMappings_Read
+    path: ../src/dotnet/Common/Templates/AuthorizableActionNames.cs
+    startLine: 169
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.Authorization
+  summary: Read Azure OpenAI conversation mappings.
+  example: []
+  syntax:
+    content: public const string FoundationaLLM_AzureOpenAI_ConversationMappings_Read = "FoundationaLLM.AzureOpenAI/conversationMappings/read"
+    return:
+      type: System.String
+    content.vb: Public Const FoundationaLLM_AzureOpenAI_ConversationMappings_Read As String = "FoundationaLLM.AzureOpenAI/conversationMappings/read"
+- uid: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_AzureOpenAI_ConversationMappings_Write
+  commentId: F:FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_AzureOpenAI_ConversationMappings_Write
+  id: FoundationaLLM_AzureOpenAI_ConversationMappings_Write
+  parent: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM_AzureOpenAI_ConversationMappings_Write
+  nameWithType: AuthorizableActionNames.FoundationaLLM_AzureOpenAI_ConversationMappings_Write
+  fullName: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_AzureOpenAI_ConversationMappings_Write
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Templates/AuthorizableActionNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: FoundationaLLM_AzureOpenAI_ConversationMappings_Write
+    path: ../src/dotnet/Common/Templates/AuthorizableActionNames.cs
+    startLine: 174
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.Authorization
+  summary: Create or update Azure OpenAI conversation mappings.
+  example: []
+  syntax:
+    content: public const string FoundationaLLM_AzureOpenAI_ConversationMappings_Write = "FoundationaLLM.AzureOpenAI/conversationMappings/write"
+    return:
+      type: System.String
+    content.vb: Public Const FoundationaLLM_AzureOpenAI_ConversationMappings_Write As String = "FoundationaLLM.AzureOpenAI/conversationMappings/write"
+- uid: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_AzureOpenAI_ConversationMappings_Delete
+  commentId: F:FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_AzureOpenAI_ConversationMappings_Delete
+  id: FoundationaLLM_AzureOpenAI_ConversationMappings_Delete
+  parent: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM_AzureOpenAI_ConversationMappings_Delete
+  nameWithType: AuthorizableActionNames.FoundationaLLM_AzureOpenAI_ConversationMappings_Delete
+  fullName: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_AzureOpenAI_ConversationMappings_Delete
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Templates/AuthorizableActionNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: FoundationaLLM_AzureOpenAI_ConversationMappings_Delete
+    path: ../src/dotnet/Common/Templates/AuthorizableActionNames.cs
+    startLine: 179
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.Authorization
+  summary: Delete Azure OpenAI conversation mappings.
+  example: []
+  syntax:
+    content: public const string FoundationaLLM_AzureOpenAI_ConversationMappings_Delete = "FoundationaLLM.AzureOpenAI/conversationMappings/delete"
+    return:
+      type: System.String
+    content.vb: Public Const FoundationaLLM_AzureOpenAI_ConversationMappings_Delete As String = "FoundationaLLM.AzureOpenAI/conversationMappings/delete"
+- uid: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_AzureOpenAI_FileMappings_Read
+  commentId: F:FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_AzureOpenAI_FileMappings_Read
+  id: FoundationaLLM_AzureOpenAI_FileMappings_Read
+  parent: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM_AzureOpenAI_FileMappings_Read
+  nameWithType: AuthorizableActionNames.FoundationaLLM_AzureOpenAI_FileMappings_Read
+  fullName: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_AzureOpenAI_FileMappings_Read
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Templates/AuthorizableActionNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: FoundationaLLM_AzureOpenAI_FileMappings_Read
+    path: ../src/dotnet/Common/Templates/AuthorizableActionNames.cs
+    startLine: 184
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.Authorization
+  summary: Read Azure OpenAI file mappings.
+  example: []
+  syntax:
+    content: public const string FoundationaLLM_AzureOpenAI_FileMappings_Read = "FoundationaLLM.AzureOpenAI/fileMappings/read"
+    return:
+      type: System.String
+    content.vb: Public Const FoundationaLLM_AzureOpenAI_FileMappings_Read As String = "FoundationaLLM.AzureOpenAI/fileMappings/read"
+- uid: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_AzureOpenAI_FileMappings_Write
+  commentId: F:FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_AzureOpenAI_FileMappings_Write
+  id: FoundationaLLM_AzureOpenAI_FileMappings_Write
+  parent: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM_AzureOpenAI_FileMappings_Write
+  nameWithType: AuthorizableActionNames.FoundationaLLM_AzureOpenAI_FileMappings_Write
+  fullName: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_AzureOpenAI_FileMappings_Write
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Templates/AuthorizableActionNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: FoundationaLLM_AzureOpenAI_FileMappings_Write
+    path: ../src/dotnet/Common/Templates/AuthorizableActionNames.cs
+    startLine: 189
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.Authorization
+  summary: Create or update Azure OpenAI file mappings.
+  example: []
+  syntax:
+    content: public const string FoundationaLLM_AzureOpenAI_FileMappings_Write = "FoundationaLLM.AzureOpenAI/fileMappings/write"
+    return:
+      type: System.String
+    content.vb: Public Const FoundationaLLM_AzureOpenAI_FileMappings_Write As String = "FoundationaLLM.AzureOpenAI/fileMappings/write"
+- uid: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_AzureOpenAI_FileMappings_Delete
+  commentId: F:FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_AzureOpenAI_FileMappings_Delete
+  id: FoundationaLLM_AzureOpenAI_FileMappings_Delete
+  parent: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM_AzureOpenAI_FileMappings_Delete
+  nameWithType: AuthorizableActionNames.FoundationaLLM_AzureOpenAI_FileMappings_Delete
+  fullName: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_AzureOpenAI_FileMappings_Delete
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Templates/AuthorizableActionNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: FoundationaLLM_AzureOpenAI_FileMappings_Delete
+    path: ../src/dotnet/Common/Templates/AuthorizableActionNames.cs
+    startLine: 194
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.Authorization
+  summary: Delete Azure OpenAI file mappings.
+  example: []
+  syntax:
+    content: public const string FoundationaLLM_AzureOpenAI_FileMappings_Delete = "FoundationaLLM.AzureOpenAI/fileMappings/delete"
+    return:
+      type: System.String
+    content.vb: Public Const FoundationaLLM_AzureOpenAI_FileMappings_Delete As String = "FoundationaLLM.AzureOpenAI/fileMappings/delete"
+- uid: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_AzureOpenAI_Management_Write
+  commentId: F:FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_AzureOpenAI_Management_Write
+  id: FoundationaLLM_AzureOpenAI_Management_Write
+  parent: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM_AzureOpenAI_Management_Write
+  nameWithType: AuthorizableActionNames.FoundationaLLM_AzureOpenAI_Management_Write
+  fullName: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_AzureOpenAI_Management_Write
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Templates/AuthorizableActionNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: FoundationaLLM_AzureOpenAI_Management_Write
+    path: ../src/dotnet/Common/Templates/AuthorizableActionNames.cs
+    startLine: 199
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.Authorization
+  summary: Execute management actions.
+  example: []
+  syntax:
+    content: public const string FoundationaLLM_AzureOpenAI_Management_Write = "FoundationaLLM.AzureOpenAI/management/write"
+    return:
+      type: System.String
+    content.vb: Public Const FoundationaLLM_AzureOpenAI_Management_Write As String = "FoundationaLLM.AzureOpenAI/management/write"
+- uid: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Configuration_AppConfigurations_Read
+  commentId: F:FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Configuration_AppConfigurations_Read
+  id: FoundationaLLM_Configuration_AppConfigurations_Read
+  parent: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM_Configuration_AppConfigurations_Read
+  nameWithType: AuthorizableActionNames.FoundationaLLM_Configuration_AppConfigurations_Read
+  fullName: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Configuration_AppConfigurations_Read
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Templates/AuthorizableActionNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: FoundationaLLM_Configuration_AppConfigurations_Read
+    path: ../src/dotnet/Common/Templates/AuthorizableActionNames.cs
+    startLine: 208
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.Authorization
+  summary: Read app configurations.
+  example: []
+  syntax:
+    content: public const string FoundationaLLM_Configuration_AppConfigurations_Read = "FoundationaLLM.Configuration/appConfigurations/read"
+    return:
+      type: System.String
+    content.vb: Public Const FoundationaLLM_Configuration_AppConfigurations_Read As String = "FoundationaLLM.Configuration/appConfigurations/read"
+- uid: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Configuration_AppConfigurations_Write
+  commentId: F:FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Configuration_AppConfigurations_Write
+  id: FoundationaLLM_Configuration_AppConfigurations_Write
+  parent: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM_Configuration_AppConfigurations_Write
+  nameWithType: AuthorizableActionNames.FoundationaLLM_Configuration_AppConfigurations_Write
+  fullName: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Configuration_AppConfigurations_Write
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Templates/AuthorizableActionNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: FoundationaLLM_Configuration_AppConfigurations_Write
+    path: ../src/dotnet/Common/Templates/AuthorizableActionNames.cs
+    startLine: 213
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.Authorization
+  summary: Create or update app configurations.
+  example: []
+  syntax:
+    content: public const string FoundationaLLM_Configuration_AppConfigurations_Write = "FoundationaLLM.Configuration/appConfigurations/write"
+    return:
+      type: System.String
+    content.vb: Public Const FoundationaLLM_Configuration_AppConfigurations_Write As String = "FoundationaLLM.Configuration/appConfigurations/write"
+- uid: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Configuration_AppConfigurations_Delete
+  commentId: F:FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Configuration_AppConfigurations_Delete
+  id: FoundationaLLM_Configuration_AppConfigurations_Delete
+  parent: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM_Configuration_AppConfigurations_Delete
+  nameWithType: AuthorizableActionNames.FoundationaLLM_Configuration_AppConfigurations_Delete
+  fullName: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Configuration_AppConfigurations_Delete
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Templates/AuthorizableActionNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: FoundationaLLM_Configuration_AppConfigurations_Delete
+    path: ../src/dotnet/Common/Templates/AuthorizableActionNames.cs
+    startLine: 218
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.Authorization
+  summary: Delete app configurations.
+  example: []
+  syntax:
+    content: public const string FoundationaLLM_Configuration_AppConfigurations_Delete = "FoundationaLLM.Configuration/appConfigurations/delete"
+    return:
+      type: System.String
+    content.vb: Public Const FoundationaLLM_Configuration_AppConfigurations_Delete As String = "FoundationaLLM.Configuration/appConfigurations/delete"
+- uid: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Configuration_AppConfigurationSets_Read
+  commentId: F:FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Configuration_AppConfigurationSets_Read
+  id: FoundationaLLM_Configuration_AppConfigurationSets_Read
+  parent: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM_Configuration_AppConfigurationSets_Read
+  nameWithType: AuthorizableActionNames.FoundationaLLM_Configuration_AppConfigurationSets_Read
+  fullName: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Configuration_AppConfigurationSets_Read
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Templates/AuthorizableActionNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: FoundationaLLM_Configuration_AppConfigurationSets_Read
+    path: ../src/dotnet/Common/Templates/AuthorizableActionNames.cs
+    startLine: 223
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.Authorization
+  summary: Read app configuration sets.
+  example: []
+  syntax:
+    content: public const string FoundationaLLM_Configuration_AppConfigurationSets_Read = "FoundationaLLM.Configuration/appConfigurationSets/read"
+    return:
+      type: System.String
+    content.vb: Public Const FoundationaLLM_Configuration_AppConfigurationSets_Read As String = "FoundationaLLM.Configuration/appConfigurationSets/read"
+- uid: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Configuration_KeyVaultSecrets_Read
+  commentId: F:FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Configuration_KeyVaultSecrets_Read
+  id: FoundationaLLM_Configuration_KeyVaultSecrets_Read
+  parent: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM_Configuration_KeyVaultSecrets_Read
+  nameWithType: AuthorizableActionNames.FoundationaLLM_Configuration_KeyVaultSecrets_Read
+  fullName: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Configuration_KeyVaultSecrets_Read
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Templates/AuthorizableActionNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: FoundationaLLM_Configuration_KeyVaultSecrets_Read
+    path: ../src/dotnet/Common/Templates/AuthorizableActionNames.cs
+    startLine: 228
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.Authorization
+  summary: Read key vault secrets.
+  example: []
+  syntax:
+    content: public const string FoundationaLLM_Configuration_KeyVaultSecrets_Read = "FoundationaLLM.Configuration/keyVaultSecrets/read"
+    return:
+      type: System.String
+    content.vb: Public Const FoundationaLLM_Configuration_KeyVaultSecrets_Read As String = "FoundationaLLM.Configuration/keyVaultSecrets/read"
+- uid: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Configuration_KeyVaultSecrets_Write
+  commentId: F:FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Configuration_KeyVaultSecrets_Write
+  id: FoundationaLLM_Configuration_KeyVaultSecrets_Write
+  parent: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM_Configuration_KeyVaultSecrets_Write
+  nameWithType: AuthorizableActionNames.FoundationaLLM_Configuration_KeyVaultSecrets_Write
+  fullName: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Configuration_KeyVaultSecrets_Write
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Templates/AuthorizableActionNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: FoundationaLLM_Configuration_KeyVaultSecrets_Write
+    path: ../src/dotnet/Common/Templates/AuthorizableActionNames.cs
+    startLine: 233
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.Authorization
+  summary: Create or update key vault secrets.
+  example: []
+  syntax:
+    content: public const string FoundationaLLM_Configuration_KeyVaultSecrets_Write = "FoundationaLLM.Configuration/keyVaultSecrets/write"
+    return:
+      type: System.String
+    content.vb: Public Const FoundationaLLM_Configuration_KeyVaultSecrets_Write As String = "FoundationaLLM.Configuration/keyVaultSecrets/write"
+- uid: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Configuration_KeyVaultSecrets_Delete
+  commentId: F:FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Configuration_KeyVaultSecrets_Delete
+  id: FoundationaLLM_Configuration_KeyVaultSecrets_Delete
+  parent: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM_Configuration_KeyVaultSecrets_Delete
+  nameWithType: AuthorizableActionNames.FoundationaLLM_Configuration_KeyVaultSecrets_Delete
+  fullName: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Configuration_KeyVaultSecrets_Delete
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Templates/AuthorizableActionNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: FoundationaLLM_Configuration_KeyVaultSecrets_Delete
+    path: ../src/dotnet/Common/Templates/AuthorizableActionNames.cs
+    startLine: 238
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.Authorization
+  summary: Delete key vault secrets.
+  example: []
+  syntax:
+    content: public const string FoundationaLLM_Configuration_KeyVaultSecrets_Delete = "FoundationaLLM.Configuration/keyVaultSecrets/delete"
+    return:
+      type: System.String
+    content.vb: Public Const FoundationaLLM_Configuration_KeyVaultSecrets_Delete As String = "FoundationaLLM.Configuration/keyVaultSecrets/delete"
+- uid: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Configuration_APIEndpointConfigurations_Read
+  commentId: F:FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Configuration_APIEndpointConfigurations_Read
+  id: FoundationaLLM_Configuration_APIEndpointConfigurations_Read
+  parent: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM_Configuration_APIEndpointConfigurations_Read
+  nameWithType: AuthorizableActionNames.FoundationaLLM_Configuration_APIEndpointConfigurations_Read
+  fullName: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Configuration_APIEndpointConfigurations_Read
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Templates/AuthorizableActionNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: FoundationaLLM_Configuration_APIEndpointConfigurations_Read
+    path: ../src/dotnet/Common/Templates/AuthorizableActionNames.cs
+    startLine: 243
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.Authorization
+  summary: Read API endpoint configurations.
+  example: []
+  syntax:
+    content: public const string FoundationaLLM_Configuration_APIEndpointConfigurations_Read = "FoundationaLLM.Configuration/apiEndpointConfigurations/read"
+    return:
+      type: System.String
+    content.vb: Public Const FoundationaLLM_Configuration_APIEndpointConfigurations_Read As String = "FoundationaLLM.Configuration/apiEndpointConfigurations/read"
+- uid: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Configuration_APIEndpointConfigurations_Write
+  commentId: F:FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Configuration_APIEndpointConfigurations_Write
+  id: FoundationaLLM_Configuration_APIEndpointConfigurations_Write
+  parent: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM_Configuration_APIEndpointConfigurations_Write
+  nameWithType: AuthorizableActionNames.FoundationaLLM_Configuration_APIEndpointConfigurations_Write
+  fullName: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Configuration_APIEndpointConfigurations_Write
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Templates/AuthorizableActionNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: FoundationaLLM_Configuration_APIEndpointConfigurations_Write
+    path: ../src/dotnet/Common/Templates/AuthorizableActionNames.cs
+    startLine: 248
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.Authorization
+  summary: Create or update API endpoint configurations.
+  example: []
+  syntax:
+    content: public const string FoundationaLLM_Configuration_APIEndpointConfigurations_Write = "FoundationaLLM.Configuration/apiEndpointConfigurations/write"
+    return:
+      type: System.String
+    content.vb: Public Const FoundationaLLM_Configuration_APIEndpointConfigurations_Write As String = "FoundationaLLM.Configuration/apiEndpointConfigurations/write"
+- uid: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Configuration_APIEndpoinConfigurations_Delete
+  commentId: F:FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Configuration_APIEndpoinConfigurations_Delete
+  id: FoundationaLLM_Configuration_APIEndpoinConfigurations_Delete
+  parent: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM_Configuration_APIEndpoinConfigurations_Delete
+  nameWithType: AuthorizableActionNames.FoundationaLLM_Configuration_APIEndpoinConfigurations_Delete
+  fullName: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Configuration_APIEndpoinConfigurations_Delete
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Templates/AuthorizableActionNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: FoundationaLLM_Configuration_APIEndpoinConfigurations_Delete
+    path: ../src/dotnet/Common/Templates/AuthorizableActionNames.cs
+    startLine: 253
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.Authorization
+  summary: Delete API endpoint configurations.
+  example: []
+  syntax:
+    content: public const string FoundationaLLM_Configuration_APIEndpoinConfigurations_Delete = "FoundationaLLM.Configuration/apiEndpointConfigurations/delete"
+    return:
+      type: System.String
+    content.vb: Public Const FoundationaLLM_Configuration_APIEndpoinConfigurations_Delete As String = "FoundationaLLM.Configuration/apiEndpointConfigurations/delete"
+- uid: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Configuration_Management_Write
+  commentId: F:FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Configuration_Management_Write
+  id: FoundationaLLM_Configuration_Management_Write
+  parent: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM_Configuration_Management_Write
+  nameWithType: AuthorizableActionNames.FoundationaLLM_Configuration_Management_Write
+  fullName: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Configuration_Management_Write
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Templates/AuthorizableActionNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: FoundationaLLM_Configuration_Management_Write
+    path: ../src/dotnet/Common/Templates/AuthorizableActionNames.cs
+    startLine: 258
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.Authorization
+  summary: Execute management actions.
+  example: []
+  syntax:
+    content: public const string FoundationaLLM_Configuration_Management_Write = "FoundationaLLM.Configuration/management/write"
+    return:
+      type: System.String
+    content.vb: Public Const FoundationaLLM_Configuration_Management_Write As String = "FoundationaLLM.Configuration/management/write"
+- uid: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_DataSource_DataSources_Read
+  commentId: F:FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_DataSource_DataSources_Read
+  id: FoundationaLLM_DataSource_DataSources_Read
+  parent: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM_DataSource_DataSources_Read
+  nameWithType: AuthorizableActionNames.FoundationaLLM_DataSource_DataSources_Read
+  fullName: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_DataSource_DataSources_Read
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Templates/AuthorizableActionNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: FoundationaLLM_DataSource_DataSources_Read
+    path: ../src/dotnet/Common/Templates/AuthorizableActionNames.cs
+    startLine: 267
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.Authorization
+  summary: Read data sources.
+  example: []
+  syntax:
+    content: public const string FoundationaLLM_DataSource_DataSources_Read = "FoundationaLLM.DataSource/dataSources/read"
+    return:
+      type: System.String
+    content.vb: Public Const FoundationaLLM_DataSource_DataSources_Read As String = "FoundationaLLM.DataSource/dataSources/read"
+- uid: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_DataSource_DataSources_Write
+  commentId: F:FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_DataSource_DataSources_Write
+  id: FoundationaLLM_DataSource_DataSources_Write
+  parent: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM_DataSource_DataSources_Write
+  nameWithType: AuthorizableActionNames.FoundationaLLM_DataSource_DataSources_Write
+  fullName: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_DataSource_DataSources_Write
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Templates/AuthorizableActionNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: FoundationaLLM_DataSource_DataSources_Write
+    path: ../src/dotnet/Common/Templates/AuthorizableActionNames.cs
+    startLine: 272
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.Authorization
+  summary: Create or update data sources.
+  example: []
+  syntax:
+    content: public const string FoundationaLLM_DataSource_DataSources_Write = "FoundationaLLM.DataSource/dataSources/write"
+    return:
+      type: System.String
+    content.vb: Public Const FoundationaLLM_DataSource_DataSources_Write As String = "FoundationaLLM.DataSource/dataSources/write"
+- uid: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_DataSource_DataSources_Delete
+  commentId: F:FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_DataSource_DataSources_Delete
+  id: FoundationaLLM_DataSource_DataSources_Delete
+  parent: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM_DataSource_DataSources_Delete
+  nameWithType: AuthorizableActionNames.FoundationaLLM_DataSource_DataSources_Delete
+  fullName: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_DataSource_DataSources_Delete
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Templates/AuthorizableActionNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: FoundationaLLM_DataSource_DataSources_Delete
+    path: ../src/dotnet/Common/Templates/AuthorizableActionNames.cs
+    startLine: 277
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.Authorization
+  summary: Delete data sources.
+  example: []
+  syntax:
+    content: public const string FoundationaLLM_DataSource_DataSources_Delete = "FoundationaLLM.DataSource/dataSources/delete"
+    return:
+      type: System.String
+    content.vb: Public Const FoundationaLLM_DataSource_DataSources_Delete As String = "FoundationaLLM.DataSource/dataSources/delete"
+- uid: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_DataSource_Management_Write
+  commentId: F:FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_DataSource_Management_Write
+  id: FoundationaLLM_DataSource_Management_Write
+  parent: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM_DataSource_Management_Write
+  nameWithType: AuthorizableActionNames.FoundationaLLM_DataSource_Management_Write
+  fullName: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_DataSource_Management_Write
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Templates/AuthorizableActionNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: FoundationaLLM_DataSource_Management_Write
+    path: ../src/dotnet/Common/Templates/AuthorizableActionNames.cs
+    startLine: 282
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.Authorization
+  summary: Execute management actions.
+  example: []
+  syntax:
+    content: public const string FoundationaLLM_DataSource_Management_Write = "FoundationaLLM.DataSource/management/write"
+    return:
+      type: System.String
+    content.vb: Public Const FoundationaLLM_DataSource_Management_Write As String = "FoundationaLLM.DataSource/management/write"
+- uid: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Prompt_Prompts_Read
+  commentId: F:FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Prompt_Prompts_Read
+  id: FoundationaLLM_Prompt_Prompts_Read
+  parent: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM_Prompt_Prompts_Read
+  nameWithType: AuthorizableActionNames.FoundationaLLM_Prompt_Prompts_Read
+  fullName: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Prompt_Prompts_Read
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Templates/AuthorizableActionNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: FoundationaLLM_Prompt_Prompts_Read
+    path: ../src/dotnet/Common/Templates/AuthorizableActionNames.cs
+    startLine: 291
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.Authorization
+  summary: Read prompts.
+  example: []
+  syntax:
+    content: public const string FoundationaLLM_Prompt_Prompts_Read = "FoundationaLLM.Prompt/prompts/read"
+    return:
+      type: System.String
+    content.vb: Public Const FoundationaLLM_Prompt_Prompts_Read As String = "FoundationaLLM.Prompt/prompts/read"
+- uid: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Prompt_Prompts_Write
+  commentId: F:FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Prompt_Prompts_Write
+  id: FoundationaLLM_Prompt_Prompts_Write
+  parent: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM_Prompt_Prompts_Write
+  nameWithType: AuthorizableActionNames.FoundationaLLM_Prompt_Prompts_Write
+  fullName: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Prompt_Prompts_Write
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Templates/AuthorizableActionNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: FoundationaLLM_Prompt_Prompts_Write
+    path: ../src/dotnet/Common/Templates/AuthorizableActionNames.cs
+    startLine: 296
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.Authorization
+  summary: Create or update prompts.
+  example: []
+  syntax:
+    content: public const string FoundationaLLM_Prompt_Prompts_Write = "FoundationaLLM.Prompt/prompts/write"
+    return:
+      type: System.String
+    content.vb: Public Const FoundationaLLM_Prompt_Prompts_Write As String = "FoundationaLLM.Prompt/prompts/write"
+- uid: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Prompt_Prompts_Delete
+  commentId: F:FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Prompt_Prompts_Delete
+  id: FoundationaLLM_Prompt_Prompts_Delete
+  parent: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM_Prompt_Prompts_Delete
+  nameWithType: AuthorizableActionNames.FoundationaLLM_Prompt_Prompts_Delete
+  fullName: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Prompt_Prompts_Delete
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Templates/AuthorizableActionNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: FoundationaLLM_Prompt_Prompts_Delete
+    path: ../src/dotnet/Common/Templates/AuthorizableActionNames.cs
+    startLine: 301
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.Authorization
+  summary: Delete prompts.
+  example: []
+  syntax:
+    content: public const string FoundationaLLM_Prompt_Prompts_Delete = "FoundationaLLM.Prompt/prompts/delete"
+    return:
+      type: System.String
+    content.vb: Public Const FoundationaLLM_Prompt_Prompts_Delete As String = "FoundationaLLM.Prompt/prompts/delete"
+- uid: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Prompt_Management_Write
+  commentId: F:FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Prompt_Management_Write
+  id: FoundationaLLM_Prompt_Management_Write
+  parent: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM_Prompt_Management_Write
+  nameWithType: AuthorizableActionNames.FoundationaLLM_Prompt_Management_Write
+  fullName: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Prompt_Management_Write
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Templates/AuthorizableActionNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: FoundationaLLM_Prompt_Management_Write
+    path: ../src/dotnet/Common/Templates/AuthorizableActionNames.cs
+    startLine: 306
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.Authorization
+  summary: Execute management actions.
+  example: []
+  syntax:
+    content: public const string FoundationaLLM_Prompt_Management_Write = "FoundationaLLM.Prompt/management/write"
+    return:
+      type: System.String
+    content.vb: Public Const FoundationaLLM_Prompt_Management_Write As String = "FoundationaLLM.Prompt/management/write"
+- uid: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Vectorization_VectorizationPipelines_Read
+  commentId: F:FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Vectorization_VectorizationPipelines_Read
+  id: FoundationaLLM_Vectorization_VectorizationPipelines_Read
+  parent: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM_Vectorization_VectorizationPipelines_Read
+  nameWithType: AuthorizableActionNames.FoundationaLLM_Vectorization_VectorizationPipelines_Read
+  fullName: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Vectorization_VectorizationPipelines_Read
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Templates/AuthorizableActionNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: FoundationaLLM_Vectorization_VectorizationPipelines_Read
+    path: ../src/dotnet/Common/Templates/AuthorizableActionNames.cs
+    startLine: 315
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.Authorization
+  summary: Read vectorization pipelines.
+  example: []
+  syntax:
+    content: public const string FoundationaLLM_Vectorization_VectorizationPipelines_Read = "FoundationaLLM.Vectorization/vectorizationPipelines/read"
+    return:
+      type: System.String
+    content.vb: Public Const FoundationaLLM_Vectorization_VectorizationPipelines_Read As String = "FoundationaLLM.Vectorization/vectorizationPipelines/read"
+- uid: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Vectorization_VectorizationPipelines_Write
+  commentId: F:FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Vectorization_VectorizationPipelines_Write
+  id: FoundationaLLM_Vectorization_VectorizationPipelines_Write
+  parent: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM_Vectorization_VectorizationPipelines_Write
+  nameWithType: AuthorizableActionNames.FoundationaLLM_Vectorization_VectorizationPipelines_Write
+  fullName: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Vectorization_VectorizationPipelines_Write
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Templates/AuthorizableActionNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: FoundationaLLM_Vectorization_VectorizationPipelines_Write
+    path: ../src/dotnet/Common/Templates/AuthorizableActionNames.cs
+    startLine: 320
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.Authorization
+  summary: Create or update vectorization pipelines.
+  example: []
+  syntax:
+    content: public const string FoundationaLLM_Vectorization_VectorizationPipelines_Write = "FoundationaLLM.Vectorization/vectorizationPipelines/write"
+    return:
+      type: System.String
+    content.vb: Public Const FoundationaLLM_Vectorization_VectorizationPipelines_Write As String = "FoundationaLLM.Vectorization/vectorizationPipelines/write"
+- uid: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Vectorization_VectorizationPipelines_Delete
+  commentId: F:FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Vectorization_VectorizationPipelines_Delete
+  id: FoundationaLLM_Vectorization_VectorizationPipelines_Delete
+  parent: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM_Vectorization_VectorizationPipelines_Delete
+  nameWithType: AuthorizableActionNames.FoundationaLLM_Vectorization_VectorizationPipelines_Delete
+  fullName: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Vectorization_VectorizationPipelines_Delete
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Templates/AuthorizableActionNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: FoundationaLLM_Vectorization_VectorizationPipelines_Delete
+    path: ../src/dotnet/Common/Templates/AuthorizableActionNames.cs
+    startLine: 325
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.Authorization
+  summary: Delete vectorization pipelines.
+  example: []
+  syntax:
+    content: public const string FoundationaLLM_Vectorization_VectorizationPipelines_Delete = "FoundationaLLM.Vectorization/vectorizationPipelines/delete"
+    return:
+      type: System.String
+    content.vb: Public Const FoundationaLLM_Vectorization_VectorizationPipelines_Delete As String = "FoundationaLLM.Vectorization/vectorizationPipelines/delete"
+- uid: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Vectorization_VectorizationRequests_Read
+  commentId: F:FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Vectorization_VectorizationRequests_Read
+  id: FoundationaLLM_Vectorization_VectorizationRequests_Read
+  parent: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM_Vectorization_VectorizationRequests_Read
+  nameWithType: AuthorizableActionNames.FoundationaLLM_Vectorization_VectorizationRequests_Read
+  fullName: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Vectorization_VectorizationRequests_Read
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Templates/AuthorizableActionNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: FoundationaLLM_Vectorization_VectorizationRequests_Read
+    path: ../src/dotnet/Common/Templates/AuthorizableActionNames.cs
+    startLine: 330
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.Authorization
+  summary: Read vectorization requests.
+  example: []
+  syntax:
+    content: public const string FoundationaLLM_Vectorization_VectorizationRequests_Read = "FoundationaLLM.Vectorization/vectorizationRequests/read"
+    return:
+      type: System.String
+    content.vb: Public Const FoundationaLLM_Vectorization_VectorizationRequests_Read As String = "FoundationaLLM.Vectorization/vectorizationRequests/read"
+- uid: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Vectorization_VectorizationRequests_Write
+  commentId: F:FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Vectorization_VectorizationRequests_Write
+  id: FoundationaLLM_Vectorization_VectorizationRequests_Write
+  parent: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM_Vectorization_VectorizationRequests_Write
+  nameWithType: AuthorizableActionNames.FoundationaLLM_Vectorization_VectorizationRequests_Write
+  fullName: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Vectorization_VectorizationRequests_Write
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Templates/AuthorizableActionNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: FoundationaLLM_Vectorization_VectorizationRequests_Write
+    path: ../src/dotnet/Common/Templates/AuthorizableActionNames.cs
+    startLine: 335
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.Authorization
+  summary: Create or update vectorization requests.
+  example: []
+  syntax:
+    content: public const string FoundationaLLM_Vectorization_VectorizationRequests_Write = "FoundationaLLM.Vectorization/vectorizationRequests/write"
+    return:
+      type: System.String
+    content.vb: Public Const FoundationaLLM_Vectorization_VectorizationRequests_Write As String = "FoundationaLLM.Vectorization/vectorizationRequests/write"
+- uid: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Vectorization_VectorizationRequests_Delete
+  commentId: F:FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Vectorization_VectorizationRequests_Delete
+  id: FoundationaLLM_Vectorization_VectorizationRequests_Delete
+  parent: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM_Vectorization_VectorizationRequests_Delete
+  nameWithType: AuthorizableActionNames.FoundationaLLM_Vectorization_VectorizationRequests_Delete
+  fullName: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Vectorization_VectorizationRequests_Delete
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Templates/AuthorizableActionNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: FoundationaLLM_Vectorization_VectorizationRequests_Delete
+    path: ../src/dotnet/Common/Templates/AuthorizableActionNames.cs
+    startLine: 340
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.Authorization
+  summary: Delete vectorization requests.
+  example: []
+  syntax:
+    content: public const string FoundationaLLM_Vectorization_VectorizationRequests_Delete = "FoundationaLLM.Vectorization/vectorizationRequests/delete"
+    return:
+      type: System.String
+    content.vb: Public Const FoundationaLLM_Vectorization_VectorizationRequests_Delete As String = "FoundationaLLM.Vectorization/vectorizationRequests/delete"
+- uid: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Vectorization_ContentSourceProfiles_Read
+  commentId: F:FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Vectorization_ContentSourceProfiles_Read
+  id: FoundationaLLM_Vectorization_ContentSourceProfiles_Read
+  parent: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM_Vectorization_ContentSourceProfiles_Read
+  nameWithType: AuthorizableActionNames.FoundationaLLM_Vectorization_ContentSourceProfiles_Read
+  fullName: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Vectorization_ContentSourceProfiles_Read
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Templates/AuthorizableActionNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: FoundationaLLM_Vectorization_ContentSourceProfiles_Read
+    path: ../src/dotnet/Common/Templates/AuthorizableActionNames.cs
+    startLine: 345
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.Authorization
+  summary: Read vectorization content source profiles.
+  example: []
+  syntax:
+    content: public const string FoundationaLLM_Vectorization_ContentSourceProfiles_Read = "FoundationaLLM.Vectorization/contentSourceProfiles/read"
+    return:
+      type: System.String
+    content.vb: Public Const FoundationaLLM_Vectorization_ContentSourceProfiles_Read As String = "FoundationaLLM.Vectorization/contentSourceProfiles/read"
+- uid: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Vectorization_ContentSourceProfiles_Write
+  commentId: F:FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Vectorization_ContentSourceProfiles_Write
+  id: FoundationaLLM_Vectorization_ContentSourceProfiles_Write
+  parent: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM_Vectorization_ContentSourceProfiles_Write
+  nameWithType: AuthorizableActionNames.FoundationaLLM_Vectorization_ContentSourceProfiles_Write
+  fullName: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Vectorization_ContentSourceProfiles_Write
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Templates/AuthorizableActionNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: FoundationaLLM_Vectorization_ContentSourceProfiles_Write
+    path: ../src/dotnet/Common/Templates/AuthorizableActionNames.cs
+    startLine: 350
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.Authorization
+  summary: Create or update vectorization content source profiles.
+  example: []
+  syntax:
+    content: public const string FoundationaLLM_Vectorization_ContentSourceProfiles_Write = "FoundationaLLM.Vectorization/contentSourceProfiles/write"
+    return:
+      type: System.String
+    content.vb: Public Const FoundationaLLM_Vectorization_ContentSourceProfiles_Write As String = "FoundationaLLM.Vectorization/contentSourceProfiles/write"
+- uid: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Vectorization_ContentSourceProfiles_Delete
+  commentId: F:FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Vectorization_ContentSourceProfiles_Delete
+  id: FoundationaLLM_Vectorization_ContentSourceProfiles_Delete
+  parent: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM_Vectorization_ContentSourceProfiles_Delete
+  nameWithType: AuthorizableActionNames.FoundationaLLM_Vectorization_ContentSourceProfiles_Delete
+  fullName: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Vectorization_ContentSourceProfiles_Delete
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Templates/AuthorizableActionNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: FoundationaLLM_Vectorization_ContentSourceProfiles_Delete
+    path: ../src/dotnet/Common/Templates/AuthorizableActionNames.cs
+    startLine: 355
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.Authorization
+  summary: Delete vectorization content source profiles.
+  example: []
+  syntax:
+    content: public const string FoundationaLLM_Vectorization_ContentSourceProfiles_Delete = "FoundationaLLM.Vectorization/contentSourceProfiles/delete"
+    return:
+      type: System.String
+    content.vb: Public Const FoundationaLLM_Vectorization_ContentSourceProfiles_Delete As String = "FoundationaLLM.Vectorization/contentSourceProfiles/delete"
+- uid: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Vectorization_TextPartitioningProfiles_Read
+  commentId: F:FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Vectorization_TextPartitioningProfiles_Read
+  id: FoundationaLLM_Vectorization_TextPartitioningProfiles_Read
+  parent: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM_Vectorization_TextPartitioningProfiles_Read
+  nameWithType: AuthorizableActionNames.FoundationaLLM_Vectorization_TextPartitioningProfiles_Read
+  fullName: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Vectorization_TextPartitioningProfiles_Read
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Templates/AuthorizableActionNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: FoundationaLLM_Vectorization_TextPartitioningProfiles_Read
+    path: ../src/dotnet/Common/Templates/AuthorizableActionNames.cs
+    startLine: 360
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.Authorization
+  summary: Read vectorization text partitioning profiles.
+  example: []
+  syntax:
+    content: public const string FoundationaLLM_Vectorization_TextPartitioningProfiles_Read = "FoundationaLLM.Vectorization/textPartitioningProfiles/read"
+    return:
+      type: System.String
+    content.vb: Public Const FoundationaLLM_Vectorization_TextPartitioningProfiles_Read As String = "FoundationaLLM.Vectorization/textPartitioningProfiles/read"
+- uid: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Vectorization_TextPartitioningProfiles_Write
+  commentId: F:FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Vectorization_TextPartitioningProfiles_Write
+  id: FoundationaLLM_Vectorization_TextPartitioningProfiles_Write
+  parent: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM_Vectorization_TextPartitioningProfiles_Write
+  nameWithType: AuthorizableActionNames.FoundationaLLM_Vectorization_TextPartitioningProfiles_Write
+  fullName: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Vectorization_TextPartitioningProfiles_Write
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Templates/AuthorizableActionNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: FoundationaLLM_Vectorization_TextPartitioningProfiles_Write
+    path: ../src/dotnet/Common/Templates/AuthorizableActionNames.cs
+    startLine: 365
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.Authorization
+  summary: Create or update vectorization text partitioning profiles.
+  example: []
+  syntax:
+    content: public const string FoundationaLLM_Vectorization_TextPartitioningProfiles_Write = "FoundationaLLM.Vectorization/textPartitioningProfiles/write"
+    return:
+      type: System.String
+    content.vb: Public Const FoundationaLLM_Vectorization_TextPartitioningProfiles_Write As String = "FoundationaLLM.Vectorization/textPartitioningProfiles/write"
+- uid: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Vectorization_TextPartitioningProfiles_Delete
+  commentId: F:FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Vectorization_TextPartitioningProfiles_Delete
+  id: FoundationaLLM_Vectorization_TextPartitioningProfiles_Delete
+  parent: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM_Vectorization_TextPartitioningProfiles_Delete
+  nameWithType: AuthorizableActionNames.FoundationaLLM_Vectorization_TextPartitioningProfiles_Delete
+  fullName: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Vectorization_TextPartitioningProfiles_Delete
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Templates/AuthorizableActionNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: FoundationaLLM_Vectorization_TextPartitioningProfiles_Delete
+    path: ../src/dotnet/Common/Templates/AuthorizableActionNames.cs
+    startLine: 370
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.Authorization
+  summary: Delete vectorization text partitioning profiles.
+  example: []
+  syntax:
+    content: public const string FoundationaLLM_Vectorization_TextPartitioningProfiles_Delete = "FoundationaLLM.Vectorization/textPartitioningProfiles/delete"
+    return:
+      type: System.String
+    content.vb: Public Const FoundationaLLM_Vectorization_TextPartitioningProfiles_Delete As String = "FoundationaLLM.Vectorization/textPartitioningProfiles/delete"
+- uid: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Vectorization_TextEmbeddingProfiles_Read
+  commentId: F:FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Vectorization_TextEmbeddingProfiles_Read
+  id: FoundationaLLM_Vectorization_TextEmbeddingProfiles_Read
+  parent: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM_Vectorization_TextEmbeddingProfiles_Read
+  nameWithType: AuthorizableActionNames.FoundationaLLM_Vectorization_TextEmbeddingProfiles_Read
+  fullName: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Vectorization_TextEmbeddingProfiles_Read
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Templates/AuthorizableActionNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: FoundationaLLM_Vectorization_TextEmbeddingProfiles_Read
+    path: ../src/dotnet/Common/Templates/AuthorizableActionNames.cs
+    startLine: 375
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.Authorization
+  summary: Read vectorization text embedding profiles.
+  example: []
+  syntax:
+    content: public const string FoundationaLLM_Vectorization_TextEmbeddingProfiles_Read = "FoundationaLLM.Vectorization/textEmbeddingProfiles/read"
+    return:
+      type: System.String
+    content.vb: Public Const FoundationaLLM_Vectorization_TextEmbeddingProfiles_Read As String = "FoundationaLLM.Vectorization/textEmbeddingProfiles/read"
+- uid: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Vectorization_TextEmbeddingProfiles_Write
+  commentId: F:FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Vectorization_TextEmbeddingProfiles_Write
+  id: FoundationaLLM_Vectorization_TextEmbeddingProfiles_Write
+  parent: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM_Vectorization_TextEmbeddingProfiles_Write
+  nameWithType: AuthorizableActionNames.FoundationaLLM_Vectorization_TextEmbeddingProfiles_Write
+  fullName: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Vectorization_TextEmbeddingProfiles_Write
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Templates/AuthorizableActionNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: FoundationaLLM_Vectorization_TextEmbeddingProfiles_Write
+    path: ../src/dotnet/Common/Templates/AuthorizableActionNames.cs
+    startLine: 380
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.Authorization
+  summary: Create or update vectorization text embedding profiles.
+  example: []
+  syntax:
+    content: public const string FoundationaLLM_Vectorization_TextEmbeddingProfiles_Write = "FoundationaLLM.Vectorization/textEmbeddingProfiles/write"
+    return:
+      type: System.String
+    content.vb: Public Const FoundationaLLM_Vectorization_TextEmbeddingProfiles_Write As String = "FoundationaLLM.Vectorization/textEmbeddingProfiles/write"
+- uid: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Vectorization_TextEmbeddingProfiles_Delete
+  commentId: F:FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Vectorization_TextEmbeddingProfiles_Delete
+  id: FoundationaLLM_Vectorization_TextEmbeddingProfiles_Delete
+  parent: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM_Vectorization_TextEmbeddingProfiles_Delete
+  nameWithType: AuthorizableActionNames.FoundationaLLM_Vectorization_TextEmbeddingProfiles_Delete
+  fullName: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Vectorization_TextEmbeddingProfiles_Delete
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Templates/AuthorizableActionNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: FoundationaLLM_Vectorization_TextEmbeddingProfiles_Delete
+    path: ../src/dotnet/Common/Templates/AuthorizableActionNames.cs
+    startLine: 385
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.Authorization
+  summary: Delete vectorization text embedding profiles.
+  example: []
+  syntax:
+    content: public const string FoundationaLLM_Vectorization_TextEmbeddingProfiles_Delete = "FoundationaLLM.Vectorization/textEmbeddingProfiles/delete"
+    return:
+      type: System.String
+    content.vb: Public Const FoundationaLLM_Vectorization_TextEmbeddingProfiles_Delete As String = "FoundationaLLM.Vectorization/textEmbeddingProfiles/delete"
+- uid: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Vectorization_IndexingProfiles_Read
+  commentId: F:FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Vectorization_IndexingProfiles_Read
+  id: FoundationaLLM_Vectorization_IndexingProfiles_Read
+  parent: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM_Vectorization_IndexingProfiles_Read
+  nameWithType: AuthorizableActionNames.FoundationaLLM_Vectorization_IndexingProfiles_Read
+  fullName: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Vectorization_IndexingProfiles_Read
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Templates/AuthorizableActionNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: FoundationaLLM_Vectorization_IndexingProfiles_Read
+    path: ../src/dotnet/Common/Templates/AuthorizableActionNames.cs
+    startLine: 390
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.Authorization
+  summary: Read vectorization indexing profiles.
+  example: []
+  syntax:
+    content: public const string FoundationaLLM_Vectorization_IndexingProfiles_Read = "FoundationaLLM.Vectorization/indexingProfiles/read"
+    return:
+      type: System.String
+    content.vb: Public Const FoundationaLLM_Vectorization_IndexingProfiles_Read As String = "FoundationaLLM.Vectorization/indexingProfiles/read"
+- uid: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Vectorization_IndexingProfiles_Write
+  commentId: F:FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Vectorization_IndexingProfiles_Write
+  id: FoundationaLLM_Vectorization_IndexingProfiles_Write
+  parent: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM_Vectorization_IndexingProfiles_Write
+  nameWithType: AuthorizableActionNames.FoundationaLLM_Vectorization_IndexingProfiles_Write
+  fullName: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Vectorization_IndexingProfiles_Write
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Templates/AuthorizableActionNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: FoundationaLLM_Vectorization_IndexingProfiles_Write
+    path: ../src/dotnet/Common/Templates/AuthorizableActionNames.cs
+    startLine: 395
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.Authorization
+  summary: Create or update vectorization indexing profiles.
+  example: []
+  syntax:
+    content: public const string FoundationaLLM_Vectorization_IndexingProfiles_Write = "FoundationaLLM.Vectorization/indexingProfiles/write"
+    return:
+      type: System.String
+    content.vb: Public Const FoundationaLLM_Vectorization_IndexingProfiles_Write As String = "FoundationaLLM.Vectorization/indexingProfiles/write"
+- uid: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Vectorization_IndexingProfiles_Delete
+  commentId: F:FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Vectorization_IndexingProfiles_Delete
+  id: FoundationaLLM_Vectorization_IndexingProfiles_Delete
+  parent: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM_Vectorization_IndexingProfiles_Delete
+  nameWithType: AuthorizableActionNames.FoundationaLLM_Vectorization_IndexingProfiles_Delete
+  fullName: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Vectorization_IndexingProfiles_Delete
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Templates/AuthorizableActionNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: FoundationaLLM_Vectorization_IndexingProfiles_Delete
+    path: ../src/dotnet/Common/Templates/AuthorizableActionNames.cs
+    startLine: 400
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.Authorization
+  summary: Delete vectorization indexing profiles.
+  example: []
+  syntax:
+    content: public const string FoundationaLLM_Vectorization_IndexingProfiles_Delete = "FoundationaLLM.Vectorization/indexingProfiles/delete"
+    return:
+      type: System.String
+    content.vb: Public Const FoundationaLLM_Vectorization_IndexingProfiles_Delete As String = "FoundationaLLM.Vectorization/indexingProfiles/delete"
+- uid: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Attachment_Attachments_Read
+  commentId: F:FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Attachment_Attachments_Read
+  id: FoundationaLLM_Attachment_Attachments_Read
+  parent: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM_Attachment_Attachments_Read
+  nameWithType: AuthorizableActionNames.FoundationaLLM_Attachment_Attachments_Read
+  fullName: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Attachment_Attachments_Read
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Templates/AuthorizableActionNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: FoundationaLLM_Attachment_Attachments_Read
+    path: ../src/dotnet/Common/Templates/AuthorizableActionNames.cs
+    startLine: 409
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.Authorization
+  summary: Read attachments.
+  example: []
+  syntax:
+    content: public const string FoundationaLLM_Attachment_Attachments_Read = "FoundationaLLM.Attachment/attachments/read"
+    return:
+      type: System.String
+    content.vb: Public Const FoundationaLLM_Attachment_Attachments_Read As String = "FoundationaLLM.Attachment/attachments/read"
+- uid: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Attachment_Attachments_Write
+  commentId: F:FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Attachment_Attachments_Write
+  id: FoundationaLLM_Attachment_Attachments_Write
+  parent: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM_Attachment_Attachments_Write
+  nameWithType: AuthorizableActionNames.FoundationaLLM_Attachment_Attachments_Write
+  fullName: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Attachment_Attachments_Write
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Templates/AuthorizableActionNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: FoundationaLLM_Attachment_Attachments_Write
+    path: ../src/dotnet/Common/Templates/AuthorizableActionNames.cs
+    startLine: 414
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.Authorization
+  summary: Create or update attachments.
+  example: []
+  syntax:
+    content: public const string FoundationaLLM_Attachment_Attachments_Write = "FoundationaLLM.Attachment/attachments/write"
+    return:
+      type: System.String
+    content.vb: Public Const FoundationaLLM_Attachment_Attachments_Write As String = "FoundationaLLM.Attachment/attachments/write"
+- uid: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Attachment_Attachments_Delete
+  commentId: F:FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Attachment_Attachments_Delete
+  id: FoundationaLLM_Attachment_Attachments_Delete
+  parent: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM_Attachment_Attachments_Delete
+  nameWithType: AuthorizableActionNames.FoundationaLLM_Attachment_Attachments_Delete
+  fullName: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Attachment_Attachments_Delete
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Templates/AuthorizableActionNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: FoundationaLLM_Attachment_Attachments_Delete
+    path: ../src/dotnet/Common/Templates/AuthorizableActionNames.cs
+    startLine: 419
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.Authorization
+  summary: Delete attachments.
+  example: []
+  syntax:
+    content: public const string FoundationaLLM_Attachment_Attachments_Delete = "FoundationaLLM.Attachment/attachments/delete"
+    return:
+      type: System.String
+    content.vb: Public Const FoundationaLLM_Attachment_Attachments_Delete As String = "FoundationaLLM.Attachment/attachments/delete"
+- uid: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_AIModel_AIModels_Read
+  commentId: F:FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_AIModel_AIModels_Read
+  id: FoundationaLLM_AIModel_AIModels_Read
+  parent: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM_AIModel_AIModels_Read
+  nameWithType: AuthorizableActionNames.FoundationaLLM_AIModel_AIModels_Read
+  fullName: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_AIModel_AIModels_Read
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Templates/AuthorizableActionNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: FoundationaLLM_AIModel_AIModels_Read
+    path: ../src/dotnet/Common/Templates/AuthorizableActionNames.cs
+    startLine: 428
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.Authorization
+  summary: Read AI models
+  example: []
+  syntax:
+    content: public const string FoundationaLLM_AIModel_AIModels_Read = "FoundationaLLM.AIModel/aiModels/read"
+    return:
+      type: System.String
+    content.vb: Public Const FoundationaLLM_AIModel_AIModels_Read As String = "FoundationaLLM.AIModel/aiModels/read"
+- uid: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_AIModel_AIModels_Write
+  commentId: F:FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_AIModel_AIModels_Write
+  id: FoundationaLLM_AIModel_AIModels_Write
+  parent: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM_AIModel_AIModels_Write
+  nameWithType: AuthorizableActionNames.FoundationaLLM_AIModel_AIModels_Write
+  fullName: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_AIModel_AIModels_Write
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Templates/AuthorizableActionNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: FoundationaLLM_AIModel_AIModels_Write
+    path: ../src/dotnet/Common/Templates/AuthorizableActionNames.cs
+    startLine: 433
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.Authorization
+  summary: Create or update AI models.
+  example: []
+  syntax:
+    content: public const string FoundationaLLM_AIModel_AIModels_Write = "FoundationaLLM.AIModel/aiModels/write"
+    return:
+      type: System.String
+    content.vb: Public Const FoundationaLLM_AIModel_AIModels_Write As String = "FoundationaLLM.AIModel/aiModels/write"
+- uid: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_AIModel_AIModels_Delete
+  commentId: F:FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_AIModel_AIModels_Delete
+  id: FoundationaLLM_AIModel_AIModels_Delete
+  parent: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM_AIModel_AIModels_Delete
+  nameWithType: AuthorizableActionNames.FoundationaLLM_AIModel_AIModels_Delete
+  fullName: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_AIModel_AIModels_Delete
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Templates/AuthorizableActionNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: FoundationaLLM_AIModel_AIModels_Delete
+    path: ../src/dotnet/Common/Templates/AuthorizableActionNames.cs
+    startLine: 438
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.Authorization
+  summary: Delete AI models.
+  example: []
+  syntax:
+    content: public const string FoundationaLLM_AIModel_AIModels_Delete = "FoundationaLLM.AIModel/aiModels/delete"
+    return:
+      type: System.String
+    content.vb: Public Const FoundationaLLM_AIModel_AIModels_Delete As String = "FoundationaLLM.AIModel/aiModels/delete"
+- uid: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_AIModel_Management_Write
+  commentId: F:FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_AIModel_Management_Write
+  id: FoundationaLLM_AIModel_Management_Write
+  parent: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM_AIModel_Management_Write
+  nameWithType: AuthorizableActionNames.FoundationaLLM_AIModel_Management_Write
+  fullName: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_AIModel_Management_Write
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Templates/AuthorizableActionNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: FoundationaLLM_AIModel_Management_Write
+    path: ../src/dotnet/Common/Templates/AuthorizableActionNames.cs
+    startLine: 443
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.Authorization
+  summary: Execute management actions.
+  example: []
+  syntax:
+    content: public const string FoundationaLLM_AIModel_Management_Write = "FoundationaLLM.AIModel/management/write"
+    return:
+      type: System.String
+    content.vb: Public Const FoundationaLLM_AIModel_Management_Write As String = "FoundationaLLM.AIModel/management/write"
+- uid: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Conversation_Conversations_Read
+  commentId: F:FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Conversation_Conversations_Read
+  id: FoundationaLLM_Conversation_Conversations_Read
+  parent: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM_Conversation_Conversations_Read
+  nameWithType: AuthorizableActionNames.FoundationaLLM_Conversation_Conversations_Read
+  fullName: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Conversation_Conversations_Read
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Templates/AuthorizableActionNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: FoundationaLLM_Conversation_Conversations_Read
+    path: ../src/dotnet/Common/Templates/AuthorizableActionNames.cs
+    startLine: 452
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.Authorization
+  summary: Read conversations
+  example: []
+  syntax:
+    content: public const string FoundationaLLM_Conversation_Conversations_Read = "FoundationaLLM.Conversation/conversations/read"
+    return:
+      type: System.String
+    content.vb: Public Const FoundationaLLM_Conversation_Conversations_Read As String = "FoundationaLLM.Conversation/conversations/read"
+- uid: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Conversation_Conversations_Write
+  commentId: F:FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Conversation_Conversations_Write
+  id: FoundationaLLM_Conversation_Conversations_Write
+  parent: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM_Conversation_Conversations_Write
+  nameWithType: AuthorizableActionNames.FoundationaLLM_Conversation_Conversations_Write
+  fullName: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Conversation_Conversations_Write
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Templates/AuthorizableActionNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: FoundationaLLM_Conversation_Conversations_Write
+    path: ../src/dotnet/Common/Templates/AuthorizableActionNames.cs
+    startLine: 457
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.Authorization
+  summary: Create or update conversations.
+  example: []
+  syntax:
+    content: public const string FoundationaLLM_Conversation_Conversations_Write = "FoundationaLLM.Conversation/conversations/write"
+    return:
+      type: System.String
+    content.vb: Public Const FoundationaLLM_Conversation_Conversations_Write As String = "FoundationaLLM.Conversation/conversations/write"
+- uid: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Conversation_Conversations_Delete
+  commentId: F:FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Conversation_Conversations_Delete
+  id: FoundationaLLM_Conversation_Conversations_Delete
+  parent: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM_Conversation_Conversations_Delete
+  nameWithType: AuthorizableActionNames.FoundationaLLM_Conversation_Conversations_Delete
+  fullName: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Conversation_Conversations_Delete
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Templates/AuthorizableActionNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: FoundationaLLM_Conversation_Conversations_Delete
+    path: ../src/dotnet/Common/Templates/AuthorizableActionNames.cs
+    startLine: 462
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.Authorization
+  summary: Delete conversations.
+  example: []
+  syntax:
+    content: public const string FoundationaLLM_Conversation_Conversations_Delete = "FoundationaLLM.Conversation/conversations/delete"
+    return:
+      type: System.String
+    content.vb: Public Const FoundationaLLM_Conversation_Conversations_Delete As String = "FoundationaLLM.Conversation/conversations/delete"
+- uid: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Conversation_Management_Write
+  commentId: F:FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Conversation_Management_Write
+  id: FoundationaLLM_Conversation_Management_Write
+  parent: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM_Conversation_Management_Write
+  nameWithType: AuthorizableActionNames.FoundationaLLM_Conversation_Management_Write
+  fullName: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Conversation_Management_Write
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Templates/AuthorizableActionNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: FoundationaLLM_Conversation_Management_Write
+    path: ../src/dotnet/Common/Templates/AuthorizableActionNames.cs
+    startLine: 467
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.Authorization
+  summary: Execute management actions.
+  example: []
+  syntax:
+    content: public const string FoundationaLLM_Conversation_Management_Write = "FoundationaLLM.Conversation/management/write"
+    return:
+      type: System.String
+    content.vb: Public Const FoundationaLLM_Conversation_Management_Write As String = "FoundationaLLM.Conversation/management/write"
+- uid: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_DataPipeline_DataPipelines_Read
+  commentId: F:FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_DataPipeline_DataPipelines_Read
+  id: FoundationaLLM_DataPipeline_DataPipelines_Read
+  parent: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM_DataPipeline_DataPipelines_Read
+  nameWithType: AuthorizableActionNames.FoundationaLLM_DataPipeline_DataPipelines_Read
+  fullName: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_DataPipeline_DataPipelines_Read
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Templates/AuthorizableActionNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: FoundationaLLM_DataPipeline_DataPipelines_Read
+    path: ../src/dotnet/Common/Templates/AuthorizableActionNames.cs
+    startLine: 476
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.Authorization
+  summary: Read data pipelines.
+  example: []
+  syntax:
+    content: public const string FoundationaLLM_DataPipeline_DataPipelines_Read = "FoundationaLLM.DataPipeline/dataPipelines/read"
+    return:
+      type: System.String
+    content.vb: Public Const FoundationaLLM_DataPipeline_DataPipelines_Read As String = "FoundationaLLM.DataPipeline/dataPipelines/read"
+- uid: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_DataPipeline_DataPipelines_Write
+  commentId: F:FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_DataPipeline_DataPipelines_Write
+  id: FoundationaLLM_DataPipeline_DataPipelines_Write
+  parent: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM_DataPipeline_DataPipelines_Write
+  nameWithType: AuthorizableActionNames.FoundationaLLM_DataPipeline_DataPipelines_Write
+  fullName: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_DataPipeline_DataPipelines_Write
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Templates/AuthorizableActionNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: FoundationaLLM_DataPipeline_DataPipelines_Write
+    path: ../src/dotnet/Common/Templates/AuthorizableActionNames.cs
+    startLine: 481
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.Authorization
+  summary: Create or update data pipelines.
+  example: []
+  syntax:
+    content: public const string FoundationaLLM_DataPipeline_DataPipelines_Write = "FoundationaLLM.DataPipeline/dataPipelines/write"
+    return:
+      type: System.String
+    content.vb: Public Const FoundationaLLM_DataPipeline_DataPipelines_Write As String = "FoundationaLLM.DataPipeline/dataPipelines/write"
+- uid: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_DataPipeline_DataPipelines_Delete
+  commentId: F:FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_DataPipeline_DataPipelines_Delete
+  id: FoundationaLLM_DataPipeline_DataPipelines_Delete
+  parent: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM_DataPipeline_DataPipelines_Delete
+  nameWithType: AuthorizableActionNames.FoundationaLLM_DataPipeline_DataPipelines_Delete
+  fullName: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_DataPipeline_DataPipelines_Delete
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Templates/AuthorizableActionNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: FoundationaLLM_DataPipeline_DataPipelines_Delete
+    path: ../src/dotnet/Common/Templates/AuthorizableActionNames.cs
+    startLine: 486
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.Authorization
+  summary: Delete data pipelines.
+  example: []
+  syntax:
+    content: public const string FoundationaLLM_DataPipeline_DataPipelines_Delete = "FoundationaLLM.DataPipeline/dataPipelines/delete"
+    return:
+      type: System.String
+    content.vb: Public Const FoundationaLLM_DataPipeline_DataPipelines_Delete As String = "FoundationaLLM.DataPipeline/dataPipelines/delete"
+- uid: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_DataPipeline_Management_Write
+  commentId: F:FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_DataPipeline_Management_Write
+  id: FoundationaLLM_DataPipeline_Management_Write
+  parent: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM_DataPipeline_Management_Write
+  nameWithType: AuthorizableActionNames.FoundationaLLM_DataPipeline_Management_Write
+  fullName: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_DataPipeline_Management_Write
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Templates/AuthorizableActionNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: FoundationaLLM_DataPipeline_Management_Write
+    path: ../src/dotnet/Common/Templates/AuthorizableActionNames.cs
+    startLine: 491
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.Authorization
+  summary: Execute management actions.
+  example: []
+  syntax:
+    content: public const string FoundationaLLM_DataPipeline_Management_Write = "FoundationaLLM.DataPipeline/management/write"
+    return:
+      type: System.String
+    content.vb: Public Const FoundationaLLM_DataPipeline_Management_Write As String = "FoundationaLLM.DataPipeline/management/write"
+- uid: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Plugin_Plugins_Read
+  commentId: F:FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Plugin_Plugins_Read
+  id: FoundationaLLM_Plugin_Plugins_Read
+  parent: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM_Plugin_Plugins_Read
+  nameWithType: AuthorizableActionNames.FoundationaLLM_Plugin_Plugins_Read
+  fullName: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Plugin_Plugins_Read
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Templates/AuthorizableActionNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: FoundationaLLM_Plugin_Plugins_Read
+    path: ../src/dotnet/Common/Templates/AuthorizableActionNames.cs
+    startLine: 500
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.Authorization
+  summary: Read plugins.
+  example: []
+  syntax:
+    content: public const string FoundationaLLM_Plugin_Plugins_Read = "FoundationaLLM.Plugin/plugins/read"
+    return:
+      type: System.String
+    content.vb: Public Const FoundationaLLM_Plugin_Plugins_Read As String = "FoundationaLLM.Plugin/plugins/read"
+- uid: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Plugin_Plugins_Write
+  commentId: F:FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Plugin_Plugins_Write
+  id: FoundationaLLM_Plugin_Plugins_Write
+  parent: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM_Plugin_Plugins_Write
+  nameWithType: AuthorizableActionNames.FoundationaLLM_Plugin_Plugins_Write
+  fullName: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Plugin_Plugins_Write
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Templates/AuthorizableActionNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: FoundationaLLM_Plugin_Plugins_Write
+    path: ../src/dotnet/Common/Templates/AuthorizableActionNames.cs
+    startLine: 505
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.Authorization
+  summary: Create or update plugins.
+  example: []
+  syntax:
+    content: public const string FoundationaLLM_Plugin_Plugins_Write = "FoundationaLLM.Plugin/plugins/write"
+    return:
+      type: System.String
+    content.vb: Public Const FoundationaLLM_Plugin_Plugins_Write As String = "FoundationaLLM.Plugin/plugins/write"
+- uid: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Plugin_Plugins_Delete
+  commentId: F:FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Plugin_Plugins_Delete
+  id: FoundationaLLM_Plugin_Plugins_Delete
+  parent: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM_Plugin_Plugins_Delete
+  nameWithType: AuthorizableActionNames.FoundationaLLM_Plugin_Plugins_Delete
+  fullName: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Plugin_Plugins_Delete
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Templates/AuthorizableActionNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: FoundationaLLM_Plugin_Plugins_Delete
+    path: ../src/dotnet/Common/Templates/AuthorizableActionNames.cs
+    startLine: 510
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.Authorization
+  summary: Delete plugins.
+  example: []
+  syntax:
+    content: public const string FoundationaLLM_Plugin_Plugins_Delete = "FoundationaLLM.Plugin/plugins/delete"
+    return:
+      type: System.String
+    content.vb: Public Const FoundationaLLM_Plugin_Plugins_Delete As String = "FoundationaLLM.Plugin/plugins/delete"
+- uid: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Plugin_PluginPackages_Read
+  commentId: F:FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Plugin_PluginPackages_Read
+  id: FoundationaLLM_Plugin_PluginPackages_Read
+  parent: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM_Plugin_PluginPackages_Read
+  nameWithType: AuthorizableActionNames.FoundationaLLM_Plugin_PluginPackages_Read
+  fullName: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Plugin_PluginPackages_Read
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Templates/AuthorizableActionNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: FoundationaLLM_Plugin_PluginPackages_Read
+    path: ../src/dotnet/Common/Templates/AuthorizableActionNames.cs
+    startLine: 515
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.Authorization
+  summary: Read plugin packages.
+  example: []
+  syntax:
+    content: public const string FoundationaLLM_Plugin_PluginPackages_Read = "FoundationaLLM.Plugin/pluginPackages/read"
+    return:
+      type: System.String
+    content.vb: Public Const FoundationaLLM_Plugin_PluginPackages_Read As String = "FoundationaLLM.Plugin/pluginPackages/read"
+- uid: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Plugin_PluginPackages_Write
+  commentId: F:FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Plugin_PluginPackages_Write
+  id: FoundationaLLM_Plugin_PluginPackages_Write
+  parent: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM_Plugin_PluginPackages_Write
+  nameWithType: AuthorizableActionNames.FoundationaLLM_Plugin_PluginPackages_Write
+  fullName: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Plugin_PluginPackages_Write
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Templates/AuthorizableActionNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: FoundationaLLM_Plugin_PluginPackages_Write
+    path: ../src/dotnet/Common/Templates/AuthorizableActionNames.cs
+    startLine: 520
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.Authorization
+  summary: Create or update plugin packages.
+  example: []
+  syntax:
+    content: public const string FoundationaLLM_Plugin_PluginPackages_Write = "FoundationaLLM.Plugin/pluginPackages/write"
+    return:
+      type: System.String
+    content.vb: Public Const FoundationaLLM_Plugin_PluginPackages_Write As String = "FoundationaLLM.Plugin/pluginPackages/write"
+- uid: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Plugin_PluginPackages_Delete
+  commentId: F:FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Plugin_PluginPackages_Delete
+  id: FoundationaLLM_Plugin_PluginPackages_Delete
+  parent: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM_Plugin_PluginPackages_Delete
+  nameWithType: AuthorizableActionNames.FoundationaLLM_Plugin_PluginPackages_Delete
+  fullName: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Plugin_PluginPackages_Delete
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Templates/AuthorizableActionNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: FoundationaLLM_Plugin_PluginPackages_Delete
+    path: ../src/dotnet/Common/Templates/AuthorizableActionNames.cs
+    startLine: 525
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.Authorization
+  summary: Delete plugin packages.
+  example: []
+  syntax:
+    content: public const string FoundationaLLM_Plugin_PluginPackages_Delete = "FoundationaLLM.Plugin/pluginPackages/delete"
+    return:
+      type: System.String
+    content.vb: Public Const FoundationaLLM_Plugin_PluginPackages_Delete As String = "FoundationaLLM.Plugin/pluginPackages/delete"
+- uid: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Plugin_Management_Write
+  commentId: F:FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Plugin_Management_Write
+  id: FoundationaLLM_Plugin_Management_Write
+  parent: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM_Plugin_Management_Write
+  nameWithType: AuthorizableActionNames.FoundationaLLM_Plugin_Management_Write
+  fullName: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Plugin_Management_Write
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Templates/AuthorizableActionNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: FoundationaLLM_Plugin_Management_Write
+    path: ../src/dotnet/Common/Templates/AuthorizableActionNames.cs
+    startLine: 530
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.Authorization
+  summary: Execute management actions.
+  example: []
+  syntax:
+    content: public const string FoundationaLLM_Plugin_Management_Write = "FoundationaLLM.Plugin/management/write"
+    return:
+      type: System.String
+    content.vb: Public Const FoundationaLLM_Plugin_Management_Write As String = "FoundationaLLM.Plugin/management/write"
+- uid: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Vector_VectorDatabases_Read
+  commentId: F:FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Vector_VectorDatabases_Read
+  id: FoundationaLLM_Vector_VectorDatabases_Read
+  parent: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM_Vector_VectorDatabases_Read
+  nameWithType: AuthorizableActionNames.FoundationaLLM_Vector_VectorDatabases_Read
+  fullName: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Vector_VectorDatabases_Read
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Templates/AuthorizableActionNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: FoundationaLLM_Vector_VectorDatabases_Read
+    path: ../src/dotnet/Common/Templates/AuthorizableActionNames.cs
+    startLine: 539
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.Authorization
+  summary: Read vector databases.
+  example: []
+  syntax:
+    content: public const string FoundationaLLM_Vector_VectorDatabases_Read = "FoundationaLLM.Vector/vectorDatabases/read"
+    return:
+      type: System.String
+    content.vb: Public Const FoundationaLLM_Vector_VectorDatabases_Read As String = "FoundationaLLM.Vector/vectorDatabases/read"
+- uid: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Vector_VectorDatabases_Write
+  commentId: F:FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Vector_VectorDatabases_Write
+  id: FoundationaLLM_Vector_VectorDatabases_Write
+  parent: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM_Vector_VectorDatabases_Write
+  nameWithType: AuthorizableActionNames.FoundationaLLM_Vector_VectorDatabases_Write
+  fullName: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Vector_VectorDatabases_Write
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Templates/AuthorizableActionNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: FoundationaLLM_Vector_VectorDatabases_Write
+    path: ../src/dotnet/Common/Templates/AuthorizableActionNames.cs
+    startLine: 544
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.Authorization
+  summary: Create or update vector databases.
+  example: []
+  syntax:
+    content: public const string FoundationaLLM_Vector_VectorDatabases_Write = "FoundationaLLM.Vector/vectorDatabases/write"
+    return:
+      type: System.String
+    content.vb: Public Const FoundationaLLM_Vector_VectorDatabases_Write As String = "FoundationaLLM.Vector/vectorDatabases/write"
+- uid: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Vector_VectorDatabases_Delete
+  commentId: F:FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Vector_VectorDatabases_Delete
+  id: FoundationaLLM_Vector_VectorDatabases_Delete
+  parent: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM_Vector_VectorDatabases_Delete
+  nameWithType: AuthorizableActionNames.FoundationaLLM_Vector_VectorDatabases_Delete
+  fullName: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Vector_VectorDatabases_Delete
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Templates/AuthorizableActionNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: FoundationaLLM_Vector_VectorDatabases_Delete
+    path: ../src/dotnet/Common/Templates/AuthorizableActionNames.cs
+    startLine: 549
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.Authorization
+  summary: Delete vector databases.
+  example: []
+  syntax:
+    content: public const string FoundationaLLM_Vector_VectorDatabases_Delete = "FoundationaLLM.Vector/vectorDatabases/delete"
+    return:
+      type: System.String
+    content.vb: Public Const FoundationaLLM_Vector_VectorDatabases_Delete As String = "FoundationaLLM.Vector/vectorDatabases/delete"
+- uid: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Vector_Management_Write
+  commentId: F:FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Vector_Management_Write
+  id: FoundationaLLM_Vector_Management_Write
+  parent: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM_Vector_Management_Write
+  nameWithType: AuthorizableActionNames.FoundationaLLM_Vector_Management_Write
+  fullName: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Vector_Management_Write
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Templates/AuthorizableActionNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: FoundationaLLM_Vector_Management_Write
+    path: ../src/dotnet/Common/Templates/AuthorizableActionNames.cs
+    startLine: 554
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.Authorization
+  summary: Execute management actions.
+  example: []
+  syntax:
+    content: public const string FoundationaLLM_Vector_Management_Write = "FoundationaLLM.Vector/management/write"
+    return:
+      type: System.String
+    content.vb: Public Const FoundationaLLM_Vector_Management_Write As String = "FoundationaLLM.Vector/management/write"
+- uid: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Context_KnowledgeSources_Read
+  commentId: F:FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Context_KnowledgeSources_Read
+  id: FoundationaLLM_Context_KnowledgeSources_Read
+  parent: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM_Context_KnowledgeSources_Read
+  nameWithType: AuthorizableActionNames.FoundationaLLM_Context_KnowledgeSources_Read
+  fullName: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Context_KnowledgeSources_Read
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Templates/AuthorizableActionNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: FoundationaLLM_Context_KnowledgeSources_Read
+    path: ../src/dotnet/Common/Templates/AuthorizableActionNames.cs
+    startLine: 563
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.Authorization
+  summary: Read context knowledge sources.
+  example: []
+  syntax:
+    content: public const string FoundationaLLM_Context_KnowledgeSources_Read = "FoundationaLLM.Context/knowledgeSources/read"
+    return:
+      type: System.String
+    content.vb: Public Const FoundationaLLM_Context_KnowledgeSources_Read As String = "FoundationaLLM.Context/knowledgeSources/read"
+- uid: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Context_KnowledgeSources_Write
+  commentId: F:FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Context_KnowledgeSources_Write
+  id: FoundationaLLM_Context_KnowledgeSources_Write
+  parent: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM_Context_KnowledgeSources_Write
+  nameWithType: AuthorizableActionNames.FoundationaLLM_Context_KnowledgeSources_Write
+  fullName: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Context_KnowledgeSources_Write
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Templates/AuthorizableActionNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: FoundationaLLM_Context_KnowledgeSources_Write
+    path: ../src/dotnet/Common/Templates/AuthorizableActionNames.cs
+    startLine: 568
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.Authorization
+  summary: Create or update context knowledge sources.
+  example: []
+  syntax:
+    content: public const string FoundationaLLM_Context_KnowledgeSources_Write = "FoundationaLLM.Context/knowledgeSources/write"
+    return:
+      type: System.String
+    content.vb: Public Const FoundationaLLM_Context_KnowledgeSources_Write As String = "FoundationaLLM.Context/knowledgeSources/write"
+- uid: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Context_KnowledgeSources_Delete
+  commentId: F:FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Context_KnowledgeSources_Delete
+  id: FoundationaLLM_Context_KnowledgeSources_Delete
+  parent: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM_Context_KnowledgeSources_Delete
+  nameWithType: AuthorizableActionNames.FoundationaLLM_Context_KnowledgeSources_Delete
+  fullName: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Context_KnowledgeSources_Delete
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Templates/AuthorizableActionNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: FoundationaLLM_Context_KnowledgeSources_Delete
+    path: ../src/dotnet/Common/Templates/AuthorizableActionNames.cs
+    startLine: 573
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.Authorization
+  summary: Delete context knowledge sources.
+  example: []
+  syntax:
+    content: public const string FoundationaLLM_Context_KnowledgeSources_Delete = "FoundationaLLM.Context/knowledgeSources/delete"
+    return:
+      type: System.String
+    content.vb: Public Const FoundationaLLM_Context_KnowledgeSources_Delete As String = "FoundationaLLM.Context/knowledgeSources/delete"
+- uid: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Context_KnowledgeUnits_Read
+  commentId: F:FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Context_KnowledgeUnits_Read
+  id: FoundationaLLM_Context_KnowledgeUnits_Read
+  parent: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM_Context_KnowledgeUnits_Read
+  nameWithType: AuthorizableActionNames.FoundationaLLM_Context_KnowledgeUnits_Read
+  fullName: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Context_KnowledgeUnits_Read
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Templates/AuthorizableActionNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: FoundationaLLM_Context_KnowledgeUnits_Read
+    path: ../src/dotnet/Common/Templates/AuthorizableActionNames.cs
+    startLine: 578
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.Authorization
+  summary: Read context knowledge units.
+  example: []
+  syntax:
+    content: public const string FoundationaLLM_Context_KnowledgeUnits_Read = "FoundationaLLM.Context/knowledgeUnits/read"
+    return:
+      type: System.String
+    content.vb: Public Const FoundationaLLM_Context_KnowledgeUnits_Read As String = "FoundationaLLM.Context/knowledgeUnits/read"
+- uid: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Context_KnowledgeUnits_Write
+  commentId: F:FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Context_KnowledgeUnits_Write
+  id: FoundationaLLM_Context_KnowledgeUnits_Write
+  parent: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM_Context_KnowledgeUnits_Write
+  nameWithType: AuthorizableActionNames.FoundationaLLM_Context_KnowledgeUnits_Write
+  fullName: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Context_KnowledgeUnits_Write
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Templates/AuthorizableActionNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: FoundationaLLM_Context_KnowledgeUnits_Write
+    path: ../src/dotnet/Common/Templates/AuthorizableActionNames.cs
+    startLine: 583
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.Authorization
+  summary: Create or update context knowledge units.
+  example: []
+  syntax:
+    content: public const string FoundationaLLM_Context_KnowledgeUnits_Write = "FoundationaLLM.Context/knowledgeUnits/write"
+    return:
+      type: System.String
+    content.vb: Public Const FoundationaLLM_Context_KnowledgeUnits_Write As String = "FoundationaLLM.Context/knowledgeUnits/write"
+- uid: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Context_KnowledgeUnits_Delete
+  commentId: F:FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Context_KnowledgeUnits_Delete
+  id: FoundationaLLM_Context_KnowledgeUnits_Delete
+  parent: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM_Context_KnowledgeUnits_Delete
+  nameWithType: AuthorizableActionNames.FoundationaLLM_Context_KnowledgeUnits_Delete
+  fullName: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Context_KnowledgeUnits_Delete
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Templates/AuthorizableActionNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: FoundationaLLM_Context_KnowledgeUnits_Delete
+    path: ../src/dotnet/Common/Templates/AuthorizableActionNames.cs
+    startLine: 588
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.Authorization
+  summary: Delete context knowledge units.
+  example: []
+  syntax:
+    content: public const string FoundationaLLM_Context_KnowledgeUnits_Delete = "FoundationaLLM.Context/knowledgeUnits/delete"
+    return:
+      type: System.String
+    content.vb: Public Const FoundationaLLM_Context_KnowledgeUnits_Delete As String = "FoundationaLLM.Context/knowledgeUnits/delete"
+- uid: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Context_Management_Write
+  commentId: F:FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Context_Management_Write
+  id: FoundationaLLM_Context_Management_Write
+  parent: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM_Context_Management_Write
+  nameWithType: AuthorizableActionNames.FoundationaLLM_Context_Management_Write
+  fullName: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.FoundationaLLM_Context_Management_Write
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Templates/AuthorizableActionNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: FoundationaLLM_Context_Management_Write
+    path: ../src/dotnet/Common/Templates/AuthorizableActionNames.cs
+    startLine: 593
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.Authorization
+  summary: Execute management actions.
+  example: []
+  syntax:
+    content: public const string FoundationaLLM_Context_Management_Write = "FoundationaLLM.Context/management/write"
+    return:
+      type: System.String
+    content.vb: Public Const FoundationaLLM_Context_Management_Write As String = "FoundationaLLM.Context/management/write"
+references:
+- uid: FoundationaLLM.Common.Constants.Authorization
+  commentId: N:FoundationaLLM.Common.Constants.Authorization
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Constants.Authorization
+  nameWithType: FoundationaLLM.Common.Constants.Authorization
+  fullName: FoundationaLLM.Common.Constants.Authorization
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Constants
+    name: Constants
+    href: FoundationaLLM.Common.Constants.html
+  - name: .
+  - uid: FoundationaLLM.Common.Constants.Authorization
+    name: Authorization
+    href: FoundationaLLM.Common.Constants.Authorization.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Constants
+    name: Constants
+    href: FoundationaLLM.Common.Constants.html
+  - name: .
+  - uid: FoundationaLLM.Common.Constants.Authorization
+    name: Authorization
+    href: FoundationaLLM.Common.Constants.Authorization.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String

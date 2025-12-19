@@ -1,0 +1,772 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Client.Management.Interfaces.IIdentityRESTClient
+  commentId: T:FoundationaLLM.Client.Management.Interfaces.IIdentityRESTClient
+  id: IIdentityRESTClient
+  parent: FoundationaLLM.Client.Management.Interfaces
+  children:
+  - FoundationaLLM.Client.Management.Interfaces.IIdentityRESTClient.GetGroupAsync(System.String)
+  - FoundationaLLM.Client.Management.Interfaces.IIdentityRESTClient.GetUserAsync(System.String)
+  - FoundationaLLM.Client.Management.Interfaces.IIdentityRESTClient.RetrieveGroupsAsync(FoundationaLLM.Common.Models.Authentication.ObjectQueryParameters)
+  - FoundationaLLM.Client.Management.Interfaces.IIdentityRESTClient.RetrieveObjectsByIdsAsync(FoundationaLLM.Common.Models.Authentication.ObjectQueryParameters)
+  - FoundationaLLM.Client.Management.Interfaces.IIdentityRESTClient.RetrieveUsersAsync(FoundationaLLM.Common.Models.Authentication.ObjectQueryParameters)
+  langs:
+  - csharp
+  - vb
+  name: IIdentityRESTClient
+  nameWithType: IIdentityRESTClient
+  fullName: FoundationaLLM.Client.Management.Interfaces.IIdentityRESTClient
+  type: Interface
+  source:
+    remote:
+      path: src/dotnet/ManagementClient/Interfaces/IIdentityRESTClient.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: IIdentityRESTClient
+    path: ../src/dotnet/ManagementClient/Interfaces/IIdentityRESTClient.cs
+    startLine: 8
+  assemblies:
+  - FoundationaLLM.Client.Management
+  namespace: FoundationaLLM.Client.Management.Interfaces
+  summary: Provides methods to manage calls to the Management API's identity endpoints.
+  example: []
+  syntax:
+    content: public interface IIdentityRESTClient
+    content.vb: Public Interface IIdentityRESTClient
+  extensionMethods:
+  - System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+- uid: FoundationaLLM.Client.Management.Interfaces.IIdentityRESTClient.RetrieveGroupsAsync(FoundationaLLM.Common.Models.Authentication.ObjectQueryParameters)
+  commentId: M:FoundationaLLM.Client.Management.Interfaces.IIdentityRESTClient.RetrieveGroupsAsync(FoundationaLLM.Common.Models.Authentication.ObjectQueryParameters)
+  id: RetrieveGroupsAsync(FoundationaLLM.Common.Models.Authentication.ObjectQueryParameters)
+  parent: FoundationaLLM.Client.Management.Interfaces.IIdentityRESTClient
+  langs:
+  - csharp
+  - vb
+  name: RetrieveGroupsAsync(ObjectQueryParameters)
+  nameWithType: IIdentityRESTClient.RetrieveGroupsAsync(ObjectQueryParameters)
+  fullName: FoundationaLLM.Client.Management.Interfaces.IIdentityRESTClient.RetrieveGroupsAsync(FoundationaLLM.Common.Models.Authentication.ObjectQueryParameters)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/ManagementClient/Interfaces/IIdentityRESTClient.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: RetrieveGroupsAsync
+    path: ../src/dotnet/ManagementClient/Interfaces/IIdentityRESTClient.cs
+    startLine: 15
+  assemblies:
+  - FoundationaLLM.Client.Management
+  namespace: FoundationaLLM.Client.Management.Interfaces
+  summary: Retrieves a list of group accounts with filtering and paging options.
+  example: []
+  syntax:
+    content: Task<IEnumerable<Group>> RetrieveGroupsAsync(ObjectQueryParameters parameters)
+    parameters:
+    - id: parameters
+      type: FoundationaLLM.Common.Models.Authentication.ObjectQueryParameters
+      description: ''
+    return:
+      type: System.Threading.Tasks.Task{System.Collections.Generic.IEnumerable{Microsoft.Graph.Models.Group}}
+      description: ''
+    content.vb: Function RetrieveGroupsAsync(parameters As ObjectQueryParameters) As Task(Of IEnumerable(Of Group))
+  overload: FoundationaLLM.Client.Management.Interfaces.IIdentityRESTClient.RetrieveGroupsAsync*
+- uid: FoundationaLLM.Client.Management.Interfaces.IIdentityRESTClient.GetGroupAsync(System.String)
+  commentId: M:FoundationaLLM.Client.Management.Interfaces.IIdentityRESTClient.GetGroupAsync(System.String)
+  id: GetGroupAsync(System.String)
+  parent: FoundationaLLM.Client.Management.Interfaces.IIdentityRESTClient
+  langs:
+  - csharp
+  - vb
+  name: GetGroupAsync(string)
+  nameWithType: IIdentityRESTClient.GetGroupAsync(string)
+  fullName: FoundationaLLM.Client.Management.Interfaces.IIdentityRESTClient.GetGroupAsync(string)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/ManagementClient/Interfaces/IIdentityRESTClient.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: GetGroupAsync
+    path: ../src/dotnet/ManagementClient/Interfaces/IIdentityRESTClient.cs
+    startLine: 21
+  assemblies:
+  - FoundationaLLM.Client.Management
+  namespace: FoundationaLLM.Client.Management.Interfaces
+  summary: Retrieves a specific group account by its identifier.
+  example: []
+  syntax:
+    content: Task<Group> GetGroupAsync(string groupId)
+    parameters:
+    - id: groupId
+      type: System.String
+      description: ''
+    return:
+      type: System.Threading.Tasks.Task{Microsoft.Graph.Models.Group}
+      description: ''
+    content.vb: Function GetGroupAsync(groupId As String) As Task(Of Group)
+  overload: FoundationaLLM.Client.Management.Interfaces.IIdentityRESTClient.GetGroupAsync*
+  nameWithType.vb: IIdentityRESTClient.GetGroupAsync(String)
+  fullName.vb: FoundationaLLM.Client.Management.Interfaces.IIdentityRESTClient.GetGroupAsync(String)
+  name.vb: GetGroupAsync(String)
+- uid: FoundationaLLM.Client.Management.Interfaces.IIdentityRESTClient.RetrieveUsersAsync(FoundationaLLM.Common.Models.Authentication.ObjectQueryParameters)
+  commentId: M:FoundationaLLM.Client.Management.Interfaces.IIdentityRESTClient.RetrieveUsersAsync(FoundationaLLM.Common.Models.Authentication.ObjectQueryParameters)
+  id: RetrieveUsersAsync(FoundationaLLM.Common.Models.Authentication.ObjectQueryParameters)
+  parent: FoundationaLLM.Client.Management.Interfaces.IIdentityRESTClient
+  langs:
+  - csharp
+  - vb
+  name: RetrieveUsersAsync(ObjectQueryParameters)
+  nameWithType: IIdentityRESTClient.RetrieveUsersAsync(ObjectQueryParameters)
+  fullName: FoundationaLLM.Client.Management.Interfaces.IIdentityRESTClient.RetrieveUsersAsync(FoundationaLLM.Common.Models.Authentication.ObjectQueryParameters)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/ManagementClient/Interfaces/IIdentityRESTClient.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: RetrieveUsersAsync
+    path: ../src/dotnet/ManagementClient/Interfaces/IIdentityRESTClient.cs
+    startLine: 27
+  assemblies:
+  - FoundationaLLM.Client.Management
+  namespace: FoundationaLLM.Client.Management.Interfaces
+  summary: Retrieves a list of user accounts with filtering and paging options.
+  example: []
+  syntax:
+    content: Task<IEnumerable<User>> RetrieveUsersAsync(ObjectQueryParameters parameters)
+    parameters:
+    - id: parameters
+      type: FoundationaLLM.Common.Models.Authentication.ObjectQueryParameters
+      description: ''
+    return:
+      type: System.Threading.Tasks.Task{System.Collections.Generic.IEnumerable{Microsoft.Graph.Models.User}}
+      description: ''
+    content.vb: Function RetrieveUsersAsync(parameters As ObjectQueryParameters) As Task(Of IEnumerable(Of User))
+  overload: FoundationaLLM.Client.Management.Interfaces.IIdentityRESTClient.RetrieveUsersAsync*
+- uid: FoundationaLLM.Client.Management.Interfaces.IIdentityRESTClient.GetUserAsync(System.String)
+  commentId: M:FoundationaLLM.Client.Management.Interfaces.IIdentityRESTClient.GetUserAsync(System.String)
+  id: GetUserAsync(System.String)
+  parent: FoundationaLLM.Client.Management.Interfaces.IIdentityRESTClient
+  langs:
+  - csharp
+  - vb
+  name: GetUserAsync(string)
+  nameWithType: IIdentityRESTClient.GetUserAsync(string)
+  fullName: FoundationaLLM.Client.Management.Interfaces.IIdentityRESTClient.GetUserAsync(string)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/ManagementClient/Interfaces/IIdentityRESTClient.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: GetUserAsync
+    path: ../src/dotnet/ManagementClient/Interfaces/IIdentityRESTClient.cs
+    startLine: 33
+  assemblies:
+  - FoundationaLLM.Client.Management
+  namespace: FoundationaLLM.Client.Management.Interfaces
+  summary: Retrieves a specific user account by its identifier.
+  example: []
+  syntax:
+    content: Task<User> GetUserAsync(string userId)
+    parameters:
+    - id: userId
+      type: System.String
+      description: ''
+    return:
+      type: System.Threading.Tasks.Task{Microsoft.Graph.Models.User}
+      description: ''
+    content.vb: Function GetUserAsync(userId As String) As Task(Of User)
+  overload: FoundationaLLM.Client.Management.Interfaces.IIdentityRESTClient.GetUserAsync*
+  nameWithType.vb: IIdentityRESTClient.GetUserAsync(String)
+  fullName.vb: FoundationaLLM.Client.Management.Interfaces.IIdentityRESTClient.GetUserAsync(String)
+  name.vb: GetUserAsync(String)
+- uid: FoundationaLLM.Client.Management.Interfaces.IIdentityRESTClient.RetrieveObjectsByIdsAsync(FoundationaLLM.Common.Models.Authentication.ObjectQueryParameters)
+  commentId: M:FoundationaLLM.Client.Management.Interfaces.IIdentityRESTClient.RetrieveObjectsByIdsAsync(FoundationaLLM.Common.Models.Authentication.ObjectQueryParameters)
+  id: RetrieveObjectsByIdsAsync(FoundationaLLM.Common.Models.Authentication.ObjectQueryParameters)
+  parent: FoundationaLLM.Client.Management.Interfaces.IIdentityRESTClient
+  langs:
+  - csharp
+  - vb
+  name: RetrieveObjectsByIdsAsync(ObjectQueryParameters)
+  nameWithType: IIdentityRESTClient.RetrieveObjectsByIdsAsync(ObjectQueryParameters)
+  fullName: FoundationaLLM.Client.Management.Interfaces.IIdentityRESTClient.RetrieveObjectsByIdsAsync(FoundationaLLM.Common.Models.Authentication.ObjectQueryParameters)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/ManagementClient/Interfaces/IIdentityRESTClient.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: RetrieveObjectsByIdsAsync
+    path: ../src/dotnet/ManagementClient/Interfaces/IIdentityRESTClient.cs
+    startLine: 39
+  assemblies:
+  - FoundationaLLM.Client.Management
+  namespace: FoundationaLLM.Client.Management.Interfaces
+  summary: Retrieves user and group objects by the passed in list of IDs.
+  example: []
+  syntax:
+    content: Task<IEnumerable<DirectoryObject>> RetrieveObjectsByIdsAsync(ObjectQueryParameters parameters)
+    parameters:
+    - id: parameters
+      type: FoundationaLLM.Common.Models.Authentication.ObjectQueryParameters
+      description: ''
+    return:
+      type: System.Threading.Tasks.Task{System.Collections.Generic.IEnumerable{Microsoft.Graph.Models.DirectoryObject}}
+      description: ''
+    content.vb: Function RetrieveObjectsByIdsAsync(parameters As ObjectQueryParameters) As Task(Of IEnumerable(Of DirectoryObject))
+  overload: FoundationaLLM.Client.Management.Interfaces.IIdentityRESTClient.RetrieveObjectsByIdsAsync*
+references:
+- uid: FoundationaLLM.Client.Management.Interfaces
+  commentId: N:FoundationaLLM.Client.Management.Interfaces
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Client.Management.Interfaces
+  nameWithType: FoundationaLLM.Client.Management.Interfaces
+  fullName: FoundationaLLM.Client.Management.Interfaces
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Client
+    name: Client
+    href: FoundationaLLM.Client.html
+  - name: .
+  - uid: FoundationaLLM.Client.Management
+    name: Management
+    href: FoundationaLLM.Client.Management.html
+  - name: .
+  - uid: FoundationaLLM.Client.Management.Interfaces
+    name: Interfaces
+    href: FoundationaLLM.Client.Management.Interfaces.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Client
+    name: Client
+    href: FoundationaLLM.Client.html
+  - name: .
+  - uid: FoundationaLLM.Client.Management
+    name: Management
+    href: FoundationaLLM.Client.Management.html
+  - name: .
+  - uid: FoundationaLLM.Client.Management.Interfaces
+    name: Interfaces
+    href: FoundationaLLM.Client.Management.Interfaces.html
+- uid: System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  parent: FoundationaLLM.Core.Utils.ObjectExtensions
+  definition: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  isExternal: true
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions
+  commentId: T:FoundationaLLM.Core.Utils.ObjectExtensions
+  parent: FoundationaLLM.Core.Utils
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html
+  name: ObjectExtensions
+  nameWithType: ObjectExtensions
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions
+- uid: FoundationaLLM.Core.Utils
+  commentId: N:FoundationaLLM.Core.Utils
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Core.Utils
+  nameWithType: FoundationaLLM.Core.Utils
+  fullName: FoundationaLLM.Core.Utils
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+- uid: FoundationaLLM.Client.Management.Interfaces.IIdentityRESTClient.RetrieveGroupsAsync*
+  commentId: Overload:FoundationaLLM.Client.Management.Interfaces.IIdentityRESTClient.RetrieveGroupsAsync
+  href: FoundationaLLM.Client.Management.Interfaces.IIdentityRESTClient.html#FoundationaLLM_Client_Management_Interfaces_IIdentityRESTClient_RetrieveGroupsAsync_FoundationaLLM_Common_Models_Authentication_ObjectQueryParameters_
+  name: RetrieveGroupsAsync
+  nameWithType: IIdentityRESTClient.RetrieveGroupsAsync
+  fullName: FoundationaLLM.Client.Management.Interfaces.IIdentityRESTClient.RetrieveGroupsAsync
+- uid: FoundationaLLM.Common.Models.Authentication.ObjectQueryParameters
+  commentId: T:FoundationaLLM.Common.Models.Authentication.ObjectQueryParameters
+  parent: FoundationaLLM.Common.Models.Authentication
+  href: FoundationaLLM.Common.Models.Authentication.ObjectQueryParameters.html
+  name: ObjectQueryParameters
+  nameWithType: ObjectQueryParameters
+  fullName: FoundationaLLM.Common.Models.Authentication.ObjectQueryParameters
+- uid: System.Threading.Tasks.Task{System.Collections.Generic.IEnumerable{Microsoft.Graph.Models.Group}}
+  commentId: T:System.Threading.Tasks.Task{System.Collections.Generic.IEnumerable{Microsoft.Graph.Models.Group}}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<IEnumerable<Group>>
+  nameWithType: Task<IEnumerable<Group>>
+  fullName: System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<Microsoft.Graph.Models.Group>>
+  nameWithType.vb: Task(Of IEnumerable(Of Group))
+  fullName.vb: System.Threading.Tasks.Task(Of System.Collections.Generic.IEnumerable(Of Microsoft.Graph.Models.Group))
+  name.vb: Task(Of IEnumerable(Of Group))
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - uid: Microsoft.Graph.Models.Group
+    name: Group
+    isExternal: true
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Microsoft.Graph.Models.Group
+    name: Group
+    isExternal: true
+  - name: )
+  - name: )
+- uid: FoundationaLLM.Common.Models.Authentication
+  commentId: N:FoundationaLLM.Common.Models.Authentication
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.Authentication
+  nameWithType: FoundationaLLM.Common.Models.Authentication
+  fullName: FoundationaLLM.Common.Models.Authentication
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Authentication
+    name: Authentication
+    href: FoundationaLLM.Common.Models.Authentication.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Authentication
+    name: Authentication
+    href: FoundationaLLM.Common.Models.Authentication.html
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: FoundationaLLM.Client.Management.Interfaces.IIdentityRESTClient.GetGroupAsync*
+  commentId: Overload:FoundationaLLM.Client.Management.Interfaces.IIdentityRESTClient.GetGroupAsync
+  href: FoundationaLLM.Client.Management.Interfaces.IIdentityRESTClient.html#FoundationaLLM_Client_Management_Interfaces_IIdentityRESTClient_GetGroupAsync_System_String_
+  name: GetGroupAsync
+  nameWithType: IIdentityRESTClient.GetGroupAsync
+  fullName: FoundationaLLM.Client.Management.Interfaces.IIdentityRESTClient.GetGroupAsync
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System.Threading.Tasks.Task{Microsoft.Graph.Models.Group}
+  commentId: T:System.Threading.Tasks.Task{Microsoft.Graph.Models.Group}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<Group>
+  nameWithType: Task<Group>
+  fullName: System.Threading.Tasks.Task<Microsoft.Graph.Models.Group>
+  nameWithType.vb: Task(Of Group)
+  fullName.vb: System.Threading.Tasks.Task(Of Microsoft.Graph.Models.Group)
+  name.vb: Task(Of Group)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: Microsoft.Graph.Models.Group
+    name: Group
+    isExternal: true
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Microsoft.Graph.Models.Group
+    name: Group
+    isExternal: true
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: FoundationaLLM.Client.Management.Interfaces.IIdentityRESTClient.RetrieveUsersAsync*
+  commentId: Overload:FoundationaLLM.Client.Management.Interfaces.IIdentityRESTClient.RetrieveUsersAsync
+  href: FoundationaLLM.Client.Management.Interfaces.IIdentityRESTClient.html#FoundationaLLM_Client_Management_Interfaces_IIdentityRESTClient_RetrieveUsersAsync_FoundationaLLM_Common_Models_Authentication_ObjectQueryParameters_
+  name: RetrieveUsersAsync
+  nameWithType: IIdentityRESTClient.RetrieveUsersAsync
+  fullName: FoundationaLLM.Client.Management.Interfaces.IIdentityRESTClient.RetrieveUsersAsync
+- uid: System.Threading.Tasks.Task{System.Collections.Generic.IEnumerable{Microsoft.Graph.Models.User}}
+  commentId: T:System.Threading.Tasks.Task{System.Collections.Generic.IEnumerable{Microsoft.Graph.Models.User}}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<IEnumerable<User>>
+  nameWithType: Task<IEnumerable<User>>
+  fullName: System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<Microsoft.Graph.Models.User>>
+  nameWithType.vb: Task(Of IEnumerable(Of User))
+  fullName.vb: System.Threading.Tasks.Task(Of System.Collections.Generic.IEnumerable(Of Microsoft.Graph.Models.User))
+  name.vb: Task(Of IEnumerable(Of User))
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - uid: Microsoft.Graph.Models.User
+    name: User
+    isExternal: true
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Microsoft.Graph.Models.User
+    name: User
+    isExternal: true
+  - name: )
+  - name: )
+- uid: FoundationaLLM.Client.Management.Interfaces.IIdentityRESTClient.GetUserAsync*
+  commentId: Overload:FoundationaLLM.Client.Management.Interfaces.IIdentityRESTClient.GetUserAsync
+  href: FoundationaLLM.Client.Management.Interfaces.IIdentityRESTClient.html#FoundationaLLM_Client_Management_Interfaces_IIdentityRESTClient_GetUserAsync_System_String_
+  name: GetUserAsync
+  nameWithType: IIdentityRESTClient.GetUserAsync
+  fullName: FoundationaLLM.Client.Management.Interfaces.IIdentityRESTClient.GetUserAsync
+- uid: System.Threading.Tasks.Task{Microsoft.Graph.Models.User}
+  commentId: T:System.Threading.Tasks.Task{Microsoft.Graph.Models.User}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<User>
+  nameWithType: Task<User>
+  fullName: System.Threading.Tasks.Task<Microsoft.Graph.Models.User>
+  nameWithType.vb: Task(Of User)
+  fullName.vb: System.Threading.Tasks.Task(Of Microsoft.Graph.Models.User)
+  name.vb: Task(Of User)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: Microsoft.Graph.Models.User
+    name: User
+    isExternal: true
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Microsoft.Graph.Models.User
+    name: User
+    isExternal: true
+  - name: )
+- uid: FoundationaLLM.Client.Management.Interfaces.IIdentityRESTClient.RetrieveObjectsByIdsAsync*
+  commentId: Overload:FoundationaLLM.Client.Management.Interfaces.IIdentityRESTClient.RetrieveObjectsByIdsAsync
+  href: FoundationaLLM.Client.Management.Interfaces.IIdentityRESTClient.html#FoundationaLLM_Client_Management_Interfaces_IIdentityRESTClient_RetrieveObjectsByIdsAsync_FoundationaLLM_Common_Models_Authentication_ObjectQueryParameters_
+  name: RetrieveObjectsByIdsAsync
+  nameWithType: IIdentityRESTClient.RetrieveObjectsByIdsAsync
+  fullName: FoundationaLLM.Client.Management.Interfaces.IIdentityRESTClient.RetrieveObjectsByIdsAsync
+- uid: System.Threading.Tasks.Task{System.Collections.Generic.IEnumerable{Microsoft.Graph.Models.DirectoryObject}}
+  commentId: T:System.Threading.Tasks.Task{System.Collections.Generic.IEnumerable{Microsoft.Graph.Models.DirectoryObject}}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<IEnumerable<DirectoryObject>>
+  nameWithType: Task<IEnumerable<DirectoryObject>>
+  fullName: System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<Microsoft.Graph.Models.DirectoryObject>>
+  nameWithType.vb: Task(Of IEnumerable(Of DirectoryObject))
+  fullName.vb: System.Threading.Tasks.Task(Of System.Collections.Generic.IEnumerable(Of Microsoft.Graph.Models.DirectoryObject))
+  name.vb: Task(Of IEnumerable(Of DirectoryObject))
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - uid: Microsoft.Graph.Models.DirectoryObject
+    name: DirectoryObject
+    isExternal: true
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Microsoft.Graph.Models.DirectoryObject
+    name: DirectoryObject
+    isExternal: true
+  - name: )
+  - name: )

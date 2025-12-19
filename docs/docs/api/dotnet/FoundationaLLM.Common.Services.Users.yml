@@ -1,0 +1,24 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Common.Services.Users
+  commentId: N:FoundationaLLM.Common.Services.Users
+  id: Users
+  parent: FoundationaLLM.Common.Services
+  children:
+  - FoundationaLLM.Common.Services.Users.UserProfileService
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM.Common.Services.Users
+  nameWithType: FoundationaLLM.Common.Services.Users
+  fullName: FoundationaLLM.Common.Services.Users
+  type: Namespace
+  assemblies:
+  - FoundationaLLM.Common
+references:
+- uid: FoundationaLLM.Common.Services.Users.UserProfileService
+  commentId: T:FoundationaLLM.Common.Services.Users.UserProfileService
+  href: FoundationaLLM.Common.Services.Users.UserProfileService.html
+  name: UserProfileService
+  nameWithType: UserProfileService
+  fullName: FoundationaLLM.Common.Services.Users.UserProfileService

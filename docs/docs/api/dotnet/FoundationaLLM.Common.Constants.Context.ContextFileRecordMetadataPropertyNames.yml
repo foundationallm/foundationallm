@@ -1,0 +1,387 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Common.Constants.Context.ContextFileRecordMetadataPropertyNames
+  commentId: T:FoundationaLLM.Common.Constants.Context.ContextFileRecordMetadataPropertyNames
+  id: ContextFileRecordMetadataPropertyNames
+  parent: FoundationaLLM.Common.Constants.Context
+  children:
+  - FoundationaLLM.Common.Constants.Context.ContextFileRecordMetadataPropertyNames.CodeSessionFilePath
+  - FoundationaLLM.Common.Constants.Context.ContextFileRecordMetadataPropertyNames.CodeSessionFileUploadRecordId
+  langs:
+  - csharp
+  - vb
+  name: ContextFileRecordMetadataPropertyNames
+  nameWithType: ContextFileRecordMetadataPropertyNames
+  fullName: FoundationaLLM.Common.Constants.Context.ContextFileRecordMetadataPropertyNames
+  type: Class
+  source:
+    remote:
+      path: src/dotnet/Common/Constants/Context/ContextFileRecordMetadataPropertyNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: ContextFileRecordMetadataPropertyNames
+    path: ../src/dotnet/Common/Constants/Context/ContextFileRecordMetadataPropertyNames.cs
+    startLine: 5
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.Context
+  summary: Provides the names of the metadata properties for context file records.
+  example: []
+  syntax:
+    content: public static class ContextFileRecordMetadataPropertyNames
+    content.vb: Public Module ContextFileRecordMetadataPropertyNames
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: FoundationaLLM.Common.Constants.Context.ContextFileRecordMetadataPropertyNames.CodeSessionFileUploadRecordId
+  commentId: F:FoundationaLLM.Common.Constants.Context.ContextFileRecordMetadataPropertyNames.CodeSessionFileUploadRecordId
+  id: CodeSessionFileUploadRecordId
+  parent: FoundationaLLM.Common.Constants.Context.ContextFileRecordMetadataPropertyNames
+  langs:
+  - csharp
+  - vb
+  name: CodeSessionFileUploadRecordId
+  nameWithType: ContextFileRecordMetadataPropertyNames.CodeSessionFileUploadRecordId
+  fullName: FoundationaLLM.Common.Constants.Context.ContextFileRecordMetadataPropertyNames.CodeSessionFileUploadRecordId
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Constants/Context/ContextFileRecordMetadataPropertyNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: CodeSessionFileUploadRecordId
+    path: ../src/dotnet/Common/Constants/Context/ContextFileRecordMetadataPropertyNames.cs
+    startLine: 10
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.Context
+  summary: The identifier of the associated code session file upload record.
+  example: []
+  syntax:
+    content: public const string CodeSessionFileUploadRecordId = "code_session_file_upload_record_id"
+    return:
+      type: System.String
+    content.vb: Public Const CodeSessionFileUploadRecordId As String = "code_session_file_upload_record_id"
+- uid: FoundationaLLM.Common.Constants.Context.ContextFileRecordMetadataPropertyNames.CodeSessionFilePath
+  commentId: F:FoundationaLLM.Common.Constants.Context.ContextFileRecordMetadataPropertyNames.CodeSessionFilePath
+  id: CodeSessionFilePath
+  parent: FoundationaLLM.Common.Constants.Context.ContextFileRecordMetadataPropertyNames
+  langs:
+  - csharp
+  - vb
+  name: CodeSessionFilePath
+  nameWithType: ContextFileRecordMetadataPropertyNames.CodeSessionFilePath
+  fullName: FoundationaLLM.Common.Constants.Context.ContextFileRecordMetadataPropertyNames.CodeSessionFilePath
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Constants/Context/ContextFileRecordMetadataPropertyNames.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: CodeSessionFilePath
+    path: ../src/dotnet/Common/Constants/Context/ContextFileRecordMetadataPropertyNames.cs
+    startLine: 15
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.Context
+  summary: The original file path in the code session file store.
+  example: []
+  syntax:
+    content: public const string CodeSessionFilePath = "code_session_file_path"
+    return:
+      type: System.String
+    content.vb: Public Const CodeSessionFilePath As String = "code_session_file_path"
+references:
+- uid: FoundationaLLM.Common.Constants.Context
+  commentId: N:FoundationaLLM.Common.Constants.Context
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Constants.Context
+  nameWithType: FoundationaLLM.Common.Constants.Context
+  fullName: FoundationaLLM.Common.Constants.Context
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Constants
+    name: Constants
+    href: FoundationaLLM.Common.Constants.html
+  - name: .
+  - uid: FoundationaLLM.Common.Constants.Context
+    name: Context
+    href: FoundationaLLM.Common.Constants.Context.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Constants
+    name: Constants
+    href: FoundationaLLM.Common.Constants.html
+  - name: .
+  - uid: FoundationaLLM.Common.Constants.Context
+    name: Context
+    href: FoundationaLLM.Common.Constants.Context.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String

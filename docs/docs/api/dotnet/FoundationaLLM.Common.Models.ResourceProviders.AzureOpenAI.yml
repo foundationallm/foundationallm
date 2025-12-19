@@ -1,0 +1,101 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Common.Models.ResourceProviders.AzureOpenAI
+  commentId: N:FoundationaLLM.Common.Models.ResourceProviders.AzureOpenAI
+  id: AzureOpenAI
+  parent: FoundationaLLM.Common.Models.ResourceProviders
+  children:
+  - FoundationaLLM.Common.Models.ResourceProviders.AzureOpenAI.AzureOpenAIAssistant
+  - FoundationaLLM.Common.Models.ResourceProviders.AzureOpenAI.AzureOpenAIConversationMapping
+  - FoundationaLLM.Common.Models.ResourceProviders.AzureOpenAI.AzureOpenAIConversationMappingUpsertResult
+  - FoundationaLLM.Common.Models.ResourceProviders.AzureOpenAI.AzureOpenAIFileMapping
+  - FoundationaLLM.Common.Models.ResourceProviders.AzureOpenAI.AzureOpenAIResourceBase
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM.Common.Models.ResourceProviders.AzureOpenAI
+  nameWithType: FoundationaLLM.Common.Models.ResourceProviders.AzureOpenAI
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.AzureOpenAI
+  type: Namespace
+  assemblies:
+  - FoundationaLLM.Common
+references:
+- uid: FoundationaLLM.Common.Models.ResourceProviders.AzureOpenAI.AzureOpenAIAssistant
+  commentId: T:FoundationaLLM.Common.Models.ResourceProviders.AzureOpenAI.AzureOpenAIAssistant
+  href: FoundationaLLM.Common.Models.ResourceProviders.AzureOpenAI.AzureOpenAIAssistant.html
+  name: AzureOpenAIAssistant
+  nameWithType: AzureOpenAIAssistant
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.AzureOpenAI.AzureOpenAIAssistant
+- uid: FoundationaLLM.Common.Models.ResourceProviders.AzureOpenAI.AzureOpenAIConversationMapping
+  commentId: T:FoundationaLLM.Common.Models.ResourceProviders.AzureOpenAI.AzureOpenAIConversationMapping
+  parent: FoundationaLLM.Common.Models.ResourceProviders.AzureOpenAI
+  href: FoundationaLLM.Common.Models.ResourceProviders.AzureOpenAI.AzureOpenAIConversationMapping.html
+  name: AzureOpenAIConversationMapping
+  nameWithType: AzureOpenAIConversationMapping
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.AzureOpenAI.AzureOpenAIConversationMapping
+- uid: FoundationaLLM.Common.Models.ResourceProviders.AzureOpenAI.AzureOpenAIConversationMappingUpsertResult
+  commentId: T:FoundationaLLM.Common.Models.ResourceProviders.AzureOpenAI.AzureOpenAIConversationMappingUpsertResult
+  href: FoundationaLLM.Common.Models.ResourceProviders.AzureOpenAI.AzureOpenAIConversationMappingUpsertResult.html
+  name: AzureOpenAIConversationMappingUpsertResult
+  nameWithType: AzureOpenAIConversationMappingUpsertResult
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.AzureOpenAI.AzureOpenAIConversationMappingUpsertResult
+- uid: FoundationaLLM.Common.Models.ResourceProviders.AzureOpenAI.AzureOpenAIFileMapping
+  commentId: T:FoundationaLLM.Common.Models.ResourceProviders.AzureOpenAI.AzureOpenAIFileMapping
+  parent: FoundationaLLM.Common.Models.ResourceProviders.AzureOpenAI
+  href: FoundationaLLM.Common.Models.ResourceProviders.AzureOpenAI.AzureOpenAIFileMapping.html
+  name: AzureOpenAIFileMapping
+  nameWithType: AzureOpenAIFileMapping
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.AzureOpenAI.AzureOpenAIFileMapping
+- uid: FoundationaLLM.Common.Models.ResourceProviders.AzureOpenAI.AzureOpenAIResourceBase
+  commentId: T:FoundationaLLM.Common.Models.ResourceProviders.AzureOpenAI.AzureOpenAIResourceBase
+  parent: FoundationaLLM.Common.Models.ResourceProviders.AzureOpenAI
+  href: FoundationaLLM.Common.Models.ResourceProviders.AzureOpenAI.AzureOpenAIResourceBase.html
+  name: AzureOpenAIResourceBase
+  nameWithType: AzureOpenAIResourceBase
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.AzureOpenAI.AzureOpenAIResourceBase
+- uid: FoundationaLLM.Common.Models.ResourceProviders.AzureOpenAI
+  commentId: N:FoundationaLLM.Common.Models.ResourceProviders.AzureOpenAI
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.ResourceProviders.AzureOpenAI
+  nameWithType: FoundationaLLM.Common.Models.ResourceProviders.AzureOpenAI
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.AzureOpenAI
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders
+    name: ResourceProviders
+    href: FoundationaLLM.Common.Models.ResourceProviders.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.AzureOpenAI
+    name: AzureOpenAI
+    href: FoundationaLLM.Common.Models.ResourceProviders.AzureOpenAI.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders
+    name: ResourceProviders
+    href: FoundationaLLM.Common.Models.ResourceProviders.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.AzureOpenAI
+    name: AzureOpenAI
+    href: FoundationaLLM.Common.Models.ResourceProviders.AzureOpenAI.html

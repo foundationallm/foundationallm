@@ -1,0 +1,24 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.AIModel.ResourceProviders
+  commentId: N:FoundationaLLM.AIModel.ResourceProviders
+  id: ResourceProviders
+  parent: FoundationaLLM.AIModel
+  children:
+  - FoundationaLLM.AIModel.ResourceProviders.AIModelResourceProviderService
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM.AIModel.ResourceProviders
+  nameWithType: FoundationaLLM.AIModel.ResourceProviders
+  fullName: FoundationaLLM.AIModel.ResourceProviders
+  type: Namespace
+  assemblies:
+  - FoundationaLLM.AIModel
+references:
+- uid: FoundationaLLM.AIModel.ResourceProviders.AIModelResourceProviderService
+  commentId: T:FoundationaLLM.AIModel.ResourceProviders.AIModelResourceProviderService
+  href: FoundationaLLM.AIModel.ResourceProviders.AIModelResourceProviderService.html
+  name: AIModelResourceProviderService
+  nameWithType: AIModelResourceProviderService
+  fullName: FoundationaLLM.AIModel.ResourceProviders.AIModelResourceProviderService

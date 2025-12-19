@@ -1,0 +1,104 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Common.Authentication
+  commentId: N:FoundationaLLM.Common.Authentication
+  id: Authentication
+  parent: FoundationaLLM.Common
+  children:
+  - FoundationaLLM.Common.Authentication.APIKeyAuthenticationAttribute
+  - FoundationaLLM.Common.Authentication.APIKeyAuthenticationFilter
+  - FoundationaLLM.Common.Authentication.APIKeyValidationService
+  - FoundationaLLM.Common.Authentication.APIKeyValidationSettings
+  - FoundationaLLM.Common.Authentication.AgentAccessTokenAuthenticationHandler
+  - FoundationaLLM.Common.Authentication.AgentAccessTokenDefaults
+  - FoundationaLLM.Common.Authentication.AgentAccessTokenOptions
+  - FoundationaLLM.Common.Authentication.ServiceContext
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM.Common.Authentication
+  nameWithType: FoundationaLLM.Common.Authentication
+  fullName: FoundationaLLM.Common.Authentication
+  type: Namespace
+  assemblies:
+  - FoundationaLLM.Common
+references:
+- uid: FoundationaLLM.Common.Authentication.APIKeyAuthenticationAttribute
+  commentId: T:FoundationaLLM.Common.Authentication.APIKeyAuthenticationAttribute
+  parent: FoundationaLLM.Common.Authentication
+  href: FoundationaLLM.Common.Authentication.APIKeyAuthenticationAttribute.html
+  name: APIKeyAuthenticationAttribute
+  nameWithType: APIKeyAuthenticationAttribute
+  fullName: FoundationaLLM.Common.Authentication.APIKeyAuthenticationAttribute
+- uid: FoundationaLLM.Common.Authentication.APIKeyAuthenticationFilter
+  commentId: T:FoundationaLLM.Common.Authentication.APIKeyAuthenticationFilter
+  href: FoundationaLLM.Common.Authentication.APIKeyAuthenticationFilter.html
+  name: APIKeyAuthenticationFilter
+  nameWithType: APIKeyAuthenticationFilter
+  fullName: FoundationaLLM.Common.Authentication.APIKeyAuthenticationFilter
+- uid: FoundationaLLM.Common.Authentication.APIKeyValidationService
+  commentId: T:FoundationaLLM.Common.Authentication.APIKeyValidationService
+  href: FoundationaLLM.Common.Authentication.APIKeyValidationService.html
+  name: APIKeyValidationService
+  nameWithType: APIKeyValidationService
+  fullName: FoundationaLLM.Common.Authentication.APIKeyValidationService
+- uid: FoundationaLLM.Common.Authentication.APIKeyValidationSettings
+  commentId: T:FoundationaLLM.Common.Authentication.APIKeyValidationSettings
+  href: FoundationaLLM.Common.Authentication.APIKeyValidationSettings.html
+  name: APIKeyValidationSettings
+  nameWithType: APIKeyValidationSettings
+  fullName: FoundationaLLM.Common.Authentication.APIKeyValidationSettings
+- uid: FoundationaLLM.Common.Authentication.AgentAccessTokenAuthenticationHandler
+  commentId: T:FoundationaLLM.Common.Authentication.AgentAccessTokenAuthenticationHandler
+  href: FoundationaLLM.Common.Authentication.AgentAccessTokenAuthenticationHandler.html
+  name: AgentAccessTokenAuthenticationHandler
+  nameWithType: AgentAccessTokenAuthenticationHandler
+  fullName: FoundationaLLM.Common.Authentication.AgentAccessTokenAuthenticationHandler
+- uid: FoundationaLLM.Common.Authentication.AgentAccessTokenDefaults
+  commentId: T:FoundationaLLM.Common.Authentication.AgentAccessTokenDefaults
+  href: FoundationaLLM.Common.Authentication.AgentAccessTokenDefaults.html
+  name: AgentAccessTokenDefaults
+  nameWithType: AgentAccessTokenDefaults
+  fullName: FoundationaLLM.Common.Authentication.AgentAccessTokenDefaults
+- uid: FoundationaLLM.Common.Authentication.AgentAccessTokenOptions
+  commentId: T:FoundationaLLM.Common.Authentication.AgentAccessTokenOptions
+  href: FoundationaLLM.Common.Authentication.AgentAccessTokenOptions.html
+  name: AgentAccessTokenOptions
+  nameWithType: AgentAccessTokenOptions
+  fullName: FoundationaLLM.Common.Authentication.AgentAccessTokenOptions
+- uid: FoundationaLLM.Common.Authentication.ServiceContext
+  commentId: T:FoundationaLLM.Common.Authentication.ServiceContext
+  href: FoundationaLLM.Common.Authentication.ServiceContext.html
+  name: ServiceContext
+  nameWithType: ServiceContext
+  fullName: FoundationaLLM.Common.Authentication.ServiceContext
+- uid: FoundationaLLM.Common.Authentication
+  commentId: N:FoundationaLLM.Common.Authentication
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Authentication
+  nameWithType: FoundationaLLM.Common.Authentication
+  fullName: FoundationaLLM.Common.Authentication
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Authentication
+    name: Authentication
+    href: FoundationaLLM.Common.Authentication.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Authentication
+    name: Authentication
+    href: FoundationaLLM.Common.Authentication.html

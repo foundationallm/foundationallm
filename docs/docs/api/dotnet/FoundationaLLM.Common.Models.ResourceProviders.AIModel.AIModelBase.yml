@@ -1,0 +1,1144 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Common.Models.ResourceProviders.AIModel.AIModelBase
+  commentId: T:FoundationaLLM.Common.Models.ResourceProviders.AIModel.AIModelBase
+  id: AIModelBase
+  parent: FoundationaLLM.Common.Models.ResourceProviders.AIModel
+  children:
+  - FoundationaLLM.Common.Models.ResourceProviders.AIModel.AIModelBase.DeploymentName
+  - FoundationaLLM.Common.Models.ResourceProviders.AIModel.AIModelBase.EndpointObjectId
+  - FoundationaLLM.Common.Models.ResourceProviders.AIModel.AIModelBase.ModelParameters
+  - FoundationaLLM.Common.Models.ResourceProviders.AIModel.AIModelBase.Type
+  - FoundationaLLM.Common.Models.ResourceProviders.AIModel.AIModelBase.Version
+  langs:
+  - csharp
+  - vb
+  name: AIModelBase
+  nameWithType: AIModelBase
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.AIModel.AIModelBase
+  type: Class
+  source:
+    remote:
+      path: src/dotnet/Common/Models/ResourceProviders/AIModel/AIModelBase.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: AIModelBase
+    path: ../src/dotnet/Common/Models/ResourceProviders/AIModel/AIModelBase.cs
+    startLine: 10
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.ResourceProviders.AIModel
+  summary: Provides a set of standard properties for all AIModel objects.
+  example: []
+  syntax:
+    content: >-
+      [JsonPolymorphic(TypeDiscriminatorPropertyName = "type")]
+
+      [JsonDerivedType(typeof(EmbeddingAIModel), "embedding")]
+
+      [JsonDerivedType(typeof(CompletionAIModel), "completion")]
+
+      [JsonDerivedType(typeof(ImageGenerationAIModel), "image-generation")]
+
+      public class AIModelBase : ResourceBase
+    content.vb: >-
+      <JsonPolymorphic(TypeDiscriminatorPropertyName:="type")>
+
+      <JsonDerivedType(GetType(EmbeddingAIModel), "embedding")>
+
+      <JsonDerivedType(GetType(CompletionAIModel), "completion")>
+
+      <JsonDerivedType(GetType(ImageGenerationAIModel), "image-generation")>
+
+      Public Class AIModelBase Inherits ResourceBase
+  inheritance:
+  - System.Object
+  - FoundationaLLM.Common.Models.ResourceProviders.ResourceName
+  - FoundationaLLM.Common.Models.ResourceProviders.ResourceBase
+  derivedClasses:
+  - FoundationaLLM.Common.Models.ResourceProviders.AIModel.CompletionAIModel
+  - FoundationaLLM.Common.Models.ResourceProviders.AIModel.EmbeddingAIModel
+  - FoundationaLLM.Common.Models.ResourceProviders.AIModel.ImageGenerationAIModel
+  inheritedMembers:
+  - FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.ObjectId
+  - FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.ResourcePath
+  - FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.DisplayName
+  - FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.Description
+  - FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.CostCenter
+  - FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.Properties
+  - FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.CreatedOn
+  - FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.UpdatedOn
+  - FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.CreatedBy
+  - FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.UpdatedBy
+  - FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.Deleted
+  - FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.ExpirationDate
+  - FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.InheritableAuthorizableActions
+  - FoundationaLLM.Common.Models.ResourceProviders.ResourceName.Name
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+  extensionMethods:
+  - System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+  attributes:
+  - type: System.Text.Json.Serialization.JsonPolymorphicAttribute
+    ctor: System.Text.Json.Serialization.JsonPolymorphicAttribute.#ctor
+    arguments: []
+    namedArguments:
+    - name: TypeDiscriminatorPropertyName
+      type: System.String
+      value: type
+  - type: System.Text.Json.Serialization.JsonDerivedTypeAttribute
+    ctor: System.Text.Json.Serialization.JsonDerivedTypeAttribute.#ctor(System.Type,System.String)
+    arguments:
+    - type: System.Type
+      value: FoundationaLLM.Common.Models.ResourceProviders.AIModel.EmbeddingAIModel
+    - type: System.String
+      value: embedding
+  - type: System.Text.Json.Serialization.JsonDerivedTypeAttribute
+    ctor: System.Text.Json.Serialization.JsonDerivedTypeAttribute.#ctor(System.Type,System.String)
+    arguments:
+    - type: System.Type
+      value: FoundationaLLM.Common.Models.ResourceProviders.AIModel.CompletionAIModel
+    - type: System.String
+      value: completion
+  - type: System.Text.Json.Serialization.JsonDerivedTypeAttribute
+    ctor: System.Text.Json.Serialization.JsonDerivedTypeAttribute.#ctor(System.Type,System.String)
+    arguments:
+    - type: System.Type
+      value: FoundationaLLM.Common.Models.ResourceProviders.AIModel.ImageGenerationAIModel
+    - type: System.String
+      value: image-generation
+- uid: FoundationaLLM.Common.Models.ResourceProviders.AIModel.AIModelBase.Type
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.AIModel.AIModelBase.Type
+  id: Type
+  parent: FoundationaLLM.Common.Models.ResourceProviders.AIModel.AIModelBase
+  langs:
+  - csharp
+  - vb
+  name: Type
+  nameWithType: AIModelBase.Type
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.AIModel.AIModelBase.Type
+  type: Property
+  source:
+    remote:
+      path: src/dotnet/Common/Models/ResourceProviders/AIModel/AIModelBase.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: Type
+    path: ../src/dotnet/Common/Models/ResourceProviders/AIModel/AIModelBase.cs
+    startLine: 17
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.ResourceProviders.AIModel
+  summary: The type of the resource.
+  example: []
+  syntax:
+    content: >-
+      [JsonIgnore]
+
+      public override string? Type { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: >-
+      <JsonIgnore>
+
+      Public Overrides Property Type As String
+  overridden: FoundationaLLM.Common.Models.ResourceProviders.ResourceName.Type
+  overload: FoundationaLLM.Common.Models.ResourceProviders.AIModel.AIModelBase.Type*
+  attributes:
+  - type: System.Text.Json.Serialization.JsonIgnoreAttribute
+    ctor: System.Text.Json.Serialization.JsonIgnoreAttribute.#ctor
+    arguments: []
+- uid: FoundationaLLM.Common.Models.ResourceProviders.AIModel.AIModelBase.EndpointObjectId
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.AIModel.AIModelBase.EndpointObjectId
+  id: EndpointObjectId
+  parent: FoundationaLLM.Common.Models.ResourceProviders.AIModel.AIModelBase
+  langs:
+  - csharp
+  - vb
+  name: EndpointObjectId
+  nameWithType: AIModelBase.EndpointObjectId
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.AIModel.AIModelBase.EndpointObjectId
+  type: Property
+  source:
+    remote:
+      path: src/dotnet/Common/Models/ResourceProviders/AIModel/AIModelBase.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: EndpointObjectId
+    path: ../src/dotnet/Common/Models/ResourceProviders/AIModel/AIModelBase.cs
+    startLine: 23
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.ResourceProviders.AIModel
+  summary: The object id of the <xref href="FoundationaLLM.Common.Models.ResourceProviders.Configuration.APIEndpointConfiguration" data-throw-if-not-resolved="false"></xref> object providing the configuration for the API endpoint used to interact with the model.
+  example: []
+  syntax:
+    content: >-
+      [JsonPropertyName("endpoint_object_id")]
+
+      public required string EndpointObjectId { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: >-
+      <JsonPropertyName("endpoint_object_id")>
+
+      Public Property EndpointObjectId As String
+  overload: FoundationaLLM.Common.Models.ResourceProviders.AIModel.AIModelBase.EndpointObjectId*
+  attributes:
+  - type: System.Text.Json.Serialization.JsonPropertyNameAttribute
+    ctor: System.Text.Json.Serialization.JsonPropertyNameAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: endpoint_object_id
+- uid: FoundationaLLM.Common.Models.ResourceProviders.AIModel.AIModelBase.Version
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.AIModel.AIModelBase.Version
+  id: Version
+  parent: FoundationaLLM.Common.Models.ResourceProviders.AIModel.AIModelBase
+  langs:
+  - csharp
+  - vb
+  name: Version
+  nameWithType: AIModelBase.Version
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.AIModel.AIModelBase.Version
+  type: Property
+  source:
+    remote:
+      path: src/dotnet/Common/Models/ResourceProviders/AIModel/AIModelBase.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: Version
+    path: ../src/dotnet/Common/Models/ResourceProviders/AIModel/AIModelBase.cs
+    startLine: 30
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.ResourceProviders.AIModel
+  summary: The version of the AI model.
+  example: []
+  syntax:
+    content: >-
+      [JsonPropertyName("version")]
+
+      public string? Version { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: >-
+      <JsonPropertyName("version")>
+
+      Public Property Version As String
+  overload: FoundationaLLM.Common.Models.ResourceProviders.AIModel.AIModelBase.Version*
+  attributes:
+  - type: System.Text.Json.Serialization.JsonPropertyNameAttribute
+    ctor: System.Text.Json.Serialization.JsonPropertyNameAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: version
+- uid: FoundationaLLM.Common.Models.ResourceProviders.AIModel.AIModelBase.DeploymentName
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.AIModel.AIModelBase.DeploymentName
+  id: DeploymentName
+  parent: FoundationaLLM.Common.Models.ResourceProviders.AIModel.AIModelBase
+  langs:
+  - csharp
+  - vb
+  name: DeploymentName
+  nameWithType: AIModelBase.DeploymentName
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.AIModel.AIModelBase.DeploymentName
+  type: Property
+  source:
+    remote:
+      path: src/dotnet/Common/Models/ResourceProviders/AIModel/AIModelBase.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: DeploymentName
+    path: ../src/dotnet/Common/Models/ResourceProviders/AIModel/AIModelBase.cs
+    startLine: 36
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.ResourceProviders.AIModel
+  summary: The name of the deployment corresponding to the AI model.
+  example: []
+  syntax:
+    content: >-
+      [JsonPropertyName("deployment_name")]
+
+      public string? DeploymentName { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: >-
+      <JsonPropertyName("deployment_name")>
+
+      Public Property DeploymentName As String
+  overload: FoundationaLLM.Common.Models.ResourceProviders.AIModel.AIModelBase.DeploymentName*
+  attributes:
+  - type: System.Text.Json.Serialization.JsonPropertyNameAttribute
+    ctor: System.Text.Json.Serialization.JsonPropertyNameAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: deployment_name
+- uid: FoundationaLLM.Common.Models.ResourceProviders.AIModel.AIModelBase.ModelParameters
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.AIModel.AIModelBase.ModelParameters
+  id: ModelParameters
+  parent: FoundationaLLM.Common.Models.ResourceProviders.AIModel.AIModelBase
+  langs:
+  - csharp
+  - vb
+  name: ModelParameters
+  nameWithType: AIModelBase.ModelParameters
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.AIModel.AIModelBase.ModelParameters
+  type: Property
+  source:
+    remote:
+      path: src/dotnet/Common/Models/ResourceProviders/AIModel/AIModelBase.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: ModelParameters
+    path: ../src/dotnet/Common/Models/ResourceProviders/AIModel/AIModelBase.cs
+    startLine: 45
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.ResourceProviders.AIModel
+  summary: >-
+    Dictionary with default values for the model parameters.
+
+    <p>
+
+    For the list of supported keys, see <xref href="FoundationaLLM.Common.Constants.Agents.ModelParametersKeys" data-throw-if-not-resolved="false"></xref>.
+
+    </p>
+  example: []
+  syntax:
+    content: >-
+      [JsonPropertyName("model_parameters")]
+
+      public Dictionary<string, object> ModelParameters { get; set; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.Dictionary{System.String,System.Object}
+    content.vb: >-
+      <JsonPropertyName("model_parameters")>
+
+      Public Property ModelParameters As Dictionary(Of String, Object)
+  overload: FoundationaLLM.Common.Models.ResourceProviders.AIModel.AIModelBase.ModelParameters*
+  attributes:
+  - type: System.Text.Json.Serialization.JsonPropertyNameAttribute
+    ctor: System.Text.Json.Serialization.JsonPropertyNameAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: model_parameters
+references:
+- uid: FoundationaLLM.Common.Models.ResourceProviders.AIModel
+  commentId: N:FoundationaLLM.Common.Models.ResourceProviders.AIModel
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.ResourceProviders.AIModel
+  nameWithType: FoundationaLLM.Common.Models.ResourceProviders.AIModel
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.AIModel
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders
+    name: ResourceProviders
+    href: FoundationaLLM.Common.Models.ResourceProviders.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.AIModel
+    name: AIModel
+    href: FoundationaLLM.Common.Models.ResourceProviders.AIModel.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders
+    name: ResourceProviders
+    href: FoundationaLLM.Common.Models.ResourceProviders.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.AIModel
+    name: AIModel
+    href: FoundationaLLM.Common.Models.ResourceProviders.AIModel.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceName
+  commentId: T:FoundationaLLM.Common.Models.ResourceProviders.ResourceName
+  parent: FoundationaLLM.Common.Models.ResourceProviders
+  href: FoundationaLLM.Common.Models.ResourceProviders.ResourceName.html
+  name: ResourceName
+  nameWithType: ResourceName
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.ResourceName
+- uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase
+  commentId: T:FoundationaLLM.Common.Models.ResourceProviders.ResourceBase
+  parent: FoundationaLLM.Common.Models.ResourceProviders
+  href: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.html
+  name: ResourceBase
+  nameWithType: ResourceBase
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase
+- uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.ObjectId
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.ObjectId
+  parent: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase
+  href: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.html#FoundationaLLM_Common_Models_ResourceProviders_ResourceBase_ObjectId
+  name: ObjectId
+  nameWithType: ResourceBase.ObjectId
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.ObjectId
+- uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.ResourcePath
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.ResourcePath
+  parent: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase
+  href: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.html#FoundationaLLM_Common_Models_ResourceProviders_ResourceBase_ResourcePath
+  name: ResourcePath
+  nameWithType: ResourceBase.ResourcePath
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.ResourcePath
+- uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.DisplayName
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.DisplayName
+  parent: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase
+  href: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.html#FoundationaLLM_Common_Models_ResourceProviders_ResourceBase_DisplayName
+  name: DisplayName
+  nameWithType: ResourceBase.DisplayName
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.DisplayName
+- uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.Description
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.Description
+  parent: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase
+  href: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.html#FoundationaLLM_Common_Models_ResourceProviders_ResourceBase_Description
+  name: Description
+  nameWithType: ResourceBase.Description
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.Description
+- uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.CostCenter
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.CostCenter
+  parent: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase
+  href: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.html#FoundationaLLM_Common_Models_ResourceProviders_ResourceBase_CostCenter
+  name: CostCenter
+  nameWithType: ResourceBase.CostCenter
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.CostCenter
+- uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.Properties
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.Properties
+  parent: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase
+  href: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.html#FoundationaLLM_Common_Models_ResourceProviders_ResourceBase_Properties
+  name: Properties
+  nameWithType: ResourceBase.Properties
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.Properties
+- uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.CreatedOn
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.CreatedOn
+  parent: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase
+  href: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.html#FoundationaLLM_Common_Models_ResourceProviders_ResourceBase_CreatedOn
+  name: CreatedOn
+  nameWithType: ResourceBase.CreatedOn
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.CreatedOn
+- uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.UpdatedOn
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.UpdatedOn
+  parent: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase
+  href: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.html#FoundationaLLM_Common_Models_ResourceProviders_ResourceBase_UpdatedOn
+  name: UpdatedOn
+  nameWithType: ResourceBase.UpdatedOn
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.UpdatedOn
+- uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.CreatedBy
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.CreatedBy
+  parent: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase
+  href: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.html#FoundationaLLM_Common_Models_ResourceProviders_ResourceBase_CreatedBy
+  name: CreatedBy
+  nameWithType: ResourceBase.CreatedBy
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.CreatedBy
+- uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.UpdatedBy
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.UpdatedBy
+  parent: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase
+  href: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.html#FoundationaLLM_Common_Models_ResourceProviders_ResourceBase_UpdatedBy
+  name: UpdatedBy
+  nameWithType: ResourceBase.UpdatedBy
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.UpdatedBy
+- uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.Deleted
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.Deleted
+  parent: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase
+  href: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.html#FoundationaLLM_Common_Models_ResourceProviders_ResourceBase_Deleted
+  name: Deleted
+  nameWithType: ResourceBase.Deleted
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.Deleted
+- uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.ExpirationDate
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.ExpirationDate
+  parent: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase
+  href: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.html#FoundationaLLM_Common_Models_ResourceProviders_ResourceBase_ExpirationDate
+  name: ExpirationDate
+  nameWithType: ResourceBase.ExpirationDate
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.ExpirationDate
+- uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.InheritableAuthorizableActions
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.InheritableAuthorizableActions
+  parent: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase
+  href: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.html#FoundationaLLM_Common_Models_ResourceProviders_ResourceBase_InheritableAuthorizableActions
+  name: InheritableAuthorizableActions
+  nameWithType: ResourceBase.InheritableAuthorizableActions
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.InheritableAuthorizableActions
+- uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceName.Name
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.ResourceName.Name
+  parent: FoundationaLLM.Common.Models.ResourceProviders.ResourceName
+  href: FoundationaLLM.Common.Models.ResourceProviders.ResourceName.html#FoundationaLLM_Common_Models_ResourceProviders_ResourceName_Name
+  name: Name
+  nameWithType: ResourceName.Name
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.ResourceName.Name
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  parent: FoundationaLLM.Core.Utils.ObjectExtensions
+  definition: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: FoundationaLLM.Common.Models.ResourceProviders
+  commentId: N:FoundationaLLM.Common.Models.ResourceProviders
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.ResourceProviders
+  nameWithType: FoundationaLLM.Common.Models.ResourceProviders
+  fullName: FoundationaLLM.Common.Models.ResourceProviders
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders
+    name: ResourceProviders
+    href: FoundationaLLM.Common.Models.ResourceProviders.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders
+    name: ResourceProviders
+    href: FoundationaLLM.Common.Models.ResourceProviders.html
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  isExternal: true
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions
+  commentId: T:FoundationaLLM.Core.Utils.ObjectExtensions
+  parent: FoundationaLLM.Core.Utils
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html
+  name: ObjectExtensions
+  nameWithType: ObjectExtensions
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions
+- uid: FoundationaLLM.Core.Utils
+  commentId: N:FoundationaLLM.Core.Utils
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Core.Utils
+  nameWithType: FoundationaLLM.Core.Utils
+  fullName: FoundationaLLM.Core.Utils
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+- uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceName.Type
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.ResourceName.Type
+  parent: FoundationaLLM.Common.Models.ResourceProviders.ResourceName
+  href: FoundationaLLM.Common.Models.ResourceProviders.ResourceName.html#FoundationaLLM_Common_Models_ResourceProviders_ResourceName_Type
+  name: Type
+  nameWithType: ResourceName.Type
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.ResourceName.Type
+- uid: FoundationaLLM.Common.Models.ResourceProviders.AIModel.AIModelBase.Type*
+  commentId: Overload:FoundationaLLM.Common.Models.ResourceProviders.AIModel.AIModelBase.Type
+  href: FoundationaLLM.Common.Models.ResourceProviders.AIModel.AIModelBase.html#FoundationaLLM_Common_Models_ResourceProviders_AIModel_AIModelBase_Type
+  name: Type
+  nameWithType: AIModelBase.Type
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.AIModel.AIModelBase.Type
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Configuration.APIEndpointConfiguration
+  commentId: T:FoundationaLLM.Common.Models.ResourceProviders.Configuration.APIEndpointConfiguration
+  parent: FoundationaLLM.Common.Models.ResourceProviders.Configuration
+  href: FoundationaLLM.Common.Models.ResourceProviders.Configuration.APIEndpointConfiguration.html
+  name: APIEndpointConfiguration
+  nameWithType: APIEndpointConfiguration
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Configuration.APIEndpointConfiguration
+- uid: FoundationaLLM.Common.Models.ResourceProviders.AIModel.AIModelBase.EndpointObjectId*
+  commentId: Overload:FoundationaLLM.Common.Models.ResourceProviders.AIModel.AIModelBase.EndpointObjectId
+  href: FoundationaLLM.Common.Models.ResourceProviders.AIModel.AIModelBase.html#FoundationaLLM_Common_Models_ResourceProviders_AIModel_AIModelBase_EndpointObjectId
+  name: EndpointObjectId
+  nameWithType: AIModelBase.EndpointObjectId
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.AIModel.AIModelBase.EndpointObjectId
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Configuration
+  commentId: N:FoundationaLLM.Common.Models.ResourceProviders.Configuration
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.ResourceProviders.Configuration
+  nameWithType: FoundationaLLM.Common.Models.ResourceProviders.Configuration
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Configuration
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders
+    name: ResourceProviders
+    href: FoundationaLLM.Common.Models.ResourceProviders.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.Configuration
+    name: Configuration
+    href: FoundationaLLM.Common.Models.ResourceProviders.Configuration.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders
+    name: ResourceProviders
+    href: FoundationaLLM.Common.Models.ResourceProviders.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.Configuration
+    name: Configuration
+    href: FoundationaLLM.Common.Models.ResourceProviders.Configuration.html
+- uid: FoundationaLLM.Common.Models.ResourceProviders.AIModel.AIModelBase.Version*
+  commentId: Overload:FoundationaLLM.Common.Models.ResourceProviders.AIModel.AIModelBase.Version
+  href: FoundationaLLM.Common.Models.ResourceProviders.AIModel.AIModelBase.html#FoundationaLLM_Common_Models_ResourceProviders_AIModel_AIModelBase_Version
+  name: Version
+  nameWithType: AIModelBase.Version
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.AIModel.AIModelBase.Version
+- uid: FoundationaLLM.Common.Models.ResourceProviders.AIModel.AIModelBase.DeploymentName*
+  commentId: Overload:FoundationaLLM.Common.Models.ResourceProviders.AIModel.AIModelBase.DeploymentName
+  href: FoundationaLLM.Common.Models.ResourceProviders.AIModel.AIModelBase.html#FoundationaLLM_Common_Models_ResourceProviders_AIModel_AIModelBase_DeploymentName
+  name: DeploymentName
+  nameWithType: AIModelBase.DeploymentName
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.AIModel.AIModelBase.DeploymentName
+- uid: FoundationaLLM.Common.Constants.Agents.ModelParametersKeys
+  commentId: T:FoundationaLLM.Common.Constants.Agents.ModelParametersKeys
+  href: FoundationaLLM.Common.Constants.Agents.ModelParametersKeys.html
+  name: ModelParametersKeys
+  nameWithType: ModelParametersKeys
+  fullName: FoundationaLLM.Common.Constants.Agents.ModelParametersKeys
+- uid: FoundationaLLM.Common.Models.ResourceProviders.AIModel.AIModelBase.ModelParameters*
+  commentId: Overload:FoundationaLLM.Common.Models.ResourceProviders.AIModel.AIModelBase.ModelParameters
+  href: FoundationaLLM.Common.Models.ResourceProviders.AIModel.AIModelBase.html#FoundationaLLM_Common_Models_ResourceProviders_AIModel_AIModelBase_ModelParameters
+  name: ModelParameters
+  nameWithType: AIModelBase.ModelParameters
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.AIModel.AIModelBase.ModelParameters
+- uid: System.Collections.Generic.Dictionary{System.String,System.Object}
+  commentId: T:System.Collections.Generic.Dictionary{System.String,System.Object}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.Dictionary`2
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  name: Dictionary<string, object>
+  nameWithType: Dictionary<string, object>
+  fullName: System.Collections.Generic.Dictionary<string, object>
+  nameWithType.vb: Dictionary(Of String, Object)
+  fullName.vb: System.Collections.Generic.Dictionary(Of String, Object)
+  name.vb: Dictionary(Of String, Object)
+  spec.csharp:
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Collections.Generic.Dictionary`2
+  commentId: T:System.Collections.Generic.Dictionary`2
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  name: Dictionary<TKey, TValue>
+  nameWithType: Dictionary<TKey, TValue>
+  fullName: System.Collections.Generic.Dictionary<TKey, TValue>
+  nameWithType.vb: Dictionary(Of TKey, TValue)
+  fullName.vb: System.Collections.Generic.Dictionary(Of TKey, TValue)
+  name.vb: Dictionary(Of TKey, TValue)
+  spec.csharp:
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  - name: <
+  - name: TKey
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TKey
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic

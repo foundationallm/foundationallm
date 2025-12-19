@@ -1,0 +1,692 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Common.Models.Cache.CacheKey
+  commentId: T:FoundationaLLM.Common.Models.Cache.CacheKey
+  id: CacheKey
+  parent: FoundationaLLM.Common.Models.Cache
+  children:
+  - FoundationaLLM.Common.Models.Cache.CacheKey.#ctor(System.String,System.String)
+  - FoundationaLLM.Common.Models.Cache.CacheKey.Category
+  - FoundationaLLM.Common.Models.Cache.CacheKey.Equals(System.Object)
+  - FoundationaLLM.Common.Models.Cache.CacheKey.GetHashCode
+  - FoundationaLLM.Common.Models.Cache.CacheKey.Name
+  langs:
+  - csharp
+  - vb
+  name: CacheKey
+  nameWithType: CacheKey
+  fullName: FoundationaLLM.Common.Models.Cache.CacheKey
+  type: Class
+  source:
+    remote:
+      path: src/dotnet/Common/Models/Cache/CacheKey.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: CacheKey
+    path: ../src/dotnet/Common/Models/Cache/CacheKey.cs
+    startLine: 7
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.Cache
+  summary: Composite caching key.
+  example: []
+  syntax:
+    content: public class CacheKey
+    content.vb: Public Class CacheKey
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+  extensionMethods:
+  - System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+- uid: FoundationaLLM.Common.Models.Cache.CacheKey.#ctor(System.String,System.String)
+  commentId: M:FoundationaLLM.Common.Models.Cache.CacheKey.#ctor(System.String,System.String)
+  id: '#ctor(System.String,System.String)'
+  parent: FoundationaLLM.Common.Models.Cache.CacheKey
+  langs:
+  - csharp
+  - vb
+  name: CacheKey(string, string)
+  nameWithType: CacheKey.CacheKey(string, string)
+  fullName: FoundationaLLM.Common.Models.Cache.CacheKey.CacheKey(string, string)
+  type: Constructor
+  source:
+    remote:
+      path: src/dotnet/Common/Models/Cache/CacheKey.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: .ctor
+    path: ../src/dotnet/Common/Models/Cache/CacheKey.cs
+    startLine: 7
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.Cache
+  summary: Composite caching key.
+  example: []
+  syntax:
+    content: public CacheKey(string name, string category)
+    parameters:
+    - id: name
+      type: System.String
+      description: The name of the object identified by the cache key.
+    - id: category
+      type: System.String
+      description: The category of the object identified by the cache key.
+    content.vb: Public Sub New(name As String, category As String)
+  overload: FoundationaLLM.Common.Models.Cache.CacheKey.#ctor*
+  nameWithType.vb: CacheKey.New(String, String)
+  fullName.vb: FoundationaLLM.Common.Models.Cache.CacheKey.New(String, String)
+  name.vb: New(String, String)
+- uid: FoundationaLLM.Common.Models.Cache.CacheKey.Name
+  commentId: F:FoundationaLLM.Common.Models.Cache.CacheKey.Name
+  id: Name
+  parent: FoundationaLLM.Common.Models.Cache.CacheKey
+  langs:
+  - csharp
+  - vb
+  name: Name
+  nameWithType: CacheKey.Name
+  fullName: FoundationaLLM.Common.Models.Cache.CacheKey.Name
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Models/Cache/CacheKey.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: Name
+    path: ../src/dotnet/Common/Models/Cache/CacheKey.cs
+    startLine: 14
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.Cache
+  summary: The name of the object from the cache.
+  example: []
+  syntax:
+    content: public string Name
+    return:
+      type: System.String
+    content.vb: Public Name As String
+- uid: FoundationaLLM.Common.Models.Cache.CacheKey.Category
+  commentId: F:FoundationaLLM.Common.Models.Cache.CacheKey.Category
+  id: Category
+  parent: FoundationaLLM.Common.Models.Cache.CacheKey
+  langs:
+  - csharp
+  - vb
+  name: Category
+  nameWithType: CacheKey.Category
+  fullName: FoundationaLLM.Common.Models.Cache.CacheKey.Category
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Models/Cache/CacheKey.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: Category
+    path: ../src/dotnet/Common/Models/Cache/CacheKey.cs
+    startLine: 19
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.Cache
+  summary: The category of the object from the cache.
+  example: []
+  syntax:
+    content: public string Category
+    return:
+      type: System.String
+    content.vb: Public Category As String
+- uid: FoundationaLLM.Common.Models.Cache.CacheKey.Equals(System.Object)
+  commentId: M:FoundationaLLM.Common.Models.Cache.CacheKey.Equals(System.Object)
+  id: Equals(System.Object)
+  parent: FoundationaLLM.Common.Models.Cache.CacheKey
+  langs:
+  - csharp
+  - vb
+  name: Equals(object?)
+  nameWithType: CacheKey.Equals(object?)
+  fullName: FoundationaLLM.Common.Models.Cache.CacheKey.Equals(object?)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Common/Models/Cache/CacheKey.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: Equals
+    path: ../src/dotnet/Common/Models/Cache/CacheKey.cs
+    startLine: 22
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.Cache
+  summary: Determines whether the specified object is equal to the current object.
+  example: []
+  syntax:
+    content: public override bool Equals(object? obj)
+    parameters:
+    - id: obj
+      type: System.Object
+      description: The object to compare with the current object.
+    return:
+      type: System.Boolean
+      description: <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if the specified object  is equal to the current object; otherwise, <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.
+    content.vb: Public Overrides Function Equals(obj As Object) As Boolean
+  overridden: System.Object.Equals(System.Object)
+  overload: FoundationaLLM.Common.Models.Cache.CacheKey.Equals*
+  nameWithType.vb: CacheKey.Equals(Object)
+  fullName.vb: FoundationaLLM.Common.Models.Cache.CacheKey.Equals(Object)
+  name.vb: Equals(Object)
+- uid: FoundationaLLM.Common.Models.Cache.CacheKey.GetHashCode
+  commentId: M:FoundationaLLM.Common.Models.Cache.CacheKey.GetHashCode
+  id: GetHashCode
+  parent: FoundationaLLM.Common.Models.Cache.CacheKey
+  langs:
+  - csharp
+  - vb
+  name: GetHashCode()
+  nameWithType: CacheKey.GetHashCode()
+  fullName: FoundationaLLM.Common.Models.Cache.CacheKey.GetHashCode()
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Common/Models/Cache/CacheKey.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: GetHashCode
+    path: ../src/dotnet/Common/Models/Cache/CacheKey.cs
+    startLine: 28
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.Cache
+  summary: Serves as the default hash function.
+  example: []
+  syntax:
+    content: public override int GetHashCode()
+    return:
+      type: System.Int32
+      description: A hash code for the current object.
+    content.vb: Public Overrides Function GetHashCode() As Integer
+  overridden: System.Object.GetHashCode
+  overload: FoundationaLLM.Common.Models.Cache.CacheKey.GetHashCode*
+references:
+- uid: FoundationaLLM.Common.Models.Cache
+  commentId: N:FoundationaLLM.Common.Models.Cache
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.Cache
+  nameWithType: FoundationaLLM.Common.Models.Cache
+  fullName: FoundationaLLM.Common.Models.Cache
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Cache
+    name: Cache
+    href: FoundationaLLM.Common.Models.Cache.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Cache
+    name: Cache
+    href: FoundationaLLM.Common.Models.Cache.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  parent: FoundationaLLM.Core.Utils.ObjectExtensions
+  definition: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  isExternal: true
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions
+  commentId: T:FoundationaLLM.Core.Utils.ObjectExtensions
+  parent: FoundationaLLM.Core.Utils
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html
+  name: ObjectExtensions
+  nameWithType: ObjectExtensions
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions
+- uid: FoundationaLLM.Core.Utils
+  commentId: N:FoundationaLLM.Core.Utils
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Core.Utils
+  nameWithType: FoundationaLLM.Core.Utils
+  fullName: FoundationaLLM.Core.Utils
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+- uid: FoundationaLLM.Common.Models.Cache.CacheKey.#ctor*
+  commentId: Overload:FoundationaLLM.Common.Models.Cache.CacheKey.#ctor
+  href: FoundationaLLM.Common.Models.Cache.CacheKey.html#FoundationaLLM_Common_Models_Cache_CacheKey__ctor_System_String_System_String_
+  name: CacheKey
+  nameWithType: CacheKey.CacheKey
+  fullName: FoundationaLLM.Common.Models.Cache.CacheKey.CacheKey
+  nameWithType.vb: CacheKey.New
+  fullName.vb: FoundationaLLM.Common.Models.Cache.CacheKey.New
+  name.vb: New
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: FoundationaLLM.Common.Models.Cache.CacheKey.Equals*
+  commentId: Overload:FoundationaLLM.Common.Models.Cache.CacheKey.Equals
+  href: FoundationaLLM.Common.Models.Cache.CacheKey.html#FoundationaLLM_Common_Models_Cache_CacheKey_Equals_System_Object_
+  name: Equals
+  nameWithType: CacheKey.Equals
+  fullName: FoundationaLLM.Common.Models.Cache.CacheKey.Equals
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: FoundationaLLM.Common.Models.Cache.CacheKey.GetHashCode*
+  commentId: Overload:FoundationaLLM.Common.Models.Cache.CacheKey.GetHashCode
+  href: FoundationaLLM.Common.Models.Cache.CacheKey.html#FoundationaLLM_Common_Models_Cache_CacheKey_GetHashCode
+  name: GetHashCode
+  nameWithType: CacheKey.GetHashCode
+  fullName: FoundationaLLM.Common.Models.Cache.CacheKey.GetHashCode
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer

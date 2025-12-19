@@ -1,0 +1,622 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.DataPipelineEngine.Interfaces.IDataPipelineService
+  commentId: T:FoundationaLLM.DataPipelineEngine.Interfaces.IDataPipelineService
+  id: IDataPipelineService
+  parent: FoundationaLLM.DataPipelineEngine.Interfaces
+  children:
+  - FoundationaLLM.DataPipelineEngine.Interfaces.IDataPipelineService.CreateDataPipelineRun(System.String,FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRun,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  - FoundationaLLM.DataPipelineEngine.Interfaces.IDataPipelineService.GetDataPipelineRun(System.String,System.String,System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  - FoundationaLLM.DataPipelineEngine.Interfaces.IDataPipelineService.GetDataPipelineRuns(System.String,FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRunFilter,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  langs:
+  - csharp
+  - vb
+  name: IDataPipelineService
+  nameWithType: IDataPipelineService
+  fullName: FoundationaLLM.DataPipelineEngine.Interfaces.IDataPipelineService
+  type: Interface
+  source:
+    remote:
+      path: src/dotnet/DataPipelineEngine/Interfaces/IDataPipelineService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: IDataPipelineService
+    path: ../src/dotnet/DataPipelineEngine/Interfaces/IDataPipelineService.cs
+    startLine: 8
+  assemblies:
+  - FoundationaLLM.DataPipelineEngine
+  namespace: FoundationaLLM.DataPipelineEngine.Interfaces
+  summary: Interface for the Data Pipeline Service.
+  example: []
+  syntax:
+    content: public interface IDataPipelineService
+    content.vb: Public Interface IDataPipelineService
+  extensionMethods:
+  - System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+- uid: FoundationaLLM.DataPipelineEngine.Interfaces.IDataPipelineService.GetDataPipelineRuns(System.String,FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRunFilter,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  commentId: M:FoundationaLLM.DataPipelineEngine.Interfaces.IDataPipelineService.GetDataPipelineRuns(System.String,FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRunFilter,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  id: GetDataPipelineRuns(System.String,FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRunFilter,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  parent: FoundationaLLM.DataPipelineEngine.Interfaces.IDataPipelineService
+  langs:
+  - csharp
+  - vb
+  name: GetDataPipelineRuns(string, DataPipelineRunFilter, UnifiedUserIdentity)
+  nameWithType: IDataPipelineService.GetDataPipelineRuns(string, DataPipelineRunFilter, UnifiedUserIdentity)
+  fullName: FoundationaLLM.DataPipelineEngine.Interfaces.IDataPipelineService.GetDataPipelineRuns(string, FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRunFilter, FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/DataPipelineEngine/Interfaces/IDataPipelineService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: GetDataPipelineRuns
+    path: ../src/dotnet/DataPipelineEngine/Interfaces/IDataPipelineService.cs
+    startLine: 17
+  assemblies:
+  - FoundationaLLM.DataPipelineEngine
+  namespace: FoundationaLLM.DataPipelineEngine.Interfaces
+  summary: Retrieves a list of data pipeline runs filtered by the provided filter criteria.
+  example: []
+  syntax:
+    content: Task<DataPipelineRunFilterResponse> GetDataPipelineRuns(string instanceId, DataPipelineRunFilter dataPipelineRunFilter, UnifiedUserIdentity userIdentity)
+    parameters:
+    - id: instanceId
+      type: System.String
+      description: The FoundationaLLM instance identifier.
+    - id: dataPipelineRunFilter
+      type: FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRunFilter
+      description: The definition of the filter criteria.
+    - id: userIdentity
+      type: FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity
+      description: The identity of the user running the operation.
+    return:
+      type: System.Threading.Tasks.Task{FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRunFilterResponse}
+      description: The requested list of data pipeline run objects.
+    content.vb: Function GetDataPipelineRuns(instanceId As String, dataPipelineRunFilter As DataPipelineRunFilter, userIdentity As UnifiedUserIdentity) As Task(Of DataPipelineRunFilterResponse)
+  overload: FoundationaLLM.DataPipelineEngine.Interfaces.IDataPipelineService.GetDataPipelineRuns*
+  nameWithType.vb: IDataPipelineService.GetDataPipelineRuns(String, DataPipelineRunFilter, UnifiedUserIdentity)
+  fullName.vb: FoundationaLLM.DataPipelineEngine.Interfaces.IDataPipelineService.GetDataPipelineRuns(String, FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRunFilter, FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  name.vb: GetDataPipelineRuns(String, DataPipelineRunFilter, UnifiedUserIdentity)
+- uid: FoundationaLLM.DataPipelineEngine.Interfaces.IDataPipelineService.GetDataPipelineRun(System.String,System.String,System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  commentId: M:FoundationaLLM.DataPipelineEngine.Interfaces.IDataPipelineService.GetDataPipelineRun(System.String,System.String,System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  id: GetDataPipelineRun(System.String,System.String,System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  parent: FoundationaLLM.DataPipelineEngine.Interfaces.IDataPipelineService
+  langs:
+  - csharp
+  - vb
+  name: GetDataPipelineRun(string, string, string, UnifiedUserIdentity)
+  nameWithType: IDataPipelineService.GetDataPipelineRun(string, string, string, UnifiedUserIdentity)
+  fullName: FoundationaLLM.DataPipelineEngine.Interfaces.IDataPipelineService.GetDataPipelineRun(string, string, string, FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/DataPipelineEngine/Interfaces/IDataPipelineService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: GetDataPipelineRun
+    path: ../src/dotnet/DataPipelineEngine/Interfaces/IDataPipelineService.cs
+    startLine: 30
+  assemblies:
+  - FoundationaLLM.DataPipelineEngine
+  namespace: FoundationaLLM.DataPipelineEngine.Interfaces
+  summary: Retrieves a data pipeline run by its name.
+  example: []
+  syntax:
+    content: Task<DataPipelineRun> GetDataPipelineRun(string instanceId, string dataPipelineName, string runId, UnifiedUserIdentity userIdentiy)
+    parameters:
+    - id: instanceId
+      type: System.String
+      description: The FoundationaLLM instance identifier.
+    - id: dataPipelineName
+      type: System.String
+      description: The name of the data pipeline.
+    - id: runId
+      type: System.String
+      description: The identifier of the data pipeline run.
+    - id: userIdentiy
+      type: FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity
+      description: The identity of the user running the operation.
+    return:
+      type: System.Threading.Tasks.Task{FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRun}
+      description: The data pipeline run identified by the provided identifier.
+    content.vb: Function GetDataPipelineRun(instanceId As String, dataPipelineName As String, runId As String, userIdentiy As UnifiedUserIdentity) As Task(Of DataPipelineRun)
+  overload: FoundationaLLM.DataPipelineEngine.Interfaces.IDataPipelineService.GetDataPipelineRun*
+  nameWithType.vb: IDataPipelineService.GetDataPipelineRun(String, String, String, UnifiedUserIdentity)
+  fullName.vb: FoundationaLLM.DataPipelineEngine.Interfaces.IDataPipelineService.GetDataPipelineRun(String, String, String, FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  name.vb: GetDataPipelineRun(String, String, String, UnifiedUserIdentity)
+- uid: FoundationaLLM.DataPipelineEngine.Interfaces.IDataPipelineService.CreateDataPipelineRun(System.String,FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRun,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  commentId: M:FoundationaLLM.DataPipelineEngine.Interfaces.IDataPipelineService.CreateDataPipelineRun(System.String,FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRun,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  id: CreateDataPipelineRun(System.String,FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRun,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  parent: FoundationaLLM.DataPipelineEngine.Interfaces.IDataPipelineService
+  langs:
+  - csharp
+  - vb
+  name: CreateDataPipelineRun(string, DataPipelineRun, UnifiedUserIdentity)
+  nameWithType: IDataPipelineService.CreateDataPipelineRun(string, DataPipelineRun, UnifiedUserIdentity)
+  fullName: FoundationaLLM.DataPipelineEngine.Interfaces.IDataPipelineService.CreateDataPipelineRun(string, FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRun, FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/DataPipelineEngine/Interfaces/IDataPipelineService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: CreateDataPipelineRun
+    path: ../src/dotnet/DataPipelineEngine/Interfaces/IDataPipelineService.cs
+    startLine: 43
+  assemblies:
+  - FoundationaLLM.DataPipelineEngine
+  namespace: FoundationaLLM.DataPipelineEngine.Interfaces
+  summary: Creates a new data pipeline run.
+  example: []
+  syntax:
+    content: Task<DataPipelineRun> CreateDataPipelineRun(string instanceId, DataPipelineRun dataPipelineRun, UnifiedUserIdentity userIdentity)
+    parameters:
+    - id: instanceId
+      type: System.String
+      description: The FoundationaLLM instance identifier.
+    - id: dataPipelineRun
+      type: FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRun
+      description: The object with the properties of the new data pipeline run.
+    - id: userIdentity
+      type: FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity
+    return:
+      type: System.Threading.Tasks.Task{FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRun}
+      description: The newly created data pipeline run.
+    content.vb: Function CreateDataPipelineRun(instanceId As String, dataPipelineRun As DataPipelineRun, userIdentity As UnifiedUserIdentity) As Task(Of DataPipelineRun)
+  overload: FoundationaLLM.DataPipelineEngine.Interfaces.IDataPipelineService.CreateDataPipelineRun*
+  nameWithType.vb: IDataPipelineService.CreateDataPipelineRun(String, DataPipelineRun, UnifiedUserIdentity)
+  fullName.vb: FoundationaLLM.DataPipelineEngine.Interfaces.IDataPipelineService.CreateDataPipelineRun(String, FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRun, FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  name.vb: CreateDataPipelineRun(String, DataPipelineRun, UnifiedUserIdentity)
+references:
+- uid: FoundationaLLM.DataPipelineEngine.Interfaces
+  commentId: N:FoundationaLLM.DataPipelineEngine.Interfaces
+  href: FoundationaLLM.html
+  name: FoundationaLLM.DataPipelineEngine.Interfaces
+  nameWithType: FoundationaLLM.DataPipelineEngine.Interfaces
+  fullName: FoundationaLLM.DataPipelineEngine.Interfaces
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.DataPipelineEngine
+    name: DataPipelineEngine
+    href: FoundationaLLM.DataPipelineEngine.html
+  - name: .
+  - uid: FoundationaLLM.DataPipelineEngine.Interfaces
+    name: Interfaces
+    href: FoundationaLLM.DataPipelineEngine.Interfaces.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.DataPipelineEngine
+    name: DataPipelineEngine
+    href: FoundationaLLM.DataPipelineEngine.html
+  - name: .
+  - uid: FoundationaLLM.DataPipelineEngine.Interfaces
+    name: Interfaces
+    href: FoundationaLLM.DataPipelineEngine.Interfaces.html
+- uid: System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  parent: FoundationaLLM.Core.Utils.ObjectExtensions
+  definition: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  isExternal: true
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions
+  commentId: T:FoundationaLLM.Core.Utils.ObjectExtensions
+  parent: FoundationaLLM.Core.Utils
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html
+  name: ObjectExtensions
+  nameWithType: ObjectExtensions
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions
+- uid: FoundationaLLM.Core.Utils
+  commentId: N:FoundationaLLM.Core.Utils
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Core.Utils
+  nameWithType: FoundationaLLM.Core.Utils
+  fullName: FoundationaLLM.Core.Utils
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+- uid: FoundationaLLM.DataPipelineEngine.Interfaces.IDataPipelineService.GetDataPipelineRuns*
+  commentId: Overload:FoundationaLLM.DataPipelineEngine.Interfaces.IDataPipelineService.GetDataPipelineRuns
+  href: FoundationaLLM.DataPipelineEngine.Interfaces.IDataPipelineService.html#FoundationaLLM_DataPipelineEngine_Interfaces_IDataPipelineService_GetDataPipelineRuns_System_String_FoundationaLLM_Common_Models_ResourceProviders_DataPipeline_DataPipelineRunFilter_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_
+  name: GetDataPipelineRuns
+  nameWithType: IDataPipelineService.GetDataPipelineRuns
+  fullName: FoundationaLLM.DataPipelineEngine.Interfaces.IDataPipelineService.GetDataPipelineRuns
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRunFilter
+  commentId: T:FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRunFilter
+  parent: FoundationaLLM.Common.Models.ResourceProviders.DataPipeline
+  href: FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRunFilter.html
+  name: DataPipelineRunFilter
+  nameWithType: DataPipelineRunFilter
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRunFilter
+- uid: FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity
+  commentId: T:FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity
+  parent: FoundationaLLM.Common.Models.Authentication
+  href: FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity.html
+  name: UnifiedUserIdentity
+  nameWithType: UnifiedUserIdentity
+  fullName: FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity
+- uid: System.Threading.Tasks.Task{FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRunFilterResponse}
+  commentId: T:System.Threading.Tasks.Task{FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRunFilterResponse}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<DataPipelineRunFilterResponse>
+  nameWithType: Task<DataPipelineRunFilterResponse>
+  fullName: System.Threading.Tasks.Task<FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRunFilterResponse>
+  nameWithType.vb: Task(Of DataPipelineRunFilterResponse)
+  fullName.vb: System.Threading.Tasks.Task(Of FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRunFilterResponse)
+  name.vb: Task(Of DataPipelineRunFilterResponse)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRunFilterResponse
+    name: DataPipelineRunFilterResponse
+    href: FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRunFilterResponse.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRunFilterResponse
+    name: DataPipelineRunFilterResponse
+    href: FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRunFilterResponse.html
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: FoundationaLLM.Common.Models.ResourceProviders.DataPipeline
+  commentId: N:FoundationaLLM.Common.Models.ResourceProviders.DataPipeline
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.ResourceProviders.DataPipeline
+  nameWithType: FoundationaLLM.Common.Models.ResourceProviders.DataPipeline
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.DataPipeline
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders
+    name: ResourceProviders
+    href: FoundationaLLM.Common.Models.ResourceProviders.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.DataPipeline
+    name: DataPipeline
+    href: FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders
+    name: ResourceProviders
+    href: FoundationaLLM.Common.Models.ResourceProviders.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.DataPipeline
+    name: DataPipeline
+    href: FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.html
+- uid: FoundationaLLM.Common.Models.Authentication
+  commentId: N:FoundationaLLM.Common.Models.Authentication
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.Authentication
+  nameWithType: FoundationaLLM.Common.Models.Authentication
+  fullName: FoundationaLLM.Common.Models.Authentication
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Authentication
+    name: Authentication
+    href: FoundationaLLM.Common.Models.Authentication.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Authentication
+    name: Authentication
+    href: FoundationaLLM.Common.Models.Authentication.html
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: FoundationaLLM.DataPipelineEngine.Interfaces.IDataPipelineService.GetDataPipelineRun*
+  commentId: Overload:FoundationaLLM.DataPipelineEngine.Interfaces.IDataPipelineService.GetDataPipelineRun
+  href: FoundationaLLM.DataPipelineEngine.Interfaces.IDataPipelineService.html#FoundationaLLM_DataPipelineEngine_Interfaces_IDataPipelineService_GetDataPipelineRun_System_String_System_String_System_String_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_
+  name: GetDataPipelineRun
+  nameWithType: IDataPipelineService.GetDataPipelineRun
+  fullName: FoundationaLLM.DataPipelineEngine.Interfaces.IDataPipelineService.GetDataPipelineRun
+- uid: System.Threading.Tasks.Task{FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRun}
+  commentId: T:System.Threading.Tasks.Task{FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRun}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<DataPipelineRun>
+  nameWithType: Task<DataPipelineRun>
+  fullName: System.Threading.Tasks.Task<FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRun>
+  nameWithType.vb: Task(Of DataPipelineRun)
+  fullName.vb: System.Threading.Tasks.Task(Of FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRun)
+  name.vb: Task(Of DataPipelineRun)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRun
+    name: DataPipelineRun
+    href: FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRun.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRun
+    name: DataPipelineRun
+    href: FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRun.html
+  - name: )
+- uid: FoundationaLLM.DataPipelineEngine.Interfaces.IDataPipelineService.CreateDataPipelineRun*
+  commentId: Overload:FoundationaLLM.DataPipelineEngine.Interfaces.IDataPipelineService.CreateDataPipelineRun
+  href: FoundationaLLM.DataPipelineEngine.Interfaces.IDataPipelineService.html#FoundationaLLM_DataPipelineEngine_Interfaces_IDataPipelineService_CreateDataPipelineRun_System_String_FoundationaLLM_Common_Models_ResourceProviders_DataPipeline_DataPipelineRun_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_
+  name: CreateDataPipelineRun
+  nameWithType: IDataPipelineService.CreateDataPipelineRun
+  fullName: FoundationaLLM.DataPipelineEngine.Interfaces.IDataPipelineService.CreateDataPipelineRun
+- uid: FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRun
+  commentId: T:FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRun
+  parent: FoundationaLLM.Common.Models.ResourceProviders.DataPipeline
+  href: FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRun.html
+  name: DataPipelineRun
+  nameWithType: DataPipelineRun
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineRun

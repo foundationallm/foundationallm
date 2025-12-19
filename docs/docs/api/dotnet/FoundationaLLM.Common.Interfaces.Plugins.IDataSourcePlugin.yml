@@ -1,0 +1,599 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Common.Interfaces.Plugins.IDataSourcePlugin
+  commentId: T:FoundationaLLM.Common.Interfaces.Plugins.IDataSourcePlugin
+  id: IDataSourcePlugin
+  parent: FoundationaLLM.Common.Interfaces.Plugins
+  children:
+  - FoundationaLLM.Common.Interfaces.Plugins.IDataSourcePlugin.GetContentItemRawContent(FoundationaLLM.Common.Models.DataPipelines.ContentIdentifier)
+  - FoundationaLLM.Common.Interfaces.Plugins.IDataSourcePlugin.GetContentItems
+  - FoundationaLLM.Common.Interfaces.Plugins.IDataSourcePlugin.HandleUnsafeContentItem(System.String)
+  langs:
+  - csharp
+  - vb
+  name: IDataSourcePlugin
+  nameWithType: IDataSourcePlugin
+  fullName: FoundationaLLM.Common.Interfaces.Plugins.IDataSourcePlugin
+  type: Interface
+  source:
+    remote:
+      path: src/dotnet/Common/Interfaces/Plugins/IDataSourcePlugin.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: IDataSourcePlugin
+    path: ../src/dotnet/Common/Interfaces/Plugins/IDataSourcePlugin.cs
+    startLine: 8
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Interfaces.Plugins
+  summary: Defines the interface for a data source plugin.
+  example: []
+  syntax:
+    content: public interface IDataSourcePlugin
+    content.vb: Public Interface IDataSourcePlugin
+  extensionMethods:
+  - System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+- uid: FoundationaLLM.Common.Interfaces.Plugins.IDataSourcePlugin.GetContentItems
+  commentId: M:FoundationaLLM.Common.Interfaces.Plugins.IDataSourcePlugin.GetContentItems
+  id: GetContentItems
+  parent: FoundationaLLM.Common.Interfaces.Plugins.IDataSourcePlugin
+  langs:
+  - csharp
+  - vb
+  name: GetContentItems()
+  nameWithType: IDataSourcePlugin.GetContentItems()
+  fullName: FoundationaLLM.Common.Interfaces.Plugins.IDataSourcePlugin.GetContentItems()
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Common/Interfaces/Plugins/IDataSourcePlugin.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: GetContentItems
+    path: ../src/dotnet/Common/Interfaces/Plugins/IDataSourcePlugin.cs
+    startLine: 14
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Interfaces.Plugins
+  summary: Gets the list of content items from the data source.
+  example: []
+  syntax:
+    content: Task<List<DataPipelineContentItem>> GetContentItems()
+    return:
+      type: System.Threading.Tasks.Task{System.Collections.Generic.List{FoundationaLLM.Common.Models.DataPipelines.DataPipelineContentItem}}
+      description: ''
+    content.vb: Function GetContentItems() As Task(Of List(Of DataPipelineContentItem))
+  overload: FoundationaLLM.Common.Interfaces.Plugins.IDataSourcePlugin.GetContentItems*
+- uid: FoundationaLLM.Common.Interfaces.Plugins.IDataSourcePlugin.GetContentItemRawContent(FoundationaLLM.Common.Models.DataPipelines.ContentIdentifier)
+  commentId: M:FoundationaLLM.Common.Interfaces.Plugins.IDataSourcePlugin.GetContentItemRawContent(FoundationaLLM.Common.Models.DataPipelines.ContentIdentifier)
+  id: GetContentItemRawContent(FoundationaLLM.Common.Models.DataPipelines.ContentIdentifier)
+  parent: FoundationaLLM.Common.Interfaces.Plugins.IDataSourcePlugin
+  langs:
+  - csharp
+  - vb
+  name: GetContentItemRawContent(ContentIdentifier)
+  nameWithType: IDataSourcePlugin.GetContentItemRawContent(ContentIdentifier)
+  fullName: FoundationaLLM.Common.Interfaces.Plugins.IDataSourcePlugin.GetContentItemRawContent(FoundationaLLM.Common.Models.DataPipelines.ContentIdentifier)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Common/Interfaces/Plugins/IDataSourcePlugin.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: GetContentItemRawContent
+    path: ../src/dotnet/Common/Interfaces/Plugins/IDataSourcePlugin.cs
+    startLine: 21
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Interfaces.Plugins
+  summary: Gets the raw content of a content item.
+  example: []
+  syntax:
+    content: Task<PluginResult<ContentItemRawContent>> GetContentItemRawContent(ContentIdentifier contentItemIdentifier)
+    parameters:
+    - id: contentItemIdentifier
+      type: FoundationaLLM.Common.Models.DataPipelines.ContentIdentifier
+      description: The identifier of the content item.
+    return:
+      type: System.Threading.Tasks.Task{FoundationaLLM.Common.Models.Plugins.PluginResult{FoundationaLLM.Common.Models.Plugins.ContentItemRawContent}}
+      description: A <xref href="FoundationaLLM.Common.Models.Plugins.PluginResult%601" data-throw-if-not-resolved="false"></xref> object with the conten item's raw content.
+    content.vb: Function GetContentItemRawContent(contentItemIdentifier As ContentIdentifier) As Task(Of PluginResult(Of ContentItemRawContent))
+  overload: FoundationaLLM.Common.Interfaces.Plugins.IDataSourcePlugin.GetContentItemRawContent*
+- uid: FoundationaLLM.Common.Interfaces.Plugins.IDataSourcePlugin.HandleUnsafeContentItem(System.String)
+  commentId: M:FoundationaLLM.Common.Interfaces.Plugins.IDataSourcePlugin.HandleUnsafeContentItem(System.String)
+  id: HandleUnsafeContentItem(System.String)
+  parent: FoundationaLLM.Common.Interfaces.Plugins.IDataSourcePlugin
+  langs:
+  - csharp
+  - vb
+  name: HandleUnsafeContentItem(string)
+  nameWithType: IDataSourcePlugin.HandleUnsafeContentItem(string)
+  fullName: FoundationaLLM.Common.Interfaces.Plugins.IDataSourcePlugin.HandleUnsafeContentItem(string)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Common/Interfaces/Plugins/IDataSourcePlugin.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: HandleUnsafeContentItem
+    path: ../src/dotnet/Common/Interfaces/Plugins/IDataSourcePlugin.cs
+    startLine: 29
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Interfaces.Plugins
+  summary: Handles an unsafe content item identified by its canonical identifier.
+  example: []
+  syntax:
+    content: Task HandleUnsafeContentItem(string canonicalContentItemIdentifier)
+    parameters:
+    - id: canonicalContentItemIdentifier
+      type: System.String
+      description: The canonical identifier of the content item to be handled. Cannot be null or empty.
+    return:
+      type: System.Threading.Tasks.Task
+      description: A task that represents the asynchronous operation.
+    content.vb: Function HandleUnsafeContentItem(canonicalContentItemIdentifier As String) As Task
+  overload: FoundationaLLM.Common.Interfaces.Plugins.IDataSourcePlugin.HandleUnsafeContentItem*
+  nameWithType.vb: IDataSourcePlugin.HandleUnsafeContentItem(String)
+  fullName.vb: FoundationaLLM.Common.Interfaces.Plugins.IDataSourcePlugin.HandleUnsafeContentItem(String)
+  name.vb: HandleUnsafeContentItem(String)
+references:
+- uid: FoundationaLLM.Common.Interfaces.Plugins
+  commentId: N:FoundationaLLM.Common.Interfaces.Plugins
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Interfaces.Plugins
+  nameWithType: FoundationaLLM.Common.Interfaces.Plugins
+  fullName: FoundationaLLM.Common.Interfaces.Plugins
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Interfaces
+    name: Interfaces
+    href: FoundationaLLM.Common.Interfaces.html
+  - name: .
+  - uid: FoundationaLLM.Common.Interfaces.Plugins
+    name: Plugins
+    href: FoundationaLLM.Common.Interfaces.Plugins.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Interfaces
+    name: Interfaces
+    href: FoundationaLLM.Common.Interfaces.html
+  - name: .
+  - uid: FoundationaLLM.Common.Interfaces.Plugins
+    name: Plugins
+    href: FoundationaLLM.Common.Interfaces.Plugins.html
+- uid: System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  parent: FoundationaLLM.Core.Utils.ObjectExtensions
+  definition: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  isExternal: true
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions
+  commentId: T:FoundationaLLM.Core.Utils.ObjectExtensions
+  parent: FoundationaLLM.Core.Utils
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html
+  name: ObjectExtensions
+  nameWithType: ObjectExtensions
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions
+- uid: FoundationaLLM.Core.Utils
+  commentId: N:FoundationaLLM.Core.Utils
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Core.Utils
+  nameWithType: FoundationaLLM.Core.Utils
+  fullName: FoundationaLLM.Core.Utils
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+- uid: FoundationaLLM.Common.Interfaces.Plugins.IDataSourcePlugin.GetContentItems*
+  commentId: Overload:FoundationaLLM.Common.Interfaces.Plugins.IDataSourcePlugin.GetContentItems
+  href: FoundationaLLM.Common.Interfaces.Plugins.IDataSourcePlugin.html#FoundationaLLM_Common_Interfaces_Plugins_IDataSourcePlugin_GetContentItems
+  name: GetContentItems
+  nameWithType: IDataSourcePlugin.GetContentItems
+  fullName: FoundationaLLM.Common.Interfaces.Plugins.IDataSourcePlugin.GetContentItems
+- uid: System.Threading.Tasks.Task{System.Collections.Generic.List{FoundationaLLM.Common.Models.DataPipelines.DataPipelineContentItem}}
+  commentId: T:System.Threading.Tasks.Task{System.Collections.Generic.List{FoundationaLLM.Common.Models.DataPipelines.DataPipelineContentItem}}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<List<DataPipelineContentItem>>
+  nameWithType: Task<List<DataPipelineContentItem>>
+  fullName: System.Threading.Tasks.Task<System.Collections.Generic.List<FoundationaLLM.Common.Models.DataPipelines.DataPipelineContentItem>>
+  nameWithType.vb: Task(Of List(Of DataPipelineContentItem))
+  fullName.vb: System.Threading.Tasks.Task(Of System.Collections.Generic.List(Of FoundationaLLM.Common.Models.DataPipelines.DataPipelineContentItem))
+  name.vb: Task(Of List(Of DataPipelineContentItem))
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: FoundationaLLM.Common.Models.DataPipelines.DataPipelineContentItem
+    name: DataPipelineContentItem
+    href: FoundationaLLM.Common.Models.DataPipelines.DataPipelineContentItem.html
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FoundationaLLM.Common.Models.DataPipelines.DataPipelineContentItem
+    name: DataPipelineContentItem
+    href: FoundationaLLM.Common.Models.DataPipelines.DataPipelineContentItem.html
+  - name: )
+  - name: )
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: FoundationaLLM.Common.Models.Plugins.PluginResult`1
+  commentId: T:FoundationaLLM.Common.Models.Plugins.PluginResult`1
+  href: FoundationaLLM.Common.Models.Plugins.PluginResult-1.html
+  name: PluginResult<T>
+  nameWithType: PluginResult<T>
+  fullName: FoundationaLLM.Common.Models.Plugins.PluginResult<T>
+  nameWithType.vb: PluginResult(Of T)
+  fullName.vb: FoundationaLLM.Common.Models.Plugins.PluginResult(Of T)
+  name.vb: PluginResult(Of T)
+  spec.csharp:
+  - uid: FoundationaLLM.Common.Models.Plugins.PluginResult`1
+    name: PluginResult
+    href: FoundationaLLM.Common.Models.Plugins.PluginResult-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: FoundationaLLM.Common.Models.Plugins.PluginResult`1
+    name: PluginResult
+    href: FoundationaLLM.Common.Models.Plugins.PluginResult-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: FoundationaLLM.Common.Interfaces.Plugins.IDataSourcePlugin.GetContentItemRawContent*
+  commentId: Overload:FoundationaLLM.Common.Interfaces.Plugins.IDataSourcePlugin.GetContentItemRawContent
+  href: FoundationaLLM.Common.Interfaces.Plugins.IDataSourcePlugin.html#FoundationaLLM_Common_Interfaces_Plugins_IDataSourcePlugin_GetContentItemRawContent_FoundationaLLM_Common_Models_DataPipelines_ContentIdentifier_
+  name: GetContentItemRawContent
+  nameWithType: IDataSourcePlugin.GetContentItemRawContent
+  fullName: FoundationaLLM.Common.Interfaces.Plugins.IDataSourcePlugin.GetContentItemRawContent
+- uid: FoundationaLLM.Common.Models.DataPipelines.ContentIdentifier
+  commentId: T:FoundationaLLM.Common.Models.DataPipelines.ContentIdentifier
+  parent: FoundationaLLM.Common.Models.DataPipelines
+  href: FoundationaLLM.Common.Models.DataPipelines.ContentIdentifier.html
+  name: ContentIdentifier
+  nameWithType: ContentIdentifier
+  fullName: FoundationaLLM.Common.Models.DataPipelines.ContentIdentifier
+- uid: System.Threading.Tasks.Task{FoundationaLLM.Common.Models.Plugins.PluginResult{FoundationaLLM.Common.Models.Plugins.ContentItemRawContent}}
+  commentId: T:System.Threading.Tasks.Task{FoundationaLLM.Common.Models.Plugins.PluginResult{FoundationaLLM.Common.Models.Plugins.ContentItemRawContent}}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<PluginResult<ContentItemRawContent>>
+  nameWithType: Task<PluginResult<ContentItemRawContent>>
+  fullName: System.Threading.Tasks.Task<FoundationaLLM.Common.Models.Plugins.PluginResult<FoundationaLLM.Common.Models.Plugins.ContentItemRawContent>>
+  nameWithType.vb: Task(Of PluginResult(Of ContentItemRawContent))
+  fullName.vb: System.Threading.Tasks.Task(Of FoundationaLLM.Common.Models.Plugins.PluginResult(Of FoundationaLLM.Common.Models.Plugins.ContentItemRawContent))
+  name.vb: Task(Of PluginResult(Of ContentItemRawContent))
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: FoundationaLLM.Common.Models.Plugins.PluginResult`1
+    name: PluginResult
+    href: FoundationaLLM.Common.Models.Plugins.PluginResult-1.html
+  - name: <
+  - uid: FoundationaLLM.Common.Models.Plugins.ContentItemRawContent
+    name: ContentItemRawContent
+    href: FoundationaLLM.Common.Models.Plugins.ContentItemRawContent.html
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FoundationaLLM.Common.Models.Plugins.PluginResult`1
+    name: PluginResult
+    href: FoundationaLLM.Common.Models.Plugins.PluginResult-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FoundationaLLM.Common.Models.Plugins.ContentItemRawContent
+    name: ContentItemRawContent
+    href: FoundationaLLM.Common.Models.Plugins.ContentItemRawContent.html
+  - name: )
+  - name: )
+- uid: FoundationaLLM.Common.Models.DataPipelines
+  commentId: N:FoundationaLLM.Common.Models.DataPipelines
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.DataPipelines
+  nameWithType: FoundationaLLM.Common.Models.DataPipelines
+  fullName: FoundationaLLM.Common.Models.DataPipelines
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.DataPipelines
+    name: DataPipelines
+    href: FoundationaLLM.Common.Models.DataPipelines.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.DataPipelines
+    name: DataPipelines
+    href: FoundationaLLM.Common.Models.DataPipelines.html
+- uid: FoundationaLLM.Common.Interfaces.Plugins.IDataSourcePlugin.HandleUnsafeContentItem*
+  commentId: Overload:FoundationaLLM.Common.Interfaces.Plugins.IDataSourcePlugin.HandleUnsafeContentItem
+  href: FoundationaLLM.Common.Interfaces.Plugins.IDataSourcePlugin.html#FoundationaLLM_Common_Interfaces_Plugins_IDataSourcePlugin_HandleUnsafeContentItem_System_String_
+  name: HandleUnsafeContentItem
+  nameWithType: IDataSourcePlugin.HandleUnsafeContentItem
+  fullName: FoundationaLLM.Common.Interfaces.Plugins.IDataSourcePlugin.HandleUnsafeContentItem
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System.Threading.Tasks.Task
+  commentId: T:System.Threading.Tasks.Task
+  parent: System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  name: Task
+  nameWithType: Task
+  fullName: System.Threading.Tasks.Task
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System

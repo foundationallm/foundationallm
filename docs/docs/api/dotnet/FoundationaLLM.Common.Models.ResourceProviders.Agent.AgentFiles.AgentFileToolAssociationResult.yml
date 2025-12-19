@@ -1,0 +1,776 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFiles.AgentFileToolAssociationResult
+  commentId: T:FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFiles.AgentFileToolAssociationResult
+  id: AgentFileToolAssociationResult
+  parent: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFiles
+  children:
+  - FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFiles.AgentFileToolAssociationResult.AgentFileToolAssociations
+  - FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFiles.AgentFileToolAssociationResult.Errors
+  - FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFiles.AgentFileToolAssociationResult.Success
+  langs:
+  - csharp
+  - vb
+  name: AgentFileToolAssociationResult
+  nameWithType: AgentFileToolAssociationResult
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFiles.AgentFileToolAssociationResult
+  type: Class
+  source:
+    remote:
+      path: src/dotnet/Common/Models/ResourceProviders/Agent/AgentFiles/AgentFileToolAssociationResult.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: AgentFileToolAssociationResult
+    path: ../src/dotnet/Common/Models/ResourceProviders/Agent/AgentFiles/AgentFileToolAssociationResult.cs
+    startLine: 7
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFiles
+  summary: Represents the result of associating a tool with a file.
+  example: []
+  syntax:
+    content: public class AgentFileToolAssociationResult
+    content.vb: Public Class AgentFileToolAssociationResult
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+  extensionMethods:
+  - System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFiles.AgentFileToolAssociationResult.Success
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFiles.AgentFileToolAssociationResult.Success
+  id: Success
+  parent: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFiles.AgentFileToolAssociationResult
+  langs:
+  - csharp
+  - vb
+  name: Success
+  nameWithType: AgentFileToolAssociationResult.Success
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFiles.AgentFileToolAssociationResult.Success
+  type: Property
+  source:
+    remote:
+      path: src/dotnet/Common/Models/ResourceProviders/Agent/AgentFiles/AgentFileToolAssociationResult.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: Success
+    path: ../src/dotnet/Common/Models/ResourceProviders/Agent/AgentFiles/AgentFileToolAssociationResult.cs
+    startLine: 12
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFiles
+  summary: Indicates if the tool association was successful.
+  example: []
+  syntax:
+    content: >-
+      [JsonPropertyName("success")]
+
+      public required bool Success { get; set; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: >-
+      <JsonPropertyName("success")>
+
+      Public Property Success As Boolean
+  overload: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFiles.AgentFileToolAssociationResult.Success*
+  attributes:
+  - type: System.Text.Json.Serialization.JsonPropertyNameAttribute
+    ctor: System.Text.Json.Serialization.JsonPropertyNameAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: success
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFiles.AgentFileToolAssociationResult.AgentFileToolAssociations
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFiles.AgentFileToolAssociationResult.AgentFileToolAssociations
+  id: AgentFileToolAssociations
+  parent: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFiles.AgentFileToolAssociationResult
+  langs:
+  - csharp
+  - vb
+  name: AgentFileToolAssociations
+  nameWithType: AgentFileToolAssociationResult.AgentFileToolAssociations
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFiles.AgentFileToolAssociationResult.AgentFileToolAssociations
+  type: Property
+  source:
+    remote:
+      path: src/dotnet/Common/Models/ResourceProviders/Agent/AgentFiles/AgentFileToolAssociationResult.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: AgentFileToolAssociations
+    path: ../src/dotnet/Common/Models/ResourceProviders/Agent/AgentFiles/AgentFileToolAssociationResult.cs
+    startLine: 18
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFiles
+  summary: Final agent file tool associations.
+  example: []
+  syntax:
+    content: >-
+      [JsonPropertyName("agent_file_tool_associations")]
+
+      public required List<AgentFileToolAssociation> AgentFileToolAssociations { get; set; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.List{FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFiles.AgentFileToolAssociation}
+    content.vb: >-
+      <JsonPropertyName("agent_file_tool_associations")>
+
+      Public Property AgentFileToolAssociations As List(Of AgentFileToolAssociation)
+  overload: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFiles.AgentFileToolAssociationResult.AgentFileToolAssociations*
+  attributes:
+  - type: System.Text.Json.Serialization.JsonPropertyNameAttribute
+    ctor: System.Text.Json.Serialization.JsonPropertyNameAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: agent_file_tool_associations
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFiles.AgentFileToolAssociationResult.Errors
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFiles.AgentFileToolAssociationResult.Errors
+  id: Errors
+  parent: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFiles.AgentFileToolAssociationResult
+  langs:
+  - csharp
+  - vb
+  name: Errors
+  nameWithType: AgentFileToolAssociationResult.Errors
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFiles.AgentFileToolAssociationResult.Errors
+  type: Property
+  source:
+    remote:
+      path: src/dotnet/Common/Models/ResourceProviders/Agent/AgentFiles/AgentFileToolAssociationResult.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: Errors
+    path: ../src/dotnet/Common/Models/ResourceProviders/Agent/AgentFiles/AgentFileToolAssociationResult.cs
+    startLine: 24
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFiles
+  summary: Agent file tool association errors.
+  example: []
+  syntax:
+    content: >-
+      [JsonPropertyName("errors")]
+
+      public List<AgentFileToolAssociationError>? Errors { get; set; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.List{FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFiles.AgentFileToolAssociationError}
+    content.vb: >-
+      <JsonPropertyName("errors")>
+
+      Public Property Errors As List(Of AgentFileToolAssociationError)
+  overload: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFiles.AgentFileToolAssociationResult.Errors*
+  attributes:
+  - type: System.Text.Json.Serialization.JsonPropertyNameAttribute
+    ctor: System.Text.Json.Serialization.JsonPropertyNameAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: errors
+references:
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFiles
+  commentId: N:FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFiles
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFiles
+  nameWithType: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFiles
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFiles
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders
+    name: ResourceProviders
+    href: FoundationaLLM.Common.Models.ResourceProviders.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.Agent
+    name: Agent
+    href: FoundationaLLM.Common.Models.ResourceProviders.Agent.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFiles
+    name: AgentFiles
+    href: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFiles.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders
+    name: ResourceProviders
+    href: FoundationaLLM.Common.Models.ResourceProviders.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.Agent
+    name: Agent
+    href: FoundationaLLM.Common.Models.ResourceProviders.Agent.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFiles
+    name: AgentFiles
+    href: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFiles.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  parent: FoundationaLLM.Core.Utils.ObjectExtensions
+  definition: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  isExternal: true
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions
+  commentId: T:FoundationaLLM.Core.Utils.ObjectExtensions
+  parent: FoundationaLLM.Core.Utils
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html
+  name: ObjectExtensions
+  nameWithType: ObjectExtensions
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions
+- uid: FoundationaLLM.Core.Utils
+  commentId: N:FoundationaLLM.Core.Utils
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Core.Utils
+  nameWithType: FoundationaLLM.Core.Utils
+  fullName: FoundationaLLM.Core.Utils
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFiles.AgentFileToolAssociationResult.Success*
+  commentId: Overload:FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFiles.AgentFileToolAssociationResult.Success
+  href: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFiles.AgentFileToolAssociationResult.html#FoundationaLLM_Common_Models_ResourceProviders_Agent_AgentFiles_AgentFileToolAssociationResult_Success
+  name: Success
+  nameWithType: AgentFileToolAssociationResult.Success
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFiles.AgentFileToolAssociationResult.Success
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFiles.AgentFileToolAssociationResult.AgentFileToolAssociations*
+  commentId: Overload:FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFiles.AgentFileToolAssociationResult.AgentFileToolAssociations
+  href: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFiles.AgentFileToolAssociationResult.html#FoundationaLLM_Common_Models_ResourceProviders_Agent_AgentFiles_AgentFileToolAssociationResult_AgentFileToolAssociations
+  name: AgentFileToolAssociations
+  nameWithType: AgentFileToolAssociationResult.AgentFileToolAssociations
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFiles.AgentFileToolAssociationResult.AgentFileToolAssociations
+- uid: System.Collections.Generic.List{FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFiles.AgentFileToolAssociation}
+  commentId: T:System.Collections.Generic.List{FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFiles.AgentFileToolAssociation}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.List`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  name: List<AgentFileToolAssociation>
+  nameWithType: List<AgentFileToolAssociation>
+  fullName: System.Collections.Generic.List<FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFiles.AgentFileToolAssociation>
+  nameWithType.vb: List(Of AgentFileToolAssociation)
+  fullName.vb: System.Collections.Generic.List(Of FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFiles.AgentFileToolAssociation)
+  name.vb: List(Of AgentFileToolAssociation)
+  spec.csharp:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFiles.AgentFileToolAssociation
+    name: AgentFileToolAssociation
+    href: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFiles.AgentFileToolAssociation.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFiles.AgentFileToolAssociation
+    name: AgentFileToolAssociation
+    href: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFiles.AgentFileToolAssociation.html
+  - name: )
+- uid: System.Collections.Generic.List`1
+  commentId: T:System.Collections.Generic.List`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  name: List<T>
+  nameWithType: List<T>
+  fullName: System.Collections.Generic.List<T>
+  nameWithType.vb: List(Of T)
+  fullName.vb: System.Collections.Generic.List(Of T)
+  name.vb: List(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFiles.AgentFileToolAssociationResult.Errors*
+  commentId: Overload:FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFiles.AgentFileToolAssociationResult.Errors
+  href: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFiles.AgentFileToolAssociationResult.html#FoundationaLLM_Common_Models_ResourceProviders_Agent_AgentFiles_AgentFileToolAssociationResult_Errors
+  name: Errors
+  nameWithType: AgentFileToolAssociationResult.Errors
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFiles.AgentFileToolAssociationResult.Errors
+- uid: System.Collections.Generic.List{FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFiles.AgentFileToolAssociationError}
+  commentId: T:System.Collections.Generic.List{FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFiles.AgentFileToolAssociationError}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.List`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  name: List<AgentFileToolAssociationError>
+  nameWithType: List<AgentFileToolAssociationError>
+  fullName: System.Collections.Generic.List<FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFiles.AgentFileToolAssociationError>
+  nameWithType.vb: List(Of AgentFileToolAssociationError)
+  fullName.vb: System.Collections.Generic.List(Of FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFiles.AgentFileToolAssociationError)
+  name.vb: List(Of AgentFileToolAssociationError)
+  spec.csharp:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFiles.AgentFileToolAssociationError
+    name: AgentFileToolAssociationError
+    href: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFiles.AgentFileToolAssociationError.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFiles.AgentFileToolAssociationError
+    name: AgentFileToolAssociationError
+    href: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFiles.AgentFileToolAssociationError.html
+  - name: )

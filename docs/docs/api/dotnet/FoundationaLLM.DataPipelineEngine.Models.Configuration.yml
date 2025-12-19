@@ -1,0 +1,85 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.DataPipelineEngine.Models.Configuration
+  commentId: N:FoundationaLLM.DataPipelineEngine.Models.Configuration
+  id: Configuration
+  parent: FoundationaLLM.DataPipelineEngine.Models
+  children:
+  - FoundationaLLM.DataPipelineEngine.Models.Configuration.DataPipelineServiceSettings
+  - FoundationaLLM.DataPipelineEngine.Models.Configuration.DataPipelineServiceSettingsBase
+  - FoundationaLLM.DataPipelineEngine.Models.Configuration.DataPipelineStateServiceSettings
+  - FoundationaLLM.DataPipelineEngine.Models.Configuration.DataPipelineWorkerServiceSettings
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM.DataPipelineEngine.Models.Configuration
+  nameWithType: FoundationaLLM.DataPipelineEngine.Models.Configuration
+  fullName: FoundationaLLM.DataPipelineEngine.Models.Configuration
+  type: Namespace
+  assemblies:
+  - FoundationaLLM.DataPipelineEngine
+references:
+- uid: FoundationaLLM.DataPipelineEngine.Models.Configuration.DataPipelineServiceSettings
+  commentId: T:FoundationaLLM.DataPipelineEngine.Models.Configuration.DataPipelineServiceSettings
+  parent: FoundationaLLM.DataPipelineEngine.Models.Configuration
+  href: FoundationaLLM.DataPipelineEngine.Models.Configuration.DataPipelineServiceSettings.html
+  name: DataPipelineServiceSettings
+  nameWithType: DataPipelineServiceSettings
+  fullName: FoundationaLLM.DataPipelineEngine.Models.Configuration.DataPipelineServiceSettings
+- uid: FoundationaLLM.DataPipelineEngine.Models.Configuration.DataPipelineServiceSettingsBase
+  commentId: T:FoundationaLLM.DataPipelineEngine.Models.Configuration.DataPipelineServiceSettingsBase
+  parent: FoundationaLLM.DataPipelineEngine.Models.Configuration
+  href: FoundationaLLM.DataPipelineEngine.Models.Configuration.DataPipelineServiceSettingsBase.html
+  name: DataPipelineServiceSettingsBase
+  nameWithType: DataPipelineServiceSettingsBase
+  fullName: FoundationaLLM.DataPipelineEngine.Models.Configuration.DataPipelineServiceSettingsBase
+- uid: FoundationaLLM.DataPipelineEngine.Models.Configuration.DataPipelineStateServiceSettings
+  commentId: T:FoundationaLLM.DataPipelineEngine.Models.Configuration.DataPipelineStateServiceSettings
+  href: FoundationaLLM.DataPipelineEngine.Models.Configuration.DataPipelineStateServiceSettings.html
+  name: DataPipelineStateServiceSettings
+  nameWithType: DataPipelineStateServiceSettings
+  fullName: FoundationaLLM.DataPipelineEngine.Models.Configuration.DataPipelineStateServiceSettings
+- uid: FoundationaLLM.DataPipelineEngine.Models.Configuration.DataPipelineWorkerServiceSettings
+  commentId: T:FoundationaLLM.DataPipelineEngine.Models.Configuration.DataPipelineWorkerServiceSettings
+  href: FoundationaLLM.DataPipelineEngine.Models.Configuration.DataPipelineWorkerServiceSettings.html
+  name: DataPipelineWorkerServiceSettings
+  nameWithType: DataPipelineWorkerServiceSettings
+  fullName: FoundationaLLM.DataPipelineEngine.Models.Configuration.DataPipelineWorkerServiceSettings
+- uid: FoundationaLLM.DataPipelineEngine.Models.Configuration
+  commentId: N:FoundationaLLM.DataPipelineEngine.Models.Configuration
+  href: FoundationaLLM.html
+  name: FoundationaLLM.DataPipelineEngine.Models.Configuration
+  nameWithType: FoundationaLLM.DataPipelineEngine.Models.Configuration
+  fullName: FoundationaLLM.DataPipelineEngine.Models.Configuration
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.DataPipelineEngine
+    name: DataPipelineEngine
+    href: FoundationaLLM.DataPipelineEngine.html
+  - name: .
+  - uid: FoundationaLLM.DataPipelineEngine.Models
+    name: Models
+    href: FoundationaLLM.DataPipelineEngine.Models.html
+  - name: .
+  - uid: FoundationaLLM.DataPipelineEngine.Models.Configuration
+    name: Configuration
+    href: FoundationaLLM.DataPipelineEngine.Models.Configuration.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.DataPipelineEngine
+    name: DataPipelineEngine
+    href: FoundationaLLM.DataPipelineEngine.html
+  - name: .
+  - uid: FoundationaLLM.DataPipelineEngine.Models
+    name: Models
+    href: FoundationaLLM.DataPipelineEngine.Models.html
+  - name: .
+  - uid: FoundationaLLM.DataPipelineEngine.Models.Configuration
+    name: Configuration
+    href: FoundationaLLM.DataPipelineEngine.Models.Configuration.html

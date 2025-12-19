@@ -1,0 +1,109 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Gateway.Models
+  commentId: N:FoundationaLLM.Gateway.Models
+  id: Models
+  parent: FoundationaLLM.Gateway
+  children:
+  - FoundationaLLM.Gateway.Models.Configuration
+  - FoundationaLLM.Gateway.Models.InternalTextOperationRequest
+  - FoundationaLLM.Gateway.Models.InternalTextOperationResult
+  - FoundationaLLM.Gateway.Models.TextOperationContext
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM.Gateway.Models
+  nameWithType: FoundationaLLM.Gateway.Models
+  fullName: FoundationaLLM.Gateway.Models
+  type: Namespace
+  assemblies:
+  - FoundationaLLM.Gateway
+references:
+- uid: FoundationaLLM.Gateway.Models.Configuration
+  commentId: N:FoundationaLLM.Gateway.Models.Configuration
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Gateway.Models.Configuration
+  nameWithType: FoundationaLLM.Gateway.Models.Configuration
+  fullName: FoundationaLLM.Gateway.Models.Configuration
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Gateway
+    name: Gateway
+    href: FoundationaLLM.Gateway.html
+  - name: .
+  - uid: FoundationaLLM.Gateway.Models
+    name: Models
+    href: FoundationaLLM.Gateway.Models.html
+  - name: .
+  - uid: FoundationaLLM.Gateway.Models.Configuration
+    name: Configuration
+    href: FoundationaLLM.Gateway.Models.Configuration.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Gateway
+    name: Gateway
+    href: FoundationaLLM.Gateway.html
+  - name: .
+  - uid: FoundationaLLM.Gateway.Models
+    name: Models
+    href: FoundationaLLM.Gateway.Models.html
+  - name: .
+  - uid: FoundationaLLM.Gateway.Models.Configuration
+    name: Configuration
+    href: FoundationaLLM.Gateway.Models.Configuration.html
+- uid: FoundationaLLM.Gateway.Models.InternalTextOperationRequest
+  commentId: T:FoundationaLLM.Gateway.Models.InternalTextOperationRequest
+  parent: FoundationaLLM.Gateway.Models
+  href: FoundationaLLM.Gateway.Models.InternalTextOperationRequest.html
+  name: InternalTextOperationRequest
+  nameWithType: InternalTextOperationRequest
+  fullName: FoundationaLLM.Gateway.Models.InternalTextOperationRequest
+- uid: FoundationaLLM.Gateway.Models.InternalTextOperationResult
+  commentId: T:FoundationaLLM.Gateway.Models.InternalTextOperationResult
+  href: FoundationaLLM.Gateway.Models.InternalTextOperationResult.html
+  name: InternalTextOperationResult
+  nameWithType: InternalTextOperationResult
+  fullName: FoundationaLLM.Gateway.Models.InternalTextOperationResult
+- uid: FoundationaLLM.Gateway.Models.TextOperationContext
+  commentId: T:FoundationaLLM.Gateway.Models.TextOperationContext
+  parent: FoundationaLLM.Gateway.Models
+  href: FoundationaLLM.Gateway.Models.TextOperationContext.html
+  name: TextOperationContext
+  nameWithType: TextOperationContext
+  fullName: FoundationaLLM.Gateway.Models.TextOperationContext
+- uid: FoundationaLLM.Gateway.Models
+  commentId: N:FoundationaLLM.Gateway.Models
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Gateway.Models
+  nameWithType: FoundationaLLM.Gateway.Models
+  fullName: FoundationaLLM.Gateway.Models
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Gateway
+    name: Gateway
+    href: FoundationaLLM.Gateway.html
+  - name: .
+  - uid: FoundationaLLM.Gateway.Models
+    name: Models
+    href: FoundationaLLM.Gateway.Models.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Gateway
+    name: Gateway
+    href: FoundationaLLM.Gateway.html
+  - name: .
+  - uid: FoundationaLLM.Gateway.Models
+    name: Models
+    href: FoundationaLLM.Gateway.Models.html

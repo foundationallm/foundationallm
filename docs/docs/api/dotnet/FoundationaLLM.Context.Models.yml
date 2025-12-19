@@ -1,0 +1,153 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Context.Models
+  commentId: N:FoundationaLLM.Context.Models
+  id: Models
+  parent: FoundationaLLM.Context
+  children:
+  - FoundationaLLM.Context.Models.CachedKnowledgeUnit
+  - FoundationaLLM.Context.Models.CodeSessionFileStore
+  - FoundationaLLM.Context.Models.CodeSessionFileStoreItem
+  - FoundationaLLM.Context.Models.Configuration
+  - FoundationaLLM.Context.Models.ContextReference
+  - FoundationaLLM.Context.Models.IndexedKnowledgeGraph
+  - FoundationaLLM.Context.Models.KnowledgeGraphIndex
+  - FoundationaLLM.Context.Models.KnowledgeGraphIndexNode
+  - FoundationaLLM.Context.Models.KnowledgeGraphIndexRelatedNode
+  - FoundationaLLM.Context.Models.KnowledgeGraphIndexRelatedNodeComparer
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM.Context.Models
+  nameWithType: FoundationaLLM.Context.Models
+  fullName: FoundationaLLM.Context.Models
+  type: Namespace
+  assemblies:
+  - FoundationaLLM.Context
+references:
+- uid: FoundationaLLM.Context.Models.Configuration
+  commentId: N:FoundationaLLM.Context.Models.Configuration
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Context.Models.Configuration
+  nameWithType: FoundationaLLM.Context.Models.Configuration
+  fullName: FoundationaLLM.Context.Models.Configuration
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Context
+    name: Context
+    href: FoundationaLLM.Context.html
+  - name: .
+  - uid: FoundationaLLM.Context.Models
+    name: Models
+    href: FoundationaLLM.Context.Models.html
+  - name: .
+  - uid: FoundationaLLM.Context.Models.Configuration
+    name: Configuration
+    href: FoundationaLLM.Context.Models.Configuration.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Context
+    name: Context
+    href: FoundationaLLM.Context.html
+  - name: .
+  - uid: FoundationaLLM.Context.Models
+    name: Models
+    href: FoundationaLLM.Context.Models.html
+  - name: .
+  - uid: FoundationaLLM.Context.Models.Configuration
+    name: Configuration
+    href: FoundationaLLM.Context.Models.Configuration.html
+- uid: FoundationaLLM.Context.Models.CachedKnowledgeUnit
+  commentId: T:FoundationaLLM.Context.Models.CachedKnowledgeUnit
+  parent: FoundationaLLM.Context.Models
+  href: FoundationaLLM.Context.Models.CachedKnowledgeUnit.html
+  name: CachedKnowledgeUnit
+  nameWithType: CachedKnowledgeUnit
+  fullName: FoundationaLLM.Context.Models.CachedKnowledgeUnit
+- uid: FoundationaLLM.Context.Models.CodeSessionFileStore
+  commentId: T:FoundationaLLM.Context.Models.CodeSessionFileStore
+  href: FoundationaLLM.Context.Models.CodeSessionFileStore.html
+  name: CodeSessionFileStore
+  nameWithType: CodeSessionFileStore
+  fullName: FoundationaLLM.Context.Models.CodeSessionFileStore
+- uid: FoundationaLLM.Context.Models.CodeSessionFileStoreItem
+  commentId: T:FoundationaLLM.Context.Models.CodeSessionFileStoreItem
+  href: FoundationaLLM.Context.Models.CodeSessionFileStoreItem.html
+  name: CodeSessionFileStoreItem
+  nameWithType: CodeSessionFileStoreItem
+  fullName: FoundationaLLM.Context.Models.CodeSessionFileStoreItem
+- uid: FoundationaLLM.Context.Models.ContextReference
+  commentId: T:FoundationaLLM.Context.Models.ContextReference
+  href: FoundationaLLM.Context.Models.ContextReference.html
+  name: ContextReference
+  nameWithType: ContextReference
+  fullName: FoundationaLLM.Context.Models.ContextReference
+- uid: FoundationaLLM.Context.Models.IndexedKnowledgeGraph
+  commentId: T:FoundationaLLM.Context.Models.IndexedKnowledgeGraph
+  parent: FoundationaLLM.Context.Models
+  href: FoundationaLLM.Context.Models.IndexedKnowledgeGraph.html
+  name: IndexedKnowledgeGraph
+  nameWithType: IndexedKnowledgeGraph
+  fullName: FoundationaLLM.Context.Models.IndexedKnowledgeGraph
+- uid: FoundationaLLM.Context.Models.KnowledgeGraphIndex
+  commentId: T:FoundationaLLM.Context.Models.KnowledgeGraphIndex
+  parent: FoundationaLLM.Context.Models
+  href: FoundationaLLM.Context.Models.KnowledgeGraphIndex.html
+  name: KnowledgeGraphIndex
+  nameWithType: KnowledgeGraphIndex
+  fullName: FoundationaLLM.Context.Models.KnowledgeGraphIndex
+- uid: FoundationaLLM.Context.Models.KnowledgeGraphIndexNode
+  commentId: T:FoundationaLLM.Context.Models.KnowledgeGraphIndexNode
+  href: FoundationaLLM.Context.Models.KnowledgeGraphIndexNode.html
+  name: KnowledgeGraphIndexNode
+  nameWithType: KnowledgeGraphIndexNode
+  fullName: FoundationaLLM.Context.Models.KnowledgeGraphIndexNode
+- uid: FoundationaLLM.Context.Models.KnowledgeGraphIndexRelatedNode
+  commentId: T:FoundationaLLM.Context.Models.KnowledgeGraphIndexRelatedNode
+  parent: FoundationaLLM.Context.Models
+  href: FoundationaLLM.Context.Models.KnowledgeGraphIndexRelatedNode.html
+  name: KnowledgeGraphIndexRelatedNode
+  nameWithType: KnowledgeGraphIndexRelatedNode
+  fullName: FoundationaLLM.Context.Models.KnowledgeGraphIndexRelatedNode
+- uid: FoundationaLLM.Context.Models.KnowledgeGraphIndexRelatedNodeComparer
+  commentId: T:FoundationaLLM.Context.Models.KnowledgeGraphIndexRelatedNodeComparer
+  href: FoundationaLLM.Context.Models.KnowledgeGraphIndexRelatedNodeComparer.html
+  name: KnowledgeGraphIndexRelatedNodeComparer
+  nameWithType: KnowledgeGraphIndexRelatedNodeComparer
+  fullName: FoundationaLLM.Context.Models.KnowledgeGraphIndexRelatedNodeComparer
+- uid: FoundationaLLM.Context.Models
+  commentId: N:FoundationaLLM.Context.Models
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Context.Models
+  nameWithType: FoundationaLLM.Context.Models
+  fullName: FoundationaLLM.Context.Models
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Context
+    name: Context
+    href: FoundationaLLM.Context.html
+  - name: .
+  - uid: FoundationaLLM.Context.Models
+    name: Models
+    href: FoundationaLLM.Context.Models.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Context
+    name: Context
+    href: FoundationaLLM.Context.html
+  - name: .
+  - uid: FoundationaLLM.Context.Models
+    name: Models
+    href: FoundationaLLM.Context.Models.html

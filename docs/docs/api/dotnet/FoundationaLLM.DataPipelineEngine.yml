@@ -1,0 +1,167 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.DataPipelineEngine
+  id: DataPipelineEngine
+  parent: FoundationaLLM
+  children:
+  - FoundationaLLM.DataPipelineEngine.Clients
+  - FoundationaLLM.DataPipelineEngine.Exceptions
+  - FoundationaLLM.DataPipelineEngine.Interfaces
+  - FoundationaLLM.DataPipelineEngine.Models
+  - FoundationaLLM.DataPipelineEngine.Services
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM.DataPipelineEngine
+  type: Namespace
+references:
+- uid: FoundationaLLM.DataPipelineEngine.Clients
+  commentId: N:FoundationaLLM.DataPipelineEngine.Clients
+  href: FoundationaLLM.html
+  name: FoundationaLLM.DataPipelineEngine.Clients
+  nameWithType: FoundationaLLM.DataPipelineEngine.Clients
+  fullName: FoundationaLLM.DataPipelineEngine.Clients
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.DataPipelineEngine
+    name: DataPipelineEngine
+    href: FoundationaLLM.DataPipelineEngine.html
+  - name: .
+  - uid: FoundationaLLM.DataPipelineEngine.Clients
+    name: Clients
+    href: FoundationaLLM.DataPipelineEngine.Clients.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.DataPipelineEngine
+    name: DataPipelineEngine
+    href: FoundationaLLM.DataPipelineEngine.html
+  - name: .
+  - uid: FoundationaLLM.DataPipelineEngine.Clients
+    name: Clients
+    href: FoundationaLLM.DataPipelineEngine.Clients.html
+- uid: FoundationaLLM.DataPipelineEngine.Exceptions
+  commentId: N:FoundationaLLM.DataPipelineEngine.Exceptions
+  href: FoundationaLLM.html
+  name: FoundationaLLM.DataPipelineEngine.Exceptions
+  nameWithType: FoundationaLLM.DataPipelineEngine.Exceptions
+  fullName: FoundationaLLM.DataPipelineEngine.Exceptions
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.DataPipelineEngine
+    name: DataPipelineEngine
+    href: FoundationaLLM.DataPipelineEngine.html
+  - name: .
+  - uid: FoundationaLLM.DataPipelineEngine.Exceptions
+    name: Exceptions
+    href: FoundationaLLM.DataPipelineEngine.Exceptions.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.DataPipelineEngine
+    name: DataPipelineEngine
+    href: FoundationaLLM.DataPipelineEngine.html
+  - name: .
+  - uid: FoundationaLLM.DataPipelineEngine.Exceptions
+    name: Exceptions
+    href: FoundationaLLM.DataPipelineEngine.Exceptions.html
+- uid: FoundationaLLM.DataPipelineEngine.Interfaces
+  commentId: N:FoundationaLLM.DataPipelineEngine.Interfaces
+  href: FoundationaLLM.html
+  name: FoundationaLLM.DataPipelineEngine.Interfaces
+  nameWithType: FoundationaLLM.DataPipelineEngine.Interfaces
+  fullName: FoundationaLLM.DataPipelineEngine.Interfaces
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.DataPipelineEngine
+    name: DataPipelineEngine
+    href: FoundationaLLM.DataPipelineEngine.html
+  - name: .
+  - uid: FoundationaLLM.DataPipelineEngine.Interfaces
+    name: Interfaces
+    href: FoundationaLLM.DataPipelineEngine.Interfaces.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.DataPipelineEngine
+    name: DataPipelineEngine
+    href: FoundationaLLM.DataPipelineEngine.html
+  - name: .
+  - uid: FoundationaLLM.DataPipelineEngine.Interfaces
+    name: Interfaces
+    href: FoundationaLLM.DataPipelineEngine.Interfaces.html
+- uid: FoundationaLLM.DataPipelineEngine.Models
+  commentId: N:FoundationaLLM.DataPipelineEngine.Models
+  href: FoundationaLLM.html
+  name: FoundationaLLM.DataPipelineEngine.Models
+  nameWithType: FoundationaLLM.DataPipelineEngine.Models
+  fullName: FoundationaLLM.DataPipelineEngine.Models
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.DataPipelineEngine
+    name: DataPipelineEngine
+    href: FoundationaLLM.DataPipelineEngine.html
+  - name: .
+  - uid: FoundationaLLM.DataPipelineEngine.Models
+    name: Models
+    href: FoundationaLLM.DataPipelineEngine.Models.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.DataPipelineEngine
+    name: DataPipelineEngine
+    href: FoundationaLLM.DataPipelineEngine.html
+  - name: .
+  - uid: FoundationaLLM.DataPipelineEngine.Models
+    name: Models
+    href: FoundationaLLM.DataPipelineEngine.Models.html
+- uid: FoundationaLLM.DataPipelineEngine.Services
+  commentId: N:FoundationaLLM.DataPipelineEngine.Services
+  href: FoundationaLLM.html
+  name: FoundationaLLM.DataPipelineEngine.Services
+  nameWithType: FoundationaLLM.DataPipelineEngine.Services
+  fullName: FoundationaLLM.DataPipelineEngine.Services
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.DataPipelineEngine
+    name: DataPipelineEngine
+    href: FoundationaLLM.DataPipelineEngine.html
+  - name: .
+  - uid: FoundationaLLM.DataPipelineEngine.Services
+    name: Services
+    href: FoundationaLLM.DataPipelineEngine.Services.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.DataPipelineEngine
+    name: DataPipelineEngine
+    href: FoundationaLLM.DataPipelineEngine.html
+  - name: .
+  - uid: FoundationaLLM.DataPipelineEngine.Services
+    name: Services
+    href: FoundationaLLM.DataPipelineEngine.Services.html

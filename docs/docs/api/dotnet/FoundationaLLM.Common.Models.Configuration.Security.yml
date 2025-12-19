@@ -1,0 +1,71 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Common.Models.Configuration.Security
+  commentId: N:FoundationaLLM.Common.Models.Configuration.Security
+  id: Security
+  parent: FoundationaLLM.Common.Models.Configuration
+  children:
+  - FoundationaLLM.Common.Models.Configuration.Security.MicrosoftGraphIdentityManagementServiceSettings
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM.Common.Models.Configuration.Security
+  nameWithType: FoundationaLLM.Common.Models.Configuration.Security
+  fullName: FoundationaLLM.Common.Models.Configuration.Security
+  type: Namespace
+  assemblies:
+  - FoundationaLLM.Common
+references:
+- uid: FoundationaLLM.Common.Models.Configuration.Security.MicrosoftGraphIdentityManagementServiceSettings
+  commentId: T:FoundationaLLM.Common.Models.Configuration.Security.MicrosoftGraphIdentityManagementServiceSettings
+  parent: FoundationaLLM.Common.Models.Configuration.Security
+  href: FoundationaLLM.Common.Models.Configuration.Security.MicrosoftGraphIdentityManagementServiceSettings.html
+  name: MicrosoftGraphIdentityManagementServiceSettings
+  nameWithType: MicrosoftGraphIdentityManagementServiceSettings
+  fullName: FoundationaLLM.Common.Models.Configuration.Security.MicrosoftGraphIdentityManagementServiceSettings
+- uid: FoundationaLLM.Common.Models.Configuration.Security
+  commentId: N:FoundationaLLM.Common.Models.Configuration.Security
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.Configuration.Security
+  nameWithType: FoundationaLLM.Common.Models.Configuration.Security
+  fullName: FoundationaLLM.Common.Models.Configuration.Security
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Configuration
+    name: Configuration
+    href: FoundationaLLM.Common.Models.Configuration.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Configuration.Security
+    name: Security
+    href: FoundationaLLM.Common.Models.Configuration.Security.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Configuration
+    name: Configuration
+    href: FoundationaLLM.Common.Models.Configuration.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Configuration.Security
+    name: Security
+    href: FoundationaLLM.Common.Models.Configuration.Security.html

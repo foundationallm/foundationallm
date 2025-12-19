@@ -1,0 +1,24 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Gateway.Models.Configuration
+  commentId: N:FoundationaLLM.Gateway.Models.Configuration
+  id: Configuration
+  parent: FoundationaLLM.Gateway.Models
+  children:
+  - FoundationaLLM.Gateway.Models.Configuration.GatewayCoreSettings
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM.Gateway.Models.Configuration
+  nameWithType: FoundationaLLM.Gateway.Models.Configuration
+  fullName: FoundationaLLM.Gateway.Models.Configuration
+  type: Namespace
+  assemblies:
+  - FoundationaLLM.Gateway
+references:
+- uid: FoundationaLLM.Gateway.Models.Configuration.GatewayCoreSettings
+  commentId: T:FoundationaLLM.Gateway.Models.Configuration.GatewayCoreSettings
+  href: FoundationaLLM.Gateway.Models.Configuration.GatewayCoreSettings.html
+  name: GatewayCoreSettings
+  nameWithType: GatewayCoreSettings
+  fullName: FoundationaLLM.Gateway.Models.Configuration.GatewayCoreSettings

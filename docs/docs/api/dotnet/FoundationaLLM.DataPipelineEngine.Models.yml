@@ -1,0 +1,89 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.DataPipelineEngine.Models
+  commentId: N:FoundationaLLM.DataPipelineEngine.Models
+  id: Models
+  parent: FoundationaLLM.DataPipelineEngine
+  children:
+  - FoundationaLLM.DataPipelineEngine.Models.Configuration
+  - FoundationaLLM.DataPipelineEngine.Models.DataPipelineRunWorkItemMessage
+  - FoundationaLLM.DataPipelineEngine.Models.DequeuedMessage`1
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM.DataPipelineEngine.Models
+  nameWithType: FoundationaLLM.DataPipelineEngine.Models
+  fullName: FoundationaLLM.DataPipelineEngine.Models
+  type: Namespace
+  assemblies:
+  - FoundationaLLM.DataPipelineEngine
+references:
+- uid: FoundationaLLM.DataPipelineEngine.Models.Configuration
+  commentId: N:FoundationaLLM.DataPipelineEngine.Models.Configuration
+  href: FoundationaLLM.html
+  name: FoundationaLLM.DataPipelineEngine.Models.Configuration
+  nameWithType: FoundationaLLM.DataPipelineEngine.Models.Configuration
+  fullName: FoundationaLLM.DataPipelineEngine.Models.Configuration
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.DataPipelineEngine
+    name: DataPipelineEngine
+    href: FoundationaLLM.DataPipelineEngine.html
+  - name: .
+  - uid: FoundationaLLM.DataPipelineEngine.Models
+    name: Models
+    href: FoundationaLLM.DataPipelineEngine.Models.html
+  - name: .
+  - uid: FoundationaLLM.DataPipelineEngine.Models.Configuration
+    name: Configuration
+    href: FoundationaLLM.DataPipelineEngine.Models.Configuration.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.DataPipelineEngine
+    name: DataPipelineEngine
+    href: FoundationaLLM.DataPipelineEngine.html
+  - name: .
+  - uid: FoundationaLLM.DataPipelineEngine.Models
+    name: Models
+    href: FoundationaLLM.DataPipelineEngine.Models.html
+  - name: .
+  - uid: FoundationaLLM.DataPipelineEngine.Models.Configuration
+    name: Configuration
+    href: FoundationaLLM.DataPipelineEngine.Models.Configuration.html
+- uid: FoundationaLLM.DataPipelineEngine.Models.DataPipelineRunWorkItemMessage
+  commentId: T:FoundationaLLM.DataPipelineEngine.Models.DataPipelineRunWorkItemMessage
+  href: FoundationaLLM.DataPipelineEngine.Models.DataPipelineRunWorkItemMessage.html
+  name: DataPipelineRunWorkItemMessage
+  nameWithType: DataPipelineRunWorkItemMessage
+  fullName: FoundationaLLM.DataPipelineEngine.Models.DataPipelineRunWorkItemMessage
+- uid: FoundationaLLM.DataPipelineEngine.Models.DequeuedMessage`1
+  commentId: T:FoundationaLLM.DataPipelineEngine.Models.DequeuedMessage`1
+  href: FoundationaLLM.DataPipelineEngine.Models.DequeuedMessage-1.html
+  name: DequeuedMessage<T>
+  nameWithType: DequeuedMessage<T>
+  fullName: FoundationaLLM.DataPipelineEngine.Models.DequeuedMessage<T>
+  nameWithType.vb: DequeuedMessage(Of T)
+  fullName.vb: FoundationaLLM.DataPipelineEngine.Models.DequeuedMessage(Of T)
+  name.vb: DequeuedMessage(Of T)
+  spec.csharp:
+  - uid: FoundationaLLM.DataPipelineEngine.Models.DequeuedMessage`1
+    name: DequeuedMessage
+    href: FoundationaLLM.DataPipelineEngine.Models.DequeuedMessage-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: FoundationaLLM.DataPipelineEngine.Models.DequeuedMessage`1
+    name: DequeuedMessage
+    href: FoundationaLLM.DataPipelineEngine.Models.DequeuedMessage-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )

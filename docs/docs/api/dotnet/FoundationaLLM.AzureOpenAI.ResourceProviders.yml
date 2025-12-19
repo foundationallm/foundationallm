@@ -1,0 +1,24 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.AzureOpenAI.ResourceProviders
+  commentId: N:FoundationaLLM.AzureOpenAI.ResourceProviders
+  id: AzureOpenAI.ResourceProviders
+  parent: FoundationaLLM
+  children:
+  - FoundationaLLM.AzureOpenAI.ResourceProviders.AzureOpenAIResourceProviderService
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM.AzureOpenAI.ResourceProviders
+  nameWithType: FoundationaLLM.AzureOpenAI.ResourceProviders
+  fullName: FoundationaLLM.AzureOpenAI.ResourceProviders
+  type: Namespace
+  assemblies:
+  - FoundationaLLM.AzureOpenAI
+references:
+- uid: FoundationaLLM.AzureOpenAI.ResourceProviders.AzureOpenAIResourceProviderService
+  commentId: T:FoundationaLLM.AzureOpenAI.ResourceProviders.AzureOpenAIResourceProviderService
+  href: FoundationaLLM.AzureOpenAI.ResourceProviders.AzureOpenAIResourceProviderService.html
+  name: AzureOpenAIResourceProviderService
+  nameWithType: AzureOpenAIResourceProviderService
+  fullName: FoundationaLLM.AzureOpenAI.ResourceProviders.AzureOpenAIResourceProviderService

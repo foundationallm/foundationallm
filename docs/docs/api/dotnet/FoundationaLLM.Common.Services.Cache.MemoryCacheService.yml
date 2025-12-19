@@ -1,0 +1,1670 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Common.Services.Cache.MemoryCacheService
+  commentId: T:FoundationaLLM.Common.Services.Cache.MemoryCacheService
+  id: MemoryCacheService
+  parent: FoundationaLLM.Common.Services.Cache
+  children:
+  - FoundationaLLM.Common.Services.Cache.MemoryCacheService.#ctor(Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Common.Services.Cache.MemoryCacheService})
+  - FoundationaLLM.Common.Services.Cache.MemoryCacheService.GetItemsCount(System.String)
+  - FoundationaLLM.Common.Services.Cache.MemoryCacheService.Get``1(FoundationaLLM.Common.Models.Cache.CacheKey)
+  - FoundationaLLM.Common.Services.Cache.MemoryCacheService.Get``1(FoundationaLLM.Common.Models.Cache.CacheKey,System.Func{System.Threading.Tasks.Task{``0}},System.Boolean,System.Nullable{System.TimeSpan})
+  - FoundationaLLM.Common.Services.Cache.MemoryCacheService.Remove(FoundationaLLM.Common.Models.Cache.CacheKey)
+  - FoundationaLLM.Common.Services.Cache.MemoryCacheService.RemoveByCategory(FoundationaLLM.Common.Models.Cache.CacheKey)
+  - FoundationaLLM.Common.Services.Cache.MemoryCacheService.Set``1(FoundationaLLM.Common.Models.Cache.CacheKey,``0,System.Nullable{System.TimeSpan})
+  langs:
+  - csharp
+  - vb
+  name: MemoryCacheService
+  nameWithType: MemoryCacheService
+  fullName: FoundationaLLM.Common.Services.Cache.MemoryCacheService
+  type: Class
+  source:
+    remote:
+      path: src/dotnet/Common/Services/Cache/MemoryCacheService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: MemoryCacheService
+    path: ../src/dotnet/Common/Services/Cache/MemoryCacheService.cs
+    startLine: 11
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Services.Cache
+  summary: Provides an in-memory cache service.
+  example: []
+  syntax:
+    content: 'public class MemoryCacheService : ICacheService'
+    content.vb: Public Class MemoryCacheService Implements ICacheService
+  inheritance:
+  - System.Object
+  implements:
+  - FoundationaLLM.Common.Interfaces.ICacheService
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+  extensionMethods:
+  - System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+- uid: FoundationaLLM.Common.Services.Cache.MemoryCacheService.#ctor(Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Common.Services.Cache.MemoryCacheService})
+  commentId: M:FoundationaLLM.Common.Services.Cache.MemoryCacheService.#ctor(Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Common.Services.Cache.MemoryCacheService})
+  id: '#ctor(Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Common.Services.Cache.MemoryCacheService})'
+  parent: FoundationaLLM.Common.Services.Cache.MemoryCacheService
+  langs:
+  - csharp
+  - vb
+  name: MemoryCacheService(ILogger<MemoryCacheService>)
+  nameWithType: MemoryCacheService.MemoryCacheService(ILogger<MemoryCacheService>)
+  fullName: FoundationaLLM.Common.Services.Cache.MemoryCacheService.MemoryCacheService(Microsoft.Extensions.Logging.ILogger<FoundationaLLM.Common.Services.Cache.MemoryCacheService>)
+  type: Constructor
+  source:
+    remote:
+      path: src/dotnet/Common/Services/Cache/MemoryCacheService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: .ctor
+    path: ../src/dotnet/Common/Services/Cache/MemoryCacheService.cs
+    startLine: 11
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Services.Cache
+  summary: Provides an in-memory cache service.
+  example: []
+  syntax:
+    content: public MemoryCacheService(ILogger<MemoryCacheService> logger)
+    parameters:
+    - id: logger
+      type: Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Common.Services.Cache.MemoryCacheService}
+      description: The logger used for logging.
+    content.vb: Public Sub New(logger As ILogger(Of MemoryCacheService))
+  overload: FoundationaLLM.Common.Services.Cache.MemoryCacheService.#ctor*
+  nameWithType.vb: MemoryCacheService.New(ILogger(Of MemoryCacheService))
+  fullName.vb: FoundationaLLM.Common.Services.Cache.MemoryCacheService.New(Microsoft.Extensions.Logging.ILogger(Of FoundationaLLM.Common.Services.Cache.MemoryCacheService))
+  name.vb: New(ILogger(Of MemoryCacheService))
+- uid: FoundationaLLM.Common.Services.Cache.MemoryCacheService.Get``1(FoundationaLLM.Common.Models.Cache.CacheKey)
+  commentId: M:FoundationaLLM.Common.Services.Cache.MemoryCacheService.Get``1(FoundationaLLM.Common.Models.Cache.CacheKey)
+  id: Get``1(FoundationaLLM.Common.Models.Cache.CacheKey)
+  parent: FoundationaLLM.Common.Services.Cache.MemoryCacheService
+  langs:
+  - csharp
+  - vb
+  name: Get<T>(CacheKey)
+  nameWithType: MemoryCacheService.Get<T>(CacheKey)
+  fullName: FoundationaLLM.Common.Services.Cache.MemoryCacheService.Get<T>(FoundationaLLM.Common.Models.Cache.CacheKey)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Common/Services/Cache/MemoryCacheService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: Get
+    path: ../src/dotnet/Common/Services/Cache/MemoryCacheService.cs
+    startLine: 18
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Services.Cache
+  summary: Gets an object from the cache.
+  example: []
+  syntax:
+    content: public T? Get<T>(CacheKey key)
+    parameters:
+    - id: key
+      type: FoundationaLLM.Common.Models.Cache.CacheKey
+      description: The <xref href="FoundationaLLM.Common.Models.Cache.CacheKey" data-throw-if-not-resolved="false"></xref> key identifying the object in the cache.
+    typeParameters:
+    - id: T
+      description: The type of object retrieved from the cache.
+    return:
+      type: '{T}'
+      description: The object identified by the key.
+    content.vb: Public Function [Get](Of T)(key As CacheKey) As T
+  overload: FoundationaLLM.Common.Services.Cache.MemoryCacheService.Get*
+  implements:
+  - FoundationaLLM.Common.Interfaces.ICacheService.Get``1(FoundationaLLM.Common.Models.Cache.CacheKey)
+  nameWithType.vb: MemoryCacheService.Get(Of T)(CacheKey)
+  fullName.vb: FoundationaLLM.Common.Services.Cache.MemoryCacheService.Get(Of T)(FoundationaLLM.Common.Models.Cache.CacheKey)
+  name.vb: Get(Of T)(CacheKey)
+- uid: FoundationaLLM.Common.Services.Cache.MemoryCacheService.Get``1(FoundationaLLM.Common.Models.Cache.CacheKey,System.Func{System.Threading.Tasks.Task{``0}},System.Boolean,System.Nullable{System.TimeSpan})
+  commentId: M:FoundationaLLM.Common.Services.Cache.MemoryCacheService.Get``1(FoundationaLLM.Common.Models.Cache.CacheKey,System.Func{System.Threading.Tasks.Task{``0}},System.Boolean,System.Nullable{System.TimeSpan})
+  id: Get``1(FoundationaLLM.Common.Models.Cache.CacheKey,System.Func{System.Threading.Tasks.Task{``0}},System.Boolean,System.Nullable{System.TimeSpan})
+  parent: FoundationaLLM.Common.Services.Cache.MemoryCacheService
+  langs:
+  - csharp
+  - vb
+  name: Get<T>(CacheKey, Func<Task<T>>, bool, TimeSpan?)
+  nameWithType: MemoryCacheService.Get<T>(CacheKey, Func<Task<T>>, bool, TimeSpan?)
+  fullName: FoundationaLLM.Common.Services.Cache.MemoryCacheService.Get<T>(FoundationaLLM.Common.Models.Cache.CacheKey, System.Func<System.Threading.Tasks.Task<T>>, bool, System.TimeSpan?)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Common/Services/Cache/MemoryCacheService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: Get
+    path: ../src/dotnet/Common/Services/Cache/MemoryCacheService.cs
+    startLine: 28
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Services.Cache
+  summary: >-
+    Gets an object from the cache. If the object is not found in the cache, will attempt to retrieve
+
+    it using a specified retriever.
+  example: []
+  syntax:
+    content: public Task<T?> Get<T>(CacheKey key, Func<Task<T>> valueRetriever, bool allowNull, TimeSpan? expirationTime)
+    parameters:
+    - id: key
+      type: FoundationaLLM.Common.Models.Cache.CacheKey
+      description: The <xref href="FoundationaLLM.Common.Models.Cache.CacheKey" data-throw-if-not-resolved="false"></xref> key identifying the object in the cache.
+    - id: valueRetriever
+      type: System.Func{System.Threading.Tasks.Task{{T}}}
+      description: The retriever used to get the value to populate the cache.
+    - id: allowNull
+      type: System.Boolean
+      description: Indicates whether null values returned by the value retriever should be cached or not.
+    - id: expirationTime
+      type: System.Nullable{System.TimeSpan}
+      description: The <xref href="System.TimeSpan" data-throw-if-not-resolved="false"></xref> time to live.
+    typeParameters:
+    - id: T
+      description: The type of object retrieved from the cache.
+    return:
+      type: System.Threading.Tasks.Task{{T}}
+      description: The object identified by the key.
+    content.vb: Public Function [Get](Of T)(key As CacheKey, valueRetriever As Func(Of Task(Of T)), allowNull As Boolean, expirationTime As TimeSpan?) As Task(Of T)
+  overload: FoundationaLLM.Common.Services.Cache.MemoryCacheService.Get*
+  implements:
+  - FoundationaLLM.Common.Interfaces.ICacheService.Get``1(FoundationaLLM.Common.Models.Cache.CacheKey,System.Func{System.Threading.Tasks.Task{{T}}},System.Boolean,System.Nullable{System.TimeSpan})
+  nameWithType.vb: MemoryCacheService.Get(Of T)(CacheKey, Func(Of Task(Of T)), Boolean, TimeSpan?)
+  fullName.vb: FoundationaLLM.Common.Services.Cache.MemoryCacheService.Get(Of T)(FoundationaLLM.Common.Models.Cache.CacheKey, System.Func(Of System.Threading.Tasks.Task(Of T)), Boolean, System.TimeSpan?)
+  name.vb: Get(Of T)(CacheKey, Func(Of Task(Of T)), Boolean, TimeSpan?)
+- uid: FoundationaLLM.Common.Services.Cache.MemoryCacheService.Set``1(FoundationaLLM.Common.Models.Cache.CacheKey,``0,System.Nullable{System.TimeSpan})
+  commentId: M:FoundationaLLM.Common.Services.Cache.MemoryCacheService.Set``1(FoundationaLLM.Common.Models.Cache.CacheKey,``0,System.Nullable{System.TimeSpan})
+  id: Set``1(FoundationaLLM.Common.Models.Cache.CacheKey,``0,System.Nullable{System.TimeSpan})
+  parent: FoundationaLLM.Common.Services.Cache.MemoryCacheService
+  langs:
+  - csharp
+  - vb
+  name: Set<T>(CacheKey, T?, TimeSpan?)
+  nameWithType: MemoryCacheService.Set<T>(CacheKey, T?, TimeSpan?)
+  fullName: FoundationaLLM.Common.Services.Cache.MemoryCacheService.Set<T>(FoundationaLLM.Common.Models.Cache.CacheKey, T?, System.TimeSpan?)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Common/Services/Cache/MemoryCacheService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: Set
+    path: ../src/dotnet/Common/Services/Cache/MemoryCacheService.cs
+    startLine: 56
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Services.Cache
+  summary: Adds an object to the cache.
+  example: []
+  syntax:
+    content: public void Set<T>(CacheKey key, T? value, TimeSpan? expirationTime)
+    parameters:
+    - id: key
+      type: FoundationaLLM.Common.Models.Cache.CacheKey
+      description: The <xref href="FoundationaLLM.Common.Models.Cache.CacheKey" data-throw-if-not-resolved="false"></xref> key identifying the object in the cache.
+    - id: value
+      type: '{T}'
+      description: The object to be added to the cache.
+    - id: expirationTime
+      type: System.Nullable{System.TimeSpan}
+      description: The <xref href="System.TimeSpan" data-throw-if-not-resolved="false"></xref> time to live.
+    typeParameters:
+    - id: T
+      description: The type of object retrieved from the cache.
+    content.vb: Public Sub [Set](Of T)(key As CacheKey, value As T, expirationTime As TimeSpan?)
+  overload: FoundationaLLM.Common.Services.Cache.MemoryCacheService.Set*
+  implements:
+  - FoundationaLLM.Common.Interfaces.ICacheService.Set``1(FoundationaLLM.Common.Models.Cache.CacheKey,{T},System.Nullable{System.TimeSpan})
+  nameWithType.vb: MemoryCacheService.Set(Of T)(CacheKey, T, TimeSpan?)
+  fullName.vb: FoundationaLLM.Common.Services.Cache.MemoryCacheService.Set(Of T)(FoundationaLLM.Common.Models.Cache.CacheKey, T, System.TimeSpan?)
+  name.vb: Set(Of T)(CacheKey, T, TimeSpan?)
+- uid: FoundationaLLM.Common.Services.Cache.MemoryCacheService.Remove(FoundationaLLM.Common.Models.Cache.CacheKey)
+  commentId: M:FoundationaLLM.Common.Services.Cache.MemoryCacheService.Remove(FoundationaLLM.Common.Models.Cache.CacheKey)
+  id: Remove(FoundationaLLM.Common.Models.Cache.CacheKey)
+  parent: FoundationaLLM.Common.Services.Cache.MemoryCacheService
+  langs:
+  - csharp
+  - vb
+  name: Remove(CacheKey)
+  nameWithType: MemoryCacheService.Remove(CacheKey)
+  fullName: FoundationaLLM.Common.Services.Cache.MemoryCacheService.Remove(FoundationaLLM.Common.Models.Cache.CacheKey)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Common/Services/Cache/MemoryCacheService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: Remove
+    path: ../src/dotnet/Common/Services/Cache/MemoryCacheService.cs
+    startLine: 67
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Services.Cache
+  summary: Removes an object from the cache.
+  example: []
+  syntax:
+    content: public void Remove(CacheKey key)
+    parameters:
+    - id: key
+      type: FoundationaLLM.Common.Models.Cache.CacheKey
+      description: The <xref href="FoundationaLLM.Common.Models.Cache.CacheKey" data-throw-if-not-resolved="false"></xref> key identifying the object in the cache.
+    content.vb: Public Sub Remove(key As CacheKey)
+  overload: FoundationaLLM.Common.Services.Cache.MemoryCacheService.Remove*
+  implements:
+  - FoundationaLLM.Common.Interfaces.ICacheService.Remove(FoundationaLLM.Common.Models.Cache.CacheKey)
+- uid: FoundationaLLM.Common.Services.Cache.MemoryCacheService.RemoveByCategory(FoundationaLLM.Common.Models.Cache.CacheKey)
+  commentId: M:FoundationaLLM.Common.Services.Cache.MemoryCacheService.RemoveByCategory(FoundationaLLM.Common.Models.Cache.CacheKey)
+  id: RemoveByCategory(FoundationaLLM.Common.Models.Cache.CacheKey)
+  parent: FoundationaLLM.Common.Services.Cache.MemoryCacheService
+  langs:
+  - csharp
+  - vb
+  name: RemoveByCategory(CacheKey)
+  nameWithType: MemoryCacheService.RemoveByCategory(CacheKey)
+  fullName: FoundationaLLM.Common.Services.Cache.MemoryCacheService.RemoveByCategory(FoundationaLLM.Common.Models.Cache.CacheKey)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Common/Services/Cache/MemoryCacheService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: RemoveByCategory
+    path: ../src/dotnet/Common/Services/Cache/MemoryCacheService.cs
+    startLine: 71
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Services.Cache
+  summary: Removes all objects belonging to a category from the cache.
+  example: []
+  syntax:
+    content: public void RemoveByCategory(CacheKey key)
+    parameters:
+    - id: key
+      type: FoundationaLLM.Common.Models.Cache.CacheKey
+      description: The <xref href="FoundationaLLM.Common.Models.Cache.CacheKey" data-throw-if-not-resolved="false"></xref> key identifying the object in the cache.
+    content.vb: Public Sub RemoveByCategory(key As CacheKey)
+  overload: FoundationaLLM.Common.Services.Cache.MemoryCacheService.RemoveByCategory*
+  implements:
+  - FoundationaLLM.Common.Interfaces.ICacheService.RemoveByCategory(FoundationaLLM.Common.Models.Cache.CacheKey)
+- uid: FoundationaLLM.Common.Services.Cache.MemoryCacheService.GetItemsCount(System.String)
+  commentId: M:FoundationaLLM.Common.Services.Cache.MemoryCacheService.GetItemsCount(System.String)
+  id: GetItemsCount(System.String)
+  parent: FoundationaLLM.Common.Services.Cache.MemoryCacheService
+  langs:
+  - csharp
+  - vb
+  name: GetItemsCount(string)
+  nameWithType: MemoryCacheService.GetItemsCount(string)
+  fullName: FoundationaLLM.Common.Services.Cache.MemoryCacheService.GetItemsCount(string)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Common/Services/Cache/MemoryCacheService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: GetItemsCount
+    path: ../src/dotnet/Common/Services/Cache/MemoryCacheService.cs
+    startLine: 78
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Services.Cache
+  summary: Gets the number of items in the cache that belong to a specified category.
+  example: []
+  syntax:
+    content: public int GetItemsCount(string categoryName)
+    parameters:
+    - id: categoryName
+      type: System.String
+      description: The name of the category.
+    return:
+      type: System.Int32
+      description: ''
+    content.vb: Public Function GetItemsCount(categoryName As String) As Integer
+  overload: FoundationaLLM.Common.Services.Cache.MemoryCacheService.GetItemsCount*
+  implements:
+  - FoundationaLLM.Common.Interfaces.ICacheService.GetItemsCount(System.String)
+  nameWithType.vb: MemoryCacheService.GetItemsCount(String)
+  fullName.vb: FoundationaLLM.Common.Services.Cache.MemoryCacheService.GetItemsCount(String)
+  name.vb: GetItemsCount(String)
+references:
+- uid: FoundationaLLM.Common.Services.Cache
+  commentId: N:FoundationaLLM.Common.Services.Cache
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Services.Cache
+  nameWithType: FoundationaLLM.Common.Services.Cache
+  fullName: FoundationaLLM.Common.Services.Cache
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Services
+    name: Services
+    href: FoundationaLLM.Common.Services.html
+  - name: .
+  - uid: FoundationaLLM.Common.Services.Cache
+    name: Cache
+    href: FoundationaLLM.Common.Services.Cache.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Services
+    name: Services
+    href: FoundationaLLM.Common.Services.html
+  - name: .
+  - uid: FoundationaLLM.Common.Services.Cache
+    name: Cache
+    href: FoundationaLLM.Common.Services.Cache.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: FoundationaLLM.Common.Interfaces.ICacheService
+  commentId: T:FoundationaLLM.Common.Interfaces.ICacheService
+  parent: FoundationaLLM.Common.Interfaces
+  href: FoundationaLLM.Common.Interfaces.ICacheService.html
+  name: ICacheService
+  nameWithType: ICacheService
+  fullName: FoundationaLLM.Common.Interfaces.ICacheService
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  parent: FoundationaLLM.Core.Utils.ObjectExtensions
+  definition: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: FoundationaLLM.Common.Interfaces
+  commentId: N:FoundationaLLM.Common.Interfaces
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Interfaces
+  nameWithType: FoundationaLLM.Common.Interfaces
+  fullName: FoundationaLLM.Common.Interfaces
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Interfaces
+    name: Interfaces
+    href: FoundationaLLM.Common.Interfaces.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Interfaces
+    name: Interfaces
+    href: FoundationaLLM.Common.Interfaces.html
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  isExternal: true
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions
+  commentId: T:FoundationaLLM.Core.Utils.ObjectExtensions
+  parent: FoundationaLLM.Core.Utils
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html
+  name: ObjectExtensions
+  nameWithType: ObjectExtensions
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions
+- uid: FoundationaLLM.Core.Utils
+  commentId: N:FoundationaLLM.Core.Utils
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Core.Utils
+  nameWithType: FoundationaLLM.Core.Utils
+  fullName: FoundationaLLM.Core.Utils
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+- uid: FoundationaLLM.Common.Services.Cache.MemoryCacheService.#ctor*
+  commentId: Overload:FoundationaLLM.Common.Services.Cache.MemoryCacheService.#ctor
+  href: FoundationaLLM.Common.Services.Cache.MemoryCacheService.html#FoundationaLLM_Common_Services_Cache_MemoryCacheService__ctor_Microsoft_Extensions_Logging_ILogger_FoundationaLLM_Common_Services_Cache_MemoryCacheService__
+  name: MemoryCacheService
+  nameWithType: MemoryCacheService.MemoryCacheService
+  fullName: FoundationaLLM.Common.Services.Cache.MemoryCacheService.MemoryCacheService
+  nameWithType.vb: MemoryCacheService.New
+  fullName.vb: FoundationaLLM.Common.Services.Cache.MemoryCacheService.New
+  name.vb: New
+- uid: Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Common.Services.Cache.MemoryCacheService}
+  commentId: T:Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Common.Services.Cache.MemoryCacheService}
+  parent: Microsoft.Extensions.Logging
+  definition: Microsoft.Extensions.Logging.ILogger`1
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  name: ILogger<MemoryCacheService>
+  nameWithType: ILogger<MemoryCacheService>
+  fullName: Microsoft.Extensions.Logging.ILogger<FoundationaLLM.Common.Services.Cache.MemoryCacheService>
+  nameWithType.vb: ILogger(Of MemoryCacheService)
+  fullName.vb: Microsoft.Extensions.Logging.ILogger(Of FoundationaLLM.Common.Services.Cache.MemoryCacheService)
+  name.vb: ILogger(Of MemoryCacheService)
+  spec.csharp:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: <
+  - uid: FoundationaLLM.Common.Services.Cache.MemoryCacheService
+    name: MemoryCacheService
+    href: FoundationaLLM.Common.Services.Cache.MemoryCacheService.html
+  - name: '>'
+  spec.vb:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FoundationaLLM.Common.Services.Cache.MemoryCacheService
+    name: MemoryCacheService
+    href: FoundationaLLM.Common.Services.Cache.MemoryCacheService.html
+  - name: )
+- uid: Microsoft.Extensions.Logging.ILogger`1
+  commentId: T:Microsoft.Extensions.Logging.ILogger`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  name: ILogger<TCategoryName>
+  nameWithType: ILogger<TCategoryName>
+  fullName: Microsoft.Extensions.Logging.ILogger<TCategoryName>
+  nameWithType.vb: ILogger(Of TCategoryName)
+  fullName.vb: Microsoft.Extensions.Logging.ILogger(Of TCategoryName)
+  name.vb: ILogger(Of TCategoryName)
+  spec.csharp:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: <
+  - name: TCategoryName
+  - name: '>'
+  spec.vb:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TCategoryName
+  - name: )
+- uid: Microsoft.Extensions.Logging
+  commentId: N:Microsoft.Extensions.Logging
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft
+  name: Microsoft.Extensions.Logging
+  nameWithType: Microsoft.Extensions.Logging
+  fullName: Microsoft.Extensions.Logging
+  spec.csharp:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Logging
+    name: Logging
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging
+  spec.vb:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Logging
+    name: Logging
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging
+- uid: FoundationaLLM.Common.Models.Cache.CacheKey
+  commentId: T:FoundationaLLM.Common.Models.Cache.CacheKey
+  parent: FoundationaLLM.Common.Models.Cache
+  href: FoundationaLLM.Common.Models.Cache.CacheKey.html
+  name: CacheKey
+  nameWithType: CacheKey
+  fullName: FoundationaLLM.Common.Models.Cache.CacheKey
+- uid: FoundationaLLM.Common.Services.Cache.MemoryCacheService.Get*
+  commentId: Overload:FoundationaLLM.Common.Services.Cache.MemoryCacheService.Get
+  href: FoundationaLLM.Common.Services.Cache.MemoryCacheService.html#FoundationaLLM_Common_Services_Cache_MemoryCacheService_Get__1_FoundationaLLM_Common_Models_Cache_CacheKey_
+  name: Get
+  nameWithType: MemoryCacheService.Get
+  fullName: FoundationaLLM.Common.Services.Cache.MemoryCacheService.Get
+- uid: FoundationaLLM.Common.Interfaces.ICacheService.Get``1(FoundationaLLM.Common.Models.Cache.CacheKey)
+  commentId: M:FoundationaLLM.Common.Interfaces.ICacheService.Get``1(FoundationaLLM.Common.Models.Cache.CacheKey)
+  parent: FoundationaLLM.Common.Interfaces.ICacheService
+  href: FoundationaLLM.Common.Interfaces.ICacheService.html#FoundationaLLM_Common_Interfaces_ICacheService_Get__1_FoundationaLLM_Common_Models_Cache_CacheKey_
+  name: Get<T>(CacheKey)
+  nameWithType: ICacheService.Get<T>(CacheKey)
+  fullName: FoundationaLLM.Common.Interfaces.ICacheService.Get<T>(FoundationaLLM.Common.Models.Cache.CacheKey)
+  nameWithType.vb: ICacheService.Get(Of T)(CacheKey)
+  fullName.vb: FoundationaLLM.Common.Interfaces.ICacheService.Get(Of T)(FoundationaLLM.Common.Models.Cache.CacheKey)
+  name.vb: Get(Of T)(CacheKey)
+  spec.csharp:
+  - uid: FoundationaLLM.Common.Interfaces.ICacheService.Get``1(FoundationaLLM.Common.Models.Cache.CacheKey)
+    name: Get
+    href: FoundationaLLM.Common.Interfaces.ICacheService.html#FoundationaLLM_Common_Interfaces_ICacheService_Get__1_FoundationaLLM_Common_Models_Cache_CacheKey_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: FoundationaLLM.Common.Models.Cache.CacheKey
+    name: CacheKey
+    href: FoundationaLLM.Common.Models.Cache.CacheKey.html
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Common.Interfaces.ICacheService.Get``1(FoundationaLLM.Common.Models.Cache.CacheKey)
+    name: Get
+    href: FoundationaLLM.Common.Interfaces.ICacheService.html#FoundationaLLM_Common_Interfaces_ICacheService_Get__1_FoundationaLLM_Common_Models_Cache_CacheKey_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: FoundationaLLM.Common.Models.Cache.CacheKey
+    name: CacheKey
+    href: FoundationaLLM.Common.Models.Cache.CacheKey.html
+  - name: )
+- uid: '{T}'
+  commentId: '!:T'
+  definition: T
+  name: T
+  nameWithType: T
+  fullName: T
+- uid: FoundationaLLM.Common.Models.Cache
+  commentId: N:FoundationaLLM.Common.Models.Cache
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.Cache
+  nameWithType: FoundationaLLM.Common.Models.Cache
+  fullName: FoundationaLLM.Common.Models.Cache
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Cache
+    name: Cache
+    href: FoundationaLLM.Common.Models.Cache.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Cache
+    name: Cache
+    href: FoundationaLLM.Common.Models.Cache.html
+- uid: T
+  name: T
+  nameWithType: T
+  fullName: T
+- uid: System.TimeSpan
+  commentId: T:System.TimeSpan
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.timespan
+  name: TimeSpan
+  nameWithType: TimeSpan
+  fullName: System.TimeSpan
+- uid: FoundationaLLM.Common.Interfaces.ICacheService.Get``1(FoundationaLLM.Common.Models.Cache.CacheKey,System.Func{System.Threading.Tasks.Task{{T}}},System.Boolean,System.Nullable{System.TimeSpan})
+  commentId: M:FoundationaLLM.Common.Interfaces.ICacheService.Get``1(FoundationaLLM.Common.Models.Cache.CacheKey,System.Func{System.Threading.Tasks.Task{``0}},System.Boolean,System.Nullable{System.TimeSpan})
+  parent: FoundationaLLM.Common.Interfaces.ICacheService
+  definition: FoundationaLLM.Common.Interfaces.ICacheService.Get``1(FoundationaLLM.Common.Models.Cache.CacheKey,System.Func{System.Threading.Tasks.Task{``0}},System.Boolean,System.Nullable{System.TimeSpan})
+  href: FoundationaLLM.Common.Interfaces.ICacheService.html#FoundationaLLM_Common_Interfaces_ICacheService_Get__1_FoundationaLLM_Common_Models_Cache_CacheKey_System_Func_System_Threading_Tasks_Task___0___System_Boolean_System_Nullable_System_TimeSpan__
+  name: Get<T>(CacheKey, Func<Task<T>>, bool, TimeSpan?)
+  nameWithType: ICacheService.Get<T>(CacheKey, Func<Task<T>>, bool, TimeSpan?)
+  fullName: FoundationaLLM.Common.Interfaces.ICacheService.Get<T>(FoundationaLLM.Common.Models.Cache.CacheKey, System.Func<System.Threading.Tasks.Task<T>>, bool, System.TimeSpan?)
+  nameWithType.vb: ICacheService.Get(Of T)(CacheKey, Func(Of Task(Of T)), Boolean, TimeSpan?)
+  fullName.vb: FoundationaLLM.Common.Interfaces.ICacheService.Get(Of T)(FoundationaLLM.Common.Models.Cache.CacheKey, System.Func(Of System.Threading.Tasks.Task(Of T)), Boolean, System.TimeSpan?)
+  name.vb: Get(Of T)(CacheKey, Func(Of Task(Of T)), Boolean, TimeSpan?)
+  spec.csharp:
+  - uid: FoundationaLLM.Common.Interfaces.ICacheService.Get``1(FoundationaLLM.Common.Models.Cache.CacheKey,System.Func{System.Threading.Tasks.Task{``0}},System.Boolean,System.Nullable{System.TimeSpan})
+    name: Get
+    href: FoundationaLLM.Common.Interfaces.ICacheService.html#FoundationaLLM_Common_Interfaces_ICacheService_Get__1_FoundationaLLM_Common_Models_Cache_CacheKey_System_Func_System_Threading_Tasks_Task___0___System_Boolean_System_Nullable_System_TimeSpan__
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: FoundationaLLM.Common.Models.Cache.CacheKey
+    name: CacheKey
+    href: FoundationaLLM.Common.Models.Cache.CacheKey.html
+  - name: ','
+  - name: " "
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: <
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: T
+  - name: '>'
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: ','
+  - name: " "
+  - uid: System.TimeSpan
+    name: TimeSpan
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.timespan
+  - name: '?'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Common.Interfaces.ICacheService.Get``1(FoundationaLLM.Common.Models.Cache.CacheKey,System.Func{System.Threading.Tasks.Task{``0}},System.Boolean,System.Nullable{System.TimeSpan})
+    name: Get
+    href: FoundationaLLM.Common.Interfaces.ICacheService.html#FoundationaLLM_Common_Interfaces_ICacheService_Get__1_FoundationaLLM_Common_Models_Cache_CacheKey_System_Func_System_Threading_Tasks_Task___0___System_Boolean_System_Nullable_System_TimeSpan__
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: FoundationaLLM.Common.Models.Cache.CacheKey
+    name: CacheKey
+    href: FoundationaLLM.Common.Models.Cache.CacheKey.html
+  - name: ','
+  - name: " "
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: ','
+  - name: " "
+  - uid: System.TimeSpan
+    name: TimeSpan
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.timespan
+  - name: '?'
+  - name: )
+- uid: System.Func{System.Threading.Tasks.Task{{T}}}
+  commentId: T:System.Func{System.Threading.Tasks.Task{``0}}
+  parent: System
+  definition: System.Func`1
+  href: https://learn.microsoft.com/dotnet/api/system.func-1
+  name: Func<Task<T>>
+  nameWithType: Func<Task<T>>
+  fullName: System.Func<System.Threading.Tasks.Task<T>>
+  nameWithType.vb: Func(Of Task(Of T))
+  fullName.vb: System.Func(Of System.Threading.Tasks.Task(Of T))
+  name.vb: Func(Of Task(Of T))
+  spec.csharp:
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: <
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: T
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: )
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: System.Nullable{System.TimeSpan}
+  commentId: T:System.Nullable{System.TimeSpan}
+  parent: System
+  definition: System.Nullable`1
+  href: https://learn.microsoft.com/dotnet/api/system.timespan
+  name: TimeSpan?
+  nameWithType: TimeSpan?
+  fullName: System.TimeSpan?
+  spec.csharp:
+  - uid: System.TimeSpan
+    name: TimeSpan
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.timespan
+  - name: '?'
+  spec.vb:
+  - uid: System.TimeSpan
+    name: TimeSpan
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.timespan
+  - name: '?'
+- uid: System.Threading.Tasks.Task{{T}}
+  commentId: T:System.Threading.Tasks.Task{``0}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<T>
+  nameWithType: Task<T>
+  fullName: System.Threading.Tasks.Task<T>
+  nameWithType.vb: Task(Of T)
+  fullName.vb: System.Threading.Tasks.Task(Of T)
+  name.vb: Task(Of T)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: FoundationaLLM.Common.Interfaces.ICacheService.Get``1(FoundationaLLM.Common.Models.Cache.CacheKey,System.Func{System.Threading.Tasks.Task{``0}},System.Boolean,System.Nullable{System.TimeSpan})
+  commentId: M:FoundationaLLM.Common.Interfaces.ICacheService.Get``1(FoundationaLLM.Common.Models.Cache.CacheKey,System.Func{System.Threading.Tasks.Task{``0}},System.Boolean,System.Nullable{System.TimeSpan})
+  isExternal: true
+  href: FoundationaLLM.Common.Interfaces.ICacheService.html#FoundationaLLM_Common_Interfaces_ICacheService_Get__1_FoundationaLLM_Common_Models_Cache_CacheKey_System_Func_System_Threading_Tasks_Task___0___System_Boolean_System_Nullable_System_TimeSpan__
+  name: Get<T>(CacheKey, Func<Task<T>>, bool, TimeSpan?)
+  nameWithType: ICacheService.Get<T>(CacheKey, Func<Task<T>>, bool, TimeSpan?)
+  fullName: FoundationaLLM.Common.Interfaces.ICacheService.Get<T>(FoundationaLLM.Common.Models.Cache.CacheKey, System.Func<System.Threading.Tasks.Task<T>>, bool, System.TimeSpan?)
+  nameWithType.vb: ICacheService.Get(Of T)(CacheKey, Func(Of Task(Of T)), Boolean, TimeSpan?)
+  fullName.vb: FoundationaLLM.Common.Interfaces.ICacheService.Get(Of T)(FoundationaLLM.Common.Models.Cache.CacheKey, System.Func(Of System.Threading.Tasks.Task(Of T)), Boolean, System.TimeSpan?)
+  name.vb: Get(Of T)(CacheKey, Func(Of Task(Of T)), Boolean, TimeSpan?)
+  spec.csharp:
+  - uid: FoundationaLLM.Common.Interfaces.ICacheService.Get``1(FoundationaLLM.Common.Models.Cache.CacheKey,System.Func{System.Threading.Tasks.Task{``0}},System.Boolean,System.Nullable{System.TimeSpan})
+    name: Get
+    href: FoundationaLLM.Common.Interfaces.ICacheService.html#FoundationaLLM_Common_Interfaces_ICacheService_Get__1_FoundationaLLM_Common_Models_Cache_CacheKey_System_Func_System_Threading_Tasks_Task___0___System_Boolean_System_Nullable_System_TimeSpan__
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: FoundationaLLM.Common.Models.Cache.CacheKey
+    name: CacheKey
+    href: FoundationaLLM.Common.Models.Cache.CacheKey.html
+  - name: ','
+  - name: " "
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: <
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: T
+  - name: '>'
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: ','
+  - name: " "
+  - uid: System.TimeSpan
+    name: TimeSpan
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.timespan
+  - name: '?'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Common.Interfaces.ICacheService.Get``1(FoundationaLLM.Common.Models.Cache.CacheKey,System.Func{System.Threading.Tasks.Task{``0}},System.Boolean,System.Nullable{System.TimeSpan})
+    name: Get
+    href: FoundationaLLM.Common.Interfaces.ICacheService.html#FoundationaLLM_Common_Interfaces_ICacheService_Get__1_FoundationaLLM_Common_Models_Cache_CacheKey_System_Func_System_Threading_Tasks_Task___0___System_Boolean_System_Nullable_System_TimeSpan__
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: FoundationaLLM.Common.Models.Cache.CacheKey
+    name: CacheKey
+    href: FoundationaLLM.Common.Models.Cache.CacheKey.html
+  - name: ','
+  - name: " "
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: ','
+  - name: " "
+  - uid: System.TimeSpan
+    name: TimeSpan
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.timespan
+  - name: '?'
+  - name: )
+- uid: System.Func`1
+  commentId: T:System.Func`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.func-1
+  name: Func<TResult>
+  nameWithType: Func<TResult>
+  fullName: System.Func<TResult>
+  nameWithType.vb: Func(Of TResult)
+  fullName.vb: System.Func(Of TResult)
+  name.vb: Func(Of TResult)
+  spec.csharp:
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Nullable`1
+  commentId: T:System.Nullable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  name: Nullable<T>
+  nameWithType: Nullable<T>
+  fullName: System.Nullable<T>
+  nameWithType.vb: Nullable(Of T)
+  fullName.vb: System.Nullable(Of T)
+  name.vb: Nullable(Of T)
+  spec.csharp:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: FoundationaLLM.Common.Services.Cache.MemoryCacheService.Set*
+  commentId: Overload:FoundationaLLM.Common.Services.Cache.MemoryCacheService.Set
+  href: FoundationaLLM.Common.Services.Cache.MemoryCacheService.html#FoundationaLLM_Common_Services_Cache_MemoryCacheService_Set__1_FoundationaLLM_Common_Models_Cache_CacheKey___0_System_Nullable_System_TimeSpan__
+  name: Set
+  nameWithType: MemoryCacheService.Set
+  fullName: FoundationaLLM.Common.Services.Cache.MemoryCacheService.Set
+- uid: FoundationaLLM.Common.Interfaces.ICacheService.Set``1(FoundationaLLM.Common.Models.Cache.CacheKey,{T},System.Nullable{System.TimeSpan})
+  commentId: M:FoundationaLLM.Common.Interfaces.ICacheService.Set``1(FoundationaLLM.Common.Models.Cache.CacheKey,``0,System.Nullable{System.TimeSpan})
+  parent: FoundationaLLM.Common.Interfaces.ICacheService
+  definition: FoundationaLLM.Common.Interfaces.ICacheService.Set``1(FoundationaLLM.Common.Models.Cache.CacheKey,``0,System.Nullable{System.TimeSpan})
+  href: FoundationaLLM.Common.Interfaces.ICacheService.html#FoundationaLLM_Common_Interfaces_ICacheService_Set__1_FoundationaLLM_Common_Models_Cache_CacheKey___0_System_Nullable_System_TimeSpan__
+  name: Set<T>(CacheKey, T, TimeSpan?)
+  nameWithType: ICacheService.Set<T>(CacheKey, T, TimeSpan?)
+  fullName: FoundationaLLM.Common.Interfaces.ICacheService.Set<T>(FoundationaLLM.Common.Models.Cache.CacheKey, T, System.TimeSpan?)
+  nameWithType.vb: ICacheService.Set(Of T)(CacheKey, T, TimeSpan?)
+  fullName.vb: FoundationaLLM.Common.Interfaces.ICacheService.Set(Of T)(FoundationaLLM.Common.Models.Cache.CacheKey, T, System.TimeSpan?)
+  name.vb: Set(Of T)(CacheKey, T, TimeSpan?)
+  spec.csharp:
+  - uid: FoundationaLLM.Common.Interfaces.ICacheService.Set``1(FoundationaLLM.Common.Models.Cache.CacheKey,``0,System.Nullable{System.TimeSpan})
+    name: Set
+    href: FoundationaLLM.Common.Interfaces.ICacheService.html#FoundationaLLM_Common_Interfaces_ICacheService_Set__1_FoundationaLLM_Common_Models_Cache_CacheKey___0_System_Nullable_System_TimeSpan__
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: FoundationaLLM.Common.Models.Cache.CacheKey
+    name: CacheKey
+    href: FoundationaLLM.Common.Models.Cache.CacheKey.html
+  - name: ','
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.TimeSpan
+    name: TimeSpan
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.timespan
+  - name: '?'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Common.Interfaces.ICacheService.Set``1(FoundationaLLM.Common.Models.Cache.CacheKey,``0,System.Nullable{System.TimeSpan})
+    name: Set
+    href: FoundationaLLM.Common.Interfaces.ICacheService.html#FoundationaLLM_Common_Interfaces_ICacheService_Set__1_FoundationaLLM_Common_Models_Cache_CacheKey___0_System_Nullable_System_TimeSpan__
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: FoundationaLLM.Common.Models.Cache.CacheKey
+    name: CacheKey
+    href: FoundationaLLM.Common.Models.Cache.CacheKey.html
+  - name: ','
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.TimeSpan
+    name: TimeSpan
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.timespan
+  - name: '?'
+  - name: )
+- uid: FoundationaLLM.Common.Interfaces.ICacheService.Set``1(FoundationaLLM.Common.Models.Cache.CacheKey,``0,System.Nullable{System.TimeSpan})
+  commentId: M:FoundationaLLM.Common.Interfaces.ICacheService.Set``1(FoundationaLLM.Common.Models.Cache.CacheKey,``0,System.Nullable{System.TimeSpan})
+  isExternal: true
+  href: FoundationaLLM.Common.Interfaces.ICacheService.html#FoundationaLLM_Common_Interfaces_ICacheService_Set__1_FoundationaLLM_Common_Models_Cache_CacheKey___0_System_Nullable_System_TimeSpan__
+  name: Set<T>(CacheKey, T, TimeSpan?)
+  nameWithType: ICacheService.Set<T>(CacheKey, T, TimeSpan?)
+  fullName: FoundationaLLM.Common.Interfaces.ICacheService.Set<T>(FoundationaLLM.Common.Models.Cache.CacheKey, T, System.TimeSpan?)
+  nameWithType.vb: ICacheService.Set(Of T)(CacheKey, T, TimeSpan?)
+  fullName.vb: FoundationaLLM.Common.Interfaces.ICacheService.Set(Of T)(FoundationaLLM.Common.Models.Cache.CacheKey, T, System.TimeSpan?)
+  name.vb: Set(Of T)(CacheKey, T, TimeSpan?)
+  spec.csharp:
+  - uid: FoundationaLLM.Common.Interfaces.ICacheService.Set``1(FoundationaLLM.Common.Models.Cache.CacheKey,``0,System.Nullable{System.TimeSpan})
+    name: Set
+    href: FoundationaLLM.Common.Interfaces.ICacheService.html#FoundationaLLM_Common_Interfaces_ICacheService_Set__1_FoundationaLLM_Common_Models_Cache_CacheKey___0_System_Nullable_System_TimeSpan__
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: FoundationaLLM.Common.Models.Cache.CacheKey
+    name: CacheKey
+    href: FoundationaLLM.Common.Models.Cache.CacheKey.html
+  - name: ','
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.TimeSpan
+    name: TimeSpan
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.timespan
+  - name: '?'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Common.Interfaces.ICacheService.Set``1(FoundationaLLM.Common.Models.Cache.CacheKey,``0,System.Nullable{System.TimeSpan})
+    name: Set
+    href: FoundationaLLM.Common.Interfaces.ICacheService.html#FoundationaLLM_Common_Interfaces_ICacheService_Set__1_FoundationaLLM_Common_Models_Cache_CacheKey___0_System_Nullable_System_TimeSpan__
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: FoundationaLLM.Common.Models.Cache.CacheKey
+    name: CacheKey
+    href: FoundationaLLM.Common.Models.Cache.CacheKey.html
+  - name: ','
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.TimeSpan
+    name: TimeSpan
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.timespan
+  - name: '?'
+  - name: )
+- uid: FoundationaLLM.Common.Services.Cache.MemoryCacheService.Remove*
+  commentId: Overload:FoundationaLLM.Common.Services.Cache.MemoryCacheService.Remove
+  href: FoundationaLLM.Common.Services.Cache.MemoryCacheService.html#FoundationaLLM_Common_Services_Cache_MemoryCacheService_Remove_FoundationaLLM_Common_Models_Cache_CacheKey_
+  name: Remove
+  nameWithType: MemoryCacheService.Remove
+  fullName: FoundationaLLM.Common.Services.Cache.MemoryCacheService.Remove
+- uid: FoundationaLLM.Common.Interfaces.ICacheService.Remove(FoundationaLLM.Common.Models.Cache.CacheKey)
+  commentId: M:FoundationaLLM.Common.Interfaces.ICacheService.Remove(FoundationaLLM.Common.Models.Cache.CacheKey)
+  parent: FoundationaLLM.Common.Interfaces.ICacheService
+  href: FoundationaLLM.Common.Interfaces.ICacheService.html#FoundationaLLM_Common_Interfaces_ICacheService_Remove_FoundationaLLM_Common_Models_Cache_CacheKey_
+  name: Remove(CacheKey)
+  nameWithType: ICacheService.Remove(CacheKey)
+  fullName: FoundationaLLM.Common.Interfaces.ICacheService.Remove(FoundationaLLM.Common.Models.Cache.CacheKey)
+  spec.csharp:
+  - uid: FoundationaLLM.Common.Interfaces.ICacheService.Remove(FoundationaLLM.Common.Models.Cache.CacheKey)
+    name: Remove
+    href: FoundationaLLM.Common.Interfaces.ICacheService.html#FoundationaLLM_Common_Interfaces_ICacheService_Remove_FoundationaLLM_Common_Models_Cache_CacheKey_
+  - name: (
+  - uid: FoundationaLLM.Common.Models.Cache.CacheKey
+    name: CacheKey
+    href: FoundationaLLM.Common.Models.Cache.CacheKey.html
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Common.Interfaces.ICacheService.Remove(FoundationaLLM.Common.Models.Cache.CacheKey)
+    name: Remove
+    href: FoundationaLLM.Common.Interfaces.ICacheService.html#FoundationaLLM_Common_Interfaces_ICacheService_Remove_FoundationaLLM_Common_Models_Cache_CacheKey_
+  - name: (
+  - uid: FoundationaLLM.Common.Models.Cache.CacheKey
+    name: CacheKey
+    href: FoundationaLLM.Common.Models.Cache.CacheKey.html
+  - name: )
+- uid: FoundationaLLM.Common.Services.Cache.MemoryCacheService.RemoveByCategory*
+  commentId: Overload:FoundationaLLM.Common.Services.Cache.MemoryCacheService.RemoveByCategory
+  href: FoundationaLLM.Common.Services.Cache.MemoryCacheService.html#FoundationaLLM_Common_Services_Cache_MemoryCacheService_RemoveByCategory_FoundationaLLM_Common_Models_Cache_CacheKey_
+  name: RemoveByCategory
+  nameWithType: MemoryCacheService.RemoveByCategory
+  fullName: FoundationaLLM.Common.Services.Cache.MemoryCacheService.RemoveByCategory
+- uid: FoundationaLLM.Common.Interfaces.ICacheService.RemoveByCategory(FoundationaLLM.Common.Models.Cache.CacheKey)
+  commentId: M:FoundationaLLM.Common.Interfaces.ICacheService.RemoveByCategory(FoundationaLLM.Common.Models.Cache.CacheKey)
+  parent: FoundationaLLM.Common.Interfaces.ICacheService
+  href: FoundationaLLM.Common.Interfaces.ICacheService.html#FoundationaLLM_Common_Interfaces_ICacheService_RemoveByCategory_FoundationaLLM_Common_Models_Cache_CacheKey_
+  name: RemoveByCategory(CacheKey)
+  nameWithType: ICacheService.RemoveByCategory(CacheKey)
+  fullName: FoundationaLLM.Common.Interfaces.ICacheService.RemoveByCategory(FoundationaLLM.Common.Models.Cache.CacheKey)
+  spec.csharp:
+  - uid: FoundationaLLM.Common.Interfaces.ICacheService.RemoveByCategory(FoundationaLLM.Common.Models.Cache.CacheKey)
+    name: RemoveByCategory
+    href: FoundationaLLM.Common.Interfaces.ICacheService.html#FoundationaLLM_Common_Interfaces_ICacheService_RemoveByCategory_FoundationaLLM_Common_Models_Cache_CacheKey_
+  - name: (
+  - uid: FoundationaLLM.Common.Models.Cache.CacheKey
+    name: CacheKey
+    href: FoundationaLLM.Common.Models.Cache.CacheKey.html
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Common.Interfaces.ICacheService.RemoveByCategory(FoundationaLLM.Common.Models.Cache.CacheKey)
+    name: RemoveByCategory
+    href: FoundationaLLM.Common.Interfaces.ICacheService.html#FoundationaLLM_Common_Interfaces_ICacheService_RemoveByCategory_FoundationaLLM_Common_Models_Cache_CacheKey_
+  - name: (
+  - uid: FoundationaLLM.Common.Models.Cache.CacheKey
+    name: CacheKey
+    href: FoundationaLLM.Common.Models.Cache.CacheKey.html
+  - name: )
+- uid: FoundationaLLM.Common.Services.Cache.MemoryCacheService.GetItemsCount*
+  commentId: Overload:FoundationaLLM.Common.Services.Cache.MemoryCacheService.GetItemsCount
+  href: FoundationaLLM.Common.Services.Cache.MemoryCacheService.html#FoundationaLLM_Common_Services_Cache_MemoryCacheService_GetItemsCount_System_String_
+  name: GetItemsCount
+  nameWithType: MemoryCacheService.GetItemsCount
+  fullName: FoundationaLLM.Common.Services.Cache.MemoryCacheService.GetItemsCount
+- uid: FoundationaLLM.Common.Interfaces.ICacheService.GetItemsCount(System.String)
+  commentId: M:FoundationaLLM.Common.Interfaces.ICacheService.GetItemsCount(System.String)
+  parent: FoundationaLLM.Common.Interfaces.ICacheService
+  isExternal: true
+  href: FoundationaLLM.Common.Interfaces.ICacheService.html#FoundationaLLM_Common_Interfaces_ICacheService_GetItemsCount_System_String_
+  name: GetItemsCount(string)
+  nameWithType: ICacheService.GetItemsCount(string)
+  fullName: FoundationaLLM.Common.Interfaces.ICacheService.GetItemsCount(string)
+  nameWithType.vb: ICacheService.GetItemsCount(String)
+  fullName.vb: FoundationaLLM.Common.Interfaces.ICacheService.GetItemsCount(String)
+  name.vb: GetItemsCount(String)
+  spec.csharp:
+  - uid: FoundationaLLM.Common.Interfaces.ICacheService.GetItemsCount(System.String)
+    name: GetItemsCount
+    href: FoundationaLLM.Common.Interfaces.ICacheService.html#FoundationaLLM_Common_Interfaces_ICacheService_GetItemsCount_System_String_
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Common.Interfaces.ICacheService.GetItemsCount(System.String)
+    name: GetItemsCount
+    href: FoundationaLLM.Common.Interfaces.ICacheService.html#FoundationaLLM_Common_Interfaces_ICacheService_GetItemsCount_System_String_
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer

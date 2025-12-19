@@ -1,0 +1,71 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Common.Models.Configuration.Text
+  commentId: N:FoundationaLLM.Common.Models.Configuration.Text
+  id: Text
+  parent: FoundationaLLM.Common.Models.Configuration
+  children:
+  - FoundationaLLM.Common.Models.Configuration.Text.TokenTextSplitterServiceSettings
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM.Common.Models.Configuration.Text
+  nameWithType: FoundationaLLM.Common.Models.Configuration.Text
+  fullName: FoundationaLLM.Common.Models.Configuration.Text
+  type: Namespace
+  assemblies:
+  - FoundationaLLM.Common
+references:
+- uid: FoundationaLLM.Common.Models.Configuration.Text.TokenTextSplitterServiceSettings
+  commentId: T:FoundationaLLM.Common.Models.Configuration.Text.TokenTextSplitterServiceSettings
+  parent: FoundationaLLM.Common.Models.Configuration.Text
+  href: FoundationaLLM.Common.Models.Configuration.Text.TokenTextSplitterServiceSettings.html
+  name: TokenTextSplitterServiceSettings
+  nameWithType: TokenTextSplitterServiceSettings
+  fullName: FoundationaLLM.Common.Models.Configuration.Text.TokenTextSplitterServiceSettings
+- uid: FoundationaLLM.Common.Models.Configuration.Text
+  commentId: N:FoundationaLLM.Common.Models.Configuration.Text
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.Configuration.Text
+  nameWithType: FoundationaLLM.Common.Models.Configuration.Text
+  fullName: FoundationaLLM.Common.Models.Configuration.Text
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Configuration
+    name: Configuration
+    href: FoundationaLLM.Common.Models.Configuration.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Configuration.Text
+    name: Text
+    href: FoundationaLLM.Common.Models.Configuration.Text.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Configuration
+    name: Configuration
+    href: FoundationaLLM.Common.Models.Configuration.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Configuration.Text
+    name: Text
+    href: FoundationaLLM.Common.Models.Configuration.Text.html

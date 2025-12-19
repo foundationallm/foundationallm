@@ -1,0 +1,766 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Common.Interfaces.IAgentTemplateService
+  commentId: T:FoundationaLLM.Common.Interfaces.IAgentTemplateService
+  id: IAgentTemplateService
+  parent: FoundationaLLM.Common.Interfaces
+  children:
+  - FoundationaLLM.Common.Interfaces.IAgentTemplateService.CreateAgent(System.String,FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTemplates.AgentCreationFromTemplateRequest,System.Collections.Generic.Dictionary{System.String,System.String},FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  - FoundationaLLM.Common.Interfaces.IAgentTemplateService.SetResourceProviderServices(System.Collections.Generic.IEnumerable{FoundationaLLM.Common.Interfaces.IResourceProviderService})
+  langs:
+  - csharp
+  - vb
+  name: IAgentTemplateService
+  nameWithType: IAgentTemplateService
+  fullName: FoundationaLLM.Common.Interfaces.IAgentTemplateService
+  type: Interface
+  source:
+    remote:
+      path: src/dotnet/Common/Interfaces/IAgentTemplateService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: IAgentTemplateService
+    path: ../src/dotnet/Common/Interfaces/IAgentTemplateService.cs
+    startLine: 9
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Interfaces
+  summary: Defines the contract for working with agent templates.
+  example: []
+  syntax:
+    content: public interface IAgentTemplateService
+    content.vb: Public Interface IAgentTemplateService
+  extensionMethods:
+  - System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+- uid: FoundationaLLM.Common.Interfaces.IAgentTemplateService.SetResourceProviderServices(System.Collections.Generic.IEnumerable{FoundationaLLM.Common.Interfaces.IResourceProviderService})
+  commentId: M:FoundationaLLM.Common.Interfaces.IAgentTemplateService.SetResourceProviderServices(System.Collections.Generic.IEnumerable{FoundationaLLM.Common.Interfaces.IResourceProviderService})
+  id: SetResourceProviderServices(System.Collections.Generic.IEnumerable{FoundationaLLM.Common.Interfaces.IResourceProviderService})
+  parent: FoundationaLLM.Common.Interfaces.IAgentTemplateService
+  langs:
+  - csharp
+  - vb
+  name: SetResourceProviderServices(IEnumerable<IResourceProviderService>)
+  nameWithType: IAgentTemplateService.SetResourceProviderServices(IEnumerable<IResourceProviderService>)
+  fullName: FoundationaLLM.Common.Interfaces.IAgentTemplateService.SetResourceProviderServices(System.Collections.Generic.IEnumerable<FoundationaLLM.Common.Interfaces.IResourceProviderService>)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Common/Interfaces/IAgentTemplateService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: SetResourceProviderServices
+    path: ../src/dotnet/Common/Interfaces/IAgentTemplateService.cs
+    startLine: 18
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Interfaces
+  summary: Sets the collection of resource providers to be used by the service.
+  remarks: >-
+    Using this method is required to avoid circular references, since this service
+        is a dependency for the FoundationaLLM.Agent resource provider while it also requires
+        a refrence to the same resource provider.
+  example: []
+  syntax:
+    content: void SetResourceProviderServices(IEnumerable<IResourceProviderService> resourceProviderServices)
+    parameters:
+    - id: resourceProviderServices
+      type: System.Collections.Generic.IEnumerable{FoundationaLLM.Common.Interfaces.IResourceProviderService}
+      description: A collection of resource provider services to register.
+    content.vb: Sub SetResourceProviderServices(resourceProviderServices As IEnumerable(Of IResourceProviderService))
+  overload: FoundationaLLM.Common.Interfaces.IAgentTemplateService.SetResourceProviderServices*
+  nameWithType.vb: IAgentTemplateService.SetResourceProviderServices(IEnumerable(Of IResourceProviderService))
+  fullName.vb: FoundationaLLM.Common.Interfaces.IAgentTemplateService.SetResourceProviderServices(System.Collections.Generic.IEnumerable(Of FoundationaLLM.Common.Interfaces.IResourceProviderService))
+  name.vb: SetResourceProviderServices(IEnumerable(Of IResourceProviderService))
+- uid: FoundationaLLM.Common.Interfaces.IAgentTemplateService.CreateAgent(System.String,FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTemplates.AgentCreationFromTemplateRequest,System.Collections.Generic.Dictionary{System.String,System.String},FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  commentId: M:FoundationaLLM.Common.Interfaces.IAgentTemplateService.CreateAgent(System.String,FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTemplates.AgentCreationFromTemplateRequest,System.Collections.Generic.Dictionary{System.String,System.String},FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  id: CreateAgent(System.String,FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTemplates.AgentCreationFromTemplateRequest,System.Collections.Generic.Dictionary{System.String,System.String},FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  parent: FoundationaLLM.Common.Interfaces.IAgentTemplateService
+  langs:
+  - csharp
+  - vb
+  name: CreateAgent(string, AgentCreationFromTemplateRequest, Dictionary<string, string>, UnifiedUserIdentity)
+  nameWithType: IAgentTemplateService.CreateAgent(string, AgentCreationFromTemplateRequest, Dictionary<string, string>, UnifiedUserIdentity)
+  fullName: FoundationaLLM.Common.Interfaces.IAgentTemplateService.CreateAgent(string, FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTemplates.AgentCreationFromTemplateRequest, System.Collections.Generic.Dictionary<string, string>, FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Common/Interfaces/IAgentTemplateService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: CreateAgent
+    path: ../src/dotnet/Common/Interfaces/IAgentTemplateService.cs
+    startLine: 35
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Interfaces
+  summary: Creates a new agent based on the provided parameter values and template files.
+  remarks: >-
+    This method performs an asynchronous operation to create an agent based on the
+        provided parameter values and template files. Ensure that all required template files are included in
+        <code class="paramref">agentTemplateFiles</code> and that the <code class="paramref">createAgentRequest</code> contains valid
+        parameters.
+  example: []
+  syntax:
+    content: Task<ResourceProviderUpsertResult> CreateAgent(string instanceId, AgentCreationFromTemplateRequest createAgentRequest, Dictionary<string, string> agentTemplateFiles, UnifiedUserIdentity userIdentity)
+    parameters:
+    - id: instanceId
+      type: System.String
+      description: The FoundationaLLM instance identifier.
+    - id: createAgentRequest
+      type: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTemplates.AgentCreationFromTemplateRequest
+      description: The request object containing the parameter values for creating the agent.
+    - id: agentTemplateFiles
+      type: System.Collections.Generic.Dictionary{System.String,System.String}
+      description: >-
+        A dictionary of template file names and their corresponding content, used to define the agent's structure
+            and behavior.
+    - id: userIdentity
+      type: FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity
+      description: The identity of the user requesting to create the agent.
+    return:
+      type: System.Threading.Tasks.Task{FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderUpsertResult}
+      description: A task that represents the asynchronous operation. The task result contains a <xref href="FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderUpsertResult" data-throw-if-not-resolved="false"></xref>  indicating the outcome of the agent creation process.
+    content.vb: Function CreateAgent(instanceId As String, createAgentRequest As AgentCreationFromTemplateRequest, agentTemplateFiles As Dictionary(Of String, String), userIdentity As UnifiedUserIdentity) As Task(Of ResourceProviderUpsertResult)
+  overload: FoundationaLLM.Common.Interfaces.IAgentTemplateService.CreateAgent*
+  nameWithType.vb: IAgentTemplateService.CreateAgent(String, AgentCreationFromTemplateRequest, Dictionary(Of String, String), UnifiedUserIdentity)
+  fullName.vb: FoundationaLLM.Common.Interfaces.IAgentTemplateService.CreateAgent(String, FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTemplates.AgentCreationFromTemplateRequest, System.Collections.Generic.Dictionary(Of String, String), FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  name.vb: CreateAgent(String, AgentCreationFromTemplateRequest, Dictionary(Of String, String), UnifiedUserIdentity)
+references:
+- uid: FoundationaLLM.Common.Interfaces
+  commentId: N:FoundationaLLM.Common.Interfaces
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Interfaces
+  nameWithType: FoundationaLLM.Common.Interfaces
+  fullName: FoundationaLLM.Common.Interfaces
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Interfaces
+    name: Interfaces
+    href: FoundationaLLM.Common.Interfaces.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Interfaces
+    name: Interfaces
+    href: FoundationaLLM.Common.Interfaces.html
+- uid: System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  parent: FoundationaLLM.Core.Utils.ObjectExtensions
+  definition: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  isExternal: true
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions
+  commentId: T:FoundationaLLM.Core.Utils.ObjectExtensions
+  parent: FoundationaLLM.Core.Utils
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html
+  name: ObjectExtensions
+  nameWithType: ObjectExtensions
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions
+- uid: FoundationaLLM.Core.Utils
+  commentId: N:FoundationaLLM.Core.Utils
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Core.Utils
+  nameWithType: FoundationaLLM.Core.Utils
+  fullName: FoundationaLLM.Core.Utils
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+- uid: FoundationaLLM.Common.Interfaces.IAgentTemplateService.SetResourceProviderServices*
+  commentId: Overload:FoundationaLLM.Common.Interfaces.IAgentTemplateService.SetResourceProviderServices
+  href: FoundationaLLM.Common.Interfaces.IAgentTemplateService.html#FoundationaLLM_Common_Interfaces_IAgentTemplateService_SetResourceProviderServices_System_Collections_Generic_IEnumerable_FoundationaLLM_Common_Interfaces_IResourceProviderService__
+  name: SetResourceProviderServices
+  nameWithType: IAgentTemplateService.SetResourceProviderServices
+  fullName: FoundationaLLM.Common.Interfaces.IAgentTemplateService.SetResourceProviderServices
+- uid: System.Collections.Generic.IEnumerable{FoundationaLLM.Common.Interfaces.IResourceProviderService}
+  commentId: T:System.Collections.Generic.IEnumerable{FoundationaLLM.Common.Interfaces.IResourceProviderService}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IEnumerable`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<IResourceProviderService>
+  nameWithType: IEnumerable<IResourceProviderService>
+  fullName: System.Collections.Generic.IEnumerable<FoundationaLLM.Common.Interfaces.IResourceProviderService>
+  nameWithType.vb: IEnumerable(Of IResourceProviderService)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of FoundationaLLM.Common.Interfaces.IResourceProviderService)
+  name.vb: IEnumerable(Of IResourceProviderService)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - uid: FoundationaLLM.Common.Interfaces.IResourceProviderService
+    name: IResourceProviderService
+    href: FoundationaLLM.Common.Interfaces.IResourceProviderService.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FoundationaLLM.Common.Interfaces.IResourceProviderService
+    name: IResourceProviderService
+    href: FoundationaLLM.Common.Interfaces.IResourceProviderService.html
+  - name: )
+- uid: System.Collections.Generic.IEnumerable`1
+  commentId: T:System.Collections.Generic.IEnumerable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<T>
+  nameWithType: IEnumerable<T>
+  fullName: System.Collections.Generic.IEnumerable<T>
+  nameWithType.vb: IEnumerable(Of T)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of T)
+  name.vb: IEnumerable(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderUpsertResult
+  commentId: T:FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderUpsertResult
+  parent: FoundationaLLM.Common.Models.ResourceProviders
+  href: FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderUpsertResult.html
+  name: ResourceProviderUpsertResult
+  nameWithType: ResourceProviderUpsertResult
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderUpsertResult
+- uid: FoundationaLLM.Common.Interfaces.IAgentTemplateService.CreateAgent*
+  commentId: Overload:FoundationaLLM.Common.Interfaces.IAgentTemplateService.CreateAgent
+  href: FoundationaLLM.Common.Interfaces.IAgentTemplateService.html#FoundationaLLM_Common_Interfaces_IAgentTemplateService_CreateAgent_System_String_FoundationaLLM_Common_Models_ResourceProviders_Agent_AgentTemplates_AgentCreationFromTemplateRequest_System_Collections_Generic_Dictionary_System_String_System_String__FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_
+  name: CreateAgent
+  nameWithType: IAgentTemplateService.CreateAgent
+  fullName: FoundationaLLM.Common.Interfaces.IAgentTemplateService.CreateAgent
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTemplates.AgentCreationFromTemplateRequest
+  commentId: T:FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTemplates.AgentCreationFromTemplateRequest
+  parent: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTemplates
+  href: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTemplates.AgentCreationFromTemplateRequest.html
+  name: AgentCreationFromTemplateRequest
+  nameWithType: AgentCreationFromTemplateRequest
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTemplates.AgentCreationFromTemplateRequest
+- uid: System.Collections.Generic.Dictionary{System.String,System.String}
+  commentId: T:System.Collections.Generic.Dictionary{System.String,System.String}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.Dictionary`2
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  name: Dictionary<string, string>
+  nameWithType: Dictionary<string, string>
+  fullName: System.Collections.Generic.Dictionary<string, string>
+  nameWithType.vb: Dictionary(Of String, String)
+  fullName.vb: System.Collections.Generic.Dictionary(Of String, String)
+  name.vb: Dictionary(Of String, String)
+  spec.csharp:
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity
+  commentId: T:FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity
+  parent: FoundationaLLM.Common.Models.Authentication
+  href: FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity.html
+  name: UnifiedUserIdentity
+  nameWithType: UnifiedUserIdentity
+  fullName: FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity
+- uid: System.Threading.Tasks.Task{FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderUpsertResult}
+  commentId: T:System.Threading.Tasks.Task{FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderUpsertResult}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<ResourceProviderUpsertResult>
+  nameWithType: Task<ResourceProviderUpsertResult>
+  fullName: System.Threading.Tasks.Task<FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderUpsertResult>
+  nameWithType.vb: Task(Of ResourceProviderUpsertResult)
+  fullName.vb: System.Threading.Tasks.Task(Of FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderUpsertResult)
+  name.vb: Task(Of ResourceProviderUpsertResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderUpsertResult
+    name: ResourceProviderUpsertResult
+    href: FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderUpsertResult.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderUpsertResult
+    name: ResourceProviderUpsertResult
+    href: FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderUpsertResult.html
+  - name: )
+- uid: FoundationaLLM.Common.Models.ResourceProviders
+  commentId: N:FoundationaLLM.Common.Models.ResourceProviders
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.ResourceProviders
+  nameWithType: FoundationaLLM.Common.Models.ResourceProviders
+  fullName: FoundationaLLM.Common.Models.ResourceProviders
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders
+    name: ResourceProviders
+    href: FoundationaLLM.Common.Models.ResourceProviders.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders
+    name: ResourceProviders
+    href: FoundationaLLM.Common.Models.ResourceProviders.html
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTemplates
+  commentId: N:FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTemplates
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTemplates
+  nameWithType: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTemplates
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTemplates
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders
+    name: ResourceProviders
+    href: FoundationaLLM.Common.Models.ResourceProviders.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.Agent
+    name: Agent
+    href: FoundationaLLM.Common.Models.ResourceProviders.Agent.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTemplates
+    name: AgentTemplates
+    href: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTemplates.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders
+    name: ResourceProviders
+    href: FoundationaLLM.Common.Models.ResourceProviders.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.Agent
+    name: Agent
+    href: FoundationaLLM.Common.Models.ResourceProviders.Agent.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTemplates
+    name: AgentTemplates
+    href: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTemplates.html
+- uid: System.Collections.Generic.Dictionary`2
+  commentId: T:System.Collections.Generic.Dictionary`2
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  name: Dictionary<TKey, TValue>
+  nameWithType: Dictionary<TKey, TValue>
+  fullName: System.Collections.Generic.Dictionary<TKey, TValue>
+  nameWithType.vb: Dictionary(Of TKey, TValue)
+  fullName.vb: System.Collections.Generic.Dictionary(Of TKey, TValue)
+  name.vb: Dictionary(Of TKey, TValue)
+  spec.csharp:
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  - name: <
+  - name: TKey
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TKey
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: )
+- uid: FoundationaLLM.Common.Models.Authentication
+  commentId: N:FoundationaLLM.Common.Models.Authentication
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.Authentication
+  nameWithType: FoundationaLLM.Common.Models.Authentication
+  fullName: FoundationaLLM.Common.Models.Authentication
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Authentication
+    name: Authentication
+    href: FoundationaLLM.Common.Models.Authentication.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Authentication
+    name: Authentication
+    href: FoundationaLLM.Common.Models.Authentication.html
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks

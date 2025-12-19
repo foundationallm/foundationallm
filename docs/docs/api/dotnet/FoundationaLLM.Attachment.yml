@@ -1,0 +1,74 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Attachment
+  id: Attachment
+  parent: FoundationaLLM
+  children:
+  - FoundationaLLM.Attachment.ResourceProviders
+  - FoundationaLLM.Attachment.Validation
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM.Attachment
+  type: Namespace
+references:
+- uid: FoundationaLLM.Attachment.ResourceProviders
+  commentId: N:FoundationaLLM.Attachment.ResourceProviders
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Attachment.ResourceProviders
+  nameWithType: FoundationaLLM.Attachment.ResourceProviders
+  fullName: FoundationaLLM.Attachment.ResourceProviders
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Attachment
+    name: Attachment
+    href: FoundationaLLM.Attachment.html
+  - name: .
+  - uid: FoundationaLLM.Attachment.ResourceProviders
+    name: ResourceProviders
+    href: FoundationaLLM.Attachment.ResourceProviders.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Attachment
+    name: Attachment
+    href: FoundationaLLM.Attachment.html
+  - name: .
+  - uid: FoundationaLLM.Attachment.ResourceProviders
+    name: ResourceProviders
+    href: FoundationaLLM.Attachment.ResourceProviders.html
+- uid: FoundationaLLM.Attachment.Validation
+  commentId: N:FoundationaLLM.Attachment.Validation
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Attachment.Validation
+  nameWithType: FoundationaLLM.Attachment.Validation
+  fullName: FoundationaLLM.Attachment.Validation
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Attachment
+    name: Attachment
+    href: FoundationaLLM.Attachment.html
+  - name: .
+  - uid: FoundationaLLM.Attachment.Validation
+    name: Validation
+    href: FoundationaLLM.Attachment.Validation.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Attachment
+    name: Attachment
+    href: FoundationaLLM.Attachment.html
+  - name: .
+  - uid: FoundationaLLM.Attachment.Validation
+    name: Validation
+    href: FoundationaLLM.Attachment.Validation.html

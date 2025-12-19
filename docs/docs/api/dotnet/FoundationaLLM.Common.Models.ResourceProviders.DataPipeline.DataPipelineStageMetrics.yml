@@ -1,0 +1,745 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineStageMetrics
+  commentId: T:FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineStageMetrics
+  id: DataPipelineStageMetrics
+  parent: FoundationaLLM.Common.Models.ResourceProviders.DataPipeline
+  children:
+  - FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineStageMetrics.CompletedWorkItemsCount
+  - FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineStageMetrics.LastUpdateTimestamp
+  - FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineStageMetrics.StartTimestamp
+  - FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineStageMetrics.SuccessfulWorkItemsCount
+  - FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineStageMetrics.WorkItemsCount
+  langs:
+  - csharp
+  - vb
+  name: DataPipelineStageMetrics
+  nameWithType: DataPipelineStageMetrics
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineStageMetrics
+  type: Class
+  source:
+    remote:
+      path: src/dotnet/Common/Models/ResourceProviders/DataPipeline/DataPipelineStageMetrics.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: DataPipelineStageMetrics
+    path: ../src/dotnet/Common/Models/ResourceProviders/DataPipeline/DataPipelineStageMetrics.cs
+    startLine: 7
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.ResourceProviders.DataPipeline
+  summary: Represents the metrics for a data pipeline stage.
+  example: []
+  syntax:
+    content: public class DataPipelineStageMetrics
+    content.vb: Public Class DataPipelineStageMetrics
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+  extensionMethods:
+  - System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+- uid: FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineStageMetrics.WorkItemsCount
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineStageMetrics.WorkItemsCount
+  id: WorkItemsCount
+  parent: FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineStageMetrics
+  langs:
+  - csharp
+  - vb
+  name: WorkItemsCount
+  nameWithType: DataPipelineStageMetrics.WorkItemsCount
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineStageMetrics.WorkItemsCount
+  type: Property
+  source:
+    remote:
+      path: src/dotnet/Common/Models/ResourceProviders/DataPipeline/DataPipelineStageMetrics.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: WorkItemsCount
+    path: ../src/dotnet/Common/Models/ResourceProviders/DataPipeline/DataPipelineStageMetrics.cs
+    startLine: 12
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.ResourceProviders.DataPipeline
+  summary: Gets or sets the number of work items that must be processed in the stage.
+  example: []
+  syntax:
+    content: >-
+      [JsonPropertyName("work_items_count")]
+
+      public int WorkItemsCount { get; set; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: >-
+      <JsonPropertyName("work_items_count")>
+
+      Public Property WorkItemsCount As Integer
+  overload: FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineStageMetrics.WorkItemsCount*
+  attributes:
+  - type: System.Text.Json.Serialization.JsonPropertyNameAttribute
+    ctor: System.Text.Json.Serialization.JsonPropertyNameAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: work_items_count
+- uid: FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineStageMetrics.CompletedWorkItemsCount
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineStageMetrics.CompletedWorkItemsCount
+  id: CompletedWorkItemsCount
+  parent: FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineStageMetrics
+  langs:
+  - csharp
+  - vb
+  name: CompletedWorkItemsCount
+  nameWithType: DataPipelineStageMetrics.CompletedWorkItemsCount
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineStageMetrics.CompletedWorkItemsCount
+  type: Property
+  source:
+    remote:
+      path: src/dotnet/Common/Models/ResourceProviders/DataPipeline/DataPipelineStageMetrics.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: CompletedWorkItemsCount
+    path: ../src/dotnet/Common/Models/ResourceProviders/DataPipeline/DataPipelineStageMetrics.cs
+    startLine: 18
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.ResourceProviders.DataPipeline
+  summary: Gets or sets the number of work items that have been processed in the stage.
+  example: []
+  syntax:
+    content: >-
+      [JsonPropertyName("completed_work_items_count")]
+
+      public int CompletedWorkItemsCount { get; set; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: >-
+      <JsonPropertyName("completed_work_items_count")>
+
+      Public Property CompletedWorkItemsCount As Integer
+  overload: FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineStageMetrics.CompletedWorkItemsCount*
+  attributes:
+  - type: System.Text.Json.Serialization.JsonPropertyNameAttribute
+    ctor: System.Text.Json.Serialization.JsonPropertyNameAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: completed_work_items_count
+- uid: FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineStageMetrics.SuccessfulWorkItemsCount
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineStageMetrics.SuccessfulWorkItemsCount
+  id: SuccessfulWorkItemsCount
+  parent: FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineStageMetrics
+  langs:
+  - csharp
+  - vb
+  name: SuccessfulWorkItemsCount
+  nameWithType: DataPipelineStageMetrics.SuccessfulWorkItemsCount
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineStageMetrics.SuccessfulWorkItemsCount
+  type: Property
+  source:
+    remote:
+      path: src/dotnet/Common/Models/ResourceProviders/DataPipeline/DataPipelineStageMetrics.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: SuccessfulWorkItemsCount
+    path: ../src/dotnet/Common/Models/ResourceProviders/DataPipeline/DataPipelineStageMetrics.cs
+    startLine: 24
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.ResourceProviders.DataPipeline
+  summary: Gets or sets the number of work items that have been successfully processed in the stage.
+  example: []
+  syntax:
+    content: >-
+      [JsonPropertyName("successful_work_items_count")]
+
+      public int SuccessfulWorkItemsCount { get; set; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: >-
+      <JsonPropertyName("successful_work_items_count")>
+
+      Public Property SuccessfulWorkItemsCount As Integer
+  overload: FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineStageMetrics.SuccessfulWorkItemsCount*
+  attributes:
+  - type: System.Text.Json.Serialization.JsonPropertyNameAttribute
+    ctor: System.Text.Json.Serialization.JsonPropertyNameAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: successful_work_items_count
+- uid: FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineStageMetrics.StartTimestamp
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineStageMetrics.StartTimestamp
+  id: StartTimestamp
+  parent: FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineStageMetrics
+  langs:
+  - csharp
+  - vb
+  name: StartTimestamp
+  nameWithType: DataPipelineStageMetrics.StartTimestamp
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineStageMetrics.StartTimestamp
+  type: Property
+  source:
+    remote:
+      path: src/dotnet/Common/Models/ResourceProviders/DataPipeline/DataPipelineStageMetrics.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: StartTimestamp
+    path: ../src/dotnet/Common/Models/ResourceProviders/DataPipeline/DataPipelineStageMetrics.cs
+    startLine: 30
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.ResourceProviders.DataPipeline
+  summary: Gets or sets the timestamp when the stage started processing.
+  example: []
+  syntax:
+    content: >-
+      [JsonPropertyName("start_timestamp")]
+
+      public DateTimeOffset StartTimestamp { get; set; }
+    parameters: []
+    return:
+      type: System.DateTimeOffset
+    content.vb: >-
+      <JsonPropertyName("start_timestamp")>
+
+      Public Property StartTimestamp As DateTimeOffset
+  overload: FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineStageMetrics.StartTimestamp*
+  attributes:
+  - type: System.Text.Json.Serialization.JsonPropertyNameAttribute
+    ctor: System.Text.Json.Serialization.JsonPropertyNameAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: start_timestamp
+- uid: FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineStageMetrics.LastUpdateTimestamp
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineStageMetrics.LastUpdateTimestamp
+  id: LastUpdateTimestamp
+  parent: FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineStageMetrics
+  langs:
+  - csharp
+  - vb
+  name: LastUpdateTimestamp
+  nameWithType: DataPipelineStageMetrics.LastUpdateTimestamp
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineStageMetrics.LastUpdateTimestamp
+  type: Property
+  source:
+    remote:
+      path: src/dotnet/Common/Models/ResourceProviders/DataPipeline/DataPipelineStageMetrics.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: LastUpdateTimestamp
+    path: ../src/dotnet/Common/Models/ResourceProviders/DataPipeline/DataPipelineStageMetrics.cs
+    startLine: 36
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.ResourceProviders.DataPipeline
+  summary: Gets or sets the timestamp when the stage metrics were last updated.
+  example: []
+  syntax:
+    content: >-
+      [JsonPropertyName("last_update_timestamp")]
+
+      public DateTimeOffset LastUpdateTimestamp { get; set; }
+    parameters: []
+    return:
+      type: System.DateTimeOffset
+    content.vb: >-
+      <JsonPropertyName("last_update_timestamp")>
+
+      Public Property LastUpdateTimestamp As DateTimeOffset
+  overload: FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineStageMetrics.LastUpdateTimestamp*
+  attributes:
+  - type: System.Text.Json.Serialization.JsonPropertyNameAttribute
+    ctor: System.Text.Json.Serialization.JsonPropertyNameAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: last_update_timestamp
+references:
+- uid: FoundationaLLM.Common.Models.ResourceProviders.DataPipeline
+  commentId: N:FoundationaLLM.Common.Models.ResourceProviders.DataPipeline
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.ResourceProviders.DataPipeline
+  nameWithType: FoundationaLLM.Common.Models.ResourceProviders.DataPipeline
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.DataPipeline
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders
+    name: ResourceProviders
+    href: FoundationaLLM.Common.Models.ResourceProviders.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.DataPipeline
+    name: DataPipeline
+    href: FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders
+    name: ResourceProviders
+    href: FoundationaLLM.Common.Models.ResourceProviders.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.DataPipeline
+    name: DataPipeline
+    href: FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  parent: FoundationaLLM.Core.Utils.ObjectExtensions
+  definition: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  isExternal: true
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions
+  commentId: T:FoundationaLLM.Core.Utils.ObjectExtensions
+  parent: FoundationaLLM.Core.Utils
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html
+  name: ObjectExtensions
+  nameWithType: ObjectExtensions
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions
+- uid: FoundationaLLM.Core.Utils
+  commentId: N:FoundationaLLM.Core.Utils
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Core.Utils
+  nameWithType: FoundationaLLM.Core.Utils
+  fullName: FoundationaLLM.Core.Utils
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+- uid: FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineStageMetrics.WorkItemsCount*
+  commentId: Overload:FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineStageMetrics.WorkItemsCount
+  href: FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineStageMetrics.html#FoundationaLLM_Common_Models_ResourceProviders_DataPipeline_DataPipelineStageMetrics_WorkItemsCount
+  name: WorkItemsCount
+  nameWithType: DataPipelineStageMetrics.WorkItemsCount
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineStageMetrics.WorkItemsCount
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineStageMetrics.CompletedWorkItemsCount*
+  commentId: Overload:FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineStageMetrics.CompletedWorkItemsCount
+  href: FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineStageMetrics.html#FoundationaLLM_Common_Models_ResourceProviders_DataPipeline_DataPipelineStageMetrics_CompletedWorkItemsCount
+  name: CompletedWorkItemsCount
+  nameWithType: DataPipelineStageMetrics.CompletedWorkItemsCount
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineStageMetrics.CompletedWorkItemsCount
+- uid: FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineStageMetrics.SuccessfulWorkItemsCount*
+  commentId: Overload:FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineStageMetrics.SuccessfulWorkItemsCount
+  href: FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineStageMetrics.html#FoundationaLLM_Common_Models_ResourceProviders_DataPipeline_DataPipelineStageMetrics_SuccessfulWorkItemsCount
+  name: SuccessfulWorkItemsCount
+  nameWithType: DataPipelineStageMetrics.SuccessfulWorkItemsCount
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineStageMetrics.SuccessfulWorkItemsCount
+- uid: FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineStageMetrics.StartTimestamp*
+  commentId: Overload:FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineStageMetrics.StartTimestamp
+  href: FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineStageMetrics.html#FoundationaLLM_Common_Models_ResourceProviders_DataPipeline_DataPipelineStageMetrics_StartTimestamp
+  name: StartTimestamp
+  nameWithType: DataPipelineStageMetrics.StartTimestamp
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineStageMetrics.StartTimestamp
+- uid: System.DateTimeOffset
+  commentId: T:System.DateTimeOffset
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.datetimeoffset
+  name: DateTimeOffset
+  nameWithType: DateTimeOffset
+  fullName: System.DateTimeOffset
+- uid: FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineStageMetrics.LastUpdateTimestamp*
+  commentId: Overload:FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineStageMetrics.LastUpdateTimestamp
+  href: FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineStageMetrics.html#FoundationaLLM_Common_Models_ResourceProviders_DataPipeline_DataPipelineStageMetrics_LastUpdateTimestamp
+  name: LastUpdateTimestamp
+  nameWithType: DataPipelineStageMetrics.LastUpdateTimestamp
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.DataPipeline.DataPipelineStageMetrics.LastUpdateTimestamp

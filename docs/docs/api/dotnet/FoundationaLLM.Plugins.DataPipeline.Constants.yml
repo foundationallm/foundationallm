@@ -1,0 +1,24 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Plugins.DataPipeline.Constants
+  commentId: N:FoundationaLLM.Plugins.DataPipeline.Constants
+  id: Constants
+  parent: FoundationaLLM.Plugins.DataPipeline
+  children:
+  - FoundationaLLM.Plugins.DataPipeline.Constants.KnowledgeGraphBuildingSteps
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM.Plugins.DataPipeline.Constants
+  nameWithType: FoundationaLLM.Plugins.DataPipeline.Constants
+  fullName: FoundationaLLM.Plugins.DataPipeline.Constants
+  type: Namespace
+  assemblies:
+  - FoundationaLLM.DataPipelinePlugins
+references:
+- uid: FoundationaLLM.Plugins.DataPipeline.Constants.KnowledgeGraphBuildingSteps
+  commentId: T:FoundationaLLM.Plugins.DataPipeline.Constants.KnowledgeGraphBuildingSteps
+  href: FoundationaLLM.Plugins.DataPipeline.Constants.KnowledgeGraphBuildingSteps.html
+  name: KnowledgeGraphBuildingSteps
+  nameWithType: KnowledgeGraphBuildingSteps
+  fullName: FoundationaLLM.Plugins.DataPipeline.Constants.KnowledgeGraphBuildingSteps

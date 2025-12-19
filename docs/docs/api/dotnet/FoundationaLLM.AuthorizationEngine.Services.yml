@@ -1,0 +1,45 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.AuthorizationEngine.Services
+  commentId: N:FoundationaLLM.AuthorizationEngine.Services
+  id: Services
+  parent: FoundationaLLM.AuthorizationEngine
+  children:
+  - FoundationaLLM.AuthorizationEngine.Services.AuthorizationCore
+  - FoundationaLLM.AuthorizationEngine.Services.PolicyAssignmentCache
+  - FoundationaLLM.AuthorizationEngine.Services.RoleAssignmentCache
+  - FoundationaLLM.AuthorizationEngine.Services.SecretKeyCache
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM.AuthorizationEngine.Services
+  nameWithType: FoundationaLLM.AuthorizationEngine.Services
+  fullName: FoundationaLLM.AuthorizationEngine.Services
+  type: Namespace
+  assemblies:
+  - FoundationaLLM.AuthorizationEngine
+references:
+- uid: FoundationaLLM.AuthorizationEngine.Services.AuthorizationCore
+  commentId: T:FoundationaLLM.AuthorizationEngine.Services.AuthorizationCore
+  href: FoundationaLLM.AuthorizationEngine.Services.AuthorizationCore.html
+  name: AuthorizationCore
+  nameWithType: AuthorizationCore
+  fullName: FoundationaLLM.AuthorizationEngine.Services.AuthorizationCore
+- uid: FoundationaLLM.AuthorizationEngine.Services.PolicyAssignmentCache
+  commentId: T:FoundationaLLM.AuthorizationEngine.Services.PolicyAssignmentCache
+  href: FoundationaLLM.AuthorizationEngine.Services.PolicyAssignmentCache.html
+  name: PolicyAssignmentCache
+  nameWithType: PolicyAssignmentCache
+  fullName: FoundationaLLM.AuthorizationEngine.Services.PolicyAssignmentCache
+- uid: FoundationaLLM.AuthorizationEngine.Services.RoleAssignmentCache
+  commentId: T:FoundationaLLM.AuthorizationEngine.Services.RoleAssignmentCache
+  href: FoundationaLLM.AuthorizationEngine.Services.RoleAssignmentCache.html
+  name: RoleAssignmentCache
+  nameWithType: RoleAssignmentCache
+  fullName: FoundationaLLM.AuthorizationEngine.Services.RoleAssignmentCache
+- uid: FoundationaLLM.AuthorizationEngine.Services.SecretKeyCache
+  commentId: T:FoundationaLLM.AuthorizationEngine.Services.SecretKeyCache
+  href: FoundationaLLM.AuthorizationEngine.Services.SecretKeyCache.html
+  name: SecretKeyCache
+  nameWithType: SecretKeyCache
+  fullName: FoundationaLLM.AuthorizationEngine.Services.SecretKeyCache

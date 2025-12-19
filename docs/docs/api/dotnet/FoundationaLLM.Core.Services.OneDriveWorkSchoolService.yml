@@ -1,0 +1,1126 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Core.Services.OneDriveWorkSchoolService
+  commentId: T:FoundationaLLM.Core.Services.OneDriveWorkSchoolService
+  id: OneDriveWorkSchoolService
+  parent: FoundationaLLM.Core.Services
+  children:
+  - FoundationaLLM.Core.Services.OneDriveWorkSchoolService.#ctor(FoundationaLLM.Core.Interfaces.ICoreService,FoundationaLLM.Common.Interfaces.IUserProfileService,System.Net.Http.IHttpClientFactory)
+  - FoundationaLLM.Core.Services.OneDriveWorkSchoolService.Connect(System.String)
+  - FoundationaLLM.Core.Services.OneDriveWorkSchoolService.Disconnect(System.String)
+  - FoundationaLLM.Core.Services.OneDriveWorkSchoolService.Download(System.String,System.String,System.String,FoundationaLLM.Core.Models.OneDriveWorkSchoolItem,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  langs:
+  - csharp
+  - vb
+  name: OneDriveWorkSchoolService
+  nameWithType: OneDriveWorkSchoolService
+  fullName: FoundationaLLM.Core.Services.OneDriveWorkSchoolService
+  type: Class
+  source:
+    remote:
+      path: src/dotnet/Core/Services/OneDriveWorkSchoolService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: OneDriveWorkSchoolService
+    path: ../src/dotnet/Core/Services/OneDriveWorkSchoolService.cs
+    startLine: 14
+  assemblies:
+  - FoundationaLLM.Core
+  namespace: FoundationaLLM.Core.Services
+  summary: Implements <xref href="FoundationaLLM.Core.Interfaces.IOneDriveWorkSchoolService" data-throw-if-not-resolved="false"></xref>.
+  example: []
+  syntax:
+    content: 'public class OneDriveWorkSchoolService : IOneDriveWorkSchoolService'
+    content.vb: Public Class OneDriveWorkSchoolService Implements IOneDriveWorkSchoolService
+  inheritance:
+  - System.Object
+  implements:
+  - FoundationaLLM.Core.Interfaces.IOneDriveWorkSchoolService
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+  extensionMethods:
+  - System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+- uid: FoundationaLLM.Core.Services.OneDriveWorkSchoolService.#ctor(FoundationaLLM.Core.Interfaces.ICoreService,FoundationaLLM.Common.Interfaces.IUserProfileService,System.Net.Http.IHttpClientFactory)
+  commentId: M:FoundationaLLM.Core.Services.OneDriveWorkSchoolService.#ctor(FoundationaLLM.Core.Interfaces.ICoreService,FoundationaLLM.Common.Interfaces.IUserProfileService,System.Net.Http.IHttpClientFactory)
+  id: '#ctor(FoundationaLLM.Core.Interfaces.ICoreService,FoundationaLLM.Common.Interfaces.IUserProfileService,System.Net.Http.IHttpClientFactory)'
+  parent: FoundationaLLM.Core.Services.OneDriveWorkSchoolService
+  langs:
+  - csharp
+  - vb
+  name: OneDriveWorkSchoolService(ICoreService, IUserProfileService, IHttpClientFactory)
+  nameWithType: OneDriveWorkSchoolService.OneDriveWorkSchoolService(ICoreService, IUserProfileService, IHttpClientFactory)
+  fullName: FoundationaLLM.Core.Services.OneDriveWorkSchoolService.OneDriveWorkSchoolService(FoundationaLLM.Core.Interfaces.ICoreService, FoundationaLLM.Common.Interfaces.IUserProfileService, System.Net.Http.IHttpClientFactory)
+  type: Constructor
+  source:
+    remote:
+      path: src/dotnet/Core/Services/OneDriveWorkSchoolService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: .ctor
+    path: ../src/dotnet/Core/Services/OneDriveWorkSchoolService.cs
+    startLine: 26
+  assemblies:
+  - FoundationaLLM.Core
+  namespace: FoundationaLLM.Core.Services
+  summary: Contructor for OneDrive service.
+  example: []
+  syntax:
+    content: public OneDriveWorkSchoolService(ICoreService coreService, IUserProfileService userProfileService, IHttpClientFactory httpClientFactory)
+    parameters:
+    - id: coreService
+      type: FoundationaLLM.Core.Interfaces.ICoreService
+      description: The core API service.
+    - id: userProfileService
+      type: FoundationaLLM.Common.Interfaces.IUserProfileService
+      description: The user profile service.
+    - id: httpClientFactory
+      type: System.Net.Http.IHttpClientFactory
+      description: The HTTP client factory.
+    content.vb: Public Sub New(coreService As ICoreService, userProfileService As IUserProfileService, httpClientFactory As IHttpClientFactory)
+  overload: FoundationaLLM.Core.Services.OneDriveWorkSchoolService.#ctor*
+  nameWithType.vb: OneDriveWorkSchoolService.New(ICoreService, IUserProfileService, IHttpClientFactory)
+  fullName.vb: FoundationaLLM.Core.Services.OneDriveWorkSchoolService.New(FoundationaLLM.Core.Interfaces.ICoreService, FoundationaLLM.Common.Interfaces.IUserProfileService, System.Net.Http.IHttpClientFactory)
+  name.vb: New(ICoreService, IUserProfileService, IHttpClientFactory)
+- uid: FoundationaLLM.Core.Services.OneDriveWorkSchoolService.Connect(System.String)
+  commentId: M:FoundationaLLM.Core.Services.OneDriveWorkSchoolService.Connect(System.String)
+  id: Connect(System.String)
+  parent: FoundationaLLM.Core.Services.OneDriveWorkSchoolService
+  langs:
+  - csharp
+  - vb
+  name: Connect(string)
+  nameWithType: OneDriveWorkSchoolService.Connect(string)
+  fullName: FoundationaLLM.Core.Services.OneDriveWorkSchoolService.Connect(string)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Core/Services/OneDriveWorkSchoolService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: Connect
+    path: ../src/dotnet/Core/Services/OneDriveWorkSchoolService.cs
+    startLine: 37
+  assemblies:
+  - FoundationaLLM.Core
+  namespace: FoundationaLLM.Core.Services
+  summary: Connects to user's OneDrive work or school account.
+  example: []
+  syntax:
+    content: public Task Connect(string instanceId)
+    parameters:
+    - id: instanceId
+      type: System.String
+      description: The FoundationaLLM instance identifier.
+    return:
+      type: System.Threading.Tasks.Task
+      description: ''
+    content.vb: Public Function Connect(instanceId As String) As Task
+  overload: FoundationaLLM.Core.Services.OneDriveWorkSchoolService.Connect*
+  implements:
+  - FoundationaLLM.Core.Interfaces.IOneDriveWorkSchoolService.Connect(System.String)
+  nameWithType.vb: OneDriveWorkSchoolService.Connect(String)
+  fullName.vb: FoundationaLLM.Core.Services.OneDriveWorkSchoolService.Connect(String)
+  name.vb: Connect(String)
+- uid: FoundationaLLM.Core.Services.OneDriveWorkSchoolService.Disconnect(System.String)
+  commentId: M:FoundationaLLM.Core.Services.OneDriveWorkSchoolService.Disconnect(System.String)
+  id: Disconnect(System.String)
+  parent: FoundationaLLM.Core.Services.OneDriveWorkSchoolService
+  langs:
+  - csharp
+  - vb
+  name: Disconnect(string)
+  nameWithType: OneDriveWorkSchoolService.Disconnect(string)
+  fullName: FoundationaLLM.Core.Services.OneDriveWorkSchoolService.Disconnect(string)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Core/Services/OneDriveWorkSchoolService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: Disconnect
+    path: ../src/dotnet/Core/Services/OneDriveWorkSchoolService.cs
+    startLine: 53
+  assemblies:
+  - FoundationaLLM.Core
+  namespace: FoundationaLLM.Core.Services
+  summary: Disconnect from user's OneDrive work or school account.
+  example: []
+  syntax:
+    content: public Task Disconnect(string instanceId)
+    parameters:
+    - id: instanceId
+      type: System.String
+      description: The FoundationaLLM instance identifier.
+    return:
+      type: System.Threading.Tasks.Task
+      description: ''
+    content.vb: Public Function Disconnect(instanceId As String) As Task
+  overload: FoundationaLLM.Core.Services.OneDriveWorkSchoolService.Disconnect*
+  implements:
+  - FoundationaLLM.Core.Interfaces.IOneDriveWorkSchoolService.Disconnect(System.String)
+  nameWithType.vb: OneDriveWorkSchoolService.Disconnect(String)
+  fullName.vb: FoundationaLLM.Core.Services.OneDriveWorkSchoolService.Disconnect(String)
+  name.vb: Disconnect(String)
+- uid: FoundationaLLM.Core.Services.OneDriveWorkSchoolService.Download(System.String,System.String,System.String,FoundationaLLM.Core.Models.OneDriveWorkSchoolItem,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  commentId: M:FoundationaLLM.Core.Services.OneDriveWorkSchoolService.Download(System.String,System.String,System.String,FoundationaLLM.Core.Models.OneDriveWorkSchoolItem,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  id: Download(System.String,System.String,System.String,FoundationaLLM.Core.Models.OneDriveWorkSchoolItem,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  parent: FoundationaLLM.Core.Services.OneDriveWorkSchoolService
+  langs:
+  - csharp
+  - vb
+  name: Download(string, string, string, OneDriveWorkSchoolItem, UnifiedUserIdentity)
+  nameWithType: OneDriveWorkSchoolService.Download(string, string, string, OneDriveWorkSchoolItem, UnifiedUserIdentity)
+  fullName: FoundationaLLM.Core.Services.OneDriveWorkSchoolService.Download(string, string, string, FoundationaLLM.Core.Models.OneDriveWorkSchoolItem, FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Core/Services/OneDriveWorkSchoolService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: Download
+    path: ../src/dotnet/Core/Services/OneDriveWorkSchoolService.cs
+    startLine: 69
+  assemblies:
+  - FoundationaLLM.Core
+  namespace: FoundationaLLM.Core.Services
+  summary: Downloads a file from the user's connected OneDrive work or school account.
+  example: []
+  syntax:
+    content: public Task<OneDriveWorkSchoolItem> Download(string instanceId, string sessionId, string agentName, OneDriveWorkSchoolItem oneDriveItem, UnifiedUserIdentity userIdentity)
+    parameters:
+    - id: instanceId
+      type: System.String
+      description: The FoundationaLLM instance identifier.
+    - id: sessionId
+      type: System.String
+      description: The session ID from which the file is uploaded.
+    - id: agentName
+      type: System.String
+      description: The agent name.
+    - id: oneDriveItem
+      type: FoundationaLLM.Core.Models.OneDriveWorkSchoolItem
+      description: The OneDrive work or school item.
+    - id: userIdentity
+      type: FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity
+      description: The user's identity.
+    return:
+      type: System.Threading.Tasks.Task{FoundationaLLM.Core.Models.OneDriveWorkSchoolItem}
+      description: ''
+    content.vb: Public Function Download(instanceId As String, sessionId As String, agentName As String, oneDriveItem As OneDriveWorkSchoolItem, userIdentity As UnifiedUserIdentity) As Task(Of OneDriveWorkSchoolItem)
+  overload: FoundationaLLM.Core.Services.OneDriveWorkSchoolService.Download*
+  implements:
+  - FoundationaLLM.Core.Interfaces.IOneDriveWorkSchoolService.Download(System.String,System.String,System.String,FoundationaLLM.Core.Models.OneDriveWorkSchoolItem,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  nameWithType.vb: OneDriveWorkSchoolService.Download(String, String, String, OneDriveWorkSchoolItem, UnifiedUserIdentity)
+  fullName.vb: FoundationaLLM.Core.Services.OneDriveWorkSchoolService.Download(String, String, String, FoundationaLLM.Core.Models.OneDriveWorkSchoolItem, FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  name.vb: Download(String, String, String, OneDriveWorkSchoolItem, UnifiedUserIdentity)
+references:
+- uid: FoundationaLLM.Core.Interfaces.IOneDriveWorkSchoolService
+  commentId: T:FoundationaLLM.Core.Interfaces.IOneDriveWorkSchoolService
+  parent: FoundationaLLM.Core.Interfaces
+  href: FoundationaLLM.Core.Interfaces.IOneDriveWorkSchoolService.html
+  name: IOneDriveWorkSchoolService
+  nameWithType: IOneDriveWorkSchoolService
+  fullName: FoundationaLLM.Core.Interfaces.IOneDriveWorkSchoolService
+- uid: FoundationaLLM.Core.Services
+  commentId: N:FoundationaLLM.Core.Services
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Core.Services
+  nameWithType: FoundationaLLM.Core.Services
+  fullName: FoundationaLLM.Core.Services
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Services
+    name: Services
+    href: FoundationaLLM.Core.Services.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Services
+    name: Services
+    href: FoundationaLLM.Core.Services.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  parent: FoundationaLLM.Core.Utils.ObjectExtensions
+  definition: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: FoundationaLLM.Core.Interfaces
+  commentId: N:FoundationaLLM.Core.Interfaces
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Core.Interfaces
+  nameWithType: FoundationaLLM.Core.Interfaces
+  fullName: FoundationaLLM.Core.Interfaces
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Interfaces
+    name: Interfaces
+    href: FoundationaLLM.Core.Interfaces.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Interfaces
+    name: Interfaces
+    href: FoundationaLLM.Core.Interfaces.html
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  isExternal: true
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions
+  commentId: T:FoundationaLLM.Core.Utils.ObjectExtensions
+  parent: FoundationaLLM.Core.Utils
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html
+  name: ObjectExtensions
+  nameWithType: ObjectExtensions
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions
+- uid: FoundationaLLM.Core.Utils
+  commentId: N:FoundationaLLM.Core.Utils
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Core.Utils
+  nameWithType: FoundationaLLM.Core.Utils
+  fullName: FoundationaLLM.Core.Utils
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+- uid: FoundationaLLM.Core.Services.OneDriveWorkSchoolService.#ctor*
+  commentId: Overload:FoundationaLLM.Core.Services.OneDriveWorkSchoolService.#ctor
+  href: FoundationaLLM.Core.Services.OneDriveWorkSchoolService.html#FoundationaLLM_Core_Services_OneDriveWorkSchoolService__ctor_FoundationaLLM_Core_Interfaces_ICoreService_FoundationaLLM_Common_Interfaces_IUserProfileService_System_Net_Http_IHttpClientFactory_
+  name: OneDriveWorkSchoolService
+  nameWithType: OneDriveWorkSchoolService.OneDriveWorkSchoolService
+  fullName: FoundationaLLM.Core.Services.OneDriveWorkSchoolService.OneDriveWorkSchoolService
+  nameWithType.vb: OneDriveWorkSchoolService.New
+  fullName.vb: FoundationaLLM.Core.Services.OneDriveWorkSchoolService.New
+  name.vb: New
+- uid: FoundationaLLM.Core.Interfaces.ICoreService
+  commentId: T:FoundationaLLM.Core.Interfaces.ICoreService
+  parent: FoundationaLLM.Core.Interfaces
+  href: FoundationaLLM.Core.Interfaces.ICoreService.html
+  name: ICoreService
+  nameWithType: ICoreService
+  fullName: FoundationaLLM.Core.Interfaces.ICoreService
+- uid: FoundationaLLM.Common.Interfaces.IUserProfileService
+  commentId: T:FoundationaLLM.Common.Interfaces.IUserProfileService
+  parent: FoundationaLLM.Common.Interfaces
+  href: FoundationaLLM.Common.Interfaces.IUserProfileService.html
+  name: IUserProfileService
+  nameWithType: IUserProfileService
+  fullName: FoundationaLLM.Common.Interfaces.IUserProfileService
+- uid: System.Net.Http.IHttpClientFactory
+  commentId: T:System.Net.Http.IHttpClientFactory
+  parent: System.Net.Http
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.net.http.ihttpclientfactory
+  name: IHttpClientFactory
+  nameWithType: IHttpClientFactory
+  fullName: System.Net.Http.IHttpClientFactory
+- uid: FoundationaLLM.Common.Interfaces
+  commentId: N:FoundationaLLM.Common.Interfaces
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Interfaces
+  nameWithType: FoundationaLLM.Common.Interfaces
+  fullName: FoundationaLLM.Common.Interfaces
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Interfaces
+    name: Interfaces
+    href: FoundationaLLM.Common.Interfaces.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Interfaces
+    name: Interfaces
+    href: FoundationaLLM.Common.Interfaces.html
+- uid: System.Net.Http
+  commentId: N:System.Net.Http
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Net.Http
+  nameWithType: System.Net.Http
+  fullName: System.Net.Http
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Net
+    name: Net
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.net
+  - name: .
+  - uid: System.Net.Http
+    name: Http
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.net.http
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Net
+    name: Net
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.net
+  - name: .
+  - uid: System.Net.Http
+    name: Http
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.net.http
+- uid: FoundationaLLM.Core.Services.OneDriveWorkSchoolService.Connect*
+  commentId: Overload:FoundationaLLM.Core.Services.OneDriveWorkSchoolService.Connect
+  href: FoundationaLLM.Core.Services.OneDriveWorkSchoolService.html#FoundationaLLM_Core_Services_OneDriveWorkSchoolService_Connect_System_String_
+  name: Connect
+  nameWithType: OneDriveWorkSchoolService.Connect
+  fullName: FoundationaLLM.Core.Services.OneDriveWorkSchoolService.Connect
+- uid: FoundationaLLM.Core.Interfaces.IOneDriveWorkSchoolService.Connect(System.String)
+  commentId: M:FoundationaLLM.Core.Interfaces.IOneDriveWorkSchoolService.Connect(System.String)
+  parent: FoundationaLLM.Core.Interfaces.IOneDriveWorkSchoolService
+  isExternal: true
+  href: FoundationaLLM.Core.Interfaces.IOneDriveWorkSchoolService.html#FoundationaLLM_Core_Interfaces_IOneDriveWorkSchoolService_Connect_System_String_
+  name: Connect(string)
+  nameWithType: IOneDriveWorkSchoolService.Connect(string)
+  fullName: FoundationaLLM.Core.Interfaces.IOneDriveWorkSchoolService.Connect(string)
+  nameWithType.vb: IOneDriveWorkSchoolService.Connect(String)
+  fullName.vb: FoundationaLLM.Core.Interfaces.IOneDriveWorkSchoolService.Connect(String)
+  name.vb: Connect(String)
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Interfaces.IOneDriveWorkSchoolService.Connect(System.String)
+    name: Connect
+    href: FoundationaLLM.Core.Interfaces.IOneDriveWorkSchoolService.html#FoundationaLLM_Core_Interfaces_IOneDriveWorkSchoolService_Connect_System_String_
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Interfaces.IOneDriveWorkSchoolService.Connect(System.String)
+    name: Connect
+    href: FoundationaLLM.Core.Interfaces.IOneDriveWorkSchoolService.html#FoundationaLLM_Core_Interfaces_IOneDriveWorkSchoolService_Connect_System_String_
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System.Threading.Tasks.Task
+  commentId: T:System.Threading.Tasks.Task
+  parent: System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  name: Task
+  nameWithType: Task
+  fullName: System.Threading.Tasks.Task
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: FoundationaLLM.Core.Services.OneDriveWorkSchoolService.Disconnect*
+  commentId: Overload:FoundationaLLM.Core.Services.OneDriveWorkSchoolService.Disconnect
+  href: FoundationaLLM.Core.Services.OneDriveWorkSchoolService.html#FoundationaLLM_Core_Services_OneDriveWorkSchoolService_Disconnect_System_String_
+  name: Disconnect
+  nameWithType: OneDriveWorkSchoolService.Disconnect
+  fullName: FoundationaLLM.Core.Services.OneDriveWorkSchoolService.Disconnect
+- uid: FoundationaLLM.Core.Interfaces.IOneDriveWorkSchoolService.Disconnect(System.String)
+  commentId: M:FoundationaLLM.Core.Interfaces.IOneDriveWorkSchoolService.Disconnect(System.String)
+  parent: FoundationaLLM.Core.Interfaces.IOneDriveWorkSchoolService
+  isExternal: true
+  href: FoundationaLLM.Core.Interfaces.IOneDriveWorkSchoolService.html#FoundationaLLM_Core_Interfaces_IOneDriveWorkSchoolService_Disconnect_System_String_
+  name: Disconnect(string)
+  nameWithType: IOneDriveWorkSchoolService.Disconnect(string)
+  fullName: FoundationaLLM.Core.Interfaces.IOneDriveWorkSchoolService.Disconnect(string)
+  nameWithType.vb: IOneDriveWorkSchoolService.Disconnect(String)
+  fullName.vb: FoundationaLLM.Core.Interfaces.IOneDriveWorkSchoolService.Disconnect(String)
+  name.vb: Disconnect(String)
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Interfaces.IOneDriveWorkSchoolService.Disconnect(System.String)
+    name: Disconnect
+    href: FoundationaLLM.Core.Interfaces.IOneDriveWorkSchoolService.html#FoundationaLLM_Core_Interfaces_IOneDriveWorkSchoolService_Disconnect_System_String_
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Interfaces.IOneDriveWorkSchoolService.Disconnect(System.String)
+    name: Disconnect
+    href: FoundationaLLM.Core.Interfaces.IOneDriveWorkSchoolService.html#FoundationaLLM_Core_Interfaces_IOneDriveWorkSchoolService_Disconnect_System_String_
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: FoundationaLLM.Core.Services.OneDriveWorkSchoolService.Download*
+  commentId: Overload:FoundationaLLM.Core.Services.OneDriveWorkSchoolService.Download
+  href: FoundationaLLM.Core.Services.OneDriveWorkSchoolService.html#FoundationaLLM_Core_Services_OneDriveWorkSchoolService_Download_System_String_System_String_System_String_FoundationaLLM_Core_Models_OneDriveWorkSchoolItem_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_
+  name: Download
+  nameWithType: OneDriveWorkSchoolService.Download
+  fullName: FoundationaLLM.Core.Services.OneDriveWorkSchoolService.Download
+- uid: FoundationaLLM.Core.Interfaces.IOneDriveWorkSchoolService.Download(System.String,System.String,System.String,FoundationaLLM.Core.Models.OneDriveWorkSchoolItem,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  commentId: M:FoundationaLLM.Core.Interfaces.IOneDriveWorkSchoolService.Download(System.String,System.String,System.String,FoundationaLLM.Core.Models.OneDriveWorkSchoolItem,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  parent: FoundationaLLM.Core.Interfaces.IOneDriveWorkSchoolService
+  isExternal: true
+  href: FoundationaLLM.Core.Interfaces.IOneDriveWorkSchoolService.html#FoundationaLLM_Core_Interfaces_IOneDriveWorkSchoolService_Download_System_String_System_String_System_String_FoundationaLLM_Core_Models_OneDriveWorkSchoolItem_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_
+  name: Download(string, string, string, OneDriveWorkSchoolItem, UnifiedUserIdentity)
+  nameWithType: IOneDriveWorkSchoolService.Download(string, string, string, OneDriveWorkSchoolItem, UnifiedUserIdentity)
+  fullName: FoundationaLLM.Core.Interfaces.IOneDriveWorkSchoolService.Download(string, string, string, FoundationaLLM.Core.Models.OneDriveWorkSchoolItem, FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  nameWithType.vb: IOneDriveWorkSchoolService.Download(String, String, String, OneDriveWorkSchoolItem, UnifiedUserIdentity)
+  fullName.vb: FoundationaLLM.Core.Interfaces.IOneDriveWorkSchoolService.Download(String, String, String, FoundationaLLM.Core.Models.OneDriveWorkSchoolItem, FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  name.vb: Download(String, String, String, OneDriveWorkSchoolItem, UnifiedUserIdentity)
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Interfaces.IOneDriveWorkSchoolService.Download(System.String,System.String,System.String,FoundationaLLM.Core.Models.OneDriveWorkSchoolItem,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+    name: Download
+    href: FoundationaLLM.Core.Interfaces.IOneDriveWorkSchoolService.html#FoundationaLLM_Core_Interfaces_IOneDriveWorkSchoolService_Download_System_String_System_String_System_String_FoundationaLLM_Core_Models_OneDriveWorkSchoolItem_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: FoundationaLLM.Core.Models.OneDriveWorkSchoolItem
+    name: OneDriveWorkSchoolItem
+    href: FoundationaLLM.Core.Models.OneDriveWorkSchoolItem.html
+  - name: ','
+  - name: " "
+  - uid: FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity
+    name: UnifiedUserIdentity
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Interfaces.IOneDriveWorkSchoolService.Download(System.String,System.String,System.String,FoundationaLLM.Core.Models.OneDriveWorkSchoolItem,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+    name: Download
+    href: FoundationaLLM.Core.Interfaces.IOneDriveWorkSchoolService.html#FoundationaLLM_Core_Interfaces_IOneDriveWorkSchoolService_Download_System_String_System_String_System_String_FoundationaLLM_Core_Models_OneDriveWorkSchoolItem_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: FoundationaLLM.Core.Models.OneDriveWorkSchoolItem
+    name: OneDriveWorkSchoolItem
+    href: FoundationaLLM.Core.Models.OneDriveWorkSchoolItem.html
+  - name: ','
+  - name: " "
+  - uid: FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity
+    name: UnifiedUserIdentity
+  - name: )
+- uid: FoundationaLLM.Core.Models.OneDriveWorkSchoolItem
+  commentId: T:FoundationaLLM.Core.Models.OneDriveWorkSchoolItem
+  parent: FoundationaLLM.Core.Models
+  href: FoundationaLLM.Core.Models.OneDriveWorkSchoolItem.html
+  name: OneDriveWorkSchoolItem
+  nameWithType: OneDriveWorkSchoolItem
+  fullName: FoundationaLLM.Core.Models.OneDriveWorkSchoolItem
+- uid: FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity
+  commentId: T:FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity
+  parent: FoundationaLLM.Common.Models.Authentication
+  href: FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity.html
+  name: UnifiedUserIdentity
+  nameWithType: UnifiedUserIdentity
+  fullName: FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity
+- uid: System.Threading.Tasks.Task{FoundationaLLM.Core.Models.OneDriveWorkSchoolItem}
+  commentId: T:System.Threading.Tasks.Task{FoundationaLLM.Core.Models.OneDriveWorkSchoolItem}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<OneDriveWorkSchoolItem>
+  nameWithType: Task<OneDriveWorkSchoolItem>
+  fullName: System.Threading.Tasks.Task<FoundationaLLM.Core.Models.OneDriveWorkSchoolItem>
+  nameWithType.vb: Task(Of OneDriveWorkSchoolItem)
+  fullName.vb: System.Threading.Tasks.Task(Of FoundationaLLM.Core.Models.OneDriveWorkSchoolItem)
+  name.vb: Task(Of OneDriveWorkSchoolItem)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: FoundationaLLM.Core.Models.OneDriveWorkSchoolItem
+    name: OneDriveWorkSchoolItem
+    href: FoundationaLLM.Core.Models.OneDriveWorkSchoolItem.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FoundationaLLM.Core.Models.OneDriveWorkSchoolItem
+    name: OneDriveWorkSchoolItem
+    href: FoundationaLLM.Core.Models.OneDriveWorkSchoolItem.html
+  - name: )
+- uid: FoundationaLLM.Core.Models
+  commentId: N:FoundationaLLM.Core.Models
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Core.Models
+  nameWithType: FoundationaLLM.Core.Models
+  fullName: FoundationaLLM.Core.Models
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Models
+    name: Models
+    href: FoundationaLLM.Core.Models.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Models
+    name: Models
+    href: FoundationaLLM.Core.Models.html
+- uid: FoundationaLLM.Common.Models.Authentication
+  commentId: N:FoundationaLLM.Common.Models.Authentication
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.Authentication
+  nameWithType: FoundationaLLM.Common.Models.Authentication
+  fullName: FoundationaLLM.Common.Models.Authentication
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Authentication
+    name: Authentication
+    href: FoundationaLLM.Common.Models.Authentication.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Authentication
+    name: Authentication
+    href: FoundationaLLM.Common.Models.Authentication.html
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )

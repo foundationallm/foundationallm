@@ -1,0 +1,1220 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Common.Interfaces.IAuthorizationServiceClient
+  commentId: T:FoundationaLLM.Common.Interfaces.IAuthorizationServiceClient
+  id: IAuthorizationServiceClient
+  parent: FoundationaLLM.Common.Interfaces
+  children:
+  - FoundationaLLM.Common.Interfaces.IAuthorizationServiceClient.CreateRoleAssignment(System.String,FoundationaLLM.Common.Models.Authorization.RoleAssignmentCreateRequest,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  - FoundationaLLM.Common.Interfaces.IAuthorizationServiceClient.DeleteRoleAssignment(System.String,System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  - FoundationaLLM.Common.Interfaces.IAuthorizationServiceClient.DeleteSecretKey(System.String,System.String,System.String)
+  - FoundationaLLM.Common.Interfaces.IAuthorizationServiceClient.GetRoleAssignments(System.String,FoundationaLLM.Common.Models.Authorization.RoleAssignmentQueryParameters,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  - FoundationaLLM.Common.Interfaces.IAuthorizationServiceClient.GetSecretKeys(System.String,System.String)
+  - FoundationaLLM.Common.Interfaces.IAuthorizationServiceClient.ProcessAuthorizationRequest(System.String,System.String,System.String,System.Collections.Generic.List{System.String},System.Boolean,System.Boolean,System.Boolean,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  - FoundationaLLM.Common.Interfaces.IAuthorizationServiceClient.UpsertSecretKey(System.String,FoundationaLLM.Common.Models.Authorization.SecretKey)
+  - FoundationaLLM.Common.Interfaces.IAuthorizationServiceClient.ValidateSecretKey(System.String,System.String,System.String)
+  langs:
+  - csharp
+  - vb
+  name: IAuthorizationServiceClient
+  nameWithType: IAuthorizationServiceClient
+  fullName: FoundationaLLM.Common.Interfaces.IAuthorizationServiceClient
+  type: Interface
+  source:
+    remote:
+      path: src/dotnet/Common/Interfaces/IAuthorizationServiceClient.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: IAuthorizationServiceClient
+    path: ../src/dotnet/Common/Interfaces/IAuthorizationServiceClient.cs
+    startLine: 9
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Interfaces
+  summary: Defines methods exposed by the Authorization service.
+  example: []
+  syntax:
+    content: public interface IAuthorizationServiceClient
+    content.vb: Public Interface IAuthorizationServiceClient
+  extensionMethods:
+  - System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+- uid: FoundationaLLM.Common.Interfaces.IAuthorizationServiceClient.ProcessAuthorizationRequest(System.String,System.String,System.String,System.Collections.Generic.List{System.String},System.Boolean,System.Boolean,System.Boolean,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  commentId: M:FoundationaLLM.Common.Interfaces.IAuthorizationServiceClient.ProcessAuthorizationRequest(System.String,System.String,System.String,System.Collections.Generic.List{System.String},System.Boolean,System.Boolean,System.Boolean,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  id: ProcessAuthorizationRequest(System.String,System.String,System.String,System.Collections.Generic.List{System.String},System.Boolean,System.Boolean,System.Boolean,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  parent: FoundationaLLM.Common.Interfaces.IAuthorizationServiceClient
+  langs:
+  - csharp
+  - vb
+  name: ProcessAuthorizationRequest(string, string, string?, List<string>, bool, bool, bool, UnifiedUserIdentity)
+  nameWithType: IAuthorizationServiceClient.ProcessAuthorizationRequest(string, string, string?, List<string>, bool, bool, bool, UnifiedUserIdentity)
+  fullName: FoundationaLLM.Common.Interfaces.IAuthorizationServiceClient.ProcessAuthorizationRequest(string, string, string?, System.Collections.Generic.List<string>, bool, bool, bool, FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Common/Interfaces/IAuthorizationServiceClient.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: ProcessAuthorizationRequest
+    path: ../src/dotnet/Common/Interfaces/IAuthorizationServiceClient.cs
+    startLine: 37
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Interfaces
+  summary: Processes an action authorization request.
+  remarks: >-
+    <p>
+
+    If the action specified by <code class="paramref">action</code> is not authorized for a resource type path,
+
+    and <code class="paramref">expandResourceTypePaths</code> is set to <code>true</code>, the response will include
+
+    any authorized resource paths matching the resource type path.
+
+    </p>
+
+    <p>
+
+    If <code class="paramref">includeRoles</code> is set to <code>true</code>, for each authrorized resource path,
+
+    the response will include the roles assigned directly or indirectly to the resource path.
+
+    </p>
+
+    <p>
+
+    If <code class="paramref">action</code> is set to <code>true</code>, for each authorized resource path,
+
+    the response will include the autorizable actions assigned directly or indirectly to the resource path.</p>
+  example: []
+  syntax:
+    content: Task<ActionAuthorizationResult> ProcessAuthorizationRequest(string instanceId, string action, string? roleName, List<string> resourcePaths, bool expandResourceTypePaths, bool includeRoles, bool includeActions, UnifiedUserIdentity userIdentity)
+    parameters:
+    - id: instanceId
+      type: System.String
+      description: The FoundationaLLM instance id.
+    - id: action
+      type: System.String
+      description: The action identifier.
+    - id: roleName
+      type: System.String
+      description: An optional role name to check for assignment.
+    - id: resourcePaths
+      type: System.Collections.Generic.List{System.String}
+      description: The resource paths.
+    - id: expandResourceTypePaths
+      type: System.Boolean
+      description: A value indicating whether to expand resource type paths that are not authorized.
+    - id: includeRoles
+      type: System.Boolean
+      description: A value indicating whether to include roles in the response.
+    - id: includeActions
+      type: System.Boolean
+      description: A value indicating whether to include authorizable actions in the response.
+    - id: userIdentity
+      type: FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity
+      description: The user identity.
+    return:
+      type: System.Threading.Tasks.Task{FoundationaLLM.Common.Models.Authorization.ActionAuthorizationResult}
+      description: An <xref href="FoundationaLLM.Common.Models.Authorization.ActionAuthorizationResult" data-throw-if-not-resolved="false"></xref> containing the result of the processing.
+    content.vb: Function ProcessAuthorizationRequest(instanceId As String, action As String, roleName As String, resourcePaths As List(Of String), expandResourceTypePaths As Boolean, includeRoles As Boolean, includeActions As Boolean, userIdentity As UnifiedUserIdentity) As Task(Of ActionAuthorizationResult)
+  overload: FoundationaLLM.Common.Interfaces.IAuthorizationServiceClient.ProcessAuthorizationRequest*
+  nameWithType.vb: IAuthorizationServiceClient.ProcessAuthorizationRequest(String, String, String, List(Of String), Boolean, Boolean, Boolean, UnifiedUserIdentity)
+  fullName.vb: FoundationaLLM.Common.Interfaces.IAuthorizationServiceClient.ProcessAuthorizationRequest(String, String, String, System.Collections.Generic.List(Of String), Boolean, Boolean, Boolean, FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  name.vb: ProcessAuthorizationRequest(String, String, String, List(Of String), Boolean, Boolean, Boolean, UnifiedUserIdentity)
+- uid: FoundationaLLM.Common.Interfaces.IAuthorizationServiceClient.CreateRoleAssignment(System.String,FoundationaLLM.Common.Models.Authorization.RoleAssignmentCreateRequest,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  commentId: M:FoundationaLLM.Common.Interfaces.IAuthorizationServiceClient.CreateRoleAssignment(System.String,FoundationaLLM.Common.Models.Authorization.RoleAssignmentCreateRequest,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  id: CreateRoleAssignment(System.String,FoundationaLLM.Common.Models.Authorization.RoleAssignmentCreateRequest,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  parent: FoundationaLLM.Common.Interfaces.IAuthorizationServiceClient
+  langs:
+  - csharp
+  - vb
+  name: CreateRoleAssignment(string, RoleAssignmentCreateRequest, UnifiedUserIdentity)
+  nameWithType: IAuthorizationServiceClient.CreateRoleAssignment(string, RoleAssignmentCreateRequest, UnifiedUserIdentity)
+  fullName: FoundationaLLM.Common.Interfaces.IAuthorizationServiceClient.CreateRoleAssignment(string, FoundationaLLM.Common.Models.Authorization.RoleAssignmentCreateRequest, FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Common/Interfaces/IAuthorizationServiceClient.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: CreateRoleAssignment
+    path: ../src/dotnet/Common/Interfaces/IAuthorizationServiceClient.cs
+    startLine: 54
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Interfaces
+  summary: Creates a new role assignment.
+  example: []
+  syntax:
+    content: Task<RoleAssignmentOperationResult> CreateRoleAssignment(string instanceId, RoleAssignmentCreateRequest roleAssignmentRequest, UnifiedUserIdentity userIdentity)
+    parameters:
+    - id: instanceId
+      type: System.String
+      description: The FoundationaLLM instance identifier.
+    - id: roleAssignmentRequest
+      type: FoundationaLLM.Common.Models.Authorization.RoleAssignmentCreateRequest
+      description: The <xref href="FoundationaLLM.Common.Models.Authorization.RoleAssignmentCreateRequest" data-throw-if-not-resolved="false"></xref> containing the details of the role assignment to be created.
+    - id: userIdentity
+      type: FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity
+      description: The user identity.
+    return:
+      type: System.Threading.Tasks.Task{FoundationaLLM.Common.Models.Authorization.RoleAssignmentOperationResult}
+      description: A <xref href="FoundationaLLM.Common.Models.Authorization.RoleAssignmentOperationResult" data-throw-if-not-resolved="false"></xref> containing information about the result of the operation.
+    content.vb: Function CreateRoleAssignment(instanceId As String, roleAssignmentRequest As RoleAssignmentCreateRequest, userIdentity As UnifiedUserIdentity) As Task(Of RoleAssignmentOperationResult)
+  overload: FoundationaLLM.Common.Interfaces.IAuthorizationServiceClient.CreateRoleAssignment*
+  nameWithType.vb: IAuthorizationServiceClient.CreateRoleAssignment(String, RoleAssignmentCreateRequest, UnifiedUserIdentity)
+  fullName.vb: FoundationaLLM.Common.Interfaces.IAuthorizationServiceClient.CreateRoleAssignment(String, FoundationaLLM.Common.Models.Authorization.RoleAssignmentCreateRequest, FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  name.vb: CreateRoleAssignment(String, RoleAssignmentCreateRequest, UnifiedUserIdentity)
+- uid: FoundationaLLM.Common.Interfaces.IAuthorizationServiceClient.GetRoleAssignments(System.String,FoundationaLLM.Common.Models.Authorization.RoleAssignmentQueryParameters,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  commentId: M:FoundationaLLM.Common.Interfaces.IAuthorizationServiceClient.GetRoleAssignments(System.String,FoundationaLLM.Common.Models.Authorization.RoleAssignmentQueryParameters,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  id: GetRoleAssignments(System.String,FoundationaLLM.Common.Models.Authorization.RoleAssignmentQueryParameters,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  parent: FoundationaLLM.Common.Interfaces.IAuthorizationServiceClient
+  langs:
+  - csharp
+  - vb
+  name: GetRoleAssignments(string, RoleAssignmentQueryParameters, UnifiedUserIdentity)
+  nameWithType: IAuthorizationServiceClient.GetRoleAssignments(string, RoleAssignmentQueryParameters, UnifiedUserIdentity)
+  fullName: FoundationaLLM.Common.Interfaces.IAuthorizationServiceClient.GetRoleAssignments(string, FoundationaLLM.Common.Models.Authorization.RoleAssignmentQueryParameters, FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Common/Interfaces/IAuthorizationServiceClient.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: GetRoleAssignments
+    path: ../src/dotnet/Common/Interfaces/IAuthorizationServiceClient.cs
+    startLine: 66
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Interfaces
+  summary: Returns a list of role assignments.
+  example: []
+  syntax:
+    content: Task<List<RoleAssignment>> GetRoleAssignments(string instanceId, RoleAssignmentQueryParameters queryParameters, UnifiedUserIdentity userIdentity)
+    parameters:
+    - id: instanceId
+      type: System.String
+      description: The FoundationaLLM instance identifier.
+    - id: queryParameters
+      type: FoundationaLLM.Common.Models.Authorization.RoleAssignmentQueryParameters
+      description: The <xref href="FoundationaLLM.Common.Models.Authorization.RoleAssignmentQueryParameters" data-throw-if-not-resolved="false"></xref> providing the inputs for filtering the role assignments.
+    - id: userIdentity
+      type: FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity
+      description: The user identity.
+    return:
+      type: System.Threading.Tasks.Task{System.Collections.Generic.List{FoundationaLLM.Common.Models.ResourceProviders.Authorization.RoleAssignment}}
+      description: The list of all role assignments for the specified instance.
+    content.vb: Function GetRoleAssignments(instanceId As String, queryParameters As RoleAssignmentQueryParameters, userIdentity As UnifiedUserIdentity) As Task(Of List(Of RoleAssignment))
+  overload: FoundationaLLM.Common.Interfaces.IAuthorizationServiceClient.GetRoleAssignments*
+  nameWithType.vb: IAuthorizationServiceClient.GetRoleAssignments(String, RoleAssignmentQueryParameters, UnifiedUserIdentity)
+  fullName.vb: FoundationaLLM.Common.Interfaces.IAuthorizationServiceClient.GetRoleAssignments(String, FoundationaLLM.Common.Models.Authorization.RoleAssignmentQueryParameters, FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  name.vb: GetRoleAssignments(String, RoleAssignmentQueryParameters, UnifiedUserIdentity)
+- uid: FoundationaLLM.Common.Interfaces.IAuthorizationServiceClient.DeleteRoleAssignment(System.String,System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  commentId: M:FoundationaLLM.Common.Interfaces.IAuthorizationServiceClient.DeleteRoleAssignment(System.String,System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  id: DeleteRoleAssignment(System.String,System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  parent: FoundationaLLM.Common.Interfaces.IAuthorizationServiceClient
+  langs:
+  - csharp
+  - vb
+  name: DeleteRoleAssignment(string, string, UnifiedUserIdentity)
+  nameWithType: IAuthorizationServiceClient.DeleteRoleAssignment(string, string, UnifiedUserIdentity)
+  fullName: FoundationaLLM.Common.Interfaces.IAuthorizationServiceClient.DeleteRoleAssignment(string, string, FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Common/Interfaces/IAuthorizationServiceClient.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: DeleteRoleAssignment
+    path: ../src/dotnet/Common/Interfaces/IAuthorizationServiceClient.cs
+    startLine: 78
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Interfaces
+  summary: Deletes a role assignment.
+  example: []
+  syntax:
+    content: Task<RoleAssignmentOperationResult> DeleteRoleAssignment(string instanceId, string roleAssignment, UnifiedUserIdentity userIdentity)
+    parameters:
+    - id: instanceId
+      type: System.String
+      description: The FoundationaLLM instance identifier.
+    - id: roleAssignment
+      type: System.String
+      description: The role assignment object identifier.
+    - id: userIdentity
+      type: FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity
+      description: The user identity.
+    return:
+      type: System.Threading.Tasks.Task{FoundationaLLM.Common.Models.Authorization.RoleAssignmentOperationResult}
+      description: A <xref href="FoundationaLLM.Common.Models.Authorization.RoleAssignmentOperationResult" data-throw-if-not-resolved="false"></xref> containing information about the result of the operation.
+    content.vb: Function DeleteRoleAssignment(instanceId As String, roleAssignment As String, userIdentity As UnifiedUserIdentity) As Task(Of RoleAssignmentOperationResult)
+  overload: FoundationaLLM.Common.Interfaces.IAuthorizationServiceClient.DeleteRoleAssignment*
+  nameWithType.vb: IAuthorizationServiceClient.DeleteRoleAssignment(String, String, UnifiedUserIdentity)
+  fullName.vb: FoundationaLLM.Common.Interfaces.IAuthorizationServiceClient.DeleteRoleAssignment(String, String, FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  name.vb: DeleteRoleAssignment(String, String, UnifiedUserIdentity)
+- uid: FoundationaLLM.Common.Interfaces.IAuthorizationServiceClient.GetSecretKeys(System.String,System.String)
+  commentId: M:FoundationaLLM.Common.Interfaces.IAuthorizationServiceClient.GetSecretKeys(System.String,System.String)
+  id: GetSecretKeys(System.String,System.String)
+  parent: FoundationaLLM.Common.Interfaces.IAuthorizationServiceClient
+  langs:
+  - csharp
+  - vb
+  name: GetSecretKeys(string, string)
+  nameWithType: IAuthorizationServiceClient.GetSecretKeys(string, string)
+  fullName: FoundationaLLM.Common.Interfaces.IAuthorizationServiceClient.GetSecretKeys(string, string)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Common/Interfaces/IAuthorizationServiceClient.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: GetSecretKeys
+    path: ../src/dotnet/Common/Interfaces/IAuthorizationServiceClient.cs
+    startLine: 93
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Interfaces
+  summary: Gets a list of <xref href="FoundationaLLM.Common.Models.Authorization.SecretKey" data-throw-if-not-resolved="false"></xref> items that are associated with the specified instance and context.
+  remarks: >-
+    Each consumer of secret keys should have a unique context identifier.
+
+    For example, FoundationaLLM resource providers could use the resource object identifier as the context identifier.
+  example: []
+  syntax:
+    content: Task<List<SecretKey>> GetSecretKeys(string instanceId, string contextId)
+    parameters:
+    - id: instanceId
+      type: System.String
+      description: The FoundationaLLM instance identifier.
+    - id: contextId
+      type: System.String
+      description: The identifier of the context for which the secret keys are retrieved.
+    return:
+      type: System.Threading.Tasks.Task{System.Collections.Generic.List{FoundationaLLM.Common.Models.Authorization.SecretKey}}
+      description: A list of <xref href="FoundationaLLM.Common.Models.Authorization.SecretKey" data-throw-if-not-resolved="false"></xref> items.
+    content.vb: Function GetSecretKeys(instanceId As String, contextId As String) As Task(Of List(Of SecretKey))
+  overload: FoundationaLLM.Common.Interfaces.IAuthorizationServiceClient.GetSecretKeys*
+  nameWithType.vb: IAuthorizationServiceClient.GetSecretKeys(String, String)
+  fullName.vb: FoundationaLLM.Common.Interfaces.IAuthorizationServiceClient.GetSecretKeys(String, String)
+  name.vb: GetSecretKeys(String, String)
+- uid: FoundationaLLM.Common.Interfaces.IAuthorizationServiceClient.UpsertSecretKey(System.String,FoundationaLLM.Common.Models.Authorization.SecretKey)
+  commentId: M:FoundationaLLM.Common.Interfaces.IAuthorizationServiceClient.UpsertSecretKey(System.String,FoundationaLLM.Common.Models.Authorization.SecretKey)
+  id: UpsertSecretKey(System.String,FoundationaLLM.Common.Models.Authorization.SecretKey)
+  parent: FoundationaLLM.Common.Interfaces.IAuthorizationServiceClient
+  langs:
+  - csharp
+  - vb
+  name: UpsertSecretKey(string, SecretKey)
+  nameWithType: IAuthorizationServiceClient.UpsertSecretKey(string, SecretKey)
+  fullName: FoundationaLLM.Common.Interfaces.IAuthorizationServiceClient.UpsertSecretKey(string, FoundationaLLM.Common.Models.Authorization.SecretKey)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Common/Interfaces/IAuthorizationServiceClient.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: UpsertSecretKey
+    path: ../src/dotnet/Common/Interfaces/IAuthorizationServiceClient.cs
+    startLine: 101
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Interfaces
+  summary: Creates a new or updates an existing <xref href="FoundationaLLM.Common.Models.Authorization.SecretKey" data-throw-if-not-resolved="false"></xref> item.
+  example: []
+  syntax:
+    content: Task<string?> UpsertSecretKey(string instanceId, SecretKey secretKey)
+    parameters:
+    - id: instanceId
+      type: System.String
+      description: The FoundationaLLM instance identifier.
+    - id: secretKey
+      type: FoundationaLLM.Common.Models.Authorization.SecretKey
+      description: The <xref href="FoundationaLLM.Common.Models.Authorization.SecretKey" data-throw-if-not-resolved="false"></xref> item containing the properties of the secret key being created or updated.
+    return:
+      type: System.Threading.Tasks.Task{System.String}
+      description: If the secret bey is being created, it returns the secret value of the key. Otherwise, returns <code>null</code>.
+    content.vb: Function UpsertSecretKey(instanceId As String, secretKey As SecretKey) As Task(Of String)
+  overload: FoundationaLLM.Common.Interfaces.IAuthorizationServiceClient.UpsertSecretKey*
+  nameWithType.vb: IAuthorizationServiceClient.UpsertSecretKey(String, SecretKey)
+  fullName.vb: FoundationaLLM.Common.Interfaces.IAuthorizationServiceClient.UpsertSecretKey(String, FoundationaLLM.Common.Models.Authorization.SecretKey)
+  name.vb: UpsertSecretKey(String, SecretKey)
+- uid: FoundationaLLM.Common.Interfaces.IAuthorizationServiceClient.DeleteSecretKey(System.String,System.String,System.String)
+  commentId: M:FoundationaLLM.Common.Interfaces.IAuthorizationServiceClient.DeleteSecretKey(System.String,System.String,System.String)
+  id: DeleteSecretKey(System.String,System.String,System.String)
+  parent: FoundationaLLM.Common.Interfaces.IAuthorizationServiceClient
+  langs:
+  - csharp
+  - vb
+  name: DeleteSecretKey(string, string, string)
+  nameWithType: IAuthorizationServiceClient.DeleteSecretKey(string, string, string)
+  fullName: FoundationaLLM.Common.Interfaces.IAuthorizationServiceClient.DeleteSecretKey(string, string, string)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Common/Interfaces/IAuthorizationServiceClient.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: DeleteSecretKey
+    path: ../src/dotnet/Common/Interfaces/IAuthorizationServiceClient.cs
+    startLine: 109
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Interfaces
+  summary: Deletes a specified secret key.
+  example: []
+  syntax:
+    content: Task DeleteSecretKey(string instanceId, string contextId, string secretKeyId)
+    parameters:
+    - id: instanceId
+      type: System.String
+      description: The FoundationaLLM instance identifier.
+    - id: contextId
+      type: System.String
+      description: The identifier of the context containing the secret key to delete.
+    - id: secretKeyId
+      type: System.String
+      description: The unique identifier of the secret key being deleted.
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Function DeleteSecretKey(instanceId As String, contextId As String, secretKeyId As String) As Task
+  overload: FoundationaLLM.Common.Interfaces.IAuthorizationServiceClient.DeleteSecretKey*
+  nameWithType.vb: IAuthorizationServiceClient.DeleteSecretKey(String, String, String)
+  fullName.vb: FoundationaLLM.Common.Interfaces.IAuthorizationServiceClient.DeleteSecretKey(String, String, String)
+  name.vb: DeleteSecretKey(String, String, String)
+- uid: FoundationaLLM.Common.Interfaces.IAuthorizationServiceClient.ValidateSecretKey(System.String,System.String,System.String)
+  commentId: M:FoundationaLLM.Common.Interfaces.IAuthorizationServiceClient.ValidateSecretKey(System.String,System.String,System.String)
+  id: ValidateSecretKey(System.String,System.String,System.String)
+  parent: FoundationaLLM.Common.Interfaces.IAuthorizationServiceClient
+  langs:
+  - csharp
+  - vb
+  name: ValidateSecretKey(string, string, string)
+  nameWithType: IAuthorizationServiceClient.ValidateSecretKey(string, string, string)
+  fullName: FoundationaLLM.Common.Interfaces.IAuthorizationServiceClient.ValidateSecretKey(string, string, string)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Common/Interfaces/IAuthorizationServiceClient.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: ValidateSecretKey
+    path: ../src/dotnet/Common/Interfaces/IAuthorizationServiceClient.cs
+    startLine: 122
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Interfaces
+  summary: Validates a secret key value.
+  remarks: >-
+    Each valid secret key has an associated virtual identity that is returned in the <xref href="FoundationaLLM.Common.Models.Authorization.SecretKeyValidationResult.VirtualIdentity" data-throw-if-not-resolved="false"></xref> property.
+
+    It is the responsibility of the caller to use the virtual identity to authorize the request.
+  example: []
+  syntax:
+    content: Task<SecretKeyValidationResult> ValidateSecretKey(string instanceId, string contextId, string secretKeyValue)
+    parameters:
+    - id: instanceId
+      type: System.String
+      description: The FoundationaLLM instance identifier.
+    - id: contextId
+      type: System.String
+      description: The identifier of the context containing the secret key to validate.
+    - id: secretKeyValue
+      type: System.String
+      description: The secret value of the key.
+    return:
+      type: System.Threading.Tasks.Task{FoundationaLLM.Common.Models.Authorization.SecretKeyValidationResult}
+      description: A <xref href="FoundationaLLM.Common.Models.Authorization.SecretKeyValidationResult" data-throw-if-not-resolved="false"></xref> item with the results of the validation.
+    content.vb: Function ValidateSecretKey(instanceId As String, contextId As String, secretKeyValue As String) As Task(Of SecretKeyValidationResult)
+  overload: FoundationaLLM.Common.Interfaces.IAuthorizationServiceClient.ValidateSecretKey*
+  nameWithType.vb: IAuthorizationServiceClient.ValidateSecretKey(String, String, String)
+  fullName.vb: FoundationaLLM.Common.Interfaces.IAuthorizationServiceClient.ValidateSecretKey(String, String, String)
+  name.vb: ValidateSecretKey(String, String, String)
+references:
+- uid: FoundationaLLM.Common.Interfaces
+  commentId: N:FoundationaLLM.Common.Interfaces
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Interfaces
+  nameWithType: FoundationaLLM.Common.Interfaces
+  fullName: FoundationaLLM.Common.Interfaces
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Interfaces
+    name: Interfaces
+    href: FoundationaLLM.Common.Interfaces.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Interfaces
+    name: Interfaces
+    href: FoundationaLLM.Common.Interfaces.html
+- uid: System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  parent: FoundationaLLM.Core.Utils.ObjectExtensions
+  definition: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  isExternal: true
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions
+  commentId: T:FoundationaLLM.Core.Utils.ObjectExtensions
+  parent: FoundationaLLM.Core.Utils
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html
+  name: ObjectExtensions
+  nameWithType: ObjectExtensions
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions
+- uid: FoundationaLLM.Core.Utils
+  commentId: N:FoundationaLLM.Core.Utils
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Core.Utils
+  nameWithType: FoundationaLLM.Core.Utils
+  fullName: FoundationaLLM.Core.Utils
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+- uid: FoundationaLLM.Common.Models.Authorization.ActionAuthorizationResult
+  commentId: T:FoundationaLLM.Common.Models.Authorization.ActionAuthorizationResult
+  parent: FoundationaLLM.Common.Models.Authorization
+  href: FoundationaLLM.Common.Models.Authorization.ActionAuthorizationResult.html
+  name: ActionAuthorizationResult
+  nameWithType: ActionAuthorizationResult
+  fullName: FoundationaLLM.Common.Models.Authorization.ActionAuthorizationResult
+- uid: FoundationaLLM.Common.Interfaces.IAuthorizationServiceClient.ProcessAuthorizationRequest*
+  commentId: Overload:FoundationaLLM.Common.Interfaces.IAuthorizationServiceClient.ProcessAuthorizationRequest
+  href: FoundationaLLM.Common.Interfaces.IAuthorizationServiceClient.html#FoundationaLLM_Common_Interfaces_IAuthorizationServiceClient_ProcessAuthorizationRequest_System_String_System_String_System_String_System_Collections_Generic_List_System_String__System_Boolean_System_Boolean_System_Boolean_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_
+  name: ProcessAuthorizationRequest
+  nameWithType: IAuthorizationServiceClient.ProcessAuthorizationRequest
+  fullName: FoundationaLLM.Common.Interfaces.IAuthorizationServiceClient.ProcessAuthorizationRequest
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System.Collections.Generic.List{System.String}
+  commentId: T:System.Collections.Generic.List{System.String}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.List`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  name: List<string>
+  nameWithType: List<string>
+  fullName: System.Collections.Generic.List<string>
+  nameWithType.vb: List(Of String)
+  fullName.vb: System.Collections.Generic.List(Of String)
+  name.vb: List(Of String)
+  spec.csharp:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity
+  commentId: T:FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity
+  parent: FoundationaLLM.Common.Models.Authentication
+  href: FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity.html
+  name: UnifiedUserIdentity
+  nameWithType: UnifiedUserIdentity
+  fullName: FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity
+- uid: System.Threading.Tasks.Task{FoundationaLLM.Common.Models.Authorization.ActionAuthorizationResult}
+  commentId: T:System.Threading.Tasks.Task{FoundationaLLM.Common.Models.Authorization.ActionAuthorizationResult}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<ActionAuthorizationResult>
+  nameWithType: Task<ActionAuthorizationResult>
+  fullName: System.Threading.Tasks.Task<FoundationaLLM.Common.Models.Authorization.ActionAuthorizationResult>
+  nameWithType.vb: Task(Of ActionAuthorizationResult)
+  fullName.vb: System.Threading.Tasks.Task(Of FoundationaLLM.Common.Models.Authorization.ActionAuthorizationResult)
+  name.vb: Task(Of ActionAuthorizationResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: FoundationaLLM.Common.Models.Authorization.ActionAuthorizationResult
+    name: ActionAuthorizationResult
+    href: FoundationaLLM.Common.Models.Authorization.ActionAuthorizationResult.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FoundationaLLM.Common.Models.Authorization.ActionAuthorizationResult
+    name: ActionAuthorizationResult
+    href: FoundationaLLM.Common.Models.Authorization.ActionAuthorizationResult.html
+  - name: )
+- uid: FoundationaLLM.Common.Models.Authorization
+  commentId: N:FoundationaLLM.Common.Models.Authorization
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.Authorization
+  nameWithType: FoundationaLLM.Common.Models.Authorization
+  fullName: FoundationaLLM.Common.Models.Authorization
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Authorization
+    name: Authorization
+    href: FoundationaLLM.Common.Models.Authorization.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Authorization
+    name: Authorization
+    href: FoundationaLLM.Common.Models.Authorization.html
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.Collections.Generic.List`1
+  commentId: T:System.Collections.Generic.List`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  name: List<T>
+  nameWithType: List<T>
+  fullName: System.Collections.Generic.List<T>
+  nameWithType.vb: List(Of T)
+  fullName.vb: System.Collections.Generic.List(Of T)
+  name.vb: List(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: FoundationaLLM.Common.Models.Authentication
+  commentId: N:FoundationaLLM.Common.Models.Authentication
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.Authentication
+  nameWithType: FoundationaLLM.Common.Models.Authentication
+  fullName: FoundationaLLM.Common.Models.Authentication
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Authentication
+    name: Authentication
+    href: FoundationaLLM.Common.Models.Authentication.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Authentication
+    name: Authentication
+    href: FoundationaLLM.Common.Models.Authentication.html
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: FoundationaLLM.Common.Models.Authorization.RoleAssignmentCreateRequest
+  commentId: T:FoundationaLLM.Common.Models.Authorization.RoleAssignmentCreateRequest
+  parent: FoundationaLLM.Common.Models.Authorization
+  href: FoundationaLLM.Common.Models.Authorization.RoleAssignmentCreateRequest.html
+  name: RoleAssignmentCreateRequest
+  nameWithType: RoleAssignmentCreateRequest
+  fullName: FoundationaLLM.Common.Models.Authorization.RoleAssignmentCreateRequest
+- uid: FoundationaLLM.Common.Models.Authorization.RoleAssignmentOperationResult
+  commentId: T:FoundationaLLM.Common.Models.Authorization.RoleAssignmentOperationResult
+  href: FoundationaLLM.Common.Models.Authorization.RoleAssignmentOperationResult.html
+  name: RoleAssignmentOperationResult
+  nameWithType: RoleAssignmentOperationResult
+  fullName: FoundationaLLM.Common.Models.Authorization.RoleAssignmentOperationResult
+- uid: FoundationaLLM.Common.Interfaces.IAuthorizationServiceClient.CreateRoleAssignment*
+  commentId: Overload:FoundationaLLM.Common.Interfaces.IAuthorizationServiceClient.CreateRoleAssignment
+  href: FoundationaLLM.Common.Interfaces.IAuthorizationServiceClient.html#FoundationaLLM_Common_Interfaces_IAuthorizationServiceClient_CreateRoleAssignment_System_String_FoundationaLLM_Common_Models_Authorization_RoleAssignmentCreateRequest_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_
+  name: CreateRoleAssignment
+  nameWithType: IAuthorizationServiceClient.CreateRoleAssignment
+  fullName: FoundationaLLM.Common.Interfaces.IAuthorizationServiceClient.CreateRoleAssignment
+- uid: System.Threading.Tasks.Task{FoundationaLLM.Common.Models.Authorization.RoleAssignmentOperationResult}
+  commentId: T:System.Threading.Tasks.Task{FoundationaLLM.Common.Models.Authorization.RoleAssignmentOperationResult}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<RoleAssignmentOperationResult>
+  nameWithType: Task<RoleAssignmentOperationResult>
+  fullName: System.Threading.Tasks.Task<FoundationaLLM.Common.Models.Authorization.RoleAssignmentOperationResult>
+  nameWithType.vb: Task(Of RoleAssignmentOperationResult)
+  fullName.vb: System.Threading.Tasks.Task(Of FoundationaLLM.Common.Models.Authorization.RoleAssignmentOperationResult)
+  name.vb: Task(Of RoleAssignmentOperationResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: FoundationaLLM.Common.Models.Authorization.RoleAssignmentOperationResult
+    name: RoleAssignmentOperationResult
+    href: FoundationaLLM.Common.Models.Authorization.RoleAssignmentOperationResult.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FoundationaLLM.Common.Models.Authorization.RoleAssignmentOperationResult
+    name: RoleAssignmentOperationResult
+    href: FoundationaLLM.Common.Models.Authorization.RoleAssignmentOperationResult.html
+  - name: )
+- uid: FoundationaLLM.Common.Models.Authorization.RoleAssignmentQueryParameters
+  commentId: T:FoundationaLLM.Common.Models.Authorization.RoleAssignmentQueryParameters
+  parent: FoundationaLLM.Common.Models.Authorization
+  href: FoundationaLLM.Common.Models.Authorization.RoleAssignmentQueryParameters.html
+  name: RoleAssignmentQueryParameters
+  nameWithType: RoleAssignmentQueryParameters
+  fullName: FoundationaLLM.Common.Models.Authorization.RoleAssignmentQueryParameters
+- uid: FoundationaLLM.Common.Interfaces.IAuthorizationServiceClient.GetRoleAssignments*
+  commentId: Overload:FoundationaLLM.Common.Interfaces.IAuthorizationServiceClient.GetRoleAssignments
+  href: FoundationaLLM.Common.Interfaces.IAuthorizationServiceClient.html#FoundationaLLM_Common_Interfaces_IAuthorizationServiceClient_GetRoleAssignments_System_String_FoundationaLLM_Common_Models_Authorization_RoleAssignmentQueryParameters_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_
+  name: GetRoleAssignments
+  nameWithType: IAuthorizationServiceClient.GetRoleAssignments
+  fullName: FoundationaLLM.Common.Interfaces.IAuthorizationServiceClient.GetRoleAssignments
+- uid: System.Threading.Tasks.Task{System.Collections.Generic.List{FoundationaLLM.Common.Models.ResourceProviders.Authorization.RoleAssignment}}
+  commentId: T:System.Threading.Tasks.Task{System.Collections.Generic.List{FoundationaLLM.Common.Models.ResourceProviders.Authorization.RoleAssignment}}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<List<RoleAssignment>>
+  nameWithType: Task<List<RoleAssignment>>
+  fullName: System.Threading.Tasks.Task<System.Collections.Generic.List<FoundationaLLM.Common.Models.ResourceProviders.Authorization.RoleAssignment>>
+  nameWithType.vb: Task(Of List(Of RoleAssignment))
+  fullName.vb: System.Threading.Tasks.Task(Of System.Collections.Generic.List(Of FoundationaLLM.Common.Models.ResourceProviders.Authorization.RoleAssignment))
+  name.vb: Task(Of List(Of RoleAssignment))
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.Authorization.RoleAssignment
+    name: RoleAssignment
+    href: FoundationaLLM.Common.Models.ResourceProviders.Authorization.RoleAssignment.html
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.Authorization.RoleAssignment
+    name: RoleAssignment
+    href: FoundationaLLM.Common.Models.ResourceProviders.Authorization.RoleAssignment.html
+  - name: )
+  - name: )
+- uid: FoundationaLLM.Common.Interfaces.IAuthorizationServiceClient.DeleteRoleAssignment*
+  commentId: Overload:FoundationaLLM.Common.Interfaces.IAuthorizationServiceClient.DeleteRoleAssignment
+  href: FoundationaLLM.Common.Interfaces.IAuthorizationServiceClient.html#FoundationaLLM_Common_Interfaces_IAuthorizationServiceClient_DeleteRoleAssignment_System_String_System_String_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_
+  name: DeleteRoleAssignment
+  nameWithType: IAuthorizationServiceClient.DeleteRoleAssignment
+  fullName: FoundationaLLM.Common.Interfaces.IAuthorizationServiceClient.DeleteRoleAssignment
+- uid: FoundationaLLM.Common.Models.Authorization.SecretKey
+  commentId: T:FoundationaLLM.Common.Models.Authorization.SecretKey
+  parent: FoundationaLLM.Common.Models.Authorization
+  href: FoundationaLLM.Common.Models.Authorization.SecretKey.html
+  name: SecretKey
+  nameWithType: SecretKey
+  fullName: FoundationaLLM.Common.Models.Authorization.SecretKey
+- uid: FoundationaLLM.Common.Interfaces.IAuthorizationServiceClient.GetSecretKeys*
+  commentId: Overload:FoundationaLLM.Common.Interfaces.IAuthorizationServiceClient.GetSecretKeys
+  href: FoundationaLLM.Common.Interfaces.IAuthorizationServiceClient.html#FoundationaLLM_Common_Interfaces_IAuthorizationServiceClient_GetSecretKeys_System_String_System_String_
+  name: GetSecretKeys
+  nameWithType: IAuthorizationServiceClient.GetSecretKeys
+  fullName: FoundationaLLM.Common.Interfaces.IAuthorizationServiceClient.GetSecretKeys
+- uid: System.Threading.Tasks.Task{System.Collections.Generic.List{FoundationaLLM.Common.Models.Authorization.SecretKey}}
+  commentId: T:System.Threading.Tasks.Task{System.Collections.Generic.List{FoundationaLLM.Common.Models.Authorization.SecretKey}}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<List<SecretKey>>
+  nameWithType: Task<List<SecretKey>>
+  fullName: System.Threading.Tasks.Task<System.Collections.Generic.List<FoundationaLLM.Common.Models.Authorization.SecretKey>>
+  nameWithType.vb: Task(Of List(Of SecretKey))
+  fullName.vb: System.Threading.Tasks.Task(Of System.Collections.Generic.List(Of FoundationaLLM.Common.Models.Authorization.SecretKey))
+  name.vb: Task(Of List(Of SecretKey))
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: FoundationaLLM.Common.Models.Authorization.SecretKey
+    name: SecretKey
+    href: FoundationaLLM.Common.Models.Authorization.SecretKey.html
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FoundationaLLM.Common.Models.Authorization.SecretKey
+    name: SecretKey
+    href: FoundationaLLM.Common.Models.Authorization.SecretKey.html
+  - name: )
+  - name: )
+- uid: FoundationaLLM.Common.Interfaces.IAuthorizationServiceClient.UpsertSecretKey*
+  commentId: Overload:FoundationaLLM.Common.Interfaces.IAuthorizationServiceClient.UpsertSecretKey
+  href: FoundationaLLM.Common.Interfaces.IAuthorizationServiceClient.html#FoundationaLLM_Common_Interfaces_IAuthorizationServiceClient_UpsertSecretKey_System_String_FoundationaLLM_Common_Models_Authorization_SecretKey_
+  name: UpsertSecretKey
+  nameWithType: IAuthorizationServiceClient.UpsertSecretKey
+  fullName: FoundationaLLM.Common.Interfaces.IAuthorizationServiceClient.UpsertSecretKey
+- uid: System.Threading.Tasks.Task{System.String}
+  commentId: T:System.Threading.Tasks.Task{System.String}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<string>
+  nameWithType: Task<string>
+  fullName: System.Threading.Tasks.Task<string>
+  nameWithType.vb: Task(Of String)
+  fullName.vb: System.Threading.Tasks.Task(Of String)
+  name.vb: Task(Of String)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: FoundationaLLM.Common.Interfaces.IAuthorizationServiceClient.DeleteSecretKey*
+  commentId: Overload:FoundationaLLM.Common.Interfaces.IAuthorizationServiceClient.DeleteSecretKey
+  href: FoundationaLLM.Common.Interfaces.IAuthorizationServiceClient.html#FoundationaLLM_Common_Interfaces_IAuthorizationServiceClient_DeleteSecretKey_System_String_System_String_System_String_
+  name: DeleteSecretKey
+  nameWithType: IAuthorizationServiceClient.DeleteSecretKey
+  fullName: FoundationaLLM.Common.Interfaces.IAuthorizationServiceClient.DeleteSecretKey
+- uid: System.Threading.Tasks.Task
+  commentId: T:System.Threading.Tasks.Task
+  parent: System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  name: Task
+  nameWithType: Task
+  fullName: System.Threading.Tasks.Task
+- uid: FoundationaLLM.Common.Models.Authorization.SecretKeyValidationResult
+  commentId: T:FoundationaLLM.Common.Models.Authorization.SecretKeyValidationResult
+  href: FoundationaLLM.Common.Models.Authorization.SecretKeyValidationResult.html
+  name: SecretKeyValidationResult
+  nameWithType: SecretKeyValidationResult
+  fullName: FoundationaLLM.Common.Models.Authorization.SecretKeyValidationResult
+- uid: FoundationaLLM.Common.Models.Authorization.SecretKeyValidationResult.VirtualIdentity
+  commentId: P:FoundationaLLM.Common.Models.Authorization.SecretKeyValidationResult.VirtualIdentity
+  href: FoundationaLLM.Common.Models.Authorization.SecretKeyValidationResult.html#FoundationaLLM_Common_Models_Authorization_SecretKeyValidationResult_VirtualIdentity
+  name: VirtualIdentity
+  nameWithType: SecretKeyValidationResult.VirtualIdentity
+  fullName: FoundationaLLM.Common.Models.Authorization.SecretKeyValidationResult.VirtualIdentity
+- uid: FoundationaLLM.Common.Interfaces.IAuthorizationServiceClient.ValidateSecretKey*
+  commentId: Overload:FoundationaLLM.Common.Interfaces.IAuthorizationServiceClient.ValidateSecretKey
+  href: FoundationaLLM.Common.Interfaces.IAuthorizationServiceClient.html#FoundationaLLM_Common_Interfaces_IAuthorizationServiceClient_ValidateSecretKey_System_String_System_String_System_String_
+  name: ValidateSecretKey
+  nameWithType: IAuthorizationServiceClient.ValidateSecretKey
+  fullName: FoundationaLLM.Common.Interfaces.IAuthorizationServiceClient.ValidateSecretKey
+- uid: System.Threading.Tasks.Task{FoundationaLLM.Common.Models.Authorization.SecretKeyValidationResult}
+  commentId: T:System.Threading.Tasks.Task{FoundationaLLM.Common.Models.Authorization.SecretKeyValidationResult}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<SecretKeyValidationResult>
+  nameWithType: Task<SecretKeyValidationResult>
+  fullName: System.Threading.Tasks.Task<FoundationaLLM.Common.Models.Authorization.SecretKeyValidationResult>
+  nameWithType.vb: Task(Of SecretKeyValidationResult)
+  fullName.vb: System.Threading.Tasks.Task(Of FoundationaLLM.Common.Models.Authorization.SecretKeyValidationResult)
+  name.vb: Task(Of SecretKeyValidationResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: FoundationaLLM.Common.Models.Authorization.SecretKeyValidationResult
+    name: SecretKeyValidationResult
+    href: FoundationaLLM.Common.Models.Authorization.SecretKeyValidationResult.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FoundationaLLM.Common.Models.Authorization.SecretKeyValidationResult
+    name: SecretKeyValidationResult
+    href: FoundationaLLM.Common.Models.Authorization.SecretKeyValidationResult.html
+  - name: )

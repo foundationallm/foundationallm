@@ -1,0 +1,99 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.SemanticKernel.Core.Models.Configuration
+  commentId: N:FoundationaLLM.SemanticKernel.Core.Models.Configuration
+  id: Models.Configuration
+  parent: FoundationaLLM.SemanticKernel.Core
+  children:
+  - FoundationaLLM.SemanticKernel.Core.Models.Configuration.AzureAISearchIndexingServiceSettings
+  - FoundationaLLM.SemanticKernel.Core.Models.Configuration.AzureCosmosDBNoSQLIndexingServiceSettings
+  - FoundationaLLM.SemanticKernel.Core.Models.Configuration.PostgresIndexingServiceSettings
+  - FoundationaLLM.SemanticKernel.Core.Models.Configuration.SemanticKernelServiceSettings
+  - FoundationaLLM.SemanticKernel.Core.Models.Configuration.SemanticKernelTextEmbeddingServiceSettings
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM.SemanticKernel.Core.Models.Configuration
+  nameWithType: FoundationaLLM.SemanticKernel.Core.Models.Configuration
+  fullName: FoundationaLLM.SemanticKernel.Core.Models.Configuration
+  type: Namespace
+  assemblies:
+  - FoundationaLLM.SemanticKernel.Core
+references:
+- uid: FoundationaLLM.SemanticKernel.Core.Models.Configuration.AzureAISearchIndexingServiceSettings
+  commentId: T:FoundationaLLM.SemanticKernel.Core.Models.Configuration.AzureAISearchIndexingServiceSettings
+  parent: FoundationaLLM.SemanticKernel.Core.Models.Configuration
+  href: FoundationaLLM.SemanticKernel.Core.Models.Configuration.AzureAISearchIndexingServiceSettings.html
+  name: AzureAISearchIndexingServiceSettings
+  nameWithType: AzureAISearchIndexingServiceSettings
+  fullName: FoundationaLLM.SemanticKernel.Core.Models.Configuration.AzureAISearchIndexingServiceSettings
+- uid: FoundationaLLM.SemanticKernel.Core.Models.Configuration.AzureCosmosDBNoSQLIndexingServiceSettings
+  commentId: T:FoundationaLLM.SemanticKernel.Core.Models.Configuration.AzureCosmosDBNoSQLIndexingServiceSettings
+  href: FoundationaLLM.SemanticKernel.Core.Models.Configuration.AzureCosmosDBNoSQLIndexingServiceSettings.html
+  name: AzureCosmosDBNoSQLIndexingServiceSettings
+  nameWithType: AzureCosmosDBNoSQLIndexingServiceSettings
+  fullName: FoundationaLLM.SemanticKernel.Core.Models.Configuration.AzureCosmosDBNoSQLIndexingServiceSettings
+- uid: FoundationaLLM.SemanticKernel.Core.Models.Configuration.PostgresIndexingServiceSettings
+  commentId: T:FoundationaLLM.SemanticKernel.Core.Models.Configuration.PostgresIndexingServiceSettings
+  href: FoundationaLLM.SemanticKernel.Core.Models.Configuration.PostgresIndexingServiceSettings.html
+  name: PostgresIndexingServiceSettings
+  nameWithType: PostgresIndexingServiceSettings
+  fullName: FoundationaLLM.SemanticKernel.Core.Models.Configuration.PostgresIndexingServiceSettings
+- uid: FoundationaLLM.SemanticKernel.Core.Models.Configuration.SemanticKernelServiceSettings
+  commentId: T:FoundationaLLM.SemanticKernel.Core.Models.Configuration.SemanticKernelServiceSettings
+  href: FoundationaLLM.SemanticKernel.Core.Models.Configuration.SemanticKernelServiceSettings.html
+  name: SemanticKernelServiceSettings
+  nameWithType: SemanticKernelServiceSettings
+  fullName: FoundationaLLM.SemanticKernel.Core.Models.Configuration.SemanticKernelServiceSettings
+- uid: FoundationaLLM.SemanticKernel.Core.Models.Configuration.SemanticKernelTextEmbeddingServiceSettings
+  commentId: T:FoundationaLLM.SemanticKernel.Core.Models.Configuration.SemanticKernelTextEmbeddingServiceSettings
+  href: FoundationaLLM.SemanticKernel.Core.Models.Configuration.SemanticKernelTextEmbeddingServiceSettings.html
+  name: SemanticKernelTextEmbeddingServiceSettings
+  nameWithType: SemanticKernelTextEmbeddingServiceSettings
+  fullName: FoundationaLLM.SemanticKernel.Core.Models.Configuration.SemanticKernelTextEmbeddingServiceSettings
+- uid: FoundationaLLM.SemanticKernel.Core.Models.Configuration
+  commentId: N:FoundationaLLM.SemanticKernel.Core.Models.Configuration
+  href: FoundationaLLM.html
+  name: FoundationaLLM.SemanticKernel.Core.Models.Configuration
+  nameWithType: FoundationaLLM.SemanticKernel.Core.Models.Configuration
+  fullName: FoundationaLLM.SemanticKernel.Core.Models.Configuration
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.SemanticKernel
+    name: SemanticKernel
+    href: FoundationaLLM.SemanticKernel.html
+  - name: .
+  - uid: FoundationaLLM.SemanticKernel.Core
+    name: Core
+    href: FoundationaLLM.SemanticKernel.Core.html
+  - name: .
+  - uid: FoundationaLLM.SemanticKernel.Core.Models
+    name: Models
+    href: FoundationaLLM.SemanticKernel.Core.Models.html
+  - name: .
+  - uid: FoundationaLLM.SemanticKernel.Core.Models.Configuration
+    name: Configuration
+    href: FoundationaLLM.SemanticKernel.Core.Models.Configuration.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.SemanticKernel
+    name: SemanticKernel
+    href: FoundationaLLM.SemanticKernel.html
+  - name: .
+  - uid: FoundationaLLM.SemanticKernel.Core
+    name: Core
+    href: FoundationaLLM.SemanticKernel.Core.html
+  - name: .
+  - uid: FoundationaLLM.SemanticKernel.Core.Models
+    name: Models
+    href: FoundationaLLM.SemanticKernel.Core.Models.html
+  - name: .
+  - uid: FoundationaLLM.SemanticKernel.Core.Models.Configuration
+    name: Configuration
+    href: FoundationaLLM.SemanticKernel.Core.Models.Configuration.html

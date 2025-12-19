@@ -1,0 +1,55 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Configuration.Interfaces
+  commentId: N:FoundationaLLM.Configuration.Interfaces
+  id: Interfaces
+  parent: FoundationaLLM.Configuration
+  children:
+  - FoundationaLLM.Configuration.Interfaces.IConfigurationHealthChecks
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM.Configuration.Interfaces
+  nameWithType: FoundationaLLM.Configuration.Interfaces
+  fullName: FoundationaLLM.Configuration.Interfaces
+  type: Namespace
+  assemblies:
+  - FoundationaLLM.Configuration
+references:
+- uid: FoundationaLLM.Configuration.Interfaces.IConfigurationHealthChecks
+  commentId: T:FoundationaLLM.Configuration.Interfaces.IConfigurationHealthChecks
+  parent: FoundationaLLM.Configuration.Interfaces
+  href: FoundationaLLM.Configuration.Interfaces.IConfigurationHealthChecks.html
+  name: IConfigurationHealthChecks
+  nameWithType: IConfigurationHealthChecks
+  fullName: FoundationaLLM.Configuration.Interfaces.IConfigurationHealthChecks
+- uid: FoundationaLLM.Configuration.Interfaces
+  commentId: N:FoundationaLLM.Configuration.Interfaces
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Configuration.Interfaces
+  nameWithType: FoundationaLLM.Configuration.Interfaces
+  fullName: FoundationaLLM.Configuration.Interfaces
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Configuration
+    name: Configuration
+    href: FoundationaLLM.Configuration.html
+  - name: .
+  - uid: FoundationaLLM.Configuration.Interfaces
+    name: Interfaces
+    href: FoundationaLLM.Configuration.Interfaces.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Configuration
+    name: Configuration
+    href: FoundationaLLM.Configuration.html
+  - name: .
+  - uid: FoundationaLLM.Configuration.Interfaces
+    name: Interfaces
+    href: FoundationaLLM.Configuration.Interfaces.html

@@ -1,0 +1,116 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Common.Services.ResourceProviders
+  commentId: N:FoundationaLLM.Common.Services.ResourceProviders
+  id: ResourceProviders
+  parent: FoundationaLLM.Common.Services
+  children:
+  - FoundationaLLM.Common.Services.ResourceProviders.Agent
+  - FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderResourceReferenceStore`1
+  - FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase`1
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM.Common.Services.ResourceProviders
+  nameWithType: FoundationaLLM.Common.Services.ResourceProviders
+  fullName: FoundationaLLM.Common.Services.ResourceProviders
+  type: Namespace
+  assemblies:
+  - FoundationaLLM.Common
+references:
+- uid: FoundationaLLM.Common.Services.ResourceProviders.Agent
+  commentId: N:FoundationaLLM.Common.Services.ResourceProviders.Agent
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Services.ResourceProviders.Agent
+  nameWithType: FoundationaLLM.Common.Services.ResourceProviders.Agent
+  fullName: FoundationaLLM.Common.Services.ResourceProviders.Agent
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Services
+    name: Services
+    href: FoundationaLLM.Common.Services.html
+  - name: .
+  - uid: FoundationaLLM.Common.Services.ResourceProviders
+    name: ResourceProviders
+    href: FoundationaLLM.Common.Services.ResourceProviders.html
+  - name: .
+  - uid: FoundationaLLM.Common.Services.ResourceProviders.Agent
+    name: Agent
+    href: FoundationaLLM.Common.Services.ResourceProviders.Agent.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Services
+    name: Services
+    href: FoundationaLLM.Common.Services.html
+  - name: .
+  - uid: FoundationaLLM.Common.Services.ResourceProviders
+    name: ResourceProviders
+    href: FoundationaLLM.Common.Services.ResourceProviders.html
+  - name: .
+  - uid: FoundationaLLM.Common.Services.ResourceProviders.Agent
+    name: Agent
+    href: FoundationaLLM.Common.Services.ResourceProviders.Agent.html
+- uid: FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderResourceReferenceStore`1
+  commentId: T:FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderResourceReferenceStore`1
+  href: FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderResourceReferenceStore-1.html
+  name: ResourceProviderResourceReferenceStore<T>
+  nameWithType: ResourceProviderResourceReferenceStore<T>
+  fullName: FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderResourceReferenceStore<T>
+  nameWithType.vb: ResourceProviderResourceReferenceStore(Of T)
+  fullName.vb: FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderResourceReferenceStore(Of T)
+  name.vb: ResourceProviderResourceReferenceStore(Of T)
+  spec.csharp:
+  - uid: FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderResourceReferenceStore`1
+    name: ResourceProviderResourceReferenceStore
+    href: FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderResourceReferenceStore-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderResourceReferenceStore`1
+    name: ResourceProviderResourceReferenceStore
+    href: FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderResourceReferenceStore-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase`1
+  commentId: T:FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase`1
+  href: FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html
+  name: ResourceProviderServiceBase<TResourceReference>
+  nameWithType: ResourceProviderServiceBase<TResourceReference>
+  fullName: FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase<TResourceReference>
+  nameWithType.vb: ResourceProviderServiceBase(Of TResourceReference)
+  fullName.vb: FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase(Of TResourceReference)
+  name.vb: ResourceProviderServiceBase(Of TResourceReference)
+  spec.csharp:
+  - uid: FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase`1
+    name: ResourceProviderServiceBase
+    href: FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html
+  - name: <
+  - name: TResourceReference
+  - name: '>'
+  spec.vb:
+  - uid: FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase`1
+    name: ResourceProviderServiceBase
+    href: FoundationaLLM.Common.Services.ResourceProviders.ResourceProviderServiceBase-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResourceReference
+  - name: )

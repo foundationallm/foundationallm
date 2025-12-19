@@ -1,0 +1,293 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.SemanticKernel.Core
+  id: Core
+  parent: FoundationaLLM.SemanticKernel
+  children:
+  - FoundationaLLM.SemanticKernel.Core.Agents
+  - FoundationaLLM.SemanticKernel.Core.Exceptions
+  - FoundationaLLM.SemanticKernel.Core.Filters
+  - FoundationaLLM.SemanticKernel.Core.Interfaces
+  - FoundationaLLM.SemanticKernel.Core.Models.Configuration
+  - FoundationaLLM.SemanticKernel.Core.Plugins
+  - FoundationaLLM.SemanticKernel.Core.Services
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM.SemanticKernel.Core
+  type: Namespace
+references:
+- uid: FoundationaLLM.SemanticKernel.Core.Agents
+  commentId: N:FoundationaLLM.SemanticKernel.Core.Agents
+  href: FoundationaLLM.html
+  name: FoundationaLLM.SemanticKernel.Core.Agents
+  nameWithType: FoundationaLLM.SemanticKernel.Core.Agents
+  fullName: FoundationaLLM.SemanticKernel.Core.Agents
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.SemanticKernel
+    name: SemanticKernel
+    href: FoundationaLLM.SemanticKernel.html
+  - name: .
+  - uid: FoundationaLLM.SemanticKernel.Core
+    name: Core
+    href: FoundationaLLM.SemanticKernel.Core.html
+  - name: .
+  - uid: FoundationaLLM.SemanticKernel.Core.Agents
+    name: Agents
+    href: FoundationaLLM.SemanticKernel.Core.Agents.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.SemanticKernel
+    name: SemanticKernel
+    href: FoundationaLLM.SemanticKernel.html
+  - name: .
+  - uid: FoundationaLLM.SemanticKernel.Core
+    name: Core
+    href: FoundationaLLM.SemanticKernel.Core.html
+  - name: .
+  - uid: FoundationaLLM.SemanticKernel.Core.Agents
+    name: Agents
+    href: FoundationaLLM.SemanticKernel.Core.Agents.html
+- uid: FoundationaLLM.SemanticKernel.Core.Exceptions
+  commentId: N:FoundationaLLM.SemanticKernel.Core.Exceptions
+  href: FoundationaLLM.html
+  name: FoundationaLLM.SemanticKernel.Core.Exceptions
+  nameWithType: FoundationaLLM.SemanticKernel.Core.Exceptions
+  fullName: FoundationaLLM.SemanticKernel.Core.Exceptions
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.SemanticKernel
+    name: SemanticKernel
+    href: FoundationaLLM.SemanticKernel.html
+  - name: .
+  - uid: FoundationaLLM.SemanticKernel.Core
+    name: Core
+    href: FoundationaLLM.SemanticKernel.Core.html
+  - name: .
+  - uid: FoundationaLLM.SemanticKernel.Core.Exceptions
+    name: Exceptions
+    href: FoundationaLLM.SemanticKernel.Core.Exceptions.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.SemanticKernel
+    name: SemanticKernel
+    href: FoundationaLLM.SemanticKernel.html
+  - name: .
+  - uid: FoundationaLLM.SemanticKernel.Core
+    name: Core
+    href: FoundationaLLM.SemanticKernel.Core.html
+  - name: .
+  - uid: FoundationaLLM.SemanticKernel.Core.Exceptions
+    name: Exceptions
+    href: FoundationaLLM.SemanticKernel.Core.Exceptions.html
+- uid: FoundationaLLM.SemanticKernel.Core.Filters
+  commentId: N:FoundationaLLM.SemanticKernel.Core.Filters
+  href: FoundationaLLM.html
+  name: FoundationaLLM.SemanticKernel.Core.Filters
+  nameWithType: FoundationaLLM.SemanticKernel.Core.Filters
+  fullName: FoundationaLLM.SemanticKernel.Core.Filters
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.SemanticKernel
+    name: SemanticKernel
+    href: FoundationaLLM.SemanticKernel.html
+  - name: .
+  - uid: FoundationaLLM.SemanticKernel.Core
+    name: Core
+    href: FoundationaLLM.SemanticKernel.Core.html
+  - name: .
+  - uid: FoundationaLLM.SemanticKernel.Core.Filters
+    name: Filters
+    href: FoundationaLLM.SemanticKernel.Core.Filters.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.SemanticKernel
+    name: SemanticKernel
+    href: FoundationaLLM.SemanticKernel.html
+  - name: .
+  - uid: FoundationaLLM.SemanticKernel.Core
+    name: Core
+    href: FoundationaLLM.SemanticKernel.Core.html
+  - name: .
+  - uid: FoundationaLLM.SemanticKernel.Core.Filters
+    name: Filters
+    href: FoundationaLLM.SemanticKernel.Core.Filters.html
+- uid: FoundationaLLM.SemanticKernel.Core.Interfaces
+  commentId: N:FoundationaLLM.SemanticKernel.Core.Interfaces
+  href: FoundationaLLM.html
+  name: FoundationaLLM.SemanticKernel.Core.Interfaces
+  nameWithType: FoundationaLLM.SemanticKernel.Core.Interfaces
+  fullName: FoundationaLLM.SemanticKernel.Core.Interfaces
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.SemanticKernel
+    name: SemanticKernel
+    href: FoundationaLLM.SemanticKernel.html
+  - name: .
+  - uid: FoundationaLLM.SemanticKernel.Core
+    name: Core
+    href: FoundationaLLM.SemanticKernel.Core.html
+  - name: .
+  - uid: FoundationaLLM.SemanticKernel.Core.Interfaces
+    name: Interfaces
+    href: FoundationaLLM.SemanticKernel.Core.Interfaces.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.SemanticKernel
+    name: SemanticKernel
+    href: FoundationaLLM.SemanticKernel.html
+  - name: .
+  - uid: FoundationaLLM.SemanticKernel.Core
+    name: Core
+    href: FoundationaLLM.SemanticKernel.Core.html
+  - name: .
+  - uid: FoundationaLLM.SemanticKernel.Core.Interfaces
+    name: Interfaces
+    href: FoundationaLLM.SemanticKernel.Core.Interfaces.html
+- uid: FoundationaLLM.SemanticKernel.Core.Plugins
+  commentId: N:FoundationaLLM.SemanticKernel.Core.Plugins
+  href: FoundationaLLM.html
+  name: FoundationaLLM.SemanticKernel.Core.Plugins
+  nameWithType: FoundationaLLM.SemanticKernel.Core.Plugins
+  fullName: FoundationaLLM.SemanticKernel.Core.Plugins
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.SemanticKernel
+    name: SemanticKernel
+    href: FoundationaLLM.SemanticKernel.html
+  - name: .
+  - uid: FoundationaLLM.SemanticKernel.Core
+    name: Core
+    href: FoundationaLLM.SemanticKernel.Core.html
+  - name: .
+  - uid: FoundationaLLM.SemanticKernel.Core.Plugins
+    name: Plugins
+    href: FoundationaLLM.SemanticKernel.Core.Plugins.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.SemanticKernel
+    name: SemanticKernel
+    href: FoundationaLLM.SemanticKernel.html
+  - name: .
+  - uid: FoundationaLLM.SemanticKernel.Core
+    name: Core
+    href: FoundationaLLM.SemanticKernel.Core.html
+  - name: .
+  - uid: FoundationaLLM.SemanticKernel.Core.Plugins
+    name: Plugins
+    href: FoundationaLLM.SemanticKernel.Core.Plugins.html
+- uid: FoundationaLLM.SemanticKernel.Core.Services
+  commentId: N:FoundationaLLM.SemanticKernel.Core.Services
+  href: FoundationaLLM.html
+  name: FoundationaLLM.SemanticKernel.Core.Services
+  nameWithType: FoundationaLLM.SemanticKernel.Core.Services
+  fullName: FoundationaLLM.SemanticKernel.Core.Services
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.SemanticKernel
+    name: SemanticKernel
+    href: FoundationaLLM.SemanticKernel.html
+  - name: .
+  - uid: FoundationaLLM.SemanticKernel.Core
+    name: Core
+    href: FoundationaLLM.SemanticKernel.Core.html
+  - name: .
+  - uid: FoundationaLLM.SemanticKernel.Core.Services
+    name: Services
+    href: FoundationaLLM.SemanticKernel.Core.Services.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.SemanticKernel
+    name: SemanticKernel
+    href: FoundationaLLM.SemanticKernel.html
+  - name: .
+  - uid: FoundationaLLM.SemanticKernel.Core
+    name: Core
+    href: FoundationaLLM.SemanticKernel.Core.html
+  - name: .
+  - uid: FoundationaLLM.SemanticKernel.Core.Services
+    name: Services
+    href: FoundationaLLM.SemanticKernel.Core.Services.html
+- uid: FoundationaLLM.SemanticKernel.Core.Models.Configuration
+  commentId: N:FoundationaLLM.SemanticKernel.Core.Models.Configuration
+  href: FoundationaLLM.html
+  name: FoundationaLLM.SemanticKernel.Core.Models.Configuration
+  nameWithType: FoundationaLLM.SemanticKernel.Core.Models.Configuration
+  fullName: FoundationaLLM.SemanticKernel.Core.Models.Configuration
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.SemanticKernel
+    name: SemanticKernel
+    href: FoundationaLLM.SemanticKernel.html
+  - name: .
+  - uid: FoundationaLLM.SemanticKernel.Core
+    name: Core
+    href: FoundationaLLM.SemanticKernel.Core.html
+  - name: .
+  - uid: FoundationaLLM.SemanticKernel.Core.Models
+    name: Models
+    href: FoundationaLLM.SemanticKernel.Core.Models.html
+  - name: .
+  - uid: FoundationaLLM.SemanticKernel.Core.Models.Configuration
+    name: Configuration
+    href: FoundationaLLM.SemanticKernel.Core.Models.Configuration.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.SemanticKernel
+    name: SemanticKernel
+    href: FoundationaLLM.SemanticKernel.html
+  - name: .
+  - uid: FoundationaLLM.SemanticKernel.Core
+    name: Core
+    href: FoundationaLLM.SemanticKernel.Core.html
+  - name: .
+  - uid: FoundationaLLM.SemanticKernel.Core.Models
+    name: Models
+    href: FoundationaLLM.SemanticKernel.Core.Models.html
+  - name: .
+  - uid: FoundationaLLM.SemanticKernel.Core.Models.Configuration
+    name: Configuration
+    href: FoundationaLLM.SemanticKernel.Core.Models.Configuration.html

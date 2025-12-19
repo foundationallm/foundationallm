@@ -1,0 +1,108 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Context.Models.Configuration
+  commentId: N:FoundationaLLM.Context.Models.Configuration
+  id: Configuration
+  parent: FoundationaLLM.Context.Models
+  children:
+  - FoundationaLLM.Context.Models.Configuration.AzureContainerAppsCodeInterpreterServiceSettings
+  - FoundationaLLM.Context.Models.Configuration.AzureContainerAppsCustomContainerServiceSettings
+  - FoundationaLLM.Context.Models.Configuration.AzureContainerAppsServiceSettings
+  - FoundationaLLM.Context.Models.Configuration.ContextServiceSettings
+  - FoundationaLLM.Context.Models.Configuration.EmbeddingSettings
+  - FoundationaLLM.Context.Models.Configuration.FileServiceSettings
+  - FoundationaLLM.Context.Models.Configuration.KnowledgeServiceSettings
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM.Context.Models.Configuration
+  nameWithType: FoundationaLLM.Context.Models.Configuration
+  fullName: FoundationaLLM.Context.Models.Configuration
+  type: Namespace
+  assemblies:
+  - FoundationaLLM.ContextEngine
+references:
+- uid: FoundationaLLM.Context.Models.Configuration.AzureContainerAppsCodeInterpreterServiceSettings
+  commentId: T:FoundationaLLM.Context.Models.Configuration.AzureContainerAppsCodeInterpreterServiceSettings
+  href: FoundationaLLM.Context.Models.Configuration.AzureContainerAppsCodeInterpreterServiceSettings.html
+  name: AzureContainerAppsCodeInterpreterServiceSettings
+  nameWithType: AzureContainerAppsCodeInterpreterServiceSettings
+  fullName: FoundationaLLM.Context.Models.Configuration.AzureContainerAppsCodeInterpreterServiceSettings
+- uid: FoundationaLLM.Context.Models.Configuration.AzureContainerAppsCustomContainerServiceSettings
+  commentId: T:FoundationaLLM.Context.Models.Configuration.AzureContainerAppsCustomContainerServiceSettings
+  href: FoundationaLLM.Context.Models.Configuration.AzureContainerAppsCustomContainerServiceSettings.html
+  name: AzureContainerAppsCustomContainerServiceSettings
+  nameWithType: AzureContainerAppsCustomContainerServiceSettings
+  fullName: FoundationaLLM.Context.Models.Configuration.AzureContainerAppsCustomContainerServiceSettings
+- uid: FoundationaLLM.Context.Models.Configuration.AzureContainerAppsServiceSettings
+  commentId: T:FoundationaLLM.Context.Models.Configuration.AzureContainerAppsServiceSettings
+  parent: FoundationaLLM.Context.Models.Configuration
+  href: FoundationaLLM.Context.Models.Configuration.AzureContainerAppsServiceSettings.html
+  name: AzureContainerAppsServiceSettings
+  nameWithType: AzureContainerAppsServiceSettings
+  fullName: FoundationaLLM.Context.Models.Configuration.AzureContainerAppsServiceSettings
+- uid: FoundationaLLM.Context.Models.Configuration.ContextServiceSettings
+  commentId: T:FoundationaLLM.Context.Models.Configuration.ContextServiceSettings
+  href: FoundationaLLM.Context.Models.Configuration.ContextServiceSettings.html
+  name: ContextServiceSettings
+  nameWithType: ContextServiceSettings
+  fullName: FoundationaLLM.Context.Models.Configuration.ContextServiceSettings
+- uid: FoundationaLLM.Context.Models.Configuration.EmbeddingSettings
+  commentId: T:FoundationaLLM.Context.Models.Configuration.EmbeddingSettings
+  parent: FoundationaLLM.Context.Models.Configuration
+  href: FoundationaLLM.Context.Models.Configuration.EmbeddingSettings.html
+  name: EmbeddingSettings
+  nameWithType: EmbeddingSettings
+  fullName: FoundationaLLM.Context.Models.Configuration.EmbeddingSettings
+- uid: FoundationaLLM.Context.Models.Configuration.FileServiceSettings
+  commentId: T:FoundationaLLM.Context.Models.Configuration.FileServiceSettings
+  parent: FoundationaLLM.Context.Models.Configuration
+  href: FoundationaLLM.Context.Models.Configuration.FileServiceSettings.html
+  name: FileServiceSettings
+  nameWithType: FileServiceSettings
+  fullName: FoundationaLLM.Context.Models.Configuration.FileServiceSettings
+- uid: FoundationaLLM.Context.Models.Configuration.KnowledgeServiceSettings
+  commentId: T:FoundationaLLM.Context.Models.Configuration.KnowledgeServiceSettings
+  parent: FoundationaLLM.Context.Models.Configuration
+  href: FoundationaLLM.Context.Models.Configuration.KnowledgeServiceSettings.html
+  name: KnowledgeServiceSettings
+  nameWithType: KnowledgeServiceSettings
+  fullName: FoundationaLLM.Context.Models.Configuration.KnowledgeServiceSettings
+- uid: FoundationaLLM.Context.Models.Configuration
+  commentId: N:FoundationaLLM.Context.Models.Configuration
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Context.Models.Configuration
+  nameWithType: FoundationaLLM.Context.Models.Configuration
+  fullName: FoundationaLLM.Context.Models.Configuration
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Context
+    name: Context
+    href: FoundationaLLM.Context.html
+  - name: .
+  - uid: FoundationaLLM.Context.Models
+    name: Models
+    href: FoundationaLLM.Context.Models.html
+  - name: .
+  - uid: FoundationaLLM.Context.Models.Configuration
+    name: Configuration
+    href: FoundationaLLM.Context.Models.Configuration.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Context
+    name: Context
+    href: FoundationaLLM.Context.html
+  - name: .
+  - uid: FoundationaLLM.Context.Models
+    name: Models
+    href: FoundationaLLM.Context.Models.html
+  - name: .
+  - uid: FoundationaLLM.Context.Models.Configuration
+    name: Configuration
+    href: FoundationaLLM.Context.Models.Configuration.html

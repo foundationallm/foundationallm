@@ -1,0 +1,78 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Common.Models.Configuration.Environment
+  commentId: N:FoundationaLLM.Common.Models.Configuration.Environment
+  id: Environment
+  parent: FoundationaLLM.Common.Models.Configuration
+  children:
+  - FoundationaLLM.Common.Models.Configuration.Environment.DependencyInjectionContainerSettings
+  - FoundationaLLM.Common.Models.Configuration.Environment.EnvironmentVariableEntry
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM.Common.Models.Configuration.Environment
+  nameWithType: FoundationaLLM.Common.Models.Configuration.Environment
+  fullName: FoundationaLLM.Common.Models.Configuration.Environment
+  type: Namespace
+  assemblies:
+  - FoundationaLLM.Common
+references:
+- uid: FoundationaLLM.Common.Models.Configuration.Environment.DependencyInjectionContainerSettings
+  commentId: T:FoundationaLLM.Common.Models.Configuration.Environment.DependencyInjectionContainerSettings
+  parent: FoundationaLLM.Common.Models.Configuration.Environment
+  href: FoundationaLLM.Common.Models.Configuration.Environment.DependencyInjectionContainerSettings.html
+  name: DependencyInjectionContainerSettings
+  nameWithType: DependencyInjectionContainerSettings
+  fullName: FoundationaLLM.Common.Models.Configuration.Environment.DependencyInjectionContainerSettings
+- uid: FoundationaLLM.Common.Models.Configuration.Environment.EnvironmentVariableEntry
+  commentId: T:FoundationaLLM.Common.Models.Configuration.Environment.EnvironmentVariableEntry
+  href: FoundationaLLM.Common.Models.Configuration.Environment.EnvironmentVariableEntry.html
+  name: EnvironmentVariableEntry
+  nameWithType: EnvironmentVariableEntry
+  fullName: FoundationaLLM.Common.Models.Configuration.Environment.EnvironmentVariableEntry
+- uid: FoundationaLLM.Common.Models.Configuration.Environment
+  commentId: N:FoundationaLLM.Common.Models.Configuration.Environment
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.Configuration.Environment
+  nameWithType: FoundationaLLM.Common.Models.Configuration.Environment
+  fullName: FoundationaLLM.Common.Models.Configuration.Environment
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Configuration
+    name: Configuration
+    href: FoundationaLLM.Common.Models.Configuration.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Configuration.Environment
+    name: Environment
+    href: FoundationaLLM.Common.Models.Configuration.Environment.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Configuration
+    name: Configuration
+    href: FoundationaLLM.Common.Models.Configuration.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Configuration.Environment
+    name: Environment
+    href: FoundationaLLM.Common.Models.Configuration.Environment.html

@@ -1,0 +1,97 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Gateway.Services
+  commentId: N:FoundationaLLM.Gateway.Services
+  id: Services
+  parent: FoundationaLLM.Gateway
+  children:
+  - FoundationaLLM.Gateway.Services.AzureOpenAITextCompletionService
+  - FoundationaLLM.Gateway.Services.AzureOpenAITextEmbeddingService
+  - FoundationaLLM.Gateway.Services.GatewayCore
+  - FoundationaLLM.Gateway.Services.GatewayMetrics
+  - FoundationaLLM.Gateway.Services.GatewayWorker
+  - FoundationaLLM.Gateway.Services.ModelContext
+  - FoundationaLLM.Gateway.Services.ModelDeploymentContext
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM.Gateway.Services
+  nameWithType: FoundationaLLM.Gateway.Services
+  fullName: FoundationaLLM.Gateway.Services
+  type: Namespace
+  assemblies:
+  - FoundationaLLM.Gateway
+references:
+- uid: FoundationaLLM.Gateway.Services.AzureOpenAITextCompletionService
+  commentId: T:FoundationaLLM.Gateway.Services.AzureOpenAITextCompletionService
+  href: FoundationaLLM.Gateway.Services.AzureOpenAITextCompletionService.html
+  name: AzureOpenAITextCompletionService
+  nameWithType: AzureOpenAITextCompletionService
+  fullName: FoundationaLLM.Gateway.Services.AzureOpenAITextCompletionService
+- uid: FoundationaLLM.Gateway.Services.AzureOpenAITextEmbeddingService
+  commentId: T:FoundationaLLM.Gateway.Services.AzureOpenAITextEmbeddingService
+  href: FoundationaLLM.Gateway.Services.AzureOpenAITextEmbeddingService.html
+  name: AzureOpenAITextEmbeddingService
+  nameWithType: AzureOpenAITextEmbeddingService
+  fullName: FoundationaLLM.Gateway.Services.AzureOpenAITextEmbeddingService
+- uid: FoundationaLLM.Gateway.Services.GatewayCore
+  commentId: T:FoundationaLLM.Gateway.Services.GatewayCore
+  href: FoundationaLLM.Gateway.Services.GatewayCore.html
+  name: GatewayCore
+  nameWithType: GatewayCore
+  fullName: FoundationaLLM.Gateway.Services.GatewayCore
+- uid: FoundationaLLM.Gateway.Services.GatewayMetrics
+  commentId: T:FoundationaLLM.Gateway.Services.GatewayMetrics
+  parent: FoundationaLLM.Gateway.Services
+  href: FoundationaLLM.Gateway.Services.GatewayMetrics.html
+  name: GatewayMetrics
+  nameWithType: GatewayMetrics
+  fullName: FoundationaLLM.Gateway.Services.GatewayMetrics
+- uid: FoundationaLLM.Gateway.Services.GatewayWorker
+  commentId: T:FoundationaLLM.Gateway.Services.GatewayWorker
+  href: FoundationaLLM.Gateway.Services.GatewayWorker.html
+  name: GatewayWorker
+  nameWithType: GatewayWorker
+  fullName: FoundationaLLM.Gateway.Services.GatewayWorker
+- uid: FoundationaLLM.Gateway.Services.ModelContext
+  commentId: T:FoundationaLLM.Gateway.Services.ModelContext
+  href: FoundationaLLM.Gateway.Services.ModelContext.html
+  name: ModelContext
+  nameWithType: ModelContext
+  fullName: FoundationaLLM.Gateway.Services.ModelContext
+- uid: FoundationaLLM.Gateway.Services.ModelDeploymentContext
+  commentId: T:FoundationaLLM.Gateway.Services.ModelDeploymentContext
+  href: FoundationaLLM.Gateway.Services.ModelDeploymentContext.html
+  name: ModelDeploymentContext
+  nameWithType: ModelDeploymentContext
+  fullName: FoundationaLLM.Gateway.Services.ModelDeploymentContext
+- uid: FoundationaLLM.Gateway.Services
+  commentId: N:FoundationaLLM.Gateway.Services
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Gateway.Services
+  nameWithType: FoundationaLLM.Gateway.Services
+  fullName: FoundationaLLM.Gateway.Services
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Gateway
+    name: Gateway
+    href: FoundationaLLM.Gateway.html
+  - name: .
+  - uid: FoundationaLLM.Gateway.Services
+    name: Services
+    href: FoundationaLLM.Gateway.Services.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Gateway
+    name: Gateway
+    href: FoundationaLLM.Gateway.html
+  - name: .
+  - uid: FoundationaLLM.Gateway.Services
+    name: Services
+    href: FoundationaLLM.Gateway.Services.html

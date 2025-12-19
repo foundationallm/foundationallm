@@ -1,0 +1,662 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Common.Authentication.AgentAccessTokenOptions
+  commentId: T:FoundationaLLM.Common.Authentication.AgentAccessTokenOptions
+  id: AgentAccessTokenOptions
+  parent: FoundationaLLM.Common.Authentication
+  children: []
+  langs:
+  - csharp
+  - vb
+  name: AgentAccessTokenOptions
+  nameWithType: AgentAccessTokenOptions
+  fullName: FoundationaLLM.Common.Authentication.AgentAccessTokenOptions
+  type: Class
+  source:
+    remote:
+      path: src/dotnet/Common/Authentication/AgentAccessTokenOptions.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: AgentAccessTokenOptions
+    path: ../src/dotnet/Common/Authentication/AgentAccessTokenOptions.cs
+    startLine: 7
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Authentication
+  summary: Options class provides information needed to control Agent Access Token Authentication handler behavior
+  example: []
+  syntax:
+    content: 'public class AgentAccessTokenOptions : AuthenticationSchemeOptions'
+    content.vb: Public Class AgentAccessTokenOptions Inherits AuthenticationSchemeOptions
+  inheritance:
+  - System.Object
+  - Microsoft.AspNetCore.Authentication.AuthenticationSchemeOptions
+  inheritedMembers:
+  - Microsoft.AspNetCore.Authentication.AuthenticationSchemeOptions.Validate
+  - Microsoft.AspNetCore.Authentication.AuthenticationSchemeOptions.Validate(System.String)
+  - Microsoft.AspNetCore.Authentication.AuthenticationSchemeOptions.ClaimsIssuer
+  - Microsoft.AspNetCore.Authentication.AuthenticationSchemeOptions.Events
+  - Microsoft.AspNetCore.Authentication.AuthenticationSchemeOptions.EventsType
+  - Microsoft.AspNetCore.Authentication.AuthenticationSchemeOptions.ForwardDefault
+  - Microsoft.AspNetCore.Authentication.AuthenticationSchemeOptions.ForwardAuthenticate
+  - Microsoft.AspNetCore.Authentication.AuthenticationSchemeOptions.ForwardChallenge
+  - Microsoft.AspNetCore.Authentication.AuthenticationSchemeOptions.ForwardForbid
+  - Microsoft.AspNetCore.Authentication.AuthenticationSchemeOptions.ForwardSignIn
+  - Microsoft.AspNetCore.Authentication.AuthenticationSchemeOptions.ForwardSignOut
+  - Microsoft.AspNetCore.Authentication.AuthenticationSchemeOptions.ForwardDefaultSelector
+  - Microsoft.AspNetCore.Authentication.AuthenticationSchemeOptions.TimeProvider
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+  extensionMethods:
+  - System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+references:
+- uid: FoundationaLLM.Common.Authentication
+  commentId: N:FoundationaLLM.Common.Authentication
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Authentication
+  nameWithType: FoundationaLLM.Common.Authentication
+  fullName: FoundationaLLM.Common.Authentication
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Authentication
+    name: Authentication
+    href: FoundationaLLM.Common.Authentication.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Authentication
+    name: Authentication
+    href: FoundationaLLM.Common.Authentication.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: Microsoft.AspNetCore.Authentication.AuthenticationSchemeOptions
+  commentId: T:Microsoft.AspNetCore.Authentication.AuthenticationSchemeOptions
+  parent: Microsoft.AspNetCore.Authentication
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationschemeoptions
+  name: AuthenticationSchemeOptions
+  nameWithType: AuthenticationSchemeOptions
+  fullName: Microsoft.AspNetCore.Authentication.AuthenticationSchemeOptions
+- uid: Microsoft.AspNetCore.Authentication.AuthenticationSchemeOptions.Validate
+  commentId: M:Microsoft.AspNetCore.Authentication.AuthenticationSchemeOptions.Validate
+  parent: Microsoft.AspNetCore.Authentication.AuthenticationSchemeOptions
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationschemeoptions.validate#microsoft-aspnetcore-authentication-authenticationschemeoptions-validate
+  name: Validate()
+  nameWithType: AuthenticationSchemeOptions.Validate()
+  fullName: Microsoft.AspNetCore.Authentication.AuthenticationSchemeOptions.Validate()
+  spec.csharp:
+  - uid: Microsoft.AspNetCore.Authentication.AuthenticationSchemeOptions.Validate
+    name: Validate
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationschemeoptions.validate#microsoft-aspnetcore-authentication-authenticationschemeoptions-validate
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: Microsoft.AspNetCore.Authentication.AuthenticationSchemeOptions.Validate
+    name: Validate
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationschemeoptions.validate#microsoft-aspnetcore-authentication-authenticationschemeoptions-validate
+  - name: (
+  - name: )
+- uid: Microsoft.AspNetCore.Authentication.AuthenticationSchemeOptions.Validate(System.String)
+  commentId: M:Microsoft.AspNetCore.Authentication.AuthenticationSchemeOptions.Validate(System.String)
+  parent: Microsoft.AspNetCore.Authentication.AuthenticationSchemeOptions
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationschemeoptions.validate#microsoft-aspnetcore-authentication-authenticationschemeoptions-validate(system-string)
+  name: Validate(string)
+  nameWithType: AuthenticationSchemeOptions.Validate(string)
+  fullName: Microsoft.AspNetCore.Authentication.AuthenticationSchemeOptions.Validate(string)
+  nameWithType.vb: AuthenticationSchemeOptions.Validate(String)
+  fullName.vb: Microsoft.AspNetCore.Authentication.AuthenticationSchemeOptions.Validate(String)
+  name.vb: Validate(String)
+  spec.csharp:
+  - uid: Microsoft.AspNetCore.Authentication.AuthenticationSchemeOptions.Validate(System.String)
+    name: Validate
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationschemeoptions.validate#microsoft-aspnetcore-authentication-authenticationschemeoptions-validate(system-string)
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: Microsoft.AspNetCore.Authentication.AuthenticationSchemeOptions.Validate(System.String)
+    name: Validate
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationschemeoptions.validate#microsoft-aspnetcore-authentication-authenticationschemeoptions-validate(system-string)
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: Microsoft.AspNetCore.Authentication.AuthenticationSchemeOptions.ClaimsIssuer
+  commentId: P:Microsoft.AspNetCore.Authentication.AuthenticationSchemeOptions.ClaimsIssuer
+  parent: Microsoft.AspNetCore.Authentication.AuthenticationSchemeOptions
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationschemeoptions.claimsissuer
+  name: ClaimsIssuer
+  nameWithType: AuthenticationSchemeOptions.ClaimsIssuer
+  fullName: Microsoft.AspNetCore.Authentication.AuthenticationSchemeOptions.ClaimsIssuer
+- uid: Microsoft.AspNetCore.Authentication.AuthenticationSchemeOptions.Events
+  commentId: P:Microsoft.AspNetCore.Authentication.AuthenticationSchemeOptions.Events
+  parent: Microsoft.AspNetCore.Authentication.AuthenticationSchemeOptions
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationschemeoptions.events
+  name: Events
+  nameWithType: AuthenticationSchemeOptions.Events
+  fullName: Microsoft.AspNetCore.Authentication.AuthenticationSchemeOptions.Events
+- uid: Microsoft.AspNetCore.Authentication.AuthenticationSchemeOptions.EventsType
+  commentId: P:Microsoft.AspNetCore.Authentication.AuthenticationSchemeOptions.EventsType
+  parent: Microsoft.AspNetCore.Authentication.AuthenticationSchemeOptions
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationschemeoptions.eventstype
+  name: EventsType
+  nameWithType: AuthenticationSchemeOptions.EventsType
+  fullName: Microsoft.AspNetCore.Authentication.AuthenticationSchemeOptions.EventsType
+- uid: Microsoft.AspNetCore.Authentication.AuthenticationSchemeOptions.ForwardDefault
+  commentId: P:Microsoft.AspNetCore.Authentication.AuthenticationSchemeOptions.ForwardDefault
+  parent: Microsoft.AspNetCore.Authentication.AuthenticationSchemeOptions
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationschemeoptions.forwarddefault
+  name: ForwardDefault
+  nameWithType: AuthenticationSchemeOptions.ForwardDefault
+  fullName: Microsoft.AspNetCore.Authentication.AuthenticationSchemeOptions.ForwardDefault
+- uid: Microsoft.AspNetCore.Authentication.AuthenticationSchemeOptions.ForwardAuthenticate
+  commentId: P:Microsoft.AspNetCore.Authentication.AuthenticationSchemeOptions.ForwardAuthenticate
+  parent: Microsoft.AspNetCore.Authentication.AuthenticationSchemeOptions
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationschemeoptions.forwardauthenticate
+  name: ForwardAuthenticate
+  nameWithType: AuthenticationSchemeOptions.ForwardAuthenticate
+  fullName: Microsoft.AspNetCore.Authentication.AuthenticationSchemeOptions.ForwardAuthenticate
+- uid: Microsoft.AspNetCore.Authentication.AuthenticationSchemeOptions.ForwardChallenge
+  commentId: P:Microsoft.AspNetCore.Authentication.AuthenticationSchemeOptions.ForwardChallenge
+  parent: Microsoft.AspNetCore.Authentication.AuthenticationSchemeOptions
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationschemeoptions.forwardchallenge
+  name: ForwardChallenge
+  nameWithType: AuthenticationSchemeOptions.ForwardChallenge
+  fullName: Microsoft.AspNetCore.Authentication.AuthenticationSchemeOptions.ForwardChallenge
+- uid: Microsoft.AspNetCore.Authentication.AuthenticationSchemeOptions.ForwardForbid
+  commentId: P:Microsoft.AspNetCore.Authentication.AuthenticationSchemeOptions.ForwardForbid
+  parent: Microsoft.AspNetCore.Authentication.AuthenticationSchemeOptions
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationschemeoptions.forwardforbid
+  name: ForwardForbid
+  nameWithType: AuthenticationSchemeOptions.ForwardForbid
+  fullName: Microsoft.AspNetCore.Authentication.AuthenticationSchemeOptions.ForwardForbid
+- uid: Microsoft.AspNetCore.Authentication.AuthenticationSchemeOptions.ForwardSignIn
+  commentId: P:Microsoft.AspNetCore.Authentication.AuthenticationSchemeOptions.ForwardSignIn
+  parent: Microsoft.AspNetCore.Authentication.AuthenticationSchemeOptions
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationschemeoptions.forwardsignin
+  name: ForwardSignIn
+  nameWithType: AuthenticationSchemeOptions.ForwardSignIn
+  fullName: Microsoft.AspNetCore.Authentication.AuthenticationSchemeOptions.ForwardSignIn
+- uid: Microsoft.AspNetCore.Authentication.AuthenticationSchemeOptions.ForwardSignOut
+  commentId: P:Microsoft.AspNetCore.Authentication.AuthenticationSchemeOptions.ForwardSignOut
+  parent: Microsoft.AspNetCore.Authentication.AuthenticationSchemeOptions
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationschemeoptions.forwardsignout
+  name: ForwardSignOut
+  nameWithType: AuthenticationSchemeOptions.ForwardSignOut
+  fullName: Microsoft.AspNetCore.Authentication.AuthenticationSchemeOptions.ForwardSignOut
+- uid: Microsoft.AspNetCore.Authentication.AuthenticationSchemeOptions.ForwardDefaultSelector
+  commentId: P:Microsoft.AspNetCore.Authentication.AuthenticationSchemeOptions.ForwardDefaultSelector
+  parent: Microsoft.AspNetCore.Authentication.AuthenticationSchemeOptions
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationschemeoptions.forwarddefaultselector
+  name: ForwardDefaultSelector
+  nameWithType: AuthenticationSchemeOptions.ForwardDefaultSelector
+  fullName: Microsoft.AspNetCore.Authentication.AuthenticationSchemeOptions.ForwardDefaultSelector
+- uid: Microsoft.AspNetCore.Authentication.AuthenticationSchemeOptions.TimeProvider
+  commentId: P:Microsoft.AspNetCore.Authentication.AuthenticationSchemeOptions.TimeProvider
+  parent: Microsoft.AspNetCore.Authentication.AuthenticationSchemeOptions
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication.authenticationschemeoptions.timeprovider
+  name: TimeProvider
+  nameWithType: AuthenticationSchemeOptions.TimeProvider
+  fullName: Microsoft.AspNetCore.Authentication.AuthenticationSchemeOptions.TimeProvider
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  parent: FoundationaLLM.Core.Utils.ObjectExtensions
+  definition: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Microsoft.AspNetCore.Authentication
+  commentId: N:Microsoft.AspNetCore.Authentication
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft
+  name: Microsoft.AspNetCore.Authentication
+  nameWithType: Microsoft.AspNetCore.Authentication
+  fullName: Microsoft.AspNetCore.Authentication
+  spec.csharp:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.AspNetCore
+    name: AspNetCore
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore
+  - name: .
+  - uid: Microsoft.AspNetCore.Authentication
+    name: Authentication
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication
+  spec.vb:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.AspNetCore
+    name: AspNetCore
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore
+  - name: .
+  - uid: Microsoft.AspNetCore.Authentication
+    name: Authentication
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.authentication
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  isExternal: true
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions
+  commentId: T:FoundationaLLM.Core.Utils.ObjectExtensions
+  parent: FoundationaLLM.Core.Utils
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html
+  name: ObjectExtensions
+  nameWithType: ObjectExtensions
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions
+- uid: FoundationaLLM.Core.Utils
+  commentId: N:FoundationaLLM.Core.Utils
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Core.Utils
+  nameWithType: FoundationaLLM.Core.Utils
+  fullName: FoundationaLLM.Core.Utils
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html

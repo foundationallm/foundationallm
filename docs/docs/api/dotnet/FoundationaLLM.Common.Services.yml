@@ -1,0 +1,577 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Common.Services
+  commentId: N:FoundationaLLM.Common.Services
+  id: Services
+  parent: FoundationaLLM.Common
+  children:
+  - FoundationaLLM.Common.Services.API
+  - FoundationaLLM.Common.Services.Azure
+  - FoundationaLLM.Common.Services.AzureContentSafetyService
+  - FoundationaLLM.Common.Services.Cache
+  - FoundationaLLM.Common.Services.Events
+  - FoundationaLLM.Common.Services.IAzureAppConfigurationService
+  - FoundationaLLM.Common.Services.IAzureKeyVaultService
+  - FoundationaLLM.Common.Services.Plugins
+  - FoundationaLLM.Common.Services.Quota
+  - FoundationaLLM.Common.Services.ResourceProviders
+  - FoundationaLLM.Common.Services.Security
+  - FoundationaLLM.Common.Services.Storage
+  - FoundationaLLM.Common.Services.Templates
+  - FoundationaLLM.Common.Services.TextSplitters
+  - FoundationaLLM.Common.Services.Tokenizers
+  - FoundationaLLM.Common.Services.Users
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM.Common.Services
+  nameWithType: FoundationaLLM.Common.Services
+  fullName: FoundationaLLM.Common.Services
+  type: Namespace
+  assemblies:
+  - FoundationaLLM.Common
+references:
+- uid: FoundationaLLM.Common.Services.API
+  commentId: N:FoundationaLLM.Common.Services.API
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Services.API
+  nameWithType: FoundationaLLM.Common.Services.API
+  fullName: FoundationaLLM.Common.Services.API
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Services
+    name: Services
+    href: FoundationaLLM.Common.Services.html
+  - name: .
+  - uid: FoundationaLLM.Common.Services.API
+    name: API
+    href: FoundationaLLM.Common.Services.API.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Services
+    name: Services
+    href: FoundationaLLM.Common.Services.html
+  - name: .
+  - uid: FoundationaLLM.Common.Services.API
+    name: API
+    href: FoundationaLLM.Common.Services.API.html
+- uid: FoundationaLLM.Common.Services.Azure
+  commentId: N:FoundationaLLM.Common.Services.Azure
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Services.Azure
+  nameWithType: FoundationaLLM.Common.Services.Azure
+  fullName: FoundationaLLM.Common.Services.Azure
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Services
+    name: Services
+    href: FoundationaLLM.Common.Services.html
+  - name: .
+  - uid: FoundationaLLM.Common.Services.Azure
+    name: Azure
+    href: FoundationaLLM.Common.Services.Azure.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Services
+    name: Services
+    href: FoundationaLLM.Common.Services.html
+  - name: .
+  - uid: FoundationaLLM.Common.Services.Azure
+    name: Azure
+    href: FoundationaLLM.Common.Services.Azure.html
+- uid: FoundationaLLM.Common.Services.Cache
+  commentId: N:FoundationaLLM.Common.Services.Cache
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Services.Cache
+  nameWithType: FoundationaLLM.Common.Services.Cache
+  fullName: FoundationaLLM.Common.Services.Cache
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Services
+    name: Services
+    href: FoundationaLLM.Common.Services.html
+  - name: .
+  - uid: FoundationaLLM.Common.Services.Cache
+    name: Cache
+    href: FoundationaLLM.Common.Services.Cache.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Services
+    name: Services
+    href: FoundationaLLM.Common.Services.html
+  - name: .
+  - uid: FoundationaLLM.Common.Services.Cache
+    name: Cache
+    href: FoundationaLLM.Common.Services.Cache.html
+- uid: FoundationaLLM.Common.Services.Events
+  commentId: N:FoundationaLLM.Common.Services.Events
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Services.Events
+  nameWithType: FoundationaLLM.Common.Services.Events
+  fullName: FoundationaLLM.Common.Services.Events
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Services
+    name: Services
+    href: FoundationaLLM.Common.Services.html
+  - name: .
+  - uid: FoundationaLLM.Common.Services.Events
+    name: Events
+    href: FoundationaLLM.Common.Services.Events.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Services
+    name: Services
+    href: FoundationaLLM.Common.Services.html
+  - name: .
+  - uid: FoundationaLLM.Common.Services.Events
+    name: Events
+    href: FoundationaLLM.Common.Services.Events.html
+- uid: FoundationaLLM.Common.Services.Plugins
+  commentId: N:FoundationaLLM.Common.Services.Plugins
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Services.Plugins
+  nameWithType: FoundationaLLM.Common.Services.Plugins
+  fullName: FoundationaLLM.Common.Services.Plugins
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Services
+    name: Services
+    href: FoundationaLLM.Common.Services.html
+  - name: .
+  - uid: FoundationaLLM.Common.Services.Plugins
+    name: Plugins
+    href: FoundationaLLM.Common.Services.Plugins.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Services
+    name: Services
+    href: FoundationaLLM.Common.Services.html
+  - name: .
+  - uid: FoundationaLLM.Common.Services.Plugins
+    name: Plugins
+    href: FoundationaLLM.Common.Services.Plugins.html
+- uid: FoundationaLLM.Common.Services.Quota
+  commentId: N:FoundationaLLM.Common.Services.Quota
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Services.Quota
+  nameWithType: FoundationaLLM.Common.Services.Quota
+  fullName: FoundationaLLM.Common.Services.Quota
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Services
+    name: Services
+    href: FoundationaLLM.Common.Services.html
+  - name: .
+  - uid: FoundationaLLM.Common.Services.Quota
+    name: Quota
+    href: FoundationaLLM.Common.Services.Quota.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Services
+    name: Services
+    href: FoundationaLLM.Common.Services.html
+  - name: .
+  - uid: FoundationaLLM.Common.Services.Quota
+    name: Quota
+    href: FoundationaLLM.Common.Services.Quota.html
+- uid: FoundationaLLM.Common.Services.ResourceProviders
+  commentId: N:FoundationaLLM.Common.Services.ResourceProviders
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Services.ResourceProviders
+  nameWithType: FoundationaLLM.Common.Services.ResourceProviders
+  fullName: FoundationaLLM.Common.Services.ResourceProviders
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Services
+    name: Services
+    href: FoundationaLLM.Common.Services.html
+  - name: .
+  - uid: FoundationaLLM.Common.Services.ResourceProviders
+    name: ResourceProviders
+    href: FoundationaLLM.Common.Services.ResourceProviders.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Services
+    name: Services
+    href: FoundationaLLM.Common.Services.html
+  - name: .
+  - uid: FoundationaLLM.Common.Services.ResourceProviders
+    name: ResourceProviders
+    href: FoundationaLLM.Common.Services.ResourceProviders.html
+- uid: FoundationaLLM.Common.Services.Security
+  commentId: N:FoundationaLLM.Common.Services.Security
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Services.Security
+  nameWithType: FoundationaLLM.Common.Services.Security
+  fullName: FoundationaLLM.Common.Services.Security
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Services
+    name: Services
+    href: FoundationaLLM.Common.Services.html
+  - name: .
+  - uid: FoundationaLLM.Common.Services.Security
+    name: Security
+    href: FoundationaLLM.Common.Services.Security.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Services
+    name: Services
+    href: FoundationaLLM.Common.Services.html
+  - name: .
+  - uid: FoundationaLLM.Common.Services.Security
+    name: Security
+    href: FoundationaLLM.Common.Services.Security.html
+- uid: FoundationaLLM.Common.Services.Storage
+  commentId: N:FoundationaLLM.Common.Services.Storage
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Services.Storage
+  nameWithType: FoundationaLLM.Common.Services.Storage
+  fullName: FoundationaLLM.Common.Services.Storage
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Services
+    name: Services
+    href: FoundationaLLM.Common.Services.html
+  - name: .
+  - uid: FoundationaLLM.Common.Services.Storage
+    name: Storage
+    href: FoundationaLLM.Common.Services.Storage.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Services
+    name: Services
+    href: FoundationaLLM.Common.Services.html
+  - name: .
+  - uid: FoundationaLLM.Common.Services.Storage
+    name: Storage
+    href: FoundationaLLM.Common.Services.Storage.html
+- uid: FoundationaLLM.Common.Services.Templates
+  commentId: N:FoundationaLLM.Common.Services.Templates
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Services.Templates
+  nameWithType: FoundationaLLM.Common.Services.Templates
+  fullName: FoundationaLLM.Common.Services.Templates
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Services
+    name: Services
+    href: FoundationaLLM.Common.Services.html
+  - name: .
+  - uid: FoundationaLLM.Common.Services.Templates
+    name: Templates
+    href: FoundationaLLM.Common.Services.Templates.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Services
+    name: Services
+    href: FoundationaLLM.Common.Services.html
+  - name: .
+  - uid: FoundationaLLM.Common.Services.Templates
+    name: Templates
+    href: FoundationaLLM.Common.Services.Templates.html
+- uid: FoundationaLLM.Common.Services.TextSplitters
+  commentId: N:FoundationaLLM.Common.Services.TextSplitters
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Services.TextSplitters
+  nameWithType: FoundationaLLM.Common.Services.TextSplitters
+  fullName: FoundationaLLM.Common.Services.TextSplitters
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Services
+    name: Services
+    href: FoundationaLLM.Common.Services.html
+  - name: .
+  - uid: FoundationaLLM.Common.Services.TextSplitters
+    name: TextSplitters
+    href: FoundationaLLM.Common.Services.TextSplitters.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Services
+    name: Services
+    href: FoundationaLLM.Common.Services.html
+  - name: .
+  - uid: FoundationaLLM.Common.Services.TextSplitters
+    name: TextSplitters
+    href: FoundationaLLM.Common.Services.TextSplitters.html
+- uid: FoundationaLLM.Common.Services.Tokenizers
+  commentId: N:FoundationaLLM.Common.Services.Tokenizers
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Services.Tokenizers
+  nameWithType: FoundationaLLM.Common.Services.Tokenizers
+  fullName: FoundationaLLM.Common.Services.Tokenizers
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Services
+    name: Services
+    href: FoundationaLLM.Common.Services.html
+  - name: .
+  - uid: FoundationaLLM.Common.Services.Tokenizers
+    name: Tokenizers
+    href: FoundationaLLM.Common.Services.Tokenizers.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Services
+    name: Services
+    href: FoundationaLLM.Common.Services.html
+  - name: .
+  - uid: FoundationaLLM.Common.Services.Tokenizers
+    name: Tokenizers
+    href: FoundationaLLM.Common.Services.Tokenizers.html
+- uid: FoundationaLLM.Common.Services.Users
+  commentId: N:FoundationaLLM.Common.Services.Users
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Services.Users
+  nameWithType: FoundationaLLM.Common.Services.Users
+  fullName: FoundationaLLM.Common.Services.Users
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Services
+    name: Services
+    href: FoundationaLLM.Common.Services.html
+  - name: .
+  - uid: FoundationaLLM.Common.Services.Users
+    name: Users
+    href: FoundationaLLM.Common.Services.Users.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Services
+    name: Services
+    href: FoundationaLLM.Common.Services.html
+  - name: .
+  - uid: FoundationaLLM.Common.Services.Users
+    name: Users
+    href: FoundationaLLM.Common.Services.Users.html
+- uid: FoundationaLLM.Common.Services.AzureContentSafetyService
+  commentId: T:FoundationaLLM.Common.Services.AzureContentSafetyService
+  href: FoundationaLLM.Common.Services.AzureContentSafetyService.html
+  name: AzureContentSafetyService
+  nameWithType: AzureContentSafetyService
+  fullName: FoundationaLLM.Common.Services.AzureContentSafetyService
+- uid: FoundationaLLM.Common.Services.IAzureAppConfigurationService
+  commentId: T:FoundationaLLM.Common.Services.IAzureAppConfigurationService
+  parent: FoundationaLLM.Common.Services
+  href: FoundationaLLM.Common.Services.IAzureAppConfigurationService.html
+  name: IAzureAppConfigurationService
+  nameWithType: IAzureAppConfigurationService
+  fullName: FoundationaLLM.Common.Services.IAzureAppConfigurationService
+- uid: FoundationaLLM.Common.Services.IAzureKeyVaultService
+  commentId: T:FoundationaLLM.Common.Services.IAzureKeyVaultService
+  parent: FoundationaLLM.Common.Services
+  href: FoundationaLLM.Common.Services.IAzureKeyVaultService.html
+  name: IAzureKeyVaultService
+  nameWithType: IAzureKeyVaultService
+  fullName: FoundationaLLM.Common.Services.IAzureKeyVaultService
+- uid: FoundationaLLM.Common.Services
+  commentId: N:FoundationaLLM.Common.Services
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Services
+  nameWithType: FoundationaLLM.Common.Services
+  fullName: FoundationaLLM.Common.Services
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Services
+    name: Services
+    href: FoundationaLLM.Common.Services.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Services
+    name: Services
+    href: FoundationaLLM.Common.Services.html

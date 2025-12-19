@@ -1,0 +1,1106 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Common.Models.ResourceProviders.AzureAI.AzureAIAgentConversationMapping
+  commentId: T:FoundationaLLM.Common.Models.ResourceProviders.AzureAI.AzureAIAgentConversationMapping
+  id: AzureAIAgentConversationMapping
+  parent: FoundationaLLM.Common.Models.ResourceProviders.AzureAI
+  children:
+  - FoundationaLLM.Common.Models.ResourceProviders.AzureAI.AzureAIAgentConversationMapping.#ctor
+  - FoundationaLLM.Common.Models.ResourceProviders.AzureAI.AzureAIAgentConversationMapping.AzureAIAgentId
+  - FoundationaLLM.Common.Models.ResourceProviders.AzureAI.AzureAIAgentConversationMapping.AzureAIAgentThreadCreatedOn
+  - FoundationaLLM.Common.Models.ResourceProviders.AzureAI.AzureAIAgentConversationMapping.AzureAIAgentThreadId
+  - FoundationaLLM.Common.Models.ResourceProviders.AzureAI.AzureAIAgentConversationMapping.AzureAIAgentVectorStoreCreatedOn
+  - FoundationaLLM.Common.Models.ResourceProviders.AzureAI.AzureAIAgentConversationMapping.AzureAIAgentVectorStoreId
+  - FoundationaLLM.Common.Models.ResourceProviders.AzureAI.AzureAIAgentConversationMapping.ConversationId
+  langs:
+  - csharp
+  - vb
+  name: AzureAIAgentConversationMapping
+  nameWithType: AzureAIAgentConversationMapping
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.AzureAI.AzureAIAgentConversationMapping
+  type: Class
+  source:
+    remote:
+      path: src/dotnet/Common/Models/ResourceProviders/AzureAI/AzureAIAgentConversationMapping.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: AzureAIAgentConversationMapping
+    path: ../src/dotnet/Common/Models/ResourceProviders/AzureAI/AzureAIAgentConversationMapping.cs
+    startLine: 8
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.ResourceProviders.AzureAI
+  summary: Provides details about a conversation mapping between FoundationaLLM and the Azure AI Agent Service.
+  example: []
+  syntax:
+    content: 'public class AzureAIAgentConversationMapping : AzureAIAgentResourceBase'
+    content.vb: Public Class AzureAIAgentConversationMapping Inherits AzureAIAgentResourceBase
+  inheritance:
+  - System.Object
+  - FoundationaLLM.Common.Models.ResourceProviders.ResourceName
+  - FoundationaLLM.Common.Models.ResourceProviders.ResourceBase
+  - FoundationaLLM.Common.Models.ResourceProviders.AzureCosmosDBResource
+  - FoundationaLLM.Common.Models.ResourceProviders.AzureAI.AzureAIAgentResourceBase
+  inheritedMembers:
+  - FoundationaLLM.Common.Models.ResourceProviders.AzureAI.AzureAIAgentResourceBase.Type
+  - FoundationaLLM.Common.Models.ResourceProviders.AzureAI.AzureAIAgentResourceBase.PartitionKey
+  - FoundationaLLM.Common.Models.ResourceProviders.AzureAI.AzureAIAgentResourceBase.ProjectConnectionString
+  - FoundationaLLM.Common.Models.ResourceProviders.AzureCosmosDBResource.Id
+  - FoundationaLLM.Common.Models.ResourceProviders.AzureCosmosDBResource.UPN
+  - FoundationaLLM.Common.Models.ResourceProviders.AzureCosmosDBResource.InstanceId
+  - FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.ObjectId
+  - FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.ResourcePath
+  - FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.DisplayName
+  - FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.Description
+  - FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.CostCenter
+  - FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.Properties
+  - FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.CreatedOn
+  - FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.UpdatedOn
+  - FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.CreatedBy
+  - FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.UpdatedBy
+  - FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.Deleted
+  - FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.ExpirationDate
+  - FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.InheritableAuthorizableActions
+  - FoundationaLLM.Common.Models.ResourceProviders.ResourceName.Name
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+  extensionMethods:
+  - System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+- uid: FoundationaLLM.Common.Models.ResourceProviders.AzureAI.AzureAIAgentConversationMapping.ConversationId
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.AzureAI.AzureAIAgentConversationMapping.ConversationId
+  id: ConversationId
+  parent: FoundationaLLM.Common.Models.ResourceProviders.AzureAI.AzureAIAgentConversationMapping
+  langs:
+  - csharp
+  - vb
+  name: ConversationId
+  nameWithType: AzureAIAgentConversationMapping.ConversationId
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.AzureAI.AzureAIAgentConversationMapping.ConversationId
+  type: Property
+  source:
+    remote:
+      path: src/dotnet/Common/Models/ResourceProviders/AzureAI/AzureAIAgentConversationMapping.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: ConversationId
+    path: ../src/dotnet/Common/Models/ResourceProviders/AzureAI/AzureAIAgentConversationMapping.cs
+    startLine: 13
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.ResourceProviders.AzureAI
+  summary: The FoundationaLLM conversation (session) id.
+  example: []
+  syntax:
+    content: >-
+      [JsonPropertyName("conversation_id")]
+
+      public required string ConversationId { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: >-
+      <JsonPropertyName("conversation_id")>
+
+      Public Property ConversationId As String
+  overload: FoundationaLLM.Common.Models.ResourceProviders.AzureAI.AzureAIAgentConversationMapping.ConversationId*
+  attributes:
+  - type: System.Text.Json.Serialization.JsonPropertyNameAttribute
+    ctor: System.Text.Json.Serialization.JsonPropertyNameAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: conversation_id
+- uid: FoundationaLLM.Common.Models.ResourceProviders.AzureAI.AzureAIAgentConversationMapping.AzureAIAgentId
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.AzureAI.AzureAIAgentConversationMapping.AzureAIAgentId
+  id: AzureAIAgentId
+  parent: FoundationaLLM.Common.Models.ResourceProviders.AzureAI.AzureAIAgentConversationMapping
+  langs:
+  - csharp
+  - vb
+  name: AzureAIAgentId
+  nameWithType: AzureAIAgentConversationMapping.AzureAIAgentId
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.AzureAI.AzureAIAgentConversationMapping.AzureAIAgentId
+  type: Property
+  source:
+    remote:
+      path: src/dotnet/Common/Models/ResourceProviders/AzureAI/AzureAIAgentConversationMapping.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: AzureAIAgentId
+    path: ../src/dotnet/Common/Models/ResourceProviders/AzureAI/AzureAIAgentConversationMapping.cs
+    startLine: 19
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.ResourceProviders.AzureAI
+  summary: The Azure AI Agent Service agent id.
+  example: []
+  syntax:
+    content: >-
+      [JsonPropertyName("azureai_agent_id")]
+
+      public required string AzureAIAgentId { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: >-
+      <JsonPropertyName("azureai_agent_id")>
+
+      Public Property AzureAIAgentId As String
+  overload: FoundationaLLM.Common.Models.ResourceProviders.AzureAI.AzureAIAgentConversationMapping.AzureAIAgentId*
+  attributes:
+  - type: System.Text.Json.Serialization.JsonPropertyNameAttribute
+    ctor: System.Text.Json.Serialization.JsonPropertyNameAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: azureai_agent_id
+- uid: FoundationaLLM.Common.Models.ResourceProviders.AzureAI.AzureAIAgentConversationMapping.AzureAIAgentThreadId
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.AzureAI.AzureAIAgentConversationMapping.AzureAIAgentThreadId
+  id: AzureAIAgentThreadId
+  parent: FoundationaLLM.Common.Models.ResourceProviders.AzureAI.AzureAIAgentConversationMapping
+  langs:
+  - csharp
+  - vb
+  name: AzureAIAgentThreadId
+  nameWithType: AzureAIAgentConversationMapping.AzureAIAgentThreadId
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.AzureAI.AzureAIAgentConversationMapping.AzureAIAgentThreadId
+  type: Property
+  source:
+    remote:
+      path: src/dotnet/Common/Models/ResourceProviders/AzureAI/AzureAIAgentConversationMapping.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: AzureAIAgentThreadId
+    path: ../src/dotnet/Common/Models/ResourceProviders/AzureAI/AzureAIAgentConversationMapping.cs
+    startLine: 25
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.ResourceProviders.AzureAI
+  summary: The Azure AI Agent Service thread id associated with the FoundationaLLM conversation (session) id.
+  example: []
+  syntax:
+    content: >-
+      [JsonPropertyName("azure_ai_agent_thread_id")]
+
+      public string? AzureAIAgentThreadId { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: >-
+      <JsonPropertyName("azure_ai_agent_thread_id")>
+
+      Public Property AzureAIAgentThreadId As String
+  overload: FoundationaLLM.Common.Models.ResourceProviders.AzureAI.AzureAIAgentConversationMapping.AzureAIAgentThreadId*
+  attributes:
+  - type: System.Text.Json.Serialization.JsonPropertyNameAttribute
+    ctor: System.Text.Json.Serialization.JsonPropertyNameAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: azure_ai_agent_thread_id
+- uid: FoundationaLLM.Common.Models.ResourceProviders.AzureAI.AzureAIAgentConversationMapping.AzureAIAgentThreadCreatedOn
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.AzureAI.AzureAIAgentConversationMapping.AzureAIAgentThreadCreatedOn
+  id: AzureAIAgentThreadCreatedOn
+  parent: FoundationaLLM.Common.Models.ResourceProviders.AzureAI.AzureAIAgentConversationMapping
+  langs:
+  - csharp
+  - vb
+  name: AzureAIAgentThreadCreatedOn
+  nameWithType: AzureAIAgentConversationMapping.AzureAIAgentThreadCreatedOn
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.AzureAI.AzureAIAgentConversationMapping.AzureAIAgentThreadCreatedOn
+  type: Property
+  source:
+    remote:
+      path: src/dotnet/Common/Models/ResourceProviders/AzureAI/AzureAIAgentConversationMapping.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: AzureAIAgentThreadCreatedOn
+    path: ../src/dotnet/Common/Models/ResourceProviders/AzureAI/AzureAIAgentConversationMapping.cs
+    startLine: 31
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.ResourceProviders.AzureAI
+  summary: The time at which the Azure AI Agent Service thread was created.
+  example: []
+  syntax:
+    content: >-
+      [JsonPropertyName("azureai_agent_thread_created_on")]
+
+      public DateTimeOffset? AzureAIAgentThreadCreatedOn { get; set; }
+    parameters: []
+    return:
+      type: System.Nullable{System.DateTimeOffset}
+    content.vb: >-
+      <JsonPropertyName("azureai_agent_thread_created_on")>
+
+      Public Property AzureAIAgentThreadCreatedOn As DateTimeOffset?
+  overload: FoundationaLLM.Common.Models.ResourceProviders.AzureAI.AzureAIAgentConversationMapping.AzureAIAgentThreadCreatedOn*
+  attributes:
+  - type: System.Text.Json.Serialization.JsonPropertyNameAttribute
+    ctor: System.Text.Json.Serialization.JsonPropertyNameAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: azureai_agent_thread_created_on
+- uid: FoundationaLLM.Common.Models.ResourceProviders.AzureAI.AzureAIAgentConversationMapping.AzureAIAgentVectorStoreId
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.AzureAI.AzureAIAgentConversationMapping.AzureAIAgentVectorStoreId
+  id: AzureAIAgentVectorStoreId
+  parent: FoundationaLLM.Common.Models.ResourceProviders.AzureAI.AzureAIAgentConversationMapping
+  langs:
+  - csharp
+  - vb
+  name: AzureAIAgentVectorStoreId
+  nameWithType: AzureAIAgentConversationMapping.AzureAIAgentVectorStoreId
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.AzureAI.AzureAIAgentConversationMapping.AzureAIAgentVectorStoreId
+  type: Property
+  source:
+    remote:
+      path: src/dotnet/Common/Models/ResourceProviders/AzureAI/AzureAIAgentConversationMapping.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: AzureAIAgentVectorStoreId
+    path: ../src/dotnet/Common/Models/ResourceProviders/AzureAI/AzureAIAgentConversationMapping.cs
+    startLine: 37
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.ResourceProviders.AzureAI
+  summary: The Azure AI Agent service vector store id associated with the FoundationaLLM session (conversation) id.
+  example: []
+  syntax:
+    content: >-
+      [JsonPropertyName("azureai_agent_vector_store_id")]
+
+      public string? AzureAIAgentVectorStoreId { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: >-
+      <JsonPropertyName("azureai_agent_vector_store_id")>
+
+      Public Property AzureAIAgentVectorStoreId As String
+  overload: FoundationaLLM.Common.Models.ResourceProviders.AzureAI.AzureAIAgentConversationMapping.AzureAIAgentVectorStoreId*
+  attributes:
+  - type: System.Text.Json.Serialization.JsonPropertyNameAttribute
+    ctor: System.Text.Json.Serialization.JsonPropertyNameAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: azureai_agent_vector_store_id
+- uid: FoundationaLLM.Common.Models.ResourceProviders.AzureAI.AzureAIAgentConversationMapping.AzureAIAgentVectorStoreCreatedOn
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.AzureAI.AzureAIAgentConversationMapping.AzureAIAgentVectorStoreCreatedOn
+  id: AzureAIAgentVectorStoreCreatedOn
+  parent: FoundationaLLM.Common.Models.ResourceProviders.AzureAI.AzureAIAgentConversationMapping
+  langs:
+  - csharp
+  - vb
+  name: AzureAIAgentVectorStoreCreatedOn
+  nameWithType: AzureAIAgentConversationMapping.AzureAIAgentVectorStoreCreatedOn
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.AzureAI.AzureAIAgentConversationMapping.AzureAIAgentVectorStoreCreatedOn
+  type: Property
+  source:
+    remote:
+      path: src/dotnet/Common/Models/ResourceProviders/AzureAI/AzureAIAgentConversationMapping.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: AzureAIAgentVectorStoreCreatedOn
+    path: ../src/dotnet/Common/Models/ResourceProviders/AzureAI/AzureAIAgentConversationMapping.cs
+    startLine: 43
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.ResourceProviders.AzureAI
+  summary: The time at which the Azure AI Agent Service vector store was created.
+  example: []
+  syntax:
+    content: >-
+      [JsonPropertyName("azureai_agent_vector_store_created_on")]
+
+      public DateTimeOffset? AzureAIAgentVectorStoreCreatedOn { get; set; }
+    parameters: []
+    return:
+      type: System.Nullable{System.DateTimeOffset}
+    content.vb: >-
+      <JsonPropertyName("azureai_agent_vector_store_created_on")>
+
+      Public Property AzureAIAgentVectorStoreCreatedOn As DateTimeOffset?
+  overload: FoundationaLLM.Common.Models.ResourceProviders.AzureAI.AzureAIAgentConversationMapping.AzureAIAgentVectorStoreCreatedOn*
+  attributes:
+  - type: System.Text.Json.Serialization.JsonPropertyNameAttribute
+    ctor: System.Text.Json.Serialization.JsonPropertyNameAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: azureai_agent_vector_store_created_on
+- uid: FoundationaLLM.Common.Models.ResourceProviders.AzureAI.AzureAIAgentConversationMapping.#ctor
+  commentId: M:FoundationaLLM.Common.Models.ResourceProviders.AzureAI.AzureAIAgentConversationMapping.#ctor
+  id: '#ctor'
+  parent: FoundationaLLM.Common.Models.ResourceProviders.AzureAI.AzureAIAgentConversationMapping
+  langs:
+  - csharp
+  - vb
+  name: AzureAIAgentConversationMapping()
+  nameWithType: AzureAIAgentConversationMapping.AzureAIAgentConversationMapping()
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.AzureAI.AzureAIAgentConversationMapping.AzureAIAgentConversationMapping()
+  type: Constructor
+  source:
+    remote:
+      path: src/dotnet/Common/Models/ResourceProviders/AzureAI/AzureAIAgentConversationMapping.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: .ctor
+    path: ../src/dotnet/Common/Models/ResourceProviders/AzureAI/AzureAIAgentConversationMapping.cs
+    startLine: 49
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.ResourceProviders.AzureAI
+  summary: Set default property values.
+  example: []
+  syntax:
+    content: public AzureAIAgentConversationMapping()
+    content.vb: Public Sub New()
+  overload: FoundationaLLM.Common.Models.ResourceProviders.AzureAI.AzureAIAgentConversationMapping.#ctor*
+  nameWithType.vb: AzureAIAgentConversationMapping.New()
+  fullName.vb: FoundationaLLM.Common.Models.ResourceProviders.AzureAI.AzureAIAgentConversationMapping.New()
+  name.vb: New()
+references:
+- uid: FoundationaLLM.Common.Models.ResourceProviders.AzureAI
+  commentId: N:FoundationaLLM.Common.Models.ResourceProviders.AzureAI
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.ResourceProviders.AzureAI
+  nameWithType: FoundationaLLM.Common.Models.ResourceProviders.AzureAI
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.AzureAI
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders
+    name: ResourceProviders
+    href: FoundationaLLM.Common.Models.ResourceProviders.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.AzureAI
+    name: AzureAI
+    href: FoundationaLLM.Common.Models.ResourceProviders.AzureAI.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders
+    name: ResourceProviders
+    href: FoundationaLLM.Common.Models.ResourceProviders.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.AzureAI
+    name: AzureAI
+    href: FoundationaLLM.Common.Models.ResourceProviders.AzureAI.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceName
+  commentId: T:FoundationaLLM.Common.Models.ResourceProviders.ResourceName
+  parent: FoundationaLLM.Common.Models.ResourceProviders
+  href: FoundationaLLM.Common.Models.ResourceProviders.ResourceName.html
+  name: ResourceName
+  nameWithType: ResourceName
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.ResourceName
+- uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase
+  commentId: T:FoundationaLLM.Common.Models.ResourceProviders.ResourceBase
+  parent: FoundationaLLM.Common.Models.ResourceProviders
+  href: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.html
+  name: ResourceBase
+  nameWithType: ResourceBase
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase
+- uid: FoundationaLLM.Common.Models.ResourceProviders.AzureCosmosDBResource
+  commentId: T:FoundationaLLM.Common.Models.ResourceProviders.AzureCosmosDBResource
+  parent: FoundationaLLM.Common.Models.ResourceProviders
+  href: FoundationaLLM.Common.Models.ResourceProviders.AzureCosmosDBResource.html
+  name: AzureCosmosDBResource
+  nameWithType: AzureCosmosDBResource
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.AzureCosmosDBResource
+- uid: FoundationaLLM.Common.Models.ResourceProviders.AzureAI.AzureAIAgentResourceBase
+  commentId: T:FoundationaLLM.Common.Models.ResourceProviders.AzureAI.AzureAIAgentResourceBase
+  parent: FoundationaLLM.Common.Models.ResourceProviders.AzureAI
+  href: FoundationaLLM.Common.Models.ResourceProviders.AzureAI.AzureAIAgentResourceBase.html
+  name: AzureAIAgentResourceBase
+  nameWithType: AzureAIAgentResourceBase
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.AzureAI.AzureAIAgentResourceBase
+- uid: FoundationaLLM.Common.Models.ResourceProviders.AzureAI.AzureAIAgentResourceBase.Type
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.AzureAI.AzureAIAgentResourceBase.Type
+  parent: FoundationaLLM.Common.Models.ResourceProviders.AzureAI.AzureAIAgentResourceBase
+  href: FoundationaLLM.Common.Models.ResourceProviders.AzureAI.AzureAIAgentResourceBase.html#FoundationaLLM_Common_Models_ResourceProviders_AzureAI_AzureAIAgentResourceBase_Type
+  name: Type
+  nameWithType: AzureAIAgentResourceBase.Type
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.AzureAI.AzureAIAgentResourceBase.Type
+- uid: FoundationaLLM.Common.Models.ResourceProviders.AzureAI.AzureAIAgentResourceBase.PartitionKey
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.AzureAI.AzureAIAgentResourceBase.PartitionKey
+  parent: FoundationaLLM.Common.Models.ResourceProviders.AzureAI.AzureAIAgentResourceBase
+  href: FoundationaLLM.Common.Models.ResourceProviders.AzureAI.AzureAIAgentResourceBase.html#FoundationaLLM_Common_Models_ResourceProviders_AzureAI_AzureAIAgentResourceBase_PartitionKey
+  name: PartitionKey
+  nameWithType: AzureAIAgentResourceBase.PartitionKey
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.AzureAI.AzureAIAgentResourceBase.PartitionKey
+- uid: FoundationaLLM.Common.Models.ResourceProviders.AzureAI.AzureAIAgentResourceBase.ProjectConnectionString
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.AzureAI.AzureAIAgentResourceBase.ProjectConnectionString
+  parent: FoundationaLLM.Common.Models.ResourceProviders.AzureAI.AzureAIAgentResourceBase
+  href: FoundationaLLM.Common.Models.ResourceProviders.AzureAI.AzureAIAgentResourceBase.html#FoundationaLLM_Common_Models_ResourceProviders_AzureAI_AzureAIAgentResourceBase_ProjectConnectionString
+  name: ProjectConnectionString
+  nameWithType: AzureAIAgentResourceBase.ProjectConnectionString
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.AzureAI.AzureAIAgentResourceBase.ProjectConnectionString
+- uid: FoundationaLLM.Common.Models.ResourceProviders.AzureCosmosDBResource.Id
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.AzureCosmosDBResource.Id
+  parent: FoundationaLLM.Common.Models.ResourceProviders.AzureCosmosDBResource
+  href: FoundationaLLM.Common.Models.ResourceProviders.AzureCosmosDBResource.html#FoundationaLLM_Common_Models_ResourceProviders_AzureCosmosDBResource_Id
+  name: Id
+  nameWithType: AzureCosmosDBResource.Id
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.AzureCosmosDBResource.Id
+- uid: FoundationaLLM.Common.Models.ResourceProviders.AzureCosmosDBResource.UPN
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.AzureCosmosDBResource.UPN
+  parent: FoundationaLLM.Common.Models.ResourceProviders.AzureCosmosDBResource
+  href: FoundationaLLM.Common.Models.ResourceProviders.AzureCosmosDBResource.html#FoundationaLLM_Common_Models_ResourceProviders_AzureCosmosDBResource_UPN
+  name: UPN
+  nameWithType: AzureCosmosDBResource.UPN
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.AzureCosmosDBResource.UPN
+- uid: FoundationaLLM.Common.Models.ResourceProviders.AzureCosmosDBResource.InstanceId
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.AzureCosmosDBResource.InstanceId
+  parent: FoundationaLLM.Common.Models.ResourceProviders.AzureCosmosDBResource
+  href: FoundationaLLM.Common.Models.ResourceProviders.AzureCosmosDBResource.html#FoundationaLLM_Common_Models_ResourceProviders_AzureCosmosDBResource_InstanceId
+  name: InstanceId
+  nameWithType: AzureCosmosDBResource.InstanceId
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.AzureCosmosDBResource.InstanceId
+- uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.ObjectId
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.ObjectId
+  parent: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase
+  href: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.html#FoundationaLLM_Common_Models_ResourceProviders_ResourceBase_ObjectId
+  name: ObjectId
+  nameWithType: ResourceBase.ObjectId
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.ObjectId
+- uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.ResourcePath
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.ResourcePath
+  parent: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase
+  href: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.html#FoundationaLLM_Common_Models_ResourceProviders_ResourceBase_ResourcePath
+  name: ResourcePath
+  nameWithType: ResourceBase.ResourcePath
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.ResourcePath
+- uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.DisplayName
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.DisplayName
+  parent: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase
+  href: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.html#FoundationaLLM_Common_Models_ResourceProviders_ResourceBase_DisplayName
+  name: DisplayName
+  nameWithType: ResourceBase.DisplayName
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.DisplayName
+- uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.Description
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.Description
+  parent: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase
+  href: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.html#FoundationaLLM_Common_Models_ResourceProviders_ResourceBase_Description
+  name: Description
+  nameWithType: ResourceBase.Description
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.Description
+- uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.CostCenter
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.CostCenter
+  parent: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase
+  href: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.html#FoundationaLLM_Common_Models_ResourceProviders_ResourceBase_CostCenter
+  name: CostCenter
+  nameWithType: ResourceBase.CostCenter
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.CostCenter
+- uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.Properties
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.Properties
+  parent: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase
+  href: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.html#FoundationaLLM_Common_Models_ResourceProviders_ResourceBase_Properties
+  name: Properties
+  nameWithType: ResourceBase.Properties
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.Properties
+- uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.CreatedOn
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.CreatedOn
+  parent: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase
+  href: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.html#FoundationaLLM_Common_Models_ResourceProviders_ResourceBase_CreatedOn
+  name: CreatedOn
+  nameWithType: ResourceBase.CreatedOn
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.CreatedOn
+- uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.UpdatedOn
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.UpdatedOn
+  parent: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase
+  href: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.html#FoundationaLLM_Common_Models_ResourceProviders_ResourceBase_UpdatedOn
+  name: UpdatedOn
+  nameWithType: ResourceBase.UpdatedOn
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.UpdatedOn
+- uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.CreatedBy
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.CreatedBy
+  parent: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase
+  href: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.html#FoundationaLLM_Common_Models_ResourceProviders_ResourceBase_CreatedBy
+  name: CreatedBy
+  nameWithType: ResourceBase.CreatedBy
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.CreatedBy
+- uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.UpdatedBy
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.UpdatedBy
+  parent: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase
+  href: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.html#FoundationaLLM_Common_Models_ResourceProviders_ResourceBase_UpdatedBy
+  name: UpdatedBy
+  nameWithType: ResourceBase.UpdatedBy
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.UpdatedBy
+- uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.Deleted
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.Deleted
+  parent: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase
+  href: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.html#FoundationaLLM_Common_Models_ResourceProviders_ResourceBase_Deleted
+  name: Deleted
+  nameWithType: ResourceBase.Deleted
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.Deleted
+- uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.ExpirationDate
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.ExpirationDate
+  parent: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase
+  href: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.html#FoundationaLLM_Common_Models_ResourceProviders_ResourceBase_ExpirationDate
+  name: ExpirationDate
+  nameWithType: ResourceBase.ExpirationDate
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.ExpirationDate
+- uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.InheritableAuthorizableActions
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.InheritableAuthorizableActions
+  parent: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase
+  href: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.html#FoundationaLLM_Common_Models_ResourceProviders_ResourceBase_InheritableAuthorizableActions
+  name: InheritableAuthorizableActions
+  nameWithType: ResourceBase.InheritableAuthorizableActions
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.ResourceBase.InheritableAuthorizableActions
+- uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceName.Name
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.ResourceName.Name
+  parent: FoundationaLLM.Common.Models.ResourceProviders.ResourceName
+  href: FoundationaLLM.Common.Models.ResourceProviders.ResourceName.html#FoundationaLLM_Common_Models_ResourceProviders_ResourceName_Name
+  name: Name
+  nameWithType: ResourceName.Name
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.ResourceName.Name
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  parent: FoundationaLLM.Core.Utils.ObjectExtensions
+  definition: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: FoundationaLLM.Common.Models.ResourceProviders
+  commentId: N:FoundationaLLM.Common.Models.ResourceProviders
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.ResourceProviders
+  nameWithType: FoundationaLLM.Common.Models.ResourceProviders
+  fullName: FoundationaLLM.Common.Models.ResourceProviders
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders
+    name: ResourceProviders
+    href: FoundationaLLM.Common.Models.ResourceProviders.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders
+    name: ResourceProviders
+    href: FoundationaLLM.Common.Models.ResourceProviders.html
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  isExternal: true
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions
+  commentId: T:FoundationaLLM.Core.Utils.ObjectExtensions
+  parent: FoundationaLLM.Core.Utils
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html
+  name: ObjectExtensions
+  nameWithType: ObjectExtensions
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions
+- uid: FoundationaLLM.Core.Utils
+  commentId: N:FoundationaLLM.Core.Utils
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Core.Utils
+  nameWithType: FoundationaLLM.Core.Utils
+  fullName: FoundationaLLM.Core.Utils
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+- uid: FoundationaLLM.Common.Models.ResourceProviders.AzureAI.AzureAIAgentConversationMapping.ConversationId*
+  commentId: Overload:FoundationaLLM.Common.Models.ResourceProviders.AzureAI.AzureAIAgentConversationMapping.ConversationId
+  href: FoundationaLLM.Common.Models.ResourceProviders.AzureAI.AzureAIAgentConversationMapping.html#FoundationaLLM_Common_Models_ResourceProviders_AzureAI_AzureAIAgentConversationMapping_ConversationId
+  name: ConversationId
+  nameWithType: AzureAIAgentConversationMapping.ConversationId
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.AzureAI.AzureAIAgentConversationMapping.ConversationId
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: FoundationaLLM.Common.Models.ResourceProviders.AzureAI.AzureAIAgentConversationMapping.AzureAIAgentId*
+  commentId: Overload:FoundationaLLM.Common.Models.ResourceProviders.AzureAI.AzureAIAgentConversationMapping.AzureAIAgentId
+  href: FoundationaLLM.Common.Models.ResourceProviders.AzureAI.AzureAIAgentConversationMapping.html#FoundationaLLM_Common_Models_ResourceProviders_AzureAI_AzureAIAgentConversationMapping_AzureAIAgentId
+  name: AzureAIAgentId
+  nameWithType: AzureAIAgentConversationMapping.AzureAIAgentId
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.AzureAI.AzureAIAgentConversationMapping.AzureAIAgentId
+- uid: FoundationaLLM.Common.Models.ResourceProviders.AzureAI.AzureAIAgentConversationMapping.AzureAIAgentThreadId*
+  commentId: Overload:FoundationaLLM.Common.Models.ResourceProviders.AzureAI.AzureAIAgentConversationMapping.AzureAIAgentThreadId
+  href: FoundationaLLM.Common.Models.ResourceProviders.AzureAI.AzureAIAgentConversationMapping.html#FoundationaLLM_Common_Models_ResourceProviders_AzureAI_AzureAIAgentConversationMapping_AzureAIAgentThreadId
+  name: AzureAIAgentThreadId
+  nameWithType: AzureAIAgentConversationMapping.AzureAIAgentThreadId
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.AzureAI.AzureAIAgentConversationMapping.AzureAIAgentThreadId
+- uid: FoundationaLLM.Common.Models.ResourceProviders.AzureAI.AzureAIAgentConversationMapping.AzureAIAgentThreadCreatedOn*
+  commentId: Overload:FoundationaLLM.Common.Models.ResourceProviders.AzureAI.AzureAIAgentConversationMapping.AzureAIAgentThreadCreatedOn
+  href: FoundationaLLM.Common.Models.ResourceProviders.AzureAI.AzureAIAgentConversationMapping.html#FoundationaLLM_Common_Models_ResourceProviders_AzureAI_AzureAIAgentConversationMapping_AzureAIAgentThreadCreatedOn
+  name: AzureAIAgentThreadCreatedOn
+  nameWithType: AzureAIAgentConversationMapping.AzureAIAgentThreadCreatedOn
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.AzureAI.AzureAIAgentConversationMapping.AzureAIAgentThreadCreatedOn
+- uid: System.Nullable{System.DateTimeOffset}
+  commentId: T:System.Nullable{System.DateTimeOffset}
+  parent: System
+  definition: System.Nullable`1
+  href: https://learn.microsoft.com/dotnet/api/system.datetimeoffset
+  name: DateTimeOffset?
+  nameWithType: DateTimeOffset?
+  fullName: System.DateTimeOffset?
+  spec.csharp:
+  - uid: System.DateTimeOffset
+    name: DateTimeOffset
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.datetimeoffset
+  - name: '?'
+  spec.vb:
+  - uid: System.DateTimeOffset
+    name: DateTimeOffset
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.datetimeoffset
+  - name: '?'
+- uid: System.Nullable`1
+  commentId: T:System.Nullable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  name: Nullable<T>
+  nameWithType: Nullable<T>
+  fullName: System.Nullable<T>
+  nameWithType.vb: Nullable(Of T)
+  fullName.vb: System.Nullable(Of T)
+  name.vb: Nullable(Of T)
+  spec.csharp:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: FoundationaLLM.Common.Models.ResourceProviders.AzureAI.AzureAIAgentConversationMapping.AzureAIAgentVectorStoreId*
+  commentId: Overload:FoundationaLLM.Common.Models.ResourceProviders.AzureAI.AzureAIAgentConversationMapping.AzureAIAgentVectorStoreId
+  href: FoundationaLLM.Common.Models.ResourceProviders.AzureAI.AzureAIAgentConversationMapping.html#FoundationaLLM_Common_Models_ResourceProviders_AzureAI_AzureAIAgentConversationMapping_AzureAIAgentVectorStoreId
+  name: AzureAIAgentVectorStoreId
+  nameWithType: AzureAIAgentConversationMapping.AzureAIAgentVectorStoreId
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.AzureAI.AzureAIAgentConversationMapping.AzureAIAgentVectorStoreId
+- uid: FoundationaLLM.Common.Models.ResourceProviders.AzureAI.AzureAIAgentConversationMapping.AzureAIAgentVectorStoreCreatedOn*
+  commentId: Overload:FoundationaLLM.Common.Models.ResourceProviders.AzureAI.AzureAIAgentConversationMapping.AzureAIAgentVectorStoreCreatedOn
+  href: FoundationaLLM.Common.Models.ResourceProviders.AzureAI.AzureAIAgentConversationMapping.html#FoundationaLLM_Common_Models_ResourceProviders_AzureAI_AzureAIAgentConversationMapping_AzureAIAgentVectorStoreCreatedOn
+  name: AzureAIAgentVectorStoreCreatedOn
+  nameWithType: AzureAIAgentConversationMapping.AzureAIAgentVectorStoreCreatedOn
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.AzureAI.AzureAIAgentConversationMapping.AzureAIAgentVectorStoreCreatedOn
+- uid: FoundationaLLM.Common.Models.ResourceProviders.AzureAI.AzureAIAgentConversationMapping.#ctor*
+  commentId: Overload:FoundationaLLM.Common.Models.ResourceProviders.AzureAI.AzureAIAgentConversationMapping.#ctor
+  href: FoundationaLLM.Common.Models.ResourceProviders.AzureAI.AzureAIAgentConversationMapping.html#FoundationaLLM_Common_Models_ResourceProviders_AzureAI_AzureAIAgentConversationMapping__ctor
+  name: AzureAIAgentConversationMapping
+  nameWithType: AzureAIAgentConversationMapping.AzureAIAgentConversationMapping
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.AzureAI.AzureAIAgentConversationMapping.AzureAIAgentConversationMapping
+  nameWithType.vb: AzureAIAgentConversationMapping.New
+  fullName.vb: FoundationaLLM.Common.Models.ResourceProviders.AzureAI.AzureAIAgentConversationMapping.New
+  name.vb: New

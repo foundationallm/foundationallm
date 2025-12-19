@@ -1,0 +1,78 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Common.Models.Authentication
+  commentId: N:FoundationaLLM.Common.Models.Authentication
+  id: Authentication
+  parent: FoundationaLLM.Common.Models
+  children:
+  - FoundationaLLM.Common.Models.Authentication.ObjectQueryParameters
+  - FoundationaLLM.Common.Models.Authentication.ObjectQueryResult
+  - FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM.Common.Models.Authentication
+  nameWithType: FoundationaLLM.Common.Models.Authentication
+  fullName: FoundationaLLM.Common.Models.Authentication
+  type: Namespace
+  assemblies:
+  - FoundationaLLM.Common
+references:
+- uid: FoundationaLLM.Common.Models.Authentication.ObjectQueryParameters
+  commentId: T:FoundationaLLM.Common.Models.Authentication.ObjectQueryParameters
+  parent: FoundationaLLM.Common.Models.Authentication
+  href: FoundationaLLM.Common.Models.Authentication.ObjectQueryParameters.html
+  name: ObjectQueryParameters
+  nameWithType: ObjectQueryParameters
+  fullName: FoundationaLLM.Common.Models.Authentication.ObjectQueryParameters
+- uid: FoundationaLLM.Common.Models.Authentication.ObjectQueryResult
+  commentId: T:FoundationaLLM.Common.Models.Authentication.ObjectQueryResult
+  href: FoundationaLLM.Common.Models.Authentication.ObjectQueryResult.html
+  name: ObjectQueryResult
+  nameWithType: ObjectQueryResult
+  fullName: FoundationaLLM.Common.Models.Authentication.ObjectQueryResult
+- uid: FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity
+  commentId: T:FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity
+  parent: FoundationaLLM.Common.Models.Authentication
+  href: FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity.html
+  name: UnifiedUserIdentity
+  nameWithType: UnifiedUserIdentity
+  fullName: FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity
+- uid: FoundationaLLM.Common.Models.Authentication
+  commentId: N:FoundationaLLM.Common.Models.Authentication
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.Authentication
+  nameWithType: FoundationaLLM.Common.Models.Authentication
+  fullName: FoundationaLLM.Common.Models.Authentication
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Authentication
+    name: Authentication
+    href: FoundationaLLM.Common.Models.Authentication.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Authentication
+    name: Authentication
+    href: FoundationaLLM.Common.Models.Authentication.html

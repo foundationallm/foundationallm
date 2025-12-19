@@ -1,0 +1,31 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Gatekeeper.Core.Models.LakeraGuard
+  commentId: N:FoundationaLLM.Gatekeeper.Core.Models.LakeraGuard
+  id: LakeraGuard
+  parent: FoundationaLLM.Gatekeeper.Core.Models
+  children:
+  - FoundationaLLM.Gatekeeper.Core.Models.LakeraGuard.AnalyzePromptInjectionResult
+  - FoundationaLLM.Gatekeeper.Core.Models.LakeraGuard.PromptInjectionResult
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM.Gatekeeper.Core.Models.LakeraGuard
+  nameWithType: FoundationaLLM.Gatekeeper.Core.Models.LakeraGuard
+  fullName: FoundationaLLM.Gatekeeper.Core.Models.LakeraGuard
+  type: Namespace
+  assemblies:
+  - FoundationaLLM.Gatekeeper.Core
+references:
+- uid: FoundationaLLM.Gatekeeper.Core.Models.LakeraGuard.AnalyzePromptInjectionResult
+  commentId: T:FoundationaLLM.Gatekeeper.Core.Models.LakeraGuard.AnalyzePromptInjectionResult
+  href: FoundationaLLM.Gatekeeper.Core.Models.LakeraGuard.AnalyzePromptInjectionResult.html
+  name: AnalyzePromptInjectionResult
+  nameWithType: AnalyzePromptInjectionResult
+  fullName: FoundationaLLM.Gatekeeper.Core.Models.LakeraGuard.AnalyzePromptInjectionResult
+- uid: FoundationaLLM.Gatekeeper.Core.Models.LakeraGuard.PromptInjectionResult
+  commentId: T:FoundationaLLM.Gatekeeper.Core.Models.LakeraGuard.PromptInjectionResult
+  href: FoundationaLLM.Gatekeeper.Core.Models.LakeraGuard.PromptInjectionResult.html
+  name: PromptInjectionResult
+  nameWithType: PromptInjectionResult
+  fullName: FoundationaLLM.Gatekeeper.Core.Models.LakeraGuard.PromptInjectionResult

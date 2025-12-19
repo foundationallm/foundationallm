@@ -1,0 +1,105 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.AIModel
+  id: AIModel
+  parent: FoundationaLLM
+  children:
+  - FoundationaLLM.AIModel.Models
+  - FoundationaLLM.AIModel.ResourceProviders
+  - FoundationaLLM.AIModel.Validation
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM.AIModel
+  type: Namespace
+references:
+- uid: FoundationaLLM.AIModel.Models
+  commentId: N:FoundationaLLM.AIModel.Models
+  href: FoundationaLLM.html
+  name: FoundationaLLM.AIModel.Models
+  nameWithType: FoundationaLLM.AIModel.Models
+  fullName: FoundationaLLM.AIModel.Models
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.AIModel
+    name: AIModel
+    href: FoundationaLLM.AIModel.html
+  - name: .
+  - uid: FoundationaLLM.AIModel.Models
+    name: Models
+    href: FoundationaLLM.AIModel.Models.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.AIModel
+    name: AIModel
+    href: FoundationaLLM.AIModel.html
+  - name: .
+  - uid: FoundationaLLM.AIModel.Models
+    name: Models
+    href: FoundationaLLM.AIModel.Models.html
+- uid: FoundationaLLM.AIModel.ResourceProviders
+  commentId: N:FoundationaLLM.AIModel.ResourceProviders
+  href: FoundationaLLM.html
+  name: FoundationaLLM.AIModel.ResourceProviders
+  nameWithType: FoundationaLLM.AIModel.ResourceProviders
+  fullName: FoundationaLLM.AIModel.ResourceProviders
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.AIModel
+    name: AIModel
+    href: FoundationaLLM.AIModel.html
+  - name: .
+  - uid: FoundationaLLM.AIModel.ResourceProviders
+    name: ResourceProviders
+    href: FoundationaLLM.AIModel.ResourceProviders.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.AIModel
+    name: AIModel
+    href: FoundationaLLM.AIModel.html
+  - name: .
+  - uid: FoundationaLLM.AIModel.ResourceProviders
+    name: ResourceProviders
+    href: FoundationaLLM.AIModel.ResourceProviders.html
+- uid: FoundationaLLM.AIModel.Validation
+  commentId: N:FoundationaLLM.AIModel.Validation
+  href: FoundationaLLM.html
+  name: FoundationaLLM.AIModel.Validation
+  nameWithType: FoundationaLLM.AIModel.Validation
+  fullName: FoundationaLLM.AIModel.Validation
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.AIModel
+    name: AIModel
+    href: FoundationaLLM.AIModel.html
+  - name: .
+  - uid: FoundationaLLM.AIModel.Validation
+    name: Validation
+    href: FoundationaLLM.AIModel.Validation.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.AIModel
+    name: AIModel
+    href: FoundationaLLM.AIModel.html
+  - name: .
+  - uid: FoundationaLLM.AIModel.Validation
+    name: Validation
+    href: FoundationaLLM.AIModel.Validation.html

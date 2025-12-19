@@ -1,0 +1,98 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Common.Models.Services
+  commentId: N:FoundationaLLM.Common.Models.Services
+  id: Services
+  parent: FoundationaLLM.Common.Models
+  children:
+  - FoundationaLLM.Common.Models.Services.DomainError
+  - FoundationaLLM.Common.Models.Services.Result
+  - FoundationaLLM.Common.Models.Services.Result`1
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM.Common.Models.Services
+  nameWithType: FoundationaLLM.Common.Models.Services
+  fullName: FoundationaLLM.Common.Models.Services
+  type: Namespace
+  assemblies:
+  - FoundationaLLM.Common
+references:
+- uid: FoundationaLLM.Common.Models.Services.DomainError
+  commentId: T:FoundationaLLM.Common.Models.Services.DomainError
+  parent: FoundationaLLM.Common.Models.Services
+  href: FoundationaLLM.Common.Models.Services.DomainError.html
+  name: DomainError
+  nameWithType: DomainError
+  fullName: FoundationaLLM.Common.Models.Services.DomainError
+- uid: FoundationaLLM.Common.Models.Services.Result
+  commentId: T:FoundationaLLM.Common.Models.Services.Result
+  parent: FoundationaLLM.Common.Models.Services
+  href: FoundationaLLM.Common.Models.Services.Result.html
+  name: Result
+  nameWithType: Result
+  fullName: FoundationaLLM.Common.Models.Services.Result
+- uid: FoundationaLLM.Common.Models.Services.Result`1
+  commentId: T:FoundationaLLM.Common.Models.Services.Result`1
+  parent: FoundationaLLM.Common.Models.Services
+  href: FoundationaLLM.Common.Models.Services.Result-1.html
+  name: Result<T>
+  nameWithType: Result<T>
+  fullName: FoundationaLLM.Common.Models.Services.Result<T>
+  nameWithType.vb: Result(Of T)
+  fullName.vb: FoundationaLLM.Common.Models.Services.Result(Of T)
+  name.vb: Result(Of T)
+  spec.csharp:
+  - uid: FoundationaLLM.Common.Models.Services.Result`1
+    name: Result
+    href: FoundationaLLM.Common.Models.Services.Result-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: FoundationaLLM.Common.Models.Services.Result`1
+    name: Result
+    href: FoundationaLLM.Common.Models.Services.Result-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: FoundationaLLM.Common.Models.Services
+  commentId: N:FoundationaLLM.Common.Models.Services
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.Services
+  nameWithType: FoundationaLLM.Common.Models.Services
+  fullName: FoundationaLLM.Common.Models.Services
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Services
+    name: Services
+    href: FoundationaLLM.Common.Models.Services.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Services
+    name: Services
+    href: FoundationaLLM.Common.Models.Services.html

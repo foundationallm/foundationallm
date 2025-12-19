@@ -1,0 +1,63 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Management.API
+  commentId: N:FoundationaLLM.Management.API
+  id: Management.API
+  parent: FoundationaLLM
+  children:
+  - FoundationaLLM.Management.API.Controllers
+  - FoundationaLLM.Management.API.Program
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM.Management.API
+  nameWithType: FoundationaLLM.Management.API
+  fullName: FoundationaLLM.Management.API
+  type: Namespace
+  assemblies:
+  - FoundationaLLM.Management.API
+references:
+- uid: FoundationaLLM.Management.API.Controllers
+  commentId: N:FoundationaLLM.Management.API.Controllers
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Management.API.Controllers
+  nameWithType: FoundationaLLM.Management.API.Controllers
+  fullName: FoundationaLLM.Management.API.Controllers
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Management
+    name: Management
+    href: FoundationaLLM.Management.html
+  - name: .
+  - uid: FoundationaLLM.Management.API
+    name: API
+    href: FoundationaLLM.Management.API.html
+  - name: .
+  - uid: FoundationaLLM.Management.API.Controllers
+    name: Controllers
+    href: FoundationaLLM.Management.API.Controllers.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Management
+    name: Management
+    href: FoundationaLLM.Management.html
+  - name: .
+  - uid: FoundationaLLM.Management.API
+    name: API
+    href: FoundationaLLM.Management.API.html
+  - name: .
+  - uid: FoundationaLLM.Management.API.Controllers
+    name: Controllers
+    href: FoundationaLLM.Management.API.Controllers.html
+- uid: FoundationaLLM.Management.API.Program
+  commentId: T:FoundationaLLM.Management.API.Program
+  href: FoundationaLLM.Management.API.Program.html
+  name: Program
+  nameWithType: Program
+  fullName: FoundationaLLM.Management.API.Program

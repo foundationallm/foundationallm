@@ -1,0 +1,170 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Common.Models.Knowledge
+  commentId: N:FoundationaLLM.Common.Models.Knowledge
+  id: Knowledge
+  parent: FoundationaLLM.Common.Models
+  children:
+  - FoundationaLLM.Common.Models.Knowledge.ExtractedKnowledgeEntity
+  - FoundationaLLM.Common.Models.Knowledge.ExtractedKnowledgeRelationship
+  - FoundationaLLM.Common.Models.Knowledge.KnowledgeBucketsRegistry
+  - FoundationaLLM.Common.Models.Knowledge.KnowledgeBucketsRegistryEntry
+  - FoundationaLLM.Common.Models.Knowledge.KnowledgeEntity
+  - FoundationaLLM.Common.Models.Knowledge.KnowledgeEntityBase
+  - FoundationaLLM.Common.Models.Knowledge.KnowledgeEntityEmbedding
+  - FoundationaLLM.Common.Models.Knowledge.KnowledgeEntityRelationshipCollection`2
+  - FoundationaLLM.Common.Models.Knowledge.KnowledgeItemBase
+  - FoundationaLLM.Common.Models.Knowledge.KnowledgeRelationship
+  - FoundationaLLM.Common.Models.Knowledge.KnowledgeRelationshipBase
+  - FoundationaLLM.Common.Models.Knowledge.KnowledgeRelationshipEmbedding
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM.Common.Models.Knowledge
+  nameWithType: FoundationaLLM.Common.Models.Knowledge
+  fullName: FoundationaLLM.Common.Models.Knowledge
+  type: Namespace
+  assemblies:
+  - FoundationaLLM.Common
+references:
+- uid: FoundationaLLM.Common.Models.Knowledge.ExtractedKnowledgeEntity
+  commentId: T:FoundationaLLM.Common.Models.Knowledge.ExtractedKnowledgeEntity
+  href: FoundationaLLM.Common.Models.Knowledge.ExtractedKnowledgeEntity.html
+  name: ExtractedKnowledgeEntity
+  nameWithType: ExtractedKnowledgeEntity
+  fullName: FoundationaLLM.Common.Models.Knowledge.ExtractedKnowledgeEntity
+- uid: FoundationaLLM.Common.Models.Knowledge.ExtractedKnowledgeRelationship
+  commentId: T:FoundationaLLM.Common.Models.Knowledge.ExtractedKnowledgeRelationship
+  href: FoundationaLLM.Common.Models.Knowledge.ExtractedKnowledgeRelationship.html
+  name: ExtractedKnowledgeRelationship
+  nameWithType: ExtractedKnowledgeRelationship
+  fullName: FoundationaLLM.Common.Models.Knowledge.ExtractedKnowledgeRelationship
+- uid: FoundationaLLM.Common.Models.Knowledge.KnowledgeBucketsRegistry
+  commentId: T:FoundationaLLM.Common.Models.Knowledge.KnowledgeBucketsRegistry
+  parent: FoundationaLLM.Common.Models.Knowledge
+  href: FoundationaLLM.Common.Models.Knowledge.KnowledgeBucketsRegistry.html
+  name: KnowledgeBucketsRegistry
+  nameWithType: KnowledgeBucketsRegistry
+  fullName: FoundationaLLM.Common.Models.Knowledge.KnowledgeBucketsRegistry
+- uid: FoundationaLLM.Common.Models.Knowledge.KnowledgeBucketsRegistryEntry
+  commentId: T:FoundationaLLM.Common.Models.Knowledge.KnowledgeBucketsRegistryEntry
+  href: FoundationaLLM.Common.Models.Knowledge.KnowledgeBucketsRegistryEntry.html
+  name: KnowledgeBucketsRegistryEntry
+  nameWithType: KnowledgeBucketsRegistryEntry
+  fullName: FoundationaLLM.Common.Models.Knowledge.KnowledgeBucketsRegistryEntry
+- uid: FoundationaLLM.Common.Models.Knowledge.KnowledgeEntity
+  commentId: T:FoundationaLLM.Common.Models.Knowledge.KnowledgeEntity
+  parent: FoundationaLLM.Common.Models.Knowledge
+  href: FoundationaLLM.Common.Models.Knowledge.KnowledgeEntity.html
+  name: KnowledgeEntity
+  nameWithType: KnowledgeEntity
+  fullName: FoundationaLLM.Common.Models.Knowledge.KnowledgeEntity
+- uid: FoundationaLLM.Common.Models.Knowledge.KnowledgeEntityBase
+  commentId: T:FoundationaLLM.Common.Models.Knowledge.KnowledgeEntityBase
+  parent: FoundationaLLM.Common.Models.Knowledge
+  href: FoundationaLLM.Common.Models.Knowledge.KnowledgeEntityBase.html
+  name: KnowledgeEntityBase
+  nameWithType: KnowledgeEntityBase
+  fullName: FoundationaLLM.Common.Models.Knowledge.KnowledgeEntityBase
+- uid: FoundationaLLM.Common.Models.Knowledge.KnowledgeEntityEmbedding
+  commentId: T:FoundationaLLM.Common.Models.Knowledge.KnowledgeEntityEmbedding
+  href: FoundationaLLM.Common.Models.Knowledge.KnowledgeEntityEmbedding.html
+  name: KnowledgeEntityEmbedding
+  nameWithType: KnowledgeEntityEmbedding
+  fullName: FoundationaLLM.Common.Models.Knowledge.KnowledgeEntityEmbedding
+- uid: FoundationaLLM.Common.Models.Knowledge.KnowledgeEntityRelationshipCollection`2
+  commentId: T:FoundationaLLM.Common.Models.Knowledge.KnowledgeEntityRelationshipCollection`2
+  href: FoundationaLLM.Common.Models.Knowledge.KnowledgeEntityRelationshipCollection-2.html
+  name: KnowledgeEntityRelationshipCollection<TEntity, TRelationship>
+  nameWithType: KnowledgeEntityRelationshipCollection<TEntity, TRelationship>
+  fullName: FoundationaLLM.Common.Models.Knowledge.KnowledgeEntityRelationshipCollection<TEntity, TRelationship>
+  nameWithType.vb: KnowledgeEntityRelationshipCollection(Of TEntity, TRelationship)
+  fullName.vb: FoundationaLLM.Common.Models.Knowledge.KnowledgeEntityRelationshipCollection(Of TEntity, TRelationship)
+  name.vb: KnowledgeEntityRelationshipCollection(Of TEntity, TRelationship)
+  spec.csharp:
+  - uid: FoundationaLLM.Common.Models.Knowledge.KnowledgeEntityRelationshipCollection`2
+    name: KnowledgeEntityRelationshipCollection
+    href: FoundationaLLM.Common.Models.Knowledge.KnowledgeEntityRelationshipCollection-2.html
+  - name: <
+  - name: TEntity
+  - name: ','
+  - name: " "
+  - name: TRelationship
+  - name: '>'
+  spec.vb:
+  - uid: FoundationaLLM.Common.Models.Knowledge.KnowledgeEntityRelationshipCollection`2
+    name: KnowledgeEntityRelationshipCollection
+    href: FoundationaLLM.Common.Models.Knowledge.KnowledgeEntityRelationshipCollection-2.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TEntity
+  - name: ','
+  - name: " "
+  - name: TRelationship
+  - name: )
+- uid: FoundationaLLM.Common.Models.Knowledge.KnowledgeItemBase
+  commentId: T:FoundationaLLM.Common.Models.Knowledge.KnowledgeItemBase
+  parent: FoundationaLLM.Common.Models.Knowledge
+  href: FoundationaLLM.Common.Models.Knowledge.KnowledgeItemBase.html
+  name: KnowledgeItemBase
+  nameWithType: KnowledgeItemBase
+  fullName: FoundationaLLM.Common.Models.Knowledge.KnowledgeItemBase
+- uid: FoundationaLLM.Common.Models.Knowledge.KnowledgeRelationship
+  commentId: T:FoundationaLLM.Common.Models.Knowledge.KnowledgeRelationship
+  parent: FoundationaLLM.Common.Models.Knowledge
+  href: FoundationaLLM.Common.Models.Knowledge.KnowledgeRelationship.html
+  name: KnowledgeRelationship
+  nameWithType: KnowledgeRelationship
+  fullName: FoundationaLLM.Common.Models.Knowledge.KnowledgeRelationship
+- uid: FoundationaLLM.Common.Models.Knowledge.KnowledgeRelationshipBase
+  commentId: T:FoundationaLLM.Common.Models.Knowledge.KnowledgeRelationshipBase
+  parent: FoundationaLLM.Common.Models.Knowledge
+  href: FoundationaLLM.Common.Models.Knowledge.KnowledgeRelationshipBase.html
+  name: KnowledgeRelationshipBase
+  nameWithType: KnowledgeRelationshipBase
+  fullName: FoundationaLLM.Common.Models.Knowledge.KnowledgeRelationshipBase
+- uid: FoundationaLLM.Common.Models.Knowledge.KnowledgeRelationshipEmbedding
+  commentId: T:FoundationaLLM.Common.Models.Knowledge.KnowledgeRelationshipEmbedding
+  href: FoundationaLLM.Common.Models.Knowledge.KnowledgeRelationshipEmbedding.html
+  name: KnowledgeRelationshipEmbedding
+  nameWithType: KnowledgeRelationshipEmbedding
+  fullName: FoundationaLLM.Common.Models.Knowledge.KnowledgeRelationshipEmbedding
+- uid: FoundationaLLM.Common.Models.Knowledge
+  commentId: N:FoundationaLLM.Common.Models.Knowledge
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.Knowledge
+  nameWithType: FoundationaLLM.Common.Models.Knowledge
+  fullName: FoundationaLLM.Common.Models.Knowledge
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Knowledge
+    name: Knowledge
+    href: FoundationaLLM.Common.Models.Knowledge.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Knowledge
+    name: Knowledge
+    href: FoundationaLLM.Common.Models.Knowledge.html

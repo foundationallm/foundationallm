@@ -1,0 +1,803 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Common.Models.Configuration.Storage.BlobStorageServiceSettings
+  commentId: T:FoundationaLLM.Common.Models.Configuration.Storage.BlobStorageServiceSettings
+  id: BlobStorageServiceSettings
+  parent: FoundationaLLM.Common.Models.Configuration.Storage
+  children:
+  - FoundationaLLM.Common.Models.Configuration.Storage.BlobStorageServiceSettings.AccountKey
+  - FoundationaLLM.Common.Models.Configuration.Storage.BlobStorageServiceSettings.AccountName
+  - FoundationaLLM.Common.Models.Configuration.Storage.BlobStorageServiceSettings.AuthenticationType
+  - FoundationaLLM.Common.Models.Configuration.Storage.BlobStorageServiceSettings.ConnectionString
+  - FoundationaLLM.Common.Models.Configuration.Storage.BlobStorageServiceSettings.ContainerName
+  langs:
+  - csharp
+  - vb
+  name: BlobStorageServiceSettings
+  nameWithType: BlobStorageServiceSettings
+  fullName: FoundationaLLM.Common.Models.Configuration.Storage.BlobStorageServiceSettings
+  type: Class
+  source:
+    remote:
+      path: src/dotnet/Common/Models/Configuration/Storage/BlobStorageServiceSettings.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: BlobStorageServiceSettings
+    path: ../src/dotnet/Common/Models/Configuration/Storage/BlobStorageServiceSettings.cs
+    startLine: 8
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.Configuration.Storage
+  summary: Provides configuration settings to initialize a blob storage service.
+  example: []
+  syntax:
+    content: 'public record BlobStorageServiceSettings : IEquatable<BlobStorageServiceSettings>'
+    content.vb: Public Class BlobStorageServiceSettings Implements IEquatable(Of BlobStorageServiceSettings)
+  inheritance:
+  - System.Object
+  implements:
+  - System.IEquatable{FoundationaLLM.Common.Models.Configuration.Storage.BlobStorageServiceSettings}
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+  extensionMethods:
+  - System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+- uid: FoundationaLLM.Common.Models.Configuration.Storage.BlobStorageServiceSettings.AuthenticationType
+  commentId: P:FoundationaLLM.Common.Models.Configuration.Storage.BlobStorageServiceSettings.AuthenticationType
+  id: AuthenticationType
+  parent: FoundationaLLM.Common.Models.Configuration.Storage.BlobStorageServiceSettings
+  langs:
+  - csharp
+  - vb
+  name: AuthenticationType
+  nameWithType: BlobStorageServiceSettings.AuthenticationType
+  fullName: FoundationaLLM.Common.Models.Configuration.Storage.BlobStorageServiceSettings.AuthenticationType
+  type: Property
+  source:
+    remote:
+      path: src/dotnet/Common/Models/Configuration/Storage/BlobStorageServiceSettings.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: AuthenticationType
+    path: ../src/dotnet/Common/Models/Configuration/Storage/BlobStorageServiceSettings.cs
+    startLine: 13
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.Configuration.Storage
+  summary: A <xref href="FoundationaLLM.Common.Constants.Authentication.AuthenticationTypes" data-throw-if-not-resolved="false"></xref> value indicating the type of authentication used.
+  example: []
+  syntax:
+    content: >-
+      [JsonConverter(typeof(JsonStringEnumConverter))]
+
+      public required AuthenticationTypes AuthenticationType { get; set; }
+    parameters: []
+    return:
+      type: FoundationaLLM.Common.Constants.Authentication.AuthenticationTypes
+    content.vb: >-
+      <JsonConverter(GetType(JsonStringEnumConverter))>
+
+      Public Property AuthenticationType As AuthenticationTypes
+  overload: FoundationaLLM.Common.Models.Configuration.Storage.BlobStorageServiceSettings.AuthenticationType*
+  attributes:
+  - type: System.Text.Json.Serialization.JsonConverterAttribute
+    ctor: System.Text.Json.Serialization.JsonConverterAttribute.#ctor(System.Type)
+    arguments:
+    - type: System.Type
+      value: System.Text.Json.Serialization.JsonStringEnumConverter
+- uid: FoundationaLLM.Common.Models.Configuration.Storage.BlobStorageServiceSettings.AccountName
+  commentId: P:FoundationaLLM.Common.Models.Configuration.Storage.BlobStorageServiceSettings.AccountName
+  id: AccountName
+  parent: FoundationaLLM.Common.Models.Configuration.Storage.BlobStorageServiceSettings
+  langs:
+  - csharp
+  - vb
+  name: AccountName
+  nameWithType: BlobStorageServiceSettings.AccountName
+  fullName: FoundationaLLM.Common.Models.Configuration.Storage.BlobStorageServiceSettings.AccountName
+  type: Property
+  source:
+    remote:
+      path: src/dotnet/Common/Models/Configuration/Storage/BlobStorageServiceSettings.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: AccountName
+    path: ../src/dotnet/Common/Models/Configuration/Storage/BlobStorageServiceSettings.cs
+    startLine: 19
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.Configuration.Storage
+  summary: The name of the blob storage account.
+  example: []
+  syntax:
+    content: public string? AccountName { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property AccountName As String
+  overload: FoundationaLLM.Common.Models.Configuration.Storage.BlobStorageServiceSettings.AccountName*
+- uid: FoundationaLLM.Common.Models.Configuration.Storage.BlobStorageServiceSettings.AccountKey
+  commentId: P:FoundationaLLM.Common.Models.Configuration.Storage.BlobStorageServiceSettings.AccountKey
+  id: AccountKey
+  parent: FoundationaLLM.Common.Models.Configuration.Storage.BlobStorageServiceSettings
+  langs:
+  - csharp
+  - vb
+  name: AccountKey
+  nameWithType: BlobStorageServiceSettings.AccountKey
+  fullName: FoundationaLLM.Common.Models.Configuration.Storage.BlobStorageServiceSettings.AccountKey
+  type: Property
+  source:
+    remote:
+      path: src/dotnet/Common/Models/Configuration/Storage/BlobStorageServiceSettings.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: AccountKey
+    path: ../src/dotnet/Common/Models/Configuration/Storage/BlobStorageServiceSettings.cs
+    startLine: 25
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.Configuration.Storage
+  summary: >-
+    The account key used for authentication.
+
+    This value should be set only if AuthenticationType has a value of AccountKey.
+  example: []
+  syntax:
+    content: public string? AccountKey { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property AccountKey As String
+  overload: FoundationaLLM.Common.Models.Configuration.Storage.BlobStorageServiceSettings.AccountKey*
+- uid: FoundationaLLM.Common.Models.Configuration.Storage.BlobStorageServiceSettings.ConnectionString
+  commentId: P:FoundationaLLM.Common.Models.Configuration.Storage.BlobStorageServiceSettings.ConnectionString
+  id: ConnectionString
+  parent: FoundationaLLM.Common.Models.Configuration.Storage.BlobStorageServiceSettings
+  langs:
+  - csharp
+  - vb
+  name: ConnectionString
+  nameWithType: BlobStorageServiceSettings.ConnectionString
+  fullName: FoundationaLLM.Common.Models.Configuration.Storage.BlobStorageServiceSettings.ConnectionString
+  type: Property
+  source:
+    remote:
+      path: src/dotnet/Common/Models/Configuration/Storage/BlobStorageServiceSettings.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: ConnectionString
+    path: ../src/dotnet/Common/Models/Configuration/Storage/BlobStorageServiceSettings.cs
+    startLine: 31
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.Configuration.Storage
+  summary: >-
+    The connection string used for authentication.
+
+    This value should be set only if AuthenticationType has a value of ConnectionString.
+  example: []
+  syntax:
+    content: public string? ConnectionString { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property ConnectionString As String
+  overload: FoundationaLLM.Common.Models.Configuration.Storage.BlobStorageServiceSettings.ConnectionString*
+- uid: FoundationaLLM.Common.Models.Configuration.Storage.BlobStorageServiceSettings.ContainerName
+  commentId: P:FoundationaLLM.Common.Models.Configuration.Storage.BlobStorageServiceSettings.ContainerName
+  id: ContainerName
+  parent: FoundationaLLM.Common.Models.Configuration.Storage.BlobStorageServiceSettings
+  langs:
+  - csharp
+  - vb
+  name: ContainerName
+  nameWithType: BlobStorageServiceSettings.ContainerName
+  fullName: FoundationaLLM.Common.Models.Configuration.Storage.BlobStorageServiceSettings.ContainerName
+  type: Property
+  source:
+    remote:
+      path: src/dotnet/Common/Models/Configuration/Storage/BlobStorageServiceSettings.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: ContainerName
+    path: ../src/dotnet/Common/Models/Configuration/Storage/BlobStorageServiceSettings.cs
+    startLine: 36
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.Configuration.Storage
+  summary: The name of the container within the blob storage account.
+  example: []
+  syntax:
+    content: public string? ContainerName { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property ContainerName As String
+  overload: FoundationaLLM.Common.Models.Configuration.Storage.BlobStorageServiceSettings.ContainerName*
+references:
+- uid: FoundationaLLM.Common.Models.Configuration.Storage
+  commentId: N:FoundationaLLM.Common.Models.Configuration.Storage
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.Configuration.Storage
+  nameWithType: FoundationaLLM.Common.Models.Configuration.Storage
+  fullName: FoundationaLLM.Common.Models.Configuration.Storage
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Configuration
+    name: Configuration
+    href: FoundationaLLM.Common.Models.Configuration.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Configuration.Storage
+    name: Storage
+    href: FoundationaLLM.Common.Models.Configuration.Storage.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Configuration
+    name: Configuration
+    href: FoundationaLLM.Common.Models.Configuration.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Configuration.Storage
+    name: Storage
+    href: FoundationaLLM.Common.Models.Configuration.Storage.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.IEquatable{FoundationaLLM.Common.Models.Configuration.Storage.BlobStorageServiceSettings}
+  commentId: T:System.IEquatable{FoundationaLLM.Common.Models.Configuration.Storage.BlobStorageServiceSettings}
+  parent: System
+  definition: System.IEquatable`1
+  href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  name: IEquatable<BlobStorageServiceSettings>
+  nameWithType: IEquatable<BlobStorageServiceSettings>
+  fullName: System.IEquatable<FoundationaLLM.Common.Models.Configuration.Storage.BlobStorageServiceSettings>
+  nameWithType.vb: IEquatable(Of BlobStorageServiceSettings)
+  fullName.vb: System.IEquatable(Of FoundationaLLM.Common.Models.Configuration.Storage.BlobStorageServiceSettings)
+  name.vb: IEquatable(Of BlobStorageServiceSettings)
+  spec.csharp:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: <
+  - uid: FoundationaLLM.Common.Models.Configuration.Storage.BlobStorageServiceSettings
+    name: BlobStorageServiceSettings
+    href: FoundationaLLM.Common.Models.Configuration.Storage.BlobStorageServiceSettings.html
+  - name: '>'
+  spec.vb:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FoundationaLLM.Common.Models.Configuration.Storage.BlobStorageServiceSettings
+    name: BlobStorageServiceSettings
+    href: FoundationaLLM.Common.Models.Configuration.Storage.BlobStorageServiceSettings.html
+  - name: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  parent: FoundationaLLM.Core.Utils.ObjectExtensions
+  definition: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.IEquatable`1
+  commentId: T:System.IEquatable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  name: IEquatable<T>
+  nameWithType: IEquatable<T>
+  fullName: System.IEquatable<T>
+  nameWithType.vb: IEquatable(Of T)
+  fullName.vb: System.IEquatable(Of T)
+  name.vb: IEquatable(Of T)
+  spec.csharp:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  isExternal: true
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions
+  commentId: T:FoundationaLLM.Core.Utils.ObjectExtensions
+  parent: FoundationaLLM.Core.Utils
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html
+  name: ObjectExtensions
+  nameWithType: ObjectExtensions
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions
+- uid: FoundationaLLM.Core.Utils
+  commentId: N:FoundationaLLM.Core.Utils
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Core.Utils
+  nameWithType: FoundationaLLM.Core.Utils
+  fullName: FoundationaLLM.Core.Utils
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+- uid: FoundationaLLM.Common.Constants.Authentication.AuthenticationTypes
+  commentId: T:FoundationaLLM.Common.Constants.Authentication.AuthenticationTypes
+  parent: FoundationaLLM.Common.Constants.Authentication
+  href: FoundationaLLM.Common.Constants.Authentication.AuthenticationTypes.html
+  name: AuthenticationTypes
+  nameWithType: AuthenticationTypes
+  fullName: FoundationaLLM.Common.Constants.Authentication.AuthenticationTypes
+- uid: FoundationaLLM.Common.Models.Configuration.Storage.BlobStorageServiceSettings.AuthenticationType*
+  commentId: Overload:FoundationaLLM.Common.Models.Configuration.Storage.BlobStorageServiceSettings.AuthenticationType
+  href: FoundationaLLM.Common.Models.Configuration.Storage.BlobStorageServiceSettings.html#FoundationaLLM_Common_Models_Configuration_Storage_BlobStorageServiceSettings_AuthenticationType
+  name: AuthenticationType
+  nameWithType: BlobStorageServiceSettings.AuthenticationType
+  fullName: FoundationaLLM.Common.Models.Configuration.Storage.BlobStorageServiceSettings.AuthenticationType
+- uid: FoundationaLLM.Common.Constants.Authentication
+  commentId: N:FoundationaLLM.Common.Constants.Authentication
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Constants.Authentication
+  nameWithType: FoundationaLLM.Common.Constants.Authentication
+  fullName: FoundationaLLM.Common.Constants.Authentication
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Constants
+    name: Constants
+    href: FoundationaLLM.Common.Constants.html
+  - name: .
+  - uid: FoundationaLLM.Common.Constants.Authentication
+    name: Authentication
+    href: FoundationaLLM.Common.Constants.Authentication.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Constants
+    name: Constants
+    href: FoundationaLLM.Common.Constants.html
+  - name: .
+  - uid: FoundationaLLM.Common.Constants.Authentication
+    name: Authentication
+    href: FoundationaLLM.Common.Constants.Authentication.html
+- uid: FoundationaLLM.Common.Models.Configuration.Storage.BlobStorageServiceSettings.AccountName*
+  commentId: Overload:FoundationaLLM.Common.Models.Configuration.Storage.BlobStorageServiceSettings.AccountName
+  href: FoundationaLLM.Common.Models.Configuration.Storage.BlobStorageServiceSettings.html#FoundationaLLM_Common_Models_Configuration_Storage_BlobStorageServiceSettings_AccountName
+  name: AccountName
+  nameWithType: BlobStorageServiceSettings.AccountName
+  fullName: FoundationaLLM.Common.Models.Configuration.Storage.BlobStorageServiceSettings.AccountName
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: FoundationaLLM.Common.Models.Configuration.Storage.BlobStorageServiceSettings.AccountKey*
+  commentId: Overload:FoundationaLLM.Common.Models.Configuration.Storage.BlobStorageServiceSettings.AccountKey
+  href: FoundationaLLM.Common.Models.Configuration.Storage.BlobStorageServiceSettings.html#FoundationaLLM_Common_Models_Configuration_Storage_BlobStorageServiceSettings_AccountKey
+  name: AccountKey
+  nameWithType: BlobStorageServiceSettings.AccountKey
+  fullName: FoundationaLLM.Common.Models.Configuration.Storage.BlobStorageServiceSettings.AccountKey
+- uid: FoundationaLLM.Common.Models.Configuration.Storage.BlobStorageServiceSettings.ConnectionString*
+  commentId: Overload:FoundationaLLM.Common.Models.Configuration.Storage.BlobStorageServiceSettings.ConnectionString
+  href: FoundationaLLM.Common.Models.Configuration.Storage.BlobStorageServiceSettings.html#FoundationaLLM_Common_Models_Configuration_Storage_BlobStorageServiceSettings_ConnectionString
+  name: ConnectionString
+  nameWithType: BlobStorageServiceSettings.ConnectionString
+  fullName: FoundationaLLM.Common.Models.Configuration.Storage.BlobStorageServiceSettings.ConnectionString
+- uid: FoundationaLLM.Common.Models.Configuration.Storage.BlobStorageServiceSettings.ContainerName*
+  commentId: Overload:FoundationaLLM.Common.Models.Configuration.Storage.BlobStorageServiceSettings.ContainerName
+  href: FoundationaLLM.Common.Models.Configuration.Storage.BlobStorageServiceSettings.html#FoundationaLLM_Common_Models_Configuration_Storage_BlobStorageServiceSettings_ContainerName
+  name: ContainerName
+  nameWithType: BlobStorageServiceSettings.ContainerName
+  fullName: FoundationaLLM.Common.Models.Configuration.Storage.BlobStorageServiceSettings.ContainerName

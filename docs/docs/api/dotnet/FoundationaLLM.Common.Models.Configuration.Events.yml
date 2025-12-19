@@ -1,0 +1,92 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Common.Models.Configuration.Events
+  commentId: N:FoundationaLLM.Common.Models.Configuration.Events
+  id: Events
+  parent: FoundationaLLM.Common.Models.Configuration
+  children:
+  - FoundationaLLM.Common.Models.Configuration.Events.AzureEventGridEventServiceProfile
+  - FoundationaLLM.Common.Models.Configuration.Events.AzureEventGridEventServiceSettings
+  - FoundationaLLM.Common.Models.Configuration.Events.EventGridTopicProfile
+  - FoundationaLLM.Common.Models.Configuration.Events.LocalEventServiceSettings
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM.Common.Models.Configuration.Events
+  nameWithType: FoundationaLLM.Common.Models.Configuration.Events
+  fullName: FoundationaLLM.Common.Models.Configuration.Events
+  type: Namespace
+  assemblies:
+  - FoundationaLLM.Common
+references:
+- uid: FoundationaLLM.Common.Models.Configuration.Events.AzureEventGridEventServiceProfile
+  commentId: T:FoundationaLLM.Common.Models.Configuration.Events.AzureEventGridEventServiceProfile
+  href: FoundationaLLM.Common.Models.Configuration.Events.AzureEventGridEventServiceProfile.html
+  name: AzureEventGridEventServiceProfile
+  nameWithType: AzureEventGridEventServiceProfile
+  fullName: FoundationaLLM.Common.Models.Configuration.Events.AzureEventGridEventServiceProfile
+- uid: FoundationaLLM.Common.Models.Configuration.Events.AzureEventGridEventServiceSettings
+  commentId: T:FoundationaLLM.Common.Models.Configuration.Events.AzureEventGridEventServiceSettings
+  href: FoundationaLLM.Common.Models.Configuration.Events.AzureEventGridEventServiceSettings.html
+  name: AzureEventGridEventServiceSettings
+  nameWithType: AzureEventGridEventServiceSettings
+  fullName: FoundationaLLM.Common.Models.Configuration.Events.AzureEventGridEventServiceSettings
+- uid: FoundationaLLM.Common.Models.Configuration.Events.EventGridTopicProfile
+  commentId: T:FoundationaLLM.Common.Models.Configuration.Events.EventGridTopicProfile
+  href: FoundationaLLM.Common.Models.Configuration.Events.EventGridTopicProfile.html
+  name: EventGridTopicProfile
+  nameWithType: EventGridTopicProfile
+  fullName: FoundationaLLM.Common.Models.Configuration.Events.EventGridTopicProfile
+- uid: FoundationaLLM.Common.Models.Configuration.Events.LocalEventServiceSettings
+  commentId: T:FoundationaLLM.Common.Models.Configuration.Events.LocalEventServiceSettings
+  parent: FoundationaLLM.Common.Models.Configuration.Events
+  href: FoundationaLLM.Common.Models.Configuration.Events.LocalEventServiceSettings.html
+  name: LocalEventServiceSettings
+  nameWithType: LocalEventServiceSettings
+  fullName: FoundationaLLM.Common.Models.Configuration.Events.LocalEventServiceSettings
+- uid: FoundationaLLM.Common.Models.Configuration.Events
+  commentId: N:FoundationaLLM.Common.Models.Configuration.Events
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.Configuration.Events
+  nameWithType: FoundationaLLM.Common.Models.Configuration.Events
+  fullName: FoundationaLLM.Common.Models.Configuration.Events
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Configuration
+    name: Configuration
+    href: FoundationaLLM.Common.Models.Configuration.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Configuration.Events
+    name: Events
+    href: FoundationaLLM.Common.Models.Configuration.Events.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Configuration
+    name: Configuration
+    href: FoundationaLLM.Common.Models.Configuration.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Configuration.Events
+    name: Events
+    href: FoundationaLLM.Common.Models.Configuration.Events.html

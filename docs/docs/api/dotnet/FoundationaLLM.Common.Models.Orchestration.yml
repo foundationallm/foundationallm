@@ -1,0 +1,335 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Common.Models.Orchestration
+  commentId: N:FoundationaLLM.Common.Models.Orchestration
+  id: Orchestration
+  parent: FoundationaLLM.Common.Models
+  children:
+  - FoundationaLLM.Common.Models.Orchestration.DataSourceConfigurations
+  - FoundationaLLM.Common.Models.Orchestration.DataSources
+  - FoundationaLLM.Common.Models.Orchestration.Direct
+  - FoundationaLLM.Common.Models.Orchestration.LongRunningOperation
+  - FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext
+  - FoundationaLLM.Common.Models.Orchestration.LongRunningOperationLogEntry
+  - FoundationaLLM.Common.Models.Orchestration.OperationStatus
+  - FoundationaLLM.Common.Models.Orchestration.OrchestrationContext
+  - FoundationaLLM.Common.Models.Orchestration.Request
+  - FoundationaLLM.Common.Models.Orchestration.Response
+  - FoundationaLLM.Common.Models.Orchestration.SummaryResponse
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM.Common.Models.Orchestration
+  nameWithType: FoundationaLLM.Common.Models.Orchestration
+  fullName: FoundationaLLM.Common.Models.Orchestration
+  type: Namespace
+  assemblies:
+  - FoundationaLLM.Common
+references:
+- uid: FoundationaLLM.Common.Models.Orchestration.DataSourceConfigurations
+  commentId: N:FoundationaLLM.Common.Models.Orchestration.DataSourceConfigurations
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.Orchestration.DataSourceConfigurations
+  nameWithType: FoundationaLLM.Common.Models.Orchestration.DataSourceConfigurations
+  fullName: FoundationaLLM.Common.Models.Orchestration.DataSourceConfigurations
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Orchestration
+    name: Orchestration
+    href: FoundationaLLM.Common.Models.Orchestration.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Orchestration.DataSourceConfigurations
+    name: DataSourceConfigurations
+    href: FoundationaLLM.Common.Models.Orchestration.DataSourceConfigurations.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Orchestration
+    name: Orchestration
+    href: FoundationaLLM.Common.Models.Orchestration.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Orchestration.DataSourceConfigurations
+    name: DataSourceConfigurations
+    href: FoundationaLLM.Common.Models.Orchestration.DataSourceConfigurations.html
+- uid: FoundationaLLM.Common.Models.Orchestration.DataSources
+  commentId: N:FoundationaLLM.Common.Models.Orchestration.DataSources
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.Orchestration.DataSources
+  nameWithType: FoundationaLLM.Common.Models.Orchestration.DataSources
+  fullName: FoundationaLLM.Common.Models.Orchestration.DataSources
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Orchestration
+    name: Orchestration
+    href: FoundationaLLM.Common.Models.Orchestration.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Orchestration.DataSources
+    name: DataSources
+    href: FoundationaLLM.Common.Models.Orchestration.DataSources.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Orchestration
+    name: Orchestration
+    href: FoundationaLLM.Common.Models.Orchestration.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Orchestration.DataSources
+    name: DataSources
+    href: FoundationaLLM.Common.Models.Orchestration.DataSources.html
+- uid: FoundationaLLM.Common.Models.Orchestration.Direct
+  commentId: N:FoundationaLLM.Common.Models.Orchestration.Direct
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.Orchestration.Direct
+  nameWithType: FoundationaLLM.Common.Models.Orchestration.Direct
+  fullName: FoundationaLLM.Common.Models.Orchestration.Direct
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Orchestration
+    name: Orchestration
+    href: FoundationaLLM.Common.Models.Orchestration.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Orchestration.Direct
+    name: Direct
+    href: FoundationaLLM.Common.Models.Orchestration.Direct.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Orchestration
+    name: Orchestration
+    href: FoundationaLLM.Common.Models.Orchestration.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Orchestration.Direct
+    name: Direct
+    href: FoundationaLLM.Common.Models.Orchestration.Direct.html
+- uid: FoundationaLLM.Common.Models.Orchestration.Request
+  commentId: N:FoundationaLLM.Common.Models.Orchestration.Request
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.Orchestration.Request
+  nameWithType: FoundationaLLM.Common.Models.Orchestration.Request
+  fullName: FoundationaLLM.Common.Models.Orchestration.Request
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Orchestration
+    name: Orchestration
+    href: FoundationaLLM.Common.Models.Orchestration.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Orchestration.Request
+    name: Request
+    href: FoundationaLLM.Common.Models.Orchestration.Request.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Orchestration
+    name: Orchestration
+    href: FoundationaLLM.Common.Models.Orchestration.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Orchestration.Request
+    name: Request
+    href: FoundationaLLM.Common.Models.Orchestration.Request.html
+- uid: FoundationaLLM.Common.Models.Orchestration.Response
+  commentId: N:FoundationaLLM.Common.Models.Orchestration.Response
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.Orchestration.Response
+  nameWithType: FoundationaLLM.Common.Models.Orchestration.Response
+  fullName: FoundationaLLM.Common.Models.Orchestration.Response
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Orchestration
+    name: Orchestration
+    href: FoundationaLLM.Common.Models.Orchestration.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Orchestration.Response
+    name: Response
+    href: FoundationaLLM.Common.Models.Orchestration.Response.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Orchestration
+    name: Orchestration
+    href: FoundationaLLM.Common.Models.Orchestration.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Orchestration.Response
+    name: Response
+    href: FoundationaLLM.Common.Models.Orchestration.Response.html
+- uid: FoundationaLLM.Common.Models.Orchestration.LongRunningOperation
+  commentId: T:FoundationaLLM.Common.Models.Orchestration.LongRunningOperation
+  parent: FoundationaLLM.Common.Models.Orchestration
+  href: FoundationaLLM.Common.Models.Orchestration.LongRunningOperation.html
+  name: LongRunningOperation
+  nameWithType: LongRunningOperation
+  fullName: FoundationaLLM.Common.Models.Orchestration.LongRunningOperation
+- uid: FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext
+  commentId: T:FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext
+  parent: FoundationaLLM.Common.Models.Orchestration
+  href: FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.html
+  name: LongRunningOperationContext
+  nameWithType: LongRunningOperationContext
+  fullName: FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext
+- uid: FoundationaLLM.Common.Models.Orchestration.LongRunningOperationLogEntry
+  commentId: T:FoundationaLLM.Common.Models.Orchestration.LongRunningOperationLogEntry
+  href: FoundationaLLM.Common.Models.Orchestration.LongRunningOperationLogEntry.html
+  name: LongRunningOperationLogEntry
+  nameWithType: LongRunningOperationLogEntry
+  fullName: FoundationaLLM.Common.Models.Orchestration.LongRunningOperationLogEntry
+- uid: FoundationaLLM.Common.Models.Orchestration.OperationStatus
+  commentId: T:FoundationaLLM.Common.Models.Orchestration.OperationStatus
+  parent: FoundationaLLM.Common.Models.Orchestration
+  href: FoundationaLLM.Common.Models.Orchestration.OperationStatus.html
+  name: OperationStatus
+  nameWithType: OperationStatus
+  fullName: FoundationaLLM.Common.Models.Orchestration.OperationStatus
+- uid: FoundationaLLM.Common.Models.Orchestration.OrchestrationContext
+  commentId: T:FoundationaLLM.Common.Models.Orchestration.OrchestrationContext
+  href: FoundationaLLM.Common.Models.Orchestration.OrchestrationContext.html
+  name: OrchestrationContext
+  nameWithType: OrchestrationContext
+  fullName: FoundationaLLM.Common.Models.Orchestration.OrchestrationContext
+- uid: FoundationaLLM.Common.Models.Orchestration.SummaryResponse
+  commentId: T:FoundationaLLM.Common.Models.Orchestration.SummaryResponse
+  href: FoundationaLLM.Common.Models.Orchestration.SummaryResponse.html
+  name: SummaryResponse
+  nameWithType: SummaryResponse
+  fullName: FoundationaLLM.Common.Models.Orchestration.SummaryResponse
+- uid: FoundationaLLM.Common.Models.Orchestration
+  commentId: N:FoundationaLLM.Common.Models.Orchestration
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.Orchestration
+  nameWithType: FoundationaLLM.Common.Models.Orchestration
+  fullName: FoundationaLLM.Common.Models.Orchestration
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Orchestration
+    name: Orchestration
+    href: FoundationaLLM.Common.Models.Orchestration.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Orchestration
+    name: Orchestration
+    href: FoundationaLLM.Common.Models.Orchestration.html

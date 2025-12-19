@@ -1,0 +1,861 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Common.Models.AzureAIService.CreatedBy
+  commentId: T:FoundationaLLM.Common.Models.AzureAIService.CreatedBy
+  id: CreatedBy
+  parent: FoundationaLLM.Common.Models.AzureAIService
+  children:
+  - FoundationaLLM.Common.Models.AzureAIService.CreatedBy.Upn
+  - FoundationaLLM.Common.Models.AzureAIService.CreatedBy.UserAltSecId
+  - FoundationaLLM.Common.Models.AzureAIService.CreatedBy.UserIdp
+  - FoundationaLLM.Common.Models.AzureAIService.CreatedBy.UserIss
+  - FoundationaLLM.Common.Models.AzureAIService.CreatedBy.UserName
+  - FoundationaLLM.Common.Models.AzureAIService.CreatedBy.UserObjectId
+  - FoundationaLLM.Common.Models.AzureAIService.CreatedBy.UserPuId
+  - FoundationaLLM.Common.Models.AzureAIService.CreatedBy.UserTenantId
+  langs:
+  - csharp
+  - vb
+  name: CreatedBy
+  nameWithType: CreatedBy
+  fullName: FoundationaLLM.Common.Models.AzureAIService.CreatedBy
+  type: Class
+  source:
+    remote:
+      path: src/dotnet/Common/Models/AzureAIService/DataVersionResponse.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: CreatedBy
+    path: ../src/dotnet/Common/Models/AzureAIService/DataVersionResponse.cs
+    startLine: 112
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.AzureAIService
+  syntax:
+    content: public class CreatedBy
+    content.vb: Public Class CreatedBy
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+  extensionMethods:
+  - System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+- uid: FoundationaLLM.Common.Models.AzureAIService.CreatedBy.UserObjectId
+  commentId: P:FoundationaLLM.Common.Models.AzureAIService.CreatedBy.UserObjectId
+  id: UserObjectId
+  parent: FoundationaLLM.Common.Models.AzureAIService.CreatedBy
+  langs:
+  - csharp
+  - vb
+  name: UserObjectId
+  nameWithType: CreatedBy.UserObjectId
+  fullName: FoundationaLLM.Common.Models.AzureAIService.CreatedBy.UserObjectId
+  type: Property
+  source:
+    remote:
+      path: src/dotnet/Common/Models/AzureAIService/DataVersionResponse.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: UserObjectId
+    path: ../src/dotnet/Common/Models/AzureAIService/DataVersionResponse.cs
+    startLine: 114
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.AzureAIService
+  syntax:
+    content: >-
+      [JsonPropertyName("userObjectId")]
+
+      public string UserObjectId { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: >-
+      <JsonPropertyName("userObjectId")>
+
+      Public Property UserObjectId As String
+  overload: FoundationaLLM.Common.Models.AzureAIService.CreatedBy.UserObjectId*
+  attributes:
+  - type: System.Text.Json.Serialization.JsonPropertyNameAttribute
+    ctor: System.Text.Json.Serialization.JsonPropertyNameAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: userObjectId
+- uid: FoundationaLLM.Common.Models.AzureAIService.CreatedBy.UserPuId
+  commentId: P:FoundationaLLM.Common.Models.AzureAIService.CreatedBy.UserPuId
+  id: UserPuId
+  parent: FoundationaLLM.Common.Models.AzureAIService.CreatedBy
+  langs:
+  - csharp
+  - vb
+  name: UserPuId
+  nameWithType: CreatedBy.UserPuId
+  fullName: FoundationaLLM.Common.Models.AzureAIService.CreatedBy.UserPuId
+  type: Property
+  source:
+    remote:
+      path: src/dotnet/Common/Models/AzureAIService/DataVersionResponse.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: UserPuId
+    path: ../src/dotnet/Common/Models/AzureAIService/DataVersionResponse.cs
+    startLine: 117
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.AzureAIService
+  syntax:
+    content: >-
+      [JsonPropertyName("userPuId")]
+
+      public string UserPuId { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: >-
+      <JsonPropertyName("userPuId")>
+
+      Public Property UserPuId As String
+  overload: FoundationaLLM.Common.Models.AzureAIService.CreatedBy.UserPuId*
+  attributes:
+  - type: System.Text.Json.Serialization.JsonPropertyNameAttribute
+    ctor: System.Text.Json.Serialization.JsonPropertyNameAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: userPuId
+- uid: FoundationaLLM.Common.Models.AzureAIService.CreatedBy.UserIdp
+  commentId: P:FoundationaLLM.Common.Models.AzureAIService.CreatedBy.UserIdp
+  id: UserIdp
+  parent: FoundationaLLM.Common.Models.AzureAIService.CreatedBy
+  langs:
+  - csharp
+  - vb
+  name: UserIdp
+  nameWithType: CreatedBy.UserIdp
+  fullName: FoundationaLLM.Common.Models.AzureAIService.CreatedBy.UserIdp
+  type: Property
+  source:
+    remote:
+      path: src/dotnet/Common/Models/AzureAIService/DataVersionResponse.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: UserIdp
+    path: ../src/dotnet/Common/Models/AzureAIService/DataVersionResponse.cs
+    startLine: 120
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.AzureAIService
+  syntax:
+    content: >-
+      [JsonPropertyName("userIdp")]
+
+      public object UserIdp { get; set; }
+    parameters: []
+    return:
+      type: System.Object
+    content.vb: >-
+      <JsonPropertyName("userIdp")>
+
+      Public Property UserIdp As Object
+  overload: FoundationaLLM.Common.Models.AzureAIService.CreatedBy.UserIdp*
+  attributes:
+  - type: System.Text.Json.Serialization.JsonPropertyNameAttribute
+    ctor: System.Text.Json.Serialization.JsonPropertyNameAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: userIdp
+- uid: FoundationaLLM.Common.Models.AzureAIService.CreatedBy.UserAltSecId
+  commentId: P:FoundationaLLM.Common.Models.AzureAIService.CreatedBy.UserAltSecId
+  id: UserAltSecId
+  parent: FoundationaLLM.Common.Models.AzureAIService.CreatedBy
+  langs:
+  - csharp
+  - vb
+  name: UserAltSecId
+  nameWithType: CreatedBy.UserAltSecId
+  fullName: FoundationaLLM.Common.Models.AzureAIService.CreatedBy.UserAltSecId
+  type: Property
+  source:
+    remote:
+      path: src/dotnet/Common/Models/AzureAIService/DataVersionResponse.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: UserAltSecId
+    path: ../src/dotnet/Common/Models/AzureAIService/DataVersionResponse.cs
+    startLine: 123
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.AzureAIService
+  syntax:
+    content: >-
+      [JsonPropertyName("userAltSecId")]
+
+      public object UserAltSecId { get; set; }
+    parameters: []
+    return:
+      type: System.Object
+    content.vb: >-
+      <JsonPropertyName("userAltSecId")>
+
+      Public Property UserAltSecId As Object
+  overload: FoundationaLLM.Common.Models.AzureAIService.CreatedBy.UserAltSecId*
+  attributes:
+  - type: System.Text.Json.Serialization.JsonPropertyNameAttribute
+    ctor: System.Text.Json.Serialization.JsonPropertyNameAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: userAltSecId
+- uid: FoundationaLLM.Common.Models.AzureAIService.CreatedBy.UserIss
+  commentId: P:FoundationaLLM.Common.Models.AzureAIService.CreatedBy.UserIss
+  id: UserIss
+  parent: FoundationaLLM.Common.Models.AzureAIService.CreatedBy
+  langs:
+  - csharp
+  - vb
+  name: UserIss
+  nameWithType: CreatedBy.UserIss
+  fullName: FoundationaLLM.Common.Models.AzureAIService.CreatedBy.UserIss
+  type: Property
+  source:
+    remote:
+      path: src/dotnet/Common/Models/AzureAIService/DataVersionResponse.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: UserIss
+    path: ../src/dotnet/Common/Models/AzureAIService/DataVersionResponse.cs
+    startLine: 126
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.AzureAIService
+  syntax:
+    content: >-
+      [JsonPropertyName("userIss")]
+
+      public string UserIss { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: >-
+      <JsonPropertyName("userIss")>
+
+      Public Property UserIss As String
+  overload: FoundationaLLM.Common.Models.AzureAIService.CreatedBy.UserIss*
+  attributes:
+  - type: System.Text.Json.Serialization.JsonPropertyNameAttribute
+    ctor: System.Text.Json.Serialization.JsonPropertyNameAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: userIss
+- uid: FoundationaLLM.Common.Models.AzureAIService.CreatedBy.UserTenantId
+  commentId: P:FoundationaLLM.Common.Models.AzureAIService.CreatedBy.UserTenantId
+  id: UserTenantId
+  parent: FoundationaLLM.Common.Models.AzureAIService.CreatedBy
+  langs:
+  - csharp
+  - vb
+  name: UserTenantId
+  nameWithType: CreatedBy.UserTenantId
+  fullName: FoundationaLLM.Common.Models.AzureAIService.CreatedBy.UserTenantId
+  type: Property
+  source:
+    remote:
+      path: src/dotnet/Common/Models/AzureAIService/DataVersionResponse.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: UserTenantId
+    path: ../src/dotnet/Common/Models/AzureAIService/DataVersionResponse.cs
+    startLine: 129
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.AzureAIService
+  syntax:
+    content: >-
+      [JsonPropertyName("userTenantId")]
+
+      public string UserTenantId { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: >-
+      <JsonPropertyName("userTenantId")>
+
+      Public Property UserTenantId As String
+  overload: FoundationaLLM.Common.Models.AzureAIService.CreatedBy.UserTenantId*
+  attributes:
+  - type: System.Text.Json.Serialization.JsonPropertyNameAttribute
+    ctor: System.Text.Json.Serialization.JsonPropertyNameAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: userTenantId
+- uid: FoundationaLLM.Common.Models.AzureAIService.CreatedBy.UserName
+  commentId: P:FoundationaLLM.Common.Models.AzureAIService.CreatedBy.UserName
+  id: UserName
+  parent: FoundationaLLM.Common.Models.AzureAIService.CreatedBy
+  langs:
+  - csharp
+  - vb
+  name: UserName
+  nameWithType: CreatedBy.UserName
+  fullName: FoundationaLLM.Common.Models.AzureAIService.CreatedBy.UserName
+  type: Property
+  source:
+    remote:
+      path: src/dotnet/Common/Models/AzureAIService/DataVersionResponse.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: UserName
+    path: ../src/dotnet/Common/Models/AzureAIService/DataVersionResponse.cs
+    startLine: 132
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.AzureAIService
+  syntax:
+    content: >-
+      [JsonPropertyName("userName")]
+
+      public string UserName { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: >-
+      <JsonPropertyName("userName")>
+
+      Public Property UserName As String
+  overload: FoundationaLLM.Common.Models.AzureAIService.CreatedBy.UserName*
+  attributes:
+  - type: System.Text.Json.Serialization.JsonPropertyNameAttribute
+    ctor: System.Text.Json.Serialization.JsonPropertyNameAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: userName
+- uid: FoundationaLLM.Common.Models.AzureAIService.CreatedBy.Upn
+  commentId: P:FoundationaLLM.Common.Models.AzureAIService.CreatedBy.Upn
+  id: Upn
+  parent: FoundationaLLM.Common.Models.AzureAIService.CreatedBy
+  langs:
+  - csharp
+  - vb
+  name: Upn
+  nameWithType: CreatedBy.Upn
+  fullName: FoundationaLLM.Common.Models.AzureAIService.CreatedBy.Upn
+  type: Property
+  source:
+    remote:
+      path: src/dotnet/Common/Models/AzureAIService/DataVersionResponse.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: Upn
+    path: ../src/dotnet/Common/Models/AzureAIService/DataVersionResponse.cs
+    startLine: 135
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.AzureAIService
+  syntax:
+    content: >-
+      [JsonPropertyName("upn")]
+
+      public string Upn { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: >-
+      <JsonPropertyName("upn")>
+
+      Public Property Upn As String
+  overload: FoundationaLLM.Common.Models.AzureAIService.CreatedBy.Upn*
+  attributes:
+  - type: System.Text.Json.Serialization.JsonPropertyNameAttribute
+    ctor: System.Text.Json.Serialization.JsonPropertyNameAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: upn
+references:
+- uid: FoundationaLLM.Common.Models.AzureAIService
+  commentId: N:FoundationaLLM.Common.Models.AzureAIService
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.AzureAIService
+  nameWithType: FoundationaLLM.Common.Models.AzureAIService
+  fullName: FoundationaLLM.Common.Models.AzureAIService
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.AzureAIService
+    name: AzureAIService
+    href: FoundationaLLM.Common.Models.AzureAIService.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.AzureAIService
+    name: AzureAIService
+    href: FoundationaLLM.Common.Models.AzureAIService.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  parent: FoundationaLLM.Core.Utils.ObjectExtensions
+  definition: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  isExternal: true
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions
+  commentId: T:FoundationaLLM.Core.Utils.ObjectExtensions
+  parent: FoundationaLLM.Core.Utils
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html
+  name: ObjectExtensions
+  nameWithType: ObjectExtensions
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions
+- uid: FoundationaLLM.Core.Utils
+  commentId: N:FoundationaLLM.Core.Utils
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Core.Utils
+  nameWithType: FoundationaLLM.Core.Utils
+  fullName: FoundationaLLM.Core.Utils
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+- uid: FoundationaLLM.Common.Models.AzureAIService.CreatedBy.UserObjectId*
+  commentId: Overload:FoundationaLLM.Common.Models.AzureAIService.CreatedBy.UserObjectId
+  href: FoundationaLLM.Common.Models.AzureAIService.CreatedBy.html#FoundationaLLM_Common_Models_AzureAIService_CreatedBy_UserObjectId
+  name: UserObjectId
+  nameWithType: CreatedBy.UserObjectId
+  fullName: FoundationaLLM.Common.Models.AzureAIService.CreatedBy.UserObjectId
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: FoundationaLLM.Common.Models.AzureAIService.CreatedBy.UserPuId*
+  commentId: Overload:FoundationaLLM.Common.Models.AzureAIService.CreatedBy.UserPuId
+  href: FoundationaLLM.Common.Models.AzureAIService.CreatedBy.html#FoundationaLLM_Common_Models_AzureAIService_CreatedBy_UserPuId
+  name: UserPuId
+  nameWithType: CreatedBy.UserPuId
+  fullName: FoundationaLLM.Common.Models.AzureAIService.CreatedBy.UserPuId
+- uid: FoundationaLLM.Common.Models.AzureAIService.CreatedBy.UserIdp*
+  commentId: Overload:FoundationaLLM.Common.Models.AzureAIService.CreatedBy.UserIdp
+  href: FoundationaLLM.Common.Models.AzureAIService.CreatedBy.html#FoundationaLLM_Common_Models_AzureAIService_CreatedBy_UserIdp
+  name: UserIdp
+  nameWithType: CreatedBy.UserIdp
+  fullName: FoundationaLLM.Common.Models.AzureAIService.CreatedBy.UserIdp
+- uid: FoundationaLLM.Common.Models.AzureAIService.CreatedBy.UserAltSecId*
+  commentId: Overload:FoundationaLLM.Common.Models.AzureAIService.CreatedBy.UserAltSecId
+  href: FoundationaLLM.Common.Models.AzureAIService.CreatedBy.html#FoundationaLLM_Common_Models_AzureAIService_CreatedBy_UserAltSecId
+  name: UserAltSecId
+  nameWithType: CreatedBy.UserAltSecId
+  fullName: FoundationaLLM.Common.Models.AzureAIService.CreatedBy.UserAltSecId
+- uid: FoundationaLLM.Common.Models.AzureAIService.CreatedBy.UserIss*
+  commentId: Overload:FoundationaLLM.Common.Models.AzureAIService.CreatedBy.UserIss
+  href: FoundationaLLM.Common.Models.AzureAIService.CreatedBy.html#FoundationaLLM_Common_Models_AzureAIService_CreatedBy_UserIss
+  name: UserIss
+  nameWithType: CreatedBy.UserIss
+  fullName: FoundationaLLM.Common.Models.AzureAIService.CreatedBy.UserIss
+- uid: FoundationaLLM.Common.Models.AzureAIService.CreatedBy.UserTenantId*
+  commentId: Overload:FoundationaLLM.Common.Models.AzureAIService.CreatedBy.UserTenantId
+  href: FoundationaLLM.Common.Models.AzureAIService.CreatedBy.html#FoundationaLLM_Common_Models_AzureAIService_CreatedBy_UserTenantId
+  name: UserTenantId
+  nameWithType: CreatedBy.UserTenantId
+  fullName: FoundationaLLM.Common.Models.AzureAIService.CreatedBy.UserTenantId
+- uid: FoundationaLLM.Common.Models.AzureAIService.CreatedBy.UserName*
+  commentId: Overload:FoundationaLLM.Common.Models.AzureAIService.CreatedBy.UserName
+  href: FoundationaLLM.Common.Models.AzureAIService.CreatedBy.html#FoundationaLLM_Common_Models_AzureAIService_CreatedBy_UserName
+  name: UserName
+  nameWithType: CreatedBy.UserName
+  fullName: FoundationaLLM.Common.Models.AzureAIService.CreatedBy.UserName
+- uid: FoundationaLLM.Common.Models.AzureAIService.CreatedBy.Upn*
+  commentId: Overload:FoundationaLLM.Common.Models.AzureAIService.CreatedBy.Upn
+  href: FoundationaLLM.Common.Models.AzureAIService.CreatedBy.html#FoundationaLLM_Common_Models_AzureAIService_CreatedBy_Upn
+  name: Upn
+  nameWithType: CreatedBy.Upn
+  fullName: FoundationaLLM.Common.Models.AzureAIService.CreatedBy.Upn

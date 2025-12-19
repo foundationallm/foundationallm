@@ -1,0 +1,79 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Context
+  commentId: N:FoundationaLLM.Common.Models.ResourceProviders.Context
+  id: Context
+  parent: FoundationaLLM.Common.Models.ResourceProviders
+  children:
+  - FoundationaLLM.Common.Models.ResourceProviders.Context.KnowledgeSource
+  - FoundationaLLM.Common.Models.ResourceProviders.Context.KnowledgeUnit
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM.Common.Models.ResourceProviders.Context
+  nameWithType: FoundationaLLM.Common.Models.ResourceProviders.Context
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Context
+  type: Namespace
+  assemblies:
+  - FoundationaLLM.Common
+references:
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Context.KnowledgeSource
+  commentId: T:FoundationaLLM.Common.Models.ResourceProviders.Context.KnowledgeSource
+  parent: FoundationaLLM.Common.Models.ResourceProviders.Context
+  href: FoundationaLLM.Common.Models.ResourceProviders.Context.KnowledgeSource.html
+  name: KnowledgeSource
+  nameWithType: KnowledgeSource
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Context.KnowledgeSource
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Context.KnowledgeUnit
+  commentId: T:FoundationaLLM.Common.Models.ResourceProviders.Context.KnowledgeUnit
+  parent: FoundationaLLM.Common.Models.ResourceProviders.Context
+  href: FoundationaLLM.Common.Models.ResourceProviders.Context.KnowledgeUnit.html
+  name: KnowledgeUnit
+  nameWithType: KnowledgeUnit
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Context.KnowledgeUnit
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Context
+  commentId: N:FoundationaLLM.Common.Models.ResourceProviders.Context
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.ResourceProviders.Context
+  nameWithType: FoundationaLLM.Common.Models.ResourceProviders.Context
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Context
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders
+    name: ResourceProviders
+    href: FoundationaLLM.Common.Models.ResourceProviders.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.Context
+    name: Context
+    href: FoundationaLLM.Common.Models.ResourceProviders.Context.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders
+    name: ResourceProviders
+    href: FoundationaLLM.Common.Models.ResourceProviders.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.Context
+    name: Context
+    href: FoundationaLLM.Common.Models.ResourceProviders.Context.html

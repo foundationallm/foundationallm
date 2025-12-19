@@ -1,0 +1,31 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Common.Constants.Orchestration
+  commentId: N:FoundationaLLM.Common.Constants.Orchestration
+  id: Orchestration
+  parent: FoundationaLLM.Common.Constants
+  children:
+  - FoundationaLLM.Common.Constants.Orchestration.LongRunningOperationTypes
+  - FoundationaLLM.Common.Constants.Orchestration.MessageContentItemTypes
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM.Common.Constants.Orchestration
+  nameWithType: FoundationaLLM.Common.Constants.Orchestration
+  fullName: FoundationaLLM.Common.Constants.Orchestration
+  type: Namespace
+  assemblies:
+  - FoundationaLLM.Common
+references:
+- uid: FoundationaLLM.Common.Constants.Orchestration.LongRunningOperationTypes
+  commentId: T:FoundationaLLM.Common.Constants.Orchestration.LongRunningOperationTypes
+  href: FoundationaLLM.Common.Constants.Orchestration.LongRunningOperationTypes.html
+  name: LongRunningOperationTypes
+  nameWithType: LongRunningOperationTypes
+  fullName: FoundationaLLM.Common.Constants.Orchestration.LongRunningOperationTypes
+- uid: FoundationaLLM.Common.Constants.Orchestration.MessageContentItemTypes
+  commentId: T:FoundationaLLM.Common.Constants.Orchestration.MessageContentItemTypes
+  href: FoundationaLLM.Common.Constants.Orchestration.MessageContentItemTypes.html
+  name: MessageContentItemTypes
+  nameWithType: MessageContentItemTypes
+  fullName: FoundationaLLM.Common.Constants.Orchestration.MessageContentItemTypes

@@ -1,0 +1,79 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Common.Models.Configuration.Users
+  commentId: N:FoundationaLLM.Common.Models.Configuration.Users
+  id: Users
+  parent: FoundationaLLM.Common.Models.Configuration
+  children:
+  - FoundationaLLM.Common.Models.Configuration.Users.UserProfile
+  - FoundationaLLM.Common.Models.Configuration.Users.UserProfileUpdateRequest
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM.Common.Models.Configuration.Users
+  nameWithType: FoundationaLLM.Common.Models.Configuration.Users
+  fullName: FoundationaLLM.Common.Models.Configuration.Users
+  type: Namespace
+  assemblies:
+  - FoundationaLLM.Common
+references:
+- uid: FoundationaLLM.Common.Models.Configuration.Users.UserProfile
+  commentId: T:FoundationaLLM.Common.Models.Configuration.Users.UserProfile
+  parent: FoundationaLLM.Common.Models.Configuration.Users
+  href: FoundationaLLM.Common.Models.Configuration.Users.UserProfile.html
+  name: UserProfile
+  nameWithType: UserProfile
+  fullName: FoundationaLLM.Common.Models.Configuration.Users.UserProfile
+- uid: FoundationaLLM.Common.Models.Configuration.Users.UserProfileUpdateRequest
+  commentId: T:FoundationaLLM.Common.Models.Configuration.Users.UserProfileUpdateRequest
+  parent: FoundationaLLM.Common.Models.Configuration.Users
+  href: FoundationaLLM.Common.Models.Configuration.Users.UserProfileUpdateRequest.html
+  name: UserProfileUpdateRequest
+  nameWithType: UserProfileUpdateRequest
+  fullName: FoundationaLLM.Common.Models.Configuration.Users.UserProfileUpdateRequest
+- uid: FoundationaLLM.Common.Models.Configuration.Users
+  commentId: N:FoundationaLLM.Common.Models.Configuration.Users
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.Configuration.Users
+  nameWithType: FoundationaLLM.Common.Models.Configuration.Users
+  fullName: FoundationaLLM.Common.Models.Configuration.Users
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Configuration
+    name: Configuration
+    href: FoundationaLLM.Common.Models.Configuration.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Configuration.Users
+    name: Users
+    href: FoundationaLLM.Common.Models.Configuration.Users.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Configuration
+    name: Configuration
+    href: FoundationaLLM.Common.Models.Configuration.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Configuration.Users
+    name: Users
+    href: FoundationaLLM.Common.Models.Configuration.Users.html

@@ -1,0 +1,70 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Client.Core
+  commentId: N:FoundationaLLM.Client.Core
+  id: Core
+  parent: FoundationaLLM.Client
+  children:
+  - FoundationaLLM.Client.Core.CoreClient
+  - FoundationaLLM.Client.Core.CoreRESTClient
+  - FoundationaLLM.Client.Core.Interfaces
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM.Client.Core
+  nameWithType: FoundationaLLM.Client.Core
+  fullName: FoundationaLLM.Client.Core
+  type: Namespace
+  assemblies:
+  - FoundationaLLM.Client.Core
+references:
+- uid: FoundationaLLM.Client.Core.Interfaces
+  commentId: N:FoundationaLLM.Client.Core.Interfaces
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Client.Core.Interfaces
+  nameWithType: FoundationaLLM.Client.Core.Interfaces
+  fullName: FoundationaLLM.Client.Core.Interfaces
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Client
+    name: Client
+    href: FoundationaLLM.Client.html
+  - name: .
+  - uid: FoundationaLLM.Client.Core
+    name: Core
+    href: FoundationaLLM.Client.Core.html
+  - name: .
+  - uid: FoundationaLLM.Client.Core.Interfaces
+    name: Interfaces
+    href: FoundationaLLM.Client.Core.Interfaces.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Client
+    name: Client
+    href: FoundationaLLM.Client.html
+  - name: .
+  - uid: FoundationaLLM.Client.Core
+    name: Core
+    href: FoundationaLLM.Client.Core.html
+  - name: .
+  - uid: FoundationaLLM.Client.Core.Interfaces
+    name: Interfaces
+    href: FoundationaLLM.Client.Core.Interfaces.html
+- uid: FoundationaLLM.Client.Core.CoreClient
+  commentId: T:FoundationaLLM.Client.Core.CoreClient
+  href: FoundationaLLM.Client.Core.CoreClient.html
+  name: CoreClient
+  nameWithType: CoreClient
+  fullName: FoundationaLLM.Client.Core.CoreClient
+- uid: FoundationaLLM.Client.Core.CoreRESTClient
+  commentId: T:FoundationaLLM.Client.Core.CoreRESTClient
+  href: FoundationaLLM.Client.Core.CoreRESTClient.html
+  name: CoreRESTClient
+  nameWithType: CoreRESTClient
+  fullName: FoundationaLLM.Client.Core.CoreRESTClient

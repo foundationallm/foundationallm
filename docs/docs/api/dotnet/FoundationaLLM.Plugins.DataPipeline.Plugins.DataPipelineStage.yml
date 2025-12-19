@@ -1,0 +1,155 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
+  commentId: N:FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
+  id: DataPipelineStage
+  parent: FoundationaLLM.Plugins.DataPipeline.Plugins
+  children:
+  - FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.AzureAIContentSafetyShieldingDataPipelineStagePlugin
+  - FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.AzureAISearchIndexingDataPipelineStagePlugin
+  - FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.AzureAISearchRemovalDataPipelineStagePlugin
+  - FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.GatewayTextEmbeddingDataPipelineStagePlugin
+  - FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.KnowledgeExtractionDataPipelineStagePlugin
+  - FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.KnowledgeGraphConsolidationDataPipelineStagePlugin
+  - FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.KnowledgeGraphDataPipelineStagePluginBase
+  - FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.KnowledgeGraphEmbeddingDataPipelineStagePlugin
+  - FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.KnowledgeGraphIndexingDataPipelineStagePlugin
+  - FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.KnowledgeGraphPublishingDataPipelineStagePlugin
+  - FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.KnowledgeGraphSummarizationDataPipelineStagePlugin
+  - FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.TextExtractionDataPipelineStagePlugin
+  - FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.TextPartitioningDataPipelineStagePlugin
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
+  nameWithType: FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
+  fullName: FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
+  type: Namespace
+  assemblies:
+  - FoundationaLLM.DataPipelinePlugins
+references:
+- uid: FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.AzureAIContentSafetyShieldingDataPipelineStagePlugin
+  commentId: T:FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.AzureAIContentSafetyShieldingDataPipelineStagePlugin
+  href: FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.AzureAIContentSafetyShieldingDataPipelineStagePlugin.html
+  name: AzureAIContentSafetyShieldingDataPipelineStagePlugin
+  nameWithType: AzureAIContentSafetyShieldingDataPipelineStagePlugin
+  fullName: FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.AzureAIContentSafetyShieldingDataPipelineStagePlugin
+- uid: FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.AzureAISearchIndexingDataPipelineStagePlugin
+  commentId: T:FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.AzureAISearchIndexingDataPipelineStagePlugin
+  href: FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.AzureAISearchIndexingDataPipelineStagePlugin.html
+  name: AzureAISearchIndexingDataPipelineStagePlugin
+  nameWithType: AzureAISearchIndexingDataPipelineStagePlugin
+  fullName: FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.AzureAISearchIndexingDataPipelineStagePlugin
+- uid: FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.AzureAISearchRemovalDataPipelineStagePlugin
+  commentId: T:FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.AzureAISearchRemovalDataPipelineStagePlugin
+  href: FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.AzureAISearchRemovalDataPipelineStagePlugin.html
+  name: AzureAISearchRemovalDataPipelineStagePlugin
+  nameWithType: AzureAISearchRemovalDataPipelineStagePlugin
+  fullName: FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.AzureAISearchRemovalDataPipelineStagePlugin
+- uid: FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.GatewayTextEmbeddingDataPipelineStagePlugin
+  commentId: T:FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.GatewayTextEmbeddingDataPipelineStagePlugin
+  href: FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.GatewayTextEmbeddingDataPipelineStagePlugin.html
+  name: GatewayTextEmbeddingDataPipelineStagePlugin
+  nameWithType: GatewayTextEmbeddingDataPipelineStagePlugin
+  fullName: FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.GatewayTextEmbeddingDataPipelineStagePlugin
+- uid: FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.KnowledgeExtractionDataPipelineStagePlugin
+  commentId: T:FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.KnowledgeExtractionDataPipelineStagePlugin
+  href: FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.KnowledgeExtractionDataPipelineStagePlugin.html
+  name: KnowledgeExtractionDataPipelineStagePlugin
+  nameWithType: KnowledgeExtractionDataPipelineStagePlugin
+  fullName: FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.KnowledgeExtractionDataPipelineStagePlugin
+- uid: FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.KnowledgeGraphConsolidationDataPipelineStagePlugin
+  commentId: T:FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.KnowledgeGraphConsolidationDataPipelineStagePlugin
+  href: FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.KnowledgeGraphConsolidationDataPipelineStagePlugin.html
+  name: KnowledgeGraphConsolidationDataPipelineStagePlugin
+  nameWithType: KnowledgeGraphConsolidationDataPipelineStagePlugin
+  fullName: FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.KnowledgeGraphConsolidationDataPipelineStagePlugin
+- uid: FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.KnowledgeGraphDataPipelineStagePluginBase
+  commentId: T:FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.KnowledgeGraphDataPipelineStagePluginBase
+  parent: FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
+  href: FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.KnowledgeGraphDataPipelineStagePluginBase.html
+  name: KnowledgeGraphDataPipelineStagePluginBase
+  nameWithType: KnowledgeGraphDataPipelineStagePluginBase
+  fullName: FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.KnowledgeGraphDataPipelineStagePluginBase
+- uid: FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.KnowledgeGraphEmbeddingDataPipelineStagePlugin
+  commentId: T:FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.KnowledgeGraphEmbeddingDataPipelineStagePlugin
+  href: FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.KnowledgeGraphEmbeddingDataPipelineStagePlugin.html
+  name: KnowledgeGraphEmbeddingDataPipelineStagePlugin
+  nameWithType: KnowledgeGraphEmbeddingDataPipelineStagePlugin
+  fullName: FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.KnowledgeGraphEmbeddingDataPipelineStagePlugin
+- uid: FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.KnowledgeGraphIndexingDataPipelineStagePlugin
+  commentId: T:FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.KnowledgeGraphIndexingDataPipelineStagePlugin
+  href: FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.KnowledgeGraphIndexingDataPipelineStagePlugin.html
+  name: KnowledgeGraphIndexingDataPipelineStagePlugin
+  nameWithType: KnowledgeGraphIndexingDataPipelineStagePlugin
+  fullName: FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.KnowledgeGraphIndexingDataPipelineStagePlugin
+- uid: FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.KnowledgeGraphPublishingDataPipelineStagePlugin
+  commentId: T:FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.KnowledgeGraphPublishingDataPipelineStagePlugin
+  href: FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.KnowledgeGraphPublishingDataPipelineStagePlugin.html
+  name: KnowledgeGraphPublishingDataPipelineStagePlugin
+  nameWithType: KnowledgeGraphPublishingDataPipelineStagePlugin
+  fullName: FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.KnowledgeGraphPublishingDataPipelineStagePlugin
+- uid: FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.KnowledgeGraphSummarizationDataPipelineStagePlugin
+  commentId: T:FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.KnowledgeGraphSummarizationDataPipelineStagePlugin
+  href: FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.KnowledgeGraphSummarizationDataPipelineStagePlugin.html
+  name: KnowledgeGraphSummarizationDataPipelineStagePlugin
+  nameWithType: KnowledgeGraphSummarizationDataPipelineStagePlugin
+  fullName: FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.KnowledgeGraphSummarizationDataPipelineStagePlugin
+- uid: FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.TextExtractionDataPipelineStagePlugin
+  commentId: T:FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.TextExtractionDataPipelineStagePlugin
+  href: FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.TextExtractionDataPipelineStagePlugin.html
+  name: TextExtractionDataPipelineStagePlugin
+  nameWithType: TextExtractionDataPipelineStagePlugin
+  fullName: FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.TextExtractionDataPipelineStagePlugin
+- uid: FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.TextPartitioningDataPipelineStagePlugin
+  commentId: T:FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.TextPartitioningDataPipelineStagePlugin
+  href: FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.TextPartitioningDataPipelineStagePlugin.html
+  name: TextPartitioningDataPipelineStagePlugin
+  nameWithType: TextPartitioningDataPipelineStagePlugin
+  fullName: FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.TextPartitioningDataPipelineStagePlugin
+- uid: FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
+  commentId: N:FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
+  nameWithType: FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
+  fullName: FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Plugins
+    name: Plugins
+    href: FoundationaLLM.Plugins.html
+  - name: .
+  - uid: FoundationaLLM.Plugins.DataPipeline
+    name: DataPipeline
+    href: FoundationaLLM.Plugins.DataPipeline.html
+  - name: .
+  - uid: FoundationaLLM.Plugins.DataPipeline.Plugins
+    name: Plugins
+    href: FoundationaLLM.Plugins.DataPipeline.Plugins.html
+  - name: .
+  - uid: FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
+    name: DataPipelineStage
+    href: FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Plugins
+    name: Plugins
+    href: FoundationaLLM.Plugins.html
+  - name: .
+  - uid: FoundationaLLM.Plugins.DataPipeline
+    name: DataPipeline
+    href: FoundationaLLM.Plugins.DataPipeline.html
+  - name: .
+  - uid: FoundationaLLM.Plugins.DataPipeline.Plugins
+    name: Plugins
+    href: FoundationaLLM.Plugins.DataPipeline.Plugins.html
+  - name: .
+  - uid: FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
+    name: DataPipelineStage
+    href: FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.html

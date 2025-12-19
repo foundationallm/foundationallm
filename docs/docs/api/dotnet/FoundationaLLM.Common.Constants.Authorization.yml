@@ -1,0 +1,66 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Common.Constants.Authorization
+  commentId: N:FoundationaLLM.Common.Constants.Authorization
+  id: Authorization
+  parent: FoundationaLLM.Common.Constants
+  children:
+  - FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames
+  - FoundationaLLM.Common.Constants.Authorization.AuthorizableOperations
+  - FoundationaLLM.Common.Constants.Authorization.AuthorizationPolicyNames
+  - FoundationaLLM.Common.Constants.Authorization.RoleDefinitionIds
+  - FoundationaLLM.Common.Constants.Authorization.RoleDefinitionNames
+  - FoundationaLLM.Common.Constants.Authorization.SecurityPrincipalVariableNames
+  - FoundationaLLM.Common.Constants.Authorization.UserIdentityPropertyNames
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM.Common.Constants.Authorization
+  nameWithType: FoundationaLLM.Common.Constants.Authorization
+  fullName: FoundationaLLM.Common.Constants.Authorization
+  type: Namespace
+  assemblies:
+  - FoundationaLLM.Common
+references:
+- uid: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames
+  commentId: T:FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames
+  href: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames.html
+  name: AuthorizableActionNames
+  nameWithType: AuthorizableActionNames
+  fullName: FoundationaLLM.Common.Constants.Authorization.AuthorizableActionNames
+- uid: FoundationaLLM.Common.Constants.Authorization.AuthorizableOperations
+  commentId: T:FoundationaLLM.Common.Constants.Authorization.AuthorizableOperations
+  href: FoundationaLLM.Common.Constants.Authorization.AuthorizableOperations.html
+  name: AuthorizableOperations
+  nameWithType: AuthorizableOperations
+  fullName: FoundationaLLM.Common.Constants.Authorization.AuthorizableOperations
+- uid: FoundationaLLM.Common.Constants.Authorization.AuthorizationPolicyNames
+  commentId: T:FoundationaLLM.Common.Constants.Authorization.AuthorizationPolicyNames
+  href: FoundationaLLM.Common.Constants.Authorization.AuthorizationPolicyNames.html
+  name: AuthorizationPolicyNames
+  nameWithType: AuthorizationPolicyNames
+  fullName: FoundationaLLM.Common.Constants.Authorization.AuthorizationPolicyNames
+- uid: FoundationaLLM.Common.Constants.Authorization.RoleDefinitionIds
+  commentId: T:FoundationaLLM.Common.Constants.Authorization.RoleDefinitionIds
+  href: FoundationaLLM.Common.Constants.Authorization.RoleDefinitionIds.html
+  name: RoleDefinitionIds
+  nameWithType: RoleDefinitionIds
+  fullName: FoundationaLLM.Common.Constants.Authorization.RoleDefinitionIds
+- uid: FoundationaLLM.Common.Constants.Authorization.RoleDefinitionNames
+  commentId: T:FoundationaLLM.Common.Constants.Authorization.RoleDefinitionNames
+  href: FoundationaLLM.Common.Constants.Authorization.RoleDefinitionNames.html
+  name: RoleDefinitionNames
+  nameWithType: RoleDefinitionNames
+  fullName: FoundationaLLM.Common.Constants.Authorization.RoleDefinitionNames
+- uid: FoundationaLLM.Common.Constants.Authorization.SecurityPrincipalVariableNames
+  commentId: T:FoundationaLLM.Common.Constants.Authorization.SecurityPrincipalVariableNames
+  href: FoundationaLLM.Common.Constants.Authorization.SecurityPrincipalVariableNames.html
+  name: SecurityPrincipalVariableNames
+  nameWithType: SecurityPrincipalVariableNames
+  fullName: FoundationaLLM.Common.Constants.Authorization.SecurityPrincipalVariableNames
+- uid: FoundationaLLM.Common.Constants.Authorization.UserIdentityPropertyNames
+  commentId: T:FoundationaLLM.Common.Constants.Authorization.UserIdentityPropertyNames
+  href: FoundationaLLM.Common.Constants.Authorization.UserIdentityPropertyNames.html
+  name: UserIdentityPropertyNames
+  nameWithType: UserIdentityPropertyNames
+  fullName: FoundationaLLM.Common.Constants.Authorization.UserIdentityPropertyNames

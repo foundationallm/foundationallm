@@ -1,0 +1,693 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.AuthorizationEngine.Middleware.AuthorizationAPIMiddleware
+  commentId: T:FoundationaLLM.AuthorizationEngine.Middleware.AuthorizationAPIMiddleware
+  id: AuthorizationAPIMiddleware
+  parent: FoundationaLLM.AuthorizationEngine.Middleware
+  children:
+  - FoundationaLLM.AuthorizationEngine.Middleware.AuthorizationAPIMiddleware.#ctor(Microsoft.AspNetCore.Http.RequestDelegate)
+  - FoundationaLLM.AuthorizationEngine.Middleware.AuthorizationAPIMiddleware.InvokeAsync(Microsoft.AspNetCore.Http.HttpContext,FoundationaLLM.AuthorizationEngine.Interfaces.IAuthorizationCore)
+  langs:
+  - csharp
+  - vb
+  name: AuthorizationAPIMiddleware
+  nameWithType: AuthorizationAPIMiddleware
+  fullName: FoundationaLLM.AuthorizationEngine.Middleware.AuthorizationAPIMiddleware
+  type: Class
+  source:
+    remote:
+      path: src/dotnet/AuthorizationEngine/Middleware/AuthorizationAPIMiddleware.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: AuthorizationAPIMiddleware
+    path: ../src/dotnet/AuthorizationEngine/Middleware/AuthorizationAPIMiddleware.cs
+    startLine: 11
+  assemblies:
+  - FoundationaLLM.AuthorizationEngine
+  namespace: FoundationaLLM.AuthorizationEngine.Middleware
+  summary: >-
+    Middleware that retrieves context information for the current HTTP request.
+
+    This middleware should be registered in the application's Startup.Configure method.
+  example: []
+  syntax:
+    content: public class AuthorizationAPIMiddleware
+    content.vb: Public Class AuthorizationAPIMiddleware
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+  extensionMethods:
+  - System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+- uid: FoundationaLLM.AuthorizationEngine.Middleware.AuthorizationAPIMiddleware.#ctor(Microsoft.AspNetCore.Http.RequestDelegate)
+  commentId: M:FoundationaLLM.AuthorizationEngine.Middleware.AuthorizationAPIMiddleware.#ctor(Microsoft.AspNetCore.Http.RequestDelegate)
+  id: '#ctor(Microsoft.AspNetCore.Http.RequestDelegate)'
+  parent: FoundationaLLM.AuthorizationEngine.Middleware.AuthorizationAPIMiddleware
+  langs:
+  - csharp
+  - vb
+  name: AuthorizationAPIMiddleware(RequestDelegate)
+  nameWithType: AuthorizationAPIMiddleware.AuthorizationAPIMiddleware(RequestDelegate)
+  fullName: FoundationaLLM.AuthorizationEngine.Middleware.AuthorizationAPIMiddleware.AuthorizationAPIMiddleware(Microsoft.AspNetCore.Http.RequestDelegate)
+  type: Constructor
+  source:
+    remote:
+      path: src/dotnet/AuthorizationEngine/Middleware/AuthorizationAPIMiddleware.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: .ctor
+    path: ../src/dotnet/AuthorizationEngine/Middleware/AuthorizationAPIMiddleware.cs
+    startLine: 19
+  assemblies:
+  - FoundationaLLM.AuthorizationEngine
+  namespace: FoundationaLLM.AuthorizationEngine.Middleware
+  summary: Initializes a new instance of the <xref href="FoundationaLLM.AuthorizationEngine.Middleware.AuthorizationAPIMiddleware" data-throw-if-not-resolved="false"></xref> class.
+  example: []
+  syntax:
+    content: public AuthorizationAPIMiddleware(RequestDelegate next)
+    parameters:
+    - id: next
+      type: Microsoft.AspNetCore.Http.RequestDelegate
+      description: ''
+    content.vb: Public Sub New([next] As RequestDelegate)
+  overload: FoundationaLLM.AuthorizationEngine.Middleware.AuthorizationAPIMiddleware.#ctor*
+  nameWithType.vb: AuthorizationAPIMiddleware.New(RequestDelegate)
+  fullName.vb: FoundationaLLM.AuthorizationEngine.Middleware.AuthorizationAPIMiddleware.New(Microsoft.AspNetCore.Http.RequestDelegate)
+  name.vb: New(RequestDelegate)
+- uid: FoundationaLLM.AuthorizationEngine.Middleware.AuthorizationAPIMiddleware.InvokeAsync(Microsoft.AspNetCore.Http.HttpContext,FoundationaLLM.AuthorizationEngine.Interfaces.IAuthorizationCore)
+  commentId: M:FoundationaLLM.AuthorizationEngine.Middleware.AuthorizationAPIMiddleware.InvokeAsync(Microsoft.AspNetCore.Http.HttpContext,FoundationaLLM.AuthorizationEngine.Interfaces.IAuthorizationCore)
+  id: InvokeAsync(Microsoft.AspNetCore.Http.HttpContext,FoundationaLLM.AuthorizationEngine.Interfaces.IAuthorizationCore)
+  parent: FoundationaLLM.AuthorizationEngine.Middleware.AuthorizationAPIMiddleware
+  langs:
+  - csharp
+  - vb
+  name: InvokeAsync(HttpContext, IAuthorizationCore)
+  nameWithType: AuthorizationAPIMiddleware.InvokeAsync(HttpContext, IAuthorizationCore)
+  fullName: FoundationaLLM.AuthorizationEngine.Middleware.AuthorizationAPIMiddleware.InvokeAsync(Microsoft.AspNetCore.Http.HttpContext, FoundationaLLM.AuthorizationEngine.Interfaces.IAuthorizationCore)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/AuthorizationEngine/Middleware/AuthorizationAPIMiddleware.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: InvokeAsync
+    path: ../src/dotnet/AuthorizationEngine/Middleware/AuthorizationAPIMiddleware.cs
+    startLine: 27
+  assemblies:
+  - FoundationaLLM.AuthorizationEngine
+  namespace: FoundationaLLM.AuthorizationEngine.Middleware
+  summary: Executes the middleware.
+  example: []
+  syntax:
+    content: public Task InvokeAsync(HttpContext context, IAuthorizationCore authorizationCore)
+    parameters:
+    - id: context
+      type: Microsoft.AspNetCore.Http.HttpContext
+      description: The current HTTP request context.
+    - id: authorizationCore
+      type: FoundationaLLM.AuthorizationEngine.Interfaces.IAuthorizationCore
+    return:
+      type: System.Threading.Tasks.Task
+      description: ''
+    content.vb: Public Function InvokeAsync(context As HttpContext, authorizationCore As IAuthorizationCore) As Task
+  overload: FoundationaLLM.AuthorizationEngine.Middleware.AuthorizationAPIMiddleware.InvokeAsync*
+references:
+- uid: FoundationaLLM.AuthorizationEngine.Middleware
+  commentId: N:FoundationaLLM.AuthorizationEngine.Middleware
+  href: FoundationaLLM.html
+  name: FoundationaLLM.AuthorizationEngine.Middleware
+  nameWithType: FoundationaLLM.AuthorizationEngine.Middleware
+  fullName: FoundationaLLM.AuthorizationEngine.Middleware
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.AuthorizationEngine
+    name: AuthorizationEngine
+    href: FoundationaLLM.AuthorizationEngine.html
+  - name: .
+  - uid: FoundationaLLM.AuthorizationEngine.Middleware
+    name: Middleware
+    href: FoundationaLLM.AuthorizationEngine.Middleware.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.AuthorizationEngine
+    name: AuthorizationEngine
+    href: FoundationaLLM.AuthorizationEngine.html
+  - name: .
+  - uid: FoundationaLLM.AuthorizationEngine.Middleware
+    name: Middleware
+    href: FoundationaLLM.AuthorizationEngine.Middleware.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  parent: FoundationaLLM.Core.Utils.ObjectExtensions
+  definition: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  isExternal: true
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions
+  commentId: T:FoundationaLLM.Core.Utils.ObjectExtensions
+  parent: FoundationaLLM.Core.Utils
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html
+  name: ObjectExtensions
+  nameWithType: ObjectExtensions
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions
+- uid: FoundationaLLM.Core.Utils
+  commentId: N:FoundationaLLM.Core.Utils
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Core.Utils
+  nameWithType: FoundationaLLM.Core.Utils
+  fullName: FoundationaLLM.Core.Utils
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+- uid: FoundationaLLM.AuthorizationEngine.Middleware.AuthorizationAPIMiddleware
+  commentId: T:FoundationaLLM.AuthorizationEngine.Middleware.AuthorizationAPIMiddleware
+  href: FoundationaLLM.AuthorizationEngine.Middleware.AuthorizationAPIMiddleware.html
+  name: AuthorizationAPIMiddleware
+  nameWithType: AuthorizationAPIMiddleware
+  fullName: FoundationaLLM.AuthorizationEngine.Middleware.AuthorizationAPIMiddleware
+- uid: FoundationaLLM.AuthorizationEngine.Middleware.AuthorizationAPIMiddleware.#ctor*
+  commentId: Overload:FoundationaLLM.AuthorizationEngine.Middleware.AuthorizationAPIMiddleware.#ctor
+  href: FoundationaLLM.AuthorizationEngine.Middleware.AuthorizationAPIMiddleware.html#FoundationaLLM_AuthorizationEngine_Middleware_AuthorizationAPIMiddleware__ctor_Microsoft_AspNetCore_Http_RequestDelegate_
+  name: AuthorizationAPIMiddleware
+  nameWithType: AuthorizationAPIMiddleware.AuthorizationAPIMiddleware
+  fullName: FoundationaLLM.AuthorizationEngine.Middleware.AuthorizationAPIMiddleware.AuthorizationAPIMiddleware
+  nameWithType.vb: AuthorizationAPIMiddleware.New
+  fullName.vb: FoundationaLLM.AuthorizationEngine.Middleware.AuthorizationAPIMiddleware.New
+  name.vb: New
+- uid: Microsoft.AspNetCore.Http.RequestDelegate
+  commentId: T:Microsoft.AspNetCore.Http.RequestDelegate
+  parent: Microsoft.AspNetCore.Http
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.http.requestdelegate
+  name: RequestDelegate
+  nameWithType: RequestDelegate
+  fullName: Microsoft.AspNetCore.Http.RequestDelegate
+- uid: Microsoft.AspNetCore.Http
+  commentId: N:Microsoft.AspNetCore.Http
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft
+  name: Microsoft.AspNetCore.Http
+  nameWithType: Microsoft.AspNetCore.Http
+  fullName: Microsoft.AspNetCore.Http
+  spec.csharp:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.AspNetCore
+    name: AspNetCore
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore
+  - name: .
+  - uid: Microsoft.AspNetCore.Http
+    name: Http
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.http
+  spec.vb:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.AspNetCore
+    name: AspNetCore
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore
+  - name: .
+  - uid: Microsoft.AspNetCore.Http
+    name: Http
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.http
+- uid: FoundationaLLM.AuthorizationEngine.Middleware.AuthorizationAPIMiddleware.InvokeAsync*
+  commentId: Overload:FoundationaLLM.AuthorizationEngine.Middleware.AuthorizationAPIMiddleware.InvokeAsync
+  href: FoundationaLLM.AuthorizationEngine.Middleware.AuthorizationAPIMiddleware.html#FoundationaLLM_AuthorizationEngine_Middleware_AuthorizationAPIMiddleware_InvokeAsync_Microsoft_AspNetCore_Http_HttpContext_FoundationaLLM_AuthorizationEngine_Interfaces_IAuthorizationCore_
+  name: InvokeAsync
+  nameWithType: AuthorizationAPIMiddleware.InvokeAsync
+  fullName: FoundationaLLM.AuthorizationEngine.Middleware.AuthorizationAPIMiddleware.InvokeAsync
+- uid: Microsoft.AspNetCore.Http.HttpContext
+  commentId: T:Microsoft.AspNetCore.Http.HttpContext
+  parent: Microsoft.AspNetCore.Http
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.http.httpcontext
+  name: HttpContext
+  nameWithType: HttpContext
+  fullName: Microsoft.AspNetCore.Http.HttpContext
+- uid: FoundationaLLM.AuthorizationEngine.Interfaces.IAuthorizationCore
+  commentId: T:FoundationaLLM.AuthorizationEngine.Interfaces.IAuthorizationCore
+  parent: FoundationaLLM.AuthorizationEngine.Interfaces
+  href: FoundationaLLM.AuthorizationEngine.Interfaces.IAuthorizationCore.html
+  name: IAuthorizationCore
+  nameWithType: IAuthorizationCore
+  fullName: FoundationaLLM.AuthorizationEngine.Interfaces.IAuthorizationCore
+- uid: System.Threading.Tasks.Task
+  commentId: T:System.Threading.Tasks.Task
+  parent: System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  name: Task
+  nameWithType: Task
+  fullName: System.Threading.Tasks.Task
+- uid: FoundationaLLM.AuthorizationEngine.Interfaces
+  commentId: N:FoundationaLLM.AuthorizationEngine.Interfaces
+  href: FoundationaLLM.html
+  name: FoundationaLLM.AuthorizationEngine.Interfaces
+  nameWithType: FoundationaLLM.AuthorizationEngine.Interfaces
+  fullName: FoundationaLLM.AuthorizationEngine.Interfaces
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.AuthorizationEngine
+    name: AuthorizationEngine
+    href: FoundationaLLM.AuthorizationEngine.html
+  - name: .
+  - uid: FoundationaLLM.AuthorizationEngine.Interfaces
+    name: Interfaces
+    href: FoundationaLLM.AuthorizationEngine.Interfaces.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.AuthorizationEngine
+    name: AuthorizationEngine
+    href: FoundationaLLM.AuthorizationEngine.html
+  - name: .
+  - uid: FoundationaLLM.AuthorizationEngine.Interfaces
+    name: Interfaces
+    href: FoundationaLLM.AuthorizationEngine.Interfaces.html
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks

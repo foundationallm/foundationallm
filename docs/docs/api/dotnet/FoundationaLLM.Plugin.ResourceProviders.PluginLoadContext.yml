@@ -1,0 +1,1440 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Plugin.ResourceProviders.PluginLoadContext
+  commentId: T:FoundationaLLM.Plugin.ResourceProviders.PluginLoadContext
+  id: PluginLoadContext
+  parent: FoundationaLLM.Plugin.ResourceProviders
+  children:
+  - FoundationaLLM.Plugin.ResourceProviders.PluginLoadContext.#ctor(System.String,System.Boolean,System.Collections.Generic.Dictionary{System.String,System.Collections.Generic.Dictionary{System.String,System.String}},Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Plugin.ResourceProviders.PluginLoadContext},System.String,FoundationaLLM.Common.Interfaces.IStorageService,System.String)
+  langs:
+  - csharp
+  - vb
+  name: PluginLoadContext
+  nameWithType: PluginLoadContext
+  fullName: FoundationaLLM.Plugin.ResourceProviders.PluginLoadContext
+  type: Class
+  source:
+    remote:
+      path: src/dotnet/Plugin/ResourceProviders/PluginLoadContext.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: PluginLoadContext
+    path: ../src/dotnet/Plugin/ResourceProviders/PluginLoadContext.cs
+    startLine: 17
+  assemblies:
+  - FoundationaLLM.Plugin
+  namespace: FoundationaLLM.Plugin.ResourceProviders
+  summary: Represents a custom assembly load context for loading plugins.
+  remarks: >-
+    This class extends <xref href="System.Runtime.Loader.AssemblyLoadContext" data-throw-if-not-resolved="false"></xref> to provide a mechanism for loading
+        assemblies in isolation, which is useful for plugin architectures where different versions of the same assembly
+        might need to be loaded simultaneously.
+  example: []
+  syntax:
+    content: 'public class PluginLoadContext : AssemblyLoadContext'
+    content.vb: Public Class PluginLoadContext Inherits AssemblyLoadContext
+  inheritance:
+  - System.Object
+  - System.Runtime.Loader.AssemblyLoadContext
+  inheritedMembers:
+  - System.Runtime.Loader.AssemblyLoadContext.EnterContextualReflection
+  - System.Runtime.Loader.AssemblyLoadContext.EnterContextualReflection(System.Reflection.Assembly)
+  - System.Runtime.Loader.AssemblyLoadContext.GetAssemblyName(System.String)
+  - System.Runtime.Loader.AssemblyLoadContext.GetLoadContext(System.Reflection.Assembly)
+  - System.Runtime.Loader.AssemblyLoadContext.Load(System.Reflection.AssemblyName)
+  - System.Runtime.Loader.AssemblyLoadContext.LoadFromAssemblyName(System.Reflection.AssemblyName)
+  - System.Runtime.Loader.AssemblyLoadContext.LoadFromAssemblyPath(System.String)
+  - System.Runtime.Loader.AssemblyLoadContext.LoadFromNativeImagePath(System.String,System.String)
+  - System.Runtime.Loader.AssemblyLoadContext.LoadFromStream(System.IO.Stream)
+  - System.Runtime.Loader.AssemblyLoadContext.LoadFromStream(System.IO.Stream,System.IO.Stream)
+  - System.Runtime.Loader.AssemblyLoadContext.LoadUnmanagedDll(System.String)
+  - System.Runtime.Loader.AssemblyLoadContext.LoadUnmanagedDllFromPath(System.String)
+  - System.Runtime.Loader.AssemblyLoadContext.SetProfileOptimizationRoot(System.String)
+  - System.Runtime.Loader.AssemblyLoadContext.StartProfileOptimization(System.String)
+  - System.Runtime.Loader.AssemblyLoadContext.ToString
+  - System.Runtime.Loader.AssemblyLoadContext.Unload
+  - System.Runtime.Loader.AssemblyLoadContext.All
+  - System.Runtime.Loader.AssemblyLoadContext.Assemblies
+  - System.Runtime.Loader.AssemblyLoadContext.CurrentContextualReflectionContext
+  - System.Runtime.Loader.AssemblyLoadContext.Default
+  - System.Runtime.Loader.AssemblyLoadContext.IsCollectible
+  - System.Runtime.Loader.AssemblyLoadContext.Name
+  - System.Runtime.Loader.AssemblyLoadContext.Resolving
+  - System.Runtime.Loader.AssemblyLoadContext.ResolvingUnmanagedDll
+  - System.Runtime.Loader.AssemblyLoadContext.Unloading
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  extensionMethods:
+  - System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+- uid: FoundationaLLM.Plugin.ResourceProviders.PluginLoadContext.#ctor(System.String,System.Boolean,System.Collections.Generic.Dictionary{System.String,System.Collections.Generic.Dictionary{System.String,System.String}},Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Plugin.ResourceProviders.PluginLoadContext},System.String,FoundationaLLM.Common.Interfaces.IStorageService,System.String)
+  commentId: M:FoundationaLLM.Plugin.ResourceProviders.PluginLoadContext.#ctor(System.String,System.Boolean,System.Collections.Generic.Dictionary{System.String,System.Collections.Generic.Dictionary{System.String,System.String}},Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Plugin.ResourceProviders.PluginLoadContext},System.String,FoundationaLLM.Common.Interfaces.IStorageService,System.String)
+  id: '#ctor(System.String,System.Boolean,System.Collections.Generic.Dictionary{System.String,System.Collections.Generic.Dictionary{System.String,System.String}},Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Plugin.ResourceProviders.PluginLoadContext},System.String,FoundationaLLM.Common.Interfaces.IStorageService,System.String)'
+  parent: FoundationaLLM.Plugin.ResourceProviders.PluginLoadContext
+  langs:
+  - csharp
+  - vb
+  name: PluginLoadContext(string, bool, Dictionary<string, Dictionary<string, string>>, ILogger<PluginLoadContext>, string, IStorageService, string)
+  nameWithType: PluginLoadContext.PluginLoadContext(string, bool, Dictionary<string, Dictionary<string, string>>, ILogger<PluginLoadContext>, string, IStorageService, string)
+  fullName: FoundationaLLM.Plugin.ResourceProviders.PluginLoadContext.PluginLoadContext(string, bool, System.Collections.Generic.Dictionary<string, System.Collections.Generic.Dictionary<string, string>>, Microsoft.Extensions.Logging.ILogger<FoundationaLLM.Plugin.ResourceProviders.PluginLoadContext>, string, FoundationaLLM.Common.Interfaces.IStorageService, string)
+  type: Constructor
+  source:
+    remote:
+      path: src/dotnet/Plugin/ResourceProviders/PluginLoadContext.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: .ctor
+    path: ../src/dotnet/Plugin/ResourceProviders/PluginLoadContext.cs
+    startLine: 28
+  assemblies:
+  - FoundationaLLM.Plugin
+  namespace: FoundationaLLM.Plugin.ResourceProviders
+  summary: ''
+  example: []
+  syntax:
+    content: public PluginLoadContext(string name, bool isCollectible, Dictionary<string, Dictionary<string, string>> pluginDependencies, ILogger<PluginLoadContext> logger, string rootDependencyPackagePath, IStorageService storageService, string storageContainerName)
+    parameters:
+    - id: name
+      type: System.String
+    - id: isCollectible
+      type: System.Boolean
+    - id: pluginDependencies
+      type: System.Collections.Generic.Dictionary{System.String,System.Collections.Generic.Dictionary{System.String,System.String}}
+    - id: logger
+      type: Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Plugin.ResourceProviders.PluginLoadContext}
+    - id: rootDependencyPackagePath
+      type: System.String
+    - id: storageService
+      type: FoundationaLLM.Common.Interfaces.IStorageService
+    - id: storageContainerName
+      type: System.String
+    content.vb: Public Sub New(name As String, isCollectible As Boolean, pluginDependencies As Dictionary(Of String, Dictionary(Of String, String)), logger As ILogger(Of PluginLoadContext), rootDependencyPackagePath As String, storageService As IStorageService, storageContainerName As String)
+  overload: FoundationaLLM.Plugin.ResourceProviders.PluginLoadContext.#ctor*
+  nameWithType.vb: PluginLoadContext.New(String, Boolean, Dictionary(Of String, Dictionary(Of String, String)), ILogger(Of PluginLoadContext), String, IStorageService, String)
+  fullName.vb: FoundationaLLM.Plugin.ResourceProviders.PluginLoadContext.New(String, Boolean, System.Collections.Generic.Dictionary(Of String, System.Collections.Generic.Dictionary(Of String, String)), Microsoft.Extensions.Logging.ILogger(Of FoundationaLLM.Plugin.ResourceProviders.PluginLoadContext), String, FoundationaLLM.Common.Interfaces.IStorageService, String)
+  name.vb: New(String, Boolean, Dictionary(Of String, Dictionary(Of String, String)), ILogger(Of PluginLoadContext), String, IStorageService, String)
+references:
+- uid: System.Runtime.Loader.AssemblyLoadContext
+  commentId: T:System.Runtime.Loader.AssemblyLoadContext
+  parent: System.Runtime.Loader
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.runtime.loader.assemblyloadcontext
+  name: AssemblyLoadContext
+  nameWithType: AssemblyLoadContext
+  fullName: System.Runtime.Loader.AssemblyLoadContext
+- uid: FoundationaLLM.Plugin.ResourceProviders
+  commentId: N:FoundationaLLM.Plugin.ResourceProviders
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Plugin.ResourceProviders
+  nameWithType: FoundationaLLM.Plugin.ResourceProviders
+  fullName: FoundationaLLM.Plugin.ResourceProviders
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Plugin
+    name: Plugin
+    href: FoundationaLLM.Plugin.html
+  - name: .
+  - uid: FoundationaLLM.Plugin.ResourceProviders
+    name: ResourceProviders
+    href: FoundationaLLM.Plugin.ResourceProviders.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Plugin
+    name: Plugin
+    href: FoundationaLLM.Plugin.html
+  - name: .
+  - uid: FoundationaLLM.Plugin.ResourceProviders
+    name: ResourceProviders
+    href: FoundationaLLM.Plugin.ResourceProviders.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Runtime.Loader.AssemblyLoadContext.EnterContextualReflection
+  commentId: M:System.Runtime.Loader.AssemblyLoadContext.EnterContextualReflection
+  parent: System.Runtime.Loader.AssemblyLoadContext
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.runtime.loader.assemblyloadcontext.entercontextualreflection#system-runtime-loader-assemblyloadcontext-entercontextualreflection
+  name: EnterContextualReflection()
+  nameWithType: AssemblyLoadContext.EnterContextualReflection()
+  fullName: System.Runtime.Loader.AssemblyLoadContext.EnterContextualReflection()
+  spec.csharp:
+  - uid: System.Runtime.Loader.AssemblyLoadContext.EnterContextualReflection
+    name: EnterContextualReflection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.runtime.loader.assemblyloadcontext.entercontextualreflection#system-runtime-loader-assemblyloadcontext-entercontextualreflection
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Runtime.Loader.AssemblyLoadContext.EnterContextualReflection
+    name: EnterContextualReflection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.runtime.loader.assemblyloadcontext.entercontextualreflection#system-runtime-loader-assemblyloadcontext-entercontextualreflection
+  - name: (
+  - name: )
+- uid: System.Runtime.Loader.AssemblyLoadContext.EnterContextualReflection(System.Reflection.Assembly)
+  commentId: M:System.Runtime.Loader.AssemblyLoadContext.EnterContextualReflection(System.Reflection.Assembly)
+  parent: System.Runtime.Loader.AssemblyLoadContext
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.runtime.loader.assemblyloadcontext.entercontextualreflection#system-runtime-loader-assemblyloadcontext-entercontextualreflection(system-reflection-assembly)
+  name: EnterContextualReflection(Assembly)
+  nameWithType: AssemblyLoadContext.EnterContextualReflection(Assembly)
+  fullName: System.Runtime.Loader.AssemblyLoadContext.EnterContextualReflection(System.Reflection.Assembly)
+  spec.csharp:
+  - uid: System.Runtime.Loader.AssemblyLoadContext.EnterContextualReflection(System.Reflection.Assembly)
+    name: EnterContextualReflection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.runtime.loader.assemblyloadcontext.entercontextualreflection#system-runtime-loader-assemblyloadcontext-entercontextualreflection(system-reflection-assembly)
+  - name: (
+  - uid: System.Reflection.Assembly
+    name: Assembly
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.assembly
+  - name: )
+  spec.vb:
+  - uid: System.Runtime.Loader.AssemblyLoadContext.EnterContextualReflection(System.Reflection.Assembly)
+    name: EnterContextualReflection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.runtime.loader.assemblyloadcontext.entercontextualreflection#system-runtime-loader-assemblyloadcontext-entercontextualreflection(system-reflection-assembly)
+  - name: (
+  - uid: System.Reflection.Assembly
+    name: Assembly
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.assembly
+  - name: )
+- uid: System.Runtime.Loader.AssemblyLoadContext.GetAssemblyName(System.String)
+  commentId: M:System.Runtime.Loader.AssemblyLoadContext.GetAssemblyName(System.String)
+  parent: System.Runtime.Loader.AssemblyLoadContext
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.runtime.loader.assemblyloadcontext.getassemblyname
+  name: GetAssemblyName(string)
+  nameWithType: AssemblyLoadContext.GetAssemblyName(string)
+  fullName: System.Runtime.Loader.AssemblyLoadContext.GetAssemblyName(string)
+  nameWithType.vb: AssemblyLoadContext.GetAssemblyName(String)
+  fullName.vb: System.Runtime.Loader.AssemblyLoadContext.GetAssemblyName(String)
+  name.vb: GetAssemblyName(String)
+  spec.csharp:
+  - uid: System.Runtime.Loader.AssemblyLoadContext.GetAssemblyName(System.String)
+    name: GetAssemblyName
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.runtime.loader.assemblyloadcontext.getassemblyname
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: System.Runtime.Loader.AssemblyLoadContext.GetAssemblyName(System.String)
+    name: GetAssemblyName
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.runtime.loader.assemblyloadcontext.getassemblyname
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: System.Runtime.Loader.AssemblyLoadContext.GetLoadContext(System.Reflection.Assembly)
+  commentId: M:System.Runtime.Loader.AssemblyLoadContext.GetLoadContext(System.Reflection.Assembly)
+  parent: System.Runtime.Loader.AssemblyLoadContext
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.runtime.loader.assemblyloadcontext.getloadcontext
+  name: GetLoadContext(Assembly)
+  nameWithType: AssemblyLoadContext.GetLoadContext(Assembly)
+  fullName: System.Runtime.Loader.AssemblyLoadContext.GetLoadContext(System.Reflection.Assembly)
+  spec.csharp:
+  - uid: System.Runtime.Loader.AssemblyLoadContext.GetLoadContext(System.Reflection.Assembly)
+    name: GetLoadContext
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.runtime.loader.assemblyloadcontext.getloadcontext
+  - name: (
+  - uid: System.Reflection.Assembly
+    name: Assembly
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.assembly
+  - name: )
+  spec.vb:
+  - uid: System.Runtime.Loader.AssemblyLoadContext.GetLoadContext(System.Reflection.Assembly)
+    name: GetLoadContext
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.runtime.loader.assemblyloadcontext.getloadcontext
+  - name: (
+  - uid: System.Reflection.Assembly
+    name: Assembly
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.assembly
+  - name: )
+- uid: System.Runtime.Loader.AssemblyLoadContext.Load(System.Reflection.AssemblyName)
+  commentId: M:System.Runtime.Loader.AssemblyLoadContext.Load(System.Reflection.AssemblyName)
+  parent: System.Runtime.Loader.AssemblyLoadContext
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.runtime.loader.assemblyloadcontext.load
+  name: Load(AssemblyName)
+  nameWithType: AssemblyLoadContext.Load(AssemblyName)
+  fullName: System.Runtime.Loader.AssemblyLoadContext.Load(System.Reflection.AssemblyName)
+  spec.csharp:
+  - uid: System.Runtime.Loader.AssemblyLoadContext.Load(System.Reflection.AssemblyName)
+    name: Load
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.runtime.loader.assemblyloadcontext.load
+  - name: (
+  - uid: System.Reflection.AssemblyName
+    name: AssemblyName
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.assemblyname
+  - name: )
+  spec.vb:
+  - uid: System.Runtime.Loader.AssemblyLoadContext.Load(System.Reflection.AssemblyName)
+    name: Load
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.runtime.loader.assemblyloadcontext.load
+  - name: (
+  - uid: System.Reflection.AssemblyName
+    name: AssemblyName
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.assemblyname
+  - name: )
+- uid: System.Runtime.Loader.AssemblyLoadContext.LoadFromAssemblyName(System.Reflection.AssemblyName)
+  commentId: M:System.Runtime.Loader.AssemblyLoadContext.LoadFromAssemblyName(System.Reflection.AssemblyName)
+  parent: System.Runtime.Loader.AssemblyLoadContext
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.runtime.loader.assemblyloadcontext.loadfromassemblyname
+  name: LoadFromAssemblyName(AssemblyName)
+  nameWithType: AssemblyLoadContext.LoadFromAssemblyName(AssemblyName)
+  fullName: System.Runtime.Loader.AssemblyLoadContext.LoadFromAssemblyName(System.Reflection.AssemblyName)
+  spec.csharp:
+  - uid: System.Runtime.Loader.AssemblyLoadContext.LoadFromAssemblyName(System.Reflection.AssemblyName)
+    name: LoadFromAssemblyName
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.runtime.loader.assemblyloadcontext.loadfromassemblyname
+  - name: (
+  - uid: System.Reflection.AssemblyName
+    name: AssemblyName
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.assemblyname
+  - name: )
+  spec.vb:
+  - uid: System.Runtime.Loader.AssemblyLoadContext.LoadFromAssemblyName(System.Reflection.AssemblyName)
+    name: LoadFromAssemblyName
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.runtime.loader.assemblyloadcontext.loadfromassemblyname
+  - name: (
+  - uid: System.Reflection.AssemblyName
+    name: AssemblyName
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.assemblyname
+  - name: )
+- uid: System.Runtime.Loader.AssemblyLoadContext.LoadFromAssemblyPath(System.String)
+  commentId: M:System.Runtime.Loader.AssemblyLoadContext.LoadFromAssemblyPath(System.String)
+  parent: System.Runtime.Loader.AssemblyLoadContext
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.runtime.loader.assemblyloadcontext.loadfromassemblypath
+  name: LoadFromAssemblyPath(string)
+  nameWithType: AssemblyLoadContext.LoadFromAssemblyPath(string)
+  fullName: System.Runtime.Loader.AssemblyLoadContext.LoadFromAssemblyPath(string)
+  nameWithType.vb: AssemblyLoadContext.LoadFromAssemblyPath(String)
+  fullName.vb: System.Runtime.Loader.AssemblyLoadContext.LoadFromAssemblyPath(String)
+  name.vb: LoadFromAssemblyPath(String)
+  spec.csharp:
+  - uid: System.Runtime.Loader.AssemblyLoadContext.LoadFromAssemblyPath(System.String)
+    name: LoadFromAssemblyPath
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.runtime.loader.assemblyloadcontext.loadfromassemblypath
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: System.Runtime.Loader.AssemblyLoadContext.LoadFromAssemblyPath(System.String)
+    name: LoadFromAssemblyPath
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.runtime.loader.assemblyloadcontext.loadfromassemblypath
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: System.Runtime.Loader.AssemblyLoadContext.LoadFromNativeImagePath(System.String,System.String)
+  commentId: M:System.Runtime.Loader.AssemblyLoadContext.LoadFromNativeImagePath(System.String,System.String)
+  parent: System.Runtime.Loader.AssemblyLoadContext
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.runtime.loader.assemblyloadcontext.loadfromnativeimagepath
+  name: LoadFromNativeImagePath(string, string)
+  nameWithType: AssemblyLoadContext.LoadFromNativeImagePath(string, string)
+  fullName: System.Runtime.Loader.AssemblyLoadContext.LoadFromNativeImagePath(string, string)
+  nameWithType.vb: AssemblyLoadContext.LoadFromNativeImagePath(String, String)
+  fullName.vb: System.Runtime.Loader.AssemblyLoadContext.LoadFromNativeImagePath(String, String)
+  name.vb: LoadFromNativeImagePath(String, String)
+  spec.csharp:
+  - uid: System.Runtime.Loader.AssemblyLoadContext.LoadFromNativeImagePath(System.String,System.String)
+    name: LoadFromNativeImagePath
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.runtime.loader.assemblyloadcontext.loadfromnativeimagepath
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: System.Runtime.Loader.AssemblyLoadContext.LoadFromNativeImagePath(System.String,System.String)
+    name: LoadFromNativeImagePath
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.runtime.loader.assemblyloadcontext.loadfromnativeimagepath
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: System.Runtime.Loader.AssemblyLoadContext.LoadFromStream(System.IO.Stream)
+  commentId: M:System.Runtime.Loader.AssemblyLoadContext.LoadFromStream(System.IO.Stream)
+  parent: System.Runtime.Loader.AssemblyLoadContext
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.runtime.loader.assemblyloadcontext.loadfromstream#system-runtime-loader-assemblyloadcontext-loadfromstream(system-io-stream)
+  name: LoadFromStream(Stream)
+  nameWithType: AssemblyLoadContext.LoadFromStream(Stream)
+  fullName: System.Runtime.Loader.AssemblyLoadContext.LoadFromStream(System.IO.Stream)
+  spec.csharp:
+  - uid: System.Runtime.Loader.AssemblyLoadContext.LoadFromStream(System.IO.Stream)
+    name: LoadFromStream
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.runtime.loader.assemblyloadcontext.loadfromstream#system-runtime-loader-assemblyloadcontext-loadfromstream(system-io-stream)
+  - name: (
+  - uid: System.IO.Stream
+    name: Stream
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.io.stream
+  - name: )
+  spec.vb:
+  - uid: System.Runtime.Loader.AssemblyLoadContext.LoadFromStream(System.IO.Stream)
+    name: LoadFromStream
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.runtime.loader.assemblyloadcontext.loadfromstream#system-runtime-loader-assemblyloadcontext-loadfromstream(system-io-stream)
+  - name: (
+  - uid: System.IO.Stream
+    name: Stream
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.io.stream
+  - name: )
+- uid: System.Runtime.Loader.AssemblyLoadContext.LoadFromStream(System.IO.Stream,System.IO.Stream)
+  commentId: M:System.Runtime.Loader.AssemblyLoadContext.LoadFromStream(System.IO.Stream,System.IO.Stream)
+  parent: System.Runtime.Loader.AssemblyLoadContext
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.runtime.loader.assemblyloadcontext.loadfromstream#system-runtime-loader-assemblyloadcontext-loadfromstream(system-io-stream-system-io-stream)
+  name: LoadFromStream(Stream, Stream)
+  nameWithType: AssemblyLoadContext.LoadFromStream(Stream, Stream)
+  fullName: System.Runtime.Loader.AssemblyLoadContext.LoadFromStream(System.IO.Stream, System.IO.Stream)
+  spec.csharp:
+  - uid: System.Runtime.Loader.AssemblyLoadContext.LoadFromStream(System.IO.Stream,System.IO.Stream)
+    name: LoadFromStream
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.runtime.loader.assemblyloadcontext.loadfromstream#system-runtime-loader-assemblyloadcontext-loadfromstream(system-io-stream-system-io-stream)
+  - name: (
+  - uid: System.IO.Stream
+    name: Stream
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.io.stream
+  - name: ','
+  - name: " "
+  - uid: System.IO.Stream
+    name: Stream
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.io.stream
+  - name: )
+  spec.vb:
+  - uid: System.Runtime.Loader.AssemblyLoadContext.LoadFromStream(System.IO.Stream,System.IO.Stream)
+    name: LoadFromStream
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.runtime.loader.assemblyloadcontext.loadfromstream#system-runtime-loader-assemblyloadcontext-loadfromstream(system-io-stream-system-io-stream)
+  - name: (
+  - uid: System.IO.Stream
+    name: Stream
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.io.stream
+  - name: ','
+  - name: " "
+  - uid: System.IO.Stream
+    name: Stream
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.io.stream
+  - name: )
+- uid: System.Runtime.Loader.AssemblyLoadContext.LoadUnmanagedDll(System.String)
+  commentId: M:System.Runtime.Loader.AssemblyLoadContext.LoadUnmanagedDll(System.String)
+  parent: System.Runtime.Loader.AssemblyLoadContext
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.runtime.loader.assemblyloadcontext.loadunmanageddll
+  name: LoadUnmanagedDll(string)
+  nameWithType: AssemblyLoadContext.LoadUnmanagedDll(string)
+  fullName: System.Runtime.Loader.AssemblyLoadContext.LoadUnmanagedDll(string)
+  nameWithType.vb: AssemblyLoadContext.LoadUnmanagedDll(String)
+  fullName.vb: System.Runtime.Loader.AssemblyLoadContext.LoadUnmanagedDll(String)
+  name.vb: LoadUnmanagedDll(String)
+  spec.csharp:
+  - uid: System.Runtime.Loader.AssemblyLoadContext.LoadUnmanagedDll(System.String)
+    name: LoadUnmanagedDll
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.runtime.loader.assemblyloadcontext.loadunmanageddll
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: System.Runtime.Loader.AssemblyLoadContext.LoadUnmanagedDll(System.String)
+    name: LoadUnmanagedDll
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.runtime.loader.assemblyloadcontext.loadunmanageddll
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: System.Runtime.Loader.AssemblyLoadContext.LoadUnmanagedDllFromPath(System.String)
+  commentId: M:System.Runtime.Loader.AssemblyLoadContext.LoadUnmanagedDllFromPath(System.String)
+  parent: System.Runtime.Loader.AssemblyLoadContext
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.runtime.loader.assemblyloadcontext.loadunmanageddllfrompath
+  name: LoadUnmanagedDllFromPath(string)
+  nameWithType: AssemblyLoadContext.LoadUnmanagedDllFromPath(string)
+  fullName: System.Runtime.Loader.AssemblyLoadContext.LoadUnmanagedDllFromPath(string)
+  nameWithType.vb: AssemblyLoadContext.LoadUnmanagedDllFromPath(String)
+  fullName.vb: System.Runtime.Loader.AssemblyLoadContext.LoadUnmanagedDllFromPath(String)
+  name.vb: LoadUnmanagedDllFromPath(String)
+  spec.csharp:
+  - uid: System.Runtime.Loader.AssemblyLoadContext.LoadUnmanagedDllFromPath(System.String)
+    name: LoadUnmanagedDllFromPath
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.runtime.loader.assemblyloadcontext.loadunmanageddllfrompath
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: System.Runtime.Loader.AssemblyLoadContext.LoadUnmanagedDllFromPath(System.String)
+    name: LoadUnmanagedDllFromPath
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.runtime.loader.assemblyloadcontext.loadunmanageddllfrompath
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: System.Runtime.Loader.AssemblyLoadContext.SetProfileOptimizationRoot(System.String)
+  commentId: M:System.Runtime.Loader.AssemblyLoadContext.SetProfileOptimizationRoot(System.String)
+  parent: System.Runtime.Loader.AssemblyLoadContext
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.runtime.loader.assemblyloadcontext.setprofileoptimizationroot
+  name: SetProfileOptimizationRoot(string)
+  nameWithType: AssemblyLoadContext.SetProfileOptimizationRoot(string)
+  fullName: System.Runtime.Loader.AssemblyLoadContext.SetProfileOptimizationRoot(string)
+  nameWithType.vb: AssemblyLoadContext.SetProfileOptimizationRoot(String)
+  fullName.vb: System.Runtime.Loader.AssemblyLoadContext.SetProfileOptimizationRoot(String)
+  name.vb: SetProfileOptimizationRoot(String)
+  spec.csharp:
+  - uid: System.Runtime.Loader.AssemblyLoadContext.SetProfileOptimizationRoot(System.String)
+    name: SetProfileOptimizationRoot
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.runtime.loader.assemblyloadcontext.setprofileoptimizationroot
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: System.Runtime.Loader.AssemblyLoadContext.SetProfileOptimizationRoot(System.String)
+    name: SetProfileOptimizationRoot
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.runtime.loader.assemblyloadcontext.setprofileoptimizationroot
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: System.Runtime.Loader.AssemblyLoadContext.StartProfileOptimization(System.String)
+  commentId: M:System.Runtime.Loader.AssemblyLoadContext.StartProfileOptimization(System.String)
+  parent: System.Runtime.Loader.AssemblyLoadContext
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.runtime.loader.assemblyloadcontext.startprofileoptimization
+  name: StartProfileOptimization(string)
+  nameWithType: AssemblyLoadContext.StartProfileOptimization(string)
+  fullName: System.Runtime.Loader.AssemblyLoadContext.StartProfileOptimization(string)
+  nameWithType.vb: AssemblyLoadContext.StartProfileOptimization(String)
+  fullName.vb: System.Runtime.Loader.AssemblyLoadContext.StartProfileOptimization(String)
+  name.vb: StartProfileOptimization(String)
+  spec.csharp:
+  - uid: System.Runtime.Loader.AssemblyLoadContext.StartProfileOptimization(System.String)
+    name: StartProfileOptimization
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.runtime.loader.assemblyloadcontext.startprofileoptimization
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: System.Runtime.Loader.AssemblyLoadContext.StartProfileOptimization(System.String)
+    name: StartProfileOptimization
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.runtime.loader.assemblyloadcontext.startprofileoptimization
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: System.Runtime.Loader.AssemblyLoadContext.ToString
+  commentId: M:System.Runtime.Loader.AssemblyLoadContext.ToString
+  parent: System.Runtime.Loader.AssemblyLoadContext
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.runtime.loader.assemblyloadcontext.tostring
+  name: ToString()
+  nameWithType: AssemblyLoadContext.ToString()
+  fullName: System.Runtime.Loader.AssemblyLoadContext.ToString()
+  spec.csharp:
+  - uid: System.Runtime.Loader.AssemblyLoadContext.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.runtime.loader.assemblyloadcontext.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Runtime.Loader.AssemblyLoadContext.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.runtime.loader.assemblyloadcontext.tostring
+  - name: (
+  - name: )
+- uid: System.Runtime.Loader.AssemblyLoadContext.Unload
+  commentId: M:System.Runtime.Loader.AssemblyLoadContext.Unload
+  parent: System.Runtime.Loader.AssemblyLoadContext
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.runtime.loader.assemblyloadcontext.unload
+  name: Unload()
+  nameWithType: AssemblyLoadContext.Unload()
+  fullName: System.Runtime.Loader.AssemblyLoadContext.Unload()
+  spec.csharp:
+  - uid: System.Runtime.Loader.AssemblyLoadContext.Unload
+    name: Unload
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.runtime.loader.assemblyloadcontext.unload
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Runtime.Loader.AssemblyLoadContext.Unload
+    name: Unload
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.runtime.loader.assemblyloadcontext.unload
+  - name: (
+  - name: )
+- uid: System.Runtime.Loader.AssemblyLoadContext.All
+  commentId: P:System.Runtime.Loader.AssemblyLoadContext.All
+  parent: System.Runtime.Loader.AssemblyLoadContext
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.runtime.loader.assemblyloadcontext.all
+  name: All
+  nameWithType: AssemblyLoadContext.All
+  fullName: System.Runtime.Loader.AssemblyLoadContext.All
+- uid: System.Runtime.Loader.AssemblyLoadContext.Assemblies
+  commentId: P:System.Runtime.Loader.AssemblyLoadContext.Assemblies
+  parent: System.Runtime.Loader.AssemblyLoadContext
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.runtime.loader.assemblyloadcontext.assemblies
+  name: Assemblies
+  nameWithType: AssemblyLoadContext.Assemblies
+  fullName: System.Runtime.Loader.AssemblyLoadContext.Assemblies
+- uid: System.Runtime.Loader.AssemblyLoadContext.CurrentContextualReflectionContext
+  commentId: P:System.Runtime.Loader.AssemblyLoadContext.CurrentContextualReflectionContext
+  parent: System.Runtime.Loader.AssemblyLoadContext
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.runtime.loader.assemblyloadcontext.currentcontextualreflectioncontext
+  name: CurrentContextualReflectionContext
+  nameWithType: AssemblyLoadContext.CurrentContextualReflectionContext
+  fullName: System.Runtime.Loader.AssemblyLoadContext.CurrentContextualReflectionContext
+- uid: System.Runtime.Loader.AssemblyLoadContext.Default
+  commentId: P:System.Runtime.Loader.AssemblyLoadContext.Default
+  parent: System.Runtime.Loader.AssemblyLoadContext
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.runtime.loader.assemblyloadcontext.default
+  name: Default
+  nameWithType: AssemblyLoadContext.Default
+  fullName: System.Runtime.Loader.AssemblyLoadContext.Default
+- uid: System.Runtime.Loader.AssemblyLoadContext.IsCollectible
+  commentId: P:System.Runtime.Loader.AssemblyLoadContext.IsCollectible
+  parent: System.Runtime.Loader.AssemblyLoadContext
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.runtime.loader.assemblyloadcontext.iscollectible
+  name: IsCollectible
+  nameWithType: AssemblyLoadContext.IsCollectible
+  fullName: System.Runtime.Loader.AssemblyLoadContext.IsCollectible
+- uid: System.Runtime.Loader.AssemblyLoadContext.Name
+  commentId: P:System.Runtime.Loader.AssemblyLoadContext.Name
+  parent: System.Runtime.Loader.AssemblyLoadContext
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.runtime.loader.assemblyloadcontext.name
+  name: Name
+  nameWithType: AssemblyLoadContext.Name
+  fullName: System.Runtime.Loader.AssemblyLoadContext.Name
+- uid: System.Runtime.Loader.AssemblyLoadContext.Resolving
+  commentId: E:System.Runtime.Loader.AssemblyLoadContext.Resolving
+  parent: System.Runtime.Loader.AssemblyLoadContext
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.runtime.loader.assemblyloadcontext.resolving
+  name: Resolving
+  nameWithType: AssemblyLoadContext.Resolving
+  fullName: System.Runtime.Loader.AssemblyLoadContext.Resolving
+- uid: System.Runtime.Loader.AssemblyLoadContext.ResolvingUnmanagedDll
+  commentId: E:System.Runtime.Loader.AssemblyLoadContext.ResolvingUnmanagedDll
+  parent: System.Runtime.Loader.AssemblyLoadContext
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.runtime.loader.assemblyloadcontext.resolvingunmanageddll
+  name: ResolvingUnmanagedDll
+  nameWithType: AssemblyLoadContext.ResolvingUnmanagedDll
+  fullName: System.Runtime.Loader.AssemblyLoadContext.ResolvingUnmanagedDll
+- uid: System.Runtime.Loader.AssemblyLoadContext.Unloading
+  commentId: E:System.Runtime.Loader.AssemblyLoadContext.Unloading
+  parent: System.Runtime.Loader.AssemblyLoadContext
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.runtime.loader.assemblyloadcontext.unloading
+  name: Unloading
+  nameWithType: AssemblyLoadContext.Unloading
+  fullName: System.Runtime.Loader.AssemblyLoadContext.Unloading
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  parent: FoundationaLLM.Core.Utils.ObjectExtensions
+  definition: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: System.Runtime.Loader
+  commentId: N:System.Runtime.Loader
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Runtime.Loader
+  nameWithType: System.Runtime.Loader
+  fullName: System.Runtime.Loader
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Runtime
+    name: Runtime
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.runtime
+  - name: .
+  - uid: System.Runtime.Loader
+    name: Loader
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.runtime.loader
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Runtime
+    name: Runtime
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.runtime
+  - name: .
+  - uid: System.Runtime.Loader
+    name: Loader
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.runtime.loader
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  isExternal: true
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions
+  commentId: T:FoundationaLLM.Core.Utils.ObjectExtensions
+  parent: FoundationaLLM.Core.Utils
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html
+  name: ObjectExtensions
+  nameWithType: ObjectExtensions
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions
+- uid: FoundationaLLM.Core.Utils
+  commentId: N:FoundationaLLM.Core.Utils
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Core.Utils
+  nameWithType: FoundationaLLM.Core.Utils
+  fullName: FoundationaLLM.Core.Utils
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+- uid: FoundationaLLM.Plugin.ResourceProviders.PluginLoadContext.#ctor*
+  commentId: Overload:FoundationaLLM.Plugin.ResourceProviders.PluginLoadContext.#ctor
+  href: FoundationaLLM.Plugin.ResourceProviders.PluginLoadContext.html#FoundationaLLM_Plugin_ResourceProviders_PluginLoadContext__ctor_System_String_System_Boolean_System_Collections_Generic_Dictionary_System_String_System_Collections_Generic_Dictionary_System_String_System_String___Microsoft_Extensions_Logging_ILogger_FoundationaLLM_Plugin_ResourceProviders_PluginLoadContext__System_String_FoundationaLLM_Common_Interfaces_IStorageService_System_String_
+  name: PluginLoadContext
+  nameWithType: PluginLoadContext.PluginLoadContext
+  fullName: FoundationaLLM.Plugin.ResourceProviders.PluginLoadContext.PluginLoadContext
+  nameWithType.vb: PluginLoadContext.New
+  fullName.vb: FoundationaLLM.Plugin.ResourceProviders.PluginLoadContext.New
+  name.vb: New
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: System.Collections.Generic.Dictionary{System.String,System.Collections.Generic.Dictionary{System.String,System.String}}
+  commentId: T:System.Collections.Generic.Dictionary{System.String,System.Collections.Generic.Dictionary{System.String,System.String}}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.Dictionary`2
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  name: Dictionary<string, Dictionary<string, string>>
+  nameWithType: Dictionary<string, Dictionary<string, string>>
+  fullName: System.Collections.Generic.Dictionary<string, System.Collections.Generic.Dictionary<string, string>>
+  nameWithType.vb: Dictionary(Of String, Dictionary(Of String, String))
+  fullName.vb: System.Collections.Generic.Dictionary(Of String, System.Collections.Generic.Dictionary(Of String, String))
+  name.vb: Dictionary(Of String, Dictionary(Of String, String))
+  spec.csharp:
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Plugin.ResourceProviders.PluginLoadContext}
+  commentId: T:Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Plugin.ResourceProviders.PluginLoadContext}
+  parent: Microsoft.Extensions.Logging
+  definition: Microsoft.Extensions.Logging.ILogger`1
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  name: ILogger<PluginLoadContext>
+  nameWithType: ILogger<PluginLoadContext>
+  fullName: Microsoft.Extensions.Logging.ILogger<FoundationaLLM.Plugin.ResourceProviders.PluginLoadContext>
+  nameWithType.vb: ILogger(Of PluginLoadContext)
+  fullName.vb: Microsoft.Extensions.Logging.ILogger(Of FoundationaLLM.Plugin.ResourceProviders.PluginLoadContext)
+  name.vb: ILogger(Of PluginLoadContext)
+  spec.csharp:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: <
+  - uid: FoundationaLLM.Plugin.ResourceProviders.PluginLoadContext
+    name: PluginLoadContext
+    href: FoundationaLLM.Plugin.ResourceProviders.PluginLoadContext.html
+  - name: '>'
+  spec.vb:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FoundationaLLM.Plugin.ResourceProviders.PluginLoadContext
+    name: PluginLoadContext
+    href: FoundationaLLM.Plugin.ResourceProviders.PluginLoadContext.html
+  - name: )
+- uid: FoundationaLLM.Common.Interfaces.IStorageService
+  commentId: T:FoundationaLLM.Common.Interfaces.IStorageService
+  parent: FoundationaLLM.Common.Interfaces
+  href: FoundationaLLM.Common.Interfaces.IStorageService.html
+  name: IStorageService
+  nameWithType: IStorageService
+  fullName: FoundationaLLM.Common.Interfaces.IStorageService
+- uid: System.Collections.Generic.Dictionary`2
+  commentId: T:System.Collections.Generic.Dictionary`2
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  name: Dictionary<TKey, TValue>
+  nameWithType: Dictionary<TKey, TValue>
+  fullName: System.Collections.Generic.Dictionary<TKey, TValue>
+  nameWithType.vb: Dictionary(Of TKey, TValue)
+  fullName.vb: System.Collections.Generic.Dictionary(Of TKey, TValue)
+  name.vb: Dictionary(Of TKey, TValue)
+  spec.csharp:
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  - name: <
+  - name: TKey
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TKey
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: Microsoft.Extensions.Logging.ILogger`1
+  commentId: T:Microsoft.Extensions.Logging.ILogger`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  name: ILogger<TCategoryName>
+  nameWithType: ILogger<TCategoryName>
+  fullName: Microsoft.Extensions.Logging.ILogger<TCategoryName>
+  nameWithType.vb: ILogger(Of TCategoryName)
+  fullName.vb: Microsoft.Extensions.Logging.ILogger(Of TCategoryName)
+  name.vb: ILogger(Of TCategoryName)
+  spec.csharp:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: <
+  - name: TCategoryName
+  - name: '>'
+  spec.vb:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TCategoryName
+  - name: )
+- uid: Microsoft.Extensions.Logging
+  commentId: N:Microsoft.Extensions.Logging
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft
+  name: Microsoft.Extensions.Logging
+  nameWithType: Microsoft.Extensions.Logging
+  fullName: Microsoft.Extensions.Logging
+  spec.csharp:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Logging
+    name: Logging
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging
+  spec.vb:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Logging
+    name: Logging
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging
+- uid: FoundationaLLM.Common.Interfaces
+  commentId: N:FoundationaLLM.Common.Interfaces
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Interfaces
+  nameWithType: FoundationaLLM.Common.Interfaces
+  fullName: FoundationaLLM.Common.Interfaces
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Interfaces
+    name: Interfaces
+    href: FoundationaLLM.Common.Interfaces.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Interfaces
+    name: Interfaces
+    href: FoundationaLLM.Common.Interfaces.html

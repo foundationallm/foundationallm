@@ -1,0 +1,1296 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Common.Services.Azure.AzureResourceManagerService
+  commentId: T:FoundationaLLM.Common.Services.Azure.AzureResourceManagerService
+  id: AzureResourceManagerService
+  parent: FoundationaLLM.Common.Services.Azure
+  children:
+  - FoundationaLLM.Common.Services.Azure.AzureResourceManagerService.#ctor(Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Common.Services.Azure.AzureResourceManagerService})
+  - FoundationaLLM.Common.Services.Azure.AzureResourceManagerService.CreateEventGridNamespaceTopicSubscription(System.String,System.String,System.String,System.Collections.Generic.List{System.String},System.Threading.CancellationToken)
+  - FoundationaLLM.Common.Services.Azure.AzureResourceManagerService.DeleteEventGridNamespaceTopicSubscription(System.String,System.String,System.String,System.Threading.CancellationToken)
+  - FoundationaLLM.Common.Services.Azure.AzureResourceManagerService.GetOpenAIAccountProperties(System.String)
+  langs:
+  - csharp
+  - vb
+  name: AzureResourceManagerService
+  nameWithType: AzureResourceManagerService
+  fullName: FoundationaLLM.Common.Services.Azure.AzureResourceManagerService
+  type: Class
+  source:
+    remote:
+      path: src/dotnet/Common/Services/Azure/AzureResourceManagerService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: AzureResourceManagerService
+    path: ../src/dotnet/Common/Services/Azure/AzureResourceManagerService.cs
+    startLine: 19
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Services.Azure
+  summary: Provides services to interact with the Azure Resource Manager (ARM) infrastructure.
+  example: []
+  syntax:
+    content: 'public class AzureResourceManagerService : IAzureResourceManagerService'
+    content.vb: Public Class AzureResourceManagerService Implements IAzureResourceManagerService
+  inheritance:
+  - System.Object
+  implements:
+  - FoundationaLLM.Common.Interfaces.IAzureResourceManagerService
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+  extensionMethods:
+  - System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+- uid: FoundationaLLM.Common.Services.Azure.AzureResourceManagerService.#ctor(Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Common.Services.Azure.AzureResourceManagerService})
+  commentId: M:FoundationaLLM.Common.Services.Azure.AzureResourceManagerService.#ctor(Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Common.Services.Azure.AzureResourceManagerService})
+  id: '#ctor(Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Common.Services.Azure.AzureResourceManagerService})'
+  parent: FoundationaLLM.Common.Services.Azure.AzureResourceManagerService
+  langs:
+  - csharp
+  - vb
+  name: AzureResourceManagerService(ILogger<AzureResourceManagerService>)
+  nameWithType: AzureResourceManagerService.AzureResourceManagerService(ILogger<AzureResourceManagerService>)
+  fullName: FoundationaLLM.Common.Services.Azure.AzureResourceManagerService.AzureResourceManagerService(Microsoft.Extensions.Logging.ILogger<FoundationaLLM.Common.Services.Azure.AzureResourceManagerService>)
+  type: Constructor
+  source:
+    remote:
+      path: src/dotnet/Common/Services/Azure/AzureResourceManagerService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: .ctor
+    path: ../src/dotnet/Common/Services/Azure/AzureResourceManagerService.cs
+    startLine: 19
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Services.Azure
+  summary: Provides services to interact with the Azure Resource Manager (ARM) infrastructure.
+  example: []
+  syntax:
+    content: public AzureResourceManagerService(ILogger<AzureResourceManagerService> logger)
+    parameters:
+    - id: logger
+      type: Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Common.Services.Azure.AzureResourceManagerService}
+      description: The logger used for logging.
+    content.vb: Public Sub New(logger As ILogger(Of AzureResourceManagerService))
+  overload: FoundationaLLM.Common.Services.Azure.AzureResourceManagerService.#ctor*
+  nameWithType.vb: AzureResourceManagerService.New(ILogger(Of AzureResourceManagerService))
+  fullName.vb: FoundationaLLM.Common.Services.Azure.AzureResourceManagerService.New(Microsoft.Extensions.Logging.ILogger(Of FoundationaLLM.Common.Services.Azure.AzureResourceManagerService))
+  name.vb: New(ILogger(Of AzureResourceManagerService))
+- uid: FoundationaLLM.Common.Services.Azure.AzureResourceManagerService.CreateEventGridNamespaceTopicSubscription(System.String,System.String,System.String,System.Collections.Generic.List{System.String},System.Threading.CancellationToken)
+  commentId: M:FoundationaLLM.Common.Services.Azure.AzureResourceManagerService.CreateEventGridNamespaceTopicSubscription(System.String,System.String,System.String,System.Collections.Generic.List{System.String},System.Threading.CancellationToken)
+  id: CreateEventGridNamespaceTopicSubscription(System.String,System.String,System.String,System.Collections.Generic.List{System.String},System.Threading.CancellationToken)
+  parent: FoundationaLLM.Common.Services.Azure.AzureResourceManagerService
+  langs:
+  - csharp
+  - vb
+  name: CreateEventGridNamespaceTopicSubscription(string, string, string, List<string>, CancellationToken)
+  nameWithType: AzureResourceManagerService.CreateEventGridNamespaceTopicSubscription(string, string, string, List<string>, CancellationToken)
+  fullName: FoundationaLLM.Common.Services.Azure.AzureResourceManagerService.CreateEventGridNamespaceTopicSubscription(string, string, string, System.Collections.Generic.List<string>, System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Common/Services/Azure/AzureResourceManagerService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: CreateEventGridNamespaceTopicSubscription
+    path: ../src/dotnet/Common/Services/Azure/AzureResourceManagerService.cs
+    startLine: 26
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Services.Azure
+  summary: Creates a new Azure Event Grid namespace topic subscription.
+  example: []
+  syntax:
+    content: public Task<bool> CreateEventGridNamespaceTopicSubscription(string namespaceResourceId, string topicName, string topicSubscriptionName, List<string> includedEventTypes, CancellationToken cancellationToken)
+    parameters:
+    - id: namespaceResourceId
+      type: System.String
+      description: The Azure resource identifier of the Azure Event Grid namespace.
+    - id: topicName
+      type: System.String
+      description: The name of the topic for which the subscription should be created.
+    - id: topicSubscriptionName
+      type: System.String
+      description: The name of the subscription to be created.
+    - id: includedEventTypes
+      type: System.Collections.Generic.List{System.String}
+      description: The list of event types to include in the subscription as part of the filters configuration.
+    - id: cancellationToken
+      type: System.Threading.CancellationToken
+      description: The <xref href="System.Threading.CancellationToken" data-throw-if-not-resolved="false"></xref> signaling the request to cancel the operation.
+    return:
+      type: System.Threading.Tasks.Task{System.Boolean}
+      description: True if the subscription was successfully created, false otherwise.
+    content.vb: Public Function CreateEventGridNamespaceTopicSubscription(namespaceResourceId As String, topicName As String, topicSubscriptionName As String, includedEventTypes As List(Of String), cancellationToken As CancellationToken) As Task(Of Boolean)
+  overload: FoundationaLLM.Common.Services.Azure.AzureResourceManagerService.CreateEventGridNamespaceTopicSubscription*
+  implements:
+  - FoundationaLLM.Common.Interfaces.IAzureResourceManagerService.CreateEventGridNamespaceTopicSubscription(System.String,System.String,System.String,System.Collections.Generic.List{System.String},System.Threading.CancellationToken)
+  nameWithType.vb: AzureResourceManagerService.CreateEventGridNamespaceTopicSubscription(String, String, String, List(Of String), CancellationToken)
+  fullName.vb: FoundationaLLM.Common.Services.Azure.AzureResourceManagerService.CreateEventGridNamespaceTopicSubscription(String, String, String, System.Collections.Generic.List(Of String), System.Threading.CancellationToken)
+  name.vb: CreateEventGridNamespaceTopicSubscription(String, String, String, List(Of String), CancellationToken)
+- uid: FoundationaLLM.Common.Services.Azure.AzureResourceManagerService.DeleteEventGridNamespaceTopicSubscription(System.String,System.String,System.String,System.Threading.CancellationToken)
+  commentId: M:FoundationaLLM.Common.Services.Azure.AzureResourceManagerService.DeleteEventGridNamespaceTopicSubscription(System.String,System.String,System.String,System.Threading.CancellationToken)
+  id: DeleteEventGridNamespaceTopicSubscription(System.String,System.String,System.String,System.Threading.CancellationToken)
+  parent: FoundationaLLM.Common.Services.Azure.AzureResourceManagerService
+  langs:
+  - csharp
+  - vb
+  name: DeleteEventGridNamespaceTopicSubscription(string, string, string, CancellationToken)
+  nameWithType: AzureResourceManagerService.DeleteEventGridNamespaceTopicSubscription(string, string, string, CancellationToken)
+  fullName: FoundationaLLM.Common.Services.Azure.AzureResourceManagerService.DeleteEventGridNamespaceTopicSubscription(string, string, string, System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Common/Services/Azure/AzureResourceManagerService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: DeleteEventGridNamespaceTopicSubscription
+    path: ../src/dotnet/Common/Services/Azure/AzureResourceManagerService.cs
+    startLine: 78
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Services.Azure
+  summary: Deletes an Azure Event Grid namespace topic subscription.
+  example: []
+  syntax:
+    content: public Task DeleteEventGridNamespaceTopicSubscription(string namespaceResourceId, string topicName, string topicSubscriptionName, CancellationToken cancellationToken)
+    parameters:
+    - id: namespaceResourceId
+      type: System.String
+      description: The Azure resource identifier of the Azure Event Grid namespace.
+    - id: topicName
+      type: System.String
+      description: The name of the topic for which the subscription should be deleted.
+    - id: topicSubscriptionName
+      type: System.String
+      description: The name of the subscription to be deleted.
+    - id: cancellationToken
+      type: System.Threading.CancellationToken
+      description: The <xref href="System.Threading.CancellationToken" data-throw-if-not-resolved="false"></xref> signaling the request to cancel the operation.
+    return:
+      type: System.Threading.Tasks.Task
+      description: ''
+    content.vb: Public Function DeleteEventGridNamespaceTopicSubscription(namespaceResourceId As String, topicName As String, topicSubscriptionName As String, cancellationToken As CancellationToken) As Task
+  overload: FoundationaLLM.Common.Services.Azure.AzureResourceManagerService.DeleteEventGridNamespaceTopicSubscription*
+  implements:
+  - FoundationaLLM.Common.Interfaces.IAzureResourceManagerService.DeleteEventGridNamespaceTopicSubscription(System.String,System.String,System.String,System.Threading.CancellationToken)
+  nameWithType.vb: AzureResourceManagerService.DeleteEventGridNamespaceTopicSubscription(String, String, String, CancellationToken)
+  fullName.vb: FoundationaLLM.Common.Services.Azure.AzureResourceManagerService.DeleteEventGridNamespaceTopicSubscription(String, String, String, System.Threading.CancellationToken)
+  name.vb: DeleteEventGridNamespaceTopicSubscription(String, String, String, CancellationToken)
+- uid: FoundationaLLM.Common.Services.Azure.AzureResourceManagerService.GetOpenAIAccountProperties(System.String)
+  commentId: M:FoundationaLLM.Common.Services.Azure.AzureResourceManagerService.GetOpenAIAccountProperties(System.String)
+  id: GetOpenAIAccountProperties(System.String)
+  parent: FoundationaLLM.Common.Services.Azure.AzureResourceManagerService
+  langs:
+  - csharp
+  - vb
+  name: GetOpenAIAccountProperties(string)
+  nameWithType: AzureResourceManagerService.GetOpenAIAccountProperties(string)
+  fullName: FoundationaLLM.Common.Services.Azure.AzureResourceManagerService.GetOpenAIAccountProperties(string)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Common/Services/Azure/AzureResourceManagerService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: GetOpenAIAccountProperties
+    path: ../src/dotnet/Common/Services/Azure/AzureResourceManagerService.cs
+    startLine: 87
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Services.Azure
+  summary: Retrieves the properties of an Azure OpenAI account.
+  example: []
+  syntax:
+    content: public Task<AzureOpenAIAccount> GetOpenAIAccountProperties(string openAIAccountResourceId)
+    parameters:
+    - id: openAIAccountResourceId
+      type: System.String
+      description: The Azure resource identifier of the Azure OpenAI account.
+    return:
+      type: System.Threading.Tasks.Task{FoundationaLLM.Common.Models.Azure.AzureOpenAIAccount}
+      description: An <xref href="FoundationaLLM.Common.Models.Azure.AzureOpenAIAccount" data-throw-if-not-resolved="false"></xref> object with the properties of the account, including model deployments.
+    content.vb: Public Function GetOpenAIAccountProperties(openAIAccountResourceId As String) As Task(Of AzureOpenAIAccount)
+  overload: FoundationaLLM.Common.Services.Azure.AzureResourceManagerService.GetOpenAIAccountProperties*
+  implements:
+  - FoundationaLLM.Common.Interfaces.IAzureResourceManagerService.GetOpenAIAccountProperties(System.String)
+  nameWithType.vb: AzureResourceManagerService.GetOpenAIAccountProperties(String)
+  fullName.vb: FoundationaLLM.Common.Services.Azure.AzureResourceManagerService.GetOpenAIAccountProperties(String)
+  name.vb: GetOpenAIAccountProperties(String)
+references:
+- uid: FoundationaLLM.Common.Services.Azure
+  commentId: N:FoundationaLLM.Common.Services.Azure
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Services.Azure
+  nameWithType: FoundationaLLM.Common.Services.Azure
+  fullName: FoundationaLLM.Common.Services.Azure
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Services
+    name: Services
+    href: FoundationaLLM.Common.Services.html
+  - name: .
+  - uid: FoundationaLLM.Common.Services.Azure
+    name: Azure
+    href: FoundationaLLM.Common.Services.Azure.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Services
+    name: Services
+    href: FoundationaLLM.Common.Services.html
+  - name: .
+  - uid: FoundationaLLM.Common.Services.Azure
+    name: Azure
+    href: FoundationaLLM.Common.Services.Azure.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: FoundationaLLM.Common.Interfaces.IAzureResourceManagerService
+  commentId: T:FoundationaLLM.Common.Interfaces.IAzureResourceManagerService
+  parent: FoundationaLLM.Common.Interfaces
+  href: FoundationaLLM.Common.Interfaces.IAzureResourceManagerService.html
+  name: IAzureResourceManagerService
+  nameWithType: IAzureResourceManagerService
+  fullName: FoundationaLLM.Common.Interfaces.IAzureResourceManagerService
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  parent: FoundationaLLM.Core.Utils.ObjectExtensions
+  definition: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: FoundationaLLM.Common.Interfaces
+  commentId: N:FoundationaLLM.Common.Interfaces
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Interfaces
+  nameWithType: FoundationaLLM.Common.Interfaces
+  fullName: FoundationaLLM.Common.Interfaces
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Interfaces
+    name: Interfaces
+    href: FoundationaLLM.Common.Interfaces.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Interfaces
+    name: Interfaces
+    href: FoundationaLLM.Common.Interfaces.html
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  isExternal: true
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions
+  commentId: T:FoundationaLLM.Core.Utils.ObjectExtensions
+  parent: FoundationaLLM.Core.Utils
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html
+  name: ObjectExtensions
+  nameWithType: ObjectExtensions
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions
+- uid: FoundationaLLM.Core.Utils
+  commentId: N:FoundationaLLM.Core.Utils
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Core.Utils
+  nameWithType: FoundationaLLM.Core.Utils
+  fullName: FoundationaLLM.Core.Utils
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+- uid: FoundationaLLM.Common.Services.Azure.AzureResourceManagerService.#ctor*
+  commentId: Overload:FoundationaLLM.Common.Services.Azure.AzureResourceManagerService.#ctor
+  href: FoundationaLLM.Common.Services.Azure.AzureResourceManagerService.html#FoundationaLLM_Common_Services_Azure_AzureResourceManagerService__ctor_Microsoft_Extensions_Logging_ILogger_FoundationaLLM_Common_Services_Azure_AzureResourceManagerService__
+  name: AzureResourceManagerService
+  nameWithType: AzureResourceManagerService.AzureResourceManagerService
+  fullName: FoundationaLLM.Common.Services.Azure.AzureResourceManagerService.AzureResourceManagerService
+  nameWithType.vb: AzureResourceManagerService.New
+  fullName.vb: FoundationaLLM.Common.Services.Azure.AzureResourceManagerService.New
+  name.vb: New
+- uid: Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Common.Services.Azure.AzureResourceManagerService}
+  commentId: T:Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Common.Services.Azure.AzureResourceManagerService}
+  parent: Microsoft.Extensions.Logging
+  definition: Microsoft.Extensions.Logging.ILogger`1
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  name: ILogger<AzureResourceManagerService>
+  nameWithType: ILogger<AzureResourceManagerService>
+  fullName: Microsoft.Extensions.Logging.ILogger<FoundationaLLM.Common.Services.Azure.AzureResourceManagerService>
+  nameWithType.vb: ILogger(Of AzureResourceManagerService)
+  fullName.vb: Microsoft.Extensions.Logging.ILogger(Of FoundationaLLM.Common.Services.Azure.AzureResourceManagerService)
+  name.vb: ILogger(Of AzureResourceManagerService)
+  spec.csharp:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: <
+  - uid: FoundationaLLM.Common.Services.Azure.AzureResourceManagerService
+    name: AzureResourceManagerService
+    href: FoundationaLLM.Common.Services.Azure.AzureResourceManagerService.html
+  - name: '>'
+  spec.vb:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FoundationaLLM.Common.Services.Azure.AzureResourceManagerService
+    name: AzureResourceManagerService
+    href: FoundationaLLM.Common.Services.Azure.AzureResourceManagerService.html
+  - name: )
+- uid: Microsoft.Extensions.Logging.ILogger`1
+  commentId: T:Microsoft.Extensions.Logging.ILogger`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  name: ILogger<TCategoryName>
+  nameWithType: ILogger<TCategoryName>
+  fullName: Microsoft.Extensions.Logging.ILogger<TCategoryName>
+  nameWithType.vb: ILogger(Of TCategoryName)
+  fullName.vb: Microsoft.Extensions.Logging.ILogger(Of TCategoryName)
+  name.vb: ILogger(Of TCategoryName)
+  spec.csharp:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: <
+  - name: TCategoryName
+  - name: '>'
+  spec.vb:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TCategoryName
+  - name: )
+- uid: Microsoft.Extensions.Logging
+  commentId: N:Microsoft.Extensions.Logging
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft
+  name: Microsoft.Extensions.Logging
+  nameWithType: Microsoft.Extensions.Logging
+  fullName: Microsoft.Extensions.Logging
+  spec.csharp:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Logging
+    name: Logging
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging
+  spec.vb:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Logging
+    name: Logging
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging
+- uid: System.Threading.CancellationToken
+  commentId: T:System.Threading.CancellationToken
+  parent: System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  name: CancellationToken
+  nameWithType: CancellationToken
+  fullName: System.Threading.CancellationToken
+- uid: FoundationaLLM.Common.Services.Azure.AzureResourceManagerService.CreateEventGridNamespaceTopicSubscription*
+  commentId: Overload:FoundationaLLM.Common.Services.Azure.AzureResourceManagerService.CreateEventGridNamespaceTopicSubscription
+  href: FoundationaLLM.Common.Services.Azure.AzureResourceManagerService.html#FoundationaLLM_Common_Services_Azure_AzureResourceManagerService_CreateEventGridNamespaceTopicSubscription_System_String_System_String_System_String_System_Collections_Generic_List_System_String__System_Threading_CancellationToken_
+  name: CreateEventGridNamespaceTopicSubscription
+  nameWithType: AzureResourceManagerService.CreateEventGridNamespaceTopicSubscription
+  fullName: FoundationaLLM.Common.Services.Azure.AzureResourceManagerService.CreateEventGridNamespaceTopicSubscription
+- uid: FoundationaLLM.Common.Interfaces.IAzureResourceManagerService.CreateEventGridNamespaceTopicSubscription(System.String,System.String,System.String,System.Collections.Generic.List{System.String},System.Threading.CancellationToken)
+  commentId: M:FoundationaLLM.Common.Interfaces.IAzureResourceManagerService.CreateEventGridNamespaceTopicSubscription(System.String,System.String,System.String,System.Collections.Generic.List{System.String},System.Threading.CancellationToken)
+  parent: FoundationaLLM.Common.Interfaces.IAzureResourceManagerService
+  isExternal: true
+  href: FoundationaLLM.Common.Interfaces.IAzureResourceManagerService.html#FoundationaLLM_Common_Interfaces_IAzureResourceManagerService_CreateEventGridNamespaceTopicSubscription_System_String_System_String_System_String_System_Collections_Generic_List_System_String__System_Threading_CancellationToken_
+  name: CreateEventGridNamespaceTopicSubscription(string, string, string, List<string>, CancellationToken)
+  nameWithType: IAzureResourceManagerService.CreateEventGridNamespaceTopicSubscription(string, string, string, List<string>, CancellationToken)
+  fullName: FoundationaLLM.Common.Interfaces.IAzureResourceManagerService.CreateEventGridNamespaceTopicSubscription(string, string, string, System.Collections.Generic.List<string>, System.Threading.CancellationToken)
+  nameWithType.vb: IAzureResourceManagerService.CreateEventGridNamespaceTopicSubscription(String, String, String, List(Of String), CancellationToken)
+  fullName.vb: FoundationaLLM.Common.Interfaces.IAzureResourceManagerService.CreateEventGridNamespaceTopicSubscription(String, String, String, System.Collections.Generic.List(Of String), System.Threading.CancellationToken)
+  name.vb: CreateEventGridNamespaceTopicSubscription(String, String, String, List(Of String), CancellationToken)
+  spec.csharp:
+  - uid: FoundationaLLM.Common.Interfaces.IAzureResourceManagerService.CreateEventGridNamespaceTopicSubscription(System.String,System.String,System.String,System.Collections.Generic.List{System.String},System.Threading.CancellationToken)
+    name: CreateEventGridNamespaceTopicSubscription
+    href: FoundationaLLM.Common.Interfaces.IAzureResourceManagerService.html#FoundationaLLM_Common_Interfaces_IAzureResourceManagerService_CreateEventGridNamespaceTopicSubscription_System_String_System_String_System_String_System_Collections_Generic_List_System_String__System_Threading_CancellationToken_
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Common.Interfaces.IAzureResourceManagerService.CreateEventGridNamespaceTopicSubscription(System.String,System.String,System.String,System.Collections.Generic.List{System.String},System.Threading.CancellationToken)
+    name: CreateEventGridNamespaceTopicSubscription
+    href: FoundationaLLM.Common.Interfaces.IAzureResourceManagerService.html#FoundationaLLM_Common_Interfaces_IAzureResourceManagerService_CreateEventGridNamespaceTopicSubscription_System_String_System_String_System_String_System_Collections_Generic_List_System_String__System_Threading_CancellationToken_
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System.Collections.Generic.List{System.String}
+  commentId: T:System.Collections.Generic.List{System.String}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.List`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  name: List<string>
+  nameWithType: List<string>
+  fullName: System.Collections.Generic.List<string>
+  nameWithType.vb: List(Of String)
+  fullName.vb: System.Collections.Generic.List(Of String)
+  name.vb: List(Of String)
+  spec.csharp:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: System.Threading.Tasks.Task{System.Boolean}
+  commentId: T:System.Threading.Tasks.Task{System.Boolean}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<bool>
+  nameWithType: Task<bool>
+  fullName: System.Threading.Tasks.Task<bool>
+  nameWithType.vb: Task(Of Boolean)
+  fullName.vb: System.Threading.Tasks.Task(Of Boolean)
+  name.vb: Task(Of Boolean)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: System.Threading
+  commentId: N:System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading
+  nameWithType: System.Threading
+  fullName: System.Threading
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+- uid: System.Collections.Generic.List`1
+  commentId: T:System.Collections.Generic.List`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  name: List<T>
+  nameWithType: List<T>
+  fullName: System.Collections.Generic.List<T>
+  nameWithType.vb: List(Of T)
+  fullName.vb: System.Collections.Generic.List(Of T)
+  name.vb: List(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: FoundationaLLM.Common.Services.Azure.AzureResourceManagerService.DeleteEventGridNamespaceTopicSubscription*
+  commentId: Overload:FoundationaLLM.Common.Services.Azure.AzureResourceManagerService.DeleteEventGridNamespaceTopicSubscription
+  href: FoundationaLLM.Common.Services.Azure.AzureResourceManagerService.html#FoundationaLLM_Common_Services_Azure_AzureResourceManagerService_DeleteEventGridNamespaceTopicSubscription_System_String_System_String_System_String_System_Threading_CancellationToken_
+  name: DeleteEventGridNamespaceTopicSubscription
+  nameWithType: AzureResourceManagerService.DeleteEventGridNamespaceTopicSubscription
+  fullName: FoundationaLLM.Common.Services.Azure.AzureResourceManagerService.DeleteEventGridNamespaceTopicSubscription
+- uid: FoundationaLLM.Common.Interfaces.IAzureResourceManagerService.DeleteEventGridNamespaceTopicSubscription(System.String,System.String,System.String,System.Threading.CancellationToken)
+  commentId: M:FoundationaLLM.Common.Interfaces.IAzureResourceManagerService.DeleteEventGridNamespaceTopicSubscription(System.String,System.String,System.String,System.Threading.CancellationToken)
+  parent: FoundationaLLM.Common.Interfaces.IAzureResourceManagerService
+  isExternal: true
+  href: FoundationaLLM.Common.Interfaces.IAzureResourceManagerService.html#FoundationaLLM_Common_Interfaces_IAzureResourceManagerService_DeleteEventGridNamespaceTopicSubscription_System_String_System_String_System_String_System_Threading_CancellationToken_
+  name: DeleteEventGridNamespaceTopicSubscription(string, string, string, CancellationToken)
+  nameWithType: IAzureResourceManagerService.DeleteEventGridNamespaceTopicSubscription(string, string, string, CancellationToken)
+  fullName: FoundationaLLM.Common.Interfaces.IAzureResourceManagerService.DeleteEventGridNamespaceTopicSubscription(string, string, string, System.Threading.CancellationToken)
+  nameWithType.vb: IAzureResourceManagerService.DeleteEventGridNamespaceTopicSubscription(String, String, String, CancellationToken)
+  fullName.vb: FoundationaLLM.Common.Interfaces.IAzureResourceManagerService.DeleteEventGridNamespaceTopicSubscription(String, String, String, System.Threading.CancellationToken)
+  name.vb: DeleteEventGridNamespaceTopicSubscription(String, String, String, CancellationToken)
+  spec.csharp:
+  - uid: FoundationaLLM.Common.Interfaces.IAzureResourceManagerService.DeleteEventGridNamespaceTopicSubscription(System.String,System.String,System.String,System.Threading.CancellationToken)
+    name: DeleteEventGridNamespaceTopicSubscription
+    href: FoundationaLLM.Common.Interfaces.IAzureResourceManagerService.html#FoundationaLLM_Common_Interfaces_IAzureResourceManagerService_DeleteEventGridNamespaceTopicSubscription_System_String_System_String_System_String_System_Threading_CancellationToken_
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Common.Interfaces.IAzureResourceManagerService.DeleteEventGridNamespaceTopicSubscription(System.String,System.String,System.String,System.Threading.CancellationToken)
+    name: DeleteEventGridNamespaceTopicSubscription
+    href: FoundationaLLM.Common.Interfaces.IAzureResourceManagerService.html#FoundationaLLM_Common_Interfaces_IAzureResourceManagerService_DeleteEventGridNamespaceTopicSubscription_System_String_System_String_System_String_System_Threading_CancellationToken_
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: System.Threading.Tasks.Task
+  commentId: T:System.Threading.Tasks.Task
+  parent: System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  name: Task
+  nameWithType: Task
+  fullName: System.Threading.Tasks.Task
+- uid: FoundationaLLM.Common.Models.Azure.AzureOpenAIAccount
+  commentId: T:FoundationaLLM.Common.Models.Azure.AzureOpenAIAccount
+  href: FoundationaLLM.Common.Models.Azure.AzureOpenAIAccount.html
+  name: AzureOpenAIAccount
+  nameWithType: AzureOpenAIAccount
+  fullName: FoundationaLLM.Common.Models.Azure.AzureOpenAIAccount
+- uid: FoundationaLLM.Common.Services.Azure.AzureResourceManagerService.GetOpenAIAccountProperties*
+  commentId: Overload:FoundationaLLM.Common.Services.Azure.AzureResourceManagerService.GetOpenAIAccountProperties
+  href: FoundationaLLM.Common.Services.Azure.AzureResourceManagerService.html#FoundationaLLM_Common_Services_Azure_AzureResourceManagerService_GetOpenAIAccountProperties_System_String_
+  name: GetOpenAIAccountProperties
+  nameWithType: AzureResourceManagerService.GetOpenAIAccountProperties
+  fullName: FoundationaLLM.Common.Services.Azure.AzureResourceManagerService.GetOpenAIAccountProperties
+- uid: FoundationaLLM.Common.Interfaces.IAzureResourceManagerService.GetOpenAIAccountProperties(System.String)
+  commentId: M:FoundationaLLM.Common.Interfaces.IAzureResourceManagerService.GetOpenAIAccountProperties(System.String)
+  parent: FoundationaLLM.Common.Interfaces.IAzureResourceManagerService
+  isExternal: true
+  href: FoundationaLLM.Common.Interfaces.IAzureResourceManagerService.html#FoundationaLLM_Common_Interfaces_IAzureResourceManagerService_GetOpenAIAccountProperties_System_String_
+  name: GetOpenAIAccountProperties(string)
+  nameWithType: IAzureResourceManagerService.GetOpenAIAccountProperties(string)
+  fullName: FoundationaLLM.Common.Interfaces.IAzureResourceManagerService.GetOpenAIAccountProperties(string)
+  nameWithType.vb: IAzureResourceManagerService.GetOpenAIAccountProperties(String)
+  fullName.vb: FoundationaLLM.Common.Interfaces.IAzureResourceManagerService.GetOpenAIAccountProperties(String)
+  name.vb: GetOpenAIAccountProperties(String)
+  spec.csharp:
+  - uid: FoundationaLLM.Common.Interfaces.IAzureResourceManagerService.GetOpenAIAccountProperties(System.String)
+    name: GetOpenAIAccountProperties
+    href: FoundationaLLM.Common.Interfaces.IAzureResourceManagerService.html#FoundationaLLM_Common_Interfaces_IAzureResourceManagerService_GetOpenAIAccountProperties_System_String_
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Common.Interfaces.IAzureResourceManagerService.GetOpenAIAccountProperties(System.String)
+    name: GetOpenAIAccountProperties
+    href: FoundationaLLM.Common.Interfaces.IAzureResourceManagerService.html#FoundationaLLM_Common_Interfaces_IAzureResourceManagerService_GetOpenAIAccountProperties_System_String_
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: System.Threading.Tasks.Task{FoundationaLLM.Common.Models.Azure.AzureOpenAIAccount}
+  commentId: T:System.Threading.Tasks.Task{FoundationaLLM.Common.Models.Azure.AzureOpenAIAccount}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<AzureOpenAIAccount>
+  nameWithType: Task<AzureOpenAIAccount>
+  fullName: System.Threading.Tasks.Task<FoundationaLLM.Common.Models.Azure.AzureOpenAIAccount>
+  nameWithType.vb: Task(Of AzureOpenAIAccount)
+  fullName.vb: System.Threading.Tasks.Task(Of FoundationaLLM.Common.Models.Azure.AzureOpenAIAccount)
+  name.vb: Task(Of AzureOpenAIAccount)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: FoundationaLLM.Common.Models.Azure.AzureOpenAIAccount
+    name: AzureOpenAIAccount
+    href: FoundationaLLM.Common.Models.Azure.AzureOpenAIAccount.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FoundationaLLM.Common.Models.Azure.AzureOpenAIAccount
+    name: AzureOpenAIAccount
+    href: FoundationaLLM.Common.Models.Azure.AzureOpenAIAccount.html
+  - name: )

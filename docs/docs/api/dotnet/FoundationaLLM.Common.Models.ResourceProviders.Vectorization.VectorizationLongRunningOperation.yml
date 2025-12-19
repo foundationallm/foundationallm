@@ -1,0 +1,815 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationLongRunningOperation
+  commentId: T:FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationLongRunningOperation
+  id: VectorizationLongRunningOperation
+  parent: FoundationaLLM.Common.Models.ResourceProviders.Vectorization
+  children:
+  - FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationLongRunningOperation.Complete
+  - FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationLongRunningOperation.FirstResponseTime
+  - FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationLongRunningOperation.LastResponseTime
+  - FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationLongRunningOperation.OperationId
+  - FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationLongRunningOperation.PollingCount
+  langs:
+  - csharp
+  - vb
+  name: VectorizationLongRunningOperation
+  nameWithType: VectorizationLongRunningOperation
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationLongRunningOperation
+  type: Class
+  source:
+    remote:
+      path: src/dotnet/Common/Models/ResourceProviders/Vectorization/VectorizationLongRunningOperation.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: VectorizationLongRunningOperation
+    path: ../src/dotnet/Common/Models/ResourceProviders/Vectorization/VectorizationLongRunningOperation.cs
+    startLine: 7
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.ResourceProviders.Vectorization
+  summary: Provides the details of a long-running vectorization operation.
+  example: []
+  syntax:
+    content: public class VectorizationLongRunningOperation
+    content.vb: Public Class VectorizationLongRunningOperation
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+  extensionMethods:
+  - System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationLongRunningOperation.OperationId
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationLongRunningOperation.OperationId
+  id: OperationId
+  parent: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationLongRunningOperation
+  langs:
+  - csharp
+  - vb
+  name: OperationId
+  nameWithType: VectorizationLongRunningOperation.OperationId
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationLongRunningOperation.OperationId
+  type: Property
+  source:
+    remote:
+      path: src/dotnet/Common/Models/ResourceProviders/Vectorization/VectorizationLongRunningOperation.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: OperationId
+    path: ../src/dotnet/Common/Models/ResourceProviders/Vectorization/VectorizationLongRunningOperation.cs
+    startLine: 12
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.ResourceProviders.Vectorization
+  summary: The unique identifier of the long-running operation.
+  example: []
+  syntax:
+    content: >-
+      [JsonPropertyOrder(-5)]
+
+      [JsonPropertyName("operation_id")]
+
+      public required string OperationId { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: >-
+      <JsonPropertyOrder(-5)>
+
+      <JsonPropertyName("operation_id")>
+
+      Public Property OperationId As String
+  overload: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationLongRunningOperation.OperationId*
+  attributes:
+  - type: System.Text.Json.Serialization.JsonPropertyOrderAttribute
+    ctor: System.Text.Json.Serialization.JsonPropertyOrderAttribute.#ctor(System.Int32)
+    arguments:
+    - type: System.Int32
+      value: -5
+  - type: System.Text.Json.Serialization.JsonPropertyNameAttribute
+    ctor: System.Text.Json.Serialization.JsonPropertyNameAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: operation_id
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationLongRunningOperation.FirstResponseTime
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationLongRunningOperation.FirstResponseTime
+  id: FirstResponseTime
+  parent: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationLongRunningOperation
+  langs:
+  - csharp
+  - vb
+  name: FirstResponseTime
+  nameWithType: VectorizationLongRunningOperation.FirstResponseTime
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationLongRunningOperation.FirstResponseTime
+  type: Property
+  source:
+    remote:
+      path: src/dotnet/Common/Models/ResourceProviders/Vectorization/VectorizationLongRunningOperation.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: FirstResponseTime
+    path: ../src/dotnet/Common/Models/ResourceProviders/Vectorization/VectorizationLongRunningOperation.cs
+    startLine: 19
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.ResourceProviders.Vectorization
+  summary: The first time we learned about the operation being run.
+  example: []
+  syntax:
+    content: >-
+      [JsonPropertyOrder(5)]
+
+      [JsonPropertyName("first_response_time")]
+
+      public DateTime FirstResponseTime { get; set; }
+    parameters: []
+    return:
+      type: System.DateTime
+    content.vb: >-
+      <JsonPropertyOrder(5)>
+
+      <JsonPropertyName("first_response_time")>
+
+      Public Property FirstResponseTime As Date
+  overload: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationLongRunningOperation.FirstResponseTime*
+  attributes:
+  - type: System.Text.Json.Serialization.JsonPropertyOrderAttribute
+    ctor: System.Text.Json.Serialization.JsonPropertyOrderAttribute.#ctor(System.Int32)
+    arguments:
+    - type: System.Int32
+      value: 5
+  - type: System.Text.Json.Serialization.JsonPropertyNameAttribute
+    ctor: System.Text.Json.Serialization.JsonPropertyNameAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: first_response_time
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationLongRunningOperation.LastResponseTime
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationLongRunningOperation.LastResponseTime
+  id: LastResponseTime
+  parent: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationLongRunningOperation
+  langs:
+  - csharp
+  - vb
+  name: LastResponseTime
+  nameWithType: VectorizationLongRunningOperation.LastResponseTime
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationLongRunningOperation.LastResponseTime
+  type: Property
+  source:
+    remote:
+      path: src/dotnet/Common/Models/ResourceProviders/Vectorization/VectorizationLongRunningOperation.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: LastResponseTime
+    path: ../src/dotnet/Common/Models/ResourceProviders/Vectorization/VectorizationLongRunningOperation.cs
+    startLine: 26
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.ResourceProviders.Vectorization
+  summary: The last time we learned about the operation being run.
+  example: []
+  syntax:
+    content: >-
+      [JsonPropertyOrder(6)]
+
+      [JsonPropertyName("last_response_time")]
+
+      public DateTime LastResponseTime { get; set; }
+    parameters: []
+    return:
+      type: System.DateTime
+    content.vb: >-
+      <JsonPropertyOrder(6)>
+
+      <JsonPropertyName("last_response_time")>
+
+      Public Property LastResponseTime As Date
+  overload: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationLongRunningOperation.LastResponseTime*
+  attributes:
+  - type: System.Text.Json.Serialization.JsonPropertyOrderAttribute
+    ctor: System.Text.Json.Serialization.JsonPropertyOrderAttribute.#ctor(System.Int32)
+    arguments:
+    - type: System.Int32
+      value: 6
+  - type: System.Text.Json.Serialization.JsonPropertyNameAttribute
+    ctor: System.Text.Json.Serialization.JsonPropertyNameAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: last_response_time
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationLongRunningOperation.Complete
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationLongRunningOperation.Complete
+  id: Complete
+  parent: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationLongRunningOperation
+  langs:
+  - csharp
+  - vb
+  name: Complete
+  nameWithType: VectorizationLongRunningOperation.Complete
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationLongRunningOperation.Complete
+  type: Property
+  source:
+    remote:
+      path: src/dotnet/Common/Models/ResourceProviders/Vectorization/VectorizationLongRunningOperation.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: Complete
+    path: ../src/dotnet/Common/Models/ResourceProviders/Vectorization/VectorizationLongRunningOperation.cs
+    startLine: 33
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.ResourceProviders.Vectorization
+  summary: Indicates whether the operation is complete or not.
+  example: []
+  syntax:
+    content: >-
+      [JsonPropertyOrder(10)]
+
+      [JsonPropertyName("complete")]
+
+      public bool Complete { get; set; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: >-
+      <JsonPropertyOrder(10)>
+
+      <JsonPropertyName("complete")>
+
+      Public Property Complete As Boolean
+  overload: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationLongRunningOperation.Complete*
+  attributes:
+  - type: System.Text.Json.Serialization.JsonPropertyOrderAttribute
+    ctor: System.Text.Json.Serialization.JsonPropertyOrderAttribute.#ctor(System.Int32)
+    arguments:
+    - type: System.Int32
+      value: 10
+  - type: System.Text.Json.Serialization.JsonPropertyNameAttribute
+    ctor: System.Text.Json.Serialization.JsonPropertyNameAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: complete
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationLongRunningOperation.PollingCount
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationLongRunningOperation.PollingCount
+  id: PollingCount
+  parent: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationLongRunningOperation
+  langs:
+  - csharp
+  - vb
+  name: PollingCount
+  nameWithType: VectorizationLongRunningOperation.PollingCount
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationLongRunningOperation.PollingCount
+  type: Property
+  source:
+    remote:
+      path: src/dotnet/Common/Models/ResourceProviders/Vectorization/VectorizationLongRunningOperation.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: PollingCount
+    path: ../src/dotnet/Common/Models/ResourceProviders/Vectorization/VectorizationLongRunningOperation.cs
+    startLine: 40
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.ResourceProviders.Vectorization
+  summary: The number of times an attempt was made to retrieve the result.
+  example: []
+  syntax:
+    content: >-
+      [JsonPropertyOrder(15)]
+
+      [JsonPropertyName("polling_count")]
+
+      public int PollingCount { get; set; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: >-
+      <JsonPropertyOrder(15)>
+
+      <JsonPropertyName("polling_count")>
+
+      Public Property PollingCount As Integer
+  overload: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationLongRunningOperation.PollingCount*
+  attributes:
+  - type: System.Text.Json.Serialization.JsonPropertyOrderAttribute
+    ctor: System.Text.Json.Serialization.JsonPropertyOrderAttribute.#ctor(System.Int32)
+    arguments:
+    - type: System.Int32
+      value: 15
+  - type: System.Text.Json.Serialization.JsonPropertyNameAttribute
+    ctor: System.Text.Json.Serialization.JsonPropertyNameAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: polling_count
+references:
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Vectorization
+  commentId: N:FoundationaLLM.Common.Models.ResourceProviders.Vectorization
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.ResourceProviders.Vectorization
+  nameWithType: FoundationaLLM.Common.Models.ResourceProviders.Vectorization
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Vectorization
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders
+    name: ResourceProviders
+    href: FoundationaLLM.Common.Models.ResourceProviders.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.Vectorization
+    name: Vectorization
+    href: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders
+    name: ResourceProviders
+    href: FoundationaLLM.Common.Models.ResourceProviders.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.Vectorization
+    name: Vectorization
+    href: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  parent: FoundationaLLM.Core.Utils.ObjectExtensions
+  definition: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  isExternal: true
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions
+  commentId: T:FoundationaLLM.Core.Utils.ObjectExtensions
+  parent: FoundationaLLM.Core.Utils
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html
+  name: ObjectExtensions
+  nameWithType: ObjectExtensions
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions
+- uid: FoundationaLLM.Core.Utils
+  commentId: N:FoundationaLLM.Core.Utils
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Core.Utils
+  nameWithType: FoundationaLLM.Core.Utils
+  fullName: FoundationaLLM.Core.Utils
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationLongRunningOperation.OperationId*
+  commentId: Overload:FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationLongRunningOperation.OperationId
+  href: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationLongRunningOperation.html#FoundationaLLM_Common_Models_ResourceProviders_Vectorization_VectorizationLongRunningOperation_OperationId
+  name: OperationId
+  nameWithType: VectorizationLongRunningOperation.OperationId
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationLongRunningOperation.OperationId
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationLongRunningOperation.FirstResponseTime*
+  commentId: Overload:FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationLongRunningOperation.FirstResponseTime
+  href: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationLongRunningOperation.html#FoundationaLLM_Common_Models_ResourceProviders_Vectorization_VectorizationLongRunningOperation_FirstResponseTime
+  name: FirstResponseTime
+  nameWithType: VectorizationLongRunningOperation.FirstResponseTime
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationLongRunningOperation.FirstResponseTime
+- uid: System.DateTime
+  commentId: T:System.DateTime
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.datetime
+  name: DateTime
+  nameWithType: DateTime
+  fullName: System.DateTime
+  nameWithType.vb: Date
+  fullName.vb: Date
+  name.vb: Date
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationLongRunningOperation.LastResponseTime*
+  commentId: Overload:FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationLongRunningOperation.LastResponseTime
+  href: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationLongRunningOperation.html#FoundationaLLM_Common_Models_ResourceProviders_Vectorization_VectorizationLongRunningOperation_LastResponseTime
+  name: LastResponseTime
+  nameWithType: VectorizationLongRunningOperation.LastResponseTime
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationLongRunningOperation.LastResponseTime
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationLongRunningOperation.Complete*
+  commentId: Overload:FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationLongRunningOperation.Complete
+  href: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationLongRunningOperation.html#FoundationaLLM_Common_Models_ResourceProviders_Vectorization_VectorizationLongRunningOperation_Complete
+  name: Complete
+  nameWithType: VectorizationLongRunningOperation.Complete
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationLongRunningOperation.Complete
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationLongRunningOperation.PollingCount*
+  commentId: Overload:FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationLongRunningOperation.PollingCount
+  href: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationLongRunningOperation.html#FoundationaLLM_Common_Models_ResourceProviders_Vectorization_VectorizationLongRunningOperation_PollingCount
+  name: PollingCount
+  nameWithType: VectorizationLongRunningOperation.PollingCount
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Vectorization.VectorizationLongRunningOperation.PollingCount
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer

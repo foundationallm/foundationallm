@@ -1,0 +1,1431 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext
+  commentId: T:FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext
+  id: LongRunningOperationContext
+  parent: FoundationaLLM.Common.Models.Orchestration
+  children:
+  - FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.AgentMessageId
+  - FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.AgentName
+  - FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.AgentWorkflowMainAIModelAPIEndpoint
+  - FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.CompletionPromptId
+  - FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.GatekeeperOptions
+  - FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.GatekeeperOverride
+  - FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.InstanceId
+  - FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.OperationId
+  - FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.Orchestrator
+  - FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.SemanticCacheSettings
+  - FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.SessionId
+  - FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.StartTime
+  - FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.StatusUpdateIteration
+  - FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.TTL
+  - FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.UPN
+  - FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.UserMessageId
+  langs:
+  - csharp
+  - vb
+  name: LongRunningOperationContext
+  nameWithType: LongRunningOperationContext
+  fullName: FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext
+  type: Class
+  source:
+    remote:
+      path: src/dotnet/Common/Models/Orchestration/LongRunningOperationContext.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: LongRunningOperationContext
+    path: ../src/dotnet/Common/Models/Orchestration/LongRunningOperationContext.cs
+    startLine: 10
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.Orchestration
+  summary: Provides a context for long-running operations.
+  example: []
+  syntax:
+    content: public class LongRunningOperationContext
+    content.vb: Public Class LongRunningOperationContext
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+  extensionMethods:
+  - System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+- uid: FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.InstanceId
+  commentId: P:FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.InstanceId
+  id: InstanceId
+  parent: FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext
+  langs:
+  - csharp
+  - vb
+  name: InstanceId
+  nameWithType: LongRunningOperationContext.InstanceId
+  fullName: FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.InstanceId
+  type: Property
+  source:
+    remote:
+      path: src/dotnet/Common/Models/Orchestration/LongRunningOperationContext.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: InstanceId
+    path: ../src/dotnet/Common/Models/Orchestration/LongRunningOperationContext.cs
+    startLine: 15
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.Orchestration
+  summary: Gets or sets the FoundationaLLM instance identifier.
+  example: []
+  syntax:
+    content: >-
+      [JsonProperty("instanceId")]
+
+      public required string InstanceId { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: >-
+      <JsonProperty("instanceId")>
+
+      Public Property InstanceId As String
+  overload: FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.InstanceId*
+  attributes:
+  - type: Newtonsoft.Json.JsonPropertyAttribute
+    ctor: Newtonsoft.Json.JsonPropertyAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: instanceId
+- uid: FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.OperationId
+  commentId: P:FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.OperationId
+  id: OperationId
+  parent: FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext
+  langs:
+  - csharp
+  - vb
+  name: OperationId
+  nameWithType: LongRunningOperationContext.OperationId
+  fullName: FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.OperationId
+  type: Property
+  source:
+    remote:
+      path: src/dotnet/Common/Models/Orchestration/LongRunningOperationContext.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: OperationId
+    path: ../src/dotnet/Common/Models/Orchestration/LongRunningOperationContext.cs
+    startLine: 21
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.Orchestration
+  summary: Gets or sets the identifier of the long-running operation.
+  example: []
+  syntax:
+    content: >-
+      [JsonProperty("id")]
+
+      public required string OperationId { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: >-
+      <JsonProperty("id")>
+
+      Public Property OperationId As String
+  overload: FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.OperationId*
+  attributes:
+  - type: Newtonsoft.Json.JsonPropertyAttribute
+    ctor: Newtonsoft.Json.JsonPropertyAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: id
+- uid: FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.AgentName
+  commentId: P:FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.AgentName
+  id: AgentName
+  parent: FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext
+  langs:
+  - csharp
+  - vb
+  name: AgentName
+  nameWithType: LongRunningOperationContext.AgentName
+  fullName: FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.AgentName
+  type: Property
+  source:
+    remote:
+      path: src/dotnet/Common/Models/Orchestration/LongRunningOperationContext.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: AgentName
+    path: ../src/dotnet/Common/Models/Orchestration/LongRunningOperationContext.cs
+    startLine: 27
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.Orchestration
+  summary: Gets or sets the name of the agent that runs the long-running operation.
+  example: []
+  syntax:
+    content: >-
+      [JsonProperty("agentName")]
+
+      public required string AgentName { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: >-
+      <JsonProperty("agentName")>
+
+      Public Property AgentName As String
+  overload: FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.AgentName*
+  attributes:
+  - type: Newtonsoft.Json.JsonPropertyAttribute
+    ctor: Newtonsoft.Json.JsonPropertyAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: agentName
+- uid: FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.AgentWorkflowMainAIModelAPIEndpoint
+  commentId: P:FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.AgentWorkflowMainAIModelAPIEndpoint
+  id: AgentWorkflowMainAIModelAPIEndpoint
+  parent: FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext
+  langs:
+  - csharp
+  - vb
+  name: AgentWorkflowMainAIModelAPIEndpoint
+  nameWithType: LongRunningOperationContext.AgentWorkflowMainAIModelAPIEndpoint
+  fullName: FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.AgentWorkflowMainAIModelAPIEndpoint
+  type: Property
+  source:
+    remote:
+      path: src/dotnet/Common/Models/Orchestration/LongRunningOperationContext.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: AgentWorkflowMainAIModelAPIEndpoint
+    path: ../src/dotnet/Common/Models/Orchestration/LongRunningOperationContext.cs
+    startLine: 33
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.Orchestration
+  summary: The API endpoint URL of the main AI model used by the agent workflow.
+  example: []
+  syntax:
+    content: >-
+      [JsonProperty("agentWorkflowMainAIModelAPIEndpoint")]
+
+      public string? AgentWorkflowMainAIModelAPIEndpoint { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: >-
+      <JsonProperty("agentWorkflowMainAIModelAPIEndpoint")>
+
+      Public Property AgentWorkflowMainAIModelAPIEndpoint As String
+  overload: FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.AgentWorkflowMainAIModelAPIEndpoint*
+  attributes:
+  - type: Newtonsoft.Json.JsonPropertyAttribute
+    ctor: Newtonsoft.Json.JsonPropertyAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: agentWorkflowMainAIModelAPIEndpoint
+- uid: FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.SessionId
+  commentId: P:FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.SessionId
+  id: SessionId
+  parent: FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext
+  langs:
+  - csharp
+  - vb
+  name: SessionId
+  nameWithType: LongRunningOperationContext.SessionId
+  fullName: FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.SessionId
+  type: Property
+  source:
+    remote:
+      path: src/dotnet/Common/Models/Orchestration/LongRunningOperationContext.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: SessionId
+    path: ../src/dotnet/Common/Models/Orchestration/LongRunningOperationContext.cs
+    startLine: 39
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.Orchestration
+  summary: Gets or sets the identifier of the session in which the long-running operation runs.
+  example: []
+  syntax:
+    content: >-
+      [JsonProperty("sessionId")]
+
+      public required string SessionId { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: >-
+      <JsonProperty("sessionId")>
+
+      Public Property SessionId As String
+  overload: FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.SessionId*
+  attributes:
+  - type: Newtonsoft.Json.JsonPropertyAttribute
+    ctor: Newtonsoft.Json.JsonPropertyAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: sessionId
+- uid: FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.UPN
+  commentId: P:FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.UPN
+  id: UPN
+  parent: FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext
+  langs:
+  - csharp
+  - vb
+  name: UPN
+  nameWithType: LongRunningOperationContext.UPN
+  fullName: FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.UPN
+  type: Property
+  source:
+    remote:
+      path: src/dotnet/Common/Models/Orchestration/LongRunningOperationContext.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: UPN
+    path: ../src/dotnet/Common/Models/Orchestration/LongRunningOperationContext.cs
+    startLine: 45
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.Orchestration
+  summary: Gets or sets the User Principal Name (UPN) of the user who triggered the long-running operation.
+  example: []
+  syntax:
+    content: >-
+      [JsonProperty("upn")]
+
+      public required string UPN { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: >-
+      <JsonProperty("upn")>
+
+      Public Property UPN As String
+  overload: FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.UPN*
+  attributes:
+  - type: Newtonsoft.Json.JsonPropertyAttribute
+    ctor: Newtonsoft.Json.JsonPropertyAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: upn
+- uid: FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.UserMessageId
+  commentId: P:FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.UserMessageId
+  id: UserMessageId
+  parent: FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext
+  langs:
+  - csharp
+  - vb
+  name: UserMessageId
+  nameWithType: LongRunningOperationContext.UserMessageId
+  fullName: FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.UserMessageId
+  type: Property
+  source:
+    remote:
+      path: src/dotnet/Common/Models/Orchestration/LongRunningOperationContext.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: UserMessageId
+    path: ../src/dotnet/Common/Models/Orchestration/LongRunningOperationContext.cs
+    startLine: 51
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.Orchestration
+  summary: Gets or sets the identifier of the user message that triggered the long-running operation.
+  example: []
+  syntax:
+    content: >-
+      [JsonProperty("userMessageId")]
+
+      public required string UserMessageId { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: >-
+      <JsonProperty("userMessageId")>
+
+      Public Property UserMessageId As String
+  overload: FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.UserMessageId*
+  attributes:
+  - type: Newtonsoft.Json.JsonPropertyAttribute
+    ctor: Newtonsoft.Json.JsonPropertyAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: userMessageId
+- uid: FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.AgentMessageId
+  commentId: P:FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.AgentMessageId
+  id: AgentMessageId
+  parent: FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext
+  langs:
+  - csharp
+  - vb
+  name: AgentMessageId
+  nameWithType: LongRunningOperationContext.AgentMessageId
+  fullName: FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.AgentMessageId
+  type: Property
+  source:
+    remote:
+      path: src/dotnet/Common/Models/Orchestration/LongRunningOperationContext.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: AgentMessageId
+    path: ../src/dotnet/Common/Models/Orchestration/LongRunningOperationContext.cs
+    startLine: 57
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.Orchestration
+  summary: Gets or sets the identifier of the agent response message sent to the user during the long-running operation.
+  example: []
+  syntax:
+    content: >-
+      [JsonProperty("agentMessageId")]
+
+      public required string AgentMessageId { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: >-
+      <JsonProperty("agentMessageId")>
+
+      Public Property AgentMessageId As String
+  overload: FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.AgentMessageId*
+  attributes:
+  - type: Newtonsoft.Json.JsonPropertyAttribute
+    ctor: Newtonsoft.Json.JsonPropertyAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: agentMessageId
+- uid: FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.CompletionPromptId
+  commentId: P:FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.CompletionPromptId
+  id: CompletionPromptId
+  parent: FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext
+  langs:
+  - csharp
+  - vb
+  name: CompletionPromptId
+  nameWithType: LongRunningOperationContext.CompletionPromptId
+  fullName: FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.CompletionPromptId
+  type: Property
+  source:
+    remote:
+      path: src/dotnet/Common/Models/Orchestration/LongRunningOperationContext.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: CompletionPromptId
+    path: ../src/dotnet/Common/Models/Orchestration/LongRunningOperationContext.cs
+    startLine: 63
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.Orchestration
+  summary: Gets or sets the identifier of the completion prompt used in the long-running operation.
+  example: []
+  syntax:
+    content: >-
+      [JsonProperty("completionPromptId")]
+
+      public required string CompletionPromptId { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: >-
+      <JsonProperty("completionPromptId")>
+
+      Public Property CompletionPromptId As String
+  overload: FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.CompletionPromptId*
+  attributes:
+  - type: Newtonsoft.Json.JsonPropertyAttribute
+    ctor: Newtonsoft.Json.JsonPropertyAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: completionPromptId
+- uid: FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.GatekeeperOverride
+  commentId: P:FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.GatekeeperOverride
+  id: GatekeeperOverride
+  parent: FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext
+  langs:
+  - csharp
+  - vb
+  name: GatekeeperOverride
+  nameWithType: LongRunningOperationContext.GatekeeperOverride
+  fullName: FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.GatekeeperOverride
+  type: Property
+  source:
+    remote:
+      path: src/dotnet/Common/Models/Orchestration/LongRunningOperationContext.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: GatekeeperOverride
+    path: ../src/dotnet/Common/Models/Orchestration/LongRunningOperationContext.cs
+    startLine: 69
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.Orchestration
+  summary: Gets or sets the Gatekeeper override option.
+  example: []
+  syntax:
+    content: >-
+      [JsonProperty("gatekeeperOverride")]
+
+      [JsonConverter(typeof(StringEnumConverter))]
+
+      public AgentGatekeeperOverrideOption GatekeeperOverride { get; set; }
+    parameters: []
+    return:
+      type: FoundationaLLM.Common.Models.Conversation.AgentGatekeeperOverrideOption
+    content.vb: >-
+      <JsonProperty("gatekeeperOverride")>
+
+      <JsonConverter(GetType(StringEnumConverter))>
+
+      Public Property GatekeeperOverride As AgentGatekeeperOverrideOption
+  overload: FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.GatekeeperOverride*
+  attributes:
+  - type: Newtonsoft.Json.JsonPropertyAttribute
+    ctor: Newtonsoft.Json.JsonPropertyAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: gatekeeperOverride
+  - type: Newtonsoft.Json.JsonConverterAttribute
+    ctor: Newtonsoft.Json.JsonConverterAttribute.#ctor(System.Type)
+    arguments:
+    - type: System.Type
+      value: Newtonsoft.Json.Converters.StringEnumConverter
+- uid: FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.GatekeeperOptions
+  commentId: P:FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.GatekeeperOptions
+  id: GatekeeperOptions
+  parent: FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext
+  langs:
+  - csharp
+  - vb
+  name: GatekeeperOptions
+  nameWithType: LongRunningOperationContext.GatekeeperOptions
+  fullName: FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.GatekeeperOptions
+  type: Property
+  source:
+    remote:
+      path: src/dotnet/Common/Models/Orchestration/LongRunningOperationContext.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: GatekeeperOptions
+    path: ../src/dotnet/Common/Models/Orchestration/LongRunningOperationContext.cs
+    startLine: 76
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.Orchestration
+  summary: Gets or sets a list of Gatekeeper feature names used by the orchestration request.
+  example: []
+  syntax:
+    content: >-
+      [JsonProperty("gatekeeperOptions")]
+
+      public string[] GatekeeperOptions { get; set; }
+    parameters: []
+    return:
+      type: System.String[]
+    content.vb: >-
+      <JsonProperty("gatekeeperOptions")>
+
+      Public Property GatekeeperOptions As String()
+  overload: FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.GatekeeperOptions*
+  attributes:
+  - type: Newtonsoft.Json.JsonPropertyAttribute
+    ctor: Newtonsoft.Json.JsonPropertyAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: gatekeeperOptions
+- uid: FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.Orchestrator
+  commentId: P:FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.Orchestrator
+  id: Orchestrator
+  parent: FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext
+  langs:
+  - csharp
+  - vb
+  name: Orchestrator
+  nameWithType: LongRunningOperationContext.Orchestrator
+  fullName: FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.Orchestrator
+  type: Property
+  source:
+    remote:
+      path: src/dotnet/Common/Models/Orchestration/LongRunningOperationContext.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: Orchestrator
+    path: ../src/dotnet/Common/Models/Orchestration/LongRunningOperationContext.cs
+    startLine: 82
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.Orchestration
+  summary: Gets or sets the name of the orchestrator used in the long-running operation.
+  example: []
+  syntax:
+    content: >-
+      [JsonProperty("orchestrator")]
+
+      public string? Orchestrator { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: >-
+      <JsonProperty("orchestrator")>
+
+      Public Property Orchestrator As String
+  overload: FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.Orchestrator*
+  attributes:
+  - type: Newtonsoft.Json.JsonPropertyAttribute
+    ctor: Newtonsoft.Json.JsonPropertyAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: orchestrator
+- uid: FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.SemanticCacheSettings
+  commentId: P:FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.SemanticCacheSettings
+  id: SemanticCacheSettings
+  parent: FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext
+  langs:
+  - csharp
+  - vb
+  name: SemanticCacheSettings
+  nameWithType: LongRunningOperationContext.SemanticCacheSettings
+  fullName: FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.SemanticCacheSettings
+  type: Property
+  source:
+    remote:
+      path: src/dotnet/Common/Models/Orchestration/LongRunningOperationContext.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: SemanticCacheSettings
+    path: ../src/dotnet/Common/Models/Orchestration/LongRunningOperationContext.cs
+    startLine: 88
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.Orchestration
+  summary: Gets or sets the settings for the semantic cache.
+  example: []
+  syntax:
+    content: >-
+      [JsonProperty("semanticCacheSettings")]
+
+      public AgentSemanticCacheSettings? SemanticCacheSettings { get; set; }
+    parameters: []
+    return:
+      type: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentSemanticCacheSettings
+    content.vb: >-
+      <JsonProperty("semanticCacheSettings")>
+
+      Public Property SemanticCacheSettings As AgentSemanticCacheSettings
+  overload: FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.SemanticCacheSettings*
+  attributes:
+  - type: Newtonsoft.Json.JsonPropertyAttribute
+    ctor: Newtonsoft.Json.JsonPropertyAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: semanticCacheSettings
+- uid: FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.TTL
+  commentId: P:FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.TTL
+  id: TTL
+  parent: FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext
+  langs:
+  - csharp
+  - vb
+  name: TTL
+  nameWithType: LongRunningOperationContext.TTL
+  fullName: FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.TTL
+  type: Property
+  source:
+    remote:
+      path: src/dotnet/Common/Models/Orchestration/LongRunningOperationContext.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: TTL
+    path: ../src/dotnet/Common/Models/Orchestration/LongRunningOperationContext.cs
+    startLine: 94
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.Orchestration
+  summary: Gets or sets the Time to Live (TTL) of the long-running operation.
+  example: []
+  syntax:
+    content: >-
+      [JsonProperty("ttl")]
+
+      public int TTL { get; set; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: >-
+      <JsonProperty("ttl")>
+
+      Public Property TTL As Integer
+  overload: FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.TTL*
+  attributes:
+  - type: Newtonsoft.Json.JsonPropertyAttribute
+    ctor: Newtonsoft.Json.JsonPropertyAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: ttl
+- uid: FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.StatusUpdateIteration
+  commentId: P:FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.StatusUpdateIteration
+  id: StatusUpdateIteration
+  parent: FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext
+  langs:
+  - csharp
+  - vb
+  name: StatusUpdateIteration
+  nameWithType: LongRunningOperationContext.StatusUpdateIteration
+  fullName: FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.StatusUpdateIteration
+  type: Property
+  source:
+    remote:
+      path: src/dotnet/Common/Models/Orchestration/LongRunningOperationContext.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: StatusUpdateIteration
+    path: ../src/dotnet/Common/Models/Orchestration/LongRunningOperationContext.cs
+    startLine: 100
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.Orchestration
+  summary: Gets or sets the iteration number of the long-running operation.
+  example: []
+  syntax:
+    content: >-
+      [JsonProperty("statusUpdateIteration")]
+
+      public int StatusUpdateIteration { get; set; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: >-
+      <JsonProperty("statusUpdateIteration")>
+
+      Public Property StatusUpdateIteration As Integer
+  overload: FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.StatusUpdateIteration*
+  attributes:
+  - type: Newtonsoft.Json.JsonPropertyAttribute
+    ctor: Newtonsoft.Json.JsonPropertyAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: statusUpdateIteration
+- uid: FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.StartTime
+  commentId: P:FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.StartTime
+  id: StartTime
+  parent: FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext
+  langs:
+  - csharp
+  - vb
+  name: StartTime
+  nameWithType: LongRunningOperationContext.StartTime
+  fullName: FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.StartTime
+  type: Property
+  source:
+    remote:
+      path: src/dotnet/Common/Models/Orchestration/LongRunningOperationContext.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: StartTime
+    path: ../src/dotnet/Common/Models/Orchestration/LongRunningOperationContext.cs
+    startLine: 106
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.Orchestration
+  summary: Gets or sets the start time of the long-running operation.
+  example: []
+  syntax:
+    content: >-
+      [JsonProperty("startTime")]
+
+      public DateTime StartTime { get; set; }
+    parameters: []
+    return:
+      type: System.DateTime
+    content.vb: >-
+      <JsonProperty("startTime")>
+
+      Public Property StartTime As Date
+  overload: FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.StartTime*
+  attributes:
+  - type: Newtonsoft.Json.JsonPropertyAttribute
+    ctor: Newtonsoft.Json.JsonPropertyAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: startTime
+references:
+- uid: FoundationaLLM.Common.Models.Orchestration
+  commentId: N:FoundationaLLM.Common.Models.Orchestration
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.Orchestration
+  nameWithType: FoundationaLLM.Common.Models.Orchestration
+  fullName: FoundationaLLM.Common.Models.Orchestration
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Orchestration
+    name: Orchestration
+    href: FoundationaLLM.Common.Models.Orchestration.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Orchestration
+    name: Orchestration
+    href: FoundationaLLM.Common.Models.Orchestration.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  parent: FoundationaLLM.Core.Utils.ObjectExtensions
+  definition: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  isExternal: true
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions
+  commentId: T:FoundationaLLM.Core.Utils.ObjectExtensions
+  parent: FoundationaLLM.Core.Utils
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html
+  name: ObjectExtensions
+  nameWithType: ObjectExtensions
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions
+- uid: FoundationaLLM.Core.Utils
+  commentId: N:FoundationaLLM.Core.Utils
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Core.Utils
+  nameWithType: FoundationaLLM.Core.Utils
+  fullName: FoundationaLLM.Core.Utils
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+- uid: FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.InstanceId*
+  commentId: Overload:FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.InstanceId
+  href: FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.html#FoundationaLLM_Common_Models_Orchestration_LongRunningOperationContext_InstanceId
+  name: InstanceId
+  nameWithType: LongRunningOperationContext.InstanceId
+  fullName: FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.InstanceId
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.OperationId*
+  commentId: Overload:FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.OperationId
+  href: FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.html#FoundationaLLM_Common_Models_Orchestration_LongRunningOperationContext_OperationId
+  name: OperationId
+  nameWithType: LongRunningOperationContext.OperationId
+  fullName: FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.OperationId
+- uid: FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.AgentName*
+  commentId: Overload:FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.AgentName
+  href: FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.html#FoundationaLLM_Common_Models_Orchestration_LongRunningOperationContext_AgentName
+  name: AgentName
+  nameWithType: LongRunningOperationContext.AgentName
+  fullName: FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.AgentName
+- uid: FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.AgentWorkflowMainAIModelAPIEndpoint*
+  commentId: Overload:FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.AgentWorkflowMainAIModelAPIEndpoint
+  href: FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.html#FoundationaLLM_Common_Models_Orchestration_LongRunningOperationContext_AgentWorkflowMainAIModelAPIEndpoint
+  name: AgentWorkflowMainAIModelAPIEndpoint
+  nameWithType: LongRunningOperationContext.AgentWorkflowMainAIModelAPIEndpoint
+  fullName: FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.AgentWorkflowMainAIModelAPIEndpoint
+- uid: FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.SessionId*
+  commentId: Overload:FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.SessionId
+  href: FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.html#FoundationaLLM_Common_Models_Orchestration_LongRunningOperationContext_SessionId
+  name: SessionId
+  nameWithType: LongRunningOperationContext.SessionId
+  fullName: FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.SessionId
+- uid: FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.UPN*
+  commentId: Overload:FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.UPN
+  href: FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.html#FoundationaLLM_Common_Models_Orchestration_LongRunningOperationContext_UPN
+  name: UPN
+  nameWithType: LongRunningOperationContext.UPN
+  fullName: FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.UPN
+- uid: FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.UserMessageId*
+  commentId: Overload:FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.UserMessageId
+  href: FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.html#FoundationaLLM_Common_Models_Orchestration_LongRunningOperationContext_UserMessageId
+  name: UserMessageId
+  nameWithType: LongRunningOperationContext.UserMessageId
+  fullName: FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.UserMessageId
+- uid: FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.AgentMessageId*
+  commentId: Overload:FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.AgentMessageId
+  href: FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.html#FoundationaLLM_Common_Models_Orchestration_LongRunningOperationContext_AgentMessageId
+  name: AgentMessageId
+  nameWithType: LongRunningOperationContext.AgentMessageId
+  fullName: FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.AgentMessageId
+- uid: FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.CompletionPromptId*
+  commentId: Overload:FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.CompletionPromptId
+  href: FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.html#FoundationaLLM_Common_Models_Orchestration_LongRunningOperationContext_CompletionPromptId
+  name: CompletionPromptId
+  nameWithType: LongRunningOperationContext.CompletionPromptId
+  fullName: FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.CompletionPromptId
+- uid: FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.GatekeeperOverride*
+  commentId: Overload:FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.GatekeeperOverride
+  href: FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.html#FoundationaLLM_Common_Models_Orchestration_LongRunningOperationContext_GatekeeperOverride
+  name: GatekeeperOverride
+  nameWithType: LongRunningOperationContext.GatekeeperOverride
+  fullName: FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.GatekeeperOverride
+- uid: FoundationaLLM.Common.Models.Conversation.AgentGatekeeperOverrideOption
+  commentId: T:FoundationaLLM.Common.Models.Conversation.AgentGatekeeperOverrideOption
+  parent: FoundationaLLM.Common.Models.Conversation
+  href: FoundationaLLM.Common.Models.Conversation.AgentGatekeeperOverrideOption.html
+  name: AgentGatekeeperOverrideOption
+  nameWithType: AgentGatekeeperOverrideOption
+  fullName: FoundationaLLM.Common.Models.Conversation.AgentGatekeeperOverrideOption
+- uid: FoundationaLLM.Common.Models.Conversation
+  commentId: N:FoundationaLLM.Common.Models.Conversation
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.Conversation
+  nameWithType: FoundationaLLM.Common.Models.Conversation
+  fullName: FoundationaLLM.Common.Models.Conversation
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Conversation
+    name: Conversation
+    href: FoundationaLLM.Common.Models.Conversation.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Conversation
+    name: Conversation
+    href: FoundationaLLM.Common.Models.Conversation.html
+- uid: FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.GatekeeperOptions*
+  commentId: Overload:FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.GatekeeperOptions
+  href: FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.html#FoundationaLLM_Common_Models_Orchestration_LongRunningOperationContext_GatekeeperOptions
+  name: GatekeeperOptions
+  nameWithType: LongRunningOperationContext.GatekeeperOptions
+  fullName: FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.GatekeeperOptions
+- uid: System.String[]
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string[]
+  nameWithType: string[]
+  fullName: string[]
+  nameWithType.vb: String()
+  fullName.vb: String()
+  name.vb: String()
+  spec.csharp:
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '['
+  - name: ']'
+  spec.vb:
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: (
+  - name: )
+- uid: FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.Orchestrator*
+  commentId: Overload:FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.Orchestrator
+  href: FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.html#FoundationaLLM_Common_Models_Orchestration_LongRunningOperationContext_Orchestrator
+  name: Orchestrator
+  nameWithType: LongRunningOperationContext.Orchestrator
+  fullName: FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.Orchestrator
+- uid: FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.SemanticCacheSettings*
+  commentId: Overload:FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.SemanticCacheSettings
+  href: FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.html#FoundationaLLM_Common_Models_Orchestration_LongRunningOperationContext_SemanticCacheSettings
+  name: SemanticCacheSettings
+  nameWithType: LongRunningOperationContext.SemanticCacheSettings
+  fullName: FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.SemanticCacheSettings
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentSemanticCacheSettings
+  commentId: T:FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentSemanticCacheSettings
+  parent: FoundationaLLM.Common.Models.ResourceProviders.Agent
+  href: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentSemanticCacheSettings.html
+  name: AgentSemanticCacheSettings
+  nameWithType: AgentSemanticCacheSettings
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentSemanticCacheSettings
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Agent
+  commentId: N:FoundationaLLM.Common.Models.ResourceProviders.Agent
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.ResourceProviders.Agent
+  nameWithType: FoundationaLLM.Common.Models.ResourceProviders.Agent
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Agent
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders
+    name: ResourceProviders
+    href: FoundationaLLM.Common.Models.ResourceProviders.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.Agent
+    name: Agent
+    href: FoundationaLLM.Common.Models.ResourceProviders.Agent.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders
+    name: ResourceProviders
+    href: FoundationaLLM.Common.Models.ResourceProviders.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.Agent
+    name: Agent
+    href: FoundationaLLM.Common.Models.ResourceProviders.Agent.html
+- uid: FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.TTL*
+  commentId: Overload:FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.TTL
+  href: FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.html#FoundationaLLM_Common_Models_Orchestration_LongRunningOperationContext_TTL
+  name: TTL
+  nameWithType: LongRunningOperationContext.TTL
+  fullName: FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.TTL
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.StatusUpdateIteration*
+  commentId: Overload:FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.StatusUpdateIteration
+  href: FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.html#FoundationaLLM_Common_Models_Orchestration_LongRunningOperationContext_StatusUpdateIteration
+  name: StatusUpdateIteration
+  nameWithType: LongRunningOperationContext.StatusUpdateIteration
+  fullName: FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.StatusUpdateIteration
+- uid: FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.StartTime*
+  commentId: Overload:FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.StartTime
+  href: FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.html#FoundationaLLM_Common_Models_Orchestration_LongRunningOperationContext_StartTime
+  name: StartTime
+  nameWithType: LongRunningOperationContext.StartTime
+  fullName: FoundationaLLM.Common.Models.Orchestration.LongRunningOperationContext.StartTime
+- uid: System.DateTime
+  commentId: T:System.DateTime
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.datetime
+  name: DateTime
+  nameWithType: DateTime
+  fullName: System.DateTime
+  nameWithType.vb: Date
+  fullName.vb: Date
+  name.vb: Date

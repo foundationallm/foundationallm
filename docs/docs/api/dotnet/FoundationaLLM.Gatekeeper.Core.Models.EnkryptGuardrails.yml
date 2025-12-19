@@ -1,0 +1,94 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Gatekeeper.Core.Models.EnkryptGuardrails
+  commentId: N:FoundationaLLM.Gatekeeper.Core.Models.EnkryptGuardrails
+  id: EnkryptGuardrails
+  parent: FoundationaLLM.Gatekeeper.Core.Models
+  children:
+  - FoundationaLLM.Gatekeeper.Core.Models.EnkryptGuardrails.DetectDetails
+  - FoundationaLLM.Gatekeeper.Core.Models.EnkryptGuardrails.DetectResult
+  - FoundationaLLM.Gatekeeper.Core.Models.EnkryptGuardrails.DetectSummary
+  - FoundationaLLM.Gatekeeper.Core.Models.EnkryptGuardrails.InjectionAttack
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM.Gatekeeper.Core.Models.EnkryptGuardrails
+  nameWithType: FoundationaLLM.Gatekeeper.Core.Models.EnkryptGuardrails
+  fullName: FoundationaLLM.Gatekeeper.Core.Models.EnkryptGuardrails
+  type: Namespace
+  assemblies:
+  - FoundationaLLM.Gatekeeper.Core
+references:
+- uid: FoundationaLLM.Gatekeeper.Core.Models.EnkryptGuardrails.DetectDetails
+  commentId: T:FoundationaLLM.Gatekeeper.Core.Models.EnkryptGuardrails.DetectDetails
+  parent: FoundationaLLM.Gatekeeper.Core.Models.EnkryptGuardrails
+  href: FoundationaLLM.Gatekeeper.Core.Models.EnkryptGuardrails.DetectDetails.html
+  name: DetectDetails
+  nameWithType: DetectDetails
+  fullName: FoundationaLLM.Gatekeeper.Core.Models.EnkryptGuardrails.DetectDetails
+- uid: FoundationaLLM.Gatekeeper.Core.Models.EnkryptGuardrails.DetectResult
+  commentId: T:FoundationaLLM.Gatekeeper.Core.Models.EnkryptGuardrails.DetectResult
+  href: FoundationaLLM.Gatekeeper.Core.Models.EnkryptGuardrails.DetectResult.html
+  name: DetectResult
+  nameWithType: DetectResult
+  fullName: FoundationaLLM.Gatekeeper.Core.Models.EnkryptGuardrails.DetectResult
+- uid: FoundationaLLM.Gatekeeper.Core.Models.EnkryptGuardrails.DetectSummary
+  commentId: T:FoundationaLLM.Gatekeeper.Core.Models.EnkryptGuardrails.DetectSummary
+  parent: FoundationaLLM.Gatekeeper.Core.Models.EnkryptGuardrails
+  href: FoundationaLLM.Gatekeeper.Core.Models.EnkryptGuardrails.DetectSummary.html
+  name: DetectSummary
+  nameWithType: DetectSummary
+  fullName: FoundationaLLM.Gatekeeper.Core.Models.EnkryptGuardrails.DetectSummary
+- uid: FoundationaLLM.Gatekeeper.Core.Models.EnkryptGuardrails.InjectionAttack
+  commentId: T:FoundationaLLM.Gatekeeper.Core.Models.EnkryptGuardrails.InjectionAttack
+  parent: FoundationaLLM.Gatekeeper.Core.Models.EnkryptGuardrails
+  href: FoundationaLLM.Gatekeeper.Core.Models.EnkryptGuardrails.InjectionAttack.html
+  name: InjectionAttack
+  nameWithType: InjectionAttack
+  fullName: FoundationaLLM.Gatekeeper.Core.Models.EnkryptGuardrails.InjectionAttack
+- uid: FoundationaLLM.Gatekeeper.Core.Models.EnkryptGuardrails
+  commentId: N:FoundationaLLM.Gatekeeper.Core.Models.EnkryptGuardrails
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Gatekeeper.Core.Models.EnkryptGuardrails
+  nameWithType: FoundationaLLM.Gatekeeper.Core.Models.EnkryptGuardrails
+  fullName: FoundationaLLM.Gatekeeper.Core.Models.EnkryptGuardrails
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Gatekeeper
+    name: Gatekeeper
+    href: FoundationaLLM.Gatekeeper.html
+  - name: .
+  - uid: FoundationaLLM.Gatekeeper.Core
+    name: Core
+    href: FoundationaLLM.Gatekeeper.Core.html
+  - name: .
+  - uid: FoundationaLLM.Gatekeeper.Core.Models
+    name: Models
+    href: FoundationaLLM.Gatekeeper.Core.Models.html
+  - name: .
+  - uid: FoundationaLLM.Gatekeeper.Core.Models.EnkryptGuardrails
+    name: EnkryptGuardrails
+    href: FoundationaLLM.Gatekeeper.Core.Models.EnkryptGuardrails.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Gatekeeper
+    name: Gatekeeper
+    href: FoundationaLLM.Gatekeeper.html
+  - name: .
+  - uid: FoundationaLLM.Gatekeeper.Core
+    name: Core
+    href: FoundationaLLM.Gatekeeper.Core.html
+  - name: .
+  - uid: FoundationaLLM.Gatekeeper.Core.Models
+    name: Models
+    href: FoundationaLLM.Gatekeeper.Core.Models.html
+  - name: .
+  - uid: FoundationaLLM.Gatekeeper.Core.Models.EnkryptGuardrails
+    name: EnkryptGuardrails
+    href: FoundationaLLM.Gatekeeper.Core.Models.EnkryptGuardrails.html

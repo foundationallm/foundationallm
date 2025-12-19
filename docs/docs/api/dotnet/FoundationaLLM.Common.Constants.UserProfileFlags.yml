@@ -1,0 +1,432 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Common.Constants.UserProfileFlags
+  commentId: T:FoundationaLLM.Common.Constants.UserProfileFlags
+  id: UserProfileFlags
+  parent: FoundationaLLM.Common.Constants
+  children:
+  - FoundationaLLM.Common.Constants.UserProfileFlags.All
+  - FoundationaLLM.Common.Constants.UserProfileFlags.OneDriveWorkSchoolEnabled
+  - FoundationaLLM.Common.Constants.UserProfileFlags.PersistOrchestrationCompletionRequests
+  langs:
+  - csharp
+  - vb
+  name: UserProfileFlags
+  nameWithType: UserProfileFlags
+  fullName: FoundationaLLM.Common.Constants.UserProfileFlags
+  type: Class
+  source:
+    remote:
+      path: src/dotnet/Common/Constants/UserProfileFlags.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: UserProfileFlags
+    path: ../src/dotnet/Common/Constants/UserProfileFlags.cs
+    startLine: 5
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants
+  summary: Named user profile flags.
+  example: []
+  syntax:
+    content: public static class UserProfileFlags
+    content.vb: Public Module UserProfileFlags
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: FoundationaLLM.Common.Constants.UserProfileFlags.OneDriveWorkSchoolEnabled
+  commentId: F:FoundationaLLM.Common.Constants.UserProfileFlags.OneDriveWorkSchoolEnabled
+  id: OneDriveWorkSchoolEnabled
+  parent: FoundationaLLM.Common.Constants.UserProfileFlags
+  langs:
+  - csharp
+  - vb
+  name: OneDriveWorkSchoolEnabled
+  nameWithType: UserProfileFlags.OneDriveWorkSchoolEnabled
+  fullName: FoundationaLLM.Common.Constants.UserProfileFlags.OneDriveWorkSchoolEnabled
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Constants/UserProfileFlags.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: OneDriveWorkSchoolEnabled
+    path: ../src/dotnet/Common/Constants/UserProfileFlags.cs
+    startLine: 10
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants
+  summary: Flag that allows the user to grant or revoke consent to connect to their OneDrive for work or school account.
+  example: []
+  syntax:
+    content: public const string OneDriveWorkSchoolEnabled = "oneDriveWorkSchoolEnabled"
+    return:
+      type: System.String
+    content.vb: Public Const OneDriveWorkSchoolEnabled As String = "oneDriveWorkSchoolEnabled"
+- uid: FoundationaLLM.Common.Constants.UserProfileFlags.PersistOrchestrationCompletionRequests
+  commentId: F:FoundationaLLM.Common.Constants.UserProfileFlags.PersistOrchestrationCompletionRequests
+  id: PersistOrchestrationCompletionRequests
+  parent: FoundationaLLM.Common.Constants.UserProfileFlags
+  langs:
+  - csharp
+  - vb
+  name: PersistOrchestrationCompletionRequests
+  nameWithType: UserProfileFlags.PersistOrchestrationCompletionRequests
+  fullName: FoundationaLLM.Common.Constants.UserProfileFlags.PersistOrchestrationCompletionRequests
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Constants/UserProfileFlags.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: PersistOrchestrationCompletionRequests
+    path: ../src/dotnet/Common/Constants/UserProfileFlags.cs
+    startLine: 15
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants
+  summary: Indicates whether completion requests created by the Orchestration API should be persisted or not.
+  example: []
+  syntax:
+    content: public const string PersistOrchestrationCompletionRequests = "persistOrchestrationCompletionRequests"
+    return:
+      type: System.String
+    content.vb: Public Const PersistOrchestrationCompletionRequests As String = "persistOrchestrationCompletionRequests"
+- uid: FoundationaLLM.Common.Constants.UserProfileFlags.All
+  commentId: F:FoundationaLLM.Common.Constants.UserProfileFlags.All
+  id: All
+  parent: FoundationaLLM.Common.Constants.UserProfileFlags
+  langs:
+  - csharp
+  - vb
+  name: All
+  nameWithType: UserProfileFlags.All
+  fullName: FoundationaLLM.Common.Constants.UserProfileFlags.All
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Constants/UserProfileFlags.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: All
+    path: ../src/dotnet/Common/Constants/UserProfileFlags.cs
+    startLine: 20
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants
+  summary: All user profile flags.
+  example: []
+  syntax:
+    content: public static readonly string[] All
+    return:
+      type: System.String[]
+    content.vb: Public Shared ReadOnly All As String()
+references:
+- uid: FoundationaLLM.Common.Constants
+  commentId: N:FoundationaLLM.Common.Constants
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Constants
+  nameWithType: FoundationaLLM.Common.Constants
+  fullName: FoundationaLLM.Common.Constants
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Constants
+    name: Constants
+    href: FoundationaLLM.Common.Constants.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Constants
+    name: Constants
+    href: FoundationaLLM.Common.Constants.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System.String[]
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string[]
+  nameWithType: string[]
+  fullName: string[]
+  nameWithType.vb: String()
+  fullName.vb: String()
+  name.vb: String()
+  spec.csharp:
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '['
+  - name: ']'
+  spec.vb:
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: (
+  - name: )

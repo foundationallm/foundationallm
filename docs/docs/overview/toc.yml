@@ -1,0 +1,9 @@
+items:
+- name: Introduction
+  href: index.md
+- name: Architecture & Concepts
+  href: architecture-concepts.md
+- name: Why FoundationaLLM?
+  href: why-foundationallm.md
+- name: Core Concepts Reference
+  href: ../management-portal/reference/concepts/index.md

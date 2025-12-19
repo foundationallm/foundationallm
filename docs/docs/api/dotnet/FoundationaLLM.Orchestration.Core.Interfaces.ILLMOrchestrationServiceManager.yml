@@ -1,0 +1,502 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Orchestration.Core.Interfaces.ILLMOrchestrationServiceManager
+  commentId: T:FoundationaLLM.Orchestration.Core.Interfaces.ILLMOrchestrationServiceManager
+  id: ILLMOrchestrationServiceManager
+  parent: FoundationaLLM.Orchestration.Core.Interfaces
+  children:
+  - FoundationaLLM.Orchestration.Core.Interfaces.ILLMOrchestrationServiceManager.GetAggregateStatus(System.String,System.IServiceProvider)
+  - FoundationaLLM.Orchestration.Core.Interfaces.ILLMOrchestrationServiceManager.GetService(System.String,System.String,System.IServiceProvider,FoundationaLLM.Common.Interfaces.IOrchestrationContext)
+  langs:
+  - csharp
+  - vb
+  name: ILLMOrchestrationServiceManager
+  nameWithType: ILLMOrchestrationServiceManager
+  fullName: FoundationaLLM.Orchestration.Core.Interfaces.ILLMOrchestrationServiceManager
+  type: Interface
+  source:
+    remote:
+      path: src/dotnet/Orchestration/Interfaces/ILLMOrchestrationServiceManager.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: ILLMOrchestrationServiceManager
+    path: ../src/dotnet/Orchestration/Interfaces/ILLMOrchestrationServiceManager.cs
+    startLine: 8
+  assemblies:
+  - FoundationaLLM.Orchestration.Core
+  namespace: FoundationaLLM.Orchestration.Core.Interfaces
+  summary: Defines the interface for the LLM Orchestration Service Manager.
+  example: []
+  syntax:
+    content: public interface ILLMOrchestrationServiceManager
+    content.vb: Public Interface ILLMOrchestrationServiceManager
+  extensionMethods:
+  - System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+- uid: FoundationaLLM.Orchestration.Core.Interfaces.ILLMOrchestrationServiceManager.GetAggregateStatus(System.String,System.IServiceProvider)
+  commentId: M:FoundationaLLM.Orchestration.Core.Interfaces.ILLMOrchestrationServiceManager.GetAggregateStatus(System.String,System.IServiceProvider)
+  id: GetAggregateStatus(System.String,System.IServiceProvider)
+  parent: FoundationaLLM.Orchestration.Core.Interfaces.ILLMOrchestrationServiceManager
+  langs:
+  - csharp
+  - vb
+  name: GetAggregateStatus(string, IServiceProvider)
+  nameWithType: ILLMOrchestrationServiceManager.GetAggregateStatus(string, IServiceProvider)
+  fullName: FoundationaLLM.Orchestration.Core.Interfaces.ILLMOrchestrationServiceManager.GetAggregateStatus(string, System.IServiceProvider)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Orchestration/Interfaces/ILLMOrchestrationServiceManager.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: GetAggregateStatus
+    path: ../src/dotnet/Orchestration/Interfaces/ILLMOrchestrationServiceManager.cs
+    startLine: 15
+  assemblies:
+  - FoundationaLLM.Orchestration.Core
+  namespace: FoundationaLLM.Orchestration.Core.Interfaces
+  summary: Gets an aggregate initialization status based on the initialization status of each subordinate orchestration service.
+  example: []
+  syntax:
+    content: Task<List<ServiceStatusInfo>> GetAggregateStatus(string instanceId, IServiceProvider serviceProvider)
+    parameters:
+    - id: instanceId
+      type: System.String
+      description: The FoundationaLLM instance ID.
+    - id: serviceProvider
+      type: System.IServiceProvider
+      description: The <xref href="System.IServiceProvider" data-throw-if-not-resolved="false"></xref> provding dependency injection services for the current scope.
+    return:
+      type: System.Threading.Tasks.Task{System.Collections.Generic.List{FoundationaLLM.Common.Models.Infrastructure.ServiceStatusInfo}}
+    content.vb: Function GetAggregateStatus(instanceId As String, serviceProvider As IServiceProvider) As Task(Of List(Of ServiceStatusInfo))
+  overload: FoundationaLLM.Orchestration.Core.Interfaces.ILLMOrchestrationServiceManager.GetAggregateStatus*
+  nameWithType.vb: ILLMOrchestrationServiceManager.GetAggregateStatus(String, IServiceProvider)
+  fullName.vb: FoundationaLLM.Orchestration.Core.Interfaces.ILLMOrchestrationServiceManager.GetAggregateStatus(String, System.IServiceProvider)
+  name.vb: GetAggregateStatus(String, IServiceProvider)
+- uid: FoundationaLLM.Orchestration.Core.Interfaces.ILLMOrchestrationServiceManager.GetService(System.String,System.String,System.IServiceProvider,FoundationaLLM.Common.Interfaces.IOrchestrationContext)
+  commentId: M:FoundationaLLM.Orchestration.Core.Interfaces.ILLMOrchestrationServiceManager.GetService(System.String,System.String,System.IServiceProvider,FoundationaLLM.Common.Interfaces.IOrchestrationContext)
+  id: GetService(System.String,System.String,System.IServiceProvider,FoundationaLLM.Common.Interfaces.IOrchestrationContext)
+  parent: FoundationaLLM.Orchestration.Core.Interfaces.ILLMOrchestrationServiceManager
+  langs:
+  - csharp
+  - vb
+  name: GetService(string, string, IServiceProvider, IOrchestrationContext)
+  nameWithType: ILLMOrchestrationServiceManager.GetService(string, string, IServiceProvider, IOrchestrationContext)
+  fullName: FoundationaLLM.Orchestration.Core.Interfaces.ILLMOrchestrationServiceManager.GetService(string, string, System.IServiceProvider, FoundationaLLM.Common.Interfaces.IOrchestrationContext)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Orchestration/Interfaces/ILLMOrchestrationServiceManager.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: GetService
+    path: ../src/dotnet/Orchestration/Interfaces/ILLMOrchestrationServiceManager.cs
+    startLine: 25
+  assemblies:
+  - FoundationaLLM.Orchestration.Core
+  namespace: FoundationaLLM.Orchestration.Core.Interfaces
+  summary: Gets an <xref href="FoundationaLLM.Orchestration.Core.Interfaces.ILLMOrchestrationService" data-throw-if-not-resolved="false"></xref> instance based on the service name.
+  example: []
+  syntax:
+    content: ILLMOrchestrationService GetService(string instanceId, string serviceName, IServiceProvider serviceProvider, IOrchestrationContext callContext)
+    parameters:
+    - id: instanceId
+      type: System.String
+      description: The FoundationaLLM instance ID.
+    - id: serviceName
+      type: System.String
+      description: The name of the <xref href="FoundationaLLM.Orchestration.Core.Interfaces.ILLMOrchestrationService" data-throw-if-not-resolved="false"></xref> to be retrieved.
+    - id: serviceProvider
+      type: System.IServiceProvider
+      description: The <xref href="System.IServiceProvider" data-throw-if-not-resolved="false"></xref> provding dependency injection services for the current scope.
+    - id: callContext
+      type: FoundationaLLM.Common.Interfaces.IOrchestrationContext
+      description: The <xref href="FoundationaLLM.Common.Interfaces.IOrchestrationContext" data-throw-if-not-resolved="false"></xref> call context of the request being handled.
+    return:
+      type: FoundationaLLM.Orchestration.Core.Interfaces.ILLMOrchestrationService
+      description: ''
+    content.vb: Function GetService(instanceId As String, serviceName As String, serviceProvider As IServiceProvider, callContext As IOrchestrationContext) As ILLMOrchestrationService
+  overload: FoundationaLLM.Orchestration.Core.Interfaces.ILLMOrchestrationServiceManager.GetService*
+  nameWithType.vb: ILLMOrchestrationServiceManager.GetService(String, String, IServiceProvider, IOrchestrationContext)
+  fullName.vb: FoundationaLLM.Orchestration.Core.Interfaces.ILLMOrchestrationServiceManager.GetService(String, String, System.IServiceProvider, FoundationaLLM.Common.Interfaces.IOrchestrationContext)
+  name.vb: GetService(String, String, IServiceProvider, IOrchestrationContext)
+references:
+- uid: FoundationaLLM.Orchestration.Core.Interfaces
+  commentId: N:FoundationaLLM.Orchestration.Core.Interfaces
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Orchestration.Core.Interfaces
+  nameWithType: FoundationaLLM.Orchestration.Core.Interfaces
+  fullName: FoundationaLLM.Orchestration.Core.Interfaces
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Orchestration
+    name: Orchestration
+    href: FoundationaLLM.Orchestration.html
+  - name: .
+  - uid: FoundationaLLM.Orchestration.Core
+    name: Core
+    href: FoundationaLLM.Orchestration.Core.html
+  - name: .
+  - uid: FoundationaLLM.Orchestration.Core.Interfaces
+    name: Interfaces
+    href: FoundationaLLM.Orchestration.Core.Interfaces.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Orchestration
+    name: Orchestration
+    href: FoundationaLLM.Orchestration.html
+  - name: .
+  - uid: FoundationaLLM.Orchestration.Core
+    name: Core
+    href: FoundationaLLM.Orchestration.Core.html
+  - name: .
+  - uid: FoundationaLLM.Orchestration.Core.Interfaces
+    name: Interfaces
+    href: FoundationaLLM.Orchestration.Core.Interfaces.html
+- uid: System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  parent: FoundationaLLM.Core.Utils.ObjectExtensions
+  definition: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  isExternal: true
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions
+  commentId: T:FoundationaLLM.Core.Utils.ObjectExtensions
+  parent: FoundationaLLM.Core.Utils
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html
+  name: ObjectExtensions
+  nameWithType: ObjectExtensions
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions
+- uid: FoundationaLLM.Core.Utils
+  commentId: N:FoundationaLLM.Core.Utils
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Core.Utils
+  nameWithType: FoundationaLLM.Core.Utils
+  fullName: FoundationaLLM.Core.Utils
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+- uid: System.IServiceProvider
+  commentId: T:System.IServiceProvider
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.iserviceprovider
+  name: IServiceProvider
+  nameWithType: IServiceProvider
+  fullName: System.IServiceProvider
+- uid: FoundationaLLM.Orchestration.Core.Interfaces.ILLMOrchestrationServiceManager.GetAggregateStatus*
+  commentId: Overload:FoundationaLLM.Orchestration.Core.Interfaces.ILLMOrchestrationServiceManager.GetAggregateStatus
+  href: FoundationaLLM.Orchestration.Core.Interfaces.ILLMOrchestrationServiceManager.html#FoundationaLLM_Orchestration_Core_Interfaces_ILLMOrchestrationServiceManager_GetAggregateStatus_System_String_System_IServiceProvider_
+  name: GetAggregateStatus
+  nameWithType: ILLMOrchestrationServiceManager.GetAggregateStatus
+  fullName: FoundationaLLM.Orchestration.Core.Interfaces.ILLMOrchestrationServiceManager.GetAggregateStatus
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System.Threading.Tasks.Task{System.Collections.Generic.List{FoundationaLLM.Common.Models.Infrastructure.ServiceStatusInfo}}
+  commentId: T:System.Threading.Tasks.Task{System.Collections.Generic.List{FoundationaLLM.Common.Models.Infrastructure.ServiceStatusInfo}}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<List<ServiceStatusInfo>>
+  nameWithType: Task<List<ServiceStatusInfo>>
+  fullName: System.Threading.Tasks.Task<System.Collections.Generic.List<FoundationaLLM.Common.Models.Infrastructure.ServiceStatusInfo>>
+  nameWithType.vb: Task(Of List(Of ServiceStatusInfo))
+  fullName.vb: System.Threading.Tasks.Task(Of System.Collections.Generic.List(Of FoundationaLLM.Common.Models.Infrastructure.ServiceStatusInfo))
+  name.vb: Task(Of List(Of ServiceStatusInfo))
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: FoundationaLLM.Common.Models.Infrastructure.ServiceStatusInfo
+    name: ServiceStatusInfo
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FoundationaLLM.Common.Models.Infrastructure.ServiceStatusInfo
+    name: ServiceStatusInfo
+  - name: )
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: FoundationaLLM.Orchestration.Core.Interfaces.ILLMOrchestrationService
+  commentId: T:FoundationaLLM.Orchestration.Core.Interfaces.ILLMOrchestrationService
+  parent: FoundationaLLM.Orchestration.Core.Interfaces
+  href: FoundationaLLM.Orchestration.Core.Interfaces.ILLMOrchestrationService.html
+  name: ILLMOrchestrationService
+  nameWithType: ILLMOrchestrationService
+  fullName: FoundationaLLM.Orchestration.Core.Interfaces.ILLMOrchestrationService
+- uid: FoundationaLLM.Common.Interfaces.IOrchestrationContext
+  commentId: T:FoundationaLLM.Common.Interfaces.IOrchestrationContext
+  parent: FoundationaLLM.Common.Interfaces
+  href: FoundationaLLM.Common.Interfaces.IOrchestrationContext.html
+  name: IOrchestrationContext
+  nameWithType: IOrchestrationContext
+  fullName: FoundationaLLM.Common.Interfaces.IOrchestrationContext
+- uid: FoundationaLLM.Orchestration.Core.Interfaces.ILLMOrchestrationServiceManager.GetService*
+  commentId: Overload:FoundationaLLM.Orchestration.Core.Interfaces.ILLMOrchestrationServiceManager.GetService
+  href: FoundationaLLM.Orchestration.Core.Interfaces.ILLMOrchestrationServiceManager.html#FoundationaLLM_Orchestration_Core_Interfaces_ILLMOrchestrationServiceManager_GetService_System_String_System_String_System_IServiceProvider_FoundationaLLM_Common_Interfaces_IOrchestrationContext_
+  name: GetService
+  nameWithType: ILLMOrchestrationServiceManager.GetService
+  fullName: FoundationaLLM.Orchestration.Core.Interfaces.ILLMOrchestrationServiceManager.GetService
+- uid: FoundationaLLM.Common.Interfaces
+  commentId: N:FoundationaLLM.Common.Interfaces
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Interfaces
+  nameWithType: FoundationaLLM.Common.Interfaces
+  fullName: FoundationaLLM.Common.Interfaces
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Interfaces
+    name: Interfaces
+    href: FoundationaLLM.Common.Interfaces.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Interfaces
+    name: Interfaces
+    href: FoundationaLLM.Common.Interfaces.html

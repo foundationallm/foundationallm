@@ -1,0 +1,941 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity
+  commentId: T:FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity
+  id: UnifiedUserIdentity
+  parent: FoundationaLLM.Common.Models.Authentication
+  children:
+  - FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity.AssociatedWithAccessToken
+  - FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity.GroupIds
+  - FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity.Name
+  - FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity.NormalizedName
+  - FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity.UPN
+  - FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity.UserId
+  - FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity.Username
+  langs:
+  - csharp
+  - vb
+  name: UnifiedUserIdentity
+  nameWithType: UnifiedUserIdentity
+  fullName: FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity
+  type: Class
+  source:
+    remote:
+      path: src/dotnet/Common/Models/Authentication/UnifiedUserIdentity.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: UnifiedUserIdentity
+    path: ../src/dotnet/Common/Models/Authentication/UnifiedUserIdentity.cs
+    startLine: 8
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.Authentication
+  summary: >-
+    Represents strongly-typed user identity information, regardless of
+
+    the identity provider.
+  example: []
+  syntax:
+    content: public class UnifiedUserIdentity
+    content.vb: Public Class UnifiedUserIdentity
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+  extensionMethods:
+  - System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+- uid: FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity.Name
+  commentId: P:FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity.Name
+  id: Name
+  parent: FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity
+  langs:
+  - csharp
+  - vb
+  name: Name
+  nameWithType: UnifiedUserIdentity.Name
+  fullName: FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity.Name
+  type: Property
+  source:
+    remote:
+      path: src/dotnet/Common/Models/Authentication/UnifiedUserIdentity.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: Name
+    path: ../src/dotnet/Common/Models/Authentication/UnifiedUserIdentity.cs
+    startLine: 13
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.Authentication
+  summary: The user's display name.
+  example: []
+  syntax:
+    content: >-
+      [JsonPropertyName("name")]
+
+      public string? Name { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: >-
+      <JsonPropertyName("name")>
+
+      Public Property Name As String
+  overload: FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity.Name*
+  attributes:
+  - type: System.Text.Json.Serialization.JsonPropertyNameAttribute
+    ctor: System.Text.Json.Serialization.JsonPropertyNameAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: name
+- uid: FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity.Username
+  commentId: P:FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity.Username
+  id: Username
+  parent: FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity
+  langs:
+  - csharp
+  - vb
+  name: Username
+  nameWithType: UnifiedUserIdentity.Username
+  fullName: FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity.Username
+  type: Property
+  source:
+    remote:
+      path: src/dotnet/Common/Models/Authentication/UnifiedUserIdentity.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: Username
+    path: ../src/dotnet/Common/Models/Authentication/UnifiedUserIdentity.cs
+    startLine: 19
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.Authentication
+  summary: The username of the user used to authenticate.
+  example: []
+  syntax:
+    content: >-
+      [JsonPropertyName("user_name")]
+
+      public string? Username { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: >-
+      <JsonPropertyName("user_name")>
+
+      Public Property Username As String
+  overload: FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity.Username*
+  attributes:
+  - type: System.Text.Json.Serialization.JsonPropertyNameAttribute
+    ctor: System.Text.Json.Serialization.JsonPropertyNameAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: user_name
+- uid: FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity.UserId
+  commentId: P:FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity.UserId
+  id: UserId
+  parent: FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity
+  langs:
+  - csharp
+  - vb
+  name: UserId
+  nameWithType: UnifiedUserIdentity.UserId
+  fullName: FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity.UserId
+  type: Property
+  source:
+    remote:
+      path: src/dotnet/Common/Models/Authentication/UnifiedUserIdentity.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: UserId
+    path: ../src/dotnet/Common/Models/Authentication/UnifiedUserIdentity.cs
+    startLine: 25
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.Authentication
+  summary: The unique identifier of the user.
+  example: []
+  syntax:
+    content: >-
+      [JsonPropertyName("user_id")]
+
+      public string? UserId { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: >-
+      <JsonPropertyName("user_id")>
+
+      Public Property UserId As String
+  overload: FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity.UserId*
+  attributes:
+  - type: System.Text.Json.Serialization.JsonPropertyNameAttribute
+    ctor: System.Text.Json.Serialization.JsonPropertyNameAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: user_id
+- uid: FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity.UPN
+  commentId: P:FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity.UPN
+  id: UPN
+  parent: FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity
+  langs:
+  - csharp
+  - vb
+  name: UPN
+  nameWithType: UnifiedUserIdentity.UPN
+  fullName: FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity.UPN
+  type: Property
+  source:
+    remote:
+      path: src/dotnet/Common/Models/Authentication/UnifiedUserIdentity.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: UPN
+    path: ../src/dotnet/Common/Models/Authentication/UnifiedUserIdentity.cs
+    startLine: 31
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.Authentication
+  summary: The User Principal Name (UPN) of the user.
+  example: []
+  syntax:
+    content: >-
+      [JsonPropertyName("upn")]
+
+      public string? UPN { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: >-
+      <JsonPropertyName("upn")>
+
+      Public Property UPN As String
+  overload: FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity.UPN*
+  attributes:
+  - type: System.Text.Json.Serialization.JsonPropertyNameAttribute
+    ctor: System.Text.Json.Serialization.JsonPropertyNameAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: upn
+- uid: FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity.AssociatedWithAccessToken
+  commentId: P:FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity.AssociatedWithAccessToken
+  id: AssociatedWithAccessToken
+  parent: FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity
+  langs:
+  - csharp
+  - vb
+  name: AssociatedWithAccessToken
+  nameWithType: UnifiedUserIdentity.AssociatedWithAccessToken
+  fullName: FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity.AssociatedWithAccessToken
+  type: Property
+  source:
+    remote:
+      path: src/dotnet/Common/Models/Authentication/UnifiedUserIdentity.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: AssociatedWithAccessToken
+    path: ../src/dotnet/Common/Models/Authentication/UnifiedUserIdentity.cs
+    startLine: 37
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.Authentication
+  summary: Indicates whether the identity is associated with an agent access token.
+  example: []
+  syntax:
+    content: >-
+      [JsonPropertyName("associated_with_access_token")]
+
+      public bool AssociatedWithAccessToken { get; set; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: >-
+      <JsonPropertyName("associated_with_access_token")>
+
+      Public Property AssociatedWithAccessToken As Boolean
+  overload: FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity.AssociatedWithAccessToken*
+  attributes:
+  - type: System.Text.Json.Serialization.JsonPropertyNameAttribute
+    ctor: System.Text.Json.Serialization.JsonPropertyNameAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: associated_with_access_token
+- uid: FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity.GroupIds
+  commentId: P:FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity.GroupIds
+  id: GroupIds
+  parent: FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity
+  langs:
+  - csharp
+  - vb
+  name: GroupIds
+  nameWithType: UnifiedUserIdentity.GroupIds
+  fullName: FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity.GroupIds
+  type: Property
+  source:
+    remote:
+      path: src/dotnet/Common/Models/Authentication/UnifiedUserIdentity.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: GroupIds
+    path: ../src/dotnet/Common/Models/Authentication/UnifiedUserIdentity.cs
+    startLine: 43
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.Authentication
+  summary: The list of the identifiers of the groups to which the user belongs.
+  example: []
+  syntax:
+    content: >-
+      [JsonPropertyName("group_ids")]
+
+      public List<string> GroupIds { get; set; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.List{System.String}
+    content.vb: >-
+      <JsonPropertyName("group_ids")>
+
+      Public Property GroupIds As List(Of String)
+  overload: FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity.GroupIds*
+  attributes:
+  - type: System.Text.Json.Serialization.JsonPropertyNameAttribute
+    ctor: System.Text.Json.Serialization.JsonPropertyNameAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: group_ids
+- uid: FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity.NormalizedName
+  commentId: P:FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity.NormalizedName
+  id: NormalizedName
+  parent: FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity
+  langs:
+  - csharp
+  - vb
+  name: NormalizedName
+  nameWithType: UnifiedUserIdentity.NormalizedName
+  fullName: FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity.NormalizedName
+  type: Property
+  source:
+    remote:
+      path: src/dotnet/Common/Models/Authentication/UnifiedUserIdentity.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: NormalizedName
+    path: ../src/dotnet/Common/Models/Authentication/UnifiedUserIdentity.cs
+    startLine: 49
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.Authentication
+  summary: Gets the normalized name of the user identity.
+  example: []
+  syntax:
+    content: >-
+      [JsonIgnore]
+
+      public string NormalizedName { get; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: >-
+      <JsonIgnore>
+
+      Public ReadOnly Property NormalizedName As String
+  overload: FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity.NormalizedName*
+  attributes:
+  - type: System.Text.Json.Serialization.JsonIgnoreAttribute
+    ctor: System.Text.Json.Serialization.JsonIgnoreAttribute.#ctor
+    arguments: []
+references:
+- uid: FoundationaLLM.Common.Models.Authentication
+  commentId: N:FoundationaLLM.Common.Models.Authentication
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.Authentication
+  nameWithType: FoundationaLLM.Common.Models.Authentication
+  fullName: FoundationaLLM.Common.Models.Authentication
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Authentication
+    name: Authentication
+    href: FoundationaLLM.Common.Models.Authentication.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Authentication
+    name: Authentication
+    href: FoundationaLLM.Common.Models.Authentication.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  parent: FoundationaLLM.Core.Utils.ObjectExtensions
+  definition: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  isExternal: true
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions
+  commentId: T:FoundationaLLM.Core.Utils.ObjectExtensions
+  parent: FoundationaLLM.Core.Utils
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html
+  name: ObjectExtensions
+  nameWithType: ObjectExtensions
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions
+- uid: FoundationaLLM.Core.Utils
+  commentId: N:FoundationaLLM.Core.Utils
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Core.Utils
+  nameWithType: FoundationaLLM.Core.Utils
+  fullName: FoundationaLLM.Core.Utils
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+- uid: FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity.Name*
+  commentId: Overload:FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity.Name
+  href: FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity.html#FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_Name
+  name: Name
+  nameWithType: UnifiedUserIdentity.Name
+  fullName: FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity.Name
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity.Username*
+  commentId: Overload:FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity.Username
+  href: FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity.html#FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_Username
+  name: Username
+  nameWithType: UnifiedUserIdentity.Username
+  fullName: FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity.Username
+- uid: FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity.UserId*
+  commentId: Overload:FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity.UserId
+  href: FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity.html#FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_UserId
+  name: UserId
+  nameWithType: UnifiedUserIdentity.UserId
+  fullName: FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity.UserId
+- uid: FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity.UPN*
+  commentId: Overload:FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity.UPN
+  href: FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity.html#FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_UPN
+  name: UPN
+  nameWithType: UnifiedUserIdentity.UPN
+  fullName: FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity.UPN
+- uid: FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity.AssociatedWithAccessToken*
+  commentId: Overload:FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity.AssociatedWithAccessToken
+  href: FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity.html#FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_AssociatedWithAccessToken
+  name: AssociatedWithAccessToken
+  nameWithType: UnifiedUserIdentity.AssociatedWithAccessToken
+  fullName: FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity.AssociatedWithAccessToken
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity.GroupIds*
+  commentId: Overload:FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity.GroupIds
+  href: FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity.html#FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_GroupIds
+  name: GroupIds
+  nameWithType: UnifiedUserIdentity.GroupIds
+  fullName: FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity.GroupIds
+- uid: System.Collections.Generic.List{System.String}
+  commentId: T:System.Collections.Generic.List{System.String}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.List`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  name: List<string>
+  nameWithType: List<string>
+  fullName: System.Collections.Generic.List<string>
+  nameWithType.vb: List(Of String)
+  fullName.vb: System.Collections.Generic.List(Of String)
+  name.vb: List(Of String)
+  spec.csharp:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: System.Collections.Generic.List`1
+  commentId: T:System.Collections.Generic.List`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  name: List<T>
+  nameWithType: List<T>
+  fullName: System.Collections.Generic.List<T>
+  nameWithType.vb: List(Of T)
+  fullName.vb: System.Collections.Generic.List(Of T)
+  name.vb: List(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity.NormalizedName*
+  commentId: Overload:FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity.NormalizedName
+  href: FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity.html#FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_NormalizedName
+  name: NormalizedName
+  nameWithType: UnifiedUserIdentity.NormalizedName
+  fullName: FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity.NormalizedName

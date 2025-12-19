@@ -1,0 +1,31 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Configuration.Services
+  commentId: N:FoundationaLLM.Configuration.Services
+  id: Services
+  parent: FoundationaLLM.Configuration
+  children:
+  - FoundationaLLM.Configuration.Services.ConfigurationHealthCheckService
+  - FoundationaLLM.Configuration.Services.ConfigurationResourceProviderService
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM.Configuration.Services
+  nameWithType: FoundationaLLM.Configuration.Services
+  fullName: FoundationaLLM.Configuration.Services
+  type: Namespace
+  assemblies:
+  - FoundationaLLM.Configuration
+references:
+- uid: FoundationaLLM.Configuration.Services.ConfigurationHealthCheckService
+  commentId: T:FoundationaLLM.Configuration.Services.ConfigurationHealthCheckService
+  href: FoundationaLLM.Configuration.Services.ConfigurationHealthCheckService.html
+  name: ConfigurationHealthCheckService
+  nameWithType: ConfigurationHealthCheckService
+  fullName: FoundationaLLM.Configuration.Services.ConfigurationHealthCheckService
+- uid: FoundationaLLM.Configuration.Services.ConfigurationResourceProviderService
+  commentId: T:FoundationaLLM.Configuration.Services.ConfigurationResourceProviderService
+  href: FoundationaLLM.Configuration.Services.ConfigurationResourceProviderService.html
+  name: ConfigurationResourceProviderService
+  nameWithType: ConfigurationResourceProviderService
+  fullName: FoundationaLLM.Configuration.Services.ConfigurationResourceProviderService

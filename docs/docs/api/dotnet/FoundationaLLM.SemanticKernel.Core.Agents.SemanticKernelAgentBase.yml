@@ -1,0 +1,1286 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.SemanticKernel.Core.Agents.SemanticKernelAgentBase
+  commentId: T:FoundationaLLM.SemanticKernel.Core.Agents.SemanticKernelAgentBase
+  id: SemanticKernelAgentBase
+  parent: FoundationaLLM.SemanticKernel.Core.Agents
+  children:
+  - FoundationaLLM.SemanticKernel.Core.Agents.SemanticKernelAgentBase.#ctor(FoundationaLLM.Common.Models.Orchestration.Request.LLMCompletionRequest,System.Collections.Generic.IEnumerable{FoundationaLLM.Common.Interfaces.IResourceProviderService},Microsoft.Extensions.Logging.ILogger)
+  - FoundationaLLM.SemanticKernel.Core.Agents.SemanticKernelAgentBase.BuildResponseWithAzureOpenAI
+  - FoundationaLLM.SemanticKernel.Core.Agents.SemanticKernelAgentBase.BuildResponseWithOpenAI
+  - FoundationaLLM.SemanticKernel.Core.Agents.SemanticKernelAgentBase.ExpandAndValidateAgent
+  - FoundationaLLM.SemanticKernel.Core.Agents.SemanticKernelAgentBase.GetCompletion
+  - FoundationaLLM.SemanticKernel.Core.Agents.SemanticKernelAgentBase.GetConfigurationValue(System.String)
+  - FoundationaLLM.SemanticKernel.Core.Agents.SemanticKernelAgentBase._configurationResourceProvider
+  - FoundationaLLM.SemanticKernel.Core.Agents.SemanticKernelAgentBase._deploymentName
+  - FoundationaLLM.SemanticKernel.Core.Agents.SemanticKernelAgentBase._endpointUrl
+  - FoundationaLLM.SemanticKernel.Core.Agents.SemanticKernelAgentBase._llmProvider
+  - FoundationaLLM.SemanticKernel.Core.Agents.SemanticKernelAgentBase._logger
+  - FoundationaLLM.SemanticKernel.Core.Agents.SemanticKernelAgentBase._request
+  langs:
+  - csharp
+  - vb
+  name: SemanticKernelAgentBase
+  nameWithType: SemanticKernelAgentBase
+  fullName: FoundationaLLM.SemanticKernel.Core.Agents.SemanticKernelAgentBase
+  type: Class
+  source:
+    remote:
+      path: src/dotnet/SemanticKernel/Agents/SemanticKernelAgentBase.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: SemanticKernelAgentBase
+    path: ../src/dotnet/SemanticKernel/Agents/SemanticKernelAgentBase.cs
+    startLine: 21
+  assemblies:
+  - FoundationaLLM.SemanticKernel.Core
+  namespace: FoundationaLLM.SemanticKernel.Core.Agents
+  summary: Implements the base functionality for a Semantic Kernel agent.
+  example: []
+  syntax:
+    content: public class SemanticKernelAgentBase
+    content.vb: Public Class SemanticKernelAgentBase
+  inheritance:
+  - System.Object
+  derivedClasses:
+  - FoundationaLLM.SemanticKernel.Core.Agents.SemanticKernelKnowledgeManagementAgent
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+  extensionMethods:
+  - System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+- uid: FoundationaLLM.SemanticKernel.Core.Agents.SemanticKernelAgentBase.#ctor(FoundationaLLM.Common.Models.Orchestration.Request.LLMCompletionRequest,System.Collections.Generic.IEnumerable{FoundationaLLM.Common.Interfaces.IResourceProviderService},Microsoft.Extensions.Logging.ILogger)
+  commentId: M:FoundationaLLM.SemanticKernel.Core.Agents.SemanticKernelAgentBase.#ctor(FoundationaLLM.Common.Models.Orchestration.Request.LLMCompletionRequest,System.Collections.Generic.IEnumerable{FoundationaLLM.Common.Interfaces.IResourceProviderService},Microsoft.Extensions.Logging.ILogger)
+  id: '#ctor(FoundationaLLM.Common.Models.Orchestration.Request.LLMCompletionRequest,System.Collections.Generic.IEnumerable{FoundationaLLM.Common.Interfaces.IResourceProviderService},Microsoft.Extensions.Logging.ILogger)'
+  parent: FoundationaLLM.SemanticKernel.Core.Agents.SemanticKernelAgentBase
+  langs:
+  - csharp
+  - vb
+  name: SemanticKernelAgentBase(LLMCompletionRequest, IEnumerable<IResourceProviderService>, ILogger)
+  nameWithType: SemanticKernelAgentBase.SemanticKernelAgentBase(LLMCompletionRequest, IEnumerable<IResourceProviderService>, ILogger)
+  fullName: FoundationaLLM.SemanticKernel.Core.Agents.SemanticKernelAgentBase.SemanticKernelAgentBase(FoundationaLLM.Common.Models.Orchestration.Request.LLMCompletionRequest, System.Collections.Generic.IEnumerable<FoundationaLLM.Common.Interfaces.IResourceProviderService>, Microsoft.Extensions.Logging.ILogger)
+  type: Constructor
+  source:
+    remote:
+      path: src/dotnet/SemanticKernel/Agents/SemanticKernelAgentBase.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: .ctor
+    path: ../src/dotnet/SemanticKernel/Agents/SemanticKernelAgentBase.cs
+    startLine: 21
+  assemblies:
+  - FoundationaLLM.SemanticKernel.Core
+  namespace: FoundationaLLM.SemanticKernel.Core.Agents
+  summary: Implements the base functionality for a Semantic Kernel agent.
+  example: []
+  syntax:
+    content: public SemanticKernelAgentBase(LLMCompletionRequest request, IEnumerable<IResourceProviderService> resourceProviderServices, ILogger logger)
+    parameters:
+    - id: request
+      type: FoundationaLLM.Common.Models.Orchestration.Request.LLMCompletionRequest
+      description: The <xref href="FoundationaLLM.Common.Models.Orchestration.Request.LLMCompletionRequest" data-throw-if-not-resolved="false"></xref> being processed by the agent.
+    - id: resourceProviderServices
+      type: System.Collections.Generic.IEnumerable{FoundationaLLM.Common.Interfaces.IResourceProviderService}
+      description: A collection of <xref href="FoundationaLLM.Common.Interfaces.IResourceProviderService" data-throw-if-not-resolved="false"></xref> resource providers.
+    - id: logger
+      type: Microsoft.Extensions.Logging.ILogger
+      description: The <xref href="Microsoft.Extensions.Logging.ILogger" data-throw-if-not-resolved="false"></xref> used for logging.
+    content.vb: Public Sub New(request As LLMCompletionRequest, resourceProviderServices As IEnumerable(Of IResourceProviderService), logger As ILogger)
+  overload: FoundationaLLM.SemanticKernel.Core.Agents.SemanticKernelAgentBase.#ctor*
+  nameWithType.vb: SemanticKernelAgentBase.New(LLMCompletionRequest, IEnumerable(Of IResourceProviderService), ILogger)
+  fullName.vb: FoundationaLLM.SemanticKernel.Core.Agents.SemanticKernelAgentBase.New(FoundationaLLM.Common.Models.Orchestration.Request.LLMCompletionRequest, System.Collections.Generic.IEnumerable(Of FoundationaLLM.Common.Interfaces.IResourceProviderService), Microsoft.Extensions.Logging.ILogger)
+  name.vb: New(LLMCompletionRequest, IEnumerable(Of IResourceProviderService), ILogger)
+- uid: FoundationaLLM.SemanticKernel.Core.Agents.SemanticKernelAgentBase._configurationResourceProvider
+  commentId: F:FoundationaLLM.SemanticKernel.Core.Agents.SemanticKernelAgentBase._configurationResourceProvider
+  id: _configurationResourceProvider
+  parent: FoundationaLLM.SemanticKernel.Core.Agents.SemanticKernelAgentBase
+  langs:
+  - csharp
+  - vb
+  name: _configurationResourceProvider
+  nameWithType: SemanticKernelAgentBase._configurationResourceProvider
+  fullName: FoundationaLLM.SemanticKernel.Core.Agents.SemanticKernelAgentBase._configurationResourceProvider
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/SemanticKernel/Agents/SemanticKernelAgentBase.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: _configurationResourceProvider
+    path: ../src/dotnet/SemanticKernel/Agents/SemanticKernelAgentBase.cs
+    startLine: 26
+  assemblies:
+  - FoundationaLLM.SemanticKernel.Core
+  namespace: FoundationaLLM.SemanticKernel.Core.Agents
+  syntax:
+    content: protected readonly IResourceProviderService _configurationResourceProvider
+    return:
+      type: FoundationaLLM.Common.Interfaces.IResourceProviderService
+    content.vb: Protected ReadOnly _configurationResourceProvider As IResourceProviderService
+- uid: FoundationaLLM.SemanticKernel.Core.Agents.SemanticKernelAgentBase._request
+  commentId: F:FoundationaLLM.SemanticKernel.Core.Agents.SemanticKernelAgentBase._request
+  id: _request
+  parent: FoundationaLLM.SemanticKernel.Core.Agents.SemanticKernelAgentBase
+  langs:
+  - csharp
+  - vb
+  name: _request
+  nameWithType: SemanticKernelAgentBase._request
+  fullName: FoundationaLLM.SemanticKernel.Core.Agents.SemanticKernelAgentBase._request
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/SemanticKernel/Agents/SemanticKernelAgentBase.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: _request
+    path: ../src/dotnet/SemanticKernel/Agents/SemanticKernelAgentBase.cs
+    startLine: 29
+  assemblies:
+  - FoundationaLLM.SemanticKernel.Core
+  namespace: FoundationaLLM.SemanticKernel.Core.Agents
+  syntax:
+    content: protected readonly LLMCompletionRequest _request
+    return:
+      type: FoundationaLLM.Common.Models.Orchestration.Request.LLMCompletionRequest
+    content.vb: Protected ReadOnly _request As LLMCompletionRequest
+- uid: FoundationaLLM.SemanticKernel.Core.Agents.SemanticKernelAgentBase._logger
+  commentId: F:FoundationaLLM.SemanticKernel.Core.Agents.SemanticKernelAgentBase._logger
+  id: _logger
+  parent: FoundationaLLM.SemanticKernel.Core.Agents.SemanticKernelAgentBase
+  langs:
+  - csharp
+  - vb
+  name: _logger
+  nameWithType: SemanticKernelAgentBase._logger
+  fullName: FoundationaLLM.SemanticKernel.Core.Agents.SemanticKernelAgentBase._logger
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/SemanticKernel/Agents/SemanticKernelAgentBase.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: _logger
+    path: ../src/dotnet/SemanticKernel/Agents/SemanticKernelAgentBase.cs
+    startLine: 30
+  assemblies:
+  - FoundationaLLM.SemanticKernel.Core
+  namespace: FoundationaLLM.SemanticKernel.Core.Agents
+  syntax:
+    content: protected readonly ILogger _logger
+    return:
+      type: Microsoft.Extensions.Logging.ILogger
+    content.vb: Protected ReadOnly _logger As ILogger
+- uid: FoundationaLLM.SemanticKernel.Core.Agents.SemanticKernelAgentBase._llmProvider
+  commentId: F:FoundationaLLM.SemanticKernel.Core.Agents.SemanticKernelAgentBase._llmProvider
+  id: _llmProvider
+  parent: FoundationaLLM.SemanticKernel.Core.Agents.SemanticKernelAgentBase
+  langs:
+  - csharp
+  - vb
+  name: _llmProvider
+  nameWithType: SemanticKernelAgentBase._llmProvider
+  fullName: FoundationaLLM.SemanticKernel.Core.Agents.SemanticKernelAgentBase._llmProvider
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/SemanticKernel/Agents/SemanticKernelAgentBase.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: _llmProvider
+    path: ../src/dotnet/SemanticKernel/Agents/SemanticKernelAgentBase.cs
+    startLine: 32
+  assemblies:
+  - FoundationaLLM.SemanticKernel.Core
+  namespace: FoundationaLLM.SemanticKernel.Core.Agents
+  syntax:
+    content: protected string _llmProvider
+    return:
+      type: System.String
+    content.vb: Protected _llmProvider As String
+- uid: FoundationaLLM.SemanticKernel.Core.Agents.SemanticKernelAgentBase._endpointUrl
+  commentId: F:FoundationaLLM.SemanticKernel.Core.Agents.SemanticKernelAgentBase._endpointUrl
+  id: _endpointUrl
+  parent: FoundationaLLM.SemanticKernel.Core.Agents.SemanticKernelAgentBase
+  langs:
+  - csharp
+  - vb
+  name: _endpointUrl
+  nameWithType: SemanticKernelAgentBase._endpointUrl
+  fullName: FoundationaLLM.SemanticKernel.Core.Agents.SemanticKernelAgentBase._endpointUrl
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/SemanticKernel/Agents/SemanticKernelAgentBase.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: _endpointUrl
+    path: ../src/dotnet/SemanticKernel/Agents/SemanticKernelAgentBase.cs
+    startLine: 33
+  assemblies:
+  - FoundationaLLM.SemanticKernel.Core
+  namespace: FoundationaLLM.SemanticKernel.Core.Agents
+  syntax:
+    content: protected string _endpointUrl
+    return:
+      type: System.String
+    content.vb: Protected _endpointUrl As String
+- uid: FoundationaLLM.SemanticKernel.Core.Agents.SemanticKernelAgentBase._deploymentName
+  commentId: F:FoundationaLLM.SemanticKernel.Core.Agents.SemanticKernelAgentBase._deploymentName
+  id: _deploymentName
+  parent: FoundationaLLM.SemanticKernel.Core.Agents.SemanticKernelAgentBase
+  langs:
+  - csharp
+  - vb
+  name: _deploymentName
+  nameWithType: SemanticKernelAgentBase._deploymentName
+  fullName: FoundationaLLM.SemanticKernel.Core.Agents.SemanticKernelAgentBase._deploymentName
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/SemanticKernel/Agents/SemanticKernelAgentBase.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: _deploymentName
+    path: ../src/dotnet/SemanticKernel/Agents/SemanticKernelAgentBase.cs
+    startLine: 34
+  assemblies:
+  - FoundationaLLM.SemanticKernel.Core
+  namespace: FoundationaLLM.SemanticKernel.Core.Agents
+  syntax:
+    content: protected string _deploymentName
+    return:
+      type: System.String
+    content.vb: Protected _deploymentName As String
+- uid: FoundationaLLM.SemanticKernel.Core.Agents.SemanticKernelAgentBase.GetCompletion
+  commentId: M:FoundationaLLM.SemanticKernel.Core.Agents.SemanticKernelAgentBase.GetCompletion
+  id: GetCompletion
+  parent: FoundationaLLM.SemanticKernel.Core.Agents.SemanticKernelAgentBase
+  langs:
+  - csharp
+  - vb
+  name: GetCompletion()
+  nameWithType: SemanticKernelAgentBase.GetCompletion()
+  fullName: FoundationaLLM.SemanticKernel.Core.Agents.SemanticKernelAgentBase.GetCompletion()
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/SemanticKernel/Agents/SemanticKernelAgentBase.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: GetCompletion
+    path: ../src/dotnet/SemanticKernel/Agents/SemanticKernelAgentBase.cs
+    startLine: 40
+  assemblies:
+  - FoundationaLLM.SemanticKernel.Core
+  namespace: FoundationaLLM.SemanticKernel.Core.Agents
+  summary: Gets the completion for the request.
+  example: []
+  syntax:
+    content: public Task<LLMCompletionResponse> GetCompletion()
+    return:
+      type: System.Threading.Tasks.Task{FoundationaLLM.Common.Models.Orchestration.Response.LLMCompletionResponse}
+      description: A <xref href="FoundationaLLM.Common.Models.Orchestration.Response.LLMCompletionResponse" data-throw-if-not-resolved="false"></xref> object containing the completion response.
+    content.vb: Public Function GetCompletion() As Task(Of LLMCompletionResponse)
+  overload: FoundationaLLM.SemanticKernel.Core.Agents.SemanticKernelAgentBase.GetCompletion*
+- uid: FoundationaLLM.SemanticKernel.Core.Agents.SemanticKernelAgentBase.BuildResponseWithAzureOpenAI
+  commentId: M:FoundationaLLM.SemanticKernel.Core.Agents.SemanticKernelAgentBase.BuildResponseWithAzureOpenAI
+  id: BuildResponseWithAzureOpenAI
+  parent: FoundationaLLM.SemanticKernel.Core.Agents.SemanticKernelAgentBase
+  langs:
+  - csharp
+  - vb
+  name: BuildResponseWithAzureOpenAI()
+  nameWithType: SemanticKernelAgentBase.BuildResponseWithAzureOpenAI()
+  fullName: FoundationaLLM.SemanticKernel.Core.Agents.SemanticKernelAgentBase.BuildResponseWithAzureOpenAI()
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/SemanticKernel/Agents/SemanticKernelAgentBase.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: BuildResponseWithAzureOpenAI
+    path: ../src/dotnet/SemanticKernel/Agents/SemanticKernelAgentBase.cs
+    startLine: 70
+  assemblies:
+  - FoundationaLLM.SemanticKernel.Core
+  namespace: FoundationaLLM.SemanticKernel.Core.Agents
+  summary: Builds the completion response using Azure OpenAI.
+  example: []
+  syntax:
+    content: protected virtual Task<LLMCompletionResponse> BuildResponseWithAzureOpenAI()
+    return:
+      type: System.Threading.Tasks.Task{FoundationaLLM.Common.Models.Orchestration.Response.LLMCompletionResponse}
+      description: A <xref href="FoundationaLLM.Common.Models.Orchestration.Response.LLMCompletionResponse" data-throw-if-not-resolved="false"></xref> object containing the completion response.
+    content.vb: Protected Overridable Function BuildResponseWithAzureOpenAI() As Task(Of LLMCompletionResponse)
+  overload: FoundationaLLM.SemanticKernel.Core.Agents.SemanticKernelAgentBase.BuildResponseWithAzureOpenAI*
+  exceptions:
+  - type: System.NotImplementedException
+    commentId: T:System.NotImplementedException
+    description: ''
+- uid: FoundationaLLM.SemanticKernel.Core.Agents.SemanticKernelAgentBase.BuildResponseWithOpenAI
+  commentId: M:FoundationaLLM.SemanticKernel.Core.Agents.SemanticKernelAgentBase.BuildResponseWithOpenAI
+  id: BuildResponseWithOpenAI
+  parent: FoundationaLLM.SemanticKernel.Core.Agents.SemanticKernelAgentBase
+  langs:
+  - csharp
+  - vb
+  name: BuildResponseWithOpenAI()
+  nameWithType: SemanticKernelAgentBase.BuildResponseWithOpenAI()
+  fullName: FoundationaLLM.SemanticKernel.Core.Agents.SemanticKernelAgentBase.BuildResponseWithOpenAI()
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/SemanticKernel/Agents/SemanticKernelAgentBase.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: BuildResponseWithOpenAI
+    path: ../src/dotnet/SemanticKernel/Agents/SemanticKernelAgentBase.cs
+    startLine: 81
+  assemblies:
+  - FoundationaLLM.SemanticKernel.Core
+  namespace: FoundationaLLM.SemanticKernel.Core.Agents
+  summary: Builds the completion response using OpenAI.
+  example: []
+  syntax:
+    content: protected virtual Task<LLMCompletionResponse> BuildResponseWithOpenAI()
+    return:
+      type: System.Threading.Tasks.Task{FoundationaLLM.Common.Models.Orchestration.Response.LLMCompletionResponse}
+      description: A <xref href="FoundationaLLM.Common.Models.Orchestration.Response.LLMCompletionResponse" data-throw-if-not-resolved="false"></xref> object containing the completion response.
+    content.vb: Protected Overridable Function BuildResponseWithOpenAI() As Task(Of LLMCompletionResponse)
+  overload: FoundationaLLM.SemanticKernel.Core.Agents.SemanticKernelAgentBase.BuildResponseWithOpenAI*
+  exceptions:
+  - type: System.NotImplementedException
+    commentId: T:System.NotImplementedException
+    description: ''
+- uid: FoundationaLLM.SemanticKernel.Core.Agents.SemanticKernelAgentBase.ExpandAndValidateAgent
+  commentId: M:FoundationaLLM.SemanticKernel.Core.Agents.SemanticKernelAgentBase.ExpandAndValidateAgent
+  id: ExpandAndValidateAgent
+  parent: FoundationaLLM.SemanticKernel.Core.Agents.SemanticKernelAgentBase
+  langs:
+  - csharp
+  - vb
+  name: ExpandAndValidateAgent()
+  nameWithType: SemanticKernelAgentBase.ExpandAndValidateAgent()
+  fullName: FoundationaLLM.SemanticKernel.Core.Agents.SemanticKernelAgentBase.ExpandAndValidateAgent()
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/SemanticKernel/Agents/SemanticKernelAgentBase.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: ExpandAndValidateAgent
+    path: ../src/dotnet/SemanticKernel/Agents/SemanticKernelAgentBase.cs
+    startLine: 91
+  assemblies:
+  - FoundationaLLM.SemanticKernel.Core
+  namespace: FoundationaLLM.SemanticKernel.Core.Agents
+  summary: Retrieves the agent-specific details from the agent properties payload.
+  example: []
+  syntax:
+    content: protected virtual Task ExpandAndValidateAgent()
+    return:
+      type: System.Threading.Tasks.Task
+      description: ''
+    content.vb: Protected Overridable Function ExpandAndValidateAgent() As Task
+  overload: FoundationaLLM.SemanticKernel.Core.Agents.SemanticKernelAgentBase.ExpandAndValidateAgent*
+- uid: FoundationaLLM.SemanticKernel.Core.Agents.SemanticKernelAgentBase.GetConfigurationValue(System.String)
+  commentId: M:FoundationaLLM.SemanticKernel.Core.Agents.SemanticKernelAgentBase.GetConfigurationValue(System.String)
+  id: GetConfigurationValue(System.String)
+  parent: FoundationaLLM.SemanticKernel.Core.Agents.SemanticKernelAgentBase
+  langs:
+  - csharp
+  - vb
+  name: GetConfigurationValue(string)
+  nameWithType: SemanticKernelAgentBase.GetConfigurationValue(string)
+  fullName: FoundationaLLM.SemanticKernel.Core.Agents.SemanticKernelAgentBase.GetConfigurationValue(string)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/SemanticKernel/Agents/SemanticKernelAgentBase.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: GetConfigurationValue
+    path: ../src/dotnet/SemanticKernel/Agents/SemanticKernelAgentBase.cs
+    startLine: 97
+  assemblies:
+  - FoundationaLLM.SemanticKernel.Core
+  namespace: FoundationaLLM.SemanticKernel.Core.Agents
+  syntax:
+    content: protected Task<string> GetConfigurationValue(string configName)
+    parameters:
+    - id: configName
+      type: System.String
+    return:
+      type: System.Threading.Tasks.Task{System.String}
+    content.vb: Protected Function GetConfigurationValue(configName As String) As Task(Of String)
+  overload: FoundationaLLM.SemanticKernel.Core.Agents.SemanticKernelAgentBase.GetConfigurationValue*
+  nameWithType.vb: SemanticKernelAgentBase.GetConfigurationValue(String)
+  fullName.vb: FoundationaLLM.SemanticKernel.Core.Agents.SemanticKernelAgentBase.GetConfigurationValue(String)
+  name.vb: GetConfigurationValue(String)
+references:
+- uid: FoundationaLLM.Common.Models.Orchestration.Request.LLMCompletionRequest
+  commentId: T:FoundationaLLM.Common.Models.Orchestration.Request.LLMCompletionRequest
+  parent: FoundationaLLM.Common.Models.Orchestration.Request
+  href: FoundationaLLM.Common.Models.Orchestration.Request.LLMCompletionRequest.html
+  name: LLMCompletionRequest
+  nameWithType: LLMCompletionRequest
+  fullName: FoundationaLLM.Common.Models.Orchestration.Request.LLMCompletionRequest
+- uid: FoundationaLLM.Common.Interfaces.IResourceProviderService
+  commentId: T:FoundationaLLM.Common.Interfaces.IResourceProviderService
+  parent: FoundationaLLM.Common.Interfaces
+  href: FoundationaLLM.Common.Interfaces.IResourceProviderService.html
+  name: IResourceProviderService
+  nameWithType: IResourceProviderService
+  fullName: FoundationaLLM.Common.Interfaces.IResourceProviderService
+- uid: Microsoft.Extensions.Logging.ILogger
+  commentId: T:Microsoft.Extensions.Logging.ILogger
+  parent: Microsoft.Extensions.Logging
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger
+  name: ILogger
+  nameWithType: ILogger
+  fullName: Microsoft.Extensions.Logging.ILogger
+- uid: FoundationaLLM.SemanticKernel.Core.Agents
+  commentId: N:FoundationaLLM.SemanticKernel.Core.Agents
+  href: FoundationaLLM.html
+  name: FoundationaLLM.SemanticKernel.Core.Agents
+  nameWithType: FoundationaLLM.SemanticKernel.Core.Agents
+  fullName: FoundationaLLM.SemanticKernel.Core.Agents
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.SemanticKernel
+    name: SemanticKernel
+    href: FoundationaLLM.SemanticKernel.html
+  - name: .
+  - uid: FoundationaLLM.SemanticKernel.Core
+    name: Core
+    href: FoundationaLLM.SemanticKernel.Core.html
+  - name: .
+  - uid: FoundationaLLM.SemanticKernel.Core.Agents
+    name: Agents
+    href: FoundationaLLM.SemanticKernel.Core.Agents.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.SemanticKernel
+    name: SemanticKernel
+    href: FoundationaLLM.SemanticKernel.html
+  - name: .
+  - uid: FoundationaLLM.SemanticKernel.Core
+    name: Core
+    href: FoundationaLLM.SemanticKernel.Core.html
+  - name: .
+  - uid: FoundationaLLM.SemanticKernel.Core.Agents
+    name: Agents
+    href: FoundationaLLM.SemanticKernel.Core.Agents.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  parent: FoundationaLLM.Core.Utils.ObjectExtensions
+  definition: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: FoundationaLLM.Common.Models.Orchestration.Request
+  commentId: N:FoundationaLLM.Common.Models.Orchestration.Request
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.Orchestration.Request
+  nameWithType: FoundationaLLM.Common.Models.Orchestration.Request
+  fullName: FoundationaLLM.Common.Models.Orchestration.Request
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Orchestration
+    name: Orchestration
+    href: FoundationaLLM.Common.Models.Orchestration.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Orchestration.Request
+    name: Request
+    href: FoundationaLLM.Common.Models.Orchestration.Request.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Orchestration
+    name: Orchestration
+    href: FoundationaLLM.Common.Models.Orchestration.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Orchestration.Request
+    name: Request
+    href: FoundationaLLM.Common.Models.Orchestration.Request.html
+- uid: FoundationaLLM.Common.Interfaces
+  commentId: N:FoundationaLLM.Common.Interfaces
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Interfaces
+  nameWithType: FoundationaLLM.Common.Interfaces
+  fullName: FoundationaLLM.Common.Interfaces
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Interfaces
+    name: Interfaces
+    href: FoundationaLLM.Common.Interfaces.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Interfaces
+    name: Interfaces
+    href: FoundationaLLM.Common.Interfaces.html
+- uid: Microsoft.Extensions.Logging
+  commentId: N:Microsoft.Extensions.Logging
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft
+  name: Microsoft.Extensions.Logging
+  nameWithType: Microsoft.Extensions.Logging
+  fullName: Microsoft.Extensions.Logging
+  spec.csharp:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Logging
+    name: Logging
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging
+  spec.vb:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Logging
+    name: Logging
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  isExternal: true
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions
+  commentId: T:FoundationaLLM.Core.Utils.ObjectExtensions
+  parent: FoundationaLLM.Core.Utils
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html
+  name: ObjectExtensions
+  nameWithType: ObjectExtensions
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions
+- uid: FoundationaLLM.Core.Utils
+  commentId: N:FoundationaLLM.Core.Utils
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Core.Utils
+  nameWithType: FoundationaLLM.Core.Utils
+  fullName: FoundationaLLM.Core.Utils
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+- uid: FoundationaLLM.SemanticKernel.Core.Agents.SemanticKernelAgentBase.#ctor*
+  commentId: Overload:FoundationaLLM.SemanticKernel.Core.Agents.SemanticKernelAgentBase.#ctor
+  href: FoundationaLLM.SemanticKernel.Core.Agents.SemanticKernelAgentBase.html#FoundationaLLM_SemanticKernel_Core_Agents_SemanticKernelAgentBase__ctor_FoundationaLLM_Common_Models_Orchestration_Request_LLMCompletionRequest_System_Collections_Generic_IEnumerable_FoundationaLLM_Common_Interfaces_IResourceProviderService__Microsoft_Extensions_Logging_ILogger_
+  name: SemanticKernelAgentBase
+  nameWithType: SemanticKernelAgentBase.SemanticKernelAgentBase
+  fullName: FoundationaLLM.SemanticKernel.Core.Agents.SemanticKernelAgentBase.SemanticKernelAgentBase
+  nameWithType.vb: SemanticKernelAgentBase.New
+  fullName.vb: FoundationaLLM.SemanticKernel.Core.Agents.SemanticKernelAgentBase.New
+  name.vb: New
+- uid: System.Collections.Generic.IEnumerable{FoundationaLLM.Common.Interfaces.IResourceProviderService}
+  commentId: T:System.Collections.Generic.IEnumerable{FoundationaLLM.Common.Interfaces.IResourceProviderService}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IEnumerable`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<IResourceProviderService>
+  nameWithType: IEnumerable<IResourceProviderService>
+  fullName: System.Collections.Generic.IEnumerable<FoundationaLLM.Common.Interfaces.IResourceProviderService>
+  nameWithType.vb: IEnumerable(Of IResourceProviderService)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of FoundationaLLM.Common.Interfaces.IResourceProviderService)
+  name.vb: IEnumerable(Of IResourceProviderService)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - uid: FoundationaLLM.Common.Interfaces.IResourceProviderService
+    name: IResourceProviderService
+    href: FoundationaLLM.Common.Interfaces.IResourceProviderService.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FoundationaLLM.Common.Interfaces.IResourceProviderService
+    name: IResourceProviderService
+    href: FoundationaLLM.Common.Interfaces.IResourceProviderService.html
+  - name: )
+- uid: System.Collections.Generic.IEnumerable`1
+  commentId: T:System.Collections.Generic.IEnumerable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<T>
+  nameWithType: IEnumerable<T>
+  fullName: System.Collections.Generic.IEnumerable<T>
+  nameWithType.vb: IEnumerable(Of T)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of T)
+  name.vb: IEnumerable(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: FoundationaLLM.Common.Models.Orchestration.Response.LLMCompletionResponse
+  commentId: T:FoundationaLLM.Common.Models.Orchestration.Response.LLMCompletionResponse
+  href: FoundationaLLM.Common.Models.Orchestration.Response.LLMCompletionResponse.html
+  name: LLMCompletionResponse
+  nameWithType: LLMCompletionResponse
+  fullName: FoundationaLLM.Common.Models.Orchestration.Response.LLMCompletionResponse
+- uid: FoundationaLLM.SemanticKernel.Core.Agents.SemanticKernelAgentBase.GetCompletion*
+  commentId: Overload:FoundationaLLM.SemanticKernel.Core.Agents.SemanticKernelAgentBase.GetCompletion
+  href: FoundationaLLM.SemanticKernel.Core.Agents.SemanticKernelAgentBase.html#FoundationaLLM_SemanticKernel_Core_Agents_SemanticKernelAgentBase_GetCompletion
+  name: GetCompletion
+  nameWithType: SemanticKernelAgentBase.GetCompletion
+  fullName: FoundationaLLM.SemanticKernel.Core.Agents.SemanticKernelAgentBase.GetCompletion
+- uid: System.Threading.Tasks.Task{FoundationaLLM.Common.Models.Orchestration.Response.LLMCompletionResponse}
+  commentId: T:System.Threading.Tasks.Task{FoundationaLLM.Common.Models.Orchestration.Response.LLMCompletionResponse}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<LLMCompletionResponse>
+  nameWithType: Task<LLMCompletionResponse>
+  fullName: System.Threading.Tasks.Task<FoundationaLLM.Common.Models.Orchestration.Response.LLMCompletionResponse>
+  nameWithType.vb: Task(Of LLMCompletionResponse)
+  fullName.vb: System.Threading.Tasks.Task(Of FoundationaLLM.Common.Models.Orchestration.Response.LLMCompletionResponse)
+  name.vb: Task(Of LLMCompletionResponse)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: FoundationaLLM.Common.Models.Orchestration.Response.LLMCompletionResponse
+    name: LLMCompletionResponse
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FoundationaLLM.Common.Models.Orchestration.Response.LLMCompletionResponse
+    name: LLMCompletionResponse
+  - name: )
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: System.NotImplementedException
+  commentId: T:System.NotImplementedException
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.notimplementedexception
+  name: NotImplementedException
+  nameWithType: NotImplementedException
+  fullName: System.NotImplementedException
+- uid: FoundationaLLM.SemanticKernel.Core.Agents.SemanticKernelAgentBase.BuildResponseWithAzureOpenAI*
+  commentId: Overload:FoundationaLLM.SemanticKernel.Core.Agents.SemanticKernelAgentBase.BuildResponseWithAzureOpenAI
+  href: FoundationaLLM.SemanticKernel.Core.Agents.SemanticKernelAgentBase.html#FoundationaLLM_SemanticKernel_Core_Agents_SemanticKernelAgentBase_BuildResponseWithAzureOpenAI
+  name: BuildResponseWithAzureOpenAI
+  nameWithType: SemanticKernelAgentBase.BuildResponseWithAzureOpenAI
+  fullName: FoundationaLLM.SemanticKernel.Core.Agents.SemanticKernelAgentBase.BuildResponseWithAzureOpenAI
+- uid: FoundationaLLM.SemanticKernel.Core.Agents.SemanticKernelAgentBase.BuildResponseWithOpenAI*
+  commentId: Overload:FoundationaLLM.SemanticKernel.Core.Agents.SemanticKernelAgentBase.BuildResponseWithOpenAI
+  href: FoundationaLLM.SemanticKernel.Core.Agents.SemanticKernelAgentBase.html#FoundationaLLM_SemanticKernel_Core_Agents_SemanticKernelAgentBase_BuildResponseWithOpenAI
+  name: BuildResponseWithOpenAI
+  nameWithType: SemanticKernelAgentBase.BuildResponseWithOpenAI
+  fullName: FoundationaLLM.SemanticKernel.Core.Agents.SemanticKernelAgentBase.BuildResponseWithOpenAI
+- uid: FoundationaLLM.SemanticKernel.Core.Agents.SemanticKernelAgentBase.ExpandAndValidateAgent*
+  commentId: Overload:FoundationaLLM.SemanticKernel.Core.Agents.SemanticKernelAgentBase.ExpandAndValidateAgent
+  href: FoundationaLLM.SemanticKernel.Core.Agents.SemanticKernelAgentBase.html#FoundationaLLM_SemanticKernel_Core_Agents_SemanticKernelAgentBase_ExpandAndValidateAgent
+  name: ExpandAndValidateAgent
+  nameWithType: SemanticKernelAgentBase.ExpandAndValidateAgent
+  fullName: FoundationaLLM.SemanticKernel.Core.Agents.SemanticKernelAgentBase.ExpandAndValidateAgent
+- uid: System.Threading.Tasks.Task
+  commentId: T:System.Threading.Tasks.Task
+  parent: System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  name: Task
+  nameWithType: Task
+  fullName: System.Threading.Tasks.Task
+- uid: FoundationaLLM.SemanticKernel.Core.Agents.SemanticKernelAgentBase.GetConfigurationValue*
+  commentId: Overload:FoundationaLLM.SemanticKernel.Core.Agents.SemanticKernelAgentBase.GetConfigurationValue
+  href: FoundationaLLM.SemanticKernel.Core.Agents.SemanticKernelAgentBase.html#FoundationaLLM_SemanticKernel_Core_Agents_SemanticKernelAgentBase_GetConfigurationValue_System_String_
+  name: GetConfigurationValue
+  nameWithType: SemanticKernelAgentBase.GetConfigurationValue
+  fullName: FoundationaLLM.SemanticKernel.Core.Agents.SemanticKernelAgentBase.GetConfigurationValue
+- uid: System.Threading.Tasks.Task{System.String}
+  commentId: T:System.Threading.Tasks.Task{System.String}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<string>
+  nameWithType: Task<string>
+  fullName: System.Threading.Tasks.Task<string>
+  nameWithType.vb: Task(Of String)
+  fullName.vb: System.Threading.Tasks.Task(Of String)
+  name.vb: Task(Of String)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )

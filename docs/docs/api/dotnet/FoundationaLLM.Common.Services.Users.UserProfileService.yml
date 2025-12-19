@@ -1,0 +1,1421 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Common.Services.Users.UserProfileService
+  commentId: T:FoundationaLLM.Common.Services.Users.UserProfileService
+  id: UserProfileService
+  parent: FoundationaLLM.Common.Services.Users
+  children:
+  - FoundationaLLM.Common.Services.Users.UserProfileService.#ctor(FoundationaLLM.Common.Interfaces.IAzureCosmosDBService,Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Common.Services.Users.UserProfileService},FoundationaLLM.Common.Interfaces.IOrchestrationContext,System.Collections.Generic.IEnumerable{FoundationaLLM.Common.Interfaces.IResourceProviderService})
+  - FoundationaLLM.Common.Services.Users.UserProfileService.AddAgent(System.String,System.String)
+  - FoundationaLLM.Common.Services.Users.UserProfileService.GetUserProfileAsync(System.String)
+  - FoundationaLLM.Common.Services.Users.UserProfileService.GetUserProfileForUserAsync(System.String,System.String)
+  - FoundationaLLM.Common.Services.Users.UserProfileService.RemoveAgent(System.String,System.String)
+  - FoundationaLLM.Common.Services.Users.UserProfileService.UpsertUserProfileAsync(System.String,FoundationaLLM.Common.Models.Configuration.Users.UserProfile)
+  langs:
+  - csharp
+  - vb
+  name: UserProfileService
+  nameWithType: UserProfileService
+  fullName: FoundationaLLM.Common.Services.Users.UserProfileService
+  type: Class
+  source:
+    remote:
+      path: src/dotnet/Common/Services/Users/UserProfileService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: UserProfileService
+    path: ../src/dotnet/Common/Services/Users/UserProfileService.cs
+    startLine: 15
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Services.Users
+  summary: Supports all classes in the .NET class hierarchy and provides low-level services to derived classes. This is the ultimate base class of all .NET classes; it is the root of the type hierarchy.
+  example: []
+  syntax:
+    content: 'public class UserProfileService : IUserProfileService'
+    content.vb: Public Class UserProfileService Implements IUserProfileService
+  inheritance:
+  - System.Object
+  implements:
+  - FoundationaLLM.Common.Interfaces.IUserProfileService
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+  extensionMethods:
+  - System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+- uid: FoundationaLLM.Common.Services.Users.UserProfileService.#ctor(FoundationaLLM.Common.Interfaces.IAzureCosmosDBService,Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Common.Services.Users.UserProfileService},FoundationaLLM.Common.Interfaces.IOrchestrationContext,System.Collections.Generic.IEnumerable{FoundationaLLM.Common.Interfaces.IResourceProviderService})
+  commentId: M:FoundationaLLM.Common.Services.Users.UserProfileService.#ctor(FoundationaLLM.Common.Interfaces.IAzureCosmosDBService,Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Common.Services.Users.UserProfileService},FoundationaLLM.Common.Interfaces.IOrchestrationContext,System.Collections.Generic.IEnumerable{FoundationaLLM.Common.Interfaces.IResourceProviderService})
+  id: '#ctor(FoundationaLLM.Common.Interfaces.IAzureCosmosDBService,Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Common.Services.Users.UserProfileService},FoundationaLLM.Common.Interfaces.IOrchestrationContext,System.Collections.Generic.IEnumerable{FoundationaLLM.Common.Interfaces.IResourceProviderService})'
+  parent: FoundationaLLM.Common.Services.Users.UserProfileService
+  langs:
+  - csharp
+  - vb
+  name: UserProfileService(IAzureCosmosDBService, ILogger<UserProfileService>, IOrchestrationContext, IEnumerable<IResourceProviderService>)
+  nameWithType: UserProfileService.UserProfileService(IAzureCosmosDBService, ILogger<UserProfileService>, IOrchestrationContext, IEnumerable<IResourceProviderService>)
+  fullName: FoundationaLLM.Common.Services.Users.UserProfileService.UserProfileService(FoundationaLLM.Common.Interfaces.IAzureCosmosDBService, Microsoft.Extensions.Logging.ILogger<FoundationaLLM.Common.Services.Users.UserProfileService>, FoundationaLLM.Common.Interfaces.IOrchestrationContext, System.Collections.Generic.IEnumerable<FoundationaLLM.Common.Interfaces.IResourceProviderService>)
+  type: Constructor
+  source:
+    remote:
+      path: src/dotnet/Common/Services/Users/UserProfileService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: .ctor
+    path: ../src/dotnet/Common/Services/Users/UserProfileService.cs
+    startLine: 32
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Services.Users
+  summary: Initializes a new instance of the <xref href="FoundationaLLM.Common.Services.Users.UserProfileService" data-throw-if-not-resolved="false"></xref> class.
+  example: []
+  syntax:
+    content: public UserProfileService(IAzureCosmosDBService cosmosDBService, ILogger<UserProfileService> logger, IOrchestrationContext callContext, IEnumerable<IResourceProviderService> resourceProviderServices)
+    parameters:
+    - id: cosmosDBService
+      type: FoundationaLLM.Common.Interfaces.IAzureCosmosDBService
+      description: >-
+        The Azure Cosmos DB service that contains
+            user profiles.
+    - id: logger
+      type: Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Common.Services.Users.UserProfileService}
+      description: >-
+        The logging interface used to log under the
+            <xref href="FoundationaLLM.Common.Services.Users.UserProfileService" data-throw-if-not-resolved="false"></xref> type name.
+    - id: callContext
+      type: FoundationaLLM.Common.Interfaces.IOrchestrationContext
+      description: Contains contextual data for the calling service.
+    - id: resourceProviderServices
+      type: System.Collections.Generic.IEnumerable{FoundationaLLM.Common.Interfaces.IResourceProviderService}
+      description: The collection of <xref href="FoundationaLLM.Common.Interfaces.IResourceProviderService" data-throw-if-not-resolved="false"></xref> services.
+    content.vb: Public Sub New(cosmosDBService As IAzureCosmosDBService, logger As ILogger(Of UserProfileService), callContext As IOrchestrationContext, resourceProviderServices As IEnumerable(Of IResourceProviderService))
+  overload: FoundationaLLM.Common.Services.Users.UserProfileService.#ctor*
+  nameWithType.vb: UserProfileService.New(IAzureCosmosDBService, ILogger(Of UserProfileService), IOrchestrationContext, IEnumerable(Of IResourceProviderService))
+  fullName.vb: FoundationaLLM.Common.Services.Users.UserProfileService.New(FoundationaLLM.Common.Interfaces.IAzureCosmosDBService, Microsoft.Extensions.Logging.ILogger(Of FoundationaLLM.Common.Services.Users.UserProfileService), FoundationaLLM.Common.Interfaces.IOrchestrationContext, System.Collections.Generic.IEnumerable(Of FoundationaLLM.Common.Interfaces.IResourceProviderService))
+  name.vb: New(IAzureCosmosDBService, ILogger(Of UserProfileService), IOrchestrationContext, IEnumerable(Of IResourceProviderService))
+- uid: FoundationaLLM.Common.Services.Users.UserProfileService.GetUserProfileAsync(System.String)
+  commentId: M:FoundationaLLM.Common.Services.Users.UserProfileService.GetUserProfileAsync(System.String)
+  id: GetUserProfileAsync(System.String)
+  parent: FoundationaLLM.Common.Services.Users.UserProfileService
+  langs:
+  - csharp
+  - vb
+  name: GetUserProfileAsync(string)
+  nameWithType: UserProfileService.GetUserProfileAsync(string)
+  fullName: FoundationaLLM.Common.Services.Users.UserProfileService.GetUserProfileAsync(string)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Common/Services/Users/UserProfileService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: GetUserProfileAsync
+    path: ../src/dotnet/Common/Services/Users/UserProfileService.cs
+    startLine: 50
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Services.Users
+  summary: Returns the user profile of the signed in user.
+  example: []
+  syntax:
+    content: public Task<UserProfile?> GetUserProfileAsync(string instanceId)
+    parameters:
+    - id: instanceId
+      type: System.String
+      description: The instance ID.
+    return:
+      type: System.Threading.Tasks.Task{FoundationaLLM.Common.Models.Configuration.Users.UserProfile}
+      description: ''
+    content.vb: Public Function GetUserProfileAsync(instanceId As String) As Task(Of UserProfile)
+  overload: FoundationaLLM.Common.Services.Users.UserProfileService.GetUserProfileAsync*
+  exceptions:
+  - type: System.InvalidOperationException
+    commentId: T:System.InvalidOperationException
+    description: ''
+  implements:
+  - FoundationaLLM.Common.Interfaces.IUserProfileService.GetUserProfileAsync(System.String)
+  nameWithType.vb: UserProfileService.GetUserProfileAsync(String)
+  fullName.vb: FoundationaLLM.Common.Services.Users.UserProfileService.GetUserProfileAsync(String)
+  name.vb: GetUserProfileAsync(String)
+- uid: FoundationaLLM.Common.Services.Users.UserProfileService.GetUserProfileForUserAsync(System.String,System.String)
+  commentId: M:FoundationaLLM.Common.Services.Users.UserProfileService.GetUserProfileForUserAsync(System.String,System.String)
+  id: GetUserProfileForUserAsync(System.String,System.String)
+  parent: FoundationaLLM.Common.Services.Users.UserProfileService
+  langs:
+  - csharp
+  - vb
+  name: GetUserProfileForUserAsync(string, string)
+  nameWithType: UserProfileService.GetUserProfileForUserAsync(string, string)
+  fullName: FoundationaLLM.Common.Services.Users.UserProfileService.GetUserProfileForUserAsync(string, string)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Common/Services/Users/UserProfileService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: GetUserProfileForUserAsync
+    path: ../src/dotnet/Common/Services/Users/UserProfileService.cs
+    startLine: 56
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Services.Users
+  summary: Returns the user profile of the specified user.
+  example: []
+  syntax:
+    content: public Task<UserProfile?> GetUserProfileForUserAsync(string instanceId, string upn)
+    parameters:
+    - id: instanceId
+      type: System.String
+      description: The instance ID.
+    - id: upn
+      type: System.String
+      description: The user principal name of the user for whom to return the user profile.
+    return:
+      type: System.Threading.Tasks.Task{FoundationaLLM.Common.Models.Configuration.Users.UserProfile}
+      description: ''
+    content.vb: Public Function GetUserProfileForUserAsync(instanceId As String, upn As String) As Task(Of UserProfile)
+  overload: FoundationaLLM.Common.Services.Users.UserProfileService.GetUserProfileForUserAsync*
+  implements:
+  - FoundationaLLM.Common.Interfaces.IUserProfileService.GetUserProfileForUserAsync(System.String,System.String)
+  nameWithType.vb: UserProfileService.GetUserProfileForUserAsync(String, String)
+  fullName.vb: FoundationaLLM.Common.Services.Users.UserProfileService.GetUserProfileForUserAsync(String, String)
+  name.vb: GetUserProfileForUserAsync(String, String)
+- uid: FoundationaLLM.Common.Services.Users.UserProfileService.UpsertUserProfileAsync(System.String,FoundationaLLM.Common.Models.Configuration.Users.UserProfile)
+  commentId: M:FoundationaLLM.Common.Services.Users.UserProfileService.UpsertUserProfileAsync(System.String,FoundationaLLM.Common.Models.Configuration.Users.UserProfile)
+  id: UpsertUserProfileAsync(System.String,FoundationaLLM.Common.Models.Configuration.Users.UserProfile)
+  parent: FoundationaLLM.Common.Services.Users.UserProfileService
+  langs:
+  - csharp
+  - vb
+  name: UpsertUserProfileAsync(string, UserProfile)
+  nameWithType: UserProfileService.UpsertUserProfileAsync(string, UserProfile)
+  fullName: FoundationaLLM.Common.Services.Users.UserProfileService.UpsertUserProfileAsync(string, FoundationaLLM.Common.Models.Configuration.Users.UserProfile)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Common/Services/Users/UserProfileService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: UpsertUserProfileAsync
+    path: ../src/dotnet/Common/Services/Users/UserProfileService.cs
+    startLine: 60
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Services.Users
+  summary: Inserts or updates a user profile.
+  example: []
+  syntax:
+    content: public Task UpsertUserProfileAsync(string instanceId, UserProfile userProfile)
+    parameters:
+    - id: instanceId
+      type: System.String
+      description: The instance ID.
+    - id: userProfile
+      type: FoundationaLLM.Common.Models.Configuration.Users.UserProfile
+      description: The user profile to upsert.
+    return:
+      type: System.Threading.Tasks.Task
+      description: ''
+    content.vb: Public Function UpsertUserProfileAsync(instanceId As String, userProfile As UserProfile) As Task
+  overload: FoundationaLLM.Common.Services.Users.UserProfileService.UpsertUserProfileAsync*
+  exceptions:
+  - type: System.InvalidOperationException
+    commentId: T:System.InvalidOperationException
+    description: ''
+  implements:
+  - FoundationaLLM.Common.Interfaces.IUserProfileService.UpsertUserProfileAsync(System.String,FoundationaLLM.Common.Models.Configuration.Users.UserProfile)
+  nameWithType.vb: UserProfileService.UpsertUserProfileAsync(String, UserProfile)
+  fullName.vb: FoundationaLLM.Common.Services.Users.UserProfileService.UpsertUserProfileAsync(String, FoundationaLLM.Common.Models.Configuration.Users.UserProfile)
+  name.vb: UpsertUserProfileAsync(String, UserProfile)
+- uid: FoundationaLLM.Common.Services.Users.UserProfileService.AddAgent(System.String,System.String)
+  commentId: M:FoundationaLLM.Common.Services.Users.UserProfileService.AddAgent(System.String,System.String)
+  id: AddAgent(System.String,System.String)
+  parent: FoundationaLLM.Common.Services.Users.UserProfileService
+  langs:
+  - csharp
+  - vb
+  name: AddAgent(string, string)
+  nameWithType: UserProfileService.AddAgent(string, string)
+  fullName: FoundationaLLM.Common.Services.Users.UserProfileService.AddAgent(string, string)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Common/Services/Users/UserProfileService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: AddAgent
+    path: ../src/dotnet/Common/Services/Users/UserProfileService.cs
+    startLine: 73
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Services.Users
+  summary: Adds an agent to the user's profile.
+  example: []
+  syntax:
+    content: public Task AddAgent(string instanceId, string agentObjectId)
+    parameters:
+    - id: instanceId
+      type: System.String
+      description: The FoundationaLLM instance identifier.
+    - id: agentObjectId
+      type: System.String
+      description: The object identifier of the agent to add.
+    return:
+      type: System.Threading.Tasks.Task
+      description: ''
+    content.vb: Public Function AddAgent(instanceId As String, agentObjectId As String) As Task
+  overload: FoundationaLLM.Common.Services.Users.UserProfileService.AddAgent*
+  implements:
+  - FoundationaLLM.Common.Interfaces.IUserProfileService.AddAgent(System.String,System.String)
+  nameWithType.vb: UserProfileService.AddAgent(String, String)
+  fullName.vb: FoundationaLLM.Common.Services.Users.UserProfileService.AddAgent(String, String)
+  name.vb: AddAgent(String, String)
+- uid: FoundationaLLM.Common.Services.Users.UserProfileService.RemoveAgent(System.String,System.String)
+  commentId: M:FoundationaLLM.Common.Services.Users.UserProfileService.RemoveAgent(System.String,System.String)
+  id: RemoveAgent(System.String,System.String)
+  parent: FoundationaLLM.Common.Services.Users.UserProfileService
+  langs:
+  - csharp
+  - vb
+  name: RemoveAgent(string, string)
+  nameWithType: UserProfileService.RemoveAgent(string, string)
+  fullName: FoundationaLLM.Common.Services.Users.UserProfileService.RemoveAgent(string, string)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Common/Services/Users/UserProfileService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: RemoveAgent
+    path: ../src/dotnet/Common/Services/Users/UserProfileService.cs
+    startLine: 119
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Services.Users
+  summary: Removes an agent to the user's profile.
+  example: []
+  syntax:
+    content: public Task RemoveAgent(string instanceId, string agentObjectId)
+    parameters:
+    - id: instanceId
+      type: System.String
+      description: The FoundationaLLM instance identifier.
+    - id: agentObjectId
+      type: System.String
+      description: The object identifier of the agent to remove.
+    return:
+      type: System.Threading.Tasks.Task
+      description: ''
+    content.vb: Public Function RemoveAgent(instanceId As String, agentObjectId As String) As Task
+  overload: FoundationaLLM.Common.Services.Users.UserProfileService.RemoveAgent*
+  implements:
+  - FoundationaLLM.Common.Interfaces.IUserProfileService.RemoveAgent(System.String,System.String)
+  nameWithType.vb: UserProfileService.RemoveAgent(String, String)
+  fullName.vb: FoundationaLLM.Common.Services.Users.UserProfileService.RemoveAgent(String, String)
+  name.vb: RemoveAgent(String, String)
+references:
+- uid: FoundationaLLM.Common.Services.Users
+  commentId: N:FoundationaLLM.Common.Services.Users
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Services.Users
+  nameWithType: FoundationaLLM.Common.Services.Users
+  fullName: FoundationaLLM.Common.Services.Users
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Services
+    name: Services
+    href: FoundationaLLM.Common.Services.html
+  - name: .
+  - uid: FoundationaLLM.Common.Services.Users
+    name: Users
+    href: FoundationaLLM.Common.Services.Users.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Services
+    name: Services
+    href: FoundationaLLM.Common.Services.html
+  - name: .
+  - uid: FoundationaLLM.Common.Services.Users
+    name: Users
+    href: FoundationaLLM.Common.Services.Users.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: FoundationaLLM.Common.Interfaces.IUserProfileService
+  commentId: T:FoundationaLLM.Common.Interfaces.IUserProfileService
+  parent: FoundationaLLM.Common.Interfaces
+  href: FoundationaLLM.Common.Interfaces.IUserProfileService.html
+  name: IUserProfileService
+  nameWithType: IUserProfileService
+  fullName: FoundationaLLM.Common.Interfaces.IUserProfileService
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  parent: FoundationaLLM.Core.Utils.ObjectExtensions
+  definition: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: FoundationaLLM.Common.Interfaces
+  commentId: N:FoundationaLLM.Common.Interfaces
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Interfaces
+  nameWithType: FoundationaLLM.Common.Interfaces
+  fullName: FoundationaLLM.Common.Interfaces
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Interfaces
+    name: Interfaces
+    href: FoundationaLLM.Common.Interfaces.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Interfaces
+    name: Interfaces
+    href: FoundationaLLM.Common.Interfaces.html
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  isExternal: true
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions
+  commentId: T:FoundationaLLM.Core.Utils.ObjectExtensions
+  parent: FoundationaLLM.Core.Utils
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html
+  name: ObjectExtensions
+  nameWithType: ObjectExtensions
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions
+- uid: FoundationaLLM.Core.Utils
+  commentId: N:FoundationaLLM.Core.Utils
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Core.Utils
+  nameWithType: FoundationaLLM.Core.Utils
+  fullName: FoundationaLLM.Core.Utils
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+- uid: FoundationaLLM.Common.Services.Users.UserProfileService
+  commentId: T:FoundationaLLM.Common.Services.Users.UserProfileService
+  href: FoundationaLLM.Common.Services.Users.UserProfileService.html
+  name: UserProfileService
+  nameWithType: UserProfileService
+  fullName: FoundationaLLM.Common.Services.Users.UserProfileService
+- uid: FoundationaLLM.Common.Interfaces.IResourceProviderService
+  commentId: T:FoundationaLLM.Common.Interfaces.IResourceProviderService
+  parent: FoundationaLLM.Common.Interfaces
+  href: FoundationaLLM.Common.Interfaces.IResourceProviderService.html
+  name: IResourceProviderService
+  nameWithType: IResourceProviderService
+  fullName: FoundationaLLM.Common.Interfaces.IResourceProviderService
+- uid: FoundationaLLM.Common.Services.Users.UserProfileService.#ctor*
+  commentId: Overload:FoundationaLLM.Common.Services.Users.UserProfileService.#ctor
+  href: FoundationaLLM.Common.Services.Users.UserProfileService.html#FoundationaLLM_Common_Services_Users_UserProfileService__ctor_FoundationaLLM_Common_Interfaces_IAzureCosmosDBService_Microsoft_Extensions_Logging_ILogger_FoundationaLLM_Common_Services_Users_UserProfileService__FoundationaLLM_Common_Interfaces_IOrchestrationContext_System_Collections_Generic_IEnumerable_FoundationaLLM_Common_Interfaces_IResourceProviderService__
+  name: UserProfileService
+  nameWithType: UserProfileService.UserProfileService
+  fullName: FoundationaLLM.Common.Services.Users.UserProfileService.UserProfileService
+  nameWithType.vb: UserProfileService.New
+  fullName.vb: FoundationaLLM.Common.Services.Users.UserProfileService.New
+  name.vb: New
+- uid: FoundationaLLM.Common.Interfaces.IAzureCosmosDBService
+  commentId: T:FoundationaLLM.Common.Interfaces.IAzureCosmosDBService
+  parent: FoundationaLLM.Common.Interfaces
+  href: FoundationaLLM.Common.Interfaces.IAzureCosmosDBService.html
+  name: IAzureCosmosDBService
+  nameWithType: IAzureCosmosDBService
+  fullName: FoundationaLLM.Common.Interfaces.IAzureCosmosDBService
+- uid: Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Common.Services.Users.UserProfileService}
+  commentId: T:Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Common.Services.Users.UserProfileService}
+  parent: Microsoft.Extensions.Logging
+  definition: Microsoft.Extensions.Logging.ILogger`1
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  name: ILogger<UserProfileService>
+  nameWithType: ILogger<UserProfileService>
+  fullName: Microsoft.Extensions.Logging.ILogger<FoundationaLLM.Common.Services.Users.UserProfileService>
+  nameWithType.vb: ILogger(Of UserProfileService)
+  fullName.vb: Microsoft.Extensions.Logging.ILogger(Of FoundationaLLM.Common.Services.Users.UserProfileService)
+  name.vb: ILogger(Of UserProfileService)
+  spec.csharp:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: <
+  - uid: FoundationaLLM.Common.Services.Users.UserProfileService
+    name: UserProfileService
+    href: FoundationaLLM.Common.Services.Users.UserProfileService.html
+  - name: '>'
+  spec.vb:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FoundationaLLM.Common.Services.Users.UserProfileService
+    name: UserProfileService
+    href: FoundationaLLM.Common.Services.Users.UserProfileService.html
+  - name: )
+- uid: FoundationaLLM.Common.Interfaces.IOrchestrationContext
+  commentId: T:FoundationaLLM.Common.Interfaces.IOrchestrationContext
+  parent: FoundationaLLM.Common.Interfaces
+  href: FoundationaLLM.Common.Interfaces.IOrchestrationContext.html
+  name: IOrchestrationContext
+  nameWithType: IOrchestrationContext
+  fullName: FoundationaLLM.Common.Interfaces.IOrchestrationContext
+- uid: System.Collections.Generic.IEnumerable{FoundationaLLM.Common.Interfaces.IResourceProviderService}
+  commentId: T:System.Collections.Generic.IEnumerable{FoundationaLLM.Common.Interfaces.IResourceProviderService}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IEnumerable`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<IResourceProviderService>
+  nameWithType: IEnumerable<IResourceProviderService>
+  fullName: System.Collections.Generic.IEnumerable<FoundationaLLM.Common.Interfaces.IResourceProviderService>
+  nameWithType.vb: IEnumerable(Of IResourceProviderService)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of FoundationaLLM.Common.Interfaces.IResourceProviderService)
+  name.vb: IEnumerable(Of IResourceProviderService)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - uid: FoundationaLLM.Common.Interfaces.IResourceProviderService
+    name: IResourceProviderService
+    href: FoundationaLLM.Common.Interfaces.IResourceProviderService.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FoundationaLLM.Common.Interfaces.IResourceProviderService
+    name: IResourceProviderService
+    href: FoundationaLLM.Common.Interfaces.IResourceProviderService.html
+  - name: )
+- uid: Microsoft.Extensions.Logging.ILogger`1
+  commentId: T:Microsoft.Extensions.Logging.ILogger`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  name: ILogger<TCategoryName>
+  nameWithType: ILogger<TCategoryName>
+  fullName: Microsoft.Extensions.Logging.ILogger<TCategoryName>
+  nameWithType.vb: ILogger(Of TCategoryName)
+  fullName.vb: Microsoft.Extensions.Logging.ILogger(Of TCategoryName)
+  name.vb: ILogger(Of TCategoryName)
+  spec.csharp:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: <
+  - name: TCategoryName
+  - name: '>'
+  spec.vb:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TCategoryName
+  - name: )
+- uid: Microsoft.Extensions.Logging
+  commentId: N:Microsoft.Extensions.Logging
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft
+  name: Microsoft.Extensions.Logging
+  nameWithType: Microsoft.Extensions.Logging
+  fullName: Microsoft.Extensions.Logging
+  spec.csharp:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Logging
+    name: Logging
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging
+  spec.vb:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Logging
+    name: Logging
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging
+- uid: System.Collections.Generic.IEnumerable`1
+  commentId: T:System.Collections.Generic.IEnumerable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<T>
+  nameWithType: IEnumerable<T>
+  fullName: System.Collections.Generic.IEnumerable<T>
+  nameWithType.vb: IEnumerable(Of T)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of T)
+  name.vb: IEnumerable(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: System.InvalidOperationException
+  commentId: T:System.InvalidOperationException
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.invalidoperationexception
+  name: InvalidOperationException
+  nameWithType: InvalidOperationException
+  fullName: System.InvalidOperationException
+- uid: FoundationaLLM.Common.Services.Users.UserProfileService.GetUserProfileAsync*
+  commentId: Overload:FoundationaLLM.Common.Services.Users.UserProfileService.GetUserProfileAsync
+  href: FoundationaLLM.Common.Services.Users.UserProfileService.html#FoundationaLLM_Common_Services_Users_UserProfileService_GetUserProfileAsync_System_String_
+  name: GetUserProfileAsync
+  nameWithType: UserProfileService.GetUserProfileAsync
+  fullName: FoundationaLLM.Common.Services.Users.UserProfileService.GetUserProfileAsync
+- uid: FoundationaLLM.Common.Interfaces.IUserProfileService.GetUserProfileAsync(System.String)
+  commentId: M:FoundationaLLM.Common.Interfaces.IUserProfileService.GetUserProfileAsync(System.String)
+  parent: FoundationaLLM.Common.Interfaces.IUserProfileService
+  isExternal: true
+  href: FoundationaLLM.Common.Interfaces.IUserProfileService.html#FoundationaLLM_Common_Interfaces_IUserProfileService_GetUserProfileAsync_System_String_
+  name: GetUserProfileAsync(string)
+  nameWithType: IUserProfileService.GetUserProfileAsync(string)
+  fullName: FoundationaLLM.Common.Interfaces.IUserProfileService.GetUserProfileAsync(string)
+  nameWithType.vb: IUserProfileService.GetUserProfileAsync(String)
+  fullName.vb: FoundationaLLM.Common.Interfaces.IUserProfileService.GetUserProfileAsync(String)
+  name.vb: GetUserProfileAsync(String)
+  spec.csharp:
+  - uid: FoundationaLLM.Common.Interfaces.IUserProfileService.GetUserProfileAsync(System.String)
+    name: GetUserProfileAsync
+    href: FoundationaLLM.Common.Interfaces.IUserProfileService.html#FoundationaLLM_Common_Interfaces_IUserProfileService_GetUserProfileAsync_System_String_
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Common.Interfaces.IUserProfileService.GetUserProfileAsync(System.String)
+    name: GetUserProfileAsync
+    href: FoundationaLLM.Common.Interfaces.IUserProfileService.html#FoundationaLLM_Common_Interfaces_IUserProfileService_GetUserProfileAsync_System_String_
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System.Threading.Tasks.Task{FoundationaLLM.Common.Models.Configuration.Users.UserProfile}
+  commentId: T:System.Threading.Tasks.Task{FoundationaLLM.Common.Models.Configuration.Users.UserProfile}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<UserProfile>
+  nameWithType: Task<UserProfile>
+  fullName: System.Threading.Tasks.Task<FoundationaLLM.Common.Models.Configuration.Users.UserProfile>
+  nameWithType.vb: Task(Of UserProfile)
+  fullName.vb: System.Threading.Tasks.Task(Of FoundationaLLM.Common.Models.Configuration.Users.UserProfile)
+  name.vb: Task(Of UserProfile)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: FoundationaLLM.Common.Models.Configuration.Users.UserProfile
+    name: UserProfile
+    href: FoundationaLLM.Common.Models.Configuration.Users.UserProfile.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FoundationaLLM.Common.Models.Configuration.Users.UserProfile
+    name: UserProfile
+    href: FoundationaLLM.Common.Models.Configuration.Users.UserProfile.html
+  - name: )
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: FoundationaLLM.Common.Services.Users.UserProfileService.GetUserProfileForUserAsync*
+  commentId: Overload:FoundationaLLM.Common.Services.Users.UserProfileService.GetUserProfileForUserAsync
+  href: FoundationaLLM.Common.Services.Users.UserProfileService.html#FoundationaLLM_Common_Services_Users_UserProfileService_GetUserProfileForUserAsync_System_String_System_String_
+  name: GetUserProfileForUserAsync
+  nameWithType: UserProfileService.GetUserProfileForUserAsync
+  fullName: FoundationaLLM.Common.Services.Users.UserProfileService.GetUserProfileForUserAsync
+- uid: FoundationaLLM.Common.Interfaces.IUserProfileService.GetUserProfileForUserAsync(System.String,System.String)
+  commentId: M:FoundationaLLM.Common.Interfaces.IUserProfileService.GetUserProfileForUserAsync(System.String,System.String)
+  parent: FoundationaLLM.Common.Interfaces.IUserProfileService
+  isExternal: true
+  href: FoundationaLLM.Common.Interfaces.IUserProfileService.html#FoundationaLLM_Common_Interfaces_IUserProfileService_GetUserProfileForUserAsync_System_String_System_String_
+  name: GetUserProfileForUserAsync(string, string)
+  nameWithType: IUserProfileService.GetUserProfileForUserAsync(string, string)
+  fullName: FoundationaLLM.Common.Interfaces.IUserProfileService.GetUserProfileForUserAsync(string, string)
+  nameWithType.vb: IUserProfileService.GetUserProfileForUserAsync(String, String)
+  fullName.vb: FoundationaLLM.Common.Interfaces.IUserProfileService.GetUserProfileForUserAsync(String, String)
+  name.vb: GetUserProfileForUserAsync(String, String)
+  spec.csharp:
+  - uid: FoundationaLLM.Common.Interfaces.IUserProfileService.GetUserProfileForUserAsync(System.String,System.String)
+    name: GetUserProfileForUserAsync
+    href: FoundationaLLM.Common.Interfaces.IUserProfileService.html#FoundationaLLM_Common_Interfaces_IUserProfileService_GetUserProfileForUserAsync_System_String_System_String_
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Common.Interfaces.IUserProfileService.GetUserProfileForUserAsync(System.String,System.String)
+    name: GetUserProfileForUserAsync
+    href: FoundationaLLM.Common.Interfaces.IUserProfileService.html#FoundationaLLM_Common_Interfaces_IUserProfileService_GetUserProfileForUserAsync_System_String_System_String_
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: FoundationaLLM.Common.Services.Users.UserProfileService.UpsertUserProfileAsync*
+  commentId: Overload:FoundationaLLM.Common.Services.Users.UserProfileService.UpsertUserProfileAsync
+  href: FoundationaLLM.Common.Services.Users.UserProfileService.html#FoundationaLLM_Common_Services_Users_UserProfileService_UpsertUserProfileAsync_System_String_FoundationaLLM_Common_Models_Configuration_Users_UserProfile_
+  name: UpsertUserProfileAsync
+  nameWithType: UserProfileService.UpsertUserProfileAsync
+  fullName: FoundationaLLM.Common.Services.Users.UserProfileService.UpsertUserProfileAsync
+- uid: FoundationaLLM.Common.Interfaces.IUserProfileService.UpsertUserProfileAsync(System.String,FoundationaLLM.Common.Models.Configuration.Users.UserProfile)
+  commentId: M:FoundationaLLM.Common.Interfaces.IUserProfileService.UpsertUserProfileAsync(System.String,FoundationaLLM.Common.Models.Configuration.Users.UserProfile)
+  parent: FoundationaLLM.Common.Interfaces.IUserProfileService
+  isExternal: true
+  href: FoundationaLLM.Common.Interfaces.IUserProfileService.html#FoundationaLLM_Common_Interfaces_IUserProfileService_UpsertUserProfileAsync_System_String_FoundationaLLM_Common_Models_Configuration_Users_UserProfile_
+  name: UpsertUserProfileAsync(string, UserProfile)
+  nameWithType: IUserProfileService.UpsertUserProfileAsync(string, UserProfile)
+  fullName: FoundationaLLM.Common.Interfaces.IUserProfileService.UpsertUserProfileAsync(string, FoundationaLLM.Common.Models.Configuration.Users.UserProfile)
+  nameWithType.vb: IUserProfileService.UpsertUserProfileAsync(String, UserProfile)
+  fullName.vb: FoundationaLLM.Common.Interfaces.IUserProfileService.UpsertUserProfileAsync(String, FoundationaLLM.Common.Models.Configuration.Users.UserProfile)
+  name.vb: UpsertUserProfileAsync(String, UserProfile)
+  spec.csharp:
+  - uid: FoundationaLLM.Common.Interfaces.IUserProfileService.UpsertUserProfileAsync(System.String,FoundationaLLM.Common.Models.Configuration.Users.UserProfile)
+    name: UpsertUserProfileAsync
+    href: FoundationaLLM.Common.Interfaces.IUserProfileService.html#FoundationaLLM_Common_Interfaces_IUserProfileService_UpsertUserProfileAsync_System_String_FoundationaLLM_Common_Models_Configuration_Users_UserProfile_
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: FoundationaLLM.Common.Models.Configuration.Users.UserProfile
+    name: UserProfile
+    href: FoundationaLLM.Common.Models.Configuration.Users.UserProfile.html
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Common.Interfaces.IUserProfileService.UpsertUserProfileAsync(System.String,FoundationaLLM.Common.Models.Configuration.Users.UserProfile)
+    name: UpsertUserProfileAsync
+    href: FoundationaLLM.Common.Interfaces.IUserProfileService.html#FoundationaLLM_Common_Interfaces_IUserProfileService_UpsertUserProfileAsync_System_String_FoundationaLLM_Common_Models_Configuration_Users_UserProfile_
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: FoundationaLLM.Common.Models.Configuration.Users.UserProfile
+    name: UserProfile
+    href: FoundationaLLM.Common.Models.Configuration.Users.UserProfile.html
+  - name: )
+- uid: FoundationaLLM.Common.Models.Configuration.Users.UserProfile
+  commentId: T:FoundationaLLM.Common.Models.Configuration.Users.UserProfile
+  parent: FoundationaLLM.Common.Models.Configuration.Users
+  href: FoundationaLLM.Common.Models.Configuration.Users.UserProfile.html
+  name: UserProfile
+  nameWithType: UserProfile
+  fullName: FoundationaLLM.Common.Models.Configuration.Users.UserProfile
+- uid: System.Threading.Tasks.Task
+  commentId: T:System.Threading.Tasks.Task
+  parent: System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  name: Task
+  nameWithType: Task
+  fullName: System.Threading.Tasks.Task
+- uid: FoundationaLLM.Common.Models.Configuration.Users
+  commentId: N:FoundationaLLM.Common.Models.Configuration.Users
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.Configuration.Users
+  nameWithType: FoundationaLLM.Common.Models.Configuration.Users
+  fullName: FoundationaLLM.Common.Models.Configuration.Users
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Configuration
+    name: Configuration
+    href: FoundationaLLM.Common.Models.Configuration.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Configuration.Users
+    name: Users
+    href: FoundationaLLM.Common.Models.Configuration.Users.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Configuration
+    name: Configuration
+    href: FoundationaLLM.Common.Models.Configuration.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Configuration.Users
+    name: Users
+    href: FoundationaLLM.Common.Models.Configuration.Users.html
+- uid: FoundationaLLM.Common.Services.Users.UserProfileService.AddAgent*
+  commentId: Overload:FoundationaLLM.Common.Services.Users.UserProfileService.AddAgent
+  href: FoundationaLLM.Common.Services.Users.UserProfileService.html#FoundationaLLM_Common_Services_Users_UserProfileService_AddAgent_System_String_System_String_
+  name: AddAgent
+  nameWithType: UserProfileService.AddAgent
+  fullName: FoundationaLLM.Common.Services.Users.UserProfileService.AddAgent
+- uid: FoundationaLLM.Common.Interfaces.IUserProfileService.AddAgent(System.String,System.String)
+  commentId: M:FoundationaLLM.Common.Interfaces.IUserProfileService.AddAgent(System.String,System.String)
+  parent: FoundationaLLM.Common.Interfaces.IUserProfileService
+  isExternal: true
+  href: FoundationaLLM.Common.Interfaces.IUserProfileService.html#FoundationaLLM_Common_Interfaces_IUserProfileService_AddAgent_System_String_System_String_
+  name: AddAgent(string, string)
+  nameWithType: IUserProfileService.AddAgent(string, string)
+  fullName: FoundationaLLM.Common.Interfaces.IUserProfileService.AddAgent(string, string)
+  nameWithType.vb: IUserProfileService.AddAgent(String, String)
+  fullName.vb: FoundationaLLM.Common.Interfaces.IUserProfileService.AddAgent(String, String)
+  name.vb: AddAgent(String, String)
+  spec.csharp:
+  - uid: FoundationaLLM.Common.Interfaces.IUserProfileService.AddAgent(System.String,System.String)
+    name: AddAgent
+    href: FoundationaLLM.Common.Interfaces.IUserProfileService.html#FoundationaLLM_Common_Interfaces_IUserProfileService_AddAgent_System_String_System_String_
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Common.Interfaces.IUserProfileService.AddAgent(System.String,System.String)
+    name: AddAgent
+    href: FoundationaLLM.Common.Interfaces.IUserProfileService.html#FoundationaLLM_Common_Interfaces_IUserProfileService_AddAgent_System_String_System_String_
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: FoundationaLLM.Common.Services.Users.UserProfileService.RemoveAgent*
+  commentId: Overload:FoundationaLLM.Common.Services.Users.UserProfileService.RemoveAgent
+  href: FoundationaLLM.Common.Services.Users.UserProfileService.html#FoundationaLLM_Common_Services_Users_UserProfileService_RemoveAgent_System_String_System_String_
+  name: RemoveAgent
+  nameWithType: UserProfileService.RemoveAgent
+  fullName: FoundationaLLM.Common.Services.Users.UserProfileService.RemoveAgent
+- uid: FoundationaLLM.Common.Interfaces.IUserProfileService.RemoveAgent(System.String,System.String)
+  commentId: M:FoundationaLLM.Common.Interfaces.IUserProfileService.RemoveAgent(System.String,System.String)
+  parent: FoundationaLLM.Common.Interfaces.IUserProfileService
+  isExternal: true
+  href: FoundationaLLM.Common.Interfaces.IUserProfileService.html#FoundationaLLM_Common_Interfaces_IUserProfileService_RemoveAgent_System_String_System_String_
+  name: RemoveAgent(string, string)
+  nameWithType: IUserProfileService.RemoveAgent(string, string)
+  fullName: FoundationaLLM.Common.Interfaces.IUserProfileService.RemoveAgent(string, string)
+  nameWithType.vb: IUserProfileService.RemoveAgent(String, String)
+  fullName.vb: FoundationaLLM.Common.Interfaces.IUserProfileService.RemoveAgent(String, String)
+  name.vb: RemoveAgent(String, String)
+  spec.csharp:
+  - uid: FoundationaLLM.Common.Interfaces.IUserProfileService.RemoveAgent(System.String,System.String)
+    name: RemoveAgent
+    href: FoundationaLLM.Common.Interfaces.IUserProfileService.html#FoundationaLLM_Common_Interfaces_IUserProfileService_RemoveAgent_System_String_System_String_
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Common.Interfaces.IUserProfileService.RemoveAgent(System.String,System.String)
+    name: RemoveAgent
+    href: FoundationaLLM.Common.Interfaces.IUserProfileService.html#FoundationaLLM_Common_Interfaces_IUserProfileService_RemoveAgent_System_String_System_String_
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )

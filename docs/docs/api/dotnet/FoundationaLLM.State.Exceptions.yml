@@ -1,0 +1,31 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.State.Exceptions
+  commentId: N:FoundationaLLM.State.Exceptions
+  id: Exceptions
+  parent: FoundationaLLM.State
+  children:
+  - FoundationaLLM.State.Exceptions.StateException
+  - FoundationaLLM.State.Exceptions.StateExceptionHandler
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM.State.Exceptions
+  nameWithType: FoundationaLLM.State.Exceptions
+  fullName: FoundationaLLM.State.Exceptions
+  type: Namespace
+  assemblies:
+  - FoundationaLLM.State
+references:
+- uid: FoundationaLLM.State.Exceptions.StateException
+  commentId: T:FoundationaLLM.State.Exceptions.StateException
+  href: FoundationaLLM.State.Exceptions.StateException.html
+  name: StateException
+  nameWithType: StateException
+  fullName: FoundationaLLM.State.Exceptions.StateException
+- uid: FoundationaLLM.State.Exceptions.StateExceptionHandler
+  commentId: T:FoundationaLLM.State.Exceptions.StateExceptionHandler
+  href: FoundationaLLM.State.Exceptions.StateExceptionHandler.html
+  name: StateExceptionHandler
+  nameWithType: StateExceptionHandler
+  fullName: FoundationaLLM.State.Exceptions.StateExceptionHandler

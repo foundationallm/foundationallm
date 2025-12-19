@@ -1,0 +1,220 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Common.Models.Authorization
+  commentId: N:FoundationaLLM.Common.Models.Authorization
+  id: Authorization
+  parent: FoundationaLLM.Common.Models
+  children:
+  - FoundationaLLM.Common.Models.Authorization.ActionAuthorizationRequest
+  - FoundationaLLM.Common.Models.Authorization.ActionAuthorizationResult
+  - FoundationaLLM.Common.Models.Authorization.AuthorizableAction
+  - FoundationaLLM.Common.Models.Authorization.AuthorizableActions
+  - FoundationaLLM.Common.Models.Authorization.ClientSecretKey
+  - FoundationaLLM.Common.Models.Authorization.PersistedSecretKey
+  - FoundationaLLM.Common.Models.Authorization.PolicyAssignment
+  - FoundationaLLM.Common.Models.Authorization.PolicyDefinition
+  - FoundationaLLM.Common.Models.Authorization.PolicyDefinitions
+  - FoundationaLLM.Common.Models.Authorization.PolicyMatchingStrategy
+  - FoundationaLLM.Common.Models.Authorization.ResourcePathAuthorizationResult
+  - FoundationaLLM.Common.Models.Authorization.RoleAssignmentCreateRequest
+  - FoundationaLLM.Common.Models.Authorization.RoleAssignmentDeleteRequest
+  - FoundationaLLM.Common.Models.Authorization.RoleAssignmentOperationResult
+  - FoundationaLLM.Common.Models.Authorization.RoleAssignmentQueryParameters
+  - FoundationaLLM.Common.Models.Authorization.RoleAssignmentsWithActionsRequest
+  - FoundationaLLM.Common.Models.Authorization.RoleAssignmentsWithActionsResult
+  - FoundationaLLM.Common.Models.Authorization.RoleDefinitions
+  - FoundationaLLM.Common.Models.Authorization.SecretKey
+  - FoundationaLLM.Common.Models.Authorization.SecretKeyValidationResult
+  - FoundationaLLM.Common.Models.Authorization.SecurityPrincipalQueryParameters
+  - FoundationaLLM.Common.Models.Authorization.UserAuthorizationContext
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM.Common.Models.Authorization
+  nameWithType: FoundationaLLM.Common.Models.Authorization
+  fullName: FoundationaLLM.Common.Models.Authorization
+  type: Namespace
+  assemblies:
+  - FoundationaLLM.Common
+references:
+- uid: FoundationaLLM.Common.Models.Authorization.ActionAuthorizationRequest
+  commentId: T:FoundationaLLM.Common.Models.Authorization.ActionAuthorizationRequest
+  parent: FoundationaLLM.Common.Models.Authorization
+  href: FoundationaLLM.Common.Models.Authorization.ActionAuthorizationRequest.html
+  name: ActionAuthorizationRequest
+  nameWithType: ActionAuthorizationRequest
+  fullName: FoundationaLLM.Common.Models.Authorization.ActionAuthorizationRequest
+- uid: FoundationaLLM.Common.Models.Authorization.ActionAuthorizationResult
+  commentId: T:FoundationaLLM.Common.Models.Authorization.ActionAuthorizationResult
+  parent: FoundationaLLM.Common.Models.Authorization
+  href: FoundationaLLM.Common.Models.Authorization.ActionAuthorizationResult.html
+  name: ActionAuthorizationResult
+  nameWithType: ActionAuthorizationResult
+  fullName: FoundationaLLM.Common.Models.Authorization.ActionAuthorizationResult
+- uid: FoundationaLLM.Common.Models.Authorization.AuthorizableAction
+  commentId: T:FoundationaLLM.Common.Models.Authorization.AuthorizableAction
+  href: FoundationaLLM.Common.Models.Authorization.AuthorizableAction.html
+  name: AuthorizableAction
+  nameWithType: AuthorizableAction
+  fullName: FoundationaLLM.Common.Models.Authorization.AuthorizableAction
+- uid: FoundationaLLM.Common.Models.Authorization.AuthorizableActions
+  commentId: T:FoundationaLLM.Common.Models.Authorization.AuthorizableActions
+  href: FoundationaLLM.Common.Models.Authorization.AuthorizableActions.html
+  name: AuthorizableActions
+  nameWithType: AuthorizableActions
+  fullName: FoundationaLLM.Common.Models.Authorization.AuthorizableActions
+- uid: FoundationaLLM.Common.Models.Authorization.ClientSecretKey
+  commentId: T:FoundationaLLM.Common.Models.Authorization.ClientSecretKey
+  parent: FoundationaLLM.Common.Models.Authorization
+  href: FoundationaLLM.Common.Models.Authorization.ClientSecretKey.html
+  name: ClientSecretKey
+  nameWithType: ClientSecretKey
+  fullName: FoundationaLLM.Common.Models.Authorization.ClientSecretKey
+- uid: FoundationaLLM.Common.Models.Authorization.PersistedSecretKey
+  commentId: T:FoundationaLLM.Common.Models.Authorization.PersistedSecretKey
+  parent: FoundationaLLM.Common.Models.Authorization
+  href: FoundationaLLM.Common.Models.Authorization.PersistedSecretKey.html
+  name: PersistedSecretKey
+  nameWithType: PersistedSecretKey
+  fullName: FoundationaLLM.Common.Models.Authorization.PersistedSecretKey
+- uid: FoundationaLLM.Common.Models.Authorization.PolicyAssignment
+  commentId: T:FoundationaLLM.Common.Models.Authorization.PolicyAssignment
+  href: FoundationaLLM.Common.Models.Authorization.PolicyAssignment.html
+  name: PolicyAssignment
+  nameWithType: PolicyAssignment
+  fullName: FoundationaLLM.Common.Models.Authorization.PolicyAssignment
+- uid: FoundationaLLM.Common.Models.Authorization.PolicyDefinition
+  commentId: T:FoundationaLLM.Common.Models.Authorization.PolicyDefinition
+  parent: FoundationaLLM.Common.Models.Authorization
+  href: FoundationaLLM.Common.Models.Authorization.PolicyDefinition.html
+  name: PolicyDefinition
+  nameWithType: PolicyDefinition
+  fullName: FoundationaLLM.Common.Models.Authorization.PolicyDefinition
+- uid: FoundationaLLM.Common.Models.Authorization.PolicyDefinitions
+  commentId: T:FoundationaLLM.Common.Models.Authorization.PolicyDefinitions
+  href: FoundationaLLM.Common.Models.Authorization.PolicyDefinitions.html
+  name: PolicyDefinitions
+  nameWithType: PolicyDefinitions
+  fullName: FoundationaLLM.Common.Models.Authorization.PolicyDefinitions
+- uid: FoundationaLLM.Common.Models.Authorization.PolicyMatchingStrategy
+  commentId: T:FoundationaLLM.Common.Models.Authorization.PolicyMatchingStrategy
+  parent: FoundationaLLM.Common.Models.Authorization
+  href: FoundationaLLM.Common.Models.Authorization.PolicyMatchingStrategy.html
+  name: PolicyMatchingStrategy
+  nameWithType: PolicyMatchingStrategy
+  fullName: FoundationaLLM.Common.Models.Authorization.PolicyMatchingStrategy
+- uid: FoundationaLLM.Common.Models.Authorization.ResourcePathAuthorizationResult
+  commentId: T:FoundationaLLM.Common.Models.Authorization.ResourcePathAuthorizationResult
+  parent: FoundationaLLM.Common.Models.Authorization
+  href: FoundationaLLM.Common.Models.Authorization.ResourcePathAuthorizationResult.html
+  name: ResourcePathAuthorizationResult
+  nameWithType: ResourcePathAuthorizationResult
+  fullName: FoundationaLLM.Common.Models.Authorization.ResourcePathAuthorizationResult
+- uid: FoundationaLLM.Common.Models.Authorization.RoleAssignmentCreateRequest
+  commentId: T:FoundationaLLM.Common.Models.Authorization.RoleAssignmentCreateRequest
+  parent: FoundationaLLM.Common.Models.Authorization
+  href: FoundationaLLM.Common.Models.Authorization.RoleAssignmentCreateRequest.html
+  name: RoleAssignmentCreateRequest
+  nameWithType: RoleAssignmentCreateRequest
+  fullName: FoundationaLLM.Common.Models.Authorization.RoleAssignmentCreateRequest
+- uid: FoundationaLLM.Common.Models.Authorization.RoleAssignmentDeleteRequest
+  commentId: T:FoundationaLLM.Common.Models.Authorization.RoleAssignmentDeleteRequest
+  href: FoundationaLLM.Common.Models.Authorization.RoleAssignmentDeleteRequest.html
+  name: RoleAssignmentDeleteRequest
+  nameWithType: RoleAssignmentDeleteRequest
+  fullName: FoundationaLLM.Common.Models.Authorization.RoleAssignmentDeleteRequest
+- uid: FoundationaLLM.Common.Models.Authorization.RoleAssignmentOperationResult
+  commentId: T:FoundationaLLM.Common.Models.Authorization.RoleAssignmentOperationResult
+  href: FoundationaLLM.Common.Models.Authorization.RoleAssignmentOperationResult.html
+  name: RoleAssignmentOperationResult
+  nameWithType: RoleAssignmentOperationResult
+  fullName: FoundationaLLM.Common.Models.Authorization.RoleAssignmentOperationResult
+- uid: FoundationaLLM.Common.Models.Authorization.RoleAssignmentQueryParameters
+  commentId: T:FoundationaLLM.Common.Models.Authorization.RoleAssignmentQueryParameters
+  parent: FoundationaLLM.Common.Models.Authorization
+  href: FoundationaLLM.Common.Models.Authorization.RoleAssignmentQueryParameters.html
+  name: RoleAssignmentQueryParameters
+  nameWithType: RoleAssignmentQueryParameters
+  fullName: FoundationaLLM.Common.Models.Authorization.RoleAssignmentQueryParameters
+- uid: FoundationaLLM.Common.Models.Authorization.RoleAssignmentsWithActionsRequest
+  commentId: T:FoundationaLLM.Common.Models.Authorization.RoleAssignmentsWithActionsRequest
+  href: FoundationaLLM.Common.Models.Authorization.RoleAssignmentsWithActionsRequest.html
+  name: RoleAssignmentsWithActionsRequest
+  nameWithType: RoleAssignmentsWithActionsRequest
+  fullName: FoundationaLLM.Common.Models.Authorization.RoleAssignmentsWithActionsRequest
+- uid: FoundationaLLM.Common.Models.Authorization.RoleAssignmentsWithActionsResult
+  commentId: T:FoundationaLLM.Common.Models.Authorization.RoleAssignmentsWithActionsResult
+  href: FoundationaLLM.Common.Models.Authorization.RoleAssignmentsWithActionsResult.html
+  name: RoleAssignmentsWithActionsResult
+  nameWithType: RoleAssignmentsWithActionsResult
+  fullName: FoundationaLLM.Common.Models.Authorization.RoleAssignmentsWithActionsResult
+- uid: FoundationaLLM.Common.Models.Authorization.RoleDefinitions
+  commentId: T:FoundationaLLM.Common.Models.Authorization.RoleDefinitions
+  href: FoundationaLLM.Common.Models.Authorization.RoleDefinitions.html
+  name: RoleDefinitions
+  nameWithType: RoleDefinitions
+  fullName: FoundationaLLM.Common.Models.Authorization.RoleDefinitions
+- uid: FoundationaLLM.Common.Models.Authorization.SecretKey
+  commentId: T:FoundationaLLM.Common.Models.Authorization.SecretKey
+  parent: FoundationaLLM.Common.Models.Authorization
+  href: FoundationaLLM.Common.Models.Authorization.SecretKey.html
+  name: SecretKey
+  nameWithType: SecretKey
+  fullName: FoundationaLLM.Common.Models.Authorization.SecretKey
+- uid: FoundationaLLM.Common.Models.Authorization.SecretKeyValidationResult
+  commentId: T:FoundationaLLM.Common.Models.Authorization.SecretKeyValidationResult
+  href: FoundationaLLM.Common.Models.Authorization.SecretKeyValidationResult.html
+  name: SecretKeyValidationResult
+  nameWithType: SecretKeyValidationResult
+  fullName: FoundationaLLM.Common.Models.Authorization.SecretKeyValidationResult
+- uid: FoundationaLLM.Common.Models.Authorization.SecurityPrincipalQueryParameters
+  commentId: T:FoundationaLLM.Common.Models.Authorization.SecurityPrincipalQueryParameters
+  href: FoundationaLLM.Common.Models.Authorization.SecurityPrincipalQueryParameters.html
+  name: SecurityPrincipalQueryParameters
+  nameWithType: SecurityPrincipalQueryParameters
+  fullName: FoundationaLLM.Common.Models.Authorization.SecurityPrincipalQueryParameters
+- uid: FoundationaLLM.Common.Models.Authorization.UserAuthorizationContext
+  commentId: T:FoundationaLLM.Common.Models.Authorization.UserAuthorizationContext
+  parent: FoundationaLLM.Common.Models.Authorization
+  href: FoundationaLLM.Common.Models.Authorization.UserAuthorizationContext.html
+  name: UserAuthorizationContext
+  nameWithType: UserAuthorizationContext
+  fullName: FoundationaLLM.Common.Models.Authorization.UserAuthorizationContext
+- uid: FoundationaLLM.Common.Models.Authorization
+  commentId: N:FoundationaLLM.Common.Models.Authorization
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.Authorization
+  nameWithType: FoundationaLLM.Common.Models.Authorization
+  fullName: FoundationaLLM.Common.Models.Authorization
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Authorization
+    name: Authorization
+    href: FoundationaLLM.Common.Models.Authorization.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Authorization
+    name: Authorization
+    href: FoundationaLLM.Common.Models.Authorization.html

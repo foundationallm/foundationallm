@@ -1,0 +1,38 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Common.Services.API
+  commentId: N:FoundationaLLM.Common.Services.API
+  id: API
+  parent: FoundationaLLM.Common.Services
+  children:
+  - FoundationaLLM.Common.Services.API.ClientFactoryService
+  - FoundationaLLM.Common.Services.API.DownstreamAPIService
+  - FoundationaLLM.Common.Services.API.HttpClientFactoryService
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM.Common.Services.API
+  nameWithType: FoundationaLLM.Common.Services.API
+  fullName: FoundationaLLM.Common.Services.API
+  type: Namespace
+  assemblies:
+  - FoundationaLLM.Common
+references:
+- uid: FoundationaLLM.Common.Services.API.ClientFactoryService
+  commentId: T:FoundationaLLM.Common.Services.API.ClientFactoryService
+  href: FoundationaLLM.Common.Services.API.ClientFactoryService.html
+  name: ClientFactoryService
+  nameWithType: ClientFactoryService
+  fullName: FoundationaLLM.Common.Services.API.ClientFactoryService
+- uid: FoundationaLLM.Common.Services.API.DownstreamAPIService
+  commentId: T:FoundationaLLM.Common.Services.API.DownstreamAPIService
+  href: FoundationaLLM.Common.Services.API.DownstreamAPIService.html
+  name: DownstreamAPIService
+  nameWithType: DownstreamAPIService
+  fullName: FoundationaLLM.Common.Services.API.DownstreamAPIService
+- uid: FoundationaLLM.Common.Services.API.HttpClientFactoryService
+  commentId: T:FoundationaLLM.Common.Services.API.HttpClientFactoryService
+  href: FoundationaLLM.Common.Services.API.HttpClientFactoryService.html
+  name: HttpClientFactoryService
+  nameWithType: HttpClientFactoryService
+  fullName: FoundationaLLM.Common.Services.API.HttpClientFactoryService

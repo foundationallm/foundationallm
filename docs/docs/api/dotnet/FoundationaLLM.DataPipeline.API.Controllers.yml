@@ -1,0 +1,31 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.DataPipeline.API.Controllers
+  commentId: N:FoundationaLLM.DataPipeline.API.Controllers
+  id: API.Controllers
+  parent: FoundationaLLM.DataPipeline
+  children:
+  - FoundationaLLM.DataPipeline.API.Controllers.DataPipelineRunsController
+  - FoundationaLLM.DataPipeline.API.Controllers.StatusController
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM.DataPipeline.API.Controllers
+  nameWithType: FoundationaLLM.DataPipeline.API.Controllers
+  fullName: FoundationaLLM.DataPipeline.API.Controllers
+  type: Namespace
+  assemblies:
+  - FoundationaLLM.DataPipeline.API
+references:
+- uid: FoundationaLLM.DataPipeline.API.Controllers.DataPipelineRunsController
+  commentId: T:FoundationaLLM.DataPipeline.API.Controllers.DataPipelineRunsController
+  href: FoundationaLLM.DataPipeline.API.Controllers.DataPipelineRunsController.html
+  name: DataPipelineRunsController
+  nameWithType: DataPipelineRunsController
+  fullName: FoundationaLLM.DataPipeline.API.Controllers.DataPipelineRunsController
+- uid: FoundationaLLM.DataPipeline.API.Controllers.StatusController
+  commentId: T:FoundationaLLM.DataPipeline.API.Controllers.StatusController
+  href: FoundationaLLM.DataPipeline.API.Controllers.StatusController.html
+  name: StatusController
+  nameWithType: StatusController
+  fullName: FoundationaLLM.DataPipeline.API.Controllers.StatusController

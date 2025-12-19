@@ -1,0 +1,183 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.State
+  id: State
+  parent: FoundationaLLM
+  children:
+  - FoundationaLLM.State.API.Controllers
+  - FoundationaLLM.State.Exceptions
+  - FoundationaLLM.State.Interfaces
+  - FoundationaLLM.State.Models.Configuration
+  - FoundationaLLM.State.Services
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM.State
+  type: Namespace
+references:
+- uid: FoundationaLLM.State.Exceptions
+  commentId: N:FoundationaLLM.State.Exceptions
+  href: FoundationaLLM.html
+  name: FoundationaLLM.State.Exceptions
+  nameWithType: FoundationaLLM.State.Exceptions
+  fullName: FoundationaLLM.State.Exceptions
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.State
+    name: State
+    href: FoundationaLLM.State.html
+  - name: .
+  - uid: FoundationaLLM.State.Exceptions
+    name: Exceptions
+    href: FoundationaLLM.State.Exceptions.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.State
+    name: State
+    href: FoundationaLLM.State.html
+  - name: .
+  - uid: FoundationaLLM.State.Exceptions
+    name: Exceptions
+    href: FoundationaLLM.State.Exceptions.html
+- uid: FoundationaLLM.State.Interfaces
+  commentId: N:FoundationaLLM.State.Interfaces
+  href: FoundationaLLM.html
+  name: FoundationaLLM.State.Interfaces
+  nameWithType: FoundationaLLM.State.Interfaces
+  fullName: FoundationaLLM.State.Interfaces
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.State
+    name: State
+    href: FoundationaLLM.State.html
+  - name: .
+  - uid: FoundationaLLM.State.Interfaces
+    name: Interfaces
+    href: FoundationaLLM.State.Interfaces.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.State
+    name: State
+    href: FoundationaLLM.State.html
+  - name: .
+  - uid: FoundationaLLM.State.Interfaces
+    name: Interfaces
+    href: FoundationaLLM.State.Interfaces.html
+- uid: FoundationaLLM.State.Services
+  commentId: N:FoundationaLLM.State.Services
+  href: FoundationaLLM.html
+  name: FoundationaLLM.State.Services
+  nameWithType: FoundationaLLM.State.Services
+  fullName: FoundationaLLM.State.Services
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.State
+    name: State
+    href: FoundationaLLM.State.html
+  - name: .
+  - uid: FoundationaLLM.State.Services
+    name: Services
+    href: FoundationaLLM.State.Services.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.State
+    name: State
+    href: FoundationaLLM.State.html
+  - name: .
+  - uid: FoundationaLLM.State.Services
+    name: Services
+    href: FoundationaLLM.State.Services.html
+- uid: FoundationaLLM.State.API.Controllers
+  commentId: N:FoundationaLLM.State.API.Controllers
+  href: FoundationaLLM.html
+  name: FoundationaLLM.State.API.Controllers
+  nameWithType: FoundationaLLM.State.API.Controllers
+  fullName: FoundationaLLM.State.API.Controllers
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.State
+    name: State
+    href: FoundationaLLM.State.html
+  - name: .
+  - uid: FoundationaLLM.State.API
+    name: API
+    href: FoundationaLLM.State.API.html
+  - name: .
+  - uid: FoundationaLLM.State.API.Controllers
+    name: Controllers
+    href: FoundationaLLM.State.API.Controllers.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.State
+    name: State
+    href: FoundationaLLM.State.html
+  - name: .
+  - uid: FoundationaLLM.State.API
+    name: API
+    href: FoundationaLLM.State.API.html
+  - name: .
+  - uid: FoundationaLLM.State.API.Controllers
+    name: Controllers
+    href: FoundationaLLM.State.API.Controllers.html
+- uid: FoundationaLLM.State.Models.Configuration
+  commentId: N:FoundationaLLM.State.Models.Configuration
+  href: FoundationaLLM.html
+  name: FoundationaLLM.State.Models.Configuration
+  nameWithType: FoundationaLLM.State.Models.Configuration
+  fullName: FoundationaLLM.State.Models.Configuration
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.State
+    name: State
+    href: FoundationaLLM.State.html
+  - name: .
+  - uid: FoundationaLLM.State.Models
+    name: Models
+    href: FoundationaLLM.State.Models.html
+  - name: .
+  - uid: FoundationaLLM.State.Models.Configuration
+    name: Configuration
+    href: FoundationaLLM.State.Models.Configuration.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.State
+    name: State
+    href: FoundationaLLM.State.html
+  - name: .
+  - uid: FoundationaLLM.State.Models
+    name: Models
+    href: FoundationaLLM.State.Models.html
+  - name: .
+  - uid: FoundationaLLM.State.Models.Configuration
+    name: Configuration
+    href: FoundationaLLM.State.Models.Configuration.html

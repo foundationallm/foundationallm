@@ -1,0 +1,155 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Common.Models.Context.Knowledge
+  commentId: N:FoundationaLLM.Common.Models.Context.Knowledge
+  id: Knowledge
+  parent: FoundationaLLM.Common.Models.Context
+  children:
+  - FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeGraphQuery
+  - FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeGraphResponse
+  - FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeResourceListRequest
+  - FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeSourceQueryRequest
+  - FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeSourceQueryResponse
+  - FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeUnitRenderGraphResponse
+  - FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeUnitSetGraphRequest
+  - FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeUnitVectorStoreFilter
+  - FoundationaLLM.Common.Models.Context.Knowledge.ContextVectorStoreQuery
+  - FoundationaLLM.Common.Models.Context.Knowledge.ContextVectorStoreResponse
+  - FoundationaLLM.Common.Models.Context.Knowledge.KnowledgeGraph
+  - FoundationaLLM.Common.Models.Context.Knowledge.KnowledgeGraphRenderingNode
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM.Common.Models.Context.Knowledge
+  nameWithType: FoundationaLLM.Common.Models.Context.Knowledge
+  fullName: FoundationaLLM.Common.Models.Context.Knowledge
+  type: Namespace
+  assemblies:
+  - FoundationaLLM.Common
+references:
+- uid: FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeGraphQuery
+  commentId: T:FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeGraphQuery
+  parent: FoundationaLLM.Common.Models.Context.Knowledge
+  href: FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeGraphQuery.html
+  name: ContextKnowledgeGraphQuery
+  nameWithType: ContextKnowledgeGraphQuery
+  fullName: FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeGraphQuery
+- uid: FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeGraphResponse
+  commentId: T:FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeGraphResponse
+  parent: FoundationaLLM.Common.Models.Context.Knowledge
+  href: FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeGraphResponse.html
+  name: ContextKnowledgeGraphResponse
+  nameWithType: ContextKnowledgeGraphResponse
+  fullName: FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeGraphResponse
+- uid: FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeResourceListRequest
+  commentId: T:FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeResourceListRequest
+  parent: FoundationaLLM.Common.Models.Context.Knowledge
+  href: FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeResourceListRequest.html
+  name: ContextKnowledgeResourceListRequest
+  nameWithType: ContextKnowledgeResourceListRequest
+  fullName: FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeResourceListRequest
+- uid: FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeSourceQueryRequest
+  commentId: T:FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeSourceQueryRequest
+  parent: FoundationaLLM.Common.Models.Context.Knowledge
+  href: FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeSourceQueryRequest.html
+  name: ContextKnowledgeSourceQueryRequest
+  nameWithType: ContextKnowledgeSourceQueryRequest
+  fullName: FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeSourceQueryRequest
+- uid: FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeSourceQueryResponse
+  commentId: T:FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeSourceQueryResponse
+  href: FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeSourceQueryResponse.html
+  name: ContextKnowledgeSourceQueryResponse
+  nameWithType: ContextKnowledgeSourceQueryResponse
+  fullName: FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeSourceQueryResponse
+- uid: FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeUnitRenderGraphResponse
+  commentId: T:FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeUnitRenderGraphResponse
+  href: FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeUnitRenderGraphResponse.html
+  name: ContextKnowledgeUnitRenderGraphResponse
+  nameWithType: ContextKnowledgeUnitRenderGraphResponse
+  fullName: FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeUnitRenderGraphResponse
+- uid: FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeUnitSetGraphRequest
+  commentId: T:FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeUnitSetGraphRequest
+  parent: FoundationaLLM.Common.Models.Context.Knowledge
+  href: FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeUnitSetGraphRequest.html
+  name: ContextKnowledgeUnitSetGraphRequest
+  nameWithType: ContextKnowledgeUnitSetGraphRequest
+  fullName: FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeUnitSetGraphRequest
+- uid: FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeUnitVectorStoreFilter
+  commentId: T:FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeUnitVectorStoreFilter
+  href: FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeUnitVectorStoreFilter.html
+  name: ContextKnowledgeUnitVectorStoreFilter
+  nameWithType: ContextKnowledgeUnitVectorStoreFilter
+  fullName: FoundationaLLM.Common.Models.Context.Knowledge.ContextKnowledgeUnitVectorStoreFilter
+- uid: FoundationaLLM.Common.Models.Context.Knowledge.ContextVectorStoreQuery
+  commentId: T:FoundationaLLM.Common.Models.Context.Knowledge.ContextVectorStoreQuery
+  parent: FoundationaLLM.Common.Models.Context.Knowledge
+  href: FoundationaLLM.Common.Models.Context.Knowledge.ContextVectorStoreQuery.html
+  name: ContextVectorStoreQuery
+  nameWithType: ContextVectorStoreQuery
+  fullName: FoundationaLLM.Common.Models.Context.Knowledge.ContextVectorStoreQuery
+- uid: FoundationaLLM.Common.Models.Context.Knowledge.ContextVectorStoreResponse
+  commentId: T:FoundationaLLM.Common.Models.Context.Knowledge.ContextVectorStoreResponse
+  parent: FoundationaLLM.Common.Models.Context.Knowledge
+  href: FoundationaLLM.Common.Models.Context.Knowledge.ContextVectorStoreResponse.html
+  name: ContextVectorStoreResponse
+  nameWithType: ContextVectorStoreResponse
+  fullName: FoundationaLLM.Common.Models.Context.Knowledge.ContextVectorStoreResponse
+- uid: FoundationaLLM.Common.Models.Context.Knowledge.KnowledgeGraph
+  commentId: T:FoundationaLLM.Common.Models.Context.Knowledge.KnowledgeGraph
+  parent: FoundationaLLM.Common.Models.Context.Knowledge
+  href: FoundationaLLM.Common.Models.Context.Knowledge.KnowledgeGraph.html
+  name: KnowledgeGraph
+  nameWithType: KnowledgeGraph
+  fullName: FoundationaLLM.Common.Models.Context.Knowledge.KnowledgeGraph
+- uid: FoundationaLLM.Common.Models.Context.Knowledge.KnowledgeGraphRenderingNode
+  commentId: T:FoundationaLLM.Common.Models.Context.Knowledge.KnowledgeGraphRenderingNode
+  href: FoundationaLLM.Common.Models.Context.Knowledge.KnowledgeGraphRenderingNode.html
+  name: KnowledgeGraphRenderingNode
+  nameWithType: KnowledgeGraphRenderingNode
+  fullName: FoundationaLLM.Common.Models.Context.Knowledge.KnowledgeGraphRenderingNode
+- uid: FoundationaLLM.Common.Models.Context.Knowledge
+  commentId: N:FoundationaLLM.Common.Models.Context.Knowledge
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.Context.Knowledge
+  nameWithType: FoundationaLLM.Common.Models.Context.Knowledge
+  fullName: FoundationaLLM.Common.Models.Context.Knowledge
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Context
+    name: Context
+    href: FoundationaLLM.Common.Models.Context.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Context.Knowledge
+    name: Knowledge
+    href: FoundationaLLM.Common.Models.Context.Knowledge.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Context
+    name: Context
+    href: FoundationaLLM.Common.Models.Context.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Context.Knowledge
+    name: Knowledge
+    href: FoundationaLLM.Common.Models.Context.Knowledge.html

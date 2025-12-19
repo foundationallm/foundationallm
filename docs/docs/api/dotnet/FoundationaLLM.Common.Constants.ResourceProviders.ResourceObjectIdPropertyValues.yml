@@ -1,0 +1,627 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Common.Constants.ResourceProviders.ResourceObjectIdPropertyValues
+  commentId: T:FoundationaLLM.Common.Constants.ResourceProviders.ResourceObjectIdPropertyValues
+  id: ResourceObjectIdPropertyValues
+  parent: FoundationaLLM.Common.Constants.ResourceProviders
+  children:
+  - FoundationaLLM.Common.Constants.ResourceProviders.ResourceObjectIdPropertyValues.AIProject
+  - FoundationaLLM.Common.Constants.ResourceProviders.ResourceObjectIdPropertyValues.AgentPrivateStoreKnowledgeUnit
+  - FoundationaLLM.Common.Constants.ResourceProviders.ResourceObjectIdPropertyValues.ConversationKnowledgeUnit
+  - FoundationaLLM.Common.Constants.ResourceProviders.ResourceObjectIdPropertyValues.FileUploadDataPipeline
+  - FoundationaLLM.Common.Constants.ResourceProviders.ResourceObjectIdPropertyValues.FilesPrompt
+  - FoundationaLLM.Common.Constants.ResourceProviders.ResourceObjectIdPropertyValues.FinalPrompt
+  - FoundationaLLM.Common.Constants.ResourceProviders.ResourceObjectIdPropertyValues.MainModel
+  - FoundationaLLM.Common.Constants.ResourceProviders.ResourceObjectIdPropertyValues.MainPrompt
+  - FoundationaLLM.Common.Constants.ResourceProviders.ResourceObjectIdPropertyValues.RouterPrompt
+  - FoundationaLLM.Common.Constants.ResourceProviders.ResourceObjectIdPropertyValues.ToolAssociation
+  langs:
+  - csharp
+  - vb
+  name: ResourceObjectIdPropertyValues
+  nameWithType: ResourceObjectIdPropertyValues
+  fullName: FoundationaLLM.Common.Constants.ResourceProviders.ResourceObjectIdPropertyValues
+  type: Class
+  source:
+    remote:
+      path: src/dotnet/Common/Constants/ResourceProviders/ResourceObjectIdPropertyValues.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: ResourceObjectIdPropertyValues
+    path: ../src/dotnet/Common/Constants/ResourceProviders/ResourceObjectIdPropertyValues.cs
+    startLine: 5
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.ResourceProviders
+  summary: Contains constants of the resource property values.
+  example: []
+  syntax:
+    content: public static class ResourceObjectIdPropertyValues
+    content.vb: Public Module ResourceObjectIdPropertyValues
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: FoundationaLLM.Common.Constants.ResourceProviders.ResourceObjectIdPropertyValues.MainModel
+  commentId: F:FoundationaLLM.Common.Constants.ResourceProviders.ResourceObjectIdPropertyValues.MainModel
+  id: MainModel
+  parent: FoundationaLLM.Common.Constants.ResourceProviders.ResourceObjectIdPropertyValues
+  langs:
+  - csharp
+  - vb
+  name: MainModel
+  nameWithType: ResourceObjectIdPropertyValues.MainModel
+  fullName: FoundationaLLM.Common.Constants.ResourceProviders.ResourceObjectIdPropertyValues.MainModel
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Constants/ResourceProviders/ResourceObjectIdPropertyValues.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: MainModel
+    path: ../src/dotnet/Common/Constants/ResourceProviders/ResourceObjectIdPropertyValues.cs
+    startLine: 10
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.ResourceProviders
+  summary: Main model.
+  example: []
+  syntax:
+    content: public const string MainModel = "main_model"
+    return:
+      type: System.String
+    content.vb: Public Const MainModel As String = "main_model"
+- uid: FoundationaLLM.Common.Constants.ResourceProviders.ResourceObjectIdPropertyValues.MainPrompt
+  commentId: F:FoundationaLLM.Common.Constants.ResourceProviders.ResourceObjectIdPropertyValues.MainPrompt
+  id: MainPrompt
+  parent: FoundationaLLM.Common.Constants.ResourceProviders.ResourceObjectIdPropertyValues
+  langs:
+  - csharp
+  - vb
+  name: MainPrompt
+  nameWithType: ResourceObjectIdPropertyValues.MainPrompt
+  fullName: FoundationaLLM.Common.Constants.ResourceProviders.ResourceObjectIdPropertyValues.MainPrompt
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Constants/ResourceProviders/ResourceObjectIdPropertyValues.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: MainPrompt
+    path: ../src/dotnet/Common/Constants/ResourceProviders/ResourceObjectIdPropertyValues.cs
+    startLine: 15
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.ResourceProviders
+  summary: Main prompt.
+  example: []
+  syntax:
+    content: public const string MainPrompt = "main_prompt"
+    return:
+      type: System.String
+    content.vb: Public Const MainPrompt As String = "main_prompt"
+- uid: FoundationaLLM.Common.Constants.ResourceProviders.ResourceObjectIdPropertyValues.RouterPrompt
+  commentId: F:FoundationaLLM.Common.Constants.ResourceProviders.ResourceObjectIdPropertyValues.RouterPrompt
+  id: RouterPrompt
+  parent: FoundationaLLM.Common.Constants.ResourceProviders.ResourceObjectIdPropertyValues
+  langs:
+  - csharp
+  - vb
+  name: RouterPrompt
+  nameWithType: ResourceObjectIdPropertyValues.RouterPrompt
+  fullName: FoundationaLLM.Common.Constants.ResourceProviders.ResourceObjectIdPropertyValues.RouterPrompt
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Constants/ResourceProviders/ResourceObjectIdPropertyValues.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: RouterPrompt
+    path: ../src/dotnet/Common/Constants/ResourceProviders/ResourceObjectIdPropertyValues.cs
+    startLine: 20
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.ResourceProviders
+  summary: Router prompt.
+  example: []
+  syntax:
+    content: public const string RouterPrompt = "router_prompt"
+    return:
+      type: System.String
+    content.vb: Public Const RouterPrompt As String = "router_prompt"
+- uid: FoundationaLLM.Common.Constants.ResourceProviders.ResourceObjectIdPropertyValues.FilesPrompt
+  commentId: F:FoundationaLLM.Common.Constants.ResourceProviders.ResourceObjectIdPropertyValues.FilesPrompt
+  id: FilesPrompt
+  parent: FoundationaLLM.Common.Constants.ResourceProviders.ResourceObjectIdPropertyValues
+  langs:
+  - csharp
+  - vb
+  name: FilesPrompt
+  nameWithType: ResourceObjectIdPropertyValues.FilesPrompt
+  fullName: FoundationaLLM.Common.Constants.ResourceProviders.ResourceObjectIdPropertyValues.FilesPrompt
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Constants/ResourceProviders/ResourceObjectIdPropertyValues.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: FilesPrompt
+    path: ../src/dotnet/Common/Constants/ResourceProviders/ResourceObjectIdPropertyValues.cs
+    startLine: 25
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.ResourceProviders
+  summary: Files prompt.
+  example: []
+  syntax:
+    content: public const string FilesPrompt = "files_prompt"
+    return:
+      type: System.String
+    content.vb: Public Const FilesPrompt As String = "files_prompt"
+- uid: FoundationaLLM.Common.Constants.ResourceProviders.ResourceObjectIdPropertyValues.FinalPrompt
+  commentId: F:FoundationaLLM.Common.Constants.ResourceProviders.ResourceObjectIdPropertyValues.FinalPrompt
+  id: FinalPrompt
+  parent: FoundationaLLM.Common.Constants.ResourceProviders.ResourceObjectIdPropertyValues
+  langs:
+  - csharp
+  - vb
+  name: FinalPrompt
+  nameWithType: ResourceObjectIdPropertyValues.FinalPrompt
+  fullName: FoundationaLLM.Common.Constants.ResourceProviders.ResourceObjectIdPropertyValues.FinalPrompt
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Constants/ResourceProviders/ResourceObjectIdPropertyValues.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: FinalPrompt
+    path: ../src/dotnet/Common/Constants/ResourceProviders/ResourceObjectIdPropertyValues.cs
+    startLine: 30
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.ResourceProviders
+  summary: Final prompt.
+  example: []
+  syntax:
+    content: public const string FinalPrompt = "final_prompt"
+    return:
+      type: System.String
+    content.vb: Public Const FinalPrompt As String = "final_prompt"
+- uid: FoundationaLLM.Common.Constants.ResourceProviders.ResourceObjectIdPropertyValues.FileUploadDataPipeline
+  commentId: F:FoundationaLLM.Common.Constants.ResourceProviders.ResourceObjectIdPropertyValues.FileUploadDataPipeline
+  id: FileUploadDataPipeline
+  parent: FoundationaLLM.Common.Constants.ResourceProviders.ResourceObjectIdPropertyValues
+  langs:
+  - csharp
+  - vb
+  name: FileUploadDataPipeline
+  nameWithType: ResourceObjectIdPropertyValues.FileUploadDataPipeline
+  fullName: FoundationaLLM.Common.Constants.ResourceProviders.ResourceObjectIdPropertyValues.FileUploadDataPipeline
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Constants/ResourceProviders/ResourceObjectIdPropertyValues.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: FileUploadDataPipeline
+    path: ../src/dotnet/Common/Constants/ResourceProviders/ResourceObjectIdPropertyValues.cs
+    startLine: 35
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.ResourceProviders
+  summary: The data pipeline used to upload files.
+  example: []
+  syntax:
+    content: public const string FileUploadDataPipeline = "file_upload_data_pipeline"
+    return:
+      type: System.String
+    content.vb: Public Const FileUploadDataPipeline As String = "file_upload_data_pipeline"
+- uid: FoundationaLLM.Common.Constants.ResourceProviders.ResourceObjectIdPropertyValues.ConversationKnowledgeUnit
+  commentId: F:FoundationaLLM.Common.Constants.ResourceProviders.ResourceObjectIdPropertyValues.ConversationKnowledgeUnit
+  id: ConversationKnowledgeUnit
+  parent: FoundationaLLM.Common.Constants.ResourceProviders.ResourceObjectIdPropertyValues
+  langs:
+  - csharp
+  - vb
+  name: ConversationKnowledgeUnit
+  nameWithType: ResourceObjectIdPropertyValues.ConversationKnowledgeUnit
+  fullName: FoundationaLLM.Common.Constants.ResourceProviders.ResourceObjectIdPropertyValues.ConversationKnowledgeUnit
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Constants/ResourceProviders/ResourceObjectIdPropertyValues.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: ConversationKnowledgeUnit
+    path: ../src/dotnet/Common/Constants/ResourceProviders/ResourceObjectIdPropertyValues.cs
+    startLine: 40
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.ResourceProviders
+  summary: The knowledge unit used for conversation files.
+  example: []
+  syntax:
+    content: public const string ConversationKnowledgeUnit = "conversation_knowledge_unit"
+    return:
+      type: System.String
+    content.vb: Public Const ConversationKnowledgeUnit As String = "conversation_knowledge_unit"
+- uid: FoundationaLLM.Common.Constants.ResourceProviders.ResourceObjectIdPropertyValues.AgentPrivateStoreKnowledgeUnit
+  commentId: F:FoundationaLLM.Common.Constants.ResourceProviders.ResourceObjectIdPropertyValues.AgentPrivateStoreKnowledgeUnit
+  id: AgentPrivateStoreKnowledgeUnit
+  parent: FoundationaLLM.Common.Constants.ResourceProviders.ResourceObjectIdPropertyValues
+  langs:
+  - csharp
+  - vb
+  name: AgentPrivateStoreKnowledgeUnit
+  nameWithType: ResourceObjectIdPropertyValues.AgentPrivateStoreKnowledgeUnit
+  fullName: FoundationaLLM.Common.Constants.ResourceProviders.ResourceObjectIdPropertyValues.AgentPrivateStoreKnowledgeUnit
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Constants/ResourceProviders/ResourceObjectIdPropertyValues.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: AgentPrivateStoreKnowledgeUnit
+    path: ../src/dotnet/Common/Constants/ResourceProviders/ResourceObjectIdPropertyValues.cs
+    startLine: 45
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.ResourceProviders
+  summary: The knowledge unit used for agent private store files.
+  example: []
+  syntax:
+    content: public const string AgentPrivateStoreKnowledgeUnit = "agent_private_store_knowledge_unit"
+    return:
+      type: System.String
+    content.vb: Public Const AgentPrivateStoreKnowledgeUnit As String = "agent_private_store_knowledge_unit"
+- uid: FoundationaLLM.Common.Constants.ResourceProviders.ResourceObjectIdPropertyValues.ToolAssociation
+  commentId: F:FoundationaLLM.Common.Constants.ResourceProviders.ResourceObjectIdPropertyValues.ToolAssociation
+  id: ToolAssociation
+  parent: FoundationaLLM.Common.Constants.ResourceProviders.ResourceObjectIdPropertyValues
+  langs:
+  - csharp
+  - vb
+  name: ToolAssociation
+  nameWithType: ResourceObjectIdPropertyValues.ToolAssociation
+  fullName: FoundationaLLM.Common.Constants.ResourceProviders.ResourceObjectIdPropertyValues.ToolAssociation
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Constants/ResourceProviders/ResourceObjectIdPropertyValues.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: ToolAssociation
+    path: ../src/dotnet/Common/Constants/ResourceProviders/ResourceObjectIdPropertyValues.cs
+    startLine: 50
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.ResourceProviders
+  summary: Tool association.
+  example: []
+  syntax:
+    content: public const string ToolAssociation = "tool_association"
+    return:
+      type: System.String
+    content.vb: Public Const ToolAssociation As String = "tool_association"
+- uid: FoundationaLLM.Common.Constants.ResourceProviders.ResourceObjectIdPropertyValues.AIProject
+  commentId: F:FoundationaLLM.Common.Constants.ResourceProviders.ResourceObjectIdPropertyValues.AIProject
+  id: AIProject
+  parent: FoundationaLLM.Common.Constants.ResourceProviders.ResourceObjectIdPropertyValues
+  langs:
+  - csharp
+  - vb
+  name: AIProject
+  nameWithType: ResourceObjectIdPropertyValues.AIProject
+  fullName: FoundationaLLM.Common.Constants.ResourceProviders.ResourceObjectIdPropertyValues.AIProject
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Constants/ResourceProviders/ResourceObjectIdPropertyValues.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: AIProject
+    path: ../src/dotnet/Common/Constants/ResourceProviders/ResourceObjectIdPropertyValues.cs
+    startLine: 55
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants.ResourceProviders
+  summary: AI project.
+  example: []
+  syntax:
+    content: public const string AIProject = "ai_project"
+    return:
+      type: System.String
+    content.vb: Public Const AIProject As String = "ai_project"
+references:
+- uid: FoundationaLLM.Common.Constants.ResourceProviders
+  commentId: N:FoundationaLLM.Common.Constants.ResourceProviders
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Constants.ResourceProviders
+  nameWithType: FoundationaLLM.Common.Constants.ResourceProviders
+  fullName: FoundationaLLM.Common.Constants.ResourceProviders
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Constants
+    name: Constants
+    href: FoundationaLLM.Common.Constants.html
+  - name: .
+  - uid: FoundationaLLM.Common.Constants.ResourceProviders
+    name: ResourceProviders
+    href: FoundationaLLM.Common.Constants.ResourceProviders.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Constants
+    name: Constants
+    href: FoundationaLLM.Common.Constants.html
+  - name: .
+  - uid: FoundationaLLM.Common.Constants.ResourceProviders
+    name: ResourceProviders
+    href: FoundationaLLM.Common.Constants.ResourceProviders.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String

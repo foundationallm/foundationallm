@@ -1,0 +1,892 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequest
+  commentId: T:FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequest
+  id: CompletionRequest
+  parent: FoundationaLLM.Common.Models.Orchestration.Request
+  children:
+  - FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequest.AgentName
+  - FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequest.Attachments
+  - FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequest.GatekeeperOptions
+  - FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequest.Settings
+  langs:
+  - csharp
+  - vb
+  name: CompletionRequest
+  nameWithType: CompletionRequest
+  fullName: FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequest
+  type: Class
+  source:
+    remote:
+      path: src/dotnet/Common/Models/Orchestration/Request/CompletionRequest.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: CompletionRequest
+    path: ../src/dotnet/Common/Models/Orchestration/Request/CompletionRequest.cs
+    startLine: 7
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.Orchestration.Request
+  summary: The completion request object.
+  example: []
+  syntax:
+    content: 'public class CompletionRequest : CompletionRequestBase'
+    content.vb: Public Class CompletionRequest Inherits CompletionRequestBase
+  inheritance:
+  - System.Object
+  - FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequestBase
+  inheritedMembers:
+  - FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequestBase.OperationId
+  - FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequestBase.LongRunningOperation
+  - FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequestBase.SessionId
+  - FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequestBase.UserPrompt
+  - FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequestBase.UserPromptRewrite
+  - FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequestBase.MessageHistory
+  - FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequestBase.FileHistory
+  - FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequestBase.Metadata
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+  extensionMethods:
+  - System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+- uid: FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequest.AgentName
+  commentId: P:FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequest.AgentName
+  id: AgentName
+  parent: FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequest
+  langs:
+  - csharp
+  - vb
+  name: AgentName
+  nameWithType: CompletionRequest.AgentName
+  fullName: FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequest.AgentName
+  type: Property
+  source:
+    remote:
+      path: src/dotnet/Common/Models/Orchestration/Request/CompletionRequest.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: AgentName
+    path: ../src/dotnet/Common/Models/Orchestration/Request/CompletionRequest.cs
+    startLine: 12
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.Orchestration.Request
+  summary: The name of the selected agent.
+  example: []
+  syntax:
+    content: >-
+      [JsonPropertyName("agent_name")]
+
+      public string? AgentName { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: >-
+      <JsonPropertyName("agent_name")>
+
+      Public Property AgentName As String
+  overload: FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequest.AgentName*
+  attributes:
+  - type: System.Text.Json.Serialization.JsonPropertyNameAttribute
+    ctor: System.Text.Json.Serialization.JsonPropertyNameAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: agent_name
+- uid: FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequest.GatekeeperOptions
+  commentId: P:FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequest.GatekeeperOptions
+  id: GatekeeperOptions
+  parent: FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequest
+  langs:
+  - csharp
+  - vb
+  name: GatekeeperOptions
+  nameWithType: CompletionRequest.GatekeeperOptions
+  fullName: FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequest.GatekeeperOptions
+  type: Property
+  source:
+    remote:
+      path: src/dotnet/Common/Models/Orchestration/Request/CompletionRequest.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: GatekeeperOptions
+    path: ../src/dotnet/Common/Models/Orchestration/Request/CompletionRequest.cs
+    startLine: 18
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.Orchestration.Request
+  summary: A list of Gatekeeper feature names used by the orchestration request.
+  example: []
+  syntax:
+    content: >-
+      [JsonPropertyName("gatekeeper_options")]
+
+      public string[]? GatekeeperOptions { get; set; }
+    parameters: []
+    return:
+      type: System.String[]
+    content.vb: >-
+      <JsonPropertyName("gatekeeper_options")>
+
+      Public Property GatekeeperOptions As String()
+  overload: FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequest.GatekeeperOptions*
+  attributes:
+  - type: System.Text.Json.Serialization.JsonPropertyNameAttribute
+    ctor: System.Text.Json.Serialization.JsonPropertyNameAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: gatekeeper_options
+- uid: FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequest.Settings
+  commentId: P:FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequest.Settings
+  id: Settings
+  parent: FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequest
+  langs:
+  - csharp
+  - vb
+  name: Settings
+  nameWithType: CompletionRequest.Settings
+  fullName: FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequest.Settings
+  type: Property
+  source:
+    remote:
+      path: src/dotnet/Common/Models/Orchestration/Request/CompletionRequest.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: Settings
+    path: ../src/dotnet/Common/Models/Orchestration/Request/CompletionRequest.cs
+    startLine: 24
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.Orchestration.Request
+  summary: Settings that override some aspects of behaviour of the orchestration.
+  example: []
+  syntax:
+    content: >-
+      [JsonPropertyName("settings")]
+
+      public OrchestrationSettings? Settings { get; set; }
+    parameters: []
+    return:
+      type: FoundationaLLM.Common.Models.Orchestration.Request.OrchestrationSettings
+    content.vb: >-
+      <JsonPropertyName("settings")>
+
+      Public Property Settings As OrchestrationSettings
+  overload: FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequest.Settings*
+  attributes:
+  - type: System.Text.Json.Serialization.JsonPropertyNameAttribute
+    ctor: System.Text.Json.Serialization.JsonPropertyNameAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: settings
+- uid: FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequest.Attachments
+  commentId: P:FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequest.Attachments
+  id: Attachments
+  parent: FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequest
+  langs:
+  - csharp
+  - vb
+  name: Attachments
+  nameWithType: CompletionRequest.Attachments
+  fullName: FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequest.Attachments
+  type: Property
+  source:
+    remote:
+      path: src/dotnet/Common/Models/Orchestration/Request/CompletionRequest.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: Attachments
+    path: ../src/dotnet/Common/Models/Orchestration/Request/CompletionRequest.cs
+    startLine: 31
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.Orchestration.Request
+  summary: >-
+    One or more attachments to include with the orchestration request.
+
+    The values should be the ObjectID of the attachment(s).
+  example: []
+  syntax:
+    content: >-
+      [JsonPropertyName("attachments")]
+
+      public List<string> Attachments { get; init; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.List{System.String}
+    content.vb: >-
+      <JsonPropertyName("attachments")>
+
+      Public Property Attachments As List(Of String)
+  overload: FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequest.Attachments*
+  attributes:
+  - type: System.Text.Json.Serialization.JsonPropertyNameAttribute
+    ctor: System.Text.Json.Serialization.JsonPropertyNameAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: attachments
+references:
+- uid: FoundationaLLM.Common.Models.Orchestration.Request
+  commentId: N:FoundationaLLM.Common.Models.Orchestration.Request
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.Orchestration.Request
+  nameWithType: FoundationaLLM.Common.Models.Orchestration.Request
+  fullName: FoundationaLLM.Common.Models.Orchestration.Request
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Orchestration
+    name: Orchestration
+    href: FoundationaLLM.Common.Models.Orchestration.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Orchestration.Request
+    name: Request
+    href: FoundationaLLM.Common.Models.Orchestration.Request.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Orchestration
+    name: Orchestration
+    href: FoundationaLLM.Common.Models.Orchestration.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Orchestration.Request
+    name: Request
+    href: FoundationaLLM.Common.Models.Orchestration.Request.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequestBase
+  commentId: T:FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequestBase
+  parent: FoundationaLLM.Common.Models.Orchestration.Request
+  href: FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequestBase.html
+  name: CompletionRequestBase
+  nameWithType: CompletionRequestBase
+  fullName: FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequestBase
+- uid: FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequestBase.OperationId
+  commentId: P:FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequestBase.OperationId
+  parent: FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequestBase
+  href: FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequestBase.html#FoundationaLLM_Common_Models_Orchestration_Request_CompletionRequestBase_OperationId
+  name: OperationId
+  nameWithType: CompletionRequestBase.OperationId
+  fullName: FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequestBase.OperationId
+- uid: FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequestBase.LongRunningOperation
+  commentId: P:FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequestBase.LongRunningOperation
+  parent: FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequestBase
+  href: FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequestBase.html#FoundationaLLM_Common_Models_Orchestration_Request_CompletionRequestBase_LongRunningOperation
+  name: LongRunningOperation
+  nameWithType: CompletionRequestBase.LongRunningOperation
+  fullName: FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequestBase.LongRunningOperation
+- uid: FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequestBase.SessionId
+  commentId: P:FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequestBase.SessionId
+  parent: FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequestBase
+  href: FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequestBase.html#FoundationaLLM_Common_Models_Orchestration_Request_CompletionRequestBase_SessionId
+  name: SessionId
+  nameWithType: CompletionRequestBase.SessionId
+  fullName: FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequestBase.SessionId
+- uid: FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequestBase.UserPrompt
+  commentId: P:FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequestBase.UserPrompt
+  parent: FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequestBase
+  href: FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequestBase.html#FoundationaLLM_Common_Models_Orchestration_Request_CompletionRequestBase_UserPrompt
+  name: UserPrompt
+  nameWithType: CompletionRequestBase.UserPrompt
+  fullName: FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequestBase.UserPrompt
+- uid: FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequestBase.UserPromptRewrite
+  commentId: P:FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequestBase.UserPromptRewrite
+  parent: FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequestBase
+  href: FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequestBase.html#FoundationaLLM_Common_Models_Orchestration_Request_CompletionRequestBase_UserPromptRewrite
+  name: UserPromptRewrite
+  nameWithType: CompletionRequestBase.UserPromptRewrite
+  fullName: FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequestBase.UserPromptRewrite
+- uid: FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequestBase.MessageHistory
+  commentId: P:FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequestBase.MessageHistory
+  parent: FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequestBase
+  href: FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequestBase.html#FoundationaLLM_Common_Models_Orchestration_Request_CompletionRequestBase_MessageHistory
+  name: MessageHistory
+  nameWithType: CompletionRequestBase.MessageHistory
+  fullName: FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequestBase.MessageHistory
+- uid: FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequestBase.FileHistory
+  commentId: P:FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequestBase.FileHistory
+  parent: FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequestBase
+  href: FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequestBase.html#FoundationaLLM_Common_Models_Orchestration_Request_CompletionRequestBase_FileHistory
+  name: FileHistory
+  nameWithType: CompletionRequestBase.FileHistory
+  fullName: FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequestBase.FileHistory
+- uid: FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequestBase.Metadata
+  commentId: P:FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequestBase.Metadata
+  parent: FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequestBase
+  href: FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequestBase.html#FoundationaLLM_Common_Models_Orchestration_Request_CompletionRequestBase_Metadata
+  name: Metadata
+  nameWithType: CompletionRequestBase.Metadata
+  fullName: FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequestBase.Metadata
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  parent: FoundationaLLM.Core.Utils.ObjectExtensions
+  definition: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  isExternal: true
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions
+  commentId: T:FoundationaLLM.Core.Utils.ObjectExtensions
+  parent: FoundationaLLM.Core.Utils
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html
+  name: ObjectExtensions
+  nameWithType: ObjectExtensions
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions
+- uid: FoundationaLLM.Core.Utils
+  commentId: N:FoundationaLLM.Core.Utils
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Core.Utils
+  nameWithType: FoundationaLLM.Core.Utils
+  fullName: FoundationaLLM.Core.Utils
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+- uid: FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequest.AgentName*
+  commentId: Overload:FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequest.AgentName
+  href: FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequest.html#FoundationaLLM_Common_Models_Orchestration_Request_CompletionRequest_AgentName
+  name: AgentName
+  nameWithType: CompletionRequest.AgentName
+  fullName: FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequest.AgentName
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequest.GatekeeperOptions*
+  commentId: Overload:FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequest.GatekeeperOptions
+  href: FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequest.html#FoundationaLLM_Common_Models_Orchestration_Request_CompletionRequest_GatekeeperOptions
+  name: GatekeeperOptions
+  nameWithType: CompletionRequest.GatekeeperOptions
+  fullName: FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequest.GatekeeperOptions
+- uid: System.String[]
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string[]
+  nameWithType: string[]
+  fullName: string[]
+  nameWithType.vb: String()
+  fullName.vb: String()
+  name.vb: String()
+  spec.csharp:
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '['
+  - name: ']'
+  spec.vb:
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: (
+  - name: )
+- uid: FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequest.Settings*
+  commentId: Overload:FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequest.Settings
+  href: FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequest.html#FoundationaLLM_Common_Models_Orchestration_Request_CompletionRequest_Settings
+  name: Settings
+  nameWithType: CompletionRequest.Settings
+  fullName: FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequest.Settings
+- uid: FoundationaLLM.Common.Models.Orchestration.Request.OrchestrationSettings
+  commentId: T:FoundationaLLM.Common.Models.Orchestration.Request.OrchestrationSettings
+  parent: FoundationaLLM.Common.Models.Orchestration.Request
+  href: FoundationaLLM.Common.Models.Orchestration.Request.OrchestrationSettings.html
+  name: OrchestrationSettings
+  nameWithType: OrchestrationSettings
+  fullName: FoundationaLLM.Common.Models.Orchestration.Request.OrchestrationSettings
+- uid: FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequest.Attachments*
+  commentId: Overload:FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequest.Attachments
+  href: FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequest.html#FoundationaLLM_Common_Models_Orchestration_Request_CompletionRequest_Attachments
+  name: Attachments
+  nameWithType: CompletionRequest.Attachments
+  fullName: FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequest.Attachments
+- uid: System.Collections.Generic.List{System.String}
+  commentId: T:System.Collections.Generic.List{System.String}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.List`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  name: List<string>
+  nameWithType: List<string>
+  fullName: System.Collections.Generic.List<string>
+  nameWithType.vb: List(Of String)
+  fullName.vb: System.Collections.Generic.List(Of String)
+  name.vb: List(Of String)
+  spec.csharp:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: System.Collections.Generic.List`1
+  commentId: T:System.Collections.Generic.List`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  name: List<T>
+  nameWithType: List<T>
+  fullName: System.Collections.Generic.List<T>
+  nameWithType.vb: List(Of T)
+  fullName.vb: System.Collections.Generic.List(Of T)
+  name.vb: List(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic

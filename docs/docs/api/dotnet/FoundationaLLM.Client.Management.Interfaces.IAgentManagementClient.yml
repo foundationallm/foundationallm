@@ -1,0 +1,953 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Client.Management.Interfaces.IAgentManagementClient
+  commentId: T:FoundationaLLM.Client.Management.Interfaces.IAgentManagementClient
+  id: IAgentManagementClient
+  parent: FoundationaLLM.Client.Management.Interfaces
+  children:
+  - FoundationaLLM.Client.Management.Interfaces.IAgentManagementClient.CheckAgentNameAsync(FoundationaLLM.Common.Models.ResourceProviders.ResourceName)
+  - FoundationaLLM.Client.Management.Interfaces.IAgentManagementClient.DeleteAgentAsync(System.String)
+  - FoundationaLLM.Client.Management.Interfaces.IAgentManagementClient.GetAgentAsync(System.String)
+  - FoundationaLLM.Client.Management.Interfaces.IAgentManagementClient.GetAgentsAsync
+  - FoundationaLLM.Client.Management.Interfaces.IAgentManagementClient.PurgeAgentAsync(System.String)
+  - FoundationaLLM.Client.Management.Interfaces.IAgentManagementClient.UpsertAgentAsync(FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentBase)
+  langs:
+  - csharp
+  - vb
+  name: IAgentManagementClient
+  nameWithType: IAgentManagementClient
+  fullName: FoundationaLLM.Client.Management.Interfaces.IAgentManagementClient
+  type: Interface
+  source:
+    remote:
+      path: src/dotnet/ManagementClient/Interfaces/IAgentManagementClient.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: IAgentManagementClient
+    path: ../src/dotnet/ManagementClient/Interfaces/IAgentManagementClient.cs
+    startLine: 8
+  assemblies:
+  - FoundationaLLM.Client.Management
+  namespace: FoundationaLLM.Client.Management.Interfaces
+  summary: Provides methods to manage agent resources.
+  example: []
+  syntax:
+    content: public interface IAgentManagementClient
+    content.vb: Public Interface IAgentManagementClient
+  extensionMethods:
+  - System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+- uid: FoundationaLLM.Client.Management.Interfaces.IAgentManagementClient.GetAgentsAsync
+  commentId: M:FoundationaLLM.Client.Management.Interfaces.IAgentManagementClient.GetAgentsAsync
+  id: GetAgentsAsync
+  parent: FoundationaLLM.Client.Management.Interfaces.IAgentManagementClient
+  langs:
+  - csharp
+  - vb
+  name: GetAgentsAsync()
+  nameWithType: IAgentManagementClient.GetAgentsAsync()
+  fullName: FoundationaLLM.Client.Management.Interfaces.IAgentManagementClient.GetAgentsAsync()
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/ManagementClient/Interfaces/IAgentManagementClient.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: GetAgentsAsync
+    path: ../src/dotnet/ManagementClient/Interfaces/IAgentManagementClient.cs
+    startLine: 14
+  assemblies:
+  - FoundationaLLM.Client.Management
+  namespace: FoundationaLLM.Client.Management.Interfaces
+  summary: Retrieves all agent resources.
+  example: []
+  syntax:
+    content: Task<List<ResourceProviderGetResult<AgentBase>>> GetAgentsAsync()
+    return:
+      type: System.Threading.Tasks.Task{System.Collections.Generic.List{FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderGetResult{FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentBase}}}
+      description: All agent resources to which the caller has access and which have not been marked as deleted.
+    content.vb: Function GetAgentsAsync() As Task(Of List(Of ResourceProviderGetResult(Of AgentBase)))
+  overload: FoundationaLLM.Client.Management.Interfaces.IAgentManagementClient.GetAgentsAsync*
+- uid: FoundationaLLM.Client.Management.Interfaces.IAgentManagementClient.GetAgentAsync(System.String)
+  commentId: M:FoundationaLLM.Client.Management.Interfaces.IAgentManagementClient.GetAgentAsync(System.String)
+  id: GetAgentAsync(System.String)
+  parent: FoundationaLLM.Client.Management.Interfaces.IAgentManagementClient
+  langs:
+  - csharp
+  - vb
+  name: GetAgentAsync(string)
+  nameWithType: IAgentManagementClient.GetAgentAsync(string)
+  fullName: FoundationaLLM.Client.Management.Interfaces.IAgentManagementClient.GetAgentAsync(string)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/ManagementClient/Interfaces/IAgentManagementClient.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: GetAgentAsync
+    path: ../src/dotnet/ManagementClient/Interfaces/IAgentManagementClient.cs
+    startLine: 21
+  assemblies:
+  - FoundationaLLM.Client.Management
+  namespace: FoundationaLLM.Client.Management.Interfaces
+  summary: Retrieves a specific agent by name.
+  example: []
+  syntax:
+    content: Task<ResourceProviderGetResult<AgentBase>> GetAgentAsync(string agentName)
+    parameters:
+    - id: agentName
+      type: System.String
+      description: The name of the agent resource to retrieve.
+    return:
+      type: System.Threading.Tasks.Task{FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderGetResult{FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentBase}}
+      description: ''
+    content.vb: Function GetAgentAsync(agentName As String) As Task(Of ResourceProviderGetResult(Of AgentBase))
+  overload: FoundationaLLM.Client.Management.Interfaces.IAgentManagementClient.GetAgentAsync*
+  nameWithType.vb: IAgentManagementClient.GetAgentAsync(String)
+  fullName.vb: FoundationaLLM.Client.Management.Interfaces.IAgentManagementClient.GetAgentAsync(String)
+  name.vb: GetAgentAsync(String)
+- uid: FoundationaLLM.Client.Management.Interfaces.IAgentManagementClient.CheckAgentNameAsync(FoundationaLLM.Common.Models.ResourceProviders.ResourceName)
+  commentId: M:FoundationaLLM.Client.Management.Interfaces.IAgentManagementClient.CheckAgentNameAsync(FoundationaLLM.Common.Models.ResourceProviders.ResourceName)
+  id: CheckAgentNameAsync(FoundationaLLM.Common.Models.ResourceProviders.ResourceName)
+  parent: FoundationaLLM.Client.Management.Interfaces.IAgentManagementClient
+  langs:
+  - csharp
+  - vb
+  name: CheckAgentNameAsync(ResourceName)
+  nameWithType: IAgentManagementClient.CheckAgentNameAsync(ResourceName)
+  fullName: FoundationaLLM.Client.Management.Interfaces.IAgentManagementClient.CheckAgentNameAsync(FoundationaLLM.Common.Models.ResourceProviders.ResourceName)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/ManagementClient/Interfaces/IAgentManagementClient.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: CheckAgentNameAsync
+    path: ../src/dotnet/ManagementClient/Interfaces/IAgentManagementClient.cs
+    startLine: 35
+  assemblies:
+  - FoundationaLLM.Client.Management
+  namespace: FoundationaLLM.Client.Management.Interfaces
+  summary: >-
+    Checks the availability of a resource name for an agent. If the name is available, the
+
+    <xref href="FoundationaLLM.Common.Models.ResourceProviders.ResourceNameCheckResult.Status" data-throw-if-not-resolved="false"></xref> value will be "Allowed". If the name is
+
+    not available, the <xref href="FoundationaLLM.Common.Models.ResourceProviders.ResourceNameCheckResult.Status" data-throw-if-not-resolved="false"></xref> value will be "Denied" and
+
+    the <xref href="FoundationaLLM.Common.Models.ResourceProviders.ResourceNameCheckResult.Message" data-throw-if-not-resolved="false"></xref> will explain the reason why. Typically,
+
+    a denied name is due to a name conflict with an existing agent or an agent that was
+
+    deleted but not purged.
+  example: []
+  syntax:
+    content: Task<ResourceNameCheckResult> CheckAgentNameAsync(ResourceName resourceName)
+    parameters:
+    - id: resourceName
+      type: FoundationaLLM.Common.Models.ResourceProviders.ResourceName
+      description: Contains the name of the resource to check.
+    return:
+      type: System.Threading.Tasks.Task{FoundationaLLM.Common.Models.ResourceProviders.ResourceNameCheckResult}
+      description: ''
+    content.vb: Function CheckAgentNameAsync(resourceName As ResourceName) As Task(Of ResourceNameCheckResult)
+  overload: FoundationaLLM.Client.Management.Interfaces.IAgentManagementClient.CheckAgentNameAsync*
+  exceptions:
+  - type: System.ArgumentException
+    commentId: T:System.ArgumentException
+    description: >-
+      Thrown when the required properties within the argument
+          are empty or missing.
+- uid: FoundationaLLM.Client.Management.Interfaces.IAgentManagementClient.PurgeAgentAsync(System.String)
+  commentId: M:FoundationaLLM.Client.Management.Interfaces.IAgentManagementClient.PurgeAgentAsync(System.String)
+  id: PurgeAgentAsync(System.String)
+  parent: FoundationaLLM.Client.Management.Interfaces.IAgentManagementClient
+  langs:
+  - csharp
+  - vb
+  name: PurgeAgentAsync(string)
+  nameWithType: IAgentManagementClient.PurgeAgentAsync(string)
+  fullName: FoundationaLLM.Client.Management.Interfaces.IAgentManagementClient.PurgeAgentAsync(string)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/ManagementClient/Interfaces/IAgentManagementClient.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: PurgeAgentAsync
+    path: ../src/dotnet/ManagementClient/Interfaces/IAgentManagementClient.cs
+    startLine: 42
+  assemblies:
+  - FoundationaLLM.Client.Management
+  namespace: FoundationaLLM.Client.Management.Interfaces
+  summary: Purges a deleted agent by its name. This action is irreversible.
+  example: []
+  syntax:
+    content: Task<ResourceProviderActionResult> PurgeAgentAsync(string agentName)
+    parameters:
+    - id: agentName
+      type: System.String
+      description: The name of the agent to purge.
+    return:
+      type: System.Threading.Tasks.Task{FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderActionResult}
+      description: ''
+    content.vb: Function PurgeAgentAsync(agentName As String) As Task(Of ResourceProviderActionResult)
+  overload: FoundationaLLM.Client.Management.Interfaces.IAgentManagementClient.PurgeAgentAsync*
+  nameWithType.vb: IAgentManagementClient.PurgeAgentAsync(String)
+  fullName.vb: FoundationaLLM.Client.Management.Interfaces.IAgentManagementClient.PurgeAgentAsync(String)
+  name.vb: PurgeAgentAsync(String)
+- uid: FoundationaLLM.Client.Management.Interfaces.IAgentManagementClient.UpsertAgentAsync(FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentBase)
+  commentId: M:FoundationaLLM.Client.Management.Interfaces.IAgentManagementClient.UpsertAgentAsync(FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentBase)
+  id: UpsertAgentAsync(FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentBase)
+  parent: FoundationaLLM.Client.Management.Interfaces.IAgentManagementClient
+  langs:
+  - csharp
+  - vb
+  name: UpsertAgentAsync(AgentBase)
+  nameWithType: IAgentManagementClient.UpsertAgentAsync(AgentBase)
+  fullName: FoundationaLLM.Client.Management.Interfaces.IAgentManagementClient.UpsertAgentAsync(FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentBase)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/ManagementClient/Interfaces/IAgentManagementClient.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: UpsertAgentAsync
+    path: ../src/dotnet/ManagementClient/Interfaces/IAgentManagementClient.cs
+    startLine: 51
+  assemblies:
+  - FoundationaLLM.Client.Management
+  namespace: FoundationaLLM.Client.Management.Interfaces
+  summary: >-
+    Upserts an agent resource. If an agent does not exist, it will be created. If an agent
+
+    does exist, it will be updated.
+  example: []
+  syntax:
+    content: Task<ResourceProviderUpsertResult> UpsertAgentAsync(AgentBase agent)
+    parameters:
+    - id: agent
+      type: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentBase
+      description: The agent resource to create or update.
+    return:
+      type: System.Threading.Tasks.Task{FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderUpsertResult}
+      description: >-
+        Returns a <xref href="FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderUpsertResult" data-throw-if-not-resolved="false"></xref>, which contains the
+            Object ID of the resource.
+    content.vb: Function UpsertAgentAsync(agent As AgentBase) As Task(Of ResourceProviderUpsertResult)
+  overload: FoundationaLLM.Client.Management.Interfaces.IAgentManagementClient.UpsertAgentAsync*
+- uid: FoundationaLLM.Client.Management.Interfaces.IAgentManagementClient.DeleteAgentAsync(System.String)
+  commentId: M:FoundationaLLM.Client.Management.Interfaces.IAgentManagementClient.DeleteAgentAsync(System.String)
+  id: DeleteAgentAsync(System.String)
+  parent: FoundationaLLM.Client.Management.Interfaces.IAgentManagementClient
+  langs:
+  - csharp
+  - vb
+  name: DeleteAgentAsync(string)
+  nameWithType: IAgentManagementClient.DeleteAgentAsync(string)
+  fullName: FoundationaLLM.Client.Management.Interfaces.IAgentManagementClient.DeleteAgentAsync(string)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/ManagementClient/Interfaces/IAgentManagementClient.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: DeleteAgentAsync
+    path: ../src/dotnet/ManagementClient/Interfaces/IAgentManagementClient.cs
+    startLine: 60
+  assemblies:
+  - FoundationaLLM.Client.Management
+  namespace: FoundationaLLM.Client.Management.Interfaces
+  summary: >-
+    Deletes an agent resource by name. Please note that all deletes are soft deletes. The
+
+    resource will be marked as deleted but not purged. To permanently remove a resource,
+
+    execute the <xref href="FoundationaLLM.Client.Management.Interfaces.IAgentManagementClient.PurgeAgentAsync(System.String)" data-throw-if-not-resolved="false"></xref> method with the same name.
+  example: []
+  syntax:
+    content: Task DeleteAgentAsync(string agentName)
+    parameters:
+    - id: agentName
+      type: System.String
+      description: The name of the agent resource to delete.
+    return:
+      type: System.Threading.Tasks.Task
+      description: ''
+    content.vb: Function DeleteAgentAsync(agentName As String) As Task
+  overload: FoundationaLLM.Client.Management.Interfaces.IAgentManagementClient.DeleteAgentAsync*
+  nameWithType.vb: IAgentManagementClient.DeleteAgentAsync(String)
+  fullName.vb: FoundationaLLM.Client.Management.Interfaces.IAgentManagementClient.DeleteAgentAsync(String)
+  name.vb: DeleteAgentAsync(String)
+references:
+- uid: FoundationaLLM.Client.Management.Interfaces
+  commentId: N:FoundationaLLM.Client.Management.Interfaces
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Client.Management.Interfaces
+  nameWithType: FoundationaLLM.Client.Management.Interfaces
+  fullName: FoundationaLLM.Client.Management.Interfaces
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Client
+    name: Client
+    href: FoundationaLLM.Client.html
+  - name: .
+  - uid: FoundationaLLM.Client.Management
+    name: Management
+    href: FoundationaLLM.Client.Management.html
+  - name: .
+  - uid: FoundationaLLM.Client.Management.Interfaces
+    name: Interfaces
+    href: FoundationaLLM.Client.Management.Interfaces.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Client
+    name: Client
+    href: FoundationaLLM.Client.html
+  - name: .
+  - uid: FoundationaLLM.Client.Management
+    name: Management
+    href: FoundationaLLM.Client.Management.html
+  - name: .
+  - uid: FoundationaLLM.Client.Management.Interfaces
+    name: Interfaces
+    href: FoundationaLLM.Client.Management.Interfaces.html
+- uid: System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  parent: FoundationaLLM.Core.Utils.ObjectExtensions
+  definition: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  isExternal: true
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions
+  commentId: T:FoundationaLLM.Core.Utils.ObjectExtensions
+  parent: FoundationaLLM.Core.Utils
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html
+  name: ObjectExtensions
+  nameWithType: ObjectExtensions
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions
+- uid: FoundationaLLM.Core.Utils
+  commentId: N:FoundationaLLM.Core.Utils
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Core.Utils
+  nameWithType: FoundationaLLM.Core.Utils
+  fullName: FoundationaLLM.Core.Utils
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+- uid: FoundationaLLM.Client.Management.Interfaces.IAgentManagementClient.GetAgentsAsync*
+  commentId: Overload:FoundationaLLM.Client.Management.Interfaces.IAgentManagementClient.GetAgentsAsync
+  href: FoundationaLLM.Client.Management.Interfaces.IAgentManagementClient.html#FoundationaLLM_Client_Management_Interfaces_IAgentManagementClient_GetAgentsAsync
+  name: GetAgentsAsync
+  nameWithType: IAgentManagementClient.GetAgentsAsync
+  fullName: FoundationaLLM.Client.Management.Interfaces.IAgentManagementClient.GetAgentsAsync
+- uid: System.Threading.Tasks.Task{System.Collections.Generic.List{FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderGetResult{FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentBase}}}
+  commentId: T:System.Threading.Tasks.Task{System.Collections.Generic.List{FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderGetResult{FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentBase}}}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<List<ResourceProviderGetResult<AgentBase>>>
+  nameWithType: Task<List<ResourceProviderGetResult<AgentBase>>>
+  fullName: System.Threading.Tasks.Task<System.Collections.Generic.List<FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderGetResult<FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentBase>>>
+  nameWithType.vb: Task(Of List(Of ResourceProviderGetResult(Of AgentBase)))
+  fullName.vb: System.Threading.Tasks.Task(Of System.Collections.Generic.List(Of FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderGetResult(Of FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentBase)))
+  name.vb: Task(Of List(Of ResourceProviderGetResult(Of AgentBase)))
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderGetResult`1
+    name: ResourceProviderGetResult
+    href: FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderGetResult-1.html
+  - name: <
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentBase
+    name: AgentBase
+    href: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentBase.html
+  - name: '>'
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderGetResult`1
+    name: ResourceProviderGetResult
+    href: FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderGetResult-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentBase
+    name: AgentBase
+    href: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentBase.html
+  - name: )
+  - name: )
+  - name: )
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: FoundationaLLM.Client.Management.Interfaces.IAgentManagementClient.GetAgentAsync*
+  commentId: Overload:FoundationaLLM.Client.Management.Interfaces.IAgentManagementClient.GetAgentAsync
+  href: FoundationaLLM.Client.Management.Interfaces.IAgentManagementClient.html#FoundationaLLM_Client_Management_Interfaces_IAgentManagementClient_GetAgentAsync_System_String_
+  name: GetAgentAsync
+  nameWithType: IAgentManagementClient.GetAgentAsync
+  fullName: FoundationaLLM.Client.Management.Interfaces.IAgentManagementClient.GetAgentAsync
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System.Threading.Tasks.Task{FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderGetResult{FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentBase}}
+  commentId: T:System.Threading.Tasks.Task{FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderGetResult{FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentBase}}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<ResourceProviderGetResult<AgentBase>>
+  nameWithType: Task<ResourceProviderGetResult<AgentBase>>
+  fullName: System.Threading.Tasks.Task<FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderGetResult<FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentBase>>
+  nameWithType.vb: Task(Of ResourceProviderGetResult(Of AgentBase))
+  fullName.vb: System.Threading.Tasks.Task(Of FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderGetResult(Of FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentBase))
+  name.vb: Task(Of ResourceProviderGetResult(Of AgentBase))
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderGetResult`1
+    name: ResourceProviderGetResult
+    href: FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderGetResult-1.html
+  - name: <
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentBase
+    name: AgentBase
+    href: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentBase.html
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderGetResult`1
+    name: ResourceProviderGetResult
+    href: FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderGetResult-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentBase
+    name: AgentBase
+    href: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentBase.html
+  - name: )
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceNameCheckResult.Status
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.ResourceNameCheckResult.Status
+  href: FoundationaLLM.Common.Models.ResourceProviders.ResourceNameCheckResult.html#FoundationaLLM_Common_Models_ResourceProviders_ResourceNameCheckResult_Status
+  name: Status
+  nameWithType: ResourceNameCheckResult.Status
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.ResourceNameCheckResult.Status
+- uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceNameCheckResult.Message
+  commentId: P:FoundationaLLM.Common.Models.ResourceProviders.ResourceNameCheckResult.Message
+  href: FoundationaLLM.Common.Models.ResourceProviders.ResourceNameCheckResult.html#FoundationaLLM_Common_Models_ResourceProviders_ResourceNameCheckResult_Message
+  name: Message
+  nameWithType: ResourceNameCheckResult.Message
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.ResourceNameCheckResult.Message
+- uid: System.ArgumentException
+  commentId: T:System.ArgumentException
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.argumentexception
+  name: ArgumentException
+  nameWithType: ArgumentException
+  fullName: System.ArgumentException
+- uid: FoundationaLLM.Client.Management.Interfaces.IAgentManagementClient.CheckAgentNameAsync*
+  commentId: Overload:FoundationaLLM.Client.Management.Interfaces.IAgentManagementClient.CheckAgentNameAsync
+  href: FoundationaLLM.Client.Management.Interfaces.IAgentManagementClient.html#FoundationaLLM_Client_Management_Interfaces_IAgentManagementClient_CheckAgentNameAsync_FoundationaLLM_Common_Models_ResourceProviders_ResourceName_
+  name: CheckAgentNameAsync
+  nameWithType: IAgentManagementClient.CheckAgentNameAsync
+  fullName: FoundationaLLM.Client.Management.Interfaces.IAgentManagementClient.CheckAgentNameAsync
+- uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceName
+  commentId: T:FoundationaLLM.Common.Models.ResourceProviders.ResourceName
+  parent: FoundationaLLM.Common.Models.ResourceProviders
+  href: FoundationaLLM.Common.Models.ResourceProviders.ResourceName.html
+  name: ResourceName
+  nameWithType: ResourceName
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.ResourceName
+- uid: System.Threading.Tasks.Task{FoundationaLLM.Common.Models.ResourceProviders.ResourceNameCheckResult}
+  commentId: T:System.Threading.Tasks.Task{FoundationaLLM.Common.Models.ResourceProviders.ResourceNameCheckResult}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<ResourceNameCheckResult>
+  nameWithType: Task<ResourceNameCheckResult>
+  fullName: System.Threading.Tasks.Task<FoundationaLLM.Common.Models.ResourceProviders.ResourceNameCheckResult>
+  nameWithType.vb: Task(Of ResourceNameCheckResult)
+  fullName.vb: System.Threading.Tasks.Task(Of FoundationaLLM.Common.Models.ResourceProviders.ResourceNameCheckResult)
+  name.vb: Task(Of ResourceNameCheckResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceNameCheckResult
+    name: ResourceNameCheckResult
+    href: FoundationaLLM.Common.Models.ResourceProviders.ResourceNameCheckResult.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceNameCheckResult
+    name: ResourceNameCheckResult
+    href: FoundationaLLM.Common.Models.ResourceProviders.ResourceNameCheckResult.html
+  - name: )
+- uid: FoundationaLLM.Common.Models.ResourceProviders
+  commentId: N:FoundationaLLM.Common.Models.ResourceProviders
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.ResourceProviders
+  nameWithType: FoundationaLLM.Common.Models.ResourceProviders
+  fullName: FoundationaLLM.Common.Models.ResourceProviders
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders
+    name: ResourceProviders
+    href: FoundationaLLM.Common.Models.ResourceProviders.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders
+    name: ResourceProviders
+    href: FoundationaLLM.Common.Models.ResourceProviders.html
+- uid: FoundationaLLM.Client.Management.Interfaces.IAgentManagementClient.PurgeAgentAsync*
+  commentId: Overload:FoundationaLLM.Client.Management.Interfaces.IAgentManagementClient.PurgeAgentAsync
+  href: FoundationaLLM.Client.Management.Interfaces.IAgentManagementClient.html#FoundationaLLM_Client_Management_Interfaces_IAgentManagementClient_PurgeAgentAsync_System_String_
+  name: PurgeAgentAsync
+  nameWithType: IAgentManagementClient.PurgeAgentAsync
+  fullName: FoundationaLLM.Client.Management.Interfaces.IAgentManagementClient.PurgeAgentAsync
+- uid: System.Threading.Tasks.Task{FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderActionResult}
+  commentId: T:System.Threading.Tasks.Task{FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderActionResult}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<ResourceProviderActionResult>
+  nameWithType: Task<ResourceProviderActionResult>
+  fullName: System.Threading.Tasks.Task<FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderActionResult>
+  nameWithType.vb: Task(Of ResourceProviderActionResult)
+  fullName.vb: System.Threading.Tasks.Task(Of FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderActionResult)
+  name.vb: Task(Of ResourceProviderActionResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderActionResult
+    name: ResourceProviderActionResult
+    href: FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderActionResult.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderActionResult
+    name: ResourceProviderActionResult
+    href: FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderActionResult.html
+  - name: )
+- uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderUpsertResult
+  commentId: T:FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderUpsertResult
+  parent: FoundationaLLM.Common.Models.ResourceProviders
+  href: FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderUpsertResult.html
+  name: ResourceProviderUpsertResult
+  nameWithType: ResourceProviderUpsertResult
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderUpsertResult
+- uid: FoundationaLLM.Client.Management.Interfaces.IAgentManagementClient.UpsertAgentAsync*
+  commentId: Overload:FoundationaLLM.Client.Management.Interfaces.IAgentManagementClient.UpsertAgentAsync
+  href: FoundationaLLM.Client.Management.Interfaces.IAgentManagementClient.html#FoundationaLLM_Client_Management_Interfaces_IAgentManagementClient_UpsertAgentAsync_FoundationaLLM_Common_Models_ResourceProviders_Agent_AgentBase_
+  name: UpsertAgentAsync
+  nameWithType: IAgentManagementClient.UpsertAgentAsync
+  fullName: FoundationaLLM.Client.Management.Interfaces.IAgentManagementClient.UpsertAgentAsync
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentBase
+  commentId: T:FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentBase
+  parent: FoundationaLLM.Common.Models.ResourceProviders.Agent
+  href: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentBase.html
+  name: AgentBase
+  nameWithType: AgentBase
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentBase
+- uid: System.Threading.Tasks.Task{FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderUpsertResult}
+  commentId: T:System.Threading.Tasks.Task{FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderUpsertResult}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<ResourceProviderUpsertResult>
+  nameWithType: Task<ResourceProviderUpsertResult>
+  fullName: System.Threading.Tasks.Task<FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderUpsertResult>
+  nameWithType.vb: Task(Of ResourceProviderUpsertResult)
+  fullName.vb: System.Threading.Tasks.Task(Of FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderUpsertResult)
+  name.vb: Task(Of ResourceProviderUpsertResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderUpsertResult
+    name: ResourceProviderUpsertResult
+    href: FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderUpsertResult.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderUpsertResult
+    name: ResourceProviderUpsertResult
+    href: FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderUpsertResult.html
+  - name: )
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Agent
+  commentId: N:FoundationaLLM.Common.Models.ResourceProviders.Agent
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.ResourceProviders.Agent
+  nameWithType: FoundationaLLM.Common.Models.ResourceProviders.Agent
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Agent
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders
+    name: ResourceProviders
+    href: FoundationaLLM.Common.Models.ResourceProviders.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.Agent
+    name: Agent
+    href: FoundationaLLM.Common.Models.ResourceProviders.Agent.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders
+    name: ResourceProviders
+    href: FoundationaLLM.Common.Models.ResourceProviders.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.Agent
+    name: Agent
+    href: FoundationaLLM.Common.Models.ResourceProviders.Agent.html
+- uid: FoundationaLLM.Client.Management.Interfaces.IAgentManagementClient.PurgeAgentAsync(System.String)
+  commentId: M:FoundationaLLM.Client.Management.Interfaces.IAgentManagementClient.PurgeAgentAsync(System.String)
+  isExternal: true
+  href: FoundationaLLM.Client.Management.Interfaces.IAgentManagementClient.html#FoundationaLLM_Client_Management_Interfaces_IAgentManagementClient_PurgeAgentAsync_System_String_
+  name: PurgeAgentAsync(string)
+  nameWithType: IAgentManagementClient.PurgeAgentAsync(string)
+  fullName: FoundationaLLM.Client.Management.Interfaces.IAgentManagementClient.PurgeAgentAsync(string)
+  nameWithType.vb: IAgentManagementClient.PurgeAgentAsync(String)
+  fullName.vb: FoundationaLLM.Client.Management.Interfaces.IAgentManagementClient.PurgeAgentAsync(String)
+  name.vb: PurgeAgentAsync(String)
+  spec.csharp:
+  - uid: FoundationaLLM.Client.Management.Interfaces.IAgentManagementClient.PurgeAgentAsync(System.String)
+    name: PurgeAgentAsync
+    href: FoundationaLLM.Client.Management.Interfaces.IAgentManagementClient.html#FoundationaLLM_Client_Management_Interfaces_IAgentManagementClient_PurgeAgentAsync_System_String_
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Client.Management.Interfaces.IAgentManagementClient.PurgeAgentAsync(System.String)
+    name: PurgeAgentAsync
+    href: FoundationaLLM.Client.Management.Interfaces.IAgentManagementClient.html#FoundationaLLM_Client_Management_Interfaces_IAgentManagementClient_PurgeAgentAsync_System_String_
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: FoundationaLLM.Client.Management.Interfaces.IAgentManagementClient.DeleteAgentAsync*
+  commentId: Overload:FoundationaLLM.Client.Management.Interfaces.IAgentManagementClient.DeleteAgentAsync
+  href: FoundationaLLM.Client.Management.Interfaces.IAgentManagementClient.html#FoundationaLLM_Client_Management_Interfaces_IAgentManagementClient_DeleteAgentAsync_System_String_
+  name: DeleteAgentAsync
+  nameWithType: IAgentManagementClient.DeleteAgentAsync
+  fullName: FoundationaLLM.Client.Management.Interfaces.IAgentManagementClient.DeleteAgentAsync
+- uid: System.Threading.Tasks.Task
+  commentId: T:System.Threading.Tasks.Task
+  parent: System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  name: Task
+  nameWithType: Task
+  fullName: System.Threading.Tasks.Task

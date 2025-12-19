@@ -1,0 +1,1159 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Client.Core.Interfaces.ICoreClient
+  commentId: T:FoundationaLLM.Client.Core.Interfaces.ICoreClient
+  id: ICoreClient
+  parent: FoundationaLLM.Client.Core.Interfaces
+  children:
+  - FoundationaLLM.Client.Core.Interfaces.ICoreClient.AttachFileAndAskQuestionAsync(System.IO.Stream,System.String,System.String,System.String,System.String,System.Boolean,System.String,FoundationaLLM.Common.Models.Conversation.ConversationProperties)
+  - FoundationaLLM.Client.Core.Interfaces.ICoreClient.CreateChatSessionAsync(FoundationaLLM.Common.Models.Conversation.ConversationProperties)
+  - FoundationaLLM.Client.Core.Interfaces.ICoreClient.DeleteSessionAsync(System.String)
+  - FoundationaLLM.Client.Core.Interfaces.ICoreClient.GetAgentsAsync
+  - FoundationaLLM.Client.Core.Interfaces.ICoreClient.GetChatSessionMessagesAsync(System.String)
+  - FoundationaLLM.Client.Core.Interfaces.ICoreClient.GetCompletionAsync(FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequest)
+  - FoundationaLLM.Client.Core.Interfaces.ICoreClient.GetCompletionAsync(System.String,System.String)
+  - FoundationaLLM.Client.Core.Interfaces.ICoreClient.GetCompletionWithSessionAsync(FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequest)
+  - FoundationaLLM.Client.Core.Interfaces.ICoreClient.GetCompletionWithSessionAsync(System.String,FoundationaLLM.Common.Models.Conversation.ConversationProperties,System.String,System.String)
+  - FoundationaLLM.Client.Core.Interfaces.ICoreClient.RateMessageAsync(System.String,System.String,FoundationaLLM.Common.Models.Conversation.MessageRatingRequest)
+  langs:
+  - csharp
+  - vb
+  name: ICoreClient
+  nameWithType: ICoreClient
+  fullName: FoundationaLLM.Client.Core.Interfaces.ICoreClient
+  type: Interface
+  source:
+    remote:
+      path: src/dotnet/CoreClient/Interfaces/ICoreClient.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: ICoreClient
+    path: ../src/dotnet/CoreClient/Interfaces/ICoreClient.cs
+    startLine: 11
+  assemblies:
+  - FoundationaLLM.Client.Core
+  namespace: FoundationaLLM.Client.Core.Interfaces
+  summary: Provides high-level methods to interact with the Core API.
+  example: []
+  syntax:
+    content: public interface ICoreClient
+    content.vb: Public Interface ICoreClient
+  extensionMethods:
+  - System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+- uid: FoundationaLLM.Client.Core.Interfaces.ICoreClient.CreateChatSessionAsync(FoundationaLLM.Common.Models.Conversation.ConversationProperties)
+  commentId: M:FoundationaLLM.Client.Core.Interfaces.ICoreClient.CreateChatSessionAsync(FoundationaLLM.Common.Models.Conversation.ConversationProperties)
+  id: CreateChatSessionAsync(FoundationaLLM.Common.Models.Conversation.ConversationProperties)
+  parent: FoundationaLLM.Client.Core.Interfaces.ICoreClient
+  langs:
+  - csharp
+  - vb
+  name: CreateChatSessionAsync(ConversationProperties)
+  nameWithType: ICoreClient.CreateChatSessionAsync(ConversationProperties)
+  fullName: FoundationaLLM.Client.Core.Interfaces.ICoreClient.CreateChatSessionAsync(FoundationaLLM.Common.Models.Conversation.ConversationProperties)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/CoreClient/Interfaces/ICoreClient.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: CreateChatSessionAsync
+    path: ../src/dotnet/CoreClient/Interfaces/ICoreClient.cs
+    startLine: 18
+  assemblies:
+  - FoundationaLLM.Client.Core
+  namespace: FoundationaLLM.Client.Core.Interfaces
+  summary: Creates a new chat session with the specified name.
+  example: []
+  syntax:
+    content: Task<string> CreateChatSessionAsync(ConversationProperties sessionProperties)
+    parameters:
+    - id: sessionProperties
+      type: FoundationaLLM.Common.Models.Conversation.ConversationProperties
+      description: The session properties.
+    return:
+      type: System.Threading.Tasks.Task{System.String}
+      description: The new chat session ID.
+    content.vb: Function CreateChatSessionAsync(sessionProperties As ConversationProperties) As Task(Of String)
+  overload: FoundationaLLM.Client.Core.Interfaces.ICoreClient.CreateChatSessionAsync*
+- uid: FoundationaLLM.Client.Core.Interfaces.ICoreClient.GetCompletionWithSessionAsync(System.String,FoundationaLLM.Common.Models.Conversation.ConversationProperties,System.String,System.String)
+  commentId: M:FoundationaLLM.Client.Core.Interfaces.ICoreClient.GetCompletionWithSessionAsync(System.String,FoundationaLLM.Common.Models.Conversation.ConversationProperties,System.String,System.String)
+  id: GetCompletionWithSessionAsync(System.String,FoundationaLLM.Common.Models.Conversation.ConversationProperties,System.String,System.String)
+  parent: FoundationaLLM.Client.Core.Interfaces.ICoreClient
+  langs:
+  - csharp
+  - vb
+  name: GetCompletionWithSessionAsync(string?, ConversationProperties?, string, string)
+  nameWithType: ICoreClient.GetCompletionWithSessionAsync(string?, ConversationProperties?, string, string)
+  fullName: FoundationaLLM.Client.Core.Interfaces.ICoreClient.GetCompletionWithSessionAsync(string?, FoundationaLLM.Common.Models.Conversation.ConversationProperties?, string, string)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/CoreClient/Interfaces/ICoreClient.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: GetCompletionWithSessionAsync
+    path: ../src/dotnet/CoreClient/Interfaces/ICoreClient.cs
+    startLine: 32
+  assemblies:
+  - FoundationaLLM.Client.Core
+  namespace: FoundationaLLM.Client.Core.Interfaces
+  summary: >-
+    Runs a single completion request with an agent using the Core API and a chat session.
+
+    To specify an existing session, provide the session ID. Otherwise, a new session will
+
+    be created. If the session name is provided, the session is renamed.
+  example: []
+  syntax:
+    content: Task<Message> GetCompletionWithSessionAsync(string? sessionId, ConversationProperties? sessionProperties, string userPrompt, string agentName)
+    parameters:
+    - id: sessionId
+      type: System.String
+      description: >-
+        The ID of an existing session. If null or empty, a new session
+            is created first.
+    - id: sessionProperties
+      type: FoundationaLLM.Common.Models.Conversation.ConversationProperties
+      description: Optional session priperties.
+    - id: userPrompt
+      type: System.String
+      description: The user prompt to send to the agent.
+    - id: agentName
+      type: System.String
+      description: >-
+        The name of the FoundationaLLM agent that will handle the
+            completion request.
+    return:
+      type: System.Threading.Tasks.Task{FoundationaLLM.Common.Models.Conversation.Message}
+      description: A completion from the designated FoundationaLLM agent.
+    content.vb: Function GetCompletionWithSessionAsync(sessionId As String, sessionProperties As ConversationProperties, userPrompt As String, agentName As String) As Task(Of Message)
+  overload: FoundationaLLM.Client.Core.Interfaces.ICoreClient.GetCompletionWithSessionAsync*
+  nameWithType.vb: ICoreClient.GetCompletionWithSessionAsync(String, ConversationProperties, String, String)
+  fullName.vb: FoundationaLLM.Client.Core.Interfaces.ICoreClient.GetCompletionWithSessionAsync(String, FoundationaLLM.Common.Models.Conversation.ConversationProperties, String, String)
+  name.vb: GetCompletionWithSessionAsync(String, ConversationProperties, String, String)
+- uid: FoundationaLLM.Client.Core.Interfaces.ICoreClient.GetCompletionWithSessionAsync(FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequest)
+  commentId: M:FoundationaLLM.Client.Core.Interfaces.ICoreClient.GetCompletionWithSessionAsync(FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequest)
+  id: GetCompletionWithSessionAsync(FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequest)
+  parent: FoundationaLLM.Client.Core.Interfaces.ICoreClient
+  langs:
+  - csharp
+  - vb
+  name: GetCompletionWithSessionAsync(CompletionRequest)
+  nameWithType: ICoreClient.GetCompletionWithSessionAsync(CompletionRequest)
+  fullName: FoundationaLLM.Client.Core.Interfaces.ICoreClient.GetCompletionWithSessionAsync(FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequest)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/CoreClient/Interfaces/ICoreClient.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: GetCompletionWithSessionAsync
+    path: ../src/dotnet/CoreClient/Interfaces/ICoreClient.cs
+    startLine: 43
+  assemblies:
+  - FoundationaLLM.Client.Core
+  namespace: FoundationaLLM.Client.Core.Interfaces
+  summary: >-
+    Runs a single completion request with an agent using the Core API and a chat session.
+
+    You must ensure that the orchestration request contains a SessionID, AgentName, and
+
+    UserPrompt.
+  example: []
+  syntax:
+    content: Task<Message> GetCompletionWithSessionAsync(CompletionRequest completionRequest)
+    parameters:
+    - id: completionRequest
+      type: FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequest
+      description: >-
+        The orchestration request that contains the
+            SessionID, AgentName, and UserPrompt at a minimum.
+    return:
+      type: System.Threading.Tasks.Task{FoundationaLLM.Common.Models.Conversation.Message}
+      description: A completion from the designated FoundationaLLM agent.
+    content.vb: Function GetCompletionWithSessionAsync(completionRequest As CompletionRequest) As Task(Of Message)
+  overload: FoundationaLLM.Client.Core.Interfaces.ICoreClient.GetCompletionWithSessionAsync*
+- uid: FoundationaLLM.Client.Core.Interfaces.ICoreClient.GetCompletionAsync(System.String,System.String)
+  commentId: M:FoundationaLLM.Client.Core.Interfaces.ICoreClient.GetCompletionAsync(System.String,System.String)
+  id: GetCompletionAsync(System.String,System.String)
+  parent: FoundationaLLM.Client.Core.Interfaces.ICoreClient
+  langs:
+  - csharp
+  - vb
+  name: GetCompletionAsync(string, string)
+  nameWithType: ICoreClient.GetCompletionAsync(string, string)
+  fullName: FoundationaLLM.Client.Core.Interfaces.ICoreClient.GetCompletionAsync(string, string)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/CoreClient/Interfaces/ICoreClient.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: GetCompletionAsync
+    path: ../src/dotnet/CoreClient/Interfaces/ICoreClient.cs
+    startLine: 54
+  assemblies:
+  - FoundationaLLM.Client.Core
+  namespace: FoundationaLLM.Client.Core.Interfaces
+  summary: >-
+    Runs a single completion with an agent using the Core API without a chat session
+
+    (sessionless). This method sends a user prompt to the agent and returns the completion
+
+    response.
+  example: []
+  syntax:
+    content: Task<Message> GetCompletionAsync(string userPrompt, string agentName)
+    parameters:
+    - id: userPrompt
+      type: System.String
+      description: The user prompt to send to the agent.
+    - id: agentName
+      type: System.String
+      description: >-
+        The name of the FoundationaLLM agent that will handle the
+            completion request.
+    return:
+      type: System.Threading.Tasks.Task{FoundationaLLM.Common.Models.Conversation.Message}
+      description: A completion from the designated FoundationaLLM agent.
+    content.vb: Function GetCompletionAsync(userPrompt As String, agentName As String) As Task(Of Message)
+  overload: FoundationaLLM.Client.Core.Interfaces.ICoreClient.GetCompletionAsync*
+  nameWithType.vb: ICoreClient.GetCompletionAsync(String, String)
+  fullName.vb: FoundationaLLM.Client.Core.Interfaces.ICoreClient.GetCompletionAsync(String, String)
+  name.vb: GetCompletionAsync(String, String)
+- uid: FoundationaLLM.Client.Core.Interfaces.ICoreClient.GetCompletionAsync(FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequest)
+  commentId: M:FoundationaLLM.Client.Core.Interfaces.ICoreClient.GetCompletionAsync(FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequest)
+  id: GetCompletionAsync(FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequest)
+  parent: FoundationaLLM.Client.Core.Interfaces.ICoreClient
+  langs:
+  - csharp
+  - vb
+  name: GetCompletionAsync(CompletionRequest)
+  nameWithType: ICoreClient.GetCompletionAsync(CompletionRequest)
+  fullName: FoundationaLLM.Client.Core.Interfaces.ICoreClient.GetCompletionAsync(FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequest)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/CoreClient/Interfaces/ICoreClient.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: GetCompletionAsync
+    path: ../src/dotnet/CoreClient/Interfaces/ICoreClient.cs
+    startLine: 65
+  assemblies:
+  - FoundationaLLM.Client.Core
+  namespace: FoundationaLLM.Client.Core.Interfaces
+  summary: >-
+    Runs a single completion with an agent using the Core API without a chat session
+
+    (sessionless). This method sends a user prompt to the agent and returns the completion
+
+    response.
+
+    You must ensure that the completion request contains an AgentName and UserPrompt.
+  example: []
+  syntax:
+    content: Task<Message> GetCompletionAsync(CompletionRequest completionRequest)
+    parameters:
+    - id: completionRequest
+      type: FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequest
+      description: >-
+        The orchestration request that contains the AgentName
+            and UserPrompt at a minimum.
+    return:
+      type: System.Threading.Tasks.Task{FoundationaLLM.Common.Models.Conversation.Message}
+      description: A completion from the designated FoundationaLLM agent.
+    content.vb: Function GetCompletionAsync(completionRequest As CompletionRequest) As Task(Of Message)
+  overload: FoundationaLLM.Client.Core.Interfaces.ICoreClient.GetCompletionAsync*
+- uid: FoundationaLLM.Client.Core.Interfaces.ICoreClient.AttachFileAndAskQuestionAsync(System.IO.Stream,System.String,System.String,System.String,System.String,System.Boolean,System.String,FoundationaLLM.Common.Models.Conversation.ConversationProperties)
+  commentId: M:FoundationaLLM.Client.Core.Interfaces.ICoreClient.AttachFileAndAskQuestionAsync(System.IO.Stream,System.String,System.String,System.String,System.String,System.Boolean,System.String,FoundationaLLM.Common.Models.Conversation.ConversationProperties)
+  id: AttachFileAndAskQuestionAsync(System.IO.Stream,System.String,System.String,System.String,System.String,System.Boolean,System.String,FoundationaLLM.Common.Models.Conversation.ConversationProperties)
+  parent: FoundationaLLM.Client.Core.Interfaces.ICoreClient
+  langs:
+  - csharp
+  - vb
+  name: AttachFileAndAskQuestionAsync(Stream, string, string, string, string, bool, string?, ConversationProperties?)
+  nameWithType: ICoreClient.AttachFileAndAskQuestionAsync(Stream, string, string, string, string, bool, string?, ConversationProperties?)
+  fullName: FoundationaLLM.Client.Core.Interfaces.ICoreClient.AttachFileAndAskQuestionAsync(System.IO.Stream, string, string, string, string, bool, string?, FoundationaLLM.Common.Models.Conversation.ConversationProperties?)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/CoreClient/Interfaces/ICoreClient.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: AttachFileAndAskQuestionAsync
+    path: ../src/dotnet/CoreClient/Interfaces/ICoreClient.cs
+    startLine: 88
+  assemblies:
+  - FoundationaLLM.Client.Core
+  namespace: FoundationaLLM.Client.Core.Interfaces
+  summary: >-
+    Attaches a file to the completion request and sends a question to the agent using the
+
+    Core API.If the useSession parameter is true, the method uses an existing session or
+
+    creates a new chat session and optionally renames it.
+
+    existing session
+  example: []
+  syntax:
+    content: Task<Message> AttachFileAndAskQuestionAsync(Stream fileStream, string fileName, string contentType, string agentName, string question, bool useSession, string? sessionId, ConversationProperties? chatSessionProperties)
+    parameters:
+    - id: fileStream
+      type: System.IO.Stream
+      description: The file contents of the new Attachment resource.
+    - id: fileName
+      type: System.String
+      description: The name of the file.
+    - id: contentType
+      type: System.String
+      description: >-
+        The Content-Type header value of a valid mime type that is used
+            to create a new <xref href="System.Net.Http.Headers.MediaTypeHeaderValue" data-throw-if-not-resolved="false"></xref> as part of the
+            <xref href="System.Net.Http.MultipartFormDataContent" data-throw-if-not-resolved="false"></xref> sent to the API endpoint.
+    - id: agentName
+      type: System.String
+      description: >-
+        The name of the FoundationaLLM agent that will handle the
+            completion request.
+    - id: question
+      type: System.String
+      description: The user prompt to send to the agent along with the attachment.
+    - id: useSession
+      type: System.Boolean
+      description: >-
+        If true, the completion is sent to a new or existing session. If
+            false, no session is created and the sessionless orchestration flow is used.
+    - id: sessionId
+      type: System.String
+      description: >-
+        The ID of an existing session. If null or empty, a new session
+            is created first.
+    - id: chatSessionProperties
+      type: FoundationaLLM.Common.Models.Conversation.ConversationProperties
+      description: Optional session properties.
+    return:
+      type: System.Threading.Tasks.Task{FoundationaLLM.Common.Models.Conversation.Message}
+      description: A completion from the designated FoundationaLLM agent.
+    content.vb: Function AttachFileAndAskQuestionAsync(fileStream As Stream, fileName As String, contentType As String, agentName As String, question As String, useSession As Boolean, sessionId As String, chatSessionProperties As ConversationProperties) As Task(Of Message)
+  overload: FoundationaLLM.Client.Core.Interfaces.ICoreClient.AttachFileAndAskQuestionAsync*
+  nameWithType.vb: ICoreClient.AttachFileAndAskQuestionAsync(Stream, String, String, String, String, Boolean, String, ConversationProperties)
+  fullName.vb: FoundationaLLM.Client.Core.Interfaces.ICoreClient.AttachFileAndAskQuestionAsync(System.IO.Stream, String, String, String, String, Boolean, String, FoundationaLLM.Common.Models.Conversation.ConversationProperties)
+  name.vb: AttachFileAndAskQuestionAsync(Stream, String, String, String, String, Boolean, String, ConversationProperties)
+- uid: FoundationaLLM.Client.Core.Interfaces.ICoreClient.GetChatSessionMessagesAsync(System.String)
+  commentId: M:FoundationaLLM.Client.Core.Interfaces.ICoreClient.GetChatSessionMessagesAsync(System.String)
+  id: GetChatSessionMessagesAsync(System.String)
+  parent: FoundationaLLM.Client.Core.Interfaces.ICoreClient
+  langs:
+  - csharp
+  - vb
+  name: GetChatSessionMessagesAsync(string)
+  nameWithType: ICoreClient.GetChatSessionMessagesAsync(string)
+  fullName: FoundationaLLM.Client.Core.Interfaces.ICoreClient.GetChatSessionMessagesAsync(string)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/CoreClient/Interfaces/ICoreClient.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: GetChatSessionMessagesAsync
+    path: ../src/dotnet/CoreClient/Interfaces/ICoreClient.cs
+    startLine: 96
+  assemblies:
+  - FoundationaLLM.Client.Core
+  namespace: FoundationaLLM.Client.Core.Interfaces
+  summary: Returns the chat messages related to an existing session.
+  example: []
+  syntax:
+    content: Task<IEnumerable<Message>> GetChatSessionMessagesAsync(string sessionId)
+    parameters:
+    - id: sessionId
+      type: System.String
+      description: ''
+    return:
+      type: System.Threading.Tasks.Task{System.Collections.Generic.IEnumerable{FoundationaLLM.Common.Models.Conversation.Message}}
+      description: ''
+    content.vb: Function GetChatSessionMessagesAsync(sessionId As String) As Task(Of IEnumerable(Of Message))
+  overload: FoundationaLLM.Client.Core.Interfaces.ICoreClient.GetChatSessionMessagesAsync*
+  nameWithType.vb: ICoreClient.GetChatSessionMessagesAsync(String)
+  fullName.vb: FoundationaLLM.Client.Core.Interfaces.ICoreClient.GetChatSessionMessagesAsync(String)
+  name.vb: GetChatSessionMessagesAsync(String)
+- uid: FoundationaLLM.Client.Core.Interfaces.ICoreClient.RateMessageAsync(System.String,System.String,FoundationaLLM.Common.Models.Conversation.MessageRatingRequest)
+  commentId: M:FoundationaLLM.Client.Core.Interfaces.ICoreClient.RateMessageAsync(System.String,System.String,FoundationaLLM.Common.Models.Conversation.MessageRatingRequest)
+  id: RateMessageAsync(System.String,System.String,FoundationaLLM.Common.Models.Conversation.MessageRatingRequest)
+  parent: FoundationaLLM.Client.Core.Interfaces.ICoreClient
+  langs:
+  - csharp
+  - vb
+  name: RateMessageAsync(string, string, MessageRatingRequest)
+  nameWithType: ICoreClient.RateMessageAsync(string, string, MessageRatingRequest)
+  fullName: FoundationaLLM.Client.Core.Interfaces.ICoreClient.RateMessageAsync(string, string, FoundationaLLM.Common.Models.Conversation.MessageRatingRequest)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/CoreClient/Interfaces/ICoreClient.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: RateMessageAsync
+    path: ../src/dotnet/CoreClient/Interfaces/ICoreClient.cs
+    startLine: 104
+  assemblies:
+  - FoundationaLLM.Client.Core
+  namespace: FoundationaLLM.Client.Core.Interfaces
+  summary: Sets the rating for a message.
+  example: []
+  syntax:
+    content: Task RateMessageAsync(string sessionId, string messageId, MessageRatingRequest rating)
+    parameters:
+    - id: sessionId
+      type: System.String
+      description: The chat session ID that contains the message to rate.
+    - id: messageId
+      type: System.String
+      description: The ID of the message to rate.
+    - id: rating
+      type: FoundationaLLM.Common.Models.Conversation.MessageRatingRequest
+      description: The rating and optional comments to assign to the message.
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Function RateMessageAsync(sessionId As String, messageId As String, rating As MessageRatingRequest) As Task
+  overload: FoundationaLLM.Client.Core.Interfaces.ICoreClient.RateMessageAsync*
+  nameWithType.vb: ICoreClient.RateMessageAsync(String, String, MessageRatingRequest)
+  fullName.vb: FoundationaLLM.Client.Core.Interfaces.ICoreClient.RateMessageAsync(String, String, FoundationaLLM.Common.Models.Conversation.MessageRatingRequest)
+  name.vb: RateMessageAsync(String, String, MessageRatingRequest)
+- uid: FoundationaLLM.Client.Core.Interfaces.ICoreClient.GetAgentsAsync
+  commentId: M:FoundationaLLM.Client.Core.Interfaces.ICoreClient.GetAgentsAsync
+  id: GetAgentsAsync
+  parent: FoundationaLLM.Client.Core.Interfaces.ICoreClient
+  langs:
+  - csharp
+  - vb
+  name: GetAgentsAsync()
+  nameWithType: ICoreClient.GetAgentsAsync()
+  fullName: FoundationaLLM.Client.Core.Interfaces.ICoreClient.GetAgentsAsync()
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/CoreClient/Interfaces/ICoreClient.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: GetAgentsAsync
+    path: ../src/dotnet/CoreClient/Interfaces/ICoreClient.cs
+    startLine: 110
+  assemblies:
+  - FoundationaLLM.Client.Core
+  namespace: FoundationaLLM.Client.Core.Interfaces
+  summary: Retrieves agents available to the user for orchestration and session-based requests.
+  example: []
+  syntax:
+    content: Task<IEnumerable<ResourceProviderGetResult<AgentBase>>> GetAgentsAsync()
+    return:
+      type: System.Threading.Tasks.Task{System.Collections.Generic.IEnumerable{FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderGetResult{FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentBase}}}
+      description: A list of available agents.
+    content.vb: Function GetAgentsAsync() As Task(Of IEnumerable(Of ResourceProviderGetResult(Of AgentBase)))
+  overload: FoundationaLLM.Client.Core.Interfaces.ICoreClient.GetAgentsAsync*
+- uid: FoundationaLLM.Client.Core.Interfaces.ICoreClient.DeleteSessionAsync(System.String)
+  commentId: M:FoundationaLLM.Client.Core.Interfaces.ICoreClient.DeleteSessionAsync(System.String)
+  id: DeleteSessionAsync(System.String)
+  parent: FoundationaLLM.Client.Core.Interfaces.ICoreClient
+  langs:
+  - csharp
+  - vb
+  name: DeleteSessionAsync(string)
+  nameWithType: ICoreClient.DeleteSessionAsync(string)
+  fullName: FoundationaLLM.Client.Core.Interfaces.ICoreClient.DeleteSessionAsync(string)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/CoreClient/Interfaces/ICoreClient.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: DeleteSessionAsync
+    path: ../src/dotnet/CoreClient/Interfaces/ICoreClient.cs
+    startLine: 117
+  assemblies:
+  - FoundationaLLM.Client.Core
+  namespace: FoundationaLLM.Client.Core.Interfaces
+  summary: Deletes a chat session.
+  example: []
+  syntax:
+    content: Task DeleteSessionAsync(string sessionId)
+    parameters:
+    - id: sessionId
+      type: System.String
+      description: The ID of the session to delete.
+    return:
+      type: System.Threading.Tasks.Task
+      description: ''
+    content.vb: Function DeleteSessionAsync(sessionId As String) As Task
+  overload: FoundationaLLM.Client.Core.Interfaces.ICoreClient.DeleteSessionAsync*
+  nameWithType.vb: ICoreClient.DeleteSessionAsync(String)
+  fullName.vb: FoundationaLLM.Client.Core.Interfaces.ICoreClient.DeleteSessionAsync(String)
+  name.vb: DeleteSessionAsync(String)
+references:
+- uid: FoundationaLLM.Client.Core.Interfaces
+  commentId: N:FoundationaLLM.Client.Core.Interfaces
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Client.Core.Interfaces
+  nameWithType: FoundationaLLM.Client.Core.Interfaces
+  fullName: FoundationaLLM.Client.Core.Interfaces
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Client
+    name: Client
+    href: FoundationaLLM.Client.html
+  - name: .
+  - uid: FoundationaLLM.Client.Core
+    name: Core
+    href: FoundationaLLM.Client.Core.html
+  - name: .
+  - uid: FoundationaLLM.Client.Core.Interfaces
+    name: Interfaces
+    href: FoundationaLLM.Client.Core.Interfaces.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Client
+    name: Client
+    href: FoundationaLLM.Client.html
+  - name: .
+  - uid: FoundationaLLM.Client.Core
+    name: Core
+    href: FoundationaLLM.Client.Core.html
+  - name: .
+  - uid: FoundationaLLM.Client.Core.Interfaces
+    name: Interfaces
+    href: FoundationaLLM.Client.Core.Interfaces.html
+- uid: System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  parent: FoundationaLLM.Core.Utils.ObjectExtensions
+  definition: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  isExternal: true
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions
+  commentId: T:FoundationaLLM.Core.Utils.ObjectExtensions
+  parent: FoundationaLLM.Core.Utils
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html
+  name: ObjectExtensions
+  nameWithType: ObjectExtensions
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions
+- uid: FoundationaLLM.Core.Utils
+  commentId: N:FoundationaLLM.Core.Utils
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Core.Utils
+  nameWithType: FoundationaLLM.Core.Utils
+  fullName: FoundationaLLM.Core.Utils
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+- uid: FoundationaLLM.Client.Core.Interfaces.ICoreClient.CreateChatSessionAsync*
+  commentId: Overload:FoundationaLLM.Client.Core.Interfaces.ICoreClient.CreateChatSessionAsync
+  href: FoundationaLLM.Client.Core.Interfaces.ICoreClient.html#FoundationaLLM_Client_Core_Interfaces_ICoreClient_CreateChatSessionAsync_FoundationaLLM_Common_Models_Conversation_ConversationProperties_
+  name: CreateChatSessionAsync
+  nameWithType: ICoreClient.CreateChatSessionAsync
+  fullName: FoundationaLLM.Client.Core.Interfaces.ICoreClient.CreateChatSessionAsync
+- uid: FoundationaLLM.Common.Models.Conversation.ConversationProperties
+  commentId: T:FoundationaLLM.Common.Models.Conversation.ConversationProperties
+  parent: FoundationaLLM.Common.Models.Conversation
+  href: FoundationaLLM.Common.Models.Conversation.ConversationProperties.html
+  name: ConversationProperties
+  nameWithType: ConversationProperties
+  fullName: FoundationaLLM.Common.Models.Conversation.ConversationProperties
+- uid: System.Threading.Tasks.Task{System.String}
+  commentId: T:System.Threading.Tasks.Task{System.String}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<string>
+  nameWithType: Task<string>
+  fullName: System.Threading.Tasks.Task<string>
+  nameWithType.vb: Task(Of String)
+  fullName.vb: System.Threading.Tasks.Task(Of String)
+  name.vb: Task(Of String)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: FoundationaLLM.Common.Models.Conversation
+  commentId: N:FoundationaLLM.Common.Models.Conversation
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.Conversation
+  nameWithType: FoundationaLLM.Common.Models.Conversation
+  fullName: FoundationaLLM.Common.Models.Conversation
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Conversation
+    name: Conversation
+    href: FoundationaLLM.Common.Models.Conversation.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Conversation
+    name: Conversation
+    href: FoundationaLLM.Common.Models.Conversation.html
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: FoundationaLLM.Client.Core.Interfaces.ICoreClient.GetCompletionWithSessionAsync*
+  commentId: Overload:FoundationaLLM.Client.Core.Interfaces.ICoreClient.GetCompletionWithSessionAsync
+  href: FoundationaLLM.Client.Core.Interfaces.ICoreClient.html#FoundationaLLM_Client_Core_Interfaces_ICoreClient_GetCompletionWithSessionAsync_System_String_FoundationaLLM_Common_Models_Conversation_ConversationProperties_System_String_System_String_
+  name: GetCompletionWithSessionAsync
+  nameWithType: ICoreClient.GetCompletionWithSessionAsync
+  fullName: FoundationaLLM.Client.Core.Interfaces.ICoreClient.GetCompletionWithSessionAsync
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System.Threading.Tasks.Task{FoundationaLLM.Common.Models.Conversation.Message}
+  commentId: T:System.Threading.Tasks.Task{FoundationaLLM.Common.Models.Conversation.Message}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<Message>
+  nameWithType: Task<Message>
+  fullName: System.Threading.Tasks.Task<FoundationaLLM.Common.Models.Conversation.Message>
+  nameWithType.vb: Task(Of Message)
+  fullName.vb: System.Threading.Tasks.Task(Of FoundationaLLM.Common.Models.Conversation.Message)
+  name.vb: Task(Of Message)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: FoundationaLLM.Common.Models.Conversation.Message
+    name: Message
+    href: FoundationaLLM.Common.Models.Conversation.Message.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FoundationaLLM.Common.Models.Conversation.Message
+    name: Message
+    href: FoundationaLLM.Common.Models.Conversation.Message.html
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequest
+  commentId: T:FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequest
+  parent: FoundationaLLM.Common.Models.Orchestration.Request
+  href: FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequest.html
+  name: CompletionRequest
+  nameWithType: CompletionRequest
+  fullName: FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequest
+- uid: FoundationaLLM.Common.Models.Orchestration.Request
+  commentId: N:FoundationaLLM.Common.Models.Orchestration.Request
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.Orchestration.Request
+  nameWithType: FoundationaLLM.Common.Models.Orchestration.Request
+  fullName: FoundationaLLM.Common.Models.Orchestration.Request
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Orchestration
+    name: Orchestration
+    href: FoundationaLLM.Common.Models.Orchestration.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Orchestration.Request
+    name: Request
+    href: FoundationaLLM.Common.Models.Orchestration.Request.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Orchestration
+    name: Orchestration
+    href: FoundationaLLM.Common.Models.Orchestration.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Orchestration.Request
+    name: Request
+    href: FoundationaLLM.Common.Models.Orchestration.Request.html
+- uid: FoundationaLLM.Client.Core.Interfaces.ICoreClient.GetCompletionAsync*
+  commentId: Overload:FoundationaLLM.Client.Core.Interfaces.ICoreClient.GetCompletionAsync
+  href: FoundationaLLM.Client.Core.Interfaces.ICoreClient.html#FoundationaLLM_Client_Core_Interfaces_ICoreClient_GetCompletionAsync_System_String_System_String_
+  name: GetCompletionAsync
+  nameWithType: ICoreClient.GetCompletionAsync
+  fullName: FoundationaLLM.Client.Core.Interfaces.ICoreClient.GetCompletionAsync
+- uid: System.Net.Http.Headers.MediaTypeHeaderValue
+  commentId: T:System.Net.Http.Headers.MediaTypeHeaderValue
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.net.http.headers.mediatypeheadervalue
+  name: MediaTypeHeaderValue
+  nameWithType: MediaTypeHeaderValue
+  fullName: System.Net.Http.Headers.MediaTypeHeaderValue
+- uid: System.Net.Http.MultipartFormDataContent
+  commentId: T:System.Net.Http.MultipartFormDataContent
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.net.http.multipartformdatacontent
+  name: MultipartFormDataContent
+  nameWithType: MultipartFormDataContent
+  fullName: System.Net.Http.MultipartFormDataContent
+- uid: FoundationaLLM.Client.Core.Interfaces.ICoreClient.AttachFileAndAskQuestionAsync*
+  commentId: Overload:FoundationaLLM.Client.Core.Interfaces.ICoreClient.AttachFileAndAskQuestionAsync
+  href: FoundationaLLM.Client.Core.Interfaces.ICoreClient.html#FoundationaLLM_Client_Core_Interfaces_ICoreClient_AttachFileAndAskQuestionAsync_System_IO_Stream_System_String_System_String_System_String_System_String_System_Boolean_System_String_FoundationaLLM_Common_Models_Conversation_ConversationProperties_
+  name: AttachFileAndAskQuestionAsync
+  nameWithType: ICoreClient.AttachFileAndAskQuestionAsync
+  fullName: FoundationaLLM.Client.Core.Interfaces.ICoreClient.AttachFileAndAskQuestionAsync
+- uid: System.IO.Stream
+  commentId: T:System.IO.Stream
+  parent: System.IO
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.io.stream
+  name: Stream
+  nameWithType: Stream
+  fullName: System.IO.Stream
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: System.IO
+  commentId: N:System.IO
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.IO
+  nameWithType: System.IO
+  fullName: System.IO
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.IO
+    name: IO
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.io
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.IO
+    name: IO
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.io
+- uid: FoundationaLLM.Client.Core.Interfaces.ICoreClient.GetChatSessionMessagesAsync*
+  commentId: Overload:FoundationaLLM.Client.Core.Interfaces.ICoreClient.GetChatSessionMessagesAsync
+  href: FoundationaLLM.Client.Core.Interfaces.ICoreClient.html#FoundationaLLM_Client_Core_Interfaces_ICoreClient_GetChatSessionMessagesAsync_System_String_
+  name: GetChatSessionMessagesAsync
+  nameWithType: ICoreClient.GetChatSessionMessagesAsync
+  fullName: FoundationaLLM.Client.Core.Interfaces.ICoreClient.GetChatSessionMessagesAsync
+- uid: System.Threading.Tasks.Task{System.Collections.Generic.IEnumerable{FoundationaLLM.Common.Models.Conversation.Message}}
+  commentId: T:System.Threading.Tasks.Task{System.Collections.Generic.IEnumerable{FoundationaLLM.Common.Models.Conversation.Message}}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<IEnumerable<Message>>
+  nameWithType: Task<IEnumerable<Message>>
+  fullName: System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<FoundationaLLM.Common.Models.Conversation.Message>>
+  nameWithType.vb: Task(Of IEnumerable(Of Message))
+  fullName.vb: System.Threading.Tasks.Task(Of System.Collections.Generic.IEnumerable(Of FoundationaLLM.Common.Models.Conversation.Message))
+  name.vb: Task(Of IEnumerable(Of Message))
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - uid: FoundationaLLM.Common.Models.Conversation.Message
+    name: Message
+    href: FoundationaLLM.Common.Models.Conversation.Message.html
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FoundationaLLM.Common.Models.Conversation.Message
+    name: Message
+    href: FoundationaLLM.Common.Models.Conversation.Message.html
+  - name: )
+  - name: )
+- uid: FoundationaLLM.Client.Core.Interfaces.ICoreClient.RateMessageAsync*
+  commentId: Overload:FoundationaLLM.Client.Core.Interfaces.ICoreClient.RateMessageAsync
+  href: FoundationaLLM.Client.Core.Interfaces.ICoreClient.html#FoundationaLLM_Client_Core_Interfaces_ICoreClient_RateMessageAsync_System_String_System_String_FoundationaLLM_Common_Models_Conversation_MessageRatingRequest_
+  name: RateMessageAsync
+  nameWithType: ICoreClient.RateMessageAsync
+  fullName: FoundationaLLM.Client.Core.Interfaces.ICoreClient.RateMessageAsync
+- uid: FoundationaLLM.Common.Models.Conversation.MessageRatingRequest
+  commentId: T:FoundationaLLM.Common.Models.Conversation.MessageRatingRequest
+  parent: FoundationaLLM.Common.Models.Conversation
+  href: FoundationaLLM.Common.Models.Conversation.MessageRatingRequest.html
+  name: MessageRatingRequest
+  nameWithType: MessageRatingRequest
+  fullName: FoundationaLLM.Common.Models.Conversation.MessageRatingRequest
+- uid: System.Threading.Tasks.Task
+  commentId: T:System.Threading.Tasks.Task
+  parent: System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  name: Task
+  nameWithType: Task
+  fullName: System.Threading.Tasks.Task
+- uid: FoundationaLLM.Client.Core.Interfaces.ICoreClient.GetAgentsAsync*
+  commentId: Overload:FoundationaLLM.Client.Core.Interfaces.ICoreClient.GetAgentsAsync
+  href: FoundationaLLM.Client.Core.Interfaces.ICoreClient.html#FoundationaLLM_Client_Core_Interfaces_ICoreClient_GetAgentsAsync
+  name: GetAgentsAsync
+  nameWithType: ICoreClient.GetAgentsAsync
+  fullName: FoundationaLLM.Client.Core.Interfaces.ICoreClient.GetAgentsAsync
+- uid: System.Threading.Tasks.Task{System.Collections.Generic.IEnumerable{FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderGetResult{FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentBase}}}
+  commentId: T:System.Threading.Tasks.Task{System.Collections.Generic.IEnumerable{FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderGetResult{FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentBase}}}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<IEnumerable<ResourceProviderGetResult<AgentBase>>>
+  nameWithType: Task<IEnumerable<ResourceProviderGetResult<AgentBase>>>
+  fullName: System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderGetResult<FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentBase>>>
+  nameWithType.vb: Task(Of IEnumerable(Of ResourceProviderGetResult(Of AgentBase)))
+  fullName.vb: System.Threading.Tasks.Task(Of System.Collections.Generic.IEnumerable(Of FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderGetResult(Of FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentBase)))
+  name.vb: Task(Of IEnumerable(Of ResourceProviderGetResult(Of AgentBase)))
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderGetResult`1
+    name: ResourceProviderGetResult
+    href: FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderGetResult-1.html
+  - name: <
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentBase
+    name: AgentBase
+    href: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentBase.html
+  - name: '>'
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderGetResult`1
+    name: ResourceProviderGetResult
+    href: FoundationaLLM.Common.Models.ResourceProviders.ResourceProviderGetResult-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentBase
+    name: AgentBase
+    href: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentBase.html
+  - name: )
+  - name: )
+  - name: )
+- uid: FoundationaLLM.Client.Core.Interfaces.ICoreClient.DeleteSessionAsync*
+  commentId: Overload:FoundationaLLM.Client.Core.Interfaces.ICoreClient.DeleteSessionAsync
+  href: FoundationaLLM.Client.Core.Interfaces.ICoreClient.html#FoundationaLLM_Client_Core_Interfaces_ICoreClient_DeleteSessionAsync_System_String_
+  name: DeleteSessionAsync
+  nameWithType: ICoreClient.DeleteSessionAsync
+  fullName: FoundationaLLM.Client.Core.Interfaces.ICoreClient.DeleteSessionAsync

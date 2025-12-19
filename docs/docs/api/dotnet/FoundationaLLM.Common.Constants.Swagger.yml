@@ -1,0 +1,439 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Common.Constants.Swagger
+  commentId: T:FoundationaLLM.Common.Constants.Swagger
+  id: Swagger
+  parent: FoundationaLLM.Common.Constants
+  children:
+  - FoundationaLLM.Common.Constants.Swagger.SecurityDefinitionName
+  - FoundationaLLM.Common.Constants.Swagger.SecuritySchemeDescription
+  - FoundationaLLM.Common.Constants.Swagger.SecuritySchemeName
+  - FoundationaLLM.Common.Constants.Swagger.SecuritySchemeReferenceId
+  langs:
+  - csharp
+  - vb
+  name: Swagger
+  nameWithType: Swagger
+  fullName: FoundationaLLM.Common.Constants.Swagger
+  type: Class
+  source:
+    remote:
+      path: src/dotnet/Common/Constants/Swagger.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: Swagger
+    path: ../src/dotnet/Common/Constants/Swagger.cs
+    startLine: 5
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants
+  summary: Common Swagger strings used throughout the FoundationaLLM infrastructure.
+  example: []
+  syntax:
+    content: public static class Swagger
+    content.vb: Public Module Swagger
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: FoundationaLLM.Common.Constants.Swagger.SecurityDefinitionName
+  commentId: F:FoundationaLLM.Common.Constants.Swagger.SecurityDefinitionName
+  id: SecurityDefinitionName
+  parent: FoundationaLLM.Common.Constants.Swagger
+  langs:
+  - csharp
+  - vb
+  name: SecurityDefinitionName
+  nameWithType: Swagger.SecurityDefinitionName
+  fullName: FoundationaLLM.Common.Constants.Swagger.SecurityDefinitionName
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Constants/Swagger.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: SecurityDefinitionName
+    path: ../src/dotnet/Common/Constants/Swagger.cs
+    startLine: 10
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants
+  summary: The OpenAPI security definition name.
+  example: []
+  syntax:
+    content: public const string SecurityDefinitionName = "ApiKey"
+    return:
+      type: System.String
+    content.vb: Public Const SecurityDefinitionName As String = "ApiKey"
+- uid: FoundationaLLM.Common.Constants.Swagger.SecuritySchemeName
+  commentId: F:FoundationaLLM.Common.Constants.Swagger.SecuritySchemeName
+  id: SecuritySchemeName
+  parent: FoundationaLLM.Common.Constants.Swagger
+  langs:
+  - csharp
+  - vb
+  name: SecuritySchemeName
+  nameWithType: Swagger.SecuritySchemeName
+  fullName: FoundationaLLM.Common.Constants.Swagger.SecuritySchemeName
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Constants/Swagger.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: SecuritySchemeName
+    path: ../src/dotnet/Common/Constants/Swagger.cs
+    startLine: 15
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants
+  summary: The OpenAPI security scheme name.
+  example: []
+  syntax:
+    content: public const string SecuritySchemeName = "ApiKeyScheme"
+    return:
+      type: System.String
+    content.vb: Public Const SecuritySchemeName As String = "ApiKeyScheme"
+- uid: FoundationaLLM.Common.Constants.Swagger.SecuritySchemeDescription
+  commentId: F:FoundationaLLM.Common.Constants.Swagger.SecuritySchemeDescription
+  id: SecuritySchemeDescription
+  parent: FoundationaLLM.Common.Constants.Swagger
+  langs:
+  - csharp
+  - vb
+  name: SecuritySchemeDescription
+  nameWithType: Swagger.SecuritySchemeDescription
+  fullName: FoundationaLLM.Common.Constants.Swagger.SecuritySchemeDescription
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Constants/Swagger.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: SecuritySchemeDescription
+    path: ../src/dotnet/Common/Constants/Swagger.cs
+    startLine: 20
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants
+  summary: The OpenAPI security scheme description.
+  example: []
+  syntax:
+    content: public const string SecuritySchemeDescription = "API Key auth"
+    return:
+      type: System.String
+    content.vb: Public Const SecuritySchemeDescription As String = "API Key auth"
+- uid: FoundationaLLM.Common.Constants.Swagger.SecuritySchemeReferenceId
+  commentId: F:FoundationaLLM.Common.Constants.Swagger.SecuritySchemeReferenceId
+  id: SecuritySchemeReferenceId
+  parent: FoundationaLLM.Common.Constants.Swagger
+  langs:
+  - csharp
+  - vb
+  name: SecuritySchemeReferenceId
+  nameWithType: Swagger.SecuritySchemeReferenceId
+  fullName: FoundationaLLM.Common.Constants.Swagger.SecuritySchemeReferenceId
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Constants/Swagger.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: SecuritySchemeReferenceId
+    path: ../src/dotnet/Common/Constants/Swagger.cs
+    startLine: 25
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants
+  summary: The OpenAPI security scheme reference identifier.
+  example: []
+  syntax:
+    content: public const string SecuritySchemeReferenceId = "ApiKey"
+    return:
+      type: System.String
+    content.vb: Public Const SecuritySchemeReferenceId As String = "ApiKey"
+references:
+- uid: FoundationaLLM.Common.Constants
+  commentId: N:FoundationaLLM.Common.Constants
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Constants
+  nameWithType: FoundationaLLM.Common.Constants
+  fullName: FoundationaLLM.Common.Constants
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Constants
+    name: Constants
+    href: FoundationaLLM.Common.Constants.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Constants
+    name: Constants
+    href: FoundationaLLM.Common.Constants.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String

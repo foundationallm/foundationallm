@@ -1,0 +1,105 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.DataSource
+  id: DataSource
+  parent: FoundationaLLM
+  children:
+  - FoundationaLLM.DataSource.Models
+  - FoundationaLLM.DataSource.ResourceProviders
+  - FoundationaLLM.DataSource.Validation
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM.DataSource
+  type: Namespace
+references:
+- uid: FoundationaLLM.DataSource.Models
+  commentId: N:FoundationaLLM.DataSource.Models
+  href: FoundationaLLM.html
+  name: FoundationaLLM.DataSource.Models
+  nameWithType: FoundationaLLM.DataSource.Models
+  fullName: FoundationaLLM.DataSource.Models
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.DataSource
+    name: DataSource
+    href: FoundationaLLM.DataSource.html
+  - name: .
+  - uid: FoundationaLLM.DataSource.Models
+    name: Models
+    href: FoundationaLLM.DataSource.Models.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.DataSource
+    name: DataSource
+    href: FoundationaLLM.DataSource.html
+  - name: .
+  - uid: FoundationaLLM.DataSource.Models
+    name: Models
+    href: FoundationaLLM.DataSource.Models.html
+- uid: FoundationaLLM.DataSource.ResourceProviders
+  commentId: N:FoundationaLLM.DataSource.ResourceProviders
+  href: FoundationaLLM.html
+  name: FoundationaLLM.DataSource.ResourceProviders
+  nameWithType: FoundationaLLM.DataSource.ResourceProviders
+  fullName: FoundationaLLM.DataSource.ResourceProviders
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.DataSource
+    name: DataSource
+    href: FoundationaLLM.DataSource.html
+  - name: .
+  - uid: FoundationaLLM.DataSource.ResourceProviders
+    name: ResourceProviders
+    href: FoundationaLLM.DataSource.ResourceProviders.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.DataSource
+    name: DataSource
+    href: FoundationaLLM.DataSource.html
+  - name: .
+  - uid: FoundationaLLM.DataSource.ResourceProviders
+    name: ResourceProviders
+    href: FoundationaLLM.DataSource.ResourceProviders.html
+- uid: FoundationaLLM.DataSource.Validation
+  commentId: N:FoundationaLLM.DataSource.Validation
+  href: FoundationaLLM.html
+  name: FoundationaLLM.DataSource.Validation
+  nameWithType: FoundationaLLM.DataSource.Validation
+  fullName: FoundationaLLM.DataSource.Validation
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.DataSource
+    name: DataSource
+    href: FoundationaLLM.DataSource.html
+  - name: .
+  - uid: FoundationaLLM.DataSource.Validation
+    name: Validation
+    href: FoundationaLLM.DataSource.Validation.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.DataSource
+    name: DataSource
+    href: FoundationaLLM.DataSource.html
+  - name: .
+  - uid: FoundationaLLM.DataSource.Validation
+    name: Validation
+    href: FoundationaLLM.DataSource.Validation.html

@@ -1,0 +1,514 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Ubuntu+Mono&display=swap');
+/* @font-face {
+  font-display: block;
+  font-family: Roboto;
+  src: url(https://assets.brevo.com/font/Roboto/Latin/normal/normal/7529907e9eaf8ebb5220c5f9850e3811.woff2)
+      format('woff2'),
+    url(https://assets.brevo.com/font/Roboto/Latin/normal/normal/25c678feafdc175a70922a116c9be3e7.woff)
+      format('woff');
+}
+@font-face {
+  font-display: fallback;
+  font-family: Roboto;
+  font-weight: 600;
+  src: url(https://assets.brevo.com/font/Roboto/Latin/medium/normal/6e9caeeafb1f3491be3e32744bc30440.woff2)
+      format('woff2'),
+    url(https://assets.brevo.com/font/Roboto/Latin/medium/normal/71501f0d8d5aa95960f6475d5487d4c2.woff)
+      format('woff');
+}
+@font-face {
+  font-display: fallback;
+  font-family: Roboto;
+  font-weight: 700;
+  src: url(https://assets.brevo.com/font/Roboto/Latin/bold/normal/3ef7cf158f310cf752d5ad08cd0e7e60.woff2)
+      format('woff2'),
+    url(https://assets.brevo.com/font/Roboto/Latin/bold/normal/ece3a1d82f18b60bcce0211725c476aa.woff)
+      format('woff');
+} */
+
+:root {
+  --bs-font-sans-serif: 'Poppins';
+  --bs-border-radius: 10px;
+  --bs-secondary-rgb: 219, 183, 227;
+
+  --border-radius-button: 10px;
+  --card-box-shadow: 0 1px 2px 0 #3d41440f, 0 1px 3px 1px #3d414429;
+
+  --material-yellow-light: #e6dfbf;
+  --material-yellow-dark: #5a5338;
+
+  --material-blue-light: #c4d9f1;
+  --material-blue-dark: #383e5a;
+
+  --material-red-light: #f1c4c4;
+  --material-red-dark: #5a3838;
+
+  --material-warning-header: #f57f171a;
+  --material-warning-background: #f6e8bd;
+  --material-warning-background-dark: #57502c;
+
+  --material-info-header: #1976d21a;
+  --material-info-background: #e3f2fd;
+  --material-info-background-dark: #2c4557;
+
+  --material-danger-header: #d32f2f1a;
+  --material-danger-background: #fdf5aa; /* #ffebee; */
+  --material-danger-background-dark: #572c2c;
+}
+
+[data-bs-theme=dark] .navbar {
+    --bs-navbar-color: rgba(var(--bs-emphasis-color-rgb), .8);
+    --bs-navbar-hover-color: rgba(var(--bs-emphasis-color-rgb), 1);
+}
+
+[data-bs-theme-dark] .link-secondary:hover, .link-secondary:focus {
+    color: RGBA(185,167,200,var(--bs-link-opacity, 1));
+}
+
+[data-bs-theme=dark] {
+    color-scheme: dark;
+    --bs-body-color: #dee2e6;
+    --bs-body-color-rgb: 222, 226, 230;
+    --bs-body-bg: #212529;
+    --bs-body-bg-rgb: 33, 37, 41;
+    --bs-emphasis-color: #fff;
+    --bs-emphasis-color-rgb: 255, 255, 255;
+    --bs-secondary-color: rgba(222, 226, 230, .75);
+    --bs-secondary-color-rgb: 222, 226, 230;
+    --bs-secondary-bg: #343a40;
+    --bs-secondary-bg-rgb: 52, 58, 64;
+    --bs-tertiary-color: rgba(222, 226, 230, .5);
+    --bs-tertiary-color-rgb: 222, 226, 230;
+    --bs-tertiary-bg: #131833;
+    --bs-tertiary-bg-rgb: 43, 48, 53;
+    --bs-primary-text-emphasis: #6ea8fe;
+    --bs-secondary-text-emphasis: #a7acb1;
+    --bs-success-text-emphasis: #75b798;
+    --bs-info-text-emphasis: #6edff6;
+    --bs-warning-text-emphasis: #ffda6a;
+    --bs-danger-text-emphasis: #ea868f;
+    --bs-light-text-emphasis: #f8f9fa;
+    --bs-dark-text-emphasis: #dee2e6;
+    --bs-primary-bg-subtle: #031633;
+    --bs-secondary-bg-subtle: #161719;
+    --bs-success-bg-subtle: #051b11;
+    --bs-info-bg-subtle: #032830;
+    --bs-warning-bg-subtle: #332701;
+    --bs-danger-bg-subtle: #2c0b0e;
+    --bs-light-bg-subtle: #343a40;
+    --bs-dark-bg-subtle: #1a1d20;
+    --bs-primary-border-subtle: #99109e;
+    --bs-secondary-border-subtle: #41464b;
+    --bs-success-border-subtle: #0f5132;
+    --bs-info-border-subtle: #087990;
+    --bs-warning-border-subtle: #997404;
+    --bs-danger-border-subtle: #842029;
+    --bs-light-border-subtle: #495057;
+    --bs-dark-border-subtle: #343a40;
+    --bs-heading-color: inherit;
+    --bs-link-color: #addfff;
+    --bs-link-hover-color: #c6daf1;
+    --bs-link-color-rgb: 110, 168, 254;
+    --bs-link-hover-color-rgb: 139, 185, 254;
+    --bs-code-color: #e685b5;
+    --bs-highlight-color: #dee2e6;
+    --bs-highlight-bg: #664d03;
+    --bs-border-color: #495057;
+    --bs-border-color-translucent: rgba(255, 255, 255, .15);
+    --bs-form-valid-color: #75b798;
+    --bs-form-valid-border-color: #75b798;
+    --bs-form-invalid-color: #ea868f;
+    --bs-form-invalid-border-color: #ea868f;
+}
+
+[data-bs-theme=light] {
+    --bs-blue: #0d6efd;
+    --bs-indigo: #6610f2;
+    --bs-purple: #6f42c1;
+    --bs-pink: #d63384;
+    --bs-red: #dc3545;
+    --bs-orange: #fd7e14;
+    --bs-yellow: #ffc107;
+    --bs-green: #198754;
+    --bs-teal: #20c997;
+    --bs-cyan: #0dcaf0;
+    --bs-black: #000;
+    --bs-white: #fff;
+    --bs-gray: #6c757d;
+    --bs-gray-dark: #343a40;
+    --bs-gray-100: #f8f9fa;
+    --bs-gray-200: #e9ecef;
+    --bs-gray-300: #dee2e6;
+    --bs-gray-400: #ced4da;
+    --bs-gray-500: #adb5bd;
+    --bs-gray-600: #6c757d;
+    --bs-gray-700: #495057;
+    --bs-gray-800: #343a40;
+    --bs-gray-900: #212529;
+    --bs-primary: #0d6efd;
+    --bs-secondary: #6c757d;
+    --bs-success: #198754;
+    --bs-info: #0dcaf0;
+    --bs-warning: #ffc107;
+    --bs-danger: #dc3545;
+    --bs-light: #f8f9fa;
+    --bs-dark: #212529;
+    --bs-primary-rgb: 13, 110, 253;
+    --bs-secondary-rgb: 108, 117, 125;
+    --bs-success-rgb: 25, 135, 84;
+    --bs-info-rgb: 13, 202, 240;
+    --bs-warning-rgb: 255, 193, 7;
+    --bs-danger-rgb: 220, 53, 69;
+    --bs-light-rgb: 248, 249, 250;
+    --bs-dark-rgb: 33, 37, 41;
+    --bs-primary-text-emphasis: #052c65;
+    --bs-secondary-text-emphasis: #2b2f32;
+    --bs-success-text-emphasis: #0a3622;
+    --bs-info-text-emphasis: #055160;
+    --bs-warning-text-emphasis: #664d03;
+    --bs-danger-text-emphasis: #58151c;
+    --bs-light-text-emphasis: #495057;
+    --bs-dark-text-emphasis: #495057;
+    --bs-primary-bg-subtle: #cfe2ff;
+    --bs-secondary-bg-subtle: #e2e3e5;
+    --bs-success-bg-subtle: #d1e7dd;
+    --bs-info-bg-subtle: #cff4fc;
+    --bs-warning-bg-subtle: #fff3cd;
+    --bs-danger-bg-subtle: #f8d7da;
+    --bs-light-bg-subtle: #fcfcfd;
+    --bs-dark-bg-subtle: #ced4da;
+    --bs-primary-border-subtle: #b3d6f4;
+    --bs-secondary-border-subtle: #c4c8cb;
+    --bs-success-border-subtle: #a3cfbb;
+    --bs-info-border-subtle: #9eeaf9;
+    --bs-warning-border-subtle: #ffe69c;
+    --bs-danger-border-subtle: #f1aeb5;
+    --bs-light-border-subtle: #e9ecef;
+    --bs-dark-border-subtle: #adb5bd;
+    --bs-white-rgb: 255, 255, 255;
+    --bs-black-rgb: 0, 0, 0;
+    --bs-font-sans-serif: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", "Liberation Sans", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    --bs-font-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    --bs-gradient: linear-gradient(180deg, rgba(255, 255, 255, .15), rgba(255, 255, 255, 0));
+    --bs-body-font-family: var(--bs-font-sans-serif);
+    --bs-body-font-size: 1rem;
+    --bs-body-font-weight: 400;
+    --bs-body-line-height: 1.5;
+    --bs-body-color: #212529;
+    --bs-body-color-rgb: 33, 37, 41;
+    --bs-body-bg: #fff;
+    --bs-body-bg-rgb: 255, 255, 255;
+    --bs-emphasis-color: #000;
+    --bs-emphasis-color-rgb: 0, 0, 0;
+    --bs-secondary-color: rgba(33, 37, 41, .75);
+    --bs-secondary-color-rgb: 33, 37, 41;
+    --bs-secondary-bg: #e9ecef;
+    --bs-secondary-bg-rgb: 233, 236, 239;
+    --bs-tertiary-color: rgba(33, 37, 41, .5);
+    --bs-tertiary-color-rgb: 33, 37, 41;
+    --bs-tertiary-bg: #f8f9fa;
+    --bs-tertiary-bg-rgb: 248, 249, 250;
+    --bs-heading-color: inherit;
+    --bs-link-color: #0d6efd;
+    --bs-link-color-rgb: 13, 110, 253;
+    --bs-link-decoration: underline;
+    --bs-link-hover-color: #0a58ca;
+    --bs-link-hover-color-rgb: 10, 88, 202;
+    --bs-code-color: #d63384;
+    --bs-highlight-color: #212529;
+    --bs-highlight-bg: #fff3cd;
+    --bs-border-width: 1px;
+    --bs-border-style: solid;
+    --bs-border-color: #dee2e6;
+    --bs-border-color-translucent: rgba(0, 0, 0, .175);
+    --bs-border-radius: .375rem;
+    --bs-border-radius-sm: .25rem;
+    --bs-border-radius-lg: .5rem;
+    --bs-border-radius-xl: 1rem;
+    --bs-border-radius-xxl: 2rem;
+    --bs-border-radius-2xl: var(--bs-border-radius-xxl);
+    --bs-border-radius-pill: 50rem;
+    --bs-box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .15);
+    --bs-box-shadow-sm: 0 .125rem .25rem rgba(0, 0, 0, .075);
+    --bs-box-shadow-lg: 0 1rem 3rem rgba(0, 0, 0, .175);
+    --bs-box-shadow-inset: inset 0 1px 2px rgba(0, 0, 0, .075);
+    --bs-focus-ring-width: .25rem;
+    --bs-focus-ring-opacity: .25;
+    --bs-focus-ring-color: rgba(13, 110, 253, .25);
+    --bs-form-valid-color: #198754;
+    --bs-form-valid-border-color: #198754;
+    --bs-form-invalid-color: #dc3545;
+    --bs-form-invalid-border-color: #dc3545;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 400;
+  font-size: var(--base-font-size);
+  background: linear-gradient(to right, rgba(255, 195, 78, 0.05), rgba(255, 80, 101, 0.05));
+}
+
+@media (max-width: 1024px) {
+  body {
+    font-size: var(--smalldevice-base-font-size);
+  }
+}
+
+footer {
+    background: #131833;
+    color: #fff!important;
+    font-size: 14px;
+}
+footer a {
+    color: #fff;
+    text-decoration: none;
+}
+footer a:hover {
+    color: #fff;
+    text-decoration: underline;
+}
+
+/* Headings */
+
+a.brand:hover {
+  text-decoration: none;
+}
+
+a.brand .brand-title {
+  font-size: 1.4em;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  color: var(--appname-color);
+  margin-top: 1px;
+  padding: 0 0 0 0.4em;
+}
+
+@media (min-width: 1024px) {
+  a.brand .brand-title {
+    font-size: 1.55em;
+  }
+}
+
+a.brand .logomark {
+  height: 35px;
+}
+
+/* HEADINGS */
+
+h1 {
+  font-weight: 600;
+  font-size: 32px;
+}
+
+h2 {
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 1.8;
+}
+
+h3 {
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 1.8;
+}
+
+h5 {
+  font-size: 14px;
+  padding: 10px 0px;
+}
+/* Articles */
+
+article h2,
+article h3,
+article h4 {
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+
+article h4 {
+  padding-bottom: 8px;
+  border-bottom: 2px solid #ddd;
+}
+
+article h1 {
+  margin-bottom: 30px;
+}
+
+/* Breadcrumbs */
+.subnav.navbar {
+  margin: 0 -15px;
+}
+
+#breadcrumb {
+  overflow: scroll;
+  margin-bottom: 0;
+}
+
+#breadcrumb::-webkit-scrollbar {
+  display: none;
+}
+
+#breadcrumb a {
+  white-space: nowrap;
+}
+
+#breadcrumb wbr {
+  display: none;
+}
+
+/** IMAGES **/
+img {
+  border-radius: var(--bs-border-radius);
+  box-shadow: var(--card-box-shadow);
+}
+
+/** NAVBAR **/
+.navbar-brand > img {
+  box-shadow: none;
+  color: var(--bs-nav-link-color);
+  margin-right: 8px;
+  height: 40px;
+}
+
+[data-bs-theme='light'] nav.navbar {
+  background: linear-gradient(to right, rgba(255, 234, 241, 1), rgba(192, 217, 247, 1))!important;
+}
+
+[data-bs-theme='dark'] nav.navbar {
+  /* background-color: var(--bs-tertiary-bg); */
+  background: linear-gradient(to right, rgba(47, 112, 157, 1), rgba(106, 11, 109, 1))!important;
+}
+
+.navbar-nav > li > a {
+  border-radius: var(--border-radius-button);
+  transition: 200ms;
+}
+
+.navbar-nav a.nav-link:focus,
+.navbar-nav a.nav-link:hover {
+  background-color: var(--bs-primary-border-subtle);
+}
+
+.navbar-nav .nav-link.active,
+.navbar-nav .nav-link.show {
+  color: var(--bs-link-hover-color);
+  font-weight: 600;
+}
+
+/** ALERTS **/
+.alert {
+  padding: 0;
+  border: none;
+  box-shadow: var(--card-box-shadow);
+}
+
+.alert > p {
+  padding: 0.2rem 0.7rem 0.7rem 1rem;
+}
+
+.alert > ul {
+  margin-bottom: 0;
+  padding: 5px 40px;
+}
+
+.alert > h5 {
+  padding: 0.5rem 0.7rem 0.7rem 1rem;
+  border-radius: var(--bs-border-radius) var(--bs-border-radius) 0 0;
+  font-weight: bold;
+  text-transform: capitalize;
+}
+
+.alert-info {
+  color: var(--material-blue-dark);
+  background-color: var(--material-info-background);
+}
+
+[data-bs-theme='dark'] .alert-info {
+  color: var(--material-blue-light);
+  background-color: var(--material-info-background-dark);
+}
+
+.alert-info > h5 {
+  background-color: var(--material-info-header);
+}
+
+.alert-warning {
+  color: var(--material-yellow-dark);
+  background-color: var(--material-warning-background);
+}
+
+[data-bs-theme='dark'] .alert-warning {
+  color: var(--material-yellow-light);
+  background-color: var(--material-warning-background-dark);
+}
+
+.alert-warning > h5 {
+  background-color: var(--material-warning-header);
+}
+
+.alert-danger {
+  color: var(--material-red-dark);
+  background-color: var(--material-danger-background);
+}
+
+[data-bs-theme='dark'] .alert-danger {
+  color: var(--material-red-light);
+  background-color: var(--material-danger-background-dark);
+}
+
+.alert-danger > h5 {
+  background-color: var(--material-danger-header);
+}
+
+.alert-danger > h5:before {
+  content: '\f431' !important; 
+}
+
+/* CODE HIGHLIGHT */
+code {
+  border-radius: var(--bs-border-radius);
+  margin: 4px 2px;
+  box-shadow: var(--card-box-shadow);
+}
+
+/* -----------------------------------------------------------------------------
+   Left-hand navigation (Table of Contents)
+
+   The DocFX modern layout renders a left TOC container (`.toc-offcanvas`) and
+   populates `nav#toc` at runtime. Our custom stylesheet can unintentionally
+   impact Bootstrap/offcanvas defaults, so we make the desktop TOC explicitly
+   visible and scrollable.
+----------------------------------------------------------------------------- */
+@media (min-width: 768px) {
+  main.container-xxl {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.6rem;
+  }
+
+  main.container-xxl > .toc-offcanvas {
+    display: block !important;
+    flex: 0 0 320px;
+    max-width: 360px;
+  }
+
+  main.container-xxl > .toc-offcanvas .offcanvas-md {
+    position: sticky;
+    top: calc(60px + 1.6rem);
+    display: block !important;
+    visibility: visible !important;
+    transform: none !important;
+    border-right: 1px solid var(--bs-border-color);
+  }
+
+  main.container-xxl > .toc-offcanvas .offcanvas-body {
+    padding: 0.5rem 0.75rem;
+    overflow-y: auto;
+    max-height: calc(100vh - 60px - 1.6rem);
+  }
+
+  main.container-xxl > .toc-offcanvas nav#toc {
+    display: block;
+  }
+}

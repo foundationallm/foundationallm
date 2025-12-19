@@ -1,0 +1,323 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Configuration.APIEndpointSubcategory
+  commentId: T:FoundationaLLM.Common.Models.ResourceProviders.Configuration.APIEndpointSubcategory
+  id: APIEndpointSubcategory
+  parent: FoundationaLLM.Common.Models.ResourceProviders.Configuration
+  children:
+  - FoundationaLLM.Common.Models.ResourceProviders.Configuration.APIEndpointSubcategory.AIModel
+  - FoundationaLLM.Common.Models.ResourceProviders.Configuration.APIEndpointSubcategory.Indexing
+  - FoundationaLLM.Common.Models.ResourceProviders.Configuration.APIEndpointSubcategory.OneDriveWorkSchool
+  langs:
+  - csharp
+  - vb
+  name: APIEndpointSubcategory
+  nameWithType: APIEndpointSubcategory
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Configuration.APIEndpointSubcategory
+  type: Enum
+  source:
+    remote:
+      path: src/dotnet/Common/Models/ResourceProviders/Configuration/APIEndpointSubcategory.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: APIEndpointSubcategory
+    path: ../src/dotnet/Common/Models/ResourceProviders/Configuration/APIEndpointSubcategory.cs
+    startLine: 5
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.ResourceProviders.Configuration
+  summary: The subcategory for api endpoint class.
+  example: []
+  syntax:
+    content: public enum APIEndpointSubcategory
+    content.vb: Public Enum APIEndpointSubcategory
+  extensionMethods:
+  - System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Configuration.APIEndpointSubcategory.OneDriveWorkSchool
+  commentId: F:FoundationaLLM.Common.Models.ResourceProviders.Configuration.APIEndpointSubcategory.OneDriveWorkSchool
+  id: OneDriveWorkSchool
+  parent: FoundationaLLM.Common.Models.ResourceProviders.Configuration.APIEndpointSubcategory
+  langs:
+  - csharp
+  - vb
+  name: OneDriveWorkSchool
+  nameWithType: APIEndpointSubcategory.OneDriveWorkSchool
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Configuration.APIEndpointSubcategory.OneDriveWorkSchool
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Models/ResourceProviders/Configuration/APIEndpointSubcategory.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: OneDriveWorkSchool
+    path: ../src/dotnet/Common/Models/ResourceProviders/Configuration/APIEndpointSubcategory.cs
+    startLine: 10
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.ResourceProviders.Configuration
+  summary: Denotes the subcategory for OneDrive Work or School for the FileStoreConnector category.
+  example: []
+  syntax:
+    content: OneDriveWorkSchool = 0
+    return:
+      type: FoundationaLLM.Common.Models.ResourceProviders.Configuration.APIEndpointSubcategory
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Configuration.APIEndpointSubcategory.Indexing
+  commentId: F:FoundationaLLM.Common.Models.ResourceProviders.Configuration.APIEndpointSubcategory.Indexing
+  id: Indexing
+  parent: FoundationaLLM.Common.Models.ResourceProviders.Configuration.APIEndpointSubcategory
+  langs:
+  - csharp
+  - vb
+  name: Indexing
+  nameWithType: APIEndpointSubcategory.Indexing
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Configuration.APIEndpointSubcategory.Indexing
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Models/ResourceProviders/Configuration/APIEndpointSubcategory.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: Indexing
+    path: ../src/dotnet/Common/Models/ResourceProviders/Configuration/APIEndpointSubcategory.cs
+    startLine: 15
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.ResourceProviders.Configuration
+  summary: Denotes the subcategory for indexing services.
+  example: []
+  syntax:
+    content: Indexing = 1
+    return:
+      type: FoundationaLLM.Common.Models.ResourceProviders.Configuration.APIEndpointSubcategory
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Configuration.APIEndpointSubcategory.AIModel
+  commentId: F:FoundationaLLM.Common.Models.ResourceProviders.Configuration.APIEndpointSubcategory.AIModel
+  id: AIModel
+  parent: FoundationaLLM.Common.Models.ResourceProviders.Configuration.APIEndpointSubcategory
+  langs:
+  - csharp
+  - vb
+  name: AIModel
+  nameWithType: APIEndpointSubcategory.AIModel
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Configuration.APIEndpointSubcategory.AIModel
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Models/ResourceProviders/Configuration/APIEndpointSubcategory.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: AIModel
+    path: ../src/dotnet/Common/Models/ResourceProviders/Configuration/APIEndpointSubcategory.cs
+    startLine: 20
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Models.ResourceProviders.Configuration
+  summary: Denotes the subcategory for AI model endpoints, such as Azure OpenAI.
+  example: []
+  syntax:
+    content: AIModel = 2
+    return:
+      type: FoundationaLLM.Common.Models.ResourceProviders.Configuration.APIEndpointSubcategory
+references:
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Configuration
+  commentId: N:FoundationaLLM.Common.Models.ResourceProviders.Configuration
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.ResourceProviders.Configuration
+  nameWithType: FoundationaLLM.Common.Models.ResourceProviders.Configuration
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Configuration
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders
+    name: ResourceProviders
+    href: FoundationaLLM.Common.Models.ResourceProviders.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.Configuration
+    name: Configuration
+    href: FoundationaLLM.Common.Models.ResourceProviders.Configuration.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders
+    name: ResourceProviders
+    href: FoundationaLLM.Common.Models.ResourceProviders.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.Configuration
+    name: Configuration
+    href: FoundationaLLM.Common.Models.ResourceProviders.Configuration.html
+- uid: System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  parent: FoundationaLLM.Core.Utils.ObjectExtensions
+  definition: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  isExternal: true
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions
+  commentId: T:FoundationaLLM.Core.Utils.ObjectExtensions
+  parent: FoundationaLLM.Core.Utils
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html
+  name: ObjectExtensions
+  nameWithType: ObjectExtensions
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions
+- uid: FoundationaLLM.Core.Utils
+  commentId: N:FoundationaLLM.Core.Utils
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Core.Utils
+  nameWithType: FoundationaLLM.Core.Utils
+  fullName: FoundationaLLM.Core.Utils
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Configuration.APIEndpointSubcategory
+  commentId: T:FoundationaLLM.Common.Models.ResourceProviders.Configuration.APIEndpointSubcategory
+  parent: FoundationaLLM.Common.Models.ResourceProviders.Configuration
+  href: FoundationaLLM.Common.Models.ResourceProviders.Configuration.APIEndpointSubcategory.html
+  name: APIEndpointSubcategory
+  nameWithType: APIEndpointSubcategory
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Configuration.APIEndpointSubcategory

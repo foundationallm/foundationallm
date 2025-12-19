@@ -1,0 +1,1334 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Orchestration.Core.Services.UserPromptRewriteService
+  commentId: T:FoundationaLLM.Orchestration.Core.Services.UserPromptRewriteService
+  id: UserPromptRewriteService
+  parent: FoundationaLLM.Orchestration.Core.Services
+  children:
+  - FoundationaLLM.Orchestration.Core.Services.UserPromptRewriteService.#ctor(System.Collections.Generic.IEnumerable{FoundationaLLM.Common.Interfaces.IResourceProviderService},FoundationaLLM.Common.Interfaces.ITemplatingService,Microsoft.Extensions.Configuration.IConfiguration,Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Orchestration.Core.Services.UserPromptRewriteService})
+  - FoundationaLLM.Orchestration.Core.Services.UserPromptRewriteService.HasUserPromptRewriterForAgent(System.String,System.String)
+  - FoundationaLLM.Orchestration.Core.Services.UserPromptRewriteService.InitializeUserPromptRewriterForAgent(System.String,System.String,FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentUserPromptRewriteSettings)
+  - FoundationaLLM.Orchestration.Core.Services.UserPromptRewriteService.RewriteUserPrompt(System.String,System.String,FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequest)
+  langs:
+  - csharp
+  - vb
+  name: UserPromptRewriteService
+  nameWithType: UserPromptRewriteService
+  fullName: FoundationaLLM.Orchestration.Core.Services.UserPromptRewriteService
+  type: Class
+  source:
+    remote:
+      path: src/dotnet/Orchestration/Services/UserPromptRewriteService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: UserPromptRewriteService
+    path: ../src/dotnet/Orchestration/Services/UserPromptRewriteService.cs
+    startLine: 28
+  assemblies:
+  - FoundationaLLM.Orchestration.Core
+  namespace: FoundationaLLM.Orchestration.Core.Services
+  summary: Provides a service for managing the semantic cache.
+  example: []
+  syntax:
+    content: 'public class UserPromptRewriteService : IUserPromptRewriteService'
+    content.vb: Public Class UserPromptRewriteService Implements IUserPromptRewriteService
+  inheritance:
+  - System.Object
+  implements:
+  - FoundationaLLM.Orchestration.Core.Interfaces.IUserPromptRewriteService
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+  extensionMethods:
+  - System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+- uid: FoundationaLLM.Orchestration.Core.Services.UserPromptRewriteService.#ctor(System.Collections.Generic.IEnumerable{FoundationaLLM.Common.Interfaces.IResourceProviderService},FoundationaLLM.Common.Interfaces.ITemplatingService,Microsoft.Extensions.Configuration.IConfiguration,Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Orchestration.Core.Services.UserPromptRewriteService})
+  commentId: M:FoundationaLLM.Orchestration.Core.Services.UserPromptRewriteService.#ctor(System.Collections.Generic.IEnumerable{FoundationaLLM.Common.Interfaces.IResourceProviderService},FoundationaLLM.Common.Interfaces.ITemplatingService,Microsoft.Extensions.Configuration.IConfiguration,Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Orchestration.Core.Services.UserPromptRewriteService})
+  id: '#ctor(System.Collections.Generic.IEnumerable{FoundationaLLM.Common.Interfaces.IResourceProviderService},FoundationaLLM.Common.Interfaces.ITemplatingService,Microsoft.Extensions.Configuration.IConfiguration,Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Orchestration.Core.Services.UserPromptRewriteService})'
+  parent: FoundationaLLM.Orchestration.Core.Services.UserPromptRewriteService
+  langs:
+  - csharp
+  - vb
+  name: UserPromptRewriteService(IEnumerable<IResourceProviderService>, ITemplatingService, IConfiguration, ILogger<UserPromptRewriteService>)
+  nameWithType: UserPromptRewriteService.UserPromptRewriteService(IEnumerable<IResourceProviderService>, ITemplatingService, IConfiguration, ILogger<UserPromptRewriteService>)
+  fullName: FoundationaLLM.Orchestration.Core.Services.UserPromptRewriteService.UserPromptRewriteService(System.Collections.Generic.IEnumerable<FoundationaLLM.Common.Interfaces.IResourceProviderService>, FoundationaLLM.Common.Interfaces.ITemplatingService, Microsoft.Extensions.Configuration.IConfiguration, Microsoft.Extensions.Logging.ILogger<FoundationaLLM.Orchestration.Core.Services.UserPromptRewriteService>)
+  type: Constructor
+  source:
+    remote:
+      path: src/dotnet/Orchestration/Services/UserPromptRewriteService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: .ctor
+    path: ../src/dotnet/Orchestration/Services/UserPromptRewriteService.cs
+    startLine: 47
+  assemblies:
+  - FoundationaLLM.Orchestration.Core
+  namespace: FoundationaLLM.Orchestration.Core.Services
+  summary: Initializes a new instance of the <xref href="FoundationaLLM.Orchestration.Core.Services.UserPromptRewriteService" data-throw-if-not-resolved="false"></xref> class.
+  example: []
+  syntax:
+    content: public UserPromptRewriteService(IEnumerable<IResourceProviderService> resourceProviderServices, ITemplatingService templatingService, IConfiguration configuration, ILogger<UserPromptRewriteService> logger)
+    parameters:
+    - id: resourceProviderServices
+      type: System.Collections.Generic.IEnumerable{FoundationaLLM.Common.Interfaces.IResourceProviderService}
+      description: A list of <xref href="FoundationaLLM.Common.Interfaces.IResourceProviderService" data-throw-if-not-resolved="false"></xref> resource providers hashed by resource provider name.
+    - id: templatingService
+      type: FoundationaLLM.Common.Interfaces.ITemplatingService
+      description: The templating service used for replacing variables in prompts.
+    - id: configuration
+      type: Microsoft.Extensions.Configuration.IConfiguration
+      description: The <xref href="Microsoft.Extensions.Configuration.IConfiguration" data-throw-if-not-resolved="false"></xref> used to retrieve app settings from configuration.
+    - id: logger
+      type: Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Orchestration.Core.Services.UserPromptRewriteService}
+      description: The logger used for logging..
+    content.vb: Public Sub New(resourceProviderServices As IEnumerable(Of IResourceProviderService), templatingService As ITemplatingService, configuration As IConfiguration, logger As ILogger(Of UserPromptRewriteService))
+  overload: FoundationaLLM.Orchestration.Core.Services.UserPromptRewriteService.#ctor*
+  nameWithType.vb: UserPromptRewriteService.New(IEnumerable(Of IResourceProviderService), ITemplatingService, IConfiguration, ILogger(Of UserPromptRewriteService))
+  fullName.vb: FoundationaLLM.Orchestration.Core.Services.UserPromptRewriteService.New(System.Collections.Generic.IEnumerable(Of FoundationaLLM.Common.Interfaces.IResourceProviderService), FoundationaLLM.Common.Interfaces.ITemplatingService, Microsoft.Extensions.Configuration.IConfiguration, Microsoft.Extensions.Logging.ILogger(Of FoundationaLLM.Orchestration.Core.Services.UserPromptRewriteService))
+  name.vb: New(IEnumerable(Of IResourceProviderService), ITemplatingService, IConfiguration, ILogger(Of UserPromptRewriteService))
+- uid: FoundationaLLM.Orchestration.Core.Services.UserPromptRewriteService.HasUserPromptRewriterForAgent(System.String,System.String)
+  commentId: M:FoundationaLLM.Orchestration.Core.Services.UserPromptRewriteService.HasUserPromptRewriterForAgent(System.String,System.String)
+  id: HasUserPromptRewriterForAgent(System.String,System.String)
+  parent: FoundationaLLM.Orchestration.Core.Services.UserPromptRewriteService
+  langs:
+  - csharp
+  - vb
+  name: HasUserPromptRewriterForAgent(string, string)
+  nameWithType: UserPromptRewriteService.HasUserPromptRewriterForAgent(string, string)
+  fullName: FoundationaLLM.Orchestration.Core.Services.UserPromptRewriteService.HasUserPromptRewriterForAgent(string, string)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Orchestration/Services/UserPromptRewriteService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: HasUserPromptRewriterForAgent
+    path: ../src/dotnet/Orchestration/Services/UserPromptRewriteService.cs
+    startLine: 65
+  assemblies:
+  - FoundationaLLM.Orchestration.Core
+  namespace: FoundationaLLM.Orchestration.Core.Services
+  summary: Determines whether user prompt rewrite is configured for the specified agent in the specified FoundationaLLM instance.
+  example: []
+  syntax:
+    content: public bool HasUserPromptRewriterForAgent(string instanceId, string agentName)
+    parameters:
+    - id: instanceId
+      type: System.String
+      description: The unique identifier of the FoundationaLLM instance.
+    - id: agentName
+      type: System.String
+      description: The name of the agent.
+    return:
+      type: System.Boolean
+      description: <see langref="true"></see> if the user prompt rewrite for the specified agent is configured, <see langref="false"></see> otherwise.
+    content.vb: Public Function HasUserPromptRewriterForAgent(instanceId As String, agentName As String) As Boolean
+  overload: FoundationaLLM.Orchestration.Core.Services.UserPromptRewriteService.HasUserPromptRewriterForAgent*
+  implements:
+  - FoundationaLLM.Orchestration.Core.Interfaces.IUserPromptRewriteService.HasUserPromptRewriterForAgent(System.String,System.String)
+  nameWithType.vb: UserPromptRewriteService.HasUserPromptRewriterForAgent(String, String)
+  fullName.vb: FoundationaLLM.Orchestration.Core.Services.UserPromptRewriteService.HasUserPromptRewriterForAgent(String, String)
+  name.vb: HasUserPromptRewriterForAgent(String, String)
+- uid: FoundationaLLM.Orchestration.Core.Services.UserPromptRewriteService.InitializeUserPromptRewriterForAgent(System.String,System.String,FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentUserPromptRewriteSettings)
+  commentId: M:FoundationaLLM.Orchestration.Core.Services.UserPromptRewriteService.InitializeUserPromptRewriterForAgent(System.String,System.String,FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentUserPromptRewriteSettings)
+  id: InitializeUserPromptRewriterForAgent(System.String,System.String,FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentUserPromptRewriteSettings)
+  parent: FoundationaLLM.Orchestration.Core.Services.UserPromptRewriteService
+  langs:
+  - csharp
+  - vb
+  name: InitializeUserPromptRewriterForAgent(string, string, AgentUserPromptRewriteSettings)
+  nameWithType: UserPromptRewriteService.InitializeUserPromptRewriterForAgent(string, string, AgentUserPromptRewriteSettings)
+  fullName: FoundationaLLM.Orchestration.Core.Services.UserPromptRewriteService.InitializeUserPromptRewriterForAgent(string, string, FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentUserPromptRewriteSettings)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Orchestration/Services/UserPromptRewriteService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: InitializeUserPromptRewriterForAgent
+    path: ../src/dotnet/Orchestration/Services/UserPromptRewriteService.cs
+    startLine: 69
+  assemblies:
+  - FoundationaLLM.Orchestration.Core
+  namespace: FoundationaLLM.Orchestration.Core.Services
+  summary: Initializes user prompt rewrite for the specified agent in the specified FoundationaLLM instance.
+  example: []
+  syntax:
+    content: public Task InitializeUserPromptRewriterForAgent(string instanceId, string agentName, AgentUserPromptRewriteSettings agentSettings)
+    parameters:
+    - id: instanceId
+      type: System.String
+      description: The unique identifier of the FoundationaLLM instance.
+    - id: agentName
+      type: System.String
+      description: The name of the agent.
+    - id: agentSettings
+      type: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentUserPromptRewriteSettings
+      description: The <xref href="FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentUserPromptRewriteSettings" data-throw-if-not-resolved="false"></xref> providing the agent's user prompt rewrite settings.
+    return:
+      type: System.Threading.Tasks.Task
+      description: ''
+    content.vb: Public Function InitializeUserPromptRewriterForAgent(instanceId As String, agentName As String, agentSettings As AgentUserPromptRewriteSettings) As Task
+  overload: FoundationaLLM.Orchestration.Core.Services.UserPromptRewriteService.InitializeUserPromptRewriterForAgent*
+  implements:
+  - FoundationaLLM.Orchestration.Core.Interfaces.IUserPromptRewriteService.InitializeUserPromptRewriterForAgent(System.String,System.String,FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentUserPromptRewriteSettings)
+  nameWithType.vb: UserPromptRewriteService.InitializeUserPromptRewriterForAgent(String, String, AgentUserPromptRewriteSettings)
+  fullName.vb: FoundationaLLM.Orchestration.Core.Services.UserPromptRewriteService.InitializeUserPromptRewriterForAgent(String, String, FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentUserPromptRewriteSettings)
+  name.vb: InitializeUserPromptRewriterForAgent(String, String, AgentUserPromptRewriteSettings)
+- uid: FoundationaLLM.Orchestration.Core.Services.UserPromptRewriteService.RewriteUserPrompt(System.String,System.String,FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequest)
+  commentId: M:FoundationaLLM.Orchestration.Core.Services.UserPromptRewriteService.RewriteUserPrompt(System.String,System.String,FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequest)
+  id: RewriteUserPrompt(System.String,System.String,FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequest)
+  parent: FoundationaLLM.Orchestration.Core.Services.UserPromptRewriteService
+  langs:
+  - csharp
+  - vb
+  name: RewriteUserPrompt(string, string, CompletionRequest)
+  nameWithType: UserPromptRewriteService.RewriteUserPrompt(string, string, CompletionRequest)
+  fullName: FoundationaLLM.Orchestration.Core.Services.UserPromptRewriteService.RewriteUserPrompt(string, string, FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequest)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Orchestration/Services/UserPromptRewriteService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: RewriteUserPrompt
+    path: ../src/dotnet/Orchestration/Services/UserPromptRewriteService.cs
+    startLine: 110
+  assemblies:
+  - FoundationaLLM.Orchestration.Core
+  namespace: FoundationaLLM.Orchestration.Core.Services
+  summary: Rewrites the user prompt to a form that can be used by the AI model.
+  example: []
+  syntax:
+    content: public Task RewriteUserPrompt(string instanceId, string agentName, CompletionRequest completionRequest)
+    parameters:
+    - id: instanceId
+      type: System.String
+      description: The unique identifier of the FoundationaLLM instance.
+    - id: agentName
+      type: System.String
+      description: The name of the agent.
+    - id: completionRequest
+      type: FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequest
+      description: The <xref href="FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequest" data-throw-if-not-resolved="false"></xref> for which to rewrite the user prompt.
+    return:
+      type: System.Threading.Tasks.Task
+      description: The rewritten user prompt.
+    content.vb: Public Function RewriteUserPrompt(instanceId As String, agentName As String, completionRequest As CompletionRequest) As Task
+  overload: FoundationaLLM.Orchestration.Core.Services.UserPromptRewriteService.RewriteUserPrompt*
+  implements:
+  - FoundationaLLM.Orchestration.Core.Interfaces.IUserPromptRewriteService.RewriteUserPrompt(System.String,System.String,FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequest)
+  nameWithType.vb: UserPromptRewriteService.RewriteUserPrompt(String, String, CompletionRequest)
+  fullName.vb: FoundationaLLM.Orchestration.Core.Services.UserPromptRewriteService.RewriteUserPrompt(String, String, FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequest)
+  name.vb: RewriteUserPrompt(String, String, CompletionRequest)
+references:
+- uid: FoundationaLLM.Orchestration.Core.Services
+  commentId: N:FoundationaLLM.Orchestration.Core.Services
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Orchestration.Core.Services
+  nameWithType: FoundationaLLM.Orchestration.Core.Services
+  fullName: FoundationaLLM.Orchestration.Core.Services
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Orchestration
+    name: Orchestration
+    href: FoundationaLLM.Orchestration.html
+  - name: .
+  - uid: FoundationaLLM.Orchestration.Core
+    name: Core
+    href: FoundationaLLM.Orchestration.Core.html
+  - name: .
+  - uid: FoundationaLLM.Orchestration.Core.Services
+    name: Services
+    href: FoundationaLLM.Orchestration.Core.Services.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Orchestration
+    name: Orchestration
+    href: FoundationaLLM.Orchestration.html
+  - name: .
+  - uid: FoundationaLLM.Orchestration.Core
+    name: Core
+    href: FoundationaLLM.Orchestration.Core.html
+  - name: .
+  - uid: FoundationaLLM.Orchestration.Core.Services
+    name: Services
+    href: FoundationaLLM.Orchestration.Core.Services.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: FoundationaLLM.Orchestration.Core.Interfaces.IUserPromptRewriteService
+  commentId: T:FoundationaLLM.Orchestration.Core.Interfaces.IUserPromptRewriteService
+  parent: FoundationaLLM.Orchestration.Core.Interfaces
+  href: FoundationaLLM.Orchestration.Core.Interfaces.IUserPromptRewriteService.html
+  name: IUserPromptRewriteService
+  nameWithType: IUserPromptRewriteService
+  fullName: FoundationaLLM.Orchestration.Core.Interfaces.IUserPromptRewriteService
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  parent: FoundationaLLM.Core.Utils.ObjectExtensions
+  definition: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: FoundationaLLM.Orchestration.Core.Interfaces
+  commentId: N:FoundationaLLM.Orchestration.Core.Interfaces
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Orchestration.Core.Interfaces
+  nameWithType: FoundationaLLM.Orchestration.Core.Interfaces
+  fullName: FoundationaLLM.Orchestration.Core.Interfaces
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Orchestration
+    name: Orchestration
+    href: FoundationaLLM.Orchestration.html
+  - name: .
+  - uid: FoundationaLLM.Orchestration.Core
+    name: Core
+    href: FoundationaLLM.Orchestration.Core.html
+  - name: .
+  - uid: FoundationaLLM.Orchestration.Core.Interfaces
+    name: Interfaces
+    href: FoundationaLLM.Orchestration.Core.Interfaces.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Orchestration
+    name: Orchestration
+    href: FoundationaLLM.Orchestration.html
+  - name: .
+  - uid: FoundationaLLM.Orchestration.Core
+    name: Core
+    href: FoundationaLLM.Orchestration.Core.html
+  - name: .
+  - uid: FoundationaLLM.Orchestration.Core.Interfaces
+    name: Interfaces
+    href: FoundationaLLM.Orchestration.Core.Interfaces.html
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  isExternal: true
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions
+  commentId: T:FoundationaLLM.Core.Utils.ObjectExtensions
+  parent: FoundationaLLM.Core.Utils
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html
+  name: ObjectExtensions
+  nameWithType: ObjectExtensions
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions
+- uid: FoundationaLLM.Core.Utils
+  commentId: N:FoundationaLLM.Core.Utils
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Core.Utils
+  nameWithType: FoundationaLLM.Core.Utils
+  fullName: FoundationaLLM.Core.Utils
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+- uid: FoundationaLLM.Orchestration.Core.Services.UserPromptRewriteService
+  commentId: T:FoundationaLLM.Orchestration.Core.Services.UserPromptRewriteService
+  href: FoundationaLLM.Orchestration.Core.Services.UserPromptRewriteService.html
+  name: UserPromptRewriteService
+  nameWithType: UserPromptRewriteService
+  fullName: FoundationaLLM.Orchestration.Core.Services.UserPromptRewriteService
+- uid: FoundationaLLM.Common.Interfaces.IResourceProviderService
+  commentId: T:FoundationaLLM.Common.Interfaces.IResourceProviderService
+  parent: FoundationaLLM.Common.Interfaces
+  href: FoundationaLLM.Common.Interfaces.IResourceProviderService.html
+  name: IResourceProviderService
+  nameWithType: IResourceProviderService
+  fullName: FoundationaLLM.Common.Interfaces.IResourceProviderService
+- uid: Microsoft.Extensions.Configuration.IConfiguration
+  commentId: T:Microsoft.Extensions.Configuration.IConfiguration
+  parent: Microsoft.Extensions.Configuration
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.configuration.iconfiguration
+  name: IConfiguration
+  nameWithType: IConfiguration
+  fullName: Microsoft.Extensions.Configuration.IConfiguration
+- uid: FoundationaLLM.Orchestration.Core.Services.UserPromptRewriteService.#ctor*
+  commentId: Overload:FoundationaLLM.Orchestration.Core.Services.UserPromptRewriteService.#ctor
+  href: FoundationaLLM.Orchestration.Core.Services.UserPromptRewriteService.html#FoundationaLLM_Orchestration_Core_Services_UserPromptRewriteService__ctor_System_Collections_Generic_IEnumerable_FoundationaLLM_Common_Interfaces_IResourceProviderService__FoundationaLLM_Common_Interfaces_ITemplatingService_Microsoft_Extensions_Configuration_IConfiguration_Microsoft_Extensions_Logging_ILogger_FoundationaLLM_Orchestration_Core_Services_UserPromptRewriteService__
+  name: UserPromptRewriteService
+  nameWithType: UserPromptRewriteService.UserPromptRewriteService
+  fullName: FoundationaLLM.Orchestration.Core.Services.UserPromptRewriteService.UserPromptRewriteService
+  nameWithType.vb: UserPromptRewriteService.New
+  fullName.vb: FoundationaLLM.Orchestration.Core.Services.UserPromptRewriteService.New
+  name.vb: New
+- uid: System.Collections.Generic.IEnumerable{FoundationaLLM.Common.Interfaces.IResourceProviderService}
+  commentId: T:System.Collections.Generic.IEnumerable{FoundationaLLM.Common.Interfaces.IResourceProviderService}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IEnumerable`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<IResourceProviderService>
+  nameWithType: IEnumerable<IResourceProviderService>
+  fullName: System.Collections.Generic.IEnumerable<FoundationaLLM.Common.Interfaces.IResourceProviderService>
+  nameWithType.vb: IEnumerable(Of IResourceProviderService)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of FoundationaLLM.Common.Interfaces.IResourceProviderService)
+  name.vb: IEnumerable(Of IResourceProviderService)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - uid: FoundationaLLM.Common.Interfaces.IResourceProviderService
+    name: IResourceProviderService
+    href: FoundationaLLM.Common.Interfaces.IResourceProviderService.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FoundationaLLM.Common.Interfaces.IResourceProviderService
+    name: IResourceProviderService
+    href: FoundationaLLM.Common.Interfaces.IResourceProviderService.html
+  - name: )
+- uid: FoundationaLLM.Common.Interfaces.ITemplatingService
+  commentId: T:FoundationaLLM.Common.Interfaces.ITemplatingService
+  parent: FoundationaLLM.Common.Interfaces
+  href: FoundationaLLM.Common.Interfaces.ITemplatingService.html
+  name: ITemplatingService
+  nameWithType: ITemplatingService
+  fullName: FoundationaLLM.Common.Interfaces.ITemplatingService
+- uid: Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Orchestration.Core.Services.UserPromptRewriteService}
+  commentId: T:Microsoft.Extensions.Logging.ILogger{FoundationaLLM.Orchestration.Core.Services.UserPromptRewriteService}
+  parent: Microsoft.Extensions.Logging
+  definition: Microsoft.Extensions.Logging.ILogger`1
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  name: ILogger<UserPromptRewriteService>
+  nameWithType: ILogger<UserPromptRewriteService>
+  fullName: Microsoft.Extensions.Logging.ILogger<FoundationaLLM.Orchestration.Core.Services.UserPromptRewriteService>
+  nameWithType.vb: ILogger(Of UserPromptRewriteService)
+  fullName.vb: Microsoft.Extensions.Logging.ILogger(Of FoundationaLLM.Orchestration.Core.Services.UserPromptRewriteService)
+  name.vb: ILogger(Of UserPromptRewriteService)
+  spec.csharp:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: <
+  - uid: FoundationaLLM.Orchestration.Core.Services.UserPromptRewriteService
+    name: UserPromptRewriteService
+    href: FoundationaLLM.Orchestration.Core.Services.UserPromptRewriteService.html
+  - name: '>'
+  spec.vb:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FoundationaLLM.Orchestration.Core.Services.UserPromptRewriteService
+    name: UserPromptRewriteService
+    href: FoundationaLLM.Orchestration.Core.Services.UserPromptRewriteService.html
+  - name: )
+- uid: FoundationaLLM.Common.Interfaces
+  commentId: N:FoundationaLLM.Common.Interfaces
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Interfaces
+  nameWithType: FoundationaLLM.Common.Interfaces
+  fullName: FoundationaLLM.Common.Interfaces
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Interfaces
+    name: Interfaces
+    href: FoundationaLLM.Common.Interfaces.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Interfaces
+    name: Interfaces
+    href: FoundationaLLM.Common.Interfaces.html
+- uid: Microsoft.Extensions.Configuration
+  commentId: N:Microsoft.Extensions.Configuration
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft
+  name: Microsoft.Extensions.Configuration
+  nameWithType: Microsoft.Extensions.Configuration
+  fullName: Microsoft.Extensions.Configuration
+  spec.csharp:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Configuration
+    name: Configuration
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.configuration
+  spec.vb:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Configuration
+    name: Configuration
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.configuration
+- uid: System.Collections.Generic.IEnumerable`1
+  commentId: T:System.Collections.Generic.IEnumerable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<T>
+  nameWithType: IEnumerable<T>
+  fullName: System.Collections.Generic.IEnumerable<T>
+  nameWithType.vb: IEnumerable(Of T)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of T)
+  name.vb: IEnumerable(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: Microsoft.Extensions.Logging.ILogger`1
+  commentId: T:Microsoft.Extensions.Logging.ILogger`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  name: ILogger<TCategoryName>
+  nameWithType: ILogger<TCategoryName>
+  fullName: Microsoft.Extensions.Logging.ILogger<TCategoryName>
+  nameWithType.vb: ILogger(Of TCategoryName)
+  fullName.vb: Microsoft.Extensions.Logging.ILogger(Of TCategoryName)
+  name.vb: ILogger(Of TCategoryName)
+  spec.csharp:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: <
+  - name: TCategoryName
+  - name: '>'
+  spec.vb:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TCategoryName
+  - name: )
+- uid: Microsoft.Extensions.Logging
+  commentId: N:Microsoft.Extensions.Logging
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft
+  name: Microsoft.Extensions.Logging
+  nameWithType: Microsoft.Extensions.Logging
+  fullName: Microsoft.Extensions.Logging
+  spec.csharp:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Logging
+    name: Logging
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging
+  spec.vb:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Logging
+    name: Logging
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging
+- uid: FoundationaLLM.Orchestration.Core.Services.UserPromptRewriteService.HasUserPromptRewriterForAgent*
+  commentId: Overload:FoundationaLLM.Orchestration.Core.Services.UserPromptRewriteService.HasUserPromptRewriterForAgent
+  href: FoundationaLLM.Orchestration.Core.Services.UserPromptRewriteService.html#FoundationaLLM_Orchestration_Core_Services_UserPromptRewriteService_HasUserPromptRewriterForAgent_System_String_System_String_
+  name: HasUserPromptRewriterForAgent
+  nameWithType: UserPromptRewriteService.HasUserPromptRewriterForAgent
+  fullName: FoundationaLLM.Orchestration.Core.Services.UserPromptRewriteService.HasUserPromptRewriterForAgent
+- uid: FoundationaLLM.Orchestration.Core.Interfaces.IUserPromptRewriteService.HasUserPromptRewriterForAgent(System.String,System.String)
+  commentId: M:FoundationaLLM.Orchestration.Core.Interfaces.IUserPromptRewriteService.HasUserPromptRewriterForAgent(System.String,System.String)
+  parent: FoundationaLLM.Orchestration.Core.Interfaces.IUserPromptRewriteService
+  isExternal: true
+  href: FoundationaLLM.Orchestration.Core.Interfaces.IUserPromptRewriteService.html#FoundationaLLM_Orchestration_Core_Interfaces_IUserPromptRewriteService_HasUserPromptRewriterForAgent_System_String_System_String_
+  name: HasUserPromptRewriterForAgent(string, string)
+  nameWithType: IUserPromptRewriteService.HasUserPromptRewriterForAgent(string, string)
+  fullName: FoundationaLLM.Orchestration.Core.Interfaces.IUserPromptRewriteService.HasUserPromptRewriterForAgent(string, string)
+  nameWithType.vb: IUserPromptRewriteService.HasUserPromptRewriterForAgent(String, String)
+  fullName.vb: FoundationaLLM.Orchestration.Core.Interfaces.IUserPromptRewriteService.HasUserPromptRewriterForAgent(String, String)
+  name.vb: HasUserPromptRewriterForAgent(String, String)
+  spec.csharp:
+  - uid: FoundationaLLM.Orchestration.Core.Interfaces.IUserPromptRewriteService.HasUserPromptRewriterForAgent(System.String,System.String)
+    name: HasUserPromptRewriterForAgent
+    href: FoundationaLLM.Orchestration.Core.Interfaces.IUserPromptRewriteService.html#FoundationaLLM_Orchestration_Core_Interfaces_IUserPromptRewriteService_HasUserPromptRewriterForAgent_System_String_System_String_
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Orchestration.Core.Interfaces.IUserPromptRewriteService.HasUserPromptRewriterForAgent(System.String,System.String)
+    name: HasUserPromptRewriterForAgent
+    href: FoundationaLLM.Orchestration.Core.Interfaces.IUserPromptRewriteService.html#FoundationaLLM_Orchestration_Core_Interfaces_IUserPromptRewriteService_HasUserPromptRewriterForAgent_System_String_System_String_
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentUserPromptRewriteSettings
+  commentId: T:FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentUserPromptRewriteSettings
+  parent: FoundationaLLM.Common.Models.ResourceProviders.Agent
+  href: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentUserPromptRewriteSettings.html
+  name: AgentUserPromptRewriteSettings
+  nameWithType: AgentUserPromptRewriteSettings
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentUserPromptRewriteSettings
+- uid: FoundationaLLM.Orchestration.Core.Services.UserPromptRewriteService.InitializeUserPromptRewriterForAgent*
+  commentId: Overload:FoundationaLLM.Orchestration.Core.Services.UserPromptRewriteService.InitializeUserPromptRewriterForAgent
+  href: FoundationaLLM.Orchestration.Core.Services.UserPromptRewriteService.html#FoundationaLLM_Orchestration_Core_Services_UserPromptRewriteService_InitializeUserPromptRewriterForAgent_System_String_System_String_FoundationaLLM_Common_Models_ResourceProviders_Agent_AgentUserPromptRewriteSettings_
+  name: InitializeUserPromptRewriterForAgent
+  nameWithType: UserPromptRewriteService.InitializeUserPromptRewriterForAgent
+  fullName: FoundationaLLM.Orchestration.Core.Services.UserPromptRewriteService.InitializeUserPromptRewriterForAgent
+- uid: FoundationaLLM.Orchestration.Core.Interfaces.IUserPromptRewriteService.InitializeUserPromptRewriterForAgent(System.String,System.String,FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentUserPromptRewriteSettings)
+  commentId: M:FoundationaLLM.Orchestration.Core.Interfaces.IUserPromptRewriteService.InitializeUserPromptRewriterForAgent(System.String,System.String,FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentUserPromptRewriteSettings)
+  parent: FoundationaLLM.Orchestration.Core.Interfaces.IUserPromptRewriteService
+  isExternal: true
+  href: FoundationaLLM.Orchestration.Core.Interfaces.IUserPromptRewriteService.html#FoundationaLLM_Orchestration_Core_Interfaces_IUserPromptRewriteService_InitializeUserPromptRewriterForAgent_System_String_System_String_FoundationaLLM_Common_Models_ResourceProviders_Agent_AgentUserPromptRewriteSettings_
+  name: InitializeUserPromptRewriterForAgent(string, string, AgentUserPromptRewriteSettings)
+  nameWithType: IUserPromptRewriteService.InitializeUserPromptRewriterForAgent(string, string, AgentUserPromptRewriteSettings)
+  fullName: FoundationaLLM.Orchestration.Core.Interfaces.IUserPromptRewriteService.InitializeUserPromptRewriterForAgent(string, string, FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentUserPromptRewriteSettings)
+  nameWithType.vb: IUserPromptRewriteService.InitializeUserPromptRewriterForAgent(String, String, AgentUserPromptRewriteSettings)
+  fullName.vb: FoundationaLLM.Orchestration.Core.Interfaces.IUserPromptRewriteService.InitializeUserPromptRewriterForAgent(String, String, FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentUserPromptRewriteSettings)
+  name.vb: InitializeUserPromptRewriterForAgent(String, String, AgentUserPromptRewriteSettings)
+  spec.csharp:
+  - uid: FoundationaLLM.Orchestration.Core.Interfaces.IUserPromptRewriteService.InitializeUserPromptRewriterForAgent(System.String,System.String,FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentUserPromptRewriteSettings)
+    name: InitializeUserPromptRewriterForAgent
+    href: FoundationaLLM.Orchestration.Core.Interfaces.IUserPromptRewriteService.html#FoundationaLLM_Orchestration_Core_Interfaces_IUserPromptRewriteService_InitializeUserPromptRewriterForAgent_System_String_System_String_FoundationaLLM_Common_Models_ResourceProviders_Agent_AgentUserPromptRewriteSettings_
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentUserPromptRewriteSettings
+    name: AgentUserPromptRewriteSettings
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Orchestration.Core.Interfaces.IUserPromptRewriteService.InitializeUserPromptRewriterForAgent(System.String,System.String,FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentUserPromptRewriteSettings)
+    name: InitializeUserPromptRewriterForAgent
+    href: FoundationaLLM.Orchestration.Core.Interfaces.IUserPromptRewriteService.html#FoundationaLLM_Orchestration_Core_Interfaces_IUserPromptRewriteService_InitializeUserPromptRewriterForAgent_System_String_System_String_FoundationaLLM_Common_Models_ResourceProviders_Agent_AgentUserPromptRewriteSettings_
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentUserPromptRewriteSettings
+    name: AgentUserPromptRewriteSettings
+  - name: )
+- uid: System.Threading.Tasks.Task
+  commentId: T:System.Threading.Tasks.Task
+  parent: System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  name: Task
+  nameWithType: Task
+  fullName: System.Threading.Tasks.Task
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Agent
+  commentId: N:FoundationaLLM.Common.Models.ResourceProviders.Agent
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.ResourceProviders.Agent
+  nameWithType: FoundationaLLM.Common.Models.ResourceProviders.Agent
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Agent
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders
+    name: ResourceProviders
+    href: FoundationaLLM.Common.Models.ResourceProviders.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.Agent
+    name: Agent
+    href: FoundationaLLM.Common.Models.ResourceProviders.Agent.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders
+    name: ResourceProviders
+    href: FoundationaLLM.Common.Models.ResourceProviders.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.Agent
+    name: Agent
+    href: FoundationaLLM.Common.Models.ResourceProviders.Agent.html
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequest
+  commentId: T:FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequest
+  parent: FoundationaLLM.Common.Models.Orchestration.Request
+  href: FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequest.html
+  name: CompletionRequest
+  nameWithType: CompletionRequest
+  fullName: FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequest
+- uid: FoundationaLLM.Orchestration.Core.Services.UserPromptRewriteService.RewriteUserPrompt*
+  commentId: Overload:FoundationaLLM.Orchestration.Core.Services.UserPromptRewriteService.RewriteUserPrompt
+  href: FoundationaLLM.Orchestration.Core.Services.UserPromptRewriteService.html#FoundationaLLM_Orchestration_Core_Services_UserPromptRewriteService_RewriteUserPrompt_System_String_System_String_FoundationaLLM_Common_Models_Orchestration_Request_CompletionRequest_
+  name: RewriteUserPrompt
+  nameWithType: UserPromptRewriteService.RewriteUserPrompt
+  fullName: FoundationaLLM.Orchestration.Core.Services.UserPromptRewriteService.RewriteUserPrompt
+- uid: FoundationaLLM.Orchestration.Core.Interfaces.IUserPromptRewriteService.RewriteUserPrompt(System.String,System.String,FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequest)
+  commentId: M:FoundationaLLM.Orchestration.Core.Interfaces.IUserPromptRewriteService.RewriteUserPrompt(System.String,System.String,FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequest)
+  parent: FoundationaLLM.Orchestration.Core.Interfaces.IUserPromptRewriteService
+  isExternal: true
+  href: FoundationaLLM.Orchestration.Core.Interfaces.IUserPromptRewriteService.html#FoundationaLLM_Orchestration_Core_Interfaces_IUserPromptRewriteService_RewriteUserPrompt_System_String_System_String_FoundationaLLM_Common_Models_Orchestration_Request_CompletionRequest_
+  name: RewriteUserPrompt(string, string, CompletionRequest)
+  nameWithType: IUserPromptRewriteService.RewriteUserPrompt(string, string, CompletionRequest)
+  fullName: FoundationaLLM.Orchestration.Core.Interfaces.IUserPromptRewriteService.RewriteUserPrompt(string, string, FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequest)
+  nameWithType.vb: IUserPromptRewriteService.RewriteUserPrompt(String, String, CompletionRequest)
+  fullName.vb: FoundationaLLM.Orchestration.Core.Interfaces.IUserPromptRewriteService.RewriteUserPrompt(String, String, FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequest)
+  name.vb: RewriteUserPrompt(String, String, CompletionRequest)
+  spec.csharp:
+  - uid: FoundationaLLM.Orchestration.Core.Interfaces.IUserPromptRewriteService.RewriteUserPrompt(System.String,System.String,FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequest)
+    name: RewriteUserPrompt
+    href: FoundationaLLM.Orchestration.Core.Interfaces.IUserPromptRewriteService.html#FoundationaLLM_Orchestration_Core_Interfaces_IUserPromptRewriteService_RewriteUserPrompt_System_String_System_String_FoundationaLLM_Common_Models_Orchestration_Request_CompletionRequest_
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequest
+    name: CompletionRequest
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Orchestration.Core.Interfaces.IUserPromptRewriteService.RewriteUserPrompt(System.String,System.String,FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequest)
+    name: RewriteUserPrompt
+    href: FoundationaLLM.Orchestration.Core.Interfaces.IUserPromptRewriteService.html#FoundationaLLM_Orchestration_Core_Interfaces_IUserPromptRewriteService_RewriteUserPrompt_System_String_System_String_FoundationaLLM_Common_Models_Orchestration_Request_CompletionRequest_
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: FoundationaLLM.Common.Models.Orchestration.Request.CompletionRequest
+    name: CompletionRequest
+  - name: )
+- uid: FoundationaLLM.Common.Models.Orchestration.Request
+  commentId: N:FoundationaLLM.Common.Models.Orchestration.Request
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.Orchestration.Request
+  nameWithType: FoundationaLLM.Common.Models.Orchestration.Request
+  fullName: FoundationaLLM.Common.Models.Orchestration.Request
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Orchestration
+    name: Orchestration
+    href: FoundationaLLM.Common.Models.Orchestration.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Orchestration.Request
+    name: Request
+    href: FoundationaLLM.Common.Models.Orchestration.Request.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Orchestration
+    name: Orchestration
+    href: FoundationaLLM.Common.Models.Orchestration.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Orchestration.Request
+    name: Request
+    href: FoundationaLLM.Common.Models.Orchestration.Request.html

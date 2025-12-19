@@ -1,0 +1,412 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Common.Interfaces.ICacheControlAPIService
+  commentId: T:FoundationaLLM.Common.Interfaces.ICacheControlAPIService
+  id: ICacheControlAPIService
+  parent: FoundationaLLM.Common.Interfaces
+  children:
+  - FoundationaLLM.Common.Interfaces.ICacheControlAPIService.RefreshCache(System.String)
+  - FoundationaLLM.Common.Interfaces.ICacheControlAPIService.RefreshConfigurationCache
+  langs:
+  - csharp
+  - vb
+  name: ICacheControlAPIService
+  nameWithType: ICacheControlAPIService
+  fullName: FoundationaLLM.Common.Interfaces.ICacheControlAPIService
+  type: Interface
+  source:
+    remote:
+      path: src/dotnet/Common/Interfaces/ICacheControlAPIService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: ICacheControlAPIService
+    path: ../src/dotnet/Common/Interfaces/ICacheControlAPIService.cs
+    startLine: 7
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Interfaces
+  summary: Contains base functionality for calling the underlying API service.
+  example: []
+  syntax:
+    content: public interface ICacheControlAPIService
+    content.vb: Public Interface ICacheControlAPIService
+  extensionMethods:
+  - System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+- uid: FoundationaLLM.Common.Interfaces.ICacheControlAPIService.RefreshConfigurationCache
+  commentId: M:FoundationaLLM.Common.Interfaces.ICacheControlAPIService.RefreshConfigurationCache
+  id: RefreshConfigurationCache
+  parent: FoundationaLLM.Common.Interfaces.ICacheControlAPIService
+  langs:
+  - csharp
+  - vb
+  name: RefreshConfigurationCache()
+  nameWithType: ICacheControlAPIService.RefreshConfigurationCache()
+  fullName: FoundationaLLM.Common.Interfaces.ICacheControlAPIService.RefreshConfigurationCache()
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Common/Interfaces/ICacheControlAPIService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: RefreshConfigurationCache
+    path: ../src/dotnet/Common/Interfaces/ICacheControlAPIService.cs
+    startLine: 13
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Interfaces
+  summary: Refreshes the configuration cache.
+  example: []
+  syntax:
+    content: Task<APICacheRefreshResult> RefreshConfigurationCache()
+    return:
+      type: System.Threading.Tasks.Task{FoundationaLLM.Common.Models.Cache.APICacheRefreshResult}
+      description: ''
+    content.vb: Function RefreshConfigurationCache() As Task(Of APICacheRefreshResult)
+  overload: FoundationaLLM.Common.Interfaces.ICacheControlAPIService.RefreshConfigurationCache*
+- uid: FoundationaLLM.Common.Interfaces.ICacheControlAPIService.RefreshCache(System.String)
+  commentId: M:FoundationaLLM.Common.Interfaces.ICacheControlAPIService.RefreshCache(System.String)
+  id: RefreshCache(System.String)
+  parent: FoundationaLLM.Common.Interfaces.ICacheControlAPIService
+  langs:
+  - csharp
+  - vb
+  name: RefreshCache(string)
+  nameWithType: ICacheControlAPIService.RefreshCache(string)
+  fullName: FoundationaLLM.Common.Interfaces.ICacheControlAPIService.RefreshCache(string)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Common/Interfaces/ICacheControlAPIService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: RefreshCache
+    path: ../src/dotnet/Common/Interfaces/ICacheControlAPIService.cs
+    startLine: 20
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Interfaces
+  summary: Refreshes the named cache.
+  example: []
+  syntax:
+    content: Task<APICacheRefreshResult> RefreshCache(string name)
+    parameters:
+    - id: name
+      type: System.String
+      description: The name of the cache item to refresh.
+    return:
+      type: System.Threading.Tasks.Task{FoundationaLLM.Common.Models.Cache.APICacheRefreshResult}
+      description: ''
+    content.vb: Function RefreshCache(name As String) As Task(Of APICacheRefreshResult)
+  overload: FoundationaLLM.Common.Interfaces.ICacheControlAPIService.RefreshCache*
+  nameWithType.vb: ICacheControlAPIService.RefreshCache(String)
+  fullName.vb: FoundationaLLM.Common.Interfaces.ICacheControlAPIService.RefreshCache(String)
+  name.vb: RefreshCache(String)
+references:
+- uid: FoundationaLLM.Common.Interfaces
+  commentId: N:FoundationaLLM.Common.Interfaces
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Interfaces
+  nameWithType: FoundationaLLM.Common.Interfaces
+  fullName: FoundationaLLM.Common.Interfaces
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Interfaces
+    name: Interfaces
+    href: FoundationaLLM.Common.Interfaces.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Interfaces
+    name: Interfaces
+    href: FoundationaLLM.Common.Interfaces.html
+- uid: System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  parent: FoundationaLLM.Core.Utils.ObjectExtensions
+  definition: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  isExternal: true
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions
+  commentId: T:FoundationaLLM.Core.Utils.ObjectExtensions
+  parent: FoundationaLLM.Core.Utils
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html
+  name: ObjectExtensions
+  nameWithType: ObjectExtensions
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions
+- uid: FoundationaLLM.Core.Utils
+  commentId: N:FoundationaLLM.Core.Utils
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Core.Utils
+  nameWithType: FoundationaLLM.Core.Utils
+  fullName: FoundationaLLM.Core.Utils
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+- uid: FoundationaLLM.Common.Interfaces.ICacheControlAPIService.RefreshConfigurationCache*
+  commentId: Overload:FoundationaLLM.Common.Interfaces.ICacheControlAPIService.RefreshConfigurationCache
+  href: FoundationaLLM.Common.Interfaces.ICacheControlAPIService.html#FoundationaLLM_Common_Interfaces_ICacheControlAPIService_RefreshConfigurationCache
+  name: RefreshConfigurationCache
+  nameWithType: ICacheControlAPIService.RefreshConfigurationCache
+  fullName: FoundationaLLM.Common.Interfaces.ICacheControlAPIService.RefreshConfigurationCache
+- uid: System.Threading.Tasks.Task{FoundationaLLM.Common.Models.Cache.APICacheRefreshResult}
+  commentId: T:System.Threading.Tasks.Task{FoundationaLLM.Common.Models.Cache.APICacheRefreshResult}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<APICacheRefreshResult>
+  nameWithType: Task<APICacheRefreshResult>
+  fullName: System.Threading.Tasks.Task<FoundationaLLM.Common.Models.Cache.APICacheRefreshResult>
+  nameWithType.vb: Task(Of APICacheRefreshResult)
+  fullName.vb: System.Threading.Tasks.Task(Of FoundationaLLM.Common.Models.Cache.APICacheRefreshResult)
+  name.vb: Task(Of APICacheRefreshResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: FoundationaLLM.Common.Models.Cache.APICacheRefreshResult
+    name: APICacheRefreshResult
+    href: FoundationaLLM.Common.Models.Cache.APICacheRefreshResult.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FoundationaLLM.Common.Models.Cache.APICacheRefreshResult
+    name: APICacheRefreshResult
+    href: FoundationaLLM.Common.Models.Cache.APICacheRefreshResult.html
+  - name: )
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: FoundationaLLM.Common.Interfaces.ICacheControlAPIService.RefreshCache*
+  commentId: Overload:FoundationaLLM.Common.Interfaces.ICacheControlAPIService.RefreshCache
+  href: FoundationaLLM.Common.Interfaces.ICacheControlAPIService.html#FoundationaLLM_Common_Interfaces_ICacheControlAPIService_RefreshCache_System_String_
+  name: RefreshCache
+  nameWithType: ICacheControlAPIService.RefreshCache
+  fullName: FoundationaLLM.Common.Interfaces.ICacheControlAPIService.RefreshCache
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System

@@ -1,0 +1,1012 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Common.Constants.ContentTypeMappings
+  commentId: T:FoundationaLLM.Common.Constants.ContentTypeMappings
+  id: ContentTypeMappings
+  parent: FoundationaLLM.Common.Constants
+  children:
+  - FoundationaLLM.Common.Constants.ContentTypeMappings.ArchiveContentTypes
+  - FoundationaLLM.Common.Constants.ContentTypeMappings.ArchiveFileExtensions
+  - FoundationaLLM.Common.Constants.ContentTypeMappings.ArchiveMap
+  - FoundationaLLM.Common.Constants.ContentTypeMappings.BinaryDocumentContentTypes
+  - FoundationaLLM.Common.Constants.ContentTypeMappings.BinaryDocumentFileExtensions
+  - FoundationaLLM.Common.Constants.ContentTypeMappings.BinaryDocumentMap
+  - FoundationaLLM.Common.Constants.ContentTypeMappings.FileExtensionMap
+  - FoundationaLLM.Common.Constants.ContentTypeMappings.Map
+  - FoundationaLLM.Common.Constants.ContentTypeMappings.MediaContentTypes
+  - FoundationaLLM.Common.Constants.ContentTypeMappings.MediaFileExtensions
+  - FoundationaLLM.Common.Constants.ContentTypeMappings.MediaMap
+  - FoundationaLLM.Common.Constants.ContentTypeMappings.MicrosoftOfficeLegacyContentTypes
+  - FoundationaLLM.Common.Constants.ContentTypeMappings.MicrosoftOfficeLegacyFileExtensions
+  - FoundationaLLM.Common.Constants.ContentTypeMappings.MicrosoftOfficeLegacyMap
+  - FoundationaLLM.Common.Constants.ContentTypeMappings.PlainTextMap
+  - FoundationaLLM.Common.Constants.ContentTypeMappings.TextContentTypes
+  - FoundationaLLM.Common.Constants.ContentTypeMappings.TextFileExtensions
+  langs:
+  - csharp
+  - vb
+  name: ContentTypeMappings
+  nameWithType: ContentTypeMappings
+  fullName: FoundationaLLM.Common.Constants.ContentTypeMappings
+  type: Class
+  source:
+    remote:
+      path: src/dotnet/Common/Constants/ContentTypeMappings.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: ContentTypeMappings
+    path: ../src/dotnet/Common/Constants/ContentTypeMappings.cs
+    startLine: 5
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants
+  summary: Provides mappings from MIME content types to file type identifiers.
+  example: []
+  syntax:
+    content: public static class ContentTypeMappings
+    content.vb: Public Module ContentTypeMappings
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: FoundationaLLM.Common.Constants.ContentTypeMappings.FileExtensionMap
+  commentId: F:FoundationaLLM.Common.Constants.ContentTypeMappings.FileExtensionMap
+  id: FileExtensionMap
+  parent: FoundationaLLM.Common.Constants.ContentTypeMappings
+  langs:
+  - csharp
+  - vb
+  name: FileExtensionMap
+  nameWithType: ContentTypeMappings.FileExtensionMap
+  fullName: FoundationaLLM.Common.Constants.ContentTypeMappings.FileExtensionMap
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Constants/ContentTypeMappings.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: FileExtensionMap
+    path: ../src/dotnet/Common/Constants/ContentTypeMappings.cs
+    startLine: 10
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants
+  summary: Provides a read-only mapping of file extensions to their canonical names.
+  example: []
+  syntax:
+    content: public static readonly IReadOnlyDictionary<string, string> FileExtensionMap
+    return:
+      type: System.Collections.Generic.IReadOnlyDictionary{System.String,System.String}
+    content.vb: Public Shared ReadOnly FileExtensionMap As IReadOnlyDictionary(Of String, String)
+- uid: FoundationaLLM.Common.Constants.ContentTypeMappings.PlainTextMap
+  commentId: F:FoundationaLLM.Common.Constants.ContentTypeMappings.PlainTextMap
+  id: PlainTextMap
+  parent: FoundationaLLM.Common.Constants.ContentTypeMappings
+  langs:
+  - csharp
+  - vb
+  name: PlainTextMap
+  nameWithType: ContentTypeMappings.PlainTextMap
+  fullName: FoundationaLLM.Common.Constants.ContentTypeMappings.PlainTextMap
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Constants/ContentTypeMappings.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: PlainTextMap
+    path: ../src/dotnet/Common/Constants/ContentTypeMappings.cs
+    startLine: 20
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants
+  summary: >-
+    Provides a read-only mapping of MIME types to their corresponding plain text or data file format
+
+    identifiers.
+  example: []
+  syntax:
+    content: public static readonly IReadOnlyDictionary<string, string> PlainTextMap
+    return:
+      type: System.Collections.Generic.IReadOnlyDictionary{System.String,System.String}
+    content.vb: Public Shared ReadOnly PlainTextMap As IReadOnlyDictionary(Of String, String)
+- uid: FoundationaLLM.Common.Constants.ContentTypeMappings.MediaMap
+  commentId: F:FoundationaLLM.Common.Constants.ContentTypeMappings.MediaMap
+  id: MediaMap
+  parent: FoundationaLLM.Common.Constants.ContentTypeMappings
+  langs:
+  - csharp
+  - vb
+  name: MediaMap
+  nameWithType: ContentTypeMappings.MediaMap
+  fullName: FoundationaLLM.Common.Constants.ContentTypeMappings.MediaMap
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Constants/ContentTypeMappings.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: MediaMap
+    path: ../src/dotnet/Common/Constants/ContentTypeMappings.cs
+    startLine: 66
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants
+  summary: Provides a read-only mapping of media MIME types to their corresponding file format names.
+  example: []
+  syntax:
+    content: public static readonly IReadOnlyDictionary<string, string> MediaMap
+    return:
+      type: System.Collections.Generic.IReadOnlyDictionary{System.String,System.String}
+    content.vb: Public Shared ReadOnly MediaMap As IReadOnlyDictionary(Of String, String)
+- uid: FoundationaLLM.Common.Constants.ContentTypeMappings.MicrosoftOfficeLegacyMap
+  commentId: F:FoundationaLLM.Common.Constants.ContentTypeMappings.MicrosoftOfficeLegacyMap
+  id: MicrosoftOfficeLegacyMap
+  parent: FoundationaLLM.Common.Constants.ContentTypeMappings
+  langs:
+  - csharp
+  - vb
+  name: MicrosoftOfficeLegacyMap
+  nameWithType: ContentTypeMappings.MicrosoftOfficeLegacyMap
+  fullName: FoundationaLLM.Common.Constants.ContentTypeMappings.MicrosoftOfficeLegacyMap
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Constants/ContentTypeMappings.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: MicrosoftOfficeLegacyMap
+    path: ../src/dotnet/Common/Constants/ContentTypeMappings.cs
+    startLine: 83
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants
+  summary: Provides a mapping of legacy Microsoft Office MIME types to their corresponding file format abbreviations.
+  example: []
+  syntax:
+    content: public static readonly IReadOnlyDictionary<string, string> MicrosoftOfficeLegacyMap
+    return:
+      type: System.Collections.Generic.IReadOnlyDictionary{System.String,System.String}
+    content.vb: Public Shared ReadOnly MicrosoftOfficeLegacyMap As IReadOnlyDictionary(Of String, String)
+- uid: FoundationaLLM.Common.Constants.ContentTypeMappings.BinaryDocumentMap
+  commentId: F:FoundationaLLM.Common.Constants.ContentTypeMappings.BinaryDocumentMap
+  id: BinaryDocumentMap
+  parent: FoundationaLLM.Common.Constants.ContentTypeMappings
+  langs:
+  - csharp
+  - vb
+  name: BinaryDocumentMap
+  nameWithType: ContentTypeMappings.BinaryDocumentMap
+  fullName: FoundationaLLM.Common.Constants.ContentTypeMappings.BinaryDocumentMap
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Constants/ContentTypeMappings.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: BinaryDocumentMap
+    path: ../src/dotnet/Common/Constants/ContentTypeMappings.cs
+    startLine: 98
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants
+  summary: >-
+    Provides a read-only mapping of MIME types for common binary document formats to their corresponding file
+
+    type identifiers.
+  example: []
+  syntax:
+    content: public static readonly IReadOnlyDictionary<string, string> BinaryDocumentMap
+    return:
+      type: System.Collections.Generic.IReadOnlyDictionary{System.String,System.String}
+    content.vb: Public Shared ReadOnly BinaryDocumentMap As IReadOnlyDictionary(Of String, String)
+- uid: FoundationaLLM.Common.Constants.ContentTypeMappings.ArchiveMap
+  commentId: F:FoundationaLLM.Common.Constants.ContentTypeMappings.ArchiveMap
+  id: ArchiveMap
+  parent: FoundationaLLM.Common.Constants.ContentTypeMappings
+  langs:
+  - csharp
+  - vb
+  name: ArchiveMap
+  nameWithType: ContentTypeMappings.ArchiveMap
+  fullName: FoundationaLLM.Common.Constants.ContentTypeMappings.ArchiveMap
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Constants/ContentTypeMappings.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: ArchiveMap
+    path: ../src/dotnet/Common/Constants/ContentTypeMappings.cs
+    startLine: 112
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants
+  summary: Provides a read-only mapping of archive MIME types to their corresponding file format names.
+  example: []
+  syntax:
+    content: public static readonly IReadOnlyDictionary<string, string> ArchiveMap
+    return:
+      type: System.Collections.Generic.IReadOnlyDictionary{System.String,System.String}
+    content.vb: Public Shared ReadOnly ArchiveMap As IReadOnlyDictionary(Of String, String)
+- uid: FoundationaLLM.Common.Constants.ContentTypeMappings.Map
+  commentId: F:FoundationaLLM.Common.Constants.ContentTypeMappings.Map
+  id: Map
+  parent: FoundationaLLM.Common.Constants.ContentTypeMappings
+  langs:
+  - csharp
+  - vb
+  name: Map
+  nameWithType: ContentTypeMappings.Map
+  fullName: FoundationaLLM.Common.Constants.ContentTypeMappings.Map
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Constants/ContentTypeMappings.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: Map
+    path: ../src/dotnet/Common/Constants/ContentTypeMappings.cs
+    startLine: 127
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants
+  summary: Provides a mapping between MIME types and their corresponding file format extensions.
+  remarks: >-
+    This dictionary contains a predefined set of MIME types as keys and their associated
+        file format  extensions as values. It is useful for converting MIME types to human-readable file format
+        identifiers. The dictionary is read-only and cannot be modified at runtime.
+  example: []
+  syntax:
+    content: public static readonly IReadOnlyDictionary<string, string> Map
+    return:
+      type: System.Collections.Generic.IReadOnlyDictionary{System.String,System.String}
+    content.vb: Public Shared ReadOnly Map As IReadOnlyDictionary(Of String, String)
+- uid: FoundationaLLM.Common.Constants.ContentTypeMappings.TextContentTypes
+  commentId: F:FoundationaLLM.Common.Constants.ContentTypeMappings.TextContentTypes
+  id: TextContentTypes
+  parent: FoundationaLLM.Common.Constants.ContentTypeMappings
+  langs:
+  - csharp
+  - vb
+  name: TextContentTypes
+  nameWithType: ContentTypeMappings.TextContentTypes
+  fullName: FoundationaLLM.Common.Constants.ContentTypeMappings.TextContentTypes
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Constants/ContentTypeMappings.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: TextContentTypes
+    path: ../src/dotnet/Common/Constants/ContentTypeMappings.cs
+    startLine: 141
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants
+  summary: Provides a set of MIME types that are commonly associated with text-based content.
+  example: []
+  syntax:
+    content: public static readonly HashSet<string> TextContentTypes
+    return:
+      type: System.Collections.Generic.HashSet{System.String}
+    content.vb: Public Shared ReadOnly TextContentTypes As HashSet(Of String)
+- uid: FoundationaLLM.Common.Constants.ContentTypeMappings.TextFileExtensions
+  commentId: F:FoundationaLLM.Common.Constants.ContentTypeMappings.TextFileExtensions
+  id: TextFileExtensions
+  parent: FoundationaLLM.Common.Constants.ContentTypeMappings
+  langs:
+  - csharp
+  - vb
+  name: TextFileExtensions
+  nameWithType: ContentTypeMappings.TextFileExtensions
+  fullName: FoundationaLLM.Common.Constants.ContentTypeMappings.TextFileExtensions
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Constants/ContentTypeMappings.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: TextFileExtensions
+    path: ../src/dotnet/Common/Constants/ContentTypeMappings.cs
+    startLine: 147
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants
+  summary: Provides a set of file extensions commonly associated with plain text files.
+  example: []
+  syntax:
+    content: public static readonly HashSet<string> TextFileExtensions
+    return:
+      type: System.Collections.Generic.HashSet{System.String}
+    content.vb: Public Shared ReadOnly TextFileExtensions As HashSet(Of String)
+- uid: FoundationaLLM.Common.Constants.ContentTypeMappings.MediaContentTypes
+  commentId: F:FoundationaLLM.Common.Constants.ContentTypeMappings.MediaContentTypes
+  id: MediaContentTypes
+  parent: FoundationaLLM.Common.Constants.ContentTypeMappings
+  langs:
+  - csharp
+  - vb
+  name: MediaContentTypes
+  nameWithType: ContentTypeMappings.MediaContentTypes
+  fullName: FoundationaLLM.Common.Constants.ContentTypeMappings.MediaContentTypes
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Constants/ContentTypeMappings.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: MediaContentTypes
+    path: ../src/dotnet/Common/Constants/ContentTypeMappings.cs
+    startLine: 153
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants
+  summary: Provides a set of MIME types that are commonly associated with media content, such as images and audio files.
+  example: []
+  syntax:
+    content: public static readonly HashSet<string> MediaContentTypes
+    return:
+      type: System.Collections.Generic.HashSet{System.String}
+    content.vb: Public Shared ReadOnly MediaContentTypes As HashSet(Of String)
+- uid: FoundationaLLM.Common.Constants.ContentTypeMappings.MediaFileExtensions
+  commentId: F:FoundationaLLM.Common.Constants.ContentTypeMappings.MediaFileExtensions
+  id: MediaFileExtensions
+  parent: FoundationaLLM.Common.Constants.ContentTypeMappings
+  langs:
+  - csharp
+  - vb
+  name: MediaFileExtensions
+  nameWithType: ContentTypeMappings.MediaFileExtensions
+  fullName: FoundationaLLM.Common.Constants.ContentTypeMappings.MediaFileExtensions
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Constants/ContentTypeMappings.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: MediaFileExtensions
+    path: ../src/dotnet/Common/Constants/ContentTypeMappings.cs
+    startLine: 159
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants
+  summary: Provides a set of file extensions recognized as media files by the application.
+  example: []
+  syntax:
+    content: public static readonly HashSet<string> MediaFileExtensions
+    return:
+      type: System.Collections.Generic.HashSet{System.String}
+    content.vb: Public Shared ReadOnly MediaFileExtensions As HashSet(Of String)
+- uid: FoundationaLLM.Common.Constants.ContentTypeMappings.MicrosoftOfficeLegacyContentTypes
+  commentId: F:FoundationaLLM.Common.Constants.ContentTypeMappings.MicrosoftOfficeLegacyContentTypes
+  id: MicrosoftOfficeLegacyContentTypes
+  parent: FoundationaLLM.Common.Constants.ContentTypeMappings
+  langs:
+  - csharp
+  - vb
+  name: MicrosoftOfficeLegacyContentTypes
+  nameWithType: ContentTypeMappings.MicrosoftOfficeLegacyContentTypes
+  fullName: FoundationaLLM.Common.Constants.ContentTypeMappings.MicrosoftOfficeLegacyContentTypes
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Constants/ContentTypeMappings.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: MicrosoftOfficeLegacyContentTypes
+    path: ../src/dotnet/Common/Constants/ContentTypeMappings.cs
+    startLine: 166
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants
+  summary: >-
+    Provides a set of MIME content types associated with legacy Microsoft Office file formats, including Word,
+
+    PowerPoint, and Excel documents.
+  example: []
+  syntax:
+    content: public static readonly HashSet<string> MicrosoftOfficeLegacyContentTypes
+    return:
+      type: System.Collections.Generic.HashSet{System.String}
+    content.vb: Public Shared ReadOnly MicrosoftOfficeLegacyContentTypes As HashSet(Of String)
+- uid: FoundationaLLM.Common.Constants.ContentTypeMappings.MicrosoftOfficeLegacyFileExtensions
+  commentId: F:FoundationaLLM.Common.Constants.ContentTypeMappings.MicrosoftOfficeLegacyFileExtensions
+  id: MicrosoftOfficeLegacyFileExtensions
+  parent: FoundationaLLM.Common.Constants.ContentTypeMappings
+  langs:
+  - csharp
+  - vb
+  name: MicrosoftOfficeLegacyFileExtensions
+  nameWithType: ContentTypeMappings.MicrosoftOfficeLegacyFileExtensions
+  fullName: FoundationaLLM.Common.Constants.ContentTypeMappings.MicrosoftOfficeLegacyFileExtensions
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Constants/ContentTypeMappings.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: MicrosoftOfficeLegacyFileExtensions
+    path: ../src/dotnet/Common/Constants/ContentTypeMappings.cs
+    startLine: 172
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants
+  summary: Provides a set of file extensions associated with legacy Microsoft Office document formats.
+  example: []
+  syntax:
+    content: public static readonly HashSet<string> MicrosoftOfficeLegacyFileExtensions
+    return:
+      type: System.Collections.Generic.HashSet{System.String}
+    content.vb: Public Shared ReadOnly MicrosoftOfficeLegacyFileExtensions As HashSet(Of String)
+- uid: FoundationaLLM.Common.Constants.ContentTypeMappings.BinaryDocumentContentTypes
+  commentId: F:FoundationaLLM.Common.Constants.ContentTypeMappings.BinaryDocumentContentTypes
+  id: BinaryDocumentContentTypes
+  parent: FoundationaLLM.Common.Constants.ContentTypeMappings
+  langs:
+  - csharp
+  - vb
+  name: BinaryDocumentContentTypes
+  nameWithType: ContentTypeMappings.BinaryDocumentContentTypes
+  fullName: FoundationaLLM.Common.Constants.ContentTypeMappings.BinaryDocumentContentTypes
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Constants/ContentTypeMappings.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: BinaryDocumentContentTypes
+    path: ../src/dotnet/Common/Constants/ContentTypeMappings.cs
+    startLine: 178
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants
+  summary: Provides a set of MIME content types that are recognized as binary document formats.
+  example: []
+  syntax:
+    content: public static readonly HashSet<string> BinaryDocumentContentTypes
+    return:
+      type: System.Collections.Generic.HashSet{System.String}
+    content.vb: Public Shared ReadOnly BinaryDocumentContentTypes As HashSet(Of String)
+- uid: FoundationaLLM.Common.Constants.ContentTypeMappings.BinaryDocumentFileExtensions
+  commentId: F:FoundationaLLM.Common.Constants.ContentTypeMappings.BinaryDocumentFileExtensions
+  id: BinaryDocumentFileExtensions
+  parent: FoundationaLLM.Common.Constants.ContentTypeMappings
+  langs:
+  - csharp
+  - vb
+  name: BinaryDocumentFileExtensions
+  nameWithType: ContentTypeMappings.BinaryDocumentFileExtensions
+  fullName: FoundationaLLM.Common.Constants.ContentTypeMappings.BinaryDocumentFileExtensions
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Constants/ContentTypeMappings.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: BinaryDocumentFileExtensions
+    path: ../src/dotnet/Common/Constants/ContentTypeMappings.cs
+    startLine: 184
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants
+  summary: Provides a set of file extensions that are recognized as binary document formats.
+  example: []
+  syntax:
+    content: public static readonly HashSet<string> BinaryDocumentFileExtensions
+    return:
+      type: System.Collections.Generic.HashSet{System.String}
+    content.vb: Public Shared ReadOnly BinaryDocumentFileExtensions As HashSet(Of String)
+- uid: FoundationaLLM.Common.Constants.ContentTypeMappings.ArchiveContentTypes
+  commentId: F:FoundationaLLM.Common.Constants.ContentTypeMappings.ArchiveContentTypes
+  id: ArchiveContentTypes
+  parent: FoundationaLLM.Common.Constants.ContentTypeMappings
+  langs:
+  - csharp
+  - vb
+  name: ArchiveContentTypes
+  nameWithType: ContentTypeMappings.ArchiveContentTypes
+  fullName: FoundationaLLM.Common.Constants.ContentTypeMappings.ArchiveContentTypes
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Constants/ContentTypeMappings.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: ArchiveContentTypes
+    path: ../src/dotnet/Common/Constants/ContentTypeMappings.cs
+    startLine: 190
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants
+  summary: Provides a set of MIME content types that are commonly used for archive files, such as ZIP and TAR formats.
+  example: []
+  syntax:
+    content: public static readonly HashSet<string> ArchiveContentTypes
+    return:
+      type: System.Collections.Generic.HashSet{System.String}
+    content.vb: Public Shared ReadOnly ArchiveContentTypes As HashSet(Of String)
+- uid: FoundationaLLM.Common.Constants.ContentTypeMappings.ArchiveFileExtensions
+  commentId: F:FoundationaLLM.Common.Constants.ContentTypeMappings.ArchiveFileExtensions
+  id: ArchiveFileExtensions
+  parent: FoundationaLLM.Common.Constants.ContentTypeMappings
+  langs:
+  - csharp
+  - vb
+  name: ArchiveFileExtensions
+  nameWithType: ContentTypeMappings.ArchiveFileExtensions
+  fullName: FoundationaLLM.Common.Constants.ContentTypeMappings.ArchiveFileExtensions
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Constants/ContentTypeMappings.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: ArchiveFileExtensions
+    path: ../src/dotnet/Common/Constants/ContentTypeMappings.cs
+    startLine: 196
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants
+  summary: Provides a set of file extensions commonly associated with archive files.
+  example: []
+  syntax:
+    content: public static readonly HashSet<string> ArchiveFileExtensions
+    return:
+      type: System.Collections.Generic.HashSet{System.String}
+    content.vb: Public Shared ReadOnly ArchiveFileExtensions As HashSet(Of String)
+references:
+- uid: FoundationaLLM.Common.Constants
+  commentId: N:FoundationaLLM.Common.Constants
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Constants
+  nameWithType: FoundationaLLM.Common.Constants
+  fullName: FoundationaLLM.Common.Constants
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Constants
+    name: Constants
+    href: FoundationaLLM.Common.Constants.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Constants
+    name: Constants
+    href: FoundationaLLM.Common.Constants.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.Collections.Generic.IReadOnlyDictionary{System.String,System.String}
+  commentId: T:System.Collections.Generic.IReadOnlyDictionary{System.String,System.String}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IReadOnlyDictionary`2
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlydictionary-2
+  name: IReadOnlyDictionary<string, string>
+  nameWithType: IReadOnlyDictionary<string, string>
+  fullName: System.Collections.Generic.IReadOnlyDictionary<string, string>
+  nameWithType.vb: IReadOnlyDictionary(Of String, String)
+  fullName.vb: System.Collections.Generic.IReadOnlyDictionary(Of String, String)
+  name.vb: IReadOnlyDictionary(Of String, String)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyDictionary`2
+    name: IReadOnlyDictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlydictionary-2
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyDictionary`2
+    name: IReadOnlyDictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlydictionary-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: System.Collections.Generic.IReadOnlyDictionary`2
+  commentId: T:System.Collections.Generic.IReadOnlyDictionary`2
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlydictionary-2
+  name: IReadOnlyDictionary<TKey, TValue>
+  nameWithType: IReadOnlyDictionary<TKey, TValue>
+  fullName: System.Collections.Generic.IReadOnlyDictionary<TKey, TValue>
+  nameWithType.vb: IReadOnlyDictionary(Of TKey, TValue)
+  fullName.vb: System.Collections.Generic.IReadOnlyDictionary(Of TKey, TValue)
+  name.vb: IReadOnlyDictionary(Of TKey, TValue)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyDictionary`2
+    name: IReadOnlyDictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlydictionary-2
+  - name: <
+  - name: TKey
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyDictionary`2
+    name: IReadOnlyDictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlydictionary-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TKey
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: System.Collections.Generic.HashSet{System.String}
+  commentId: T:System.Collections.Generic.HashSet{System.String}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.HashSet`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.hashset-1
+  name: HashSet<string>
+  nameWithType: HashSet<string>
+  fullName: System.Collections.Generic.HashSet<string>
+  nameWithType.vb: HashSet(Of String)
+  fullName.vb: System.Collections.Generic.HashSet(Of String)
+  name.vb: HashSet(Of String)
+  spec.csharp:
+  - uid: System.Collections.Generic.HashSet`1
+    name: HashSet
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.hashset-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.HashSet`1
+    name: HashSet
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.hashset-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: System.Collections.Generic.HashSet`1
+  commentId: T:System.Collections.Generic.HashSet`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.hashset-1
+  name: HashSet<T>
+  nameWithType: HashSet<T>
+  fullName: System.Collections.Generic.HashSet<T>
+  nameWithType.vb: HashSet(Of T)
+  fullName.vb: System.Collections.Generic.HashSet(Of T)
+  name.vb: HashSet(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.HashSet`1
+    name: HashSet
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.hashset-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.HashSet`1
+    name: HashSet
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.hashset-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )

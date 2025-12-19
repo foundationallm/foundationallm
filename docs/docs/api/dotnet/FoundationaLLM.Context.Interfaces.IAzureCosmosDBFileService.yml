@@ -1,0 +1,734 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Context.Interfaces.IAzureCosmosDBFileService
+  commentId: T:FoundationaLLM.Context.Interfaces.IAzureCosmosDBFileService
+  id: IAzureCosmosDBFileService
+  parent: FoundationaLLM.Context.Interfaces
+  children:
+  - FoundationaLLM.Context.Interfaces.IAzureCosmosDBFileService.DeleteFileRecord(System.String,System.String,System.String)
+  - FoundationaLLM.Context.Interfaces.IAzureCosmosDBFileService.FileRecordExists(System.String,System.String,System.String)
+  - FoundationaLLM.Context.Interfaces.IAzureCosmosDBFileService.GetFileRecord(System.String,System.String,System.String,System.Boolean)
+  - FoundationaLLM.Context.Interfaces.IAzureCosmosDBFileService.GetFileRecords(System.String,System.String,System.String,System.String,System.Boolean)
+  - FoundationaLLM.Context.Interfaces.IAzureCosmosDBFileService.UpsertFileRecord(FoundationaLLM.Common.Models.Context.ContextFileRecord)
+  langs:
+  - csharp
+  - vb
+  name: IAzureCosmosDBFileService
+  nameWithType: IAzureCosmosDBFileService
+  fullName: FoundationaLLM.Context.Interfaces.IAzureCosmosDBFileService
+  type: Interface
+  source:
+    remote:
+      path: src/dotnet/ContextEngine/Interfaces/IAzureCosmosDBFileService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: IAzureCosmosDBFileService
+    path: ../src/dotnet/ContextEngine/Interfaces/IAzureCosmosDBFileService.cs
+    startLine: 7
+  assemblies:
+  - FoundationaLLM.ContextEngine
+  namespace: FoundationaLLM.Context.Interfaces
+  summary: Defines the interface for the Azure Cosmos DB service that services the Context API File service.
+  example: []
+  syntax:
+    content: public interface IAzureCosmosDBFileService
+    content.vb: Public Interface IAzureCosmosDBFileService
+  extensionMethods:
+  - System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+- uid: FoundationaLLM.Context.Interfaces.IAzureCosmosDBFileService.UpsertFileRecord(FoundationaLLM.Common.Models.Context.ContextFileRecord)
+  commentId: M:FoundationaLLM.Context.Interfaces.IAzureCosmosDBFileService.UpsertFileRecord(FoundationaLLM.Common.Models.Context.ContextFileRecord)
+  id: UpsertFileRecord(FoundationaLLM.Common.Models.Context.ContextFileRecord)
+  parent: FoundationaLLM.Context.Interfaces.IAzureCosmosDBFileService
+  langs:
+  - csharp
+  - vb
+  name: UpsertFileRecord(ContextFileRecord)
+  nameWithType: IAzureCosmosDBFileService.UpsertFileRecord(ContextFileRecord)
+  fullName: FoundationaLLM.Context.Interfaces.IAzureCosmosDBFileService.UpsertFileRecord(FoundationaLLM.Common.Models.Context.ContextFileRecord)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/ContextEngine/Interfaces/IAzureCosmosDBFileService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: UpsertFileRecord
+    path: ../src/dotnet/ContextEngine/Interfaces/IAzureCosmosDBFileService.cs
+    startLine: 13
+  assemblies:
+  - FoundationaLLM.ContextEngine
+  namespace: FoundationaLLM.Context.Interfaces
+  summary: Upserts a file record in the Azure Cosmos DB.
+  example: []
+  syntax:
+    content: Task UpsertFileRecord(ContextFileRecord fileRecord)
+    parameters:
+    - id: fileRecord
+      type: FoundationaLLM.Common.Models.Context.ContextFileRecord
+      description: The file record to be upserted.
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Function UpsertFileRecord(fileRecord As ContextFileRecord) As Task
+  overload: FoundationaLLM.Context.Interfaces.IAzureCosmosDBFileService.UpsertFileRecord*
+- uid: FoundationaLLM.Context.Interfaces.IAzureCosmosDBFileService.GetFileRecord(System.String,System.String,System.String,System.Boolean)
+  commentId: M:FoundationaLLM.Context.Interfaces.IAzureCosmosDBFileService.GetFileRecord(System.String,System.String,System.String,System.Boolean)
+  id: GetFileRecord(System.String,System.String,System.String,System.Boolean)
+  parent: FoundationaLLM.Context.Interfaces.IAzureCosmosDBFileService
+  langs:
+  - csharp
+  - vb
+  name: GetFileRecord(string, string, string, bool)
+  nameWithType: IAzureCosmosDBFileService.GetFileRecord(string, string, string, bool)
+  fullName: FoundationaLLM.Context.Interfaces.IAzureCosmosDBFileService.GetFileRecord(string, string, string, bool)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/ContextEngine/Interfaces/IAzureCosmosDBFileService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: GetFileRecord
+    path: ../src/dotnet/ContextEngine/Interfaces/IAzureCosmosDBFileService.cs
+    startLine: 24
+  assemblies:
+  - FoundationaLLM.ContextEngine
+  namespace: FoundationaLLM.Context.Interfaces
+  summary: Gets the file record for a specified file identifier.
+  example: []
+  syntax:
+    content: Task<ContextFileRecord> GetFileRecord(string instanceId, string fileId, string userPrincipalName, bool bypassOwnerCheck)
+    parameters:
+    - id: instanceId
+      type: System.String
+      description: The FoundationaLLM instance identifier.
+    - id: fileId
+      type: System.String
+      description: The idenfier of the file.
+    - id: userPrincipalName
+      type: System.String
+      description: The user principal name of the user associated with the file record.
+    - id: bypassOwnerCheck
+      type: System.Boolean
+      description: Indicates whether to bypass the owner check for the file record.
+    return:
+      type: System.Threading.Tasks.Task{FoundationaLLM.Common.Models.Context.ContextFileRecord}
+      description: ''
+    content.vb: Function GetFileRecord(instanceId As String, fileId As String, userPrincipalName As String, bypassOwnerCheck As Boolean) As Task(Of ContextFileRecord)
+  overload: FoundationaLLM.Context.Interfaces.IAzureCosmosDBFileService.GetFileRecord*
+  nameWithType.vb: IAzureCosmosDBFileService.GetFileRecord(String, String, String, Boolean)
+  fullName.vb: FoundationaLLM.Context.Interfaces.IAzureCosmosDBFileService.GetFileRecord(String, String, String, Boolean)
+  name.vb: GetFileRecord(String, String, String, Boolean)
+- uid: FoundationaLLM.Context.Interfaces.IAzureCosmosDBFileService.GetFileRecords(System.String,System.String,System.String,System.String,System.Boolean)
+  commentId: M:FoundationaLLM.Context.Interfaces.IAzureCosmosDBFileService.GetFileRecords(System.String,System.String,System.String,System.String,System.Boolean)
+  id: GetFileRecords(System.String,System.String,System.String,System.String,System.Boolean)
+  parent: FoundationaLLM.Context.Interfaces.IAzureCosmosDBFileService
+  langs:
+  - csharp
+  - vb
+  name: GetFileRecords(string, string, string, string, bool)
+  nameWithType: IAzureCosmosDBFileService.GetFileRecords(string, string, string, string, bool)
+  fullName: FoundationaLLM.Context.Interfaces.IAzureCosmosDBFileService.GetFileRecords(string, string, string, string, bool)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/ContextEngine/Interfaces/IAzureCosmosDBFileService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: GetFileRecords
+    path: ../src/dotnet/ContextEngine/Interfaces/IAzureCosmosDBFileService.cs
+    startLine: 39
+  assemblies:
+  - FoundationaLLM.ContextEngine
+  namespace: FoundationaLLM.Context.Interfaces
+  summary: Gets the file records matching the specified criteria.
+  example: []
+  syntax:
+    content: Task<List<ContextFileRecord>> GetFileRecords(string instanceId, string conversationId, string fileName, string userPrincipalName, bool bypassOwnerCheck)
+    parameters:
+    - id: instanceId
+      type: System.String
+      description: The FoundationaLLM instance identifier.
+    - id: conversationId
+      type: System.String
+      description: The idenfier of the conversation to which the file is associated.
+    - id: fileName
+      type: System.String
+      description: The name of the file.
+    - id: userPrincipalName
+      type: System.String
+      description: The user principal name of the user associated with the file record.
+    - id: bypassOwnerCheck
+      type: System.Boolean
+      description: Indicates whether to bypass the owner check for the file records.
+    return:
+      type: System.Threading.Tasks.Task{System.Collections.Generic.List{FoundationaLLM.Common.Models.Context.ContextFileRecord}}
+      description: ''
+    content.vb: Function GetFileRecords(instanceId As String, conversationId As String, fileName As String, userPrincipalName As String, bypassOwnerCheck As Boolean) As Task(Of List(Of ContextFileRecord))
+  overload: FoundationaLLM.Context.Interfaces.IAzureCosmosDBFileService.GetFileRecords*
+  nameWithType.vb: IAzureCosmosDBFileService.GetFileRecords(String, String, String, String, Boolean)
+  fullName.vb: FoundationaLLM.Context.Interfaces.IAzureCosmosDBFileService.GetFileRecords(String, String, String, String, Boolean)
+  name.vb: GetFileRecords(String, String, String, String, Boolean)
+- uid: FoundationaLLM.Context.Interfaces.IAzureCosmosDBFileService.DeleteFileRecord(System.String,System.String,System.String)
+  commentId: M:FoundationaLLM.Context.Interfaces.IAzureCosmosDBFileService.DeleteFileRecord(System.String,System.String,System.String)
+  id: DeleteFileRecord(System.String,System.String,System.String)
+  parent: FoundationaLLM.Context.Interfaces.IAzureCosmosDBFileService
+  langs:
+  - csharp
+  - vb
+  name: DeleteFileRecord(string, string, string)
+  nameWithType: IAzureCosmosDBFileService.DeleteFileRecord(string, string, string)
+  fullName: FoundationaLLM.Context.Interfaces.IAzureCosmosDBFileService.DeleteFileRecord(string, string, string)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/ContextEngine/Interfaces/IAzureCosmosDBFileService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: DeleteFileRecord
+    path: ../src/dotnet/ContextEngine/Interfaces/IAzureCosmosDBFileService.cs
+    startLine: 55
+  assemblies:
+  - FoundationaLLM.ContextEngine
+  namespace: FoundationaLLM.Context.Interfaces
+  summary: Deletes the file record for a specified file identifier.
+  remarks: >-
+    Bypassing owner check cannot be performed here as we need the partition key (which is the UPN)
+        to perform the delete operation.
+  example: []
+  syntax:
+    content: Task DeleteFileRecord(string instanceId, string fileId, string userPrincipalName)
+    parameters:
+    - id: instanceId
+      type: System.String
+      description: The FoundationaLLM instance identifier.
+    - id: fileId
+      type: System.String
+      description: The idenfier of the file.
+    - id: userPrincipalName
+      type: System.String
+      description: The user principal name of the user associated with the file record.
+    return:
+      type: System.Threading.Tasks.Task
+      description: ''
+    content.vb: Function DeleteFileRecord(instanceId As String, fileId As String, userPrincipalName As String) As Task
+  overload: FoundationaLLM.Context.Interfaces.IAzureCosmosDBFileService.DeleteFileRecord*
+  nameWithType.vb: IAzureCosmosDBFileService.DeleteFileRecord(String, String, String)
+  fullName.vb: FoundationaLLM.Context.Interfaces.IAzureCosmosDBFileService.DeleteFileRecord(String, String, String)
+  name.vb: DeleteFileRecord(String, String, String)
+- uid: FoundationaLLM.Context.Interfaces.IAzureCosmosDBFileService.FileRecordExists(System.String,System.String,System.String)
+  commentId: M:FoundationaLLM.Context.Interfaces.IAzureCosmosDBFileService.FileRecordExists(System.String,System.String,System.String)
+  id: FileRecordExists(System.String,System.String,System.String)
+  parent: FoundationaLLM.Context.Interfaces.IAzureCosmosDBFileService
+  langs:
+  - csharp
+  - vb
+  name: FileRecordExists(string, string, string)
+  nameWithType: IAzureCosmosDBFileService.FileRecordExists(string, string, string)
+  fullName: FoundationaLLM.Context.Interfaces.IAzureCosmosDBFileService.FileRecordExists(string, string, string)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/ContextEngine/Interfaces/IAzureCosmosDBFileService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: FileRecordExists
+    path: ../src/dotnet/ContextEngine/Interfaces/IAzureCosmosDBFileService.cs
+    startLine: 68
+  assemblies:
+  - FoundationaLLM.ContextEngine
+  namespace: FoundationaLLM.Context.Interfaces
+  summary: Determines whether a file record exists for the specified file and user.
+  example: []
+  syntax:
+    content: Task<bool> FileRecordExists(string instanceId, string fileId, string userPrincipalName)
+    parameters:
+    - id: instanceId
+      type: System.String
+      description: The FoundationaLLM instance identifier.
+    - id: fileId
+      type: System.String
+      description: The unique identifier of the file to check for existence. Cannot be null or empty.
+    - id: userPrincipalName
+      type: System.String
+      description: The user principal name associated with the file record. Cannot be null or empty.
+    return:
+      type: System.Threading.Tasks.Task{System.Boolean}
+      description: >-
+        A task that represents the asynchronous operation. The task result is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if the file
+            record exists for the specified user and instance; otherwise, <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.
+    content.vb: Function FileRecordExists(instanceId As String, fileId As String, userPrincipalName As String) As Task(Of Boolean)
+  overload: FoundationaLLM.Context.Interfaces.IAzureCosmosDBFileService.FileRecordExists*
+  nameWithType.vb: IAzureCosmosDBFileService.FileRecordExists(String, String, String)
+  fullName.vb: FoundationaLLM.Context.Interfaces.IAzureCosmosDBFileService.FileRecordExists(String, String, String)
+  name.vb: FileRecordExists(String, String, String)
+references:
+- uid: FoundationaLLM.Context.Interfaces
+  commentId: N:FoundationaLLM.Context.Interfaces
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Context.Interfaces
+  nameWithType: FoundationaLLM.Context.Interfaces
+  fullName: FoundationaLLM.Context.Interfaces
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Context
+    name: Context
+    href: FoundationaLLM.Context.html
+  - name: .
+  - uid: FoundationaLLM.Context.Interfaces
+    name: Interfaces
+    href: FoundationaLLM.Context.Interfaces.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Context
+    name: Context
+    href: FoundationaLLM.Context.html
+  - name: .
+  - uid: FoundationaLLM.Context.Interfaces
+    name: Interfaces
+    href: FoundationaLLM.Context.Interfaces.html
+- uid: System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  parent: FoundationaLLM.Core.Utils.ObjectExtensions
+  definition: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  isExternal: true
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions
+  commentId: T:FoundationaLLM.Core.Utils.ObjectExtensions
+  parent: FoundationaLLM.Core.Utils
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html
+  name: ObjectExtensions
+  nameWithType: ObjectExtensions
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions
+- uid: FoundationaLLM.Core.Utils
+  commentId: N:FoundationaLLM.Core.Utils
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Core.Utils
+  nameWithType: FoundationaLLM.Core.Utils
+  fullName: FoundationaLLM.Core.Utils
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+- uid: FoundationaLLM.Context.Interfaces.IAzureCosmosDBFileService.UpsertFileRecord*
+  commentId: Overload:FoundationaLLM.Context.Interfaces.IAzureCosmosDBFileService.UpsertFileRecord
+  href: FoundationaLLM.Context.Interfaces.IAzureCosmosDBFileService.html#FoundationaLLM_Context_Interfaces_IAzureCosmosDBFileService_UpsertFileRecord_FoundationaLLM_Common_Models_Context_ContextFileRecord_
+  name: UpsertFileRecord
+  nameWithType: IAzureCosmosDBFileService.UpsertFileRecord
+  fullName: FoundationaLLM.Context.Interfaces.IAzureCosmosDBFileService.UpsertFileRecord
+- uid: FoundationaLLM.Common.Models.Context.ContextFileRecord
+  commentId: T:FoundationaLLM.Common.Models.Context.ContextFileRecord
+  parent: FoundationaLLM.Common.Models.Context
+  href: FoundationaLLM.Common.Models.Context.ContextFileRecord.html
+  name: ContextFileRecord
+  nameWithType: ContextFileRecord
+  fullName: FoundationaLLM.Common.Models.Context.ContextFileRecord
+- uid: System.Threading.Tasks.Task
+  commentId: T:System.Threading.Tasks.Task
+  parent: System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  name: Task
+  nameWithType: Task
+  fullName: System.Threading.Tasks.Task
+- uid: FoundationaLLM.Common.Models.Context
+  commentId: N:FoundationaLLM.Common.Models.Context
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.Context
+  nameWithType: FoundationaLLM.Common.Models.Context
+  fullName: FoundationaLLM.Common.Models.Context
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Context
+    name: Context
+    href: FoundationaLLM.Common.Models.Context.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Context
+    name: Context
+    href: FoundationaLLM.Common.Models.Context.html
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: FoundationaLLM.Context.Interfaces.IAzureCosmosDBFileService.GetFileRecord*
+  commentId: Overload:FoundationaLLM.Context.Interfaces.IAzureCosmosDBFileService.GetFileRecord
+  href: FoundationaLLM.Context.Interfaces.IAzureCosmosDBFileService.html#FoundationaLLM_Context_Interfaces_IAzureCosmosDBFileService_GetFileRecord_System_String_System_String_System_String_System_Boolean_
+  name: GetFileRecord
+  nameWithType: IAzureCosmosDBFileService.GetFileRecord
+  fullName: FoundationaLLM.Context.Interfaces.IAzureCosmosDBFileService.GetFileRecord
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: System.Threading.Tasks.Task{FoundationaLLM.Common.Models.Context.ContextFileRecord}
+  commentId: T:System.Threading.Tasks.Task{FoundationaLLM.Common.Models.Context.ContextFileRecord}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<ContextFileRecord>
+  nameWithType: Task<ContextFileRecord>
+  fullName: System.Threading.Tasks.Task<FoundationaLLM.Common.Models.Context.ContextFileRecord>
+  nameWithType.vb: Task(Of ContextFileRecord)
+  fullName.vb: System.Threading.Tasks.Task(Of FoundationaLLM.Common.Models.Context.ContextFileRecord)
+  name.vb: Task(Of ContextFileRecord)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: FoundationaLLM.Common.Models.Context.ContextFileRecord
+    name: ContextFileRecord
+    href: FoundationaLLM.Common.Models.Context.ContextFileRecord.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FoundationaLLM.Common.Models.Context.ContextFileRecord
+    name: ContextFileRecord
+    href: FoundationaLLM.Common.Models.Context.ContextFileRecord.html
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: FoundationaLLM.Context.Interfaces.IAzureCosmosDBFileService.GetFileRecords*
+  commentId: Overload:FoundationaLLM.Context.Interfaces.IAzureCosmosDBFileService.GetFileRecords
+  href: FoundationaLLM.Context.Interfaces.IAzureCosmosDBFileService.html#FoundationaLLM_Context_Interfaces_IAzureCosmosDBFileService_GetFileRecords_System_String_System_String_System_String_System_String_System_Boolean_
+  name: GetFileRecords
+  nameWithType: IAzureCosmosDBFileService.GetFileRecords
+  fullName: FoundationaLLM.Context.Interfaces.IAzureCosmosDBFileService.GetFileRecords
+- uid: System.Threading.Tasks.Task{System.Collections.Generic.List{FoundationaLLM.Common.Models.Context.ContextFileRecord}}
+  commentId: T:System.Threading.Tasks.Task{System.Collections.Generic.List{FoundationaLLM.Common.Models.Context.ContextFileRecord}}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<List<ContextFileRecord>>
+  nameWithType: Task<List<ContextFileRecord>>
+  fullName: System.Threading.Tasks.Task<System.Collections.Generic.List<FoundationaLLM.Common.Models.Context.ContextFileRecord>>
+  nameWithType.vb: Task(Of List(Of ContextFileRecord))
+  fullName.vb: System.Threading.Tasks.Task(Of System.Collections.Generic.List(Of FoundationaLLM.Common.Models.Context.ContextFileRecord))
+  name.vb: Task(Of List(Of ContextFileRecord))
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: FoundationaLLM.Common.Models.Context.ContextFileRecord
+    name: ContextFileRecord
+    href: FoundationaLLM.Common.Models.Context.ContextFileRecord.html
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FoundationaLLM.Common.Models.Context.ContextFileRecord
+    name: ContextFileRecord
+    href: FoundationaLLM.Common.Models.Context.ContextFileRecord.html
+  - name: )
+  - name: )
+- uid: FoundationaLLM.Context.Interfaces.IAzureCosmosDBFileService.DeleteFileRecord*
+  commentId: Overload:FoundationaLLM.Context.Interfaces.IAzureCosmosDBFileService.DeleteFileRecord
+  href: FoundationaLLM.Context.Interfaces.IAzureCosmosDBFileService.html#FoundationaLLM_Context_Interfaces_IAzureCosmosDBFileService_DeleteFileRecord_System_String_System_String_System_String_
+  name: DeleteFileRecord
+  nameWithType: IAzureCosmosDBFileService.DeleteFileRecord
+  fullName: FoundationaLLM.Context.Interfaces.IAzureCosmosDBFileService.DeleteFileRecord
+- uid: FoundationaLLM.Context.Interfaces.IAzureCosmosDBFileService.FileRecordExists*
+  commentId: Overload:FoundationaLLM.Context.Interfaces.IAzureCosmosDBFileService.FileRecordExists
+  href: FoundationaLLM.Context.Interfaces.IAzureCosmosDBFileService.html#FoundationaLLM_Context_Interfaces_IAzureCosmosDBFileService_FileRecordExists_System_String_System_String_System_String_
+  name: FileRecordExists
+  nameWithType: IAzureCosmosDBFileService.FileRecordExists
+  fullName: FoundationaLLM.Context.Interfaces.IAzureCosmosDBFileService.FileRecordExists
+- uid: System.Threading.Tasks.Task{System.Boolean}
+  commentId: T:System.Threading.Tasks.Task{System.Boolean}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<bool>
+  nameWithType: Task<bool>
+  fullName: System.Threading.Tasks.Task<bool>
+  nameWithType.vb: Task(Of Boolean)
+  fullName.vb: System.Threading.Tasks.Task(Of Boolean)
+  name.vb: Task(Of Boolean)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )

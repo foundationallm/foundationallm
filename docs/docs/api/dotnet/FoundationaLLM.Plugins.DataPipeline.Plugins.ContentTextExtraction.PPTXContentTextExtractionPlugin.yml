@@ -1,0 +1,1082 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextExtraction.PPTXContentTextExtractionPlugin
+  commentId: T:FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextExtraction.PPTXContentTextExtractionPlugin
+  id: PPTXContentTextExtractionPlugin
+  parent: FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextExtraction
+  children:
+  - FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextExtraction.PPTXContentTextExtractionPlugin.#ctor(System.Collections.Generic.Dictionary{System.String,System.Object},FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManager,FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManagerResolver,System.IServiceProvider)
+  - FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextExtraction.PPTXContentTextExtractionPlugin.ExtractText(System.BinaryData)
+  - FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextExtraction.PPTXContentTextExtractionPlugin.Name
+  langs:
+  - csharp
+  - vb
+  name: PPTXContentTextExtractionPlugin
+  nameWithType: PPTXContentTextExtractionPlugin
+  fullName: FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextExtraction.PPTXContentTextExtractionPlugin
+  type: Class
+  source:
+    remote:
+      path: src/dotnet/DataPipelinePlugins/Plugins/ContentTextExtraction/PPTXContentTextExtractionPlugin.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: PPTXContentTextExtractionPlugin
+    path: ../src/dotnet/DataPipelinePlugins/Plugins/ContentTextExtraction/PPTXContentTextExtractionPlugin.cs
+    startLine: 17
+  assemblies:
+  - FoundationaLLM.DataPipelinePlugins
+  namespace: FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextExtraction
+  summary: Implements the PPTX Content Text Extraction Plugin.
+  example: []
+  syntax:
+    content: 'public class PPTXContentTextExtractionPlugin : PluginBase, IContentTextExtractionPlugin'
+    content.vb: Public Class PPTXContentTextExtractionPlugin Inherits PluginBase Implements IContentTextExtractionPlugin
+  inheritance:
+  - System.Object
+  - FoundationaLLM.Common.Services.Plugins.PluginBase
+  implements:
+  - FoundationaLLM.Common.Interfaces.Plugins.IContentTextExtractionPlugin
+  inheritedMembers:
+  - FoundationaLLM.Common.Services.Plugins.PluginBase._pluginParameters
+  - FoundationaLLM.Common.Services.Plugins.PluginBase._packageManager
+  - FoundationaLLM.Common.Services.Plugins.PluginBase._packageManagerResolver
+  - FoundationaLLM.Common.Services.Plugins.PluginBase._pluginMetadata
+  - FoundationaLLM.Common.Services.Plugins.PluginBase._serviceProvider
+  - FoundationaLLM.Common.Services.Plugins.PluginBase._logger
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+  extensionMethods:
+  - System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+- uid: FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextExtraction.PPTXContentTextExtractionPlugin.#ctor(System.Collections.Generic.Dictionary{System.String,System.Object},FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManager,FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManagerResolver,System.IServiceProvider)
+  commentId: M:FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextExtraction.PPTXContentTextExtractionPlugin.#ctor(System.Collections.Generic.Dictionary{System.String,System.Object},FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManager,FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManagerResolver,System.IServiceProvider)
+  id: '#ctor(System.Collections.Generic.Dictionary{System.String,System.Object},FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManager,FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManagerResolver,System.IServiceProvider)'
+  parent: FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextExtraction.PPTXContentTextExtractionPlugin
+  langs:
+  - csharp
+  - vb
+  name: PPTXContentTextExtractionPlugin(Dictionary<string, object>, IPluginPackageManager, IPluginPackageManagerResolver, IServiceProvider)
+  nameWithType: PPTXContentTextExtractionPlugin.PPTXContentTextExtractionPlugin(Dictionary<string, object>, IPluginPackageManager, IPluginPackageManagerResolver, IServiceProvider)
+  fullName: FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextExtraction.PPTXContentTextExtractionPlugin.PPTXContentTextExtractionPlugin(System.Collections.Generic.Dictionary<string, object>, FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManager, FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManagerResolver, System.IServiceProvider)
+  type: Constructor
+  source:
+    remote:
+      path: src/dotnet/DataPipelinePlugins/Plugins/ContentTextExtraction/PPTXContentTextExtractionPlugin.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: .ctor
+    path: ../src/dotnet/DataPipelinePlugins/Plugins/ContentTextExtraction/PPTXContentTextExtractionPlugin.cs
+    startLine: 17
+  assemblies:
+  - FoundationaLLM.DataPipelinePlugins
+  namespace: FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextExtraction
+  summary: Implements the PPTX Content Text Extraction Plugin.
+  example: []
+  syntax:
+    content: public PPTXContentTextExtractionPlugin(Dictionary<string, object> pluginParameters, IPluginPackageManager packageManager, IPluginPackageManagerResolver packageManagerResolver, IServiceProvider serviceProvider)
+    parameters:
+    - id: pluginParameters
+      type: System.Collections.Generic.Dictionary{System.String,System.Object}
+      description: The dictionary containing the plugin parameters.
+    - id: packageManager
+      type: FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManager
+      description: The package manager for the plugin.
+    - id: packageManagerResolver
+      type: FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManagerResolver
+      description: The package manager resolver for the plugin.
+    - id: serviceProvider
+      type: System.IServiceProvider
+      description: The service provider of the dependency injection container.
+    content.vb: Public Sub New(pluginParameters As Dictionary(Of String, Object), packageManager As IPluginPackageManager, packageManagerResolver As IPluginPackageManagerResolver, serviceProvider As IServiceProvider)
+  overload: FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextExtraction.PPTXContentTextExtractionPlugin.#ctor*
+  nameWithType.vb: PPTXContentTextExtractionPlugin.New(Dictionary(Of String, Object), IPluginPackageManager, IPluginPackageManagerResolver, IServiceProvider)
+  fullName.vb: FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextExtraction.PPTXContentTextExtractionPlugin.New(System.Collections.Generic.Dictionary(Of String, Object), FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManager, FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManagerResolver, System.IServiceProvider)
+  name.vb: New(Dictionary(Of String, Object), IPluginPackageManager, IPluginPackageManagerResolver, IServiceProvider)
+- uid: FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextExtraction.PPTXContentTextExtractionPlugin.Name
+  commentId: P:FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextExtraction.PPTXContentTextExtractionPlugin.Name
+  id: Name
+  parent: FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextExtraction.PPTXContentTextExtractionPlugin
+  langs:
+  - csharp
+  - vb
+  name: Name
+  nameWithType: PPTXContentTextExtractionPlugin.Name
+  fullName: FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextExtraction.PPTXContentTextExtractionPlugin.Name
+  type: Property
+  source:
+    remote:
+      path: src/dotnet/DataPipelinePlugins/Plugins/ContentTextExtraction/PPTXContentTextExtractionPlugin.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: Name
+    path: ../src/dotnet/DataPipelinePlugins/Plugins/ContentTextExtraction/PPTXContentTextExtractionPlugin.cs
+    startLine: 24
+  assemblies:
+  - FoundationaLLM.DataPipelinePlugins
+  namespace: FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextExtraction
+  example: []
+  syntax:
+    content: protected override string Name { get; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Protected Overrides ReadOnly Property Name As String
+  overridden: FoundationaLLM.Common.Services.Plugins.PluginBase.Name
+  overload: FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextExtraction.PPTXContentTextExtractionPlugin.Name*
+- uid: FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextExtraction.PPTXContentTextExtractionPlugin.ExtractText(System.BinaryData)
+  commentId: M:FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextExtraction.PPTXContentTextExtractionPlugin.ExtractText(System.BinaryData)
+  id: ExtractText(System.BinaryData)
+  parent: FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextExtraction.PPTXContentTextExtractionPlugin
+  langs:
+  - csharp
+  - vb
+  name: ExtractText(BinaryData)
+  nameWithType: PPTXContentTextExtractionPlugin.ExtractText(BinaryData)
+  fullName: FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextExtraction.PPTXContentTextExtractionPlugin.ExtractText(System.BinaryData)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/DataPipelinePlugins/Plugins/ContentTextExtraction/PPTXContentTextExtractionPlugin.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: ExtractText
+    path: ../src/dotnet/DataPipelinePlugins/Plugins/ContentTextExtraction/PPTXContentTextExtractionPlugin.cs
+    startLine: 27
+  assemblies:
+  - FoundationaLLM.DataPipelinePlugins
+  namespace: FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextExtraction
+  summary: Extracts text from the provided raw content.
+  example: []
+  syntax:
+    content: public Task<PluginResult<string>> ExtractText(BinaryData rawContent)
+    parameters:
+    - id: rawContent
+      type: System.BinaryData
+      description: The binary content to extract text from.
+    return:
+      type: System.Threading.Tasks.Task{FoundationaLLM.Common.Models.Plugins.PluginResult{System.String}}
+      description: A <xref href="FoundationaLLM.Common.Models.Plugins.PluginResult%601" data-throw-if-not-resolved="false"></xref> object with the extracted text.
+    content.vb: Public Function ExtractText(rawContent As BinaryData) As Task(Of PluginResult(Of String))
+  overload: FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextExtraction.PPTXContentTextExtractionPlugin.ExtractText*
+  implements:
+  - FoundationaLLM.Common.Interfaces.Plugins.IContentTextExtractionPlugin.ExtractText(System.BinaryData)
+references:
+- uid: FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextExtraction
+  commentId: N:FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextExtraction
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextExtraction
+  nameWithType: FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextExtraction
+  fullName: FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextExtraction
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Plugins
+    name: Plugins
+    href: FoundationaLLM.Plugins.html
+  - name: .
+  - uid: FoundationaLLM.Plugins.DataPipeline
+    name: DataPipeline
+    href: FoundationaLLM.Plugins.DataPipeline.html
+  - name: .
+  - uid: FoundationaLLM.Plugins.DataPipeline.Plugins
+    name: Plugins
+    href: FoundationaLLM.Plugins.DataPipeline.Plugins.html
+  - name: .
+  - uid: FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextExtraction
+    name: ContentTextExtraction
+    href: FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextExtraction.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Plugins
+    name: Plugins
+    href: FoundationaLLM.Plugins.html
+  - name: .
+  - uid: FoundationaLLM.Plugins.DataPipeline
+    name: DataPipeline
+    href: FoundationaLLM.Plugins.DataPipeline.html
+  - name: .
+  - uid: FoundationaLLM.Plugins.DataPipeline.Plugins
+    name: Plugins
+    href: FoundationaLLM.Plugins.DataPipeline.Plugins.html
+  - name: .
+  - uid: FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextExtraction
+    name: ContentTextExtraction
+    href: FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextExtraction.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: FoundationaLLM.Common.Services.Plugins.PluginBase
+  commentId: T:FoundationaLLM.Common.Services.Plugins.PluginBase
+  parent: FoundationaLLM.Common.Services.Plugins
+  href: FoundationaLLM.Common.Services.Plugins.PluginBase.html
+  name: PluginBase
+  nameWithType: PluginBase
+  fullName: FoundationaLLM.Common.Services.Plugins.PluginBase
+- uid: FoundationaLLM.Common.Interfaces.Plugins.IContentTextExtractionPlugin
+  commentId: T:FoundationaLLM.Common.Interfaces.Plugins.IContentTextExtractionPlugin
+  parent: FoundationaLLM.Common.Interfaces.Plugins
+  href: FoundationaLLM.Common.Interfaces.Plugins.IContentTextExtractionPlugin.html
+  name: IContentTextExtractionPlugin
+  nameWithType: IContentTextExtractionPlugin
+  fullName: FoundationaLLM.Common.Interfaces.Plugins.IContentTextExtractionPlugin
+- uid: FoundationaLLM.Common.Services.Plugins.PluginBase._pluginParameters
+  commentId: F:FoundationaLLM.Common.Services.Plugins.PluginBase._pluginParameters
+  parent: FoundationaLLM.Common.Services.Plugins.PluginBase
+  href: FoundationaLLM.Common.Services.Plugins.PluginBase.html#FoundationaLLM_Common_Services_Plugins_PluginBase__pluginParameters
+  name: _pluginParameters
+  nameWithType: PluginBase._pluginParameters
+  fullName: FoundationaLLM.Common.Services.Plugins.PluginBase._pluginParameters
+- uid: FoundationaLLM.Common.Services.Plugins.PluginBase._packageManager
+  commentId: F:FoundationaLLM.Common.Services.Plugins.PluginBase._packageManager
+  parent: FoundationaLLM.Common.Services.Plugins.PluginBase
+  href: FoundationaLLM.Common.Services.Plugins.PluginBase.html#FoundationaLLM_Common_Services_Plugins_PluginBase__packageManager
+  name: _packageManager
+  nameWithType: PluginBase._packageManager
+  fullName: FoundationaLLM.Common.Services.Plugins.PluginBase._packageManager
+- uid: FoundationaLLM.Common.Services.Plugins.PluginBase._packageManagerResolver
+  commentId: F:FoundationaLLM.Common.Services.Plugins.PluginBase._packageManagerResolver
+  parent: FoundationaLLM.Common.Services.Plugins.PluginBase
+  href: FoundationaLLM.Common.Services.Plugins.PluginBase.html#FoundationaLLM_Common_Services_Plugins_PluginBase__packageManagerResolver
+  name: _packageManagerResolver
+  nameWithType: PluginBase._packageManagerResolver
+  fullName: FoundationaLLM.Common.Services.Plugins.PluginBase._packageManagerResolver
+- uid: FoundationaLLM.Common.Services.Plugins.PluginBase._pluginMetadata
+  commentId: F:FoundationaLLM.Common.Services.Plugins.PluginBase._pluginMetadata
+  parent: FoundationaLLM.Common.Services.Plugins.PluginBase
+  href: FoundationaLLM.Common.Services.Plugins.PluginBase.html#FoundationaLLM_Common_Services_Plugins_PluginBase__pluginMetadata
+  name: _pluginMetadata
+  nameWithType: PluginBase._pluginMetadata
+  fullName: FoundationaLLM.Common.Services.Plugins.PluginBase._pluginMetadata
+- uid: FoundationaLLM.Common.Services.Plugins.PluginBase._serviceProvider
+  commentId: F:FoundationaLLM.Common.Services.Plugins.PluginBase._serviceProvider
+  parent: FoundationaLLM.Common.Services.Plugins.PluginBase
+  href: FoundationaLLM.Common.Services.Plugins.PluginBase.html#FoundationaLLM_Common_Services_Plugins_PluginBase__serviceProvider
+  name: _serviceProvider
+  nameWithType: PluginBase._serviceProvider
+  fullName: FoundationaLLM.Common.Services.Plugins.PluginBase._serviceProvider
+- uid: FoundationaLLM.Common.Services.Plugins.PluginBase._logger
+  commentId: F:FoundationaLLM.Common.Services.Plugins.PluginBase._logger
+  parent: FoundationaLLM.Common.Services.Plugins.PluginBase
+  href: FoundationaLLM.Common.Services.Plugins.PluginBase.html#FoundationaLLM_Common_Services_Plugins_PluginBase__logger
+  name: _logger
+  nameWithType: PluginBase._logger
+  fullName: FoundationaLLM.Common.Services.Plugins.PluginBase._logger
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  parent: FoundationaLLM.Core.Utils.ObjectExtensions
+  definition: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: FoundationaLLM.Common.Services.Plugins
+  commentId: N:FoundationaLLM.Common.Services.Plugins
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Services.Plugins
+  nameWithType: FoundationaLLM.Common.Services.Plugins
+  fullName: FoundationaLLM.Common.Services.Plugins
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Services
+    name: Services
+    href: FoundationaLLM.Common.Services.html
+  - name: .
+  - uid: FoundationaLLM.Common.Services.Plugins
+    name: Plugins
+    href: FoundationaLLM.Common.Services.Plugins.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Services
+    name: Services
+    href: FoundationaLLM.Common.Services.html
+  - name: .
+  - uid: FoundationaLLM.Common.Services.Plugins
+    name: Plugins
+    href: FoundationaLLM.Common.Services.Plugins.html
+- uid: FoundationaLLM.Common.Interfaces.Plugins
+  commentId: N:FoundationaLLM.Common.Interfaces.Plugins
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Interfaces.Plugins
+  nameWithType: FoundationaLLM.Common.Interfaces.Plugins
+  fullName: FoundationaLLM.Common.Interfaces.Plugins
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Interfaces
+    name: Interfaces
+    href: FoundationaLLM.Common.Interfaces.html
+  - name: .
+  - uid: FoundationaLLM.Common.Interfaces.Plugins
+    name: Plugins
+    href: FoundationaLLM.Common.Interfaces.Plugins.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Interfaces
+    name: Interfaces
+    href: FoundationaLLM.Common.Interfaces.html
+  - name: .
+  - uid: FoundationaLLM.Common.Interfaces.Plugins
+    name: Plugins
+    href: FoundationaLLM.Common.Interfaces.Plugins.html
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  isExternal: true
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions
+  commentId: T:FoundationaLLM.Core.Utils.ObjectExtensions
+  parent: FoundationaLLM.Core.Utils
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html
+  name: ObjectExtensions
+  nameWithType: ObjectExtensions
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions
+- uid: FoundationaLLM.Core.Utils
+  commentId: N:FoundationaLLM.Core.Utils
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Core.Utils
+  nameWithType: FoundationaLLM.Core.Utils
+  fullName: FoundationaLLM.Core.Utils
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+- uid: FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextExtraction.PPTXContentTextExtractionPlugin.#ctor*
+  commentId: Overload:FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextExtraction.PPTXContentTextExtractionPlugin.#ctor
+  href: FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextExtraction.PPTXContentTextExtractionPlugin.html#FoundationaLLM_Plugins_DataPipeline_Plugins_ContentTextExtraction_PPTXContentTextExtractionPlugin__ctor_System_Collections_Generic_Dictionary_System_String_System_Object__FoundationaLLM_Common_Interfaces_Plugins_IPluginPackageManager_FoundationaLLM_Common_Interfaces_Plugins_IPluginPackageManagerResolver_System_IServiceProvider_
+  name: PPTXContentTextExtractionPlugin
+  nameWithType: PPTXContentTextExtractionPlugin.PPTXContentTextExtractionPlugin
+  fullName: FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextExtraction.PPTXContentTextExtractionPlugin.PPTXContentTextExtractionPlugin
+  nameWithType.vb: PPTXContentTextExtractionPlugin.New
+  fullName.vb: FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextExtraction.PPTXContentTextExtractionPlugin.New
+  name.vb: New
+- uid: System.Collections.Generic.Dictionary{System.String,System.Object}
+  commentId: T:System.Collections.Generic.Dictionary{System.String,System.Object}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.Dictionary`2
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  name: Dictionary<string, object>
+  nameWithType: Dictionary<string, object>
+  fullName: System.Collections.Generic.Dictionary<string, object>
+  nameWithType.vb: Dictionary(Of String, Object)
+  fullName.vb: System.Collections.Generic.Dictionary(Of String, Object)
+  name.vb: Dictionary(Of String, Object)
+  spec.csharp:
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManager
+  commentId: T:FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManager
+  parent: FoundationaLLM.Common.Interfaces.Plugins
+  href: FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManager.html
+  name: IPluginPackageManager
+  nameWithType: IPluginPackageManager
+  fullName: FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManager
+- uid: FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManagerResolver
+  commentId: T:FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManagerResolver
+  parent: FoundationaLLM.Common.Interfaces.Plugins
+  href: FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManagerResolver.html
+  name: IPluginPackageManagerResolver
+  nameWithType: IPluginPackageManagerResolver
+  fullName: FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManagerResolver
+- uid: System.IServiceProvider
+  commentId: T:System.IServiceProvider
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.iserviceprovider
+  name: IServiceProvider
+  nameWithType: IServiceProvider
+  fullName: System.IServiceProvider
+- uid: System.Collections.Generic.Dictionary`2
+  commentId: T:System.Collections.Generic.Dictionary`2
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  name: Dictionary<TKey, TValue>
+  nameWithType: Dictionary<TKey, TValue>
+  fullName: System.Collections.Generic.Dictionary<TKey, TValue>
+  nameWithType.vb: Dictionary(Of TKey, TValue)
+  fullName.vb: System.Collections.Generic.Dictionary(Of TKey, TValue)
+  name.vb: Dictionary(Of TKey, TValue)
+  spec.csharp:
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  - name: <
+  - name: TKey
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TKey
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: FoundationaLLM.Common.Services.Plugins.PluginBase.Name
+  commentId: P:FoundationaLLM.Common.Services.Plugins.PluginBase.Name
+  parent: FoundationaLLM.Common.Services.Plugins.PluginBase
+  href: FoundationaLLM.Common.Services.Plugins.PluginBase.html#FoundationaLLM_Common_Services_Plugins_PluginBase_Name
+  name: Name
+  nameWithType: PluginBase.Name
+  fullName: FoundationaLLM.Common.Services.Plugins.PluginBase.Name
+- uid: FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextExtraction.PPTXContentTextExtractionPlugin.Name*
+  commentId: Overload:FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextExtraction.PPTXContentTextExtractionPlugin.Name
+  href: FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextExtraction.PPTXContentTextExtractionPlugin.html#FoundationaLLM_Plugins_DataPipeline_Plugins_ContentTextExtraction_PPTXContentTextExtractionPlugin_Name
+  name: Name
+  nameWithType: PPTXContentTextExtractionPlugin.Name
+  fullName: FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextExtraction.PPTXContentTextExtractionPlugin.Name
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: FoundationaLLM.Common.Models.Plugins.PluginResult`1
+  commentId: T:FoundationaLLM.Common.Models.Plugins.PluginResult`1
+  href: FoundationaLLM.Common.Models.Plugins.PluginResult-1.html
+  name: PluginResult<T>
+  nameWithType: PluginResult<T>
+  fullName: FoundationaLLM.Common.Models.Plugins.PluginResult<T>
+  nameWithType.vb: PluginResult(Of T)
+  fullName.vb: FoundationaLLM.Common.Models.Plugins.PluginResult(Of T)
+  name.vb: PluginResult(Of T)
+  spec.csharp:
+  - uid: FoundationaLLM.Common.Models.Plugins.PluginResult`1
+    name: PluginResult
+    href: FoundationaLLM.Common.Models.Plugins.PluginResult-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: FoundationaLLM.Common.Models.Plugins.PluginResult`1
+    name: PluginResult
+    href: FoundationaLLM.Common.Models.Plugins.PluginResult-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextExtraction.PPTXContentTextExtractionPlugin.ExtractText*
+  commentId: Overload:FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextExtraction.PPTXContentTextExtractionPlugin.ExtractText
+  href: FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextExtraction.PPTXContentTextExtractionPlugin.html#FoundationaLLM_Plugins_DataPipeline_Plugins_ContentTextExtraction_PPTXContentTextExtractionPlugin_ExtractText_System_BinaryData_
+  name: ExtractText
+  nameWithType: PPTXContentTextExtractionPlugin.ExtractText
+  fullName: FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextExtraction.PPTXContentTextExtractionPlugin.ExtractText
+- uid: FoundationaLLM.Common.Interfaces.Plugins.IContentTextExtractionPlugin.ExtractText(System.BinaryData)
+  commentId: M:FoundationaLLM.Common.Interfaces.Plugins.IContentTextExtractionPlugin.ExtractText(System.BinaryData)
+  parent: FoundationaLLM.Common.Interfaces.Plugins.IContentTextExtractionPlugin
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.binarydata
+  name: ExtractText(BinaryData)
+  nameWithType: IContentTextExtractionPlugin.ExtractText(BinaryData)
+  fullName: FoundationaLLM.Common.Interfaces.Plugins.IContentTextExtractionPlugin.ExtractText(System.BinaryData)
+  spec.csharp:
+  - uid: FoundationaLLM.Common.Interfaces.Plugins.IContentTextExtractionPlugin.ExtractText(System.BinaryData)
+    name: ExtractText
+  - name: (
+  - uid: System.BinaryData
+    name: BinaryData
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.binarydata
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Common.Interfaces.Plugins.IContentTextExtractionPlugin.ExtractText(System.BinaryData)
+    name: ExtractText
+  - name: (
+  - uid: System.BinaryData
+    name: BinaryData
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.binarydata
+  - name: )
+- uid: System.BinaryData
+  commentId: T:System.BinaryData
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.binarydata
+  name: BinaryData
+  nameWithType: BinaryData
+  fullName: System.BinaryData
+- uid: System.Threading.Tasks.Task{FoundationaLLM.Common.Models.Plugins.PluginResult{System.String}}
+  commentId: T:System.Threading.Tasks.Task{FoundationaLLM.Common.Models.Plugins.PluginResult{System.String}}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<PluginResult<string>>
+  nameWithType: Task<PluginResult<string>>
+  fullName: System.Threading.Tasks.Task<FoundationaLLM.Common.Models.Plugins.PluginResult<string>>
+  nameWithType.vb: Task(Of PluginResult(Of String))
+  fullName.vb: System.Threading.Tasks.Task(Of FoundationaLLM.Common.Models.Plugins.PluginResult(Of String))
+  name.vb: Task(Of PluginResult(Of String))
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: FoundationaLLM.Common.Models.Plugins.PluginResult`1
+    name: PluginResult
+    href: FoundationaLLM.Common.Models.Plugins.PluginResult-1.html
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FoundationaLLM.Common.Models.Plugins.PluginResult`1
+    name: PluginResult
+    href: FoundationaLLM.Common.Models.Plugins.PluginResult-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks

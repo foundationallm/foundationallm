@@ -1,0 +1,1050 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Gateway.Interfaces.IGatewayCore
+  commentId: T:FoundationaLLM.Gateway.Interfaces.IGatewayCore
+  id: IGatewayCore
+  parent: FoundationaLLM.Gateway.Interfaces
+  children:
+  - FoundationaLLM.Gateway.Interfaces.IGatewayCore.CreateAgentCapability(System.String,System.String,System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity,System.Collections.Generic.Dictionary{System.String,System.Object})
+  - FoundationaLLM.Gateway.Interfaces.IGatewayCore.ExecuteAsync(System.Threading.CancellationToken)
+  - FoundationaLLM.Gateway.Interfaces.IGatewayCore.GetCompletionOperationResult(System.String,System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  - FoundationaLLM.Gateway.Interfaces.IGatewayCore.GetEmbeddingOperationResult(System.String,System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  - FoundationaLLM.Gateway.Interfaces.IGatewayCore.StartAsync(System.Threading.CancellationToken)
+  - FoundationaLLM.Gateway.Interfaces.IGatewayCore.StartCompletionOperation(System.String,FoundationaLLM.Common.Models.Vectorization.TextCompletionRequest,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  - FoundationaLLM.Gateway.Interfaces.IGatewayCore.StartEmbeddingOperation(System.String,FoundationaLLM.Common.Models.Vectorization.TextEmbeddingRequest,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  - FoundationaLLM.Gateway.Interfaces.IGatewayCore.StopAsync(System.Threading.CancellationToken)
+  langs:
+  - csharp
+  - vb
+  name: IGatewayCore
+  nameWithType: IGatewayCore
+  fullName: FoundationaLLM.Gateway.Interfaces.IGatewayCore
+  type: Interface
+  source:
+    remote:
+      path: src/dotnet/Gateway/Interfaces/IGatewayCore.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: IGatewayCore
+    path: ../src/dotnet/Gateway/Interfaces/IGatewayCore.cs
+    startLine: 8
+  assemblies:
+  - FoundationaLLM.Gateway
+  namespace: FoundationaLLM.Gateway.Interfaces
+  summary: Defines the interface of the FoundationaLLM Gateway core.
+  example: []
+  syntax:
+    content: public interface IGatewayCore
+    content.vb: Public Interface IGatewayCore
+  extensionMethods:
+  - System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+- uid: FoundationaLLM.Gateway.Interfaces.IGatewayCore.StartAsync(System.Threading.CancellationToken)
+  commentId: M:FoundationaLLM.Gateway.Interfaces.IGatewayCore.StartAsync(System.Threading.CancellationToken)
+  id: StartAsync(System.Threading.CancellationToken)
+  parent: FoundationaLLM.Gateway.Interfaces.IGatewayCore
+  langs:
+  - csharp
+  - vb
+  name: StartAsync(CancellationToken)
+  nameWithType: IGatewayCore.StartAsync(CancellationToken)
+  fullName: FoundationaLLM.Gateway.Interfaces.IGatewayCore.StartAsync(System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Gateway/Interfaces/IGatewayCore.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: StartAsync
+    path: ../src/dotnet/Gateway/Interfaces/IGatewayCore.cs
+    startLine: 15
+  assemblies:
+  - FoundationaLLM.Gateway
+  namespace: FoundationaLLM.Gateway.Interfaces
+  summary: Starts the Gateway service, allowing it to initialize.
+  example: []
+  syntax:
+    content: Task StartAsync(CancellationToken cancellationToken)
+    parameters:
+    - id: cancellationToken
+      type: System.Threading.CancellationToken
+      description: The <xref href="System.Threading.CancellationToken" data-throw-if-not-resolved="false"></xref> signaling cancellation.
+    return:
+      type: System.Threading.Tasks.Task
+      description: ''
+    content.vb: Function StartAsync(cancellationToken As CancellationToken) As Task
+  overload: FoundationaLLM.Gateway.Interfaces.IGatewayCore.StartAsync*
+- uid: FoundationaLLM.Gateway.Interfaces.IGatewayCore.StopAsync(System.Threading.CancellationToken)
+  commentId: M:FoundationaLLM.Gateway.Interfaces.IGatewayCore.StopAsync(System.Threading.CancellationToken)
+  id: StopAsync(System.Threading.CancellationToken)
+  parent: FoundationaLLM.Gateway.Interfaces.IGatewayCore
+  langs:
+  - csharp
+  - vb
+  name: StopAsync(CancellationToken)
+  nameWithType: IGatewayCore.StopAsync(CancellationToken)
+  fullName: FoundationaLLM.Gateway.Interfaces.IGatewayCore.StopAsync(System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Gateway/Interfaces/IGatewayCore.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: StopAsync
+    path: ../src/dotnet/Gateway/Interfaces/IGatewayCore.cs
+    startLine: 22
+  assemblies:
+  - FoundationaLLM.Gateway
+  namespace: FoundationaLLM.Gateway.Interfaces
+  summary: Stops the Gateway service, allowing it to cleanup.
+  example: []
+  syntax:
+    content: Task StopAsync(CancellationToken cancellationToken)
+    parameters:
+    - id: cancellationToken
+      type: System.Threading.CancellationToken
+      description: The <xref href="System.Threading.CancellationToken" data-throw-if-not-resolved="false"></xref> signaling cancellation.
+    return:
+      type: System.Threading.Tasks.Task
+      description: ''
+    content.vb: Function StopAsync(cancellationToken As CancellationToken) As Task
+  overload: FoundationaLLM.Gateway.Interfaces.IGatewayCore.StopAsync*
+- uid: FoundationaLLM.Gateway.Interfaces.IGatewayCore.ExecuteAsync(System.Threading.CancellationToken)
+  commentId: M:FoundationaLLM.Gateway.Interfaces.IGatewayCore.ExecuteAsync(System.Threading.CancellationToken)
+  id: ExecuteAsync(System.Threading.CancellationToken)
+  parent: FoundationaLLM.Gateway.Interfaces.IGatewayCore
+  langs:
+  - csharp
+  - vb
+  name: ExecuteAsync(CancellationToken)
+  nameWithType: IGatewayCore.ExecuteAsync(CancellationToken)
+  fullName: FoundationaLLM.Gateway.Interfaces.IGatewayCore.ExecuteAsync(System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Gateway/Interfaces/IGatewayCore.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: ExecuteAsync
+    path: ../src/dotnet/Gateway/Interfaces/IGatewayCore.cs
+    startLine: 29
+  assemblies:
+  - FoundationaLLM.Gateway
+  namespace: FoundationaLLM.Gateway.Interfaces
+  summary: Executes the Gateway service until cancellation is signaled.
+  example: []
+  syntax:
+    content: Task ExecuteAsync(CancellationToken cancellationToken)
+    parameters:
+    - id: cancellationToken
+      type: System.Threading.CancellationToken
+      description: The <xref href="System.Threading.CancellationToken" data-throw-if-not-resolved="false"></xref> signaling cancellation.
+    return:
+      type: System.Threading.Tasks.Task
+      description: ''
+    content.vb: Function ExecuteAsync(cancellationToken As CancellationToken) As Task
+  overload: FoundationaLLM.Gateway.Interfaces.IGatewayCore.ExecuteAsync*
+- uid: FoundationaLLM.Gateway.Interfaces.IGatewayCore.StartEmbeddingOperation(System.String,FoundationaLLM.Common.Models.Vectorization.TextEmbeddingRequest,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  commentId: M:FoundationaLLM.Gateway.Interfaces.IGatewayCore.StartEmbeddingOperation(System.String,FoundationaLLM.Common.Models.Vectorization.TextEmbeddingRequest,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  id: StartEmbeddingOperation(System.String,FoundationaLLM.Common.Models.Vectorization.TextEmbeddingRequest,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  parent: FoundationaLLM.Gateway.Interfaces.IGatewayCore
+  langs:
+  - csharp
+  - vb
+  name: StartEmbeddingOperation(string, TextEmbeddingRequest, UnifiedUserIdentity)
+  nameWithType: IGatewayCore.StartEmbeddingOperation(string, TextEmbeddingRequest, UnifiedUserIdentity)
+  fullName: FoundationaLLM.Gateway.Interfaces.IGatewayCore.StartEmbeddingOperation(string, FoundationaLLM.Common.Models.Vectorization.TextEmbeddingRequest, FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Gateway/Interfaces/IGatewayCore.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: StartEmbeddingOperation
+    path: ../src/dotnet/Gateway/Interfaces/IGatewayCore.cs
+    startLine: 38
+  assemblies:
+  - FoundationaLLM.Gateway
+  namespace: FoundationaLLM.Gateway.Interfaces
+  summary: Starts an embedding operation.
+  example: []
+  syntax:
+    content: Task<TextOperationResult> StartEmbeddingOperation(string instanceId, TextEmbeddingRequest embeddingRequest, UnifiedUserIdentity userIdentity)
+    parameters:
+    - id: instanceId
+      type: System.String
+      description: The FoundationaLLM instance id.
+    - id: embeddingRequest
+      type: FoundationaLLM.Common.Models.Vectorization.TextEmbeddingRequest
+      description: The <xref href="FoundationaLLM.Common.Models.Vectorization.TextEmbeddingRequest" data-throw-if-not-resolved="false"></xref> object containing the details of the embedding operation.
+    - id: userIdentity
+      type: FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity
+      description: The <xref href="FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity" data-throw-if-not-resolved="false"></xref> providing information about the calling user identity.
+    return:
+      type: System.Threading.Tasks.Task{FoundationaLLM.Common.Models.Vectorization.TextOperationResult}
+      description: A <xref href="FoundationaLLM.Common.Models.Vectorization.TextOperationResult" data-throw-if-not-resolved="false"></xref> object with the outcome of the operation.
+    content.vb: Function StartEmbeddingOperation(instanceId As String, embeddingRequest As TextEmbeddingRequest, userIdentity As UnifiedUserIdentity) As Task(Of TextOperationResult)
+  overload: FoundationaLLM.Gateway.Interfaces.IGatewayCore.StartEmbeddingOperation*
+  nameWithType.vb: IGatewayCore.StartEmbeddingOperation(String, TextEmbeddingRequest, UnifiedUserIdentity)
+  fullName.vb: FoundationaLLM.Gateway.Interfaces.IGatewayCore.StartEmbeddingOperation(String, FoundationaLLM.Common.Models.Vectorization.TextEmbeddingRequest, FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  name.vb: StartEmbeddingOperation(String, TextEmbeddingRequest, UnifiedUserIdentity)
+- uid: FoundationaLLM.Gateway.Interfaces.IGatewayCore.GetEmbeddingOperationResult(System.String,System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  commentId: M:FoundationaLLM.Gateway.Interfaces.IGatewayCore.GetEmbeddingOperationResult(System.String,System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  id: GetEmbeddingOperationResult(System.String,System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  parent: FoundationaLLM.Gateway.Interfaces.IGatewayCore
+  langs:
+  - csharp
+  - vb
+  name: GetEmbeddingOperationResult(string, string, UnifiedUserIdentity)
+  nameWithType: IGatewayCore.GetEmbeddingOperationResult(string, string, UnifiedUserIdentity)
+  fullName: FoundationaLLM.Gateway.Interfaces.IGatewayCore.GetEmbeddingOperationResult(string, string, FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Gateway/Interfaces/IGatewayCore.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: GetEmbeddingOperationResult
+    path: ../src/dotnet/Gateway/Interfaces/IGatewayCore.cs
+    startLine: 47
+  assemblies:
+  - FoundationaLLM.Gateway
+  namespace: FoundationaLLM.Gateway.Interfaces
+  summary: Retrieves the outcome of an embedding operation.
+  example: []
+  syntax:
+    content: Task<TextOperationResult> GetEmbeddingOperationResult(string instanceId, string operationId, UnifiedUserIdentity userIdentity)
+    parameters:
+    - id: instanceId
+      type: System.String
+      description: The FoundationaLLM instance id.
+    - id: operationId
+      type: System.String
+      description: The unique identifier of the text embedding operation.
+    - id: userIdentity
+      type: FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity
+      description: The <xref href="FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity" data-throw-if-not-resolved="false"></xref> providing information about the calling user identity.
+    return:
+      type: System.Threading.Tasks.Task{FoundationaLLM.Common.Models.Vectorization.TextOperationResult}
+      description: A <xref href="FoundationaLLM.Common.Models.Vectorization.TextOperationResult" data-throw-if-not-resolved="false"></xref> object with the outcome of the operation.
+    content.vb: Function GetEmbeddingOperationResult(instanceId As String, operationId As String, userIdentity As UnifiedUserIdentity) As Task(Of TextOperationResult)
+  overload: FoundationaLLM.Gateway.Interfaces.IGatewayCore.GetEmbeddingOperationResult*
+  nameWithType.vb: IGatewayCore.GetEmbeddingOperationResult(String, String, UnifiedUserIdentity)
+  fullName.vb: FoundationaLLM.Gateway.Interfaces.IGatewayCore.GetEmbeddingOperationResult(String, String, FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  name.vb: GetEmbeddingOperationResult(String, String, UnifiedUserIdentity)
+- uid: FoundationaLLM.Gateway.Interfaces.IGatewayCore.StartCompletionOperation(System.String,FoundationaLLM.Common.Models.Vectorization.TextCompletionRequest,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  commentId: M:FoundationaLLM.Gateway.Interfaces.IGatewayCore.StartCompletionOperation(System.String,FoundationaLLM.Common.Models.Vectorization.TextCompletionRequest,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  id: StartCompletionOperation(System.String,FoundationaLLM.Common.Models.Vectorization.TextCompletionRequest,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  parent: FoundationaLLM.Gateway.Interfaces.IGatewayCore
+  langs:
+  - csharp
+  - vb
+  name: StartCompletionOperation(string, TextCompletionRequest, UnifiedUserIdentity)
+  nameWithType: IGatewayCore.StartCompletionOperation(string, TextCompletionRequest, UnifiedUserIdentity)
+  fullName: FoundationaLLM.Gateway.Interfaces.IGatewayCore.StartCompletionOperation(string, FoundationaLLM.Common.Models.Vectorization.TextCompletionRequest, FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Gateway/Interfaces/IGatewayCore.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: StartCompletionOperation
+    path: ../src/dotnet/Gateway/Interfaces/IGatewayCore.cs
+    startLine: 56
+  assemblies:
+  - FoundationaLLM.Gateway
+  namespace: FoundationaLLM.Gateway.Interfaces
+  summary: Starts a completion operation.
+  example: []
+  syntax:
+    content: Task<TextOperationResult> StartCompletionOperation(string instanceId, TextCompletionRequest completionRequest, UnifiedUserIdentity userIdentity)
+    parameters:
+    - id: instanceId
+      type: System.String
+      description: The FoundationaLLM instance id.
+    - id: completionRequest
+      type: FoundationaLLM.Common.Models.Vectorization.TextCompletionRequest
+      description: The <xref href="FoundationaLLM.Common.Models.Vectorization.TextCompletionRequest" data-throw-if-not-resolved="false"></xref> object containing the details of the completion operation.
+    - id: userIdentity
+      type: FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity
+      description: The <xref href="FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity" data-throw-if-not-resolved="false"></xref> providing information about the calling user identity.
+    return:
+      type: System.Threading.Tasks.Task{FoundationaLLM.Common.Models.Vectorization.TextOperationResult}
+      description: A <xref href="FoundationaLLM.Common.Models.Vectorization.TextOperationResult" data-throw-if-not-resolved="false"></xref> object with the outcome of the operation.
+    content.vb: Function StartCompletionOperation(instanceId As String, completionRequest As TextCompletionRequest, userIdentity As UnifiedUserIdentity) As Task(Of TextOperationResult)
+  overload: FoundationaLLM.Gateway.Interfaces.IGatewayCore.StartCompletionOperation*
+  nameWithType.vb: IGatewayCore.StartCompletionOperation(String, TextCompletionRequest, UnifiedUserIdentity)
+  fullName.vb: FoundationaLLM.Gateway.Interfaces.IGatewayCore.StartCompletionOperation(String, FoundationaLLM.Common.Models.Vectorization.TextCompletionRequest, FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  name.vb: StartCompletionOperation(String, TextCompletionRequest, UnifiedUserIdentity)
+- uid: FoundationaLLM.Gateway.Interfaces.IGatewayCore.GetCompletionOperationResult(System.String,System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  commentId: M:FoundationaLLM.Gateway.Interfaces.IGatewayCore.GetCompletionOperationResult(System.String,System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  id: GetCompletionOperationResult(System.String,System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  parent: FoundationaLLM.Gateway.Interfaces.IGatewayCore
+  langs:
+  - csharp
+  - vb
+  name: GetCompletionOperationResult(string, string, UnifiedUserIdentity)
+  nameWithType: IGatewayCore.GetCompletionOperationResult(string, string, UnifiedUserIdentity)
+  fullName: FoundationaLLM.Gateway.Interfaces.IGatewayCore.GetCompletionOperationResult(string, string, FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Gateway/Interfaces/IGatewayCore.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: GetCompletionOperationResult
+    path: ../src/dotnet/Gateway/Interfaces/IGatewayCore.cs
+    startLine: 65
+  assemblies:
+  - FoundationaLLM.Gateway
+  namespace: FoundationaLLM.Gateway.Interfaces
+  summary: Retrieves the outcome of a completion operation.
+  example: []
+  syntax:
+    content: Task<TextOperationResult> GetCompletionOperationResult(string instanceId, string operationId, UnifiedUserIdentity userIdentity)
+    parameters:
+    - id: instanceId
+      type: System.String
+      description: The FoundationaLLM instance id.
+    - id: operationId
+      type: System.String
+      description: The unique identifier of the text completion operation.
+    - id: userIdentity
+      type: FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity
+      description: The <xref href="FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity" data-throw-if-not-resolved="false"></xref> providing information about the calling user identity.
+    return:
+      type: System.Threading.Tasks.Task{FoundationaLLM.Common.Models.Vectorization.TextOperationResult}
+      description: A <xref href="FoundationaLLM.Common.Models.Vectorization.TextOperationResult" data-throw-if-not-resolved="false"></xref> object with the outcome of the operation.
+    content.vb: Function GetCompletionOperationResult(instanceId As String, operationId As String, userIdentity As UnifiedUserIdentity) As Task(Of TextOperationResult)
+  overload: FoundationaLLM.Gateway.Interfaces.IGatewayCore.GetCompletionOperationResult*
+  nameWithType.vb: IGatewayCore.GetCompletionOperationResult(String, String, UnifiedUserIdentity)
+  fullName.vb: FoundationaLLM.Gateway.Interfaces.IGatewayCore.GetCompletionOperationResult(String, String, FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  name.vb: GetCompletionOperationResult(String, String, UnifiedUserIdentity)
+- uid: FoundationaLLM.Gateway.Interfaces.IGatewayCore.CreateAgentCapability(System.String,System.String,System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity,System.Collections.Generic.Dictionary{System.String,System.Object})
+  commentId: M:FoundationaLLM.Gateway.Interfaces.IGatewayCore.CreateAgentCapability(System.String,System.String,System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity,System.Collections.Generic.Dictionary{System.String,System.Object})
+  id: CreateAgentCapability(System.String,System.String,System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity,System.Collections.Generic.Dictionary{System.String,System.Object})
+  parent: FoundationaLLM.Gateway.Interfaces.IGatewayCore
+  langs:
+  - csharp
+  - vb
+  name: CreateAgentCapability(string, string, string, UnifiedUserIdentity, Dictionary<string, object>?)
+  nameWithType: IGatewayCore.CreateAgentCapability(string, string, string, UnifiedUserIdentity, Dictionary<string, object>?)
+  fullName: FoundationaLLM.Gateway.Interfaces.IGatewayCore.CreateAgentCapability(string, string, string, FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity, System.Collections.Generic.Dictionary<string, object>?)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Gateway/Interfaces/IGatewayCore.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: CreateAgentCapability
+    path: ../src/dotnet/Gateway/Interfaces/IGatewayCore.cs
+    startLine: 84
+  assemblies:
+  - FoundationaLLM.Gateway
+  namespace: FoundationaLLM.Gateway.Interfaces
+  summary: Creates a new LLM-based agent capability.
+  remarks: >-
+    The supported categories are:
+
+    <ul><li>
+
+    OpenAI.Assistants (the names of the keys for the parameters and output dictionaries are defined in OpenAIAgentCapabilityParameterNames)
+
+    </li></ul>
+  example: []
+  syntax:
+    content: Task<Dictionary<string, object>> CreateAgentCapability(string instanceId, string capabilityCategory, string capabilityName, UnifiedUserIdentity userIdentity, Dictionary<string, object>? parameters = null)
+    parameters:
+    - id: instanceId
+      type: System.String
+      description: The FoundationaLLM instance id.
+    - id: capabilityCategory
+      type: System.String
+      description: The category of the capability.
+    - id: capabilityName
+      type: System.String
+      description: The name of the capability to be created.
+    - id: userIdentity
+      type: FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity
+      description: The <xref href="FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity" data-throw-if-not-resolved="false"></xref> providing information about the calling user identity.
+    - id: parameters
+      type: System.Collections.Generic.Dictionary{System.String,System.Object}
+      description: A dictionary of parameter values used to create the capability.
+    return:
+      type: System.Threading.Tasks.Task{System.Collections.Generic.Dictionary{System.String,System.Object}}
+      description: A dictionary of output values.
+    content.vb: Function CreateAgentCapability(instanceId As String, capabilityCategory As String, capabilityName As String, userIdentity As UnifiedUserIdentity, parameters As Dictionary(Of String, Object) = Nothing) As Task(Of Dictionary(Of String, Object))
+  overload: FoundationaLLM.Gateway.Interfaces.IGatewayCore.CreateAgentCapability*
+  nameWithType.vb: IGatewayCore.CreateAgentCapability(String, String, String, UnifiedUserIdentity, Dictionary(Of String, Object))
+  fullName.vb: FoundationaLLM.Gateway.Interfaces.IGatewayCore.CreateAgentCapability(String, String, String, FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity, System.Collections.Generic.Dictionary(Of String, Object))
+  name.vb: CreateAgentCapability(String, String, String, UnifiedUserIdentity, Dictionary(Of String, Object))
+references:
+- uid: FoundationaLLM.Gateway.Interfaces
+  commentId: N:FoundationaLLM.Gateway.Interfaces
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Gateway.Interfaces
+  nameWithType: FoundationaLLM.Gateway.Interfaces
+  fullName: FoundationaLLM.Gateway.Interfaces
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Gateway
+    name: Gateway
+    href: FoundationaLLM.Gateway.html
+  - name: .
+  - uid: FoundationaLLM.Gateway.Interfaces
+    name: Interfaces
+    href: FoundationaLLM.Gateway.Interfaces.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Gateway
+    name: Gateway
+    href: FoundationaLLM.Gateway.html
+  - name: .
+  - uid: FoundationaLLM.Gateway.Interfaces
+    name: Interfaces
+    href: FoundationaLLM.Gateway.Interfaces.html
+- uid: System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  parent: FoundationaLLM.Core.Utils.ObjectExtensions
+  definition: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  isExternal: true
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions
+  commentId: T:FoundationaLLM.Core.Utils.ObjectExtensions
+  parent: FoundationaLLM.Core.Utils
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html
+  name: ObjectExtensions
+  nameWithType: ObjectExtensions
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions
+- uid: FoundationaLLM.Core.Utils
+  commentId: N:FoundationaLLM.Core.Utils
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Core.Utils
+  nameWithType: FoundationaLLM.Core.Utils
+  fullName: FoundationaLLM.Core.Utils
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+- uid: System.Threading.CancellationToken
+  commentId: T:System.Threading.CancellationToken
+  parent: System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  name: CancellationToken
+  nameWithType: CancellationToken
+  fullName: System.Threading.CancellationToken
+- uid: FoundationaLLM.Gateway.Interfaces.IGatewayCore.StartAsync*
+  commentId: Overload:FoundationaLLM.Gateway.Interfaces.IGatewayCore.StartAsync
+  href: FoundationaLLM.Gateway.Interfaces.IGatewayCore.html#FoundationaLLM_Gateway_Interfaces_IGatewayCore_StartAsync_System_Threading_CancellationToken_
+  name: StartAsync
+  nameWithType: IGatewayCore.StartAsync
+  fullName: FoundationaLLM.Gateway.Interfaces.IGatewayCore.StartAsync
+- uid: System.Threading.Tasks.Task
+  commentId: T:System.Threading.Tasks.Task
+  parent: System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  name: Task
+  nameWithType: Task
+  fullName: System.Threading.Tasks.Task
+- uid: System.Threading
+  commentId: N:System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading
+  nameWithType: System.Threading
+  fullName: System.Threading
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: FoundationaLLM.Gateway.Interfaces.IGatewayCore.StopAsync*
+  commentId: Overload:FoundationaLLM.Gateway.Interfaces.IGatewayCore.StopAsync
+  href: FoundationaLLM.Gateway.Interfaces.IGatewayCore.html#FoundationaLLM_Gateway_Interfaces_IGatewayCore_StopAsync_System_Threading_CancellationToken_
+  name: StopAsync
+  nameWithType: IGatewayCore.StopAsync
+  fullName: FoundationaLLM.Gateway.Interfaces.IGatewayCore.StopAsync
+- uid: FoundationaLLM.Gateway.Interfaces.IGatewayCore.ExecuteAsync*
+  commentId: Overload:FoundationaLLM.Gateway.Interfaces.IGatewayCore.ExecuteAsync
+  href: FoundationaLLM.Gateway.Interfaces.IGatewayCore.html#FoundationaLLM_Gateway_Interfaces_IGatewayCore_ExecuteAsync_System_Threading_CancellationToken_
+  name: ExecuteAsync
+  nameWithType: IGatewayCore.ExecuteAsync
+  fullName: FoundationaLLM.Gateway.Interfaces.IGatewayCore.ExecuteAsync
+- uid: FoundationaLLM.Common.Models.Vectorization.TextEmbeddingRequest
+  commentId: T:FoundationaLLM.Common.Models.Vectorization.TextEmbeddingRequest
+  parent: FoundationaLLM.Common.Models.Vectorization
+  href: FoundationaLLM.Common.Models.Vectorization.TextEmbeddingRequest.html
+  name: TextEmbeddingRequest
+  nameWithType: TextEmbeddingRequest
+  fullName: FoundationaLLM.Common.Models.Vectorization.TextEmbeddingRequest
+- uid: FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity
+  commentId: T:FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity
+  parent: FoundationaLLM.Common.Models.Authentication
+  href: FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity.html
+  name: UnifiedUserIdentity
+  nameWithType: UnifiedUserIdentity
+  fullName: FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity
+- uid: FoundationaLLM.Common.Models.Vectorization.TextOperationResult
+  commentId: T:FoundationaLLM.Common.Models.Vectorization.TextOperationResult
+  parent: FoundationaLLM.Common.Models.Vectorization
+  href: FoundationaLLM.Common.Models.Vectorization.TextOperationResult.html
+  name: TextOperationResult
+  nameWithType: TextOperationResult
+  fullName: FoundationaLLM.Common.Models.Vectorization.TextOperationResult
+- uid: FoundationaLLM.Gateway.Interfaces.IGatewayCore.StartEmbeddingOperation*
+  commentId: Overload:FoundationaLLM.Gateway.Interfaces.IGatewayCore.StartEmbeddingOperation
+  href: FoundationaLLM.Gateway.Interfaces.IGatewayCore.html#FoundationaLLM_Gateway_Interfaces_IGatewayCore_StartEmbeddingOperation_System_String_FoundationaLLM_Common_Models_Vectorization_TextEmbeddingRequest_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_
+  name: StartEmbeddingOperation
+  nameWithType: IGatewayCore.StartEmbeddingOperation
+  fullName: FoundationaLLM.Gateway.Interfaces.IGatewayCore.StartEmbeddingOperation
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System.Threading.Tasks.Task{FoundationaLLM.Common.Models.Vectorization.TextOperationResult}
+  commentId: T:System.Threading.Tasks.Task{FoundationaLLM.Common.Models.Vectorization.TextOperationResult}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TextOperationResult>
+  nameWithType: Task<TextOperationResult>
+  fullName: System.Threading.Tasks.Task<FoundationaLLM.Common.Models.Vectorization.TextOperationResult>
+  nameWithType.vb: Task(Of TextOperationResult)
+  fullName.vb: System.Threading.Tasks.Task(Of FoundationaLLM.Common.Models.Vectorization.TextOperationResult)
+  name.vb: Task(Of TextOperationResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: FoundationaLLM.Common.Models.Vectorization.TextOperationResult
+    name: TextOperationResult
+    href: FoundationaLLM.Common.Models.Vectorization.TextOperationResult.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FoundationaLLM.Common.Models.Vectorization.TextOperationResult
+    name: TextOperationResult
+    href: FoundationaLLM.Common.Models.Vectorization.TextOperationResult.html
+  - name: )
+- uid: FoundationaLLM.Common.Models.Vectorization
+  commentId: N:FoundationaLLM.Common.Models.Vectorization
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.Vectorization
+  nameWithType: FoundationaLLM.Common.Models.Vectorization
+  fullName: FoundationaLLM.Common.Models.Vectorization
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Vectorization
+    name: Vectorization
+    href: FoundationaLLM.Common.Models.Vectorization.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Vectorization
+    name: Vectorization
+    href: FoundationaLLM.Common.Models.Vectorization.html
+- uid: FoundationaLLM.Common.Models.Authentication
+  commentId: N:FoundationaLLM.Common.Models.Authentication
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.Authentication
+  nameWithType: FoundationaLLM.Common.Models.Authentication
+  fullName: FoundationaLLM.Common.Models.Authentication
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Authentication
+    name: Authentication
+    href: FoundationaLLM.Common.Models.Authentication.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Authentication
+    name: Authentication
+    href: FoundationaLLM.Common.Models.Authentication.html
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: FoundationaLLM.Gateway.Interfaces.IGatewayCore.GetEmbeddingOperationResult*
+  commentId: Overload:FoundationaLLM.Gateway.Interfaces.IGatewayCore.GetEmbeddingOperationResult
+  href: FoundationaLLM.Gateway.Interfaces.IGatewayCore.html#FoundationaLLM_Gateway_Interfaces_IGatewayCore_GetEmbeddingOperationResult_System_String_System_String_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_
+  name: GetEmbeddingOperationResult
+  nameWithType: IGatewayCore.GetEmbeddingOperationResult
+  fullName: FoundationaLLM.Gateway.Interfaces.IGatewayCore.GetEmbeddingOperationResult
+- uid: FoundationaLLM.Common.Models.Vectorization.TextCompletionRequest
+  commentId: T:FoundationaLLM.Common.Models.Vectorization.TextCompletionRequest
+  parent: FoundationaLLM.Common.Models.Vectorization
+  href: FoundationaLLM.Common.Models.Vectorization.TextCompletionRequest.html
+  name: TextCompletionRequest
+  nameWithType: TextCompletionRequest
+  fullName: FoundationaLLM.Common.Models.Vectorization.TextCompletionRequest
+- uid: FoundationaLLM.Gateway.Interfaces.IGatewayCore.StartCompletionOperation*
+  commentId: Overload:FoundationaLLM.Gateway.Interfaces.IGatewayCore.StartCompletionOperation
+  href: FoundationaLLM.Gateway.Interfaces.IGatewayCore.html#FoundationaLLM_Gateway_Interfaces_IGatewayCore_StartCompletionOperation_System_String_FoundationaLLM_Common_Models_Vectorization_TextCompletionRequest_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_
+  name: StartCompletionOperation
+  nameWithType: IGatewayCore.StartCompletionOperation
+  fullName: FoundationaLLM.Gateway.Interfaces.IGatewayCore.StartCompletionOperation
+- uid: FoundationaLLM.Gateway.Interfaces.IGatewayCore.GetCompletionOperationResult*
+  commentId: Overload:FoundationaLLM.Gateway.Interfaces.IGatewayCore.GetCompletionOperationResult
+  href: FoundationaLLM.Gateway.Interfaces.IGatewayCore.html#FoundationaLLM_Gateway_Interfaces_IGatewayCore_GetCompletionOperationResult_System_String_System_String_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_
+  name: GetCompletionOperationResult
+  nameWithType: IGatewayCore.GetCompletionOperationResult
+  fullName: FoundationaLLM.Gateway.Interfaces.IGatewayCore.GetCompletionOperationResult
+- uid: FoundationaLLM.Gateway.Interfaces.IGatewayCore.CreateAgentCapability*
+  commentId: Overload:FoundationaLLM.Gateway.Interfaces.IGatewayCore.CreateAgentCapability
+  href: FoundationaLLM.Gateway.Interfaces.IGatewayCore.html#FoundationaLLM_Gateway_Interfaces_IGatewayCore_CreateAgentCapability_System_String_System_String_System_String_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_System_Collections_Generic_Dictionary_System_String_System_Object__
+  name: CreateAgentCapability
+  nameWithType: IGatewayCore.CreateAgentCapability
+  fullName: FoundationaLLM.Gateway.Interfaces.IGatewayCore.CreateAgentCapability
+- uid: System.Collections.Generic.Dictionary{System.String,System.Object}
+  commentId: T:System.Collections.Generic.Dictionary{System.String,System.Object}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.Dictionary`2
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  name: Dictionary<string, object>
+  nameWithType: Dictionary<string, object>
+  fullName: System.Collections.Generic.Dictionary<string, object>
+  nameWithType.vb: Dictionary(Of String, Object)
+  fullName.vb: System.Collections.Generic.Dictionary(Of String, Object)
+  name.vb: Dictionary(Of String, Object)
+  spec.csharp:
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Threading.Tasks.Task{System.Collections.Generic.Dictionary{System.String,System.Object}}
+  commentId: T:System.Threading.Tasks.Task{System.Collections.Generic.Dictionary{System.String,System.Object}}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<Dictionary<string, object>>
+  nameWithType: Task<Dictionary<string, object>>
+  fullName: System.Threading.Tasks.Task<System.Collections.Generic.Dictionary<string, object>>
+  nameWithType.vb: Task(Of Dictionary(Of String, Object))
+  fullName.vb: System.Threading.Tasks.Task(Of System.Collections.Generic.Dictionary(Of String, Object))
+  name.vb: Task(Of Dictionary(Of String, Object))
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  - name: )
+- uid: System.Collections.Generic.Dictionary`2
+  commentId: T:System.Collections.Generic.Dictionary`2
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  name: Dictionary<TKey, TValue>
+  nameWithType: Dictionary<TKey, TValue>
+  fullName: System.Collections.Generic.Dictionary<TKey, TValue>
+  nameWithType.vb: Dictionary(Of TKey, TValue)
+  fullName.vb: System.Collections.Generic.Dictionary(Of TKey, TValue)
+  name.vb: Dictionary(Of TKey, TValue)
+  spec.csharp:
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  - name: <
+  - name: TKey
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TKey
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic

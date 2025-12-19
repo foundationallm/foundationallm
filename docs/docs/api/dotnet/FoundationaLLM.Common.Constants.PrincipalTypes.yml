@@ -1,0 +1,465 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Common.Constants.PrincipalTypes
+  commentId: T:FoundationaLLM.Common.Constants.PrincipalTypes
+  id: PrincipalTypes
+  parent: FoundationaLLM.Common.Constants
+  children:
+  - FoundationaLLM.Common.Constants.PrincipalTypes.Group
+  - FoundationaLLM.Common.Constants.PrincipalTypes.IsValidPrincipalType(System.String)
+  - FoundationaLLM.Common.Constants.PrincipalTypes.ServicePrincipal
+  - FoundationaLLM.Common.Constants.PrincipalTypes.User
+  langs:
+  - csharp
+  - vb
+  name: PrincipalTypes
+  nameWithType: PrincipalTypes
+  fullName: FoundationaLLM.Common.Constants.PrincipalTypes
+  type: Class
+  source:
+    remote:
+      path: src/dotnet/Common/Constants/PrincipalTypes.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: PrincipalTypes
+    path: ../src/dotnet/Common/Constants/PrincipalTypes.cs
+    startLine: 5
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants
+  summary: The types of security principals.
+  example: []
+  syntax:
+    content: public static class PrincipalTypes
+    content.vb: Public Module PrincipalTypes
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: FoundationaLLM.Common.Constants.PrincipalTypes.User
+  commentId: F:FoundationaLLM.Common.Constants.PrincipalTypes.User
+  id: User
+  parent: FoundationaLLM.Common.Constants.PrincipalTypes
+  langs:
+  - csharp
+  - vb
+  name: User
+  nameWithType: PrincipalTypes.User
+  fullName: FoundationaLLM.Common.Constants.PrincipalTypes.User
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Constants/PrincipalTypes.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: User
+    path: ../src/dotnet/Common/Constants/PrincipalTypes.cs
+    startLine: 10
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants
+  summary: The user security principal type.
+  example: []
+  syntax:
+    content: public const string User = "User"
+    return:
+      type: System.String
+    content.vb: Public Const User As String = "User"
+- uid: FoundationaLLM.Common.Constants.PrincipalTypes.Group
+  commentId: F:FoundationaLLM.Common.Constants.PrincipalTypes.Group
+  id: Group
+  parent: FoundationaLLM.Common.Constants.PrincipalTypes
+  langs:
+  - csharp
+  - vb
+  name: Group
+  nameWithType: PrincipalTypes.Group
+  fullName: FoundationaLLM.Common.Constants.PrincipalTypes.Group
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Constants/PrincipalTypes.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: Group
+    path: ../src/dotnet/Common/Constants/PrincipalTypes.cs
+    startLine: 15
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants
+  summary: The group security principal type.
+  example: []
+  syntax:
+    content: public const string Group = "Group"
+    return:
+      type: System.String
+    content.vb: Public Const Group As String = "Group"
+- uid: FoundationaLLM.Common.Constants.PrincipalTypes.ServicePrincipal
+  commentId: F:FoundationaLLM.Common.Constants.PrincipalTypes.ServicePrincipal
+  id: ServicePrincipal
+  parent: FoundationaLLM.Common.Constants.PrincipalTypes
+  langs:
+  - csharp
+  - vb
+  name: ServicePrincipal
+  nameWithType: PrincipalTypes.ServicePrincipal
+  fullName: FoundationaLLM.Common.Constants.PrincipalTypes.ServicePrincipal
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Constants/PrincipalTypes.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: ServicePrincipal
+    path: ../src/dotnet/Common/Constants/PrincipalTypes.cs
+    startLine: 20
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants
+  summary: The service principal security principal type.
+  example: []
+  syntax:
+    content: public const string ServicePrincipal = "ServicePrincipal"
+    return:
+      type: System.String
+    content.vb: Public Const ServicePrincipal As String = "ServicePrincipal"
+- uid: FoundationaLLM.Common.Constants.PrincipalTypes.IsValidPrincipalType(System.String)
+  commentId: M:FoundationaLLM.Common.Constants.PrincipalTypes.IsValidPrincipalType(System.String)
+  id: IsValidPrincipalType(System.String)
+  parent: FoundationaLLM.Common.Constants.PrincipalTypes
+  langs:
+  - csharp
+  - vb
+  name: IsValidPrincipalType(string)
+  nameWithType: PrincipalTypes.IsValidPrincipalType(string)
+  fullName: FoundationaLLM.Common.Constants.PrincipalTypes.IsValidPrincipalType(string)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Common/Constants/PrincipalTypes.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: IsValidPrincipalType
+    path: ../src/dotnet/Common/Constants/PrincipalTypes.cs
+    startLine: 27
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants
+  summary: Determines if the specified principal type is valid.
+  example: []
+  syntax:
+    content: public static bool IsValidPrincipalType(string principalType)
+    parameters:
+    - id: principalType
+      type: System.String
+      description: The name of the principal type to validate.
+    return:
+      type: System.Boolean
+      description: True if the specified principal type is valid.
+    content.vb: Public Shared Function IsValidPrincipalType(principalType As String) As Boolean
+  overload: FoundationaLLM.Common.Constants.PrincipalTypes.IsValidPrincipalType*
+  nameWithType.vb: PrincipalTypes.IsValidPrincipalType(String)
+  fullName.vb: FoundationaLLM.Common.Constants.PrincipalTypes.IsValidPrincipalType(String)
+  name.vb: IsValidPrincipalType(String)
+references:
+- uid: FoundationaLLM.Common.Constants
+  commentId: N:FoundationaLLM.Common.Constants
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Constants
+  nameWithType: FoundationaLLM.Common.Constants
+  fullName: FoundationaLLM.Common.Constants
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Constants
+    name: Constants
+    href: FoundationaLLM.Common.Constants.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Constants
+    name: Constants
+    href: FoundationaLLM.Common.Constants.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: FoundationaLLM.Common.Constants.PrincipalTypes.IsValidPrincipalType*
+  commentId: Overload:FoundationaLLM.Common.Constants.PrincipalTypes.IsValidPrincipalType
+  href: FoundationaLLM.Common.Constants.PrincipalTypes.html#FoundationaLLM_Common_Constants_PrincipalTypes_IsValidPrincipalType_System_String_
+  name: IsValidPrincipalType
+  nameWithType: PrincipalTypes.IsValidPrincipalType
+  fullName: FoundationaLLM.Common.Constants.PrincipalTypes.IsValidPrincipalType
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean

@@ -1,0 +1,2273 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Common.Authentication.APIKeyAuthenticationAttribute
+  commentId: T:FoundationaLLM.Common.Authentication.APIKeyAuthenticationAttribute
+  id: APIKeyAuthenticationAttribute
+  parent: FoundationaLLM.Common.Authentication
+  children:
+  - FoundationaLLM.Common.Authentication.APIKeyAuthenticationAttribute.#ctor
+  langs:
+  - csharp
+  - vb
+  name: APIKeyAuthenticationAttribute
+  nameWithType: APIKeyAuthenticationAttribute
+  fullName: FoundationaLLM.Common.Authentication.APIKeyAuthenticationAttribute
+  type: Class
+  source:
+    remote:
+      path: src/dotnet/Common/Authentication/APIKeyAuthenticationAttribute.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: APIKeyAuthenticationAttribute
+    path: ../src/dotnet/Common/Authentication/APIKeyAuthenticationAttribute.cs
+    startLine: 7
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Authentication
+  summary: Service filter attribute for X-API-Key header validation.
+  example: []
+  syntax:
+    content: 'public class APIKeyAuthenticationAttribute : ServiceFilterAttribute, IFilterFactory, IOrderedFilter, IFilterMetadata'
+    content.vb: Public Class APIKeyAuthenticationAttribute Inherits ServiceFilterAttribute Implements IFilterFactory, IOrderedFilter, IFilterMetadata
+  inheritance:
+  - System.Object
+  - System.Attribute
+  - Microsoft.AspNetCore.Mvc.ServiceFilterAttribute
+  implements:
+  - Microsoft.AspNetCore.Mvc.Filters.IFilterFactory
+  - Microsoft.AspNetCore.Mvc.Filters.IOrderedFilter
+  - Microsoft.AspNetCore.Mvc.Filters.IFilterMetadata
+  inheritedMembers:
+  - Microsoft.AspNetCore.Mvc.ServiceFilterAttribute.CreateInstance(System.IServiceProvider)
+  - Microsoft.AspNetCore.Mvc.ServiceFilterAttribute.Order
+  - Microsoft.AspNetCore.Mvc.ServiceFilterAttribute.ServiceType
+  - Microsoft.AspNetCore.Mvc.ServiceFilterAttribute.IsReusable
+  - System.Attribute.Equals(System.Object)
+  - System.Attribute.GetCustomAttribute(System.Reflection.Assembly,System.Type)
+  - System.Attribute.GetCustomAttribute(System.Reflection.Assembly,System.Type,System.Boolean)
+  - System.Attribute.GetCustomAttribute(System.Reflection.MemberInfo,System.Type)
+  - System.Attribute.GetCustomAttribute(System.Reflection.MemberInfo,System.Type,System.Boolean)
+  - System.Attribute.GetCustomAttribute(System.Reflection.Module,System.Type)
+  - System.Attribute.GetCustomAttribute(System.Reflection.Module,System.Type,System.Boolean)
+  - System.Attribute.GetCustomAttribute(System.Reflection.ParameterInfo,System.Type)
+  - System.Attribute.GetCustomAttribute(System.Reflection.ParameterInfo,System.Type,System.Boolean)
+  - System.Attribute.GetCustomAttributes(System.Reflection.Assembly)
+  - System.Attribute.GetCustomAttributes(System.Reflection.Assembly,System.Boolean)
+  - System.Attribute.GetCustomAttributes(System.Reflection.Assembly,System.Type)
+  - System.Attribute.GetCustomAttributes(System.Reflection.Assembly,System.Type,System.Boolean)
+  - System.Attribute.GetCustomAttributes(System.Reflection.MemberInfo)
+  - System.Attribute.GetCustomAttributes(System.Reflection.MemberInfo,System.Boolean)
+  - System.Attribute.GetCustomAttributes(System.Reflection.MemberInfo,System.Type)
+  - System.Attribute.GetCustomAttributes(System.Reflection.MemberInfo,System.Type,System.Boolean)
+  - System.Attribute.GetCustomAttributes(System.Reflection.Module)
+  - System.Attribute.GetCustomAttributes(System.Reflection.Module,System.Boolean)
+  - System.Attribute.GetCustomAttributes(System.Reflection.Module,System.Type)
+  - System.Attribute.GetCustomAttributes(System.Reflection.Module,System.Type,System.Boolean)
+  - System.Attribute.GetCustomAttributes(System.Reflection.ParameterInfo)
+  - System.Attribute.GetCustomAttributes(System.Reflection.ParameterInfo,System.Boolean)
+  - System.Attribute.GetCustomAttributes(System.Reflection.ParameterInfo,System.Type)
+  - System.Attribute.GetCustomAttributes(System.Reflection.ParameterInfo,System.Type,System.Boolean)
+  - System.Attribute.GetHashCode
+  - System.Attribute.IsDefaultAttribute
+  - System.Attribute.IsDefined(System.Reflection.Assembly,System.Type)
+  - System.Attribute.IsDefined(System.Reflection.Assembly,System.Type,System.Boolean)
+  - System.Attribute.IsDefined(System.Reflection.MemberInfo,System.Type)
+  - System.Attribute.IsDefined(System.Reflection.MemberInfo,System.Type,System.Boolean)
+  - System.Attribute.IsDefined(System.Reflection.Module,System.Type)
+  - System.Attribute.IsDefined(System.Reflection.Module,System.Type,System.Boolean)
+  - System.Attribute.IsDefined(System.Reflection.ParameterInfo,System.Type)
+  - System.Attribute.IsDefined(System.Reflection.ParameterInfo,System.Type,System.Boolean)
+  - System.Attribute.Match(System.Object)
+  - System.Attribute.TypeId
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+  extensionMethods:
+  - System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+- uid: FoundationaLLM.Common.Authentication.APIKeyAuthenticationAttribute.#ctor
+  commentId: M:FoundationaLLM.Common.Authentication.APIKeyAuthenticationAttribute.#ctor
+  id: '#ctor'
+  parent: FoundationaLLM.Common.Authentication.APIKeyAuthenticationAttribute
+  langs:
+  - csharp
+  - vb
+  name: APIKeyAuthenticationAttribute()
+  nameWithType: APIKeyAuthenticationAttribute.APIKeyAuthenticationAttribute()
+  fullName: FoundationaLLM.Common.Authentication.APIKeyAuthenticationAttribute.APIKeyAuthenticationAttribute()
+  type: Constructor
+  source:
+    remote:
+      path: src/dotnet/Common/Authentication/APIKeyAuthenticationAttribute.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: .ctor
+    path: ../src/dotnet/Common/Authentication/APIKeyAuthenticationAttribute.cs
+    startLine: 12
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Authentication
+  summary: Initializes a new instance of the APIKeyAuthenticationAttribute class.
+  example: []
+  syntax:
+    content: public APIKeyAuthenticationAttribute()
+    content.vb: Public Sub New()
+  overload: FoundationaLLM.Common.Authentication.APIKeyAuthenticationAttribute.#ctor*
+  nameWithType.vb: APIKeyAuthenticationAttribute.New()
+  fullName.vb: FoundationaLLM.Common.Authentication.APIKeyAuthenticationAttribute.New()
+  name.vb: New()
+references:
+- uid: FoundationaLLM.Common.Authentication
+  commentId: N:FoundationaLLM.Common.Authentication
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Authentication
+  nameWithType: FoundationaLLM.Common.Authentication
+  fullName: FoundationaLLM.Common.Authentication
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Authentication
+    name: Authentication
+    href: FoundationaLLM.Common.Authentication.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Authentication
+    name: Authentication
+    href: FoundationaLLM.Common.Authentication.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Attribute
+  commentId: T:System.Attribute
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.attribute
+  name: Attribute
+  nameWithType: Attribute
+  fullName: System.Attribute
+- uid: Microsoft.AspNetCore.Mvc.ServiceFilterAttribute
+  commentId: T:Microsoft.AspNetCore.Mvc.ServiceFilterAttribute
+  parent: Microsoft.AspNetCore.Mvc
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.mvc.servicefilterattribute
+  name: ServiceFilterAttribute
+  nameWithType: ServiceFilterAttribute
+  fullName: Microsoft.AspNetCore.Mvc.ServiceFilterAttribute
+- uid: Microsoft.AspNetCore.Mvc.Filters.IFilterFactory
+  commentId: T:Microsoft.AspNetCore.Mvc.Filters.IFilterFactory
+  parent: Microsoft.AspNetCore.Mvc.Filters
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.mvc.filters.ifilterfactory
+  name: IFilterFactory
+  nameWithType: IFilterFactory
+  fullName: Microsoft.AspNetCore.Mvc.Filters.IFilterFactory
+- uid: Microsoft.AspNetCore.Mvc.Filters.IOrderedFilter
+  commentId: T:Microsoft.AspNetCore.Mvc.Filters.IOrderedFilter
+  parent: Microsoft.AspNetCore.Mvc.Filters
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.mvc.filters.iorderedfilter
+  name: IOrderedFilter
+  nameWithType: IOrderedFilter
+  fullName: Microsoft.AspNetCore.Mvc.Filters.IOrderedFilter
+- uid: Microsoft.AspNetCore.Mvc.Filters.IFilterMetadata
+  commentId: T:Microsoft.AspNetCore.Mvc.Filters.IFilterMetadata
+  parent: Microsoft.AspNetCore.Mvc.Filters
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.mvc.filters.ifiltermetadata
+  name: IFilterMetadata
+  nameWithType: IFilterMetadata
+  fullName: Microsoft.AspNetCore.Mvc.Filters.IFilterMetadata
+- uid: Microsoft.AspNetCore.Mvc.ServiceFilterAttribute.CreateInstance(System.IServiceProvider)
+  commentId: M:Microsoft.AspNetCore.Mvc.ServiceFilterAttribute.CreateInstance(System.IServiceProvider)
+  parent: Microsoft.AspNetCore.Mvc.ServiceFilterAttribute
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.mvc.servicefilterattribute.createinstance
+  name: CreateInstance(IServiceProvider)
+  nameWithType: ServiceFilterAttribute.CreateInstance(IServiceProvider)
+  fullName: Microsoft.AspNetCore.Mvc.ServiceFilterAttribute.CreateInstance(System.IServiceProvider)
+  spec.csharp:
+  - uid: Microsoft.AspNetCore.Mvc.ServiceFilterAttribute.CreateInstance(System.IServiceProvider)
+    name: CreateInstance
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.mvc.servicefilterattribute.createinstance
+  - name: (
+  - uid: System.IServiceProvider
+    name: IServiceProvider
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iserviceprovider
+  - name: )
+  spec.vb:
+  - uid: Microsoft.AspNetCore.Mvc.ServiceFilterAttribute.CreateInstance(System.IServiceProvider)
+    name: CreateInstance
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.mvc.servicefilterattribute.createinstance
+  - name: (
+  - uid: System.IServiceProvider
+    name: IServiceProvider
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iserviceprovider
+  - name: )
+- uid: Microsoft.AspNetCore.Mvc.ServiceFilterAttribute.Order
+  commentId: P:Microsoft.AspNetCore.Mvc.ServiceFilterAttribute.Order
+  parent: Microsoft.AspNetCore.Mvc.ServiceFilterAttribute
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.mvc.servicefilterattribute.order
+  name: Order
+  nameWithType: ServiceFilterAttribute.Order
+  fullName: Microsoft.AspNetCore.Mvc.ServiceFilterAttribute.Order
+- uid: Microsoft.AspNetCore.Mvc.ServiceFilterAttribute.ServiceType
+  commentId: P:Microsoft.AspNetCore.Mvc.ServiceFilterAttribute.ServiceType
+  parent: Microsoft.AspNetCore.Mvc.ServiceFilterAttribute
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.mvc.servicefilterattribute.servicetype
+  name: ServiceType
+  nameWithType: ServiceFilterAttribute.ServiceType
+  fullName: Microsoft.AspNetCore.Mvc.ServiceFilterAttribute.ServiceType
+- uid: Microsoft.AspNetCore.Mvc.ServiceFilterAttribute.IsReusable
+  commentId: P:Microsoft.AspNetCore.Mvc.ServiceFilterAttribute.IsReusable
+  parent: Microsoft.AspNetCore.Mvc.ServiceFilterAttribute
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.mvc.servicefilterattribute.isreusable
+  name: IsReusable
+  nameWithType: ServiceFilterAttribute.IsReusable
+  fullName: Microsoft.AspNetCore.Mvc.ServiceFilterAttribute.IsReusable
+- uid: System.Attribute.Equals(System.Object)
+  commentId: M:System.Attribute.Equals(System.Object)
+  parent: System.Attribute
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.attribute.equals
+  name: Equals(object)
+  nameWithType: Attribute.Equals(object)
+  fullName: System.Attribute.Equals(object)
+  nameWithType.vb: Attribute.Equals(Object)
+  fullName.vb: System.Attribute.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Attribute.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.attribute.equals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Attribute.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.attribute.equals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Attribute.GetCustomAttribute(System.Reflection.Assembly,System.Type)
+  commentId: M:System.Attribute.GetCustomAttribute(System.Reflection.Assembly,System.Type)
+  parent: System.Attribute
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.attribute.getcustomattribute#system-attribute-getcustomattribute(system-reflection-assembly-system-type)
+  name: GetCustomAttribute(Assembly, Type)
+  nameWithType: Attribute.GetCustomAttribute(Assembly, Type)
+  fullName: System.Attribute.GetCustomAttribute(System.Reflection.Assembly, System.Type)
+  spec.csharp:
+  - uid: System.Attribute.GetCustomAttribute(System.Reflection.Assembly,System.Type)
+    name: GetCustomAttribute
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.attribute.getcustomattribute#system-attribute-getcustomattribute(system-reflection-assembly-system-type)
+  - name: (
+  - uid: System.Reflection.Assembly
+    name: Assembly
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.assembly
+  - name: ','
+  - name: " "
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: )
+  spec.vb:
+  - uid: System.Attribute.GetCustomAttribute(System.Reflection.Assembly,System.Type)
+    name: GetCustomAttribute
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.attribute.getcustomattribute#system-attribute-getcustomattribute(system-reflection-assembly-system-type)
+  - name: (
+  - uid: System.Reflection.Assembly
+    name: Assembly
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.assembly
+  - name: ','
+  - name: " "
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: )
+- uid: System.Attribute.GetCustomAttribute(System.Reflection.Assembly,System.Type,System.Boolean)
+  commentId: M:System.Attribute.GetCustomAttribute(System.Reflection.Assembly,System.Type,System.Boolean)
+  parent: System.Attribute
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.attribute.getcustomattribute#system-attribute-getcustomattribute(system-reflection-assembly-system-type-system-boolean)
+  name: GetCustomAttribute(Assembly, Type, bool)
+  nameWithType: Attribute.GetCustomAttribute(Assembly, Type, bool)
+  fullName: System.Attribute.GetCustomAttribute(System.Reflection.Assembly, System.Type, bool)
+  nameWithType.vb: Attribute.GetCustomAttribute(Assembly, Type, Boolean)
+  fullName.vb: System.Attribute.GetCustomAttribute(System.Reflection.Assembly, System.Type, Boolean)
+  name.vb: GetCustomAttribute(Assembly, Type, Boolean)
+  spec.csharp:
+  - uid: System.Attribute.GetCustomAttribute(System.Reflection.Assembly,System.Type,System.Boolean)
+    name: GetCustomAttribute
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.attribute.getcustomattribute#system-attribute-getcustomattribute(system-reflection-assembly-system-type-system-boolean)
+  - name: (
+  - uid: System.Reflection.Assembly
+    name: Assembly
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.assembly
+  - name: ','
+  - name: " "
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: System.Attribute.GetCustomAttribute(System.Reflection.Assembly,System.Type,System.Boolean)
+    name: GetCustomAttribute
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.attribute.getcustomattribute#system-attribute-getcustomattribute(system-reflection-assembly-system-type-system-boolean)
+  - name: (
+  - uid: System.Reflection.Assembly
+    name: Assembly
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.assembly
+  - name: ','
+  - name: " "
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: System.Attribute.GetCustomAttribute(System.Reflection.MemberInfo,System.Type)
+  commentId: M:System.Attribute.GetCustomAttribute(System.Reflection.MemberInfo,System.Type)
+  parent: System.Attribute
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.attribute.getcustomattribute#system-attribute-getcustomattribute(system-reflection-memberinfo-system-type)
+  name: GetCustomAttribute(MemberInfo, Type)
+  nameWithType: Attribute.GetCustomAttribute(MemberInfo, Type)
+  fullName: System.Attribute.GetCustomAttribute(System.Reflection.MemberInfo, System.Type)
+  spec.csharp:
+  - uid: System.Attribute.GetCustomAttribute(System.Reflection.MemberInfo,System.Type)
+    name: GetCustomAttribute
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.attribute.getcustomattribute#system-attribute-getcustomattribute(system-reflection-memberinfo-system-type)
+  - name: (
+  - uid: System.Reflection.MemberInfo
+    name: MemberInfo
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.memberinfo
+  - name: ','
+  - name: " "
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: )
+  spec.vb:
+  - uid: System.Attribute.GetCustomAttribute(System.Reflection.MemberInfo,System.Type)
+    name: GetCustomAttribute
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.attribute.getcustomattribute#system-attribute-getcustomattribute(system-reflection-memberinfo-system-type)
+  - name: (
+  - uid: System.Reflection.MemberInfo
+    name: MemberInfo
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.memberinfo
+  - name: ','
+  - name: " "
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: )
+- uid: System.Attribute.GetCustomAttribute(System.Reflection.MemberInfo,System.Type,System.Boolean)
+  commentId: M:System.Attribute.GetCustomAttribute(System.Reflection.MemberInfo,System.Type,System.Boolean)
+  parent: System.Attribute
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.attribute.getcustomattribute#system-attribute-getcustomattribute(system-reflection-memberinfo-system-type-system-boolean)
+  name: GetCustomAttribute(MemberInfo, Type, bool)
+  nameWithType: Attribute.GetCustomAttribute(MemberInfo, Type, bool)
+  fullName: System.Attribute.GetCustomAttribute(System.Reflection.MemberInfo, System.Type, bool)
+  nameWithType.vb: Attribute.GetCustomAttribute(MemberInfo, Type, Boolean)
+  fullName.vb: System.Attribute.GetCustomAttribute(System.Reflection.MemberInfo, System.Type, Boolean)
+  name.vb: GetCustomAttribute(MemberInfo, Type, Boolean)
+  spec.csharp:
+  - uid: System.Attribute.GetCustomAttribute(System.Reflection.MemberInfo,System.Type,System.Boolean)
+    name: GetCustomAttribute
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.attribute.getcustomattribute#system-attribute-getcustomattribute(system-reflection-memberinfo-system-type-system-boolean)
+  - name: (
+  - uid: System.Reflection.MemberInfo
+    name: MemberInfo
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.memberinfo
+  - name: ','
+  - name: " "
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: System.Attribute.GetCustomAttribute(System.Reflection.MemberInfo,System.Type,System.Boolean)
+    name: GetCustomAttribute
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.attribute.getcustomattribute#system-attribute-getcustomattribute(system-reflection-memberinfo-system-type-system-boolean)
+  - name: (
+  - uid: System.Reflection.MemberInfo
+    name: MemberInfo
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.memberinfo
+  - name: ','
+  - name: " "
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: System.Attribute.GetCustomAttribute(System.Reflection.Module,System.Type)
+  commentId: M:System.Attribute.GetCustomAttribute(System.Reflection.Module,System.Type)
+  parent: System.Attribute
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.attribute.getcustomattribute#system-attribute-getcustomattribute(system-reflection-module-system-type)
+  name: GetCustomAttribute(Module, Type)
+  nameWithType: Attribute.GetCustomAttribute(Module, Type)
+  fullName: System.Attribute.GetCustomAttribute(System.Reflection.Module, System.Type)
+  spec.csharp:
+  - uid: System.Attribute.GetCustomAttribute(System.Reflection.Module,System.Type)
+    name: GetCustomAttribute
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.attribute.getcustomattribute#system-attribute-getcustomattribute(system-reflection-module-system-type)
+  - name: (
+  - uid: System.Reflection.Module
+    name: Module
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.module
+  - name: ','
+  - name: " "
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: )
+  spec.vb:
+  - uid: System.Attribute.GetCustomAttribute(System.Reflection.Module,System.Type)
+    name: GetCustomAttribute
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.attribute.getcustomattribute#system-attribute-getcustomattribute(system-reflection-module-system-type)
+  - name: (
+  - uid: System.Reflection.Module
+    name: Module
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.module
+  - name: ','
+  - name: " "
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: )
+- uid: System.Attribute.GetCustomAttribute(System.Reflection.Module,System.Type,System.Boolean)
+  commentId: M:System.Attribute.GetCustomAttribute(System.Reflection.Module,System.Type,System.Boolean)
+  parent: System.Attribute
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.attribute.getcustomattribute#system-attribute-getcustomattribute(system-reflection-module-system-type-system-boolean)
+  name: GetCustomAttribute(Module, Type, bool)
+  nameWithType: Attribute.GetCustomAttribute(Module, Type, bool)
+  fullName: System.Attribute.GetCustomAttribute(System.Reflection.Module, System.Type, bool)
+  nameWithType.vb: Attribute.GetCustomAttribute(Module, Type, Boolean)
+  fullName.vb: System.Attribute.GetCustomAttribute(System.Reflection.Module, System.Type, Boolean)
+  name.vb: GetCustomAttribute(Module, Type, Boolean)
+  spec.csharp:
+  - uid: System.Attribute.GetCustomAttribute(System.Reflection.Module,System.Type,System.Boolean)
+    name: GetCustomAttribute
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.attribute.getcustomattribute#system-attribute-getcustomattribute(system-reflection-module-system-type-system-boolean)
+  - name: (
+  - uid: System.Reflection.Module
+    name: Module
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.module
+  - name: ','
+  - name: " "
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: System.Attribute.GetCustomAttribute(System.Reflection.Module,System.Type,System.Boolean)
+    name: GetCustomAttribute
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.attribute.getcustomattribute#system-attribute-getcustomattribute(system-reflection-module-system-type-system-boolean)
+  - name: (
+  - uid: System.Reflection.Module
+    name: Module
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.module
+  - name: ','
+  - name: " "
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: System.Attribute.GetCustomAttribute(System.Reflection.ParameterInfo,System.Type)
+  commentId: M:System.Attribute.GetCustomAttribute(System.Reflection.ParameterInfo,System.Type)
+  parent: System.Attribute
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.attribute.getcustomattribute#system-attribute-getcustomattribute(system-reflection-parameterinfo-system-type)
+  name: GetCustomAttribute(ParameterInfo, Type)
+  nameWithType: Attribute.GetCustomAttribute(ParameterInfo, Type)
+  fullName: System.Attribute.GetCustomAttribute(System.Reflection.ParameterInfo, System.Type)
+  spec.csharp:
+  - uid: System.Attribute.GetCustomAttribute(System.Reflection.ParameterInfo,System.Type)
+    name: GetCustomAttribute
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.attribute.getcustomattribute#system-attribute-getcustomattribute(system-reflection-parameterinfo-system-type)
+  - name: (
+  - uid: System.Reflection.ParameterInfo
+    name: ParameterInfo
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.parameterinfo
+  - name: ','
+  - name: " "
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: )
+  spec.vb:
+  - uid: System.Attribute.GetCustomAttribute(System.Reflection.ParameterInfo,System.Type)
+    name: GetCustomAttribute
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.attribute.getcustomattribute#system-attribute-getcustomattribute(system-reflection-parameterinfo-system-type)
+  - name: (
+  - uid: System.Reflection.ParameterInfo
+    name: ParameterInfo
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.parameterinfo
+  - name: ','
+  - name: " "
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: )
+- uid: System.Attribute.GetCustomAttribute(System.Reflection.ParameterInfo,System.Type,System.Boolean)
+  commentId: M:System.Attribute.GetCustomAttribute(System.Reflection.ParameterInfo,System.Type,System.Boolean)
+  parent: System.Attribute
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.attribute.getcustomattribute#system-attribute-getcustomattribute(system-reflection-parameterinfo-system-type-system-boolean)
+  name: GetCustomAttribute(ParameterInfo, Type, bool)
+  nameWithType: Attribute.GetCustomAttribute(ParameterInfo, Type, bool)
+  fullName: System.Attribute.GetCustomAttribute(System.Reflection.ParameterInfo, System.Type, bool)
+  nameWithType.vb: Attribute.GetCustomAttribute(ParameterInfo, Type, Boolean)
+  fullName.vb: System.Attribute.GetCustomAttribute(System.Reflection.ParameterInfo, System.Type, Boolean)
+  name.vb: GetCustomAttribute(ParameterInfo, Type, Boolean)
+  spec.csharp:
+  - uid: System.Attribute.GetCustomAttribute(System.Reflection.ParameterInfo,System.Type,System.Boolean)
+    name: GetCustomAttribute
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.attribute.getcustomattribute#system-attribute-getcustomattribute(system-reflection-parameterinfo-system-type-system-boolean)
+  - name: (
+  - uid: System.Reflection.ParameterInfo
+    name: ParameterInfo
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.parameterinfo
+  - name: ','
+  - name: " "
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: System.Attribute.GetCustomAttribute(System.Reflection.ParameterInfo,System.Type,System.Boolean)
+    name: GetCustomAttribute
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.attribute.getcustomattribute#system-attribute-getcustomattribute(system-reflection-parameterinfo-system-type-system-boolean)
+  - name: (
+  - uid: System.Reflection.ParameterInfo
+    name: ParameterInfo
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.parameterinfo
+  - name: ','
+  - name: " "
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: System.Attribute.GetCustomAttributes(System.Reflection.Assembly)
+  commentId: M:System.Attribute.GetCustomAttributes(System.Reflection.Assembly)
+  parent: System.Attribute
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.attribute.getcustomattributes#system-attribute-getcustomattributes(system-reflection-assembly)
+  name: GetCustomAttributes(Assembly)
+  nameWithType: Attribute.GetCustomAttributes(Assembly)
+  fullName: System.Attribute.GetCustomAttributes(System.Reflection.Assembly)
+  spec.csharp:
+  - uid: System.Attribute.GetCustomAttributes(System.Reflection.Assembly)
+    name: GetCustomAttributes
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.attribute.getcustomattributes#system-attribute-getcustomattributes(system-reflection-assembly)
+  - name: (
+  - uid: System.Reflection.Assembly
+    name: Assembly
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.assembly
+  - name: )
+  spec.vb:
+  - uid: System.Attribute.GetCustomAttributes(System.Reflection.Assembly)
+    name: GetCustomAttributes
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.attribute.getcustomattributes#system-attribute-getcustomattributes(system-reflection-assembly)
+  - name: (
+  - uid: System.Reflection.Assembly
+    name: Assembly
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.assembly
+  - name: )
+- uid: System.Attribute.GetCustomAttributes(System.Reflection.Assembly,System.Boolean)
+  commentId: M:System.Attribute.GetCustomAttributes(System.Reflection.Assembly,System.Boolean)
+  parent: System.Attribute
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.attribute.getcustomattributes#system-attribute-getcustomattributes(system-reflection-assembly-system-boolean)
+  name: GetCustomAttributes(Assembly, bool)
+  nameWithType: Attribute.GetCustomAttributes(Assembly, bool)
+  fullName: System.Attribute.GetCustomAttributes(System.Reflection.Assembly, bool)
+  nameWithType.vb: Attribute.GetCustomAttributes(Assembly, Boolean)
+  fullName.vb: System.Attribute.GetCustomAttributes(System.Reflection.Assembly, Boolean)
+  name.vb: GetCustomAttributes(Assembly, Boolean)
+  spec.csharp:
+  - uid: System.Attribute.GetCustomAttributes(System.Reflection.Assembly,System.Boolean)
+    name: GetCustomAttributes
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.attribute.getcustomattributes#system-attribute-getcustomattributes(system-reflection-assembly-system-boolean)
+  - name: (
+  - uid: System.Reflection.Assembly
+    name: Assembly
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.assembly
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: System.Attribute.GetCustomAttributes(System.Reflection.Assembly,System.Boolean)
+    name: GetCustomAttributes
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.attribute.getcustomattributes#system-attribute-getcustomattributes(system-reflection-assembly-system-boolean)
+  - name: (
+  - uid: System.Reflection.Assembly
+    name: Assembly
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.assembly
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: System.Attribute.GetCustomAttributes(System.Reflection.Assembly,System.Type)
+  commentId: M:System.Attribute.GetCustomAttributes(System.Reflection.Assembly,System.Type)
+  parent: System.Attribute
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.attribute.getcustomattributes#system-attribute-getcustomattributes(system-reflection-assembly-system-type)
+  name: GetCustomAttributes(Assembly, Type)
+  nameWithType: Attribute.GetCustomAttributes(Assembly, Type)
+  fullName: System.Attribute.GetCustomAttributes(System.Reflection.Assembly, System.Type)
+  spec.csharp:
+  - uid: System.Attribute.GetCustomAttributes(System.Reflection.Assembly,System.Type)
+    name: GetCustomAttributes
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.attribute.getcustomattributes#system-attribute-getcustomattributes(system-reflection-assembly-system-type)
+  - name: (
+  - uid: System.Reflection.Assembly
+    name: Assembly
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.assembly
+  - name: ','
+  - name: " "
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: )
+  spec.vb:
+  - uid: System.Attribute.GetCustomAttributes(System.Reflection.Assembly,System.Type)
+    name: GetCustomAttributes
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.attribute.getcustomattributes#system-attribute-getcustomattributes(system-reflection-assembly-system-type)
+  - name: (
+  - uid: System.Reflection.Assembly
+    name: Assembly
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.assembly
+  - name: ','
+  - name: " "
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: )
+- uid: System.Attribute.GetCustomAttributes(System.Reflection.Assembly,System.Type,System.Boolean)
+  commentId: M:System.Attribute.GetCustomAttributes(System.Reflection.Assembly,System.Type,System.Boolean)
+  parent: System.Attribute
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.attribute.getcustomattributes#system-attribute-getcustomattributes(system-reflection-assembly-system-type-system-boolean)
+  name: GetCustomAttributes(Assembly, Type, bool)
+  nameWithType: Attribute.GetCustomAttributes(Assembly, Type, bool)
+  fullName: System.Attribute.GetCustomAttributes(System.Reflection.Assembly, System.Type, bool)
+  nameWithType.vb: Attribute.GetCustomAttributes(Assembly, Type, Boolean)
+  fullName.vb: System.Attribute.GetCustomAttributes(System.Reflection.Assembly, System.Type, Boolean)
+  name.vb: GetCustomAttributes(Assembly, Type, Boolean)
+  spec.csharp:
+  - uid: System.Attribute.GetCustomAttributes(System.Reflection.Assembly,System.Type,System.Boolean)
+    name: GetCustomAttributes
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.attribute.getcustomattributes#system-attribute-getcustomattributes(system-reflection-assembly-system-type-system-boolean)
+  - name: (
+  - uid: System.Reflection.Assembly
+    name: Assembly
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.assembly
+  - name: ','
+  - name: " "
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: System.Attribute.GetCustomAttributes(System.Reflection.Assembly,System.Type,System.Boolean)
+    name: GetCustomAttributes
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.attribute.getcustomattributes#system-attribute-getcustomattributes(system-reflection-assembly-system-type-system-boolean)
+  - name: (
+  - uid: System.Reflection.Assembly
+    name: Assembly
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.assembly
+  - name: ','
+  - name: " "
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: System.Attribute.GetCustomAttributes(System.Reflection.MemberInfo)
+  commentId: M:System.Attribute.GetCustomAttributes(System.Reflection.MemberInfo)
+  parent: System.Attribute
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.attribute.getcustomattributes#system-attribute-getcustomattributes(system-reflection-memberinfo)
+  name: GetCustomAttributes(MemberInfo)
+  nameWithType: Attribute.GetCustomAttributes(MemberInfo)
+  fullName: System.Attribute.GetCustomAttributes(System.Reflection.MemberInfo)
+  spec.csharp:
+  - uid: System.Attribute.GetCustomAttributes(System.Reflection.MemberInfo)
+    name: GetCustomAttributes
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.attribute.getcustomattributes#system-attribute-getcustomattributes(system-reflection-memberinfo)
+  - name: (
+  - uid: System.Reflection.MemberInfo
+    name: MemberInfo
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.memberinfo
+  - name: )
+  spec.vb:
+  - uid: System.Attribute.GetCustomAttributes(System.Reflection.MemberInfo)
+    name: GetCustomAttributes
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.attribute.getcustomattributes#system-attribute-getcustomattributes(system-reflection-memberinfo)
+  - name: (
+  - uid: System.Reflection.MemberInfo
+    name: MemberInfo
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.memberinfo
+  - name: )
+- uid: System.Attribute.GetCustomAttributes(System.Reflection.MemberInfo,System.Boolean)
+  commentId: M:System.Attribute.GetCustomAttributes(System.Reflection.MemberInfo,System.Boolean)
+  parent: System.Attribute
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.attribute.getcustomattributes#system-attribute-getcustomattributes(system-reflection-memberinfo-system-boolean)
+  name: GetCustomAttributes(MemberInfo, bool)
+  nameWithType: Attribute.GetCustomAttributes(MemberInfo, bool)
+  fullName: System.Attribute.GetCustomAttributes(System.Reflection.MemberInfo, bool)
+  nameWithType.vb: Attribute.GetCustomAttributes(MemberInfo, Boolean)
+  fullName.vb: System.Attribute.GetCustomAttributes(System.Reflection.MemberInfo, Boolean)
+  name.vb: GetCustomAttributes(MemberInfo, Boolean)
+  spec.csharp:
+  - uid: System.Attribute.GetCustomAttributes(System.Reflection.MemberInfo,System.Boolean)
+    name: GetCustomAttributes
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.attribute.getcustomattributes#system-attribute-getcustomattributes(system-reflection-memberinfo-system-boolean)
+  - name: (
+  - uid: System.Reflection.MemberInfo
+    name: MemberInfo
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.memberinfo
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: System.Attribute.GetCustomAttributes(System.Reflection.MemberInfo,System.Boolean)
+    name: GetCustomAttributes
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.attribute.getcustomattributes#system-attribute-getcustomattributes(system-reflection-memberinfo-system-boolean)
+  - name: (
+  - uid: System.Reflection.MemberInfo
+    name: MemberInfo
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.memberinfo
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: System.Attribute.GetCustomAttributes(System.Reflection.MemberInfo,System.Type)
+  commentId: M:System.Attribute.GetCustomAttributes(System.Reflection.MemberInfo,System.Type)
+  parent: System.Attribute
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.attribute.getcustomattributes#system-attribute-getcustomattributes(system-reflection-memberinfo-system-type)
+  name: GetCustomAttributes(MemberInfo, Type)
+  nameWithType: Attribute.GetCustomAttributes(MemberInfo, Type)
+  fullName: System.Attribute.GetCustomAttributes(System.Reflection.MemberInfo, System.Type)
+  spec.csharp:
+  - uid: System.Attribute.GetCustomAttributes(System.Reflection.MemberInfo,System.Type)
+    name: GetCustomAttributes
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.attribute.getcustomattributes#system-attribute-getcustomattributes(system-reflection-memberinfo-system-type)
+  - name: (
+  - uid: System.Reflection.MemberInfo
+    name: MemberInfo
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.memberinfo
+  - name: ','
+  - name: " "
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: )
+  spec.vb:
+  - uid: System.Attribute.GetCustomAttributes(System.Reflection.MemberInfo,System.Type)
+    name: GetCustomAttributes
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.attribute.getcustomattributes#system-attribute-getcustomattributes(system-reflection-memberinfo-system-type)
+  - name: (
+  - uid: System.Reflection.MemberInfo
+    name: MemberInfo
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.memberinfo
+  - name: ','
+  - name: " "
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: )
+- uid: System.Attribute.GetCustomAttributes(System.Reflection.MemberInfo,System.Type,System.Boolean)
+  commentId: M:System.Attribute.GetCustomAttributes(System.Reflection.MemberInfo,System.Type,System.Boolean)
+  parent: System.Attribute
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.attribute.getcustomattributes#system-attribute-getcustomattributes(system-reflection-memberinfo-system-type-system-boolean)
+  name: GetCustomAttributes(MemberInfo, Type, bool)
+  nameWithType: Attribute.GetCustomAttributes(MemberInfo, Type, bool)
+  fullName: System.Attribute.GetCustomAttributes(System.Reflection.MemberInfo, System.Type, bool)
+  nameWithType.vb: Attribute.GetCustomAttributes(MemberInfo, Type, Boolean)
+  fullName.vb: System.Attribute.GetCustomAttributes(System.Reflection.MemberInfo, System.Type, Boolean)
+  name.vb: GetCustomAttributes(MemberInfo, Type, Boolean)
+  spec.csharp:
+  - uid: System.Attribute.GetCustomAttributes(System.Reflection.MemberInfo,System.Type,System.Boolean)
+    name: GetCustomAttributes
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.attribute.getcustomattributes#system-attribute-getcustomattributes(system-reflection-memberinfo-system-type-system-boolean)
+  - name: (
+  - uid: System.Reflection.MemberInfo
+    name: MemberInfo
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.memberinfo
+  - name: ','
+  - name: " "
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: System.Attribute.GetCustomAttributes(System.Reflection.MemberInfo,System.Type,System.Boolean)
+    name: GetCustomAttributes
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.attribute.getcustomattributes#system-attribute-getcustomattributes(system-reflection-memberinfo-system-type-system-boolean)
+  - name: (
+  - uid: System.Reflection.MemberInfo
+    name: MemberInfo
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.memberinfo
+  - name: ','
+  - name: " "
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: System.Attribute.GetCustomAttributes(System.Reflection.Module)
+  commentId: M:System.Attribute.GetCustomAttributes(System.Reflection.Module)
+  parent: System.Attribute
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.attribute.getcustomattributes#system-attribute-getcustomattributes(system-reflection-module)
+  name: GetCustomAttributes(Module)
+  nameWithType: Attribute.GetCustomAttributes(Module)
+  fullName: System.Attribute.GetCustomAttributes(System.Reflection.Module)
+  spec.csharp:
+  - uid: System.Attribute.GetCustomAttributes(System.Reflection.Module)
+    name: GetCustomAttributes
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.attribute.getcustomattributes#system-attribute-getcustomattributes(system-reflection-module)
+  - name: (
+  - uid: System.Reflection.Module
+    name: Module
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.module
+  - name: )
+  spec.vb:
+  - uid: System.Attribute.GetCustomAttributes(System.Reflection.Module)
+    name: GetCustomAttributes
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.attribute.getcustomattributes#system-attribute-getcustomattributes(system-reflection-module)
+  - name: (
+  - uid: System.Reflection.Module
+    name: Module
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.module
+  - name: )
+- uid: System.Attribute.GetCustomAttributes(System.Reflection.Module,System.Boolean)
+  commentId: M:System.Attribute.GetCustomAttributes(System.Reflection.Module,System.Boolean)
+  parent: System.Attribute
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.attribute.getcustomattributes#system-attribute-getcustomattributes(system-reflection-module-system-boolean)
+  name: GetCustomAttributes(Module, bool)
+  nameWithType: Attribute.GetCustomAttributes(Module, bool)
+  fullName: System.Attribute.GetCustomAttributes(System.Reflection.Module, bool)
+  nameWithType.vb: Attribute.GetCustomAttributes(Module, Boolean)
+  fullName.vb: System.Attribute.GetCustomAttributes(System.Reflection.Module, Boolean)
+  name.vb: GetCustomAttributes(Module, Boolean)
+  spec.csharp:
+  - uid: System.Attribute.GetCustomAttributes(System.Reflection.Module,System.Boolean)
+    name: GetCustomAttributes
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.attribute.getcustomattributes#system-attribute-getcustomattributes(system-reflection-module-system-boolean)
+  - name: (
+  - uid: System.Reflection.Module
+    name: Module
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.module
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: System.Attribute.GetCustomAttributes(System.Reflection.Module,System.Boolean)
+    name: GetCustomAttributes
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.attribute.getcustomattributes#system-attribute-getcustomattributes(system-reflection-module-system-boolean)
+  - name: (
+  - uid: System.Reflection.Module
+    name: Module
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.module
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: System.Attribute.GetCustomAttributes(System.Reflection.Module,System.Type)
+  commentId: M:System.Attribute.GetCustomAttributes(System.Reflection.Module,System.Type)
+  parent: System.Attribute
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.attribute.getcustomattributes#system-attribute-getcustomattributes(system-reflection-module-system-type)
+  name: GetCustomAttributes(Module, Type)
+  nameWithType: Attribute.GetCustomAttributes(Module, Type)
+  fullName: System.Attribute.GetCustomAttributes(System.Reflection.Module, System.Type)
+  spec.csharp:
+  - uid: System.Attribute.GetCustomAttributes(System.Reflection.Module,System.Type)
+    name: GetCustomAttributes
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.attribute.getcustomattributes#system-attribute-getcustomattributes(system-reflection-module-system-type)
+  - name: (
+  - uid: System.Reflection.Module
+    name: Module
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.module
+  - name: ','
+  - name: " "
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: )
+  spec.vb:
+  - uid: System.Attribute.GetCustomAttributes(System.Reflection.Module,System.Type)
+    name: GetCustomAttributes
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.attribute.getcustomattributes#system-attribute-getcustomattributes(system-reflection-module-system-type)
+  - name: (
+  - uid: System.Reflection.Module
+    name: Module
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.module
+  - name: ','
+  - name: " "
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: )
+- uid: System.Attribute.GetCustomAttributes(System.Reflection.Module,System.Type,System.Boolean)
+  commentId: M:System.Attribute.GetCustomAttributes(System.Reflection.Module,System.Type,System.Boolean)
+  parent: System.Attribute
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.attribute.getcustomattributes#system-attribute-getcustomattributes(system-reflection-module-system-type-system-boolean)
+  name: GetCustomAttributes(Module, Type, bool)
+  nameWithType: Attribute.GetCustomAttributes(Module, Type, bool)
+  fullName: System.Attribute.GetCustomAttributes(System.Reflection.Module, System.Type, bool)
+  nameWithType.vb: Attribute.GetCustomAttributes(Module, Type, Boolean)
+  fullName.vb: System.Attribute.GetCustomAttributes(System.Reflection.Module, System.Type, Boolean)
+  name.vb: GetCustomAttributes(Module, Type, Boolean)
+  spec.csharp:
+  - uid: System.Attribute.GetCustomAttributes(System.Reflection.Module,System.Type,System.Boolean)
+    name: GetCustomAttributes
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.attribute.getcustomattributes#system-attribute-getcustomattributes(system-reflection-module-system-type-system-boolean)
+  - name: (
+  - uid: System.Reflection.Module
+    name: Module
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.module
+  - name: ','
+  - name: " "
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: System.Attribute.GetCustomAttributes(System.Reflection.Module,System.Type,System.Boolean)
+    name: GetCustomAttributes
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.attribute.getcustomattributes#system-attribute-getcustomattributes(system-reflection-module-system-type-system-boolean)
+  - name: (
+  - uid: System.Reflection.Module
+    name: Module
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.module
+  - name: ','
+  - name: " "
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: System.Attribute.GetCustomAttributes(System.Reflection.ParameterInfo)
+  commentId: M:System.Attribute.GetCustomAttributes(System.Reflection.ParameterInfo)
+  parent: System.Attribute
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.attribute.getcustomattributes#system-attribute-getcustomattributes(system-reflection-parameterinfo)
+  name: GetCustomAttributes(ParameterInfo)
+  nameWithType: Attribute.GetCustomAttributes(ParameterInfo)
+  fullName: System.Attribute.GetCustomAttributes(System.Reflection.ParameterInfo)
+  spec.csharp:
+  - uid: System.Attribute.GetCustomAttributes(System.Reflection.ParameterInfo)
+    name: GetCustomAttributes
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.attribute.getcustomattributes#system-attribute-getcustomattributes(system-reflection-parameterinfo)
+  - name: (
+  - uid: System.Reflection.ParameterInfo
+    name: ParameterInfo
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.parameterinfo
+  - name: )
+  spec.vb:
+  - uid: System.Attribute.GetCustomAttributes(System.Reflection.ParameterInfo)
+    name: GetCustomAttributes
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.attribute.getcustomattributes#system-attribute-getcustomattributes(system-reflection-parameterinfo)
+  - name: (
+  - uid: System.Reflection.ParameterInfo
+    name: ParameterInfo
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.parameterinfo
+  - name: )
+- uid: System.Attribute.GetCustomAttributes(System.Reflection.ParameterInfo,System.Boolean)
+  commentId: M:System.Attribute.GetCustomAttributes(System.Reflection.ParameterInfo,System.Boolean)
+  parent: System.Attribute
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.attribute.getcustomattributes#system-attribute-getcustomattributes(system-reflection-parameterinfo-system-boolean)
+  name: GetCustomAttributes(ParameterInfo, bool)
+  nameWithType: Attribute.GetCustomAttributes(ParameterInfo, bool)
+  fullName: System.Attribute.GetCustomAttributes(System.Reflection.ParameterInfo, bool)
+  nameWithType.vb: Attribute.GetCustomAttributes(ParameterInfo, Boolean)
+  fullName.vb: System.Attribute.GetCustomAttributes(System.Reflection.ParameterInfo, Boolean)
+  name.vb: GetCustomAttributes(ParameterInfo, Boolean)
+  spec.csharp:
+  - uid: System.Attribute.GetCustomAttributes(System.Reflection.ParameterInfo,System.Boolean)
+    name: GetCustomAttributes
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.attribute.getcustomattributes#system-attribute-getcustomattributes(system-reflection-parameterinfo-system-boolean)
+  - name: (
+  - uid: System.Reflection.ParameterInfo
+    name: ParameterInfo
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.parameterinfo
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: System.Attribute.GetCustomAttributes(System.Reflection.ParameterInfo,System.Boolean)
+    name: GetCustomAttributes
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.attribute.getcustomattributes#system-attribute-getcustomattributes(system-reflection-parameterinfo-system-boolean)
+  - name: (
+  - uid: System.Reflection.ParameterInfo
+    name: ParameterInfo
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.parameterinfo
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: System.Attribute.GetCustomAttributes(System.Reflection.ParameterInfo,System.Type)
+  commentId: M:System.Attribute.GetCustomAttributes(System.Reflection.ParameterInfo,System.Type)
+  parent: System.Attribute
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.attribute.getcustomattributes#system-attribute-getcustomattributes(system-reflection-parameterinfo-system-type)
+  name: GetCustomAttributes(ParameterInfo, Type)
+  nameWithType: Attribute.GetCustomAttributes(ParameterInfo, Type)
+  fullName: System.Attribute.GetCustomAttributes(System.Reflection.ParameterInfo, System.Type)
+  spec.csharp:
+  - uid: System.Attribute.GetCustomAttributes(System.Reflection.ParameterInfo,System.Type)
+    name: GetCustomAttributes
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.attribute.getcustomattributes#system-attribute-getcustomattributes(system-reflection-parameterinfo-system-type)
+  - name: (
+  - uid: System.Reflection.ParameterInfo
+    name: ParameterInfo
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.parameterinfo
+  - name: ','
+  - name: " "
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: )
+  spec.vb:
+  - uid: System.Attribute.GetCustomAttributes(System.Reflection.ParameterInfo,System.Type)
+    name: GetCustomAttributes
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.attribute.getcustomattributes#system-attribute-getcustomattributes(system-reflection-parameterinfo-system-type)
+  - name: (
+  - uid: System.Reflection.ParameterInfo
+    name: ParameterInfo
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.parameterinfo
+  - name: ','
+  - name: " "
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: )
+- uid: System.Attribute.GetCustomAttributes(System.Reflection.ParameterInfo,System.Type,System.Boolean)
+  commentId: M:System.Attribute.GetCustomAttributes(System.Reflection.ParameterInfo,System.Type,System.Boolean)
+  parent: System.Attribute
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.attribute.getcustomattributes#system-attribute-getcustomattributes(system-reflection-parameterinfo-system-type-system-boolean)
+  name: GetCustomAttributes(ParameterInfo, Type, bool)
+  nameWithType: Attribute.GetCustomAttributes(ParameterInfo, Type, bool)
+  fullName: System.Attribute.GetCustomAttributes(System.Reflection.ParameterInfo, System.Type, bool)
+  nameWithType.vb: Attribute.GetCustomAttributes(ParameterInfo, Type, Boolean)
+  fullName.vb: System.Attribute.GetCustomAttributes(System.Reflection.ParameterInfo, System.Type, Boolean)
+  name.vb: GetCustomAttributes(ParameterInfo, Type, Boolean)
+  spec.csharp:
+  - uid: System.Attribute.GetCustomAttributes(System.Reflection.ParameterInfo,System.Type,System.Boolean)
+    name: GetCustomAttributes
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.attribute.getcustomattributes#system-attribute-getcustomattributes(system-reflection-parameterinfo-system-type-system-boolean)
+  - name: (
+  - uid: System.Reflection.ParameterInfo
+    name: ParameterInfo
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.parameterinfo
+  - name: ','
+  - name: " "
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: System.Attribute.GetCustomAttributes(System.Reflection.ParameterInfo,System.Type,System.Boolean)
+    name: GetCustomAttributes
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.attribute.getcustomattributes#system-attribute-getcustomattributes(system-reflection-parameterinfo-system-type-system-boolean)
+  - name: (
+  - uid: System.Reflection.ParameterInfo
+    name: ParameterInfo
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.parameterinfo
+  - name: ','
+  - name: " "
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: System.Attribute.GetHashCode
+  commentId: M:System.Attribute.GetHashCode
+  parent: System.Attribute
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.attribute.gethashcode
+  name: GetHashCode()
+  nameWithType: Attribute.GetHashCode()
+  fullName: System.Attribute.GetHashCode()
+  spec.csharp:
+  - uid: System.Attribute.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.attribute.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Attribute.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.attribute.gethashcode
+  - name: (
+  - name: )
+- uid: System.Attribute.IsDefaultAttribute
+  commentId: M:System.Attribute.IsDefaultAttribute
+  parent: System.Attribute
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.attribute.isdefaultattribute
+  name: IsDefaultAttribute()
+  nameWithType: Attribute.IsDefaultAttribute()
+  fullName: System.Attribute.IsDefaultAttribute()
+  spec.csharp:
+  - uid: System.Attribute.IsDefaultAttribute
+    name: IsDefaultAttribute
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.attribute.isdefaultattribute
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Attribute.IsDefaultAttribute
+    name: IsDefaultAttribute
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.attribute.isdefaultattribute
+  - name: (
+  - name: )
+- uid: System.Attribute.IsDefined(System.Reflection.Assembly,System.Type)
+  commentId: M:System.Attribute.IsDefined(System.Reflection.Assembly,System.Type)
+  parent: System.Attribute
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.attribute.isdefined#system-attribute-isdefined(system-reflection-assembly-system-type)
+  name: IsDefined(Assembly, Type)
+  nameWithType: Attribute.IsDefined(Assembly, Type)
+  fullName: System.Attribute.IsDefined(System.Reflection.Assembly, System.Type)
+  spec.csharp:
+  - uid: System.Attribute.IsDefined(System.Reflection.Assembly,System.Type)
+    name: IsDefined
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.attribute.isdefined#system-attribute-isdefined(system-reflection-assembly-system-type)
+  - name: (
+  - uid: System.Reflection.Assembly
+    name: Assembly
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.assembly
+  - name: ','
+  - name: " "
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: )
+  spec.vb:
+  - uid: System.Attribute.IsDefined(System.Reflection.Assembly,System.Type)
+    name: IsDefined
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.attribute.isdefined#system-attribute-isdefined(system-reflection-assembly-system-type)
+  - name: (
+  - uid: System.Reflection.Assembly
+    name: Assembly
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.assembly
+  - name: ','
+  - name: " "
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: )
+- uid: System.Attribute.IsDefined(System.Reflection.Assembly,System.Type,System.Boolean)
+  commentId: M:System.Attribute.IsDefined(System.Reflection.Assembly,System.Type,System.Boolean)
+  parent: System.Attribute
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.attribute.isdefined#system-attribute-isdefined(system-reflection-assembly-system-type-system-boolean)
+  name: IsDefined(Assembly, Type, bool)
+  nameWithType: Attribute.IsDefined(Assembly, Type, bool)
+  fullName: System.Attribute.IsDefined(System.Reflection.Assembly, System.Type, bool)
+  nameWithType.vb: Attribute.IsDefined(Assembly, Type, Boolean)
+  fullName.vb: System.Attribute.IsDefined(System.Reflection.Assembly, System.Type, Boolean)
+  name.vb: IsDefined(Assembly, Type, Boolean)
+  spec.csharp:
+  - uid: System.Attribute.IsDefined(System.Reflection.Assembly,System.Type,System.Boolean)
+    name: IsDefined
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.attribute.isdefined#system-attribute-isdefined(system-reflection-assembly-system-type-system-boolean)
+  - name: (
+  - uid: System.Reflection.Assembly
+    name: Assembly
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.assembly
+  - name: ','
+  - name: " "
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: System.Attribute.IsDefined(System.Reflection.Assembly,System.Type,System.Boolean)
+    name: IsDefined
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.attribute.isdefined#system-attribute-isdefined(system-reflection-assembly-system-type-system-boolean)
+  - name: (
+  - uid: System.Reflection.Assembly
+    name: Assembly
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.assembly
+  - name: ','
+  - name: " "
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: System.Attribute.IsDefined(System.Reflection.MemberInfo,System.Type)
+  commentId: M:System.Attribute.IsDefined(System.Reflection.MemberInfo,System.Type)
+  parent: System.Attribute
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.attribute.isdefined#system-attribute-isdefined(system-reflection-memberinfo-system-type)
+  name: IsDefined(MemberInfo, Type)
+  nameWithType: Attribute.IsDefined(MemberInfo, Type)
+  fullName: System.Attribute.IsDefined(System.Reflection.MemberInfo, System.Type)
+  spec.csharp:
+  - uid: System.Attribute.IsDefined(System.Reflection.MemberInfo,System.Type)
+    name: IsDefined
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.attribute.isdefined#system-attribute-isdefined(system-reflection-memberinfo-system-type)
+  - name: (
+  - uid: System.Reflection.MemberInfo
+    name: MemberInfo
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.memberinfo
+  - name: ','
+  - name: " "
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: )
+  spec.vb:
+  - uid: System.Attribute.IsDefined(System.Reflection.MemberInfo,System.Type)
+    name: IsDefined
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.attribute.isdefined#system-attribute-isdefined(system-reflection-memberinfo-system-type)
+  - name: (
+  - uid: System.Reflection.MemberInfo
+    name: MemberInfo
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.memberinfo
+  - name: ','
+  - name: " "
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: )
+- uid: System.Attribute.IsDefined(System.Reflection.MemberInfo,System.Type,System.Boolean)
+  commentId: M:System.Attribute.IsDefined(System.Reflection.MemberInfo,System.Type,System.Boolean)
+  parent: System.Attribute
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.attribute.isdefined#system-attribute-isdefined(system-reflection-memberinfo-system-type-system-boolean)
+  name: IsDefined(MemberInfo, Type, bool)
+  nameWithType: Attribute.IsDefined(MemberInfo, Type, bool)
+  fullName: System.Attribute.IsDefined(System.Reflection.MemberInfo, System.Type, bool)
+  nameWithType.vb: Attribute.IsDefined(MemberInfo, Type, Boolean)
+  fullName.vb: System.Attribute.IsDefined(System.Reflection.MemberInfo, System.Type, Boolean)
+  name.vb: IsDefined(MemberInfo, Type, Boolean)
+  spec.csharp:
+  - uid: System.Attribute.IsDefined(System.Reflection.MemberInfo,System.Type,System.Boolean)
+    name: IsDefined
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.attribute.isdefined#system-attribute-isdefined(system-reflection-memberinfo-system-type-system-boolean)
+  - name: (
+  - uid: System.Reflection.MemberInfo
+    name: MemberInfo
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.memberinfo
+  - name: ','
+  - name: " "
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: System.Attribute.IsDefined(System.Reflection.MemberInfo,System.Type,System.Boolean)
+    name: IsDefined
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.attribute.isdefined#system-attribute-isdefined(system-reflection-memberinfo-system-type-system-boolean)
+  - name: (
+  - uid: System.Reflection.MemberInfo
+    name: MemberInfo
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.memberinfo
+  - name: ','
+  - name: " "
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: System.Attribute.IsDefined(System.Reflection.Module,System.Type)
+  commentId: M:System.Attribute.IsDefined(System.Reflection.Module,System.Type)
+  parent: System.Attribute
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.attribute.isdefined#system-attribute-isdefined(system-reflection-module-system-type)
+  name: IsDefined(Module, Type)
+  nameWithType: Attribute.IsDefined(Module, Type)
+  fullName: System.Attribute.IsDefined(System.Reflection.Module, System.Type)
+  spec.csharp:
+  - uid: System.Attribute.IsDefined(System.Reflection.Module,System.Type)
+    name: IsDefined
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.attribute.isdefined#system-attribute-isdefined(system-reflection-module-system-type)
+  - name: (
+  - uid: System.Reflection.Module
+    name: Module
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.module
+  - name: ','
+  - name: " "
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: )
+  spec.vb:
+  - uid: System.Attribute.IsDefined(System.Reflection.Module,System.Type)
+    name: IsDefined
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.attribute.isdefined#system-attribute-isdefined(system-reflection-module-system-type)
+  - name: (
+  - uid: System.Reflection.Module
+    name: Module
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.module
+  - name: ','
+  - name: " "
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: )
+- uid: System.Attribute.IsDefined(System.Reflection.Module,System.Type,System.Boolean)
+  commentId: M:System.Attribute.IsDefined(System.Reflection.Module,System.Type,System.Boolean)
+  parent: System.Attribute
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.attribute.isdefined#system-attribute-isdefined(system-reflection-module-system-type-system-boolean)
+  name: IsDefined(Module, Type, bool)
+  nameWithType: Attribute.IsDefined(Module, Type, bool)
+  fullName: System.Attribute.IsDefined(System.Reflection.Module, System.Type, bool)
+  nameWithType.vb: Attribute.IsDefined(Module, Type, Boolean)
+  fullName.vb: System.Attribute.IsDefined(System.Reflection.Module, System.Type, Boolean)
+  name.vb: IsDefined(Module, Type, Boolean)
+  spec.csharp:
+  - uid: System.Attribute.IsDefined(System.Reflection.Module,System.Type,System.Boolean)
+    name: IsDefined
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.attribute.isdefined#system-attribute-isdefined(system-reflection-module-system-type-system-boolean)
+  - name: (
+  - uid: System.Reflection.Module
+    name: Module
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.module
+  - name: ','
+  - name: " "
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: System.Attribute.IsDefined(System.Reflection.Module,System.Type,System.Boolean)
+    name: IsDefined
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.attribute.isdefined#system-attribute-isdefined(system-reflection-module-system-type-system-boolean)
+  - name: (
+  - uid: System.Reflection.Module
+    name: Module
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.module
+  - name: ','
+  - name: " "
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: System.Attribute.IsDefined(System.Reflection.ParameterInfo,System.Type)
+  commentId: M:System.Attribute.IsDefined(System.Reflection.ParameterInfo,System.Type)
+  parent: System.Attribute
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.attribute.isdefined#system-attribute-isdefined(system-reflection-parameterinfo-system-type)
+  name: IsDefined(ParameterInfo, Type)
+  nameWithType: Attribute.IsDefined(ParameterInfo, Type)
+  fullName: System.Attribute.IsDefined(System.Reflection.ParameterInfo, System.Type)
+  spec.csharp:
+  - uid: System.Attribute.IsDefined(System.Reflection.ParameterInfo,System.Type)
+    name: IsDefined
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.attribute.isdefined#system-attribute-isdefined(system-reflection-parameterinfo-system-type)
+  - name: (
+  - uid: System.Reflection.ParameterInfo
+    name: ParameterInfo
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.parameterinfo
+  - name: ','
+  - name: " "
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: )
+  spec.vb:
+  - uid: System.Attribute.IsDefined(System.Reflection.ParameterInfo,System.Type)
+    name: IsDefined
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.attribute.isdefined#system-attribute-isdefined(system-reflection-parameterinfo-system-type)
+  - name: (
+  - uid: System.Reflection.ParameterInfo
+    name: ParameterInfo
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.parameterinfo
+  - name: ','
+  - name: " "
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: )
+- uid: System.Attribute.IsDefined(System.Reflection.ParameterInfo,System.Type,System.Boolean)
+  commentId: M:System.Attribute.IsDefined(System.Reflection.ParameterInfo,System.Type,System.Boolean)
+  parent: System.Attribute
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.attribute.isdefined#system-attribute-isdefined(system-reflection-parameterinfo-system-type-system-boolean)
+  name: IsDefined(ParameterInfo, Type, bool)
+  nameWithType: Attribute.IsDefined(ParameterInfo, Type, bool)
+  fullName: System.Attribute.IsDefined(System.Reflection.ParameterInfo, System.Type, bool)
+  nameWithType.vb: Attribute.IsDefined(ParameterInfo, Type, Boolean)
+  fullName.vb: System.Attribute.IsDefined(System.Reflection.ParameterInfo, System.Type, Boolean)
+  name.vb: IsDefined(ParameterInfo, Type, Boolean)
+  spec.csharp:
+  - uid: System.Attribute.IsDefined(System.Reflection.ParameterInfo,System.Type,System.Boolean)
+    name: IsDefined
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.attribute.isdefined#system-attribute-isdefined(system-reflection-parameterinfo-system-type-system-boolean)
+  - name: (
+  - uid: System.Reflection.ParameterInfo
+    name: ParameterInfo
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.parameterinfo
+  - name: ','
+  - name: " "
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: System.Attribute.IsDefined(System.Reflection.ParameterInfo,System.Type,System.Boolean)
+    name: IsDefined
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.attribute.isdefined#system-attribute-isdefined(system-reflection-parameterinfo-system-type-system-boolean)
+  - name: (
+  - uid: System.Reflection.ParameterInfo
+    name: ParameterInfo
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.parameterinfo
+  - name: ','
+  - name: " "
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: System.Attribute.Match(System.Object)
+  commentId: M:System.Attribute.Match(System.Object)
+  parent: System.Attribute
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.attribute.match
+  name: Match(object)
+  nameWithType: Attribute.Match(object)
+  fullName: System.Attribute.Match(object)
+  nameWithType.vb: Attribute.Match(Object)
+  fullName.vb: System.Attribute.Match(Object)
+  name.vb: Match(Object)
+  spec.csharp:
+  - uid: System.Attribute.Match(System.Object)
+    name: Match
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.attribute.match
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Attribute.Match(System.Object)
+    name: Match
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.attribute.match
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Attribute.TypeId
+  commentId: P:System.Attribute.TypeId
+  parent: System.Attribute
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.attribute.typeid
+  name: TypeId
+  nameWithType: Attribute.TypeId
+  fullName: System.Attribute.TypeId
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  parent: FoundationaLLM.Core.Utils.ObjectExtensions
+  definition: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Microsoft.AspNetCore.Mvc
+  commentId: N:Microsoft.AspNetCore.Mvc
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft
+  name: Microsoft.AspNetCore.Mvc
+  nameWithType: Microsoft.AspNetCore.Mvc
+  fullName: Microsoft.AspNetCore.Mvc
+  spec.csharp:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.AspNetCore
+    name: AspNetCore
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore
+  - name: .
+  - uid: Microsoft.AspNetCore.Mvc
+    name: Mvc
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.mvc
+  spec.vb:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.AspNetCore
+    name: AspNetCore
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore
+  - name: .
+  - uid: Microsoft.AspNetCore.Mvc
+    name: Mvc
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.mvc
+- uid: Microsoft.AspNetCore.Mvc.Filters
+  commentId: N:Microsoft.AspNetCore.Mvc.Filters
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft
+  name: Microsoft.AspNetCore.Mvc.Filters
+  nameWithType: Microsoft.AspNetCore.Mvc.Filters
+  fullName: Microsoft.AspNetCore.Mvc.Filters
+  spec.csharp:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.AspNetCore
+    name: AspNetCore
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore
+  - name: .
+  - uid: Microsoft.AspNetCore.Mvc
+    name: Mvc
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.mvc
+  - name: .
+  - uid: Microsoft.AspNetCore.Mvc.Filters
+    name: Filters
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.mvc.filters
+  spec.vb:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.AspNetCore
+    name: AspNetCore
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore
+  - name: .
+  - uid: Microsoft.AspNetCore.Mvc
+    name: Mvc
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.mvc
+  - name: .
+  - uid: Microsoft.AspNetCore.Mvc.Filters
+    name: Filters
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.mvc.filters
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  isExternal: true
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions
+  commentId: T:FoundationaLLM.Core.Utils.ObjectExtensions
+  parent: FoundationaLLM.Core.Utils
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html
+  name: ObjectExtensions
+  nameWithType: ObjectExtensions
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions
+- uid: FoundationaLLM.Core.Utils
+  commentId: N:FoundationaLLM.Core.Utils
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Core.Utils
+  nameWithType: FoundationaLLM.Core.Utils
+  fullName: FoundationaLLM.Core.Utils
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+- uid: FoundationaLLM.Common.Authentication.APIKeyAuthenticationAttribute.#ctor*
+  commentId: Overload:FoundationaLLM.Common.Authentication.APIKeyAuthenticationAttribute.#ctor
+  href: FoundationaLLM.Common.Authentication.APIKeyAuthenticationAttribute.html#FoundationaLLM_Common_Authentication_APIKeyAuthenticationAttribute__ctor
+  name: APIKeyAuthenticationAttribute
+  nameWithType: APIKeyAuthenticationAttribute.APIKeyAuthenticationAttribute
+  fullName: FoundationaLLM.Common.Authentication.APIKeyAuthenticationAttribute.APIKeyAuthenticationAttribute
+  nameWithType.vb: APIKeyAuthenticationAttribute.New
+  fullName.vb: FoundationaLLM.Common.Authentication.APIKeyAuthenticationAttribute.New
+  name.vb: New

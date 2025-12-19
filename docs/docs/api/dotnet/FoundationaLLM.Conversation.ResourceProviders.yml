@@ -1,0 +1,24 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Conversation.ResourceProviders
+  commentId: N:FoundationaLLM.Conversation.ResourceProviders
+  id: Conversation.ResourceProviders
+  parent: FoundationaLLM
+  children:
+  - FoundationaLLM.Conversation.ResourceProviders.ConversationResourceProviderService
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM.Conversation.ResourceProviders
+  nameWithType: FoundationaLLM.Conversation.ResourceProviders
+  fullName: FoundationaLLM.Conversation.ResourceProviders
+  type: Namespace
+  assemblies:
+  - FoundationaLLM.Conversation
+references:
+- uid: FoundationaLLM.Conversation.ResourceProviders.ConversationResourceProviderService
+  commentId: T:FoundationaLLM.Conversation.ResourceProviders.ConversationResourceProviderService
+  href: FoundationaLLM.Conversation.ResourceProviders.ConversationResourceProviderService.html
+  name: ConversationResourceProviderService
+  nameWithType: ConversationResourceProviderService
+  fullName: FoundationaLLM.Conversation.ResourceProviders.ConversationResourceProviderService

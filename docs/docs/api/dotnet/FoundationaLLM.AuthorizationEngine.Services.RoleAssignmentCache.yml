@@ -1,0 +1,836 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.AuthorizationEngine.Services.RoleAssignmentCache
+  commentId: T:FoundationaLLM.AuthorizationEngine.Services.RoleAssignmentCache
+  id: RoleAssignmentCache
+  parent: FoundationaLLM.AuthorizationEngine.Services
+  children:
+  - FoundationaLLM.AuthorizationEngine.Services.RoleAssignmentCache.#ctor(FoundationaLLM.AuthorizationEngine.Models.RoleAssignmentStore)
+  - FoundationaLLM.AuthorizationEngine.Services.RoleAssignmentCache.AddOrUpdateRoleAssignment(FoundationaLLM.Common.Models.ResourceProviders.Authorization.RoleAssignment)
+  - FoundationaLLM.AuthorizationEngine.Services.RoleAssignmentCache.GetRoleAssignments(System.String)
+  - FoundationaLLM.AuthorizationEngine.Services.RoleAssignmentCache.RemoveRoleAssignment(System.String)
+  langs:
+  - csharp
+  - vb
+  name: RoleAssignmentCache
+  nameWithType: RoleAssignmentCache
+  fullName: FoundationaLLM.AuthorizationEngine.Services.RoleAssignmentCache
+  type: Class
+  source:
+    remote:
+      path: src/dotnet/AuthorizationEngine/Services/RoleAssignmentCache.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: RoleAssignmentCache
+    path: ../src/dotnet/AuthorizationEngine/Services/RoleAssignmentCache.cs
+    startLine: 8
+  assemblies:
+  - FoundationaLLM.AuthorizationEngine
+  namespace: FoundationaLLM.AuthorizationEngine.Services
+  summary: In-memory cache for role assignments.
+  example: []
+  syntax:
+    content: public class RoleAssignmentCache
+    content.vb: Public Class RoleAssignmentCache
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+  extensionMethods:
+  - System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+- uid: FoundationaLLM.AuthorizationEngine.Services.RoleAssignmentCache.#ctor(FoundationaLLM.AuthorizationEngine.Models.RoleAssignmentStore)
+  commentId: M:FoundationaLLM.AuthorizationEngine.Services.RoleAssignmentCache.#ctor(FoundationaLLM.AuthorizationEngine.Models.RoleAssignmentStore)
+  id: '#ctor(FoundationaLLM.AuthorizationEngine.Models.RoleAssignmentStore)'
+  parent: FoundationaLLM.AuthorizationEngine.Services.RoleAssignmentCache
+  langs:
+  - csharp
+  - vb
+  name: RoleAssignmentCache(RoleAssignmentStore)
+  nameWithType: RoleAssignmentCache.RoleAssignmentCache(RoleAssignmentStore)
+  fullName: FoundationaLLM.AuthorizationEngine.Services.RoleAssignmentCache.RoleAssignmentCache(FoundationaLLM.AuthorizationEngine.Models.RoleAssignmentStore)
+  type: Constructor
+  source:
+    remote:
+      path: src/dotnet/AuthorizationEngine/Services/RoleAssignmentCache.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: .ctor
+    path: ../src/dotnet/AuthorizationEngine/Services/RoleAssignmentCache.cs
+    startLine: 17
+  assemblies:
+  - FoundationaLLM.AuthorizationEngine
+  namespace: FoundationaLLM.AuthorizationEngine.Services
+  summary: Creates a new instance of the <xref href="FoundationaLLM.AuthorizationEngine.Services.RoleAssignmentCache" data-throw-if-not-resolved="false"></xref> class.
+  example: []
+  syntax:
+    content: public RoleAssignmentCache(RoleAssignmentStore roleAssignmentStore)
+    parameters:
+    - id: roleAssignmentStore
+      type: FoundationaLLM.AuthorizationEngine.Models.RoleAssignmentStore
+      description: The role assignment store containing the role assignments used to initialize the cache.
+    content.vb: Public Sub New(roleAssignmentStore As RoleAssignmentStore)
+  overload: FoundationaLLM.AuthorizationEngine.Services.RoleAssignmentCache.#ctor*
+  nameWithType.vb: RoleAssignmentCache.New(RoleAssignmentStore)
+  fullName.vb: FoundationaLLM.AuthorizationEngine.Services.RoleAssignmentCache.New(FoundationaLLM.AuthorizationEngine.Models.RoleAssignmentStore)
+  name.vb: New(RoleAssignmentStore)
+- uid: FoundationaLLM.AuthorizationEngine.Services.RoleAssignmentCache.AddOrUpdateRoleAssignment(FoundationaLLM.Common.Models.ResourceProviders.Authorization.RoleAssignment)
+  commentId: M:FoundationaLLM.AuthorizationEngine.Services.RoleAssignmentCache.AddOrUpdateRoleAssignment(FoundationaLLM.Common.Models.ResourceProviders.Authorization.RoleAssignment)
+  id: AddOrUpdateRoleAssignment(FoundationaLLM.Common.Models.ResourceProviders.Authorization.RoleAssignment)
+  parent: FoundationaLLM.AuthorizationEngine.Services.RoleAssignmentCache
+  langs:
+  - csharp
+  - vb
+  name: AddOrUpdateRoleAssignment(RoleAssignment)
+  nameWithType: RoleAssignmentCache.AddOrUpdateRoleAssignment(RoleAssignment)
+  fullName: FoundationaLLM.AuthorizationEngine.Services.RoleAssignmentCache.AddOrUpdateRoleAssignment(FoundationaLLM.Common.Models.ResourceProviders.Authorization.RoleAssignment)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/AuthorizationEngine/Services/RoleAssignmentCache.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: AddOrUpdateRoleAssignment
+    path: ../src/dotnet/AuthorizationEngine/Services/RoleAssignmentCache.cs
+    startLine: 32
+  assemblies:
+  - FoundationaLLM.AuthorizationEngine
+  namespace: FoundationaLLM.AuthorizationEngine.Services
+  summary: Adds or updates a role assignment in the cache.
+  example: []
+  syntax:
+    content: public void AddOrUpdateRoleAssignment(RoleAssignment roleAssignment)
+    parameters:
+    - id: roleAssignment
+      type: FoundationaLLM.Common.Models.ResourceProviders.Authorization.RoleAssignment
+      description: The <xref href="FoundationaLLM.Common.Models.ResourceProviders.Authorization.RoleAssignment" data-throw-if-not-resolved="false"></xref> to add or update in the cache.
+    content.vb: Public Sub AddOrUpdateRoleAssignment(roleAssignment As RoleAssignment)
+  overload: FoundationaLLM.AuthorizationEngine.Services.RoleAssignmentCache.AddOrUpdateRoleAssignment*
+- uid: FoundationaLLM.AuthorizationEngine.Services.RoleAssignmentCache.RemoveRoleAssignment(System.String)
+  commentId: M:FoundationaLLM.AuthorizationEngine.Services.RoleAssignmentCache.RemoveRoleAssignment(System.String)
+  id: RemoveRoleAssignment(System.String)
+  parent: FoundationaLLM.AuthorizationEngine.Services.RoleAssignmentCache
+  langs:
+  - csharp
+  - vb
+  name: RemoveRoleAssignment(string)
+  nameWithType: RoleAssignmentCache.RemoveRoleAssignment(string)
+  fullName: FoundationaLLM.AuthorizationEngine.Services.RoleAssignmentCache.RemoveRoleAssignment(string)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/AuthorizationEngine/Services/RoleAssignmentCache.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: RemoveRoleAssignment
+    path: ../src/dotnet/AuthorizationEngine/Services/RoleAssignmentCache.cs
+    startLine: 52
+  assemblies:
+  - FoundationaLLM.AuthorizationEngine
+  namespace: FoundationaLLM.AuthorizationEngine.Services
+  summary: Removes a role assignment from the cache.
+  example: []
+  syntax:
+    content: public void RemoveRoleAssignment(string roleAssignmentId)
+    parameters:
+    - id: roleAssignmentId
+      type: System.String
+      description: The unique identifier of the role assigment to be removed.
+    content.vb: Public Sub RemoveRoleAssignment(roleAssignmentId As String)
+  overload: FoundationaLLM.AuthorizationEngine.Services.RoleAssignmentCache.RemoveRoleAssignment*
+  nameWithType.vb: RoleAssignmentCache.RemoveRoleAssignment(String)
+  fullName.vb: FoundationaLLM.AuthorizationEngine.Services.RoleAssignmentCache.RemoveRoleAssignment(String)
+  name.vb: RemoveRoleAssignment(String)
+- uid: FoundationaLLM.AuthorizationEngine.Services.RoleAssignmentCache.GetRoleAssignments(System.String)
+  commentId: M:FoundationaLLM.AuthorizationEngine.Services.RoleAssignmentCache.GetRoleAssignments(System.String)
+  id: GetRoleAssignments(System.String)
+  parent: FoundationaLLM.AuthorizationEngine.Services.RoleAssignmentCache
+  langs:
+  - csharp
+  - vb
+  name: GetRoleAssignments(string)
+  nameWithType: RoleAssignmentCache.GetRoleAssignments(string)
+  fullName: FoundationaLLM.AuthorizationEngine.Services.RoleAssignmentCache.GetRoleAssignments(string)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/AuthorizationEngine/Services/RoleAssignmentCache.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: GetRoleAssignments
+    path: ../src/dotnet/AuthorizationEngine/Services/RoleAssignmentCache.cs
+    startLine: 69
+  assemblies:
+  - FoundationaLLM.AuthorizationEngine
+  namespace: FoundationaLLM.AuthorizationEngine.Services
+  summary: Gets all role assignments for a principal.
+  example: []
+  syntax:
+    content: public List<RoleAssignment> GetRoleAssignments(string principalId)
+    parameters:
+    - id: principalId
+      type: System.String
+      description: The unique identifier of the principal for which role assignments are retrieved.
+    return:
+      type: System.Collections.Generic.List{FoundationaLLM.Common.Models.ResourceProviders.Authorization.RoleAssignment}
+      description: ''
+    content.vb: Public Function GetRoleAssignments(principalId As String) As List(Of RoleAssignment)
+  overload: FoundationaLLM.AuthorizationEngine.Services.RoleAssignmentCache.GetRoleAssignments*
+  nameWithType.vb: RoleAssignmentCache.GetRoleAssignments(String)
+  fullName.vb: FoundationaLLM.AuthorizationEngine.Services.RoleAssignmentCache.GetRoleAssignments(String)
+  name.vb: GetRoleAssignments(String)
+references:
+- uid: FoundationaLLM.AuthorizationEngine.Services
+  commentId: N:FoundationaLLM.AuthorizationEngine.Services
+  href: FoundationaLLM.html
+  name: FoundationaLLM.AuthorizationEngine.Services
+  nameWithType: FoundationaLLM.AuthorizationEngine.Services
+  fullName: FoundationaLLM.AuthorizationEngine.Services
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.AuthorizationEngine
+    name: AuthorizationEngine
+    href: FoundationaLLM.AuthorizationEngine.html
+  - name: .
+  - uid: FoundationaLLM.AuthorizationEngine.Services
+    name: Services
+    href: FoundationaLLM.AuthorizationEngine.Services.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.AuthorizationEngine
+    name: AuthorizationEngine
+    href: FoundationaLLM.AuthorizationEngine.html
+  - name: .
+  - uid: FoundationaLLM.AuthorizationEngine.Services
+    name: Services
+    href: FoundationaLLM.AuthorizationEngine.Services.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  parent: FoundationaLLM.Core.Utils.ObjectExtensions
+  definition: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  isExternal: true
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions
+  commentId: T:FoundationaLLM.Core.Utils.ObjectExtensions
+  parent: FoundationaLLM.Core.Utils
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html
+  name: ObjectExtensions
+  nameWithType: ObjectExtensions
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions
+- uid: FoundationaLLM.Core.Utils
+  commentId: N:FoundationaLLM.Core.Utils
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Core.Utils
+  nameWithType: FoundationaLLM.Core.Utils
+  fullName: FoundationaLLM.Core.Utils
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+- uid: FoundationaLLM.AuthorizationEngine.Services.RoleAssignmentCache
+  commentId: T:FoundationaLLM.AuthorizationEngine.Services.RoleAssignmentCache
+  href: FoundationaLLM.AuthorizationEngine.Services.RoleAssignmentCache.html
+  name: RoleAssignmentCache
+  nameWithType: RoleAssignmentCache
+  fullName: FoundationaLLM.AuthorizationEngine.Services.RoleAssignmentCache
+- uid: FoundationaLLM.AuthorizationEngine.Services.RoleAssignmentCache.#ctor*
+  commentId: Overload:FoundationaLLM.AuthorizationEngine.Services.RoleAssignmentCache.#ctor
+  href: FoundationaLLM.AuthorizationEngine.Services.RoleAssignmentCache.html#FoundationaLLM_AuthorizationEngine_Services_RoleAssignmentCache__ctor_FoundationaLLM_AuthorizationEngine_Models_RoleAssignmentStore_
+  name: RoleAssignmentCache
+  nameWithType: RoleAssignmentCache.RoleAssignmentCache
+  fullName: FoundationaLLM.AuthorizationEngine.Services.RoleAssignmentCache.RoleAssignmentCache
+  nameWithType.vb: RoleAssignmentCache.New
+  fullName.vb: FoundationaLLM.AuthorizationEngine.Services.RoleAssignmentCache.New
+  name.vb: New
+- uid: FoundationaLLM.AuthorizationEngine.Models.RoleAssignmentStore
+  commentId: T:FoundationaLLM.AuthorizationEngine.Models.RoleAssignmentStore
+  parent: FoundationaLLM.AuthorizationEngine.Models
+  href: FoundationaLLM.AuthorizationEngine.Models.RoleAssignmentStore.html
+  name: RoleAssignmentStore
+  nameWithType: RoleAssignmentStore
+  fullName: FoundationaLLM.AuthorizationEngine.Models.RoleAssignmentStore
+- uid: FoundationaLLM.AuthorizationEngine.Models
+  commentId: N:FoundationaLLM.AuthorizationEngine.Models
+  href: FoundationaLLM.html
+  name: FoundationaLLM.AuthorizationEngine.Models
+  nameWithType: FoundationaLLM.AuthorizationEngine.Models
+  fullName: FoundationaLLM.AuthorizationEngine.Models
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.AuthorizationEngine
+    name: AuthorizationEngine
+    href: FoundationaLLM.AuthorizationEngine.html
+  - name: .
+  - uid: FoundationaLLM.AuthorizationEngine.Models
+    name: Models
+    href: FoundationaLLM.AuthorizationEngine.Models.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.AuthorizationEngine
+    name: AuthorizationEngine
+    href: FoundationaLLM.AuthorizationEngine.html
+  - name: .
+  - uid: FoundationaLLM.AuthorizationEngine.Models
+    name: Models
+    href: FoundationaLLM.AuthorizationEngine.Models.html
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Authorization.RoleAssignment
+  commentId: T:FoundationaLLM.Common.Models.ResourceProviders.Authorization.RoleAssignment
+  parent: FoundationaLLM.Common.Models.ResourceProviders.Authorization
+  href: FoundationaLLM.Common.Models.ResourceProviders.Authorization.RoleAssignment.html
+  name: RoleAssignment
+  nameWithType: RoleAssignment
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Authorization.RoleAssignment
+- uid: FoundationaLLM.AuthorizationEngine.Services.RoleAssignmentCache.AddOrUpdateRoleAssignment*
+  commentId: Overload:FoundationaLLM.AuthorizationEngine.Services.RoleAssignmentCache.AddOrUpdateRoleAssignment
+  href: FoundationaLLM.AuthorizationEngine.Services.RoleAssignmentCache.html#FoundationaLLM_AuthorizationEngine_Services_RoleAssignmentCache_AddOrUpdateRoleAssignment_FoundationaLLM_Common_Models_ResourceProviders_Authorization_RoleAssignment_
+  name: AddOrUpdateRoleAssignment
+  nameWithType: RoleAssignmentCache.AddOrUpdateRoleAssignment
+  fullName: FoundationaLLM.AuthorizationEngine.Services.RoleAssignmentCache.AddOrUpdateRoleAssignment
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Authorization
+  commentId: N:FoundationaLLM.Common.Models.ResourceProviders.Authorization
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.ResourceProviders.Authorization
+  nameWithType: FoundationaLLM.Common.Models.ResourceProviders.Authorization
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Authorization
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders
+    name: ResourceProviders
+    href: FoundationaLLM.Common.Models.ResourceProviders.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.Authorization
+    name: Authorization
+    href: FoundationaLLM.Common.Models.ResourceProviders.Authorization.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders
+    name: ResourceProviders
+    href: FoundationaLLM.Common.Models.ResourceProviders.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.Authorization
+    name: Authorization
+    href: FoundationaLLM.Common.Models.ResourceProviders.Authorization.html
+- uid: FoundationaLLM.AuthorizationEngine.Services.RoleAssignmentCache.RemoveRoleAssignment*
+  commentId: Overload:FoundationaLLM.AuthorizationEngine.Services.RoleAssignmentCache.RemoveRoleAssignment
+  href: FoundationaLLM.AuthorizationEngine.Services.RoleAssignmentCache.html#FoundationaLLM_AuthorizationEngine_Services_RoleAssignmentCache_RemoveRoleAssignment_System_String_
+  name: RemoveRoleAssignment
+  nameWithType: RoleAssignmentCache.RemoveRoleAssignment
+  fullName: FoundationaLLM.AuthorizationEngine.Services.RoleAssignmentCache.RemoveRoleAssignment
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: FoundationaLLM.AuthorizationEngine.Services.RoleAssignmentCache.GetRoleAssignments*
+  commentId: Overload:FoundationaLLM.AuthorizationEngine.Services.RoleAssignmentCache.GetRoleAssignments
+  href: FoundationaLLM.AuthorizationEngine.Services.RoleAssignmentCache.html#FoundationaLLM_AuthorizationEngine_Services_RoleAssignmentCache_GetRoleAssignments_System_String_
+  name: GetRoleAssignments
+  nameWithType: RoleAssignmentCache.GetRoleAssignments
+  fullName: FoundationaLLM.AuthorizationEngine.Services.RoleAssignmentCache.GetRoleAssignments
+- uid: System.Collections.Generic.List{FoundationaLLM.Common.Models.ResourceProviders.Authorization.RoleAssignment}
+  commentId: T:System.Collections.Generic.List{FoundationaLLM.Common.Models.ResourceProviders.Authorization.RoleAssignment}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.List`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  name: List<RoleAssignment>
+  nameWithType: List<RoleAssignment>
+  fullName: System.Collections.Generic.List<FoundationaLLM.Common.Models.ResourceProviders.Authorization.RoleAssignment>
+  nameWithType.vb: List(Of RoleAssignment)
+  fullName.vb: System.Collections.Generic.List(Of FoundationaLLM.Common.Models.ResourceProviders.Authorization.RoleAssignment)
+  name.vb: List(Of RoleAssignment)
+  spec.csharp:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.Authorization.RoleAssignment
+    name: RoleAssignment
+    href: FoundationaLLM.Common.Models.ResourceProviders.Authorization.RoleAssignment.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.Authorization.RoleAssignment
+    name: RoleAssignment
+    href: FoundationaLLM.Common.Models.ResourceProviders.Authorization.RoleAssignment.html
+  - name: )
+- uid: System.Collections.Generic.List`1
+  commentId: T:System.Collections.Generic.List`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  name: List<T>
+  nameWithType: List<T>
+  fullName: System.Collections.Generic.List<T>
+  nameWithType.vb: List(Of T)
+  fullName.vb: System.Collections.Generic.List(Of T)
+  name.vb: List(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic

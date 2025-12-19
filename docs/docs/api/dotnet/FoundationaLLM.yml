@@ -1,0 +1,248 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM
+  commentId: N:FoundationaLLM
+  id: FoundationaLLM
+  children:
+  - FoundationaLLM.AIModel
+  - FoundationaLLM.Agent
+  - FoundationaLLM.Attachment
+  - FoundationaLLM.Authorization
+  - FoundationaLLM.AuthorizationEngine
+  - FoundationaLLM.AzureOpenAI.ResourceProviders
+  - FoundationaLLM.CSharpCodeSession.API
+  - FoundationaLLM.Client
+  - FoundationaLLM.Common
+  - FoundationaLLM.Configuration
+  - FoundationaLLM.Context
+  - FoundationaLLM.Conversation.ResourceProviders
+  - FoundationaLLM.Core
+  - FoundationaLLM.DataPipeline
+  - FoundationaLLM.DataPipelineEngine
+  - FoundationaLLM.DataSource
+  - FoundationaLLM.DependencyInjection
+  - FoundationaLLM.Gatekeeper
+  - FoundationaLLM.Gateway
+  - FoundationaLLM.Management.API
+  - FoundationaLLM.Orchestration
+  - FoundationaLLM.Plugin
+  - FoundationaLLM.Plugins.DataPipeline
+  - FoundationaLLM.Prompt
+  - FoundationaLLM.SemanticKernel
+  - FoundationaLLM.State
+  - FoundationaLLM.ValidatedEnvironment
+  - FoundationaLLM.Vector.ResourceProviders
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM
+  nameWithType: FoundationaLLM
+  fullName: FoundationaLLM
+  type: Namespace
+  assemblies:
+  - FoundationaLLM.Agent
+references:
+- uid: FoundationaLLM.AIModel
+  isExternal: true
+- uid: FoundationaLLM.Agent
+  isExternal: true
+- uid: FoundationaLLM.Attachment
+  isExternal: true
+- uid: FoundationaLLM.Authorization
+  isExternal: true
+- uid: FoundationaLLM.AuthorizationEngine
+  isExternal: true
+- uid: FoundationaLLM.Client
+  isExternal: true
+- uid: FoundationaLLM.Common
+  isExternal: true
+- uid: FoundationaLLM.Configuration
+  isExternal: true
+- uid: FoundationaLLM.Context
+  isExternal: true
+- uid: FoundationaLLM.Core
+  isExternal: true
+- uid: FoundationaLLM.DataPipeline
+  isExternal: true
+- uid: FoundationaLLM.DataPipelineEngine
+  isExternal: true
+- uid: FoundationaLLM.DataSource
+  isExternal: true
+- uid: FoundationaLLM.Gatekeeper
+  isExternal: true
+- uid: FoundationaLLM.Gateway
+  isExternal: true
+- uid: FoundationaLLM.Orchestration
+  isExternal: true
+- uid: FoundationaLLM.Plugin
+  isExternal: true
+- uid: FoundationaLLM.Prompt
+  isExternal: true
+- uid: FoundationaLLM.SemanticKernel
+  isExternal: true
+- uid: FoundationaLLM.State
+  isExternal: true
+- uid: FoundationaLLM.DependencyInjection
+  commentId: T:FoundationaLLM.DependencyInjection
+  href: FoundationaLLM.DependencyInjection.html
+  name: DependencyInjection
+  nameWithType: DependencyInjection
+  fullName: FoundationaLLM.DependencyInjection
+- uid: FoundationaLLM.ValidatedEnvironment
+  commentId: T:FoundationaLLM.ValidatedEnvironment
+  href: FoundationaLLM.ValidatedEnvironment.html
+  name: ValidatedEnvironment
+  nameWithType: ValidatedEnvironment
+  fullName: FoundationaLLM.ValidatedEnvironment
+- uid: FoundationaLLM.AzureOpenAI.ResourceProviders
+  commentId: N:FoundationaLLM.AzureOpenAI.ResourceProviders
+  href: FoundationaLLM.html
+  name: FoundationaLLM.AzureOpenAI.ResourceProviders
+  nameWithType: FoundationaLLM.AzureOpenAI.ResourceProviders
+  fullName: FoundationaLLM.AzureOpenAI.ResourceProviders
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.AzureOpenAI
+    name: AzureOpenAI
+    href: FoundationaLLM.AzureOpenAI.html
+  - name: .
+  - uid: FoundationaLLM.AzureOpenAI.ResourceProviders
+    name: ResourceProviders
+    href: FoundationaLLM.AzureOpenAI.ResourceProviders.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.AzureOpenAI
+    name: AzureOpenAI
+    href: FoundationaLLM.AzureOpenAI.html
+  - name: .
+  - uid: FoundationaLLM.AzureOpenAI.ResourceProviders
+    name: ResourceProviders
+    href: FoundationaLLM.AzureOpenAI.ResourceProviders.html
+- uid: FoundationaLLM.CSharpCodeSession.API
+  isExternal: true
+- uid: FoundationaLLM.Conversation.ResourceProviders
+  commentId: N:FoundationaLLM.Conversation.ResourceProviders
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Conversation.ResourceProviders
+  nameWithType: FoundationaLLM.Conversation.ResourceProviders
+  fullName: FoundationaLLM.Conversation.ResourceProviders
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Conversation
+    name: Conversation
+    href: FoundationaLLM.Conversation.html
+  - name: .
+  - uid: FoundationaLLM.Conversation.ResourceProviders
+    name: ResourceProviders
+    href: FoundationaLLM.Conversation.ResourceProviders.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Conversation
+    name: Conversation
+    href: FoundationaLLM.Conversation.html
+  - name: .
+  - uid: FoundationaLLM.Conversation.ResourceProviders
+    name: ResourceProviders
+    href: FoundationaLLM.Conversation.ResourceProviders.html
+- uid: FoundationaLLM.Management.API
+  commentId: N:FoundationaLLM.Management.API
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Management.API
+  nameWithType: FoundationaLLM.Management.API
+  fullName: FoundationaLLM.Management.API
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Management
+    name: Management
+    href: FoundationaLLM.Management.html
+  - name: .
+  - uid: FoundationaLLM.Management.API
+    name: API
+    href: FoundationaLLM.Management.API.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Management
+    name: Management
+    href: FoundationaLLM.Management.html
+  - name: .
+  - uid: FoundationaLLM.Management.API
+    name: API
+    href: FoundationaLLM.Management.API.html
+- uid: FoundationaLLM.Plugins.DataPipeline
+  commentId: N:FoundationaLLM.Plugins.DataPipeline
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Plugins.DataPipeline
+  nameWithType: FoundationaLLM.Plugins.DataPipeline
+  fullName: FoundationaLLM.Plugins.DataPipeline
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Plugins
+    name: Plugins
+    href: FoundationaLLM.Plugins.html
+  - name: .
+  - uid: FoundationaLLM.Plugins.DataPipeline
+    name: DataPipeline
+    href: FoundationaLLM.Plugins.DataPipeline.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Plugins
+    name: Plugins
+    href: FoundationaLLM.Plugins.html
+  - name: .
+  - uid: FoundationaLLM.Plugins.DataPipeline
+    name: DataPipeline
+    href: FoundationaLLM.Plugins.DataPipeline.html
+- uid: FoundationaLLM.Vector.ResourceProviders
+  commentId: N:FoundationaLLM.Vector.ResourceProviders
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Vector.ResourceProviders
+  nameWithType: FoundationaLLM.Vector.ResourceProviders
+  fullName: FoundationaLLM.Vector.ResourceProviders
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Vector
+    name: Vector
+    href: FoundationaLLM.Vector.html
+  - name: .
+  - uid: FoundationaLLM.Vector.ResourceProviders
+    name: ResourceProviders
+    href: FoundationaLLM.Vector.ResourceProviders.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Vector
+    name: Vector
+    href: FoundationaLLM.Vector.html
+  - name: .
+  - uid: FoundationaLLM.Vector.ResourceProviders
+    name: ResourceProviders
+    href: FoundationaLLM.Vector.ResourceProviders.html

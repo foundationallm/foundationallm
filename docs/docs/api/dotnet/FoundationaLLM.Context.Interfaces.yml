@@ -1,0 +1,103 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Context.Interfaces
+  commentId: N:FoundationaLLM.Context.Interfaces
+  id: Interfaces
+  parent: FoundationaLLM.Context
+  children:
+  - FoundationaLLM.Context.Interfaces.IAzureCosmosDBCodeSessionService
+  - FoundationaLLM.Context.Interfaces.IAzureCosmosDBFileService
+  - FoundationaLLM.Context.Interfaces.IAzureCosmosDBServiceBase
+  - FoundationaLLM.Context.Interfaces.ICodeSessionProviderService
+  - FoundationaLLM.Context.Interfaces.ICodeSessionService
+  - FoundationaLLM.Context.Interfaces.IFileService
+  - FoundationaLLM.Context.Interfaces.IKnowledgeService
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM.Context.Interfaces
+  nameWithType: FoundationaLLM.Context.Interfaces
+  fullName: FoundationaLLM.Context.Interfaces
+  type: Namespace
+  assemblies:
+  - FoundationaLLM.ContextEngine
+references:
+- uid: FoundationaLLM.Context.Interfaces.IAzureCosmosDBCodeSessionService
+  commentId: T:FoundationaLLM.Context.Interfaces.IAzureCosmosDBCodeSessionService
+  parent: FoundationaLLM.Context.Interfaces
+  href: FoundationaLLM.Context.Interfaces.IAzureCosmosDBCodeSessionService.html
+  name: IAzureCosmosDBCodeSessionService
+  nameWithType: IAzureCosmosDBCodeSessionService
+  fullName: FoundationaLLM.Context.Interfaces.IAzureCosmosDBCodeSessionService
+- uid: FoundationaLLM.Context.Interfaces.IAzureCosmosDBFileService
+  commentId: T:FoundationaLLM.Context.Interfaces.IAzureCosmosDBFileService
+  parent: FoundationaLLM.Context.Interfaces
+  href: FoundationaLLM.Context.Interfaces.IAzureCosmosDBFileService.html
+  name: IAzureCosmosDBFileService
+  nameWithType: IAzureCosmosDBFileService
+  fullName: FoundationaLLM.Context.Interfaces.IAzureCosmosDBFileService
+- uid: FoundationaLLM.Context.Interfaces.IAzureCosmosDBServiceBase
+  commentId: T:FoundationaLLM.Context.Interfaces.IAzureCosmosDBServiceBase
+  parent: FoundationaLLM.Context.Interfaces
+  href: FoundationaLLM.Context.Interfaces.IAzureCosmosDBServiceBase.html
+  name: IAzureCosmosDBServiceBase
+  nameWithType: IAzureCosmosDBServiceBase
+  fullName: FoundationaLLM.Context.Interfaces.IAzureCosmosDBServiceBase
+- uid: FoundationaLLM.Context.Interfaces.ICodeSessionProviderService
+  commentId: T:FoundationaLLM.Context.Interfaces.ICodeSessionProviderService
+  parent: FoundationaLLM.Context.Interfaces
+  href: FoundationaLLM.Context.Interfaces.ICodeSessionProviderService.html
+  name: ICodeSessionProviderService
+  nameWithType: ICodeSessionProviderService
+  fullName: FoundationaLLM.Context.Interfaces.ICodeSessionProviderService
+- uid: FoundationaLLM.Context.Interfaces.ICodeSessionService
+  commentId: T:FoundationaLLM.Context.Interfaces.ICodeSessionService
+  parent: FoundationaLLM.Context.Interfaces
+  href: FoundationaLLM.Context.Interfaces.ICodeSessionService.html
+  name: ICodeSessionService
+  nameWithType: ICodeSessionService
+  fullName: FoundationaLLM.Context.Interfaces.ICodeSessionService
+- uid: FoundationaLLM.Context.Interfaces.IFileService
+  commentId: T:FoundationaLLM.Context.Interfaces.IFileService
+  parent: FoundationaLLM.Context.Interfaces
+  href: FoundationaLLM.Context.Interfaces.IFileService.html
+  name: IFileService
+  nameWithType: IFileService
+  fullName: FoundationaLLM.Context.Interfaces.IFileService
+- uid: FoundationaLLM.Context.Interfaces.IKnowledgeService
+  commentId: T:FoundationaLLM.Context.Interfaces.IKnowledgeService
+  parent: FoundationaLLM.Context.Interfaces
+  href: FoundationaLLM.Context.Interfaces.IKnowledgeService.html
+  name: IKnowledgeService
+  nameWithType: IKnowledgeService
+  fullName: FoundationaLLM.Context.Interfaces.IKnowledgeService
+- uid: FoundationaLLM.Context.Interfaces
+  commentId: N:FoundationaLLM.Context.Interfaces
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Context.Interfaces
+  nameWithType: FoundationaLLM.Context.Interfaces
+  fullName: FoundationaLLM.Context.Interfaces
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Context
+    name: Context
+    href: FoundationaLLM.Context.html
+  - name: .
+  - uid: FoundationaLLM.Context.Interfaces
+    name: Interfaces
+    href: FoundationaLLM.Context.Interfaces.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Context
+    name: Context
+    href: FoundationaLLM.Context.html
+  - name: .
+  - uid: FoundationaLLM.Context.Interfaces
+    name: Interfaces
+    href: FoundationaLLM.Context.Interfaces.html

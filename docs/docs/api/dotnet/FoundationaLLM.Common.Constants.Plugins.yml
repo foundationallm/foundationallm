@@ -1,0 +1,85 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Common.Constants.Plugins
+  commentId: N:FoundationaLLM.Common.Constants.Plugins
+  id: Plugins
+  parent: FoundationaLLM.Common.Constants
+  children:
+  - FoundationaLLM.Common.Constants.Plugins.PluginCategoryNames
+  - FoundationaLLM.Common.Constants.Plugins.PluginDependencySelectionTypes
+  - FoundationaLLM.Common.Constants.Plugins.PluginPackagePlatform
+  - FoundationaLLM.Common.Constants.Plugins.PluginParameterTypes
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM.Common.Constants.Plugins
+  nameWithType: FoundationaLLM.Common.Constants.Plugins
+  fullName: FoundationaLLM.Common.Constants.Plugins
+  type: Namespace
+  assemblies:
+  - FoundationaLLM.Common
+references:
+- uid: FoundationaLLM.Common.Constants.Plugins.PluginCategoryNames
+  commentId: T:FoundationaLLM.Common.Constants.Plugins.PluginCategoryNames
+  href: FoundationaLLM.Common.Constants.Plugins.PluginCategoryNames.html
+  name: PluginCategoryNames
+  nameWithType: PluginCategoryNames
+  fullName: FoundationaLLM.Common.Constants.Plugins.PluginCategoryNames
+- uid: FoundationaLLM.Common.Constants.Plugins.PluginDependencySelectionTypes
+  commentId: T:FoundationaLLM.Common.Constants.Plugins.PluginDependencySelectionTypes
+  parent: FoundationaLLM.Common.Constants.Plugins
+  href: FoundationaLLM.Common.Constants.Plugins.PluginDependencySelectionTypes.html
+  name: PluginDependencySelectionTypes
+  nameWithType: PluginDependencySelectionTypes
+  fullName: FoundationaLLM.Common.Constants.Plugins.PluginDependencySelectionTypes
+- uid: FoundationaLLM.Common.Constants.Plugins.PluginPackagePlatform
+  commentId: T:FoundationaLLM.Common.Constants.Plugins.PluginPackagePlatform
+  parent: FoundationaLLM.Common.Constants.Plugins
+  href: FoundationaLLM.Common.Constants.Plugins.PluginPackagePlatform.html
+  name: PluginPackagePlatform
+  nameWithType: PluginPackagePlatform
+  fullName: FoundationaLLM.Common.Constants.Plugins.PluginPackagePlatform
+- uid: FoundationaLLM.Common.Constants.Plugins.PluginParameterTypes
+  commentId: T:FoundationaLLM.Common.Constants.Plugins.PluginParameterTypes
+  href: FoundationaLLM.Common.Constants.Plugins.PluginParameterTypes.html
+  name: PluginParameterTypes
+  nameWithType: PluginParameterTypes
+  fullName: FoundationaLLM.Common.Constants.Plugins.PluginParameterTypes
+- uid: FoundationaLLM.Common.Constants.Plugins
+  commentId: N:FoundationaLLM.Common.Constants.Plugins
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Constants.Plugins
+  nameWithType: FoundationaLLM.Common.Constants.Plugins
+  fullName: FoundationaLLM.Common.Constants.Plugins
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Constants
+    name: Constants
+    href: FoundationaLLM.Common.Constants.html
+  - name: .
+  - uid: FoundationaLLM.Common.Constants.Plugins
+    name: Plugins
+    href: FoundationaLLM.Common.Constants.Plugins.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Constants
+    name: Constants
+    href: FoundationaLLM.Common.Constants.html
+  - name: .
+  - uid: FoundationaLLM.Common.Constants.Plugins
+    name: Plugins
+    href: FoundationaLLM.Common.Constants.Plugins.html

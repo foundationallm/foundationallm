@@ -1,0 +1,699 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Common.Utils.ResourcePathUtils
+  commentId: T:FoundationaLLM.Common.Utils.ResourcePathUtils
+  id: ResourcePathUtils
+  parent: FoundationaLLM.Common.Utils
+  children:
+  - FoundationaLLM.Common.Utils.ResourcePathUtils.ParseForAuthorizationRequestResourcePath(System.String,System.Collections.Generic.List{System.String})
+  - FoundationaLLM.Common.Utils.ResourcePathUtils.ParseForPolicyAssignmentScope(System.String,System.Collections.Generic.List{System.String})
+  - FoundationaLLM.Common.Utils.ResourcePathUtils.ParseForRoleAssignmentScope(System.String,System.Collections.Generic.List{System.String})
+  langs:
+  - csharp
+  - vb
+  name: ResourcePathUtils
+  nameWithType: ResourcePathUtils
+  fullName: FoundationaLLM.Common.Utils.ResourcePathUtils
+  type: Class
+  source:
+    remote:
+      path: src/dotnet/Common/Utils/ResourcePathUtils.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: ResourcePathUtils
+    path: ../src/dotnet/Common/Utils/ResourcePathUtils.cs
+    startLine: 11
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Utils
+  summary: Utilities dedicated to the <xref href="FoundationaLLM.Common.Models.ResourceProviders.ResourcePath" data-throw-if-not-resolved="false"></xref> class.
+  example: []
+  syntax:
+    content: public static class ResourcePathUtils
+    content.vb: Public Module ResourcePathUtils
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: FoundationaLLM.Common.Utils.ResourcePathUtils.ParseForAuthorizationRequestResourcePath(System.String,System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Common.Utils.ResourcePathUtils.ParseForAuthorizationRequestResourcePath(System.String,System.Collections.Generic.List{System.String})
+  id: ParseForAuthorizationRequestResourcePath(System.String,System.Collections.Generic.List{System.String})
+  parent: FoundationaLLM.Common.Utils.ResourcePathUtils
+  langs:
+  - csharp
+  - vb
+  name: ParseForAuthorizationRequestResourcePath(string, List<string>)
+  nameWithType: ResourcePathUtils.ParseForAuthorizationRequestResourcePath(string, List<string>)
+  fullName: FoundationaLLM.Common.Utils.ResourcePathUtils.ParseForAuthorizationRequestResourcePath(string, System.Collections.Generic.List<string>)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Common/Utils/ResourcePathUtils.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: ParseForAuthorizationRequestResourcePath
+    path: ../src/dotnet/Common/Utils/ResourcePathUtils.cs
+    startLine: 20
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Utils
+  summary: Parses a resource path from an <xref href="FoundationaLLM.Common.Models.Authorization.ActionAuthorizationRequest" data-throw-if-not-resolved="false"></xref> object.
+  example: []
+  syntax:
+    content: public static ResourcePath ParseForAuthorizationRequestResourcePath(string resourcePath, List<string> allowedInstanceIds)
+    parameters:
+    - id: resourcePath
+      type: System.String
+      description: The resource path to be analyzed.
+    - id: allowedInstanceIds
+      type: System.Collections.Generic.List{System.String}
+      description: The list of allowed FoundationaLLM instance identifiers.
+    return:
+      type: FoundationaLLM.Common.Models.ResourceProviders.ResourcePath
+      description: A <xref href="FoundationaLLM.Common.Models.ResourceProviders.ResourcePath" data-throw-if-not-resolved="false"></xref> instance.
+    content.vb: Public Shared Function ParseForAuthorizationRequestResourcePath(resourcePath As String, allowedInstanceIds As List(Of String)) As ResourcePath
+  overload: FoundationaLLM.Common.Utils.ResourcePathUtils.ParseForAuthorizationRequestResourcePath*
+  exceptions:
+  - type: FoundationaLLM.Common.Exceptions.AuthorizationException
+    commentId: T:FoundationaLLM.Common.Exceptions.AuthorizationException
+    description: Thrown if the resource path is invalid.
+  nameWithType.vb: ResourcePathUtils.ParseForAuthorizationRequestResourcePath(String, List(Of String))
+  fullName.vb: FoundationaLLM.Common.Utils.ResourcePathUtils.ParseForAuthorizationRequestResourcePath(String, System.Collections.Generic.List(Of String))
+  name.vb: ParseForAuthorizationRequestResourcePath(String, List(Of String))
+- uid: FoundationaLLM.Common.Utils.ResourcePathUtils.ParseForRoleAssignmentScope(System.String,System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Common.Utils.ResourcePathUtils.ParseForRoleAssignmentScope(System.String,System.Collections.Generic.List{System.String})
+  id: ParseForRoleAssignmentScope(System.String,System.Collections.Generic.List{System.String})
+  parent: FoundationaLLM.Common.Utils.ResourcePathUtils
+  langs:
+  - csharp
+  - vb
+  name: ParseForRoleAssignmentScope(string, List<string>)
+  nameWithType: ResourcePathUtils.ParseForRoleAssignmentScope(string, List<string>)
+  fullName: FoundationaLLM.Common.Utils.ResourcePathUtils.ParseForRoleAssignmentScope(string, System.Collections.Generic.List<string>)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Common/Utils/ResourcePathUtils.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: ParseForRoleAssignmentScope
+    path: ../src/dotnet/Common/Utils/ResourcePathUtils.cs
+    startLine: 39
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Utils
+  summary: Parses a resource path used as scope for an RBAC role assignment.
+  remarks: >-
+    <p>Technically, the resource path can be any valid resource path, including a root path.
+
+    At the moment, role assignments are not allowed at the root level, so the method will throw an exception if the resource path is a root path.
+
+    Role assignments at the root level are reserved for future use (e.g., in SaaS scenarios where cross-FoundationaLLM instance assignments are needed).
+
+    </p>
+
+    <p>
+
+    Any non-root resource path must reference one of the allowed FoundationaLLM instance identifiers.
+
+    </p>
+  example: []
+  syntax:
+    content: public static ResourcePath ParseForRoleAssignmentScope(string resourcePath, List<string> allowedInstanceIds)
+    parameters:
+    - id: resourcePath
+      type: System.String
+      description: The resource path to be parsed.
+    - id: allowedInstanceIds
+      type: System.Collections.Generic.List{System.String}
+      description: The list of FoundationaLLM instance identifiers used as the context for parsing.
+    return:
+      type: FoundationaLLM.Common.Models.ResourceProviders.ResourcePath
+      description: A <xref href="FoundationaLLM.Common.Models.ResourceProviders.ResourcePath" data-throw-if-not-resolved="false"></xref> object containing the parsed resource path.
+    content.vb: Public Shared Function ParseForRoleAssignmentScope(resourcePath As String, allowedInstanceIds As List(Of String)) As ResourcePath
+  overload: FoundationaLLM.Common.Utils.ResourcePathUtils.ParseForRoleAssignmentScope*
+  exceptions:
+  - type: FoundationaLLM.Common.Exceptions.AuthorizationException
+    commentId: T:FoundationaLLM.Common.Exceptions.AuthorizationException
+    description: ''
+  nameWithType.vb: ResourcePathUtils.ParseForRoleAssignmentScope(String, List(Of String))
+  fullName.vb: FoundationaLLM.Common.Utils.ResourcePathUtils.ParseForRoleAssignmentScope(String, System.Collections.Generic.List(Of String))
+  name.vb: ParseForRoleAssignmentScope(String, List(Of String))
+- uid: FoundationaLLM.Common.Utils.ResourcePathUtils.ParseForPolicyAssignmentScope(System.String,System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Common.Utils.ResourcePathUtils.ParseForPolicyAssignmentScope(System.String,System.Collections.Generic.List{System.String})
+  id: ParseForPolicyAssignmentScope(System.String,System.Collections.Generic.List{System.String})
+  parent: FoundationaLLM.Common.Utils.ResourcePathUtils
+  langs:
+  - csharp
+  - vb
+  name: ParseForPolicyAssignmentScope(string, List<string>)
+  nameWithType: ResourcePathUtils.ParseForPolicyAssignmentScope(string, List<string>)
+  fullName: FoundationaLLM.Common.Utils.ResourcePathUtils.ParseForPolicyAssignmentScope(string, System.Collections.Generic.List<string>)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Common/Utils/ResourcePathUtils.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: ParseForPolicyAssignmentScope
+    path: ../src/dotnet/Common/Utils/ResourcePathUtils.cs
+    startLine: 65
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Utils
+  summary: Parses a resource path used as scope for a PBAC policy assignment.
+  remarks: >-
+    <p>
+
+    Resource paths used as scopes for policy assignments must be valid resource type paths.
+
+    If the resource path is not a valid resource type path, the method will throw an exception.
+
+    </p>
+
+    <p>
+
+    Also, all resource paths must reference one of the allowed FoundationaLLM instance identifiers.
+
+    </p>
+  example: []
+  syntax:
+    content: public static ResourcePath ParseForPolicyAssignmentScope(string resourcePath, List<string> allowedInstanceIds)
+    parameters:
+    - id: resourcePath
+      type: System.String
+      description: The resource path to be parsed.
+    - id: allowedInstanceIds
+      type: System.Collections.Generic.List{System.String}
+      description: The list of FoundationaLLM instance identifiers used as the context for parsing.
+    return:
+      type: FoundationaLLM.Common.Models.ResourceProviders.ResourcePath
+      description: A <xref href="FoundationaLLM.Common.Models.ResourceProviders.ResourcePath" data-throw-if-not-resolved="false"></xref> object containing the parsed resource path.
+    content.vb: Public Shared Function ParseForPolicyAssignmentScope(resourcePath As String, allowedInstanceIds As List(Of String)) As ResourcePath
+  overload: FoundationaLLM.Common.Utils.ResourcePathUtils.ParseForPolicyAssignmentScope*
+  exceptions:
+  - type: FoundationaLLM.Common.Exceptions.AuthorizationException
+    commentId: T:FoundationaLLM.Common.Exceptions.AuthorizationException
+    description: ''
+  nameWithType.vb: ResourcePathUtils.ParseForPolicyAssignmentScope(String, List(Of String))
+  fullName.vb: FoundationaLLM.Common.Utils.ResourcePathUtils.ParseForPolicyAssignmentScope(String, System.Collections.Generic.List(Of String))
+  name.vb: ParseForPolicyAssignmentScope(String, List(Of String))
+references:
+- uid: FoundationaLLM.Common.Models.ResourceProviders.ResourcePath
+  commentId: T:FoundationaLLM.Common.Models.ResourceProviders.ResourcePath
+  parent: FoundationaLLM.Common.Models.ResourceProviders
+  href: FoundationaLLM.Common.Models.ResourceProviders.ResourcePath.html
+  name: ResourcePath
+  nameWithType: ResourcePath
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.ResourcePath
+- uid: FoundationaLLM.Common.Utils
+  commentId: N:FoundationaLLM.Common.Utils
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Utils
+  nameWithType: FoundationaLLM.Common.Utils
+  fullName: FoundationaLLM.Common.Utils
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Utils
+    name: Utils
+    href: FoundationaLLM.Common.Utils.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Utils
+    name: Utils
+    href: FoundationaLLM.Common.Utils.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: FoundationaLLM.Common.Models.ResourceProviders
+  commentId: N:FoundationaLLM.Common.Models.ResourceProviders
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.ResourceProviders
+  nameWithType: FoundationaLLM.Common.Models.ResourceProviders
+  fullName: FoundationaLLM.Common.Models.ResourceProviders
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders
+    name: ResourceProviders
+    href: FoundationaLLM.Common.Models.ResourceProviders.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders
+    name: ResourceProviders
+    href: FoundationaLLM.Common.Models.ResourceProviders.html
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: FoundationaLLM.Common.Models.Authorization.ActionAuthorizationRequest
+  commentId: T:FoundationaLLM.Common.Models.Authorization.ActionAuthorizationRequest
+  parent: FoundationaLLM.Common.Models.Authorization
+  href: FoundationaLLM.Common.Models.Authorization.ActionAuthorizationRequest.html
+  name: ActionAuthorizationRequest
+  nameWithType: ActionAuthorizationRequest
+  fullName: FoundationaLLM.Common.Models.Authorization.ActionAuthorizationRequest
+- uid: FoundationaLLM.Common.Exceptions.AuthorizationException
+  commentId: T:FoundationaLLM.Common.Exceptions.AuthorizationException
+  href: FoundationaLLM.Common.Exceptions.AuthorizationException.html
+  name: AuthorizationException
+  nameWithType: AuthorizationException
+  fullName: FoundationaLLM.Common.Exceptions.AuthorizationException
+- uid: FoundationaLLM.Common.Utils.ResourcePathUtils.ParseForAuthorizationRequestResourcePath*
+  commentId: Overload:FoundationaLLM.Common.Utils.ResourcePathUtils.ParseForAuthorizationRequestResourcePath
+  href: FoundationaLLM.Common.Utils.ResourcePathUtils.html#FoundationaLLM_Common_Utils_ResourcePathUtils_ParseForAuthorizationRequestResourcePath_System_String_System_Collections_Generic_List_System_String__
+  name: ParseForAuthorizationRequestResourcePath
+  nameWithType: ResourcePathUtils.ParseForAuthorizationRequestResourcePath
+  fullName: FoundationaLLM.Common.Utils.ResourcePathUtils.ParseForAuthorizationRequestResourcePath
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System.Collections.Generic.List{System.String}
+  commentId: T:System.Collections.Generic.List{System.String}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.List`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  name: List<string>
+  nameWithType: List<string>
+  fullName: System.Collections.Generic.List<string>
+  nameWithType.vb: List(Of String)
+  fullName.vb: System.Collections.Generic.List(Of String)
+  name.vb: List(Of String)
+  spec.csharp:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: FoundationaLLM.Common.Models.Authorization
+  commentId: N:FoundationaLLM.Common.Models.Authorization
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.Authorization
+  nameWithType: FoundationaLLM.Common.Models.Authorization
+  fullName: FoundationaLLM.Common.Models.Authorization
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Authorization
+    name: Authorization
+    href: FoundationaLLM.Common.Models.Authorization.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Authorization
+    name: Authorization
+    href: FoundationaLLM.Common.Models.Authorization.html
+- uid: System.Collections.Generic.List`1
+  commentId: T:System.Collections.Generic.List`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  name: List<T>
+  nameWithType: List<T>
+  fullName: System.Collections.Generic.List<T>
+  nameWithType.vb: List(Of T)
+  fullName.vb: System.Collections.Generic.List(Of T)
+  name.vb: List(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: FoundationaLLM.Common.Utils.ResourcePathUtils.ParseForRoleAssignmentScope*
+  commentId: Overload:FoundationaLLM.Common.Utils.ResourcePathUtils.ParseForRoleAssignmentScope
+  href: FoundationaLLM.Common.Utils.ResourcePathUtils.html#FoundationaLLM_Common_Utils_ResourcePathUtils_ParseForRoleAssignmentScope_System_String_System_Collections_Generic_List_System_String__
+  name: ParseForRoleAssignmentScope
+  nameWithType: ResourcePathUtils.ParseForRoleAssignmentScope
+  fullName: FoundationaLLM.Common.Utils.ResourcePathUtils.ParseForRoleAssignmentScope
+- uid: FoundationaLLM.Common.Utils.ResourcePathUtils.ParseForPolicyAssignmentScope*
+  commentId: Overload:FoundationaLLM.Common.Utils.ResourcePathUtils.ParseForPolicyAssignmentScope
+  href: FoundationaLLM.Common.Utils.ResourcePathUtils.html#FoundationaLLM_Common_Utils_ResourcePathUtils_ParseForPolicyAssignmentScope_System_String_System_Collections_Generic_List_System_String__
+  name: ParseForPolicyAssignmentScope
+  nameWithType: ResourcePathUtils.ParseForPolicyAssignmentScope
+  fullName: FoundationaLLM.Common.Utils.ResourcePathUtils.ParseForPolicyAssignmentScope

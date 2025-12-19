@@ -1,0 +1,811 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Common.Models.Configuration
+  id: Configuration
+  parent: FoundationaLLM.Common.Models
+  children:
+  - FoundationaLLM.Common.Models.Configuration.API
+  - FoundationaLLM.Common.Models.Configuration.AppConfiguration
+  - FoundationaLLM.Common.Models.Configuration.Authentication
+  - FoundationaLLM.Common.Models.Configuration.Authorization
+  - FoundationaLLM.Common.Models.Configuration.AzureAI
+  - FoundationaLLM.Common.Models.Configuration.Branding
+  - FoundationaLLM.Common.Models.Configuration.ContentSafety
+  - FoundationaLLM.Common.Models.Configuration.CosmosDB
+  - FoundationaLLM.Common.Models.Configuration.Environment
+  - FoundationaLLM.Common.Models.Configuration.Events
+  - FoundationaLLM.Common.Models.Configuration.Instance
+  - FoundationaLLM.Common.Models.Configuration.KeyVault
+  - FoundationaLLM.Common.Models.Configuration.ResourceProviders
+  - FoundationaLLM.Common.Models.Configuration.Security
+  - FoundationaLLM.Common.Models.Configuration.Storage
+  - FoundationaLLM.Common.Models.Configuration.Text
+  - FoundationaLLM.Common.Models.Configuration.Users
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM.Common.Models.Configuration
+  type: Namespace
+references:
+- uid: FoundationaLLM.Common.Models.Configuration.API
+  commentId: N:FoundationaLLM.Common.Models.Configuration.API
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.Configuration.API
+  nameWithType: FoundationaLLM.Common.Models.Configuration.API
+  fullName: FoundationaLLM.Common.Models.Configuration.API
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Configuration
+    name: Configuration
+    href: FoundationaLLM.Common.Models.Configuration.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Configuration.API
+    name: API
+    href: FoundationaLLM.Common.Models.Configuration.API.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Configuration
+    name: Configuration
+    href: FoundationaLLM.Common.Models.Configuration.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Configuration.API
+    name: API
+    href: FoundationaLLM.Common.Models.Configuration.API.html
+- uid: FoundationaLLM.Common.Models.Configuration.AppConfiguration
+  commentId: N:FoundationaLLM.Common.Models.Configuration.AppConfiguration
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.Configuration.AppConfiguration
+  nameWithType: FoundationaLLM.Common.Models.Configuration.AppConfiguration
+  fullName: FoundationaLLM.Common.Models.Configuration.AppConfiguration
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Configuration
+    name: Configuration
+    href: FoundationaLLM.Common.Models.Configuration.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Configuration.AppConfiguration
+    name: AppConfiguration
+    href: FoundationaLLM.Common.Models.Configuration.AppConfiguration.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Configuration
+    name: Configuration
+    href: FoundationaLLM.Common.Models.Configuration.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Configuration.AppConfiguration
+    name: AppConfiguration
+    href: FoundationaLLM.Common.Models.Configuration.AppConfiguration.html
+- uid: FoundationaLLM.Common.Models.Configuration.Authentication
+  commentId: N:FoundationaLLM.Common.Models.Configuration.Authentication
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.Configuration.Authentication
+  nameWithType: FoundationaLLM.Common.Models.Configuration.Authentication
+  fullName: FoundationaLLM.Common.Models.Configuration.Authentication
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Configuration
+    name: Configuration
+    href: FoundationaLLM.Common.Models.Configuration.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Configuration.Authentication
+    name: Authentication
+    href: FoundationaLLM.Common.Models.Configuration.Authentication.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Configuration
+    name: Configuration
+    href: FoundationaLLM.Common.Models.Configuration.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Configuration.Authentication
+    name: Authentication
+    href: FoundationaLLM.Common.Models.Configuration.Authentication.html
+- uid: FoundationaLLM.Common.Models.Configuration.Authorization
+  commentId: N:FoundationaLLM.Common.Models.Configuration.Authorization
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.Configuration.Authorization
+  nameWithType: FoundationaLLM.Common.Models.Configuration.Authorization
+  fullName: FoundationaLLM.Common.Models.Configuration.Authorization
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Configuration
+    name: Configuration
+    href: FoundationaLLM.Common.Models.Configuration.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Configuration.Authorization
+    name: Authorization
+    href: FoundationaLLM.Common.Models.Configuration.Authorization.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Configuration
+    name: Configuration
+    href: FoundationaLLM.Common.Models.Configuration.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Configuration.Authorization
+    name: Authorization
+    href: FoundationaLLM.Common.Models.Configuration.Authorization.html
+- uid: FoundationaLLM.Common.Models.Configuration.AzureAI
+  commentId: N:FoundationaLLM.Common.Models.Configuration.AzureAI
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.Configuration.AzureAI
+  nameWithType: FoundationaLLM.Common.Models.Configuration.AzureAI
+  fullName: FoundationaLLM.Common.Models.Configuration.AzureAI
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Configuration
+    name: Configuration
+    href: FoundationaLLM.Common.Models.Configuration.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Configuration.AzureAI
+    name: AzureAI
+    href: FoundationaLLM.Common.Models.Configuration.AzureAI.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Configuration
+    name: Configuration
+    href: FoundationaLLM.Common.Models.Configuration.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Configuration.AzureAI
+    name: AzureAI
+    href: FoundationaLLM.Common.Models.Configuration.AzureAI.html
+- uid: FoundationaLLM.Common.Models.Configuration.Branding
+  commentId: N:FoundationaLLM.Common.Models.Configuration.Branding
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.Configuration.Branding
+  nameWithType: FoundationaLLM.Common.Models.Configuration.Branding
+  fullName: FoundationaLLM.Common.Models.Configuration.Branding
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Configuration
+    name: Configuration
+    href: FoundationaLLM.Common.Models.Configuration.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Configuration.Branding
+    name: Branding
+    href: FoundationaLLM.Common.Models.Configuration.Branding.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Configuration
+    name: Configuration
+    href: FoundationaLLM.Common.Models.Configuration.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Configuration.Branding
+    name: Branding
+    href: FoundationaLLM.Common.Models.Configuration.Branding.html
+- uid: FoundationaLLM.Common.Models.Configuration.ContentSafety
+  commentId: N:FoundationaLLM.Common.Models.Configuration.ContentSafety
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.Configuration.ContentSafety
+  nameWithType: FoundationaLLM.Common.Models.Configuration.ContentSafety
+  fullName: FoundationaLLM.Common.Models.Configuration.ContentSafety
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Configuration
+    name: Configuration
+    href: FoundationaLLM.Common.Models.Configuration.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Configuration.ContentSafety
+    name: ContentSafety
+    href: FoundationaLLM.Common.Models.Configuration.ContentSafety.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Configuration
+    name: Configuration
+    href: FoundationaLLM.Common.Models.Configuration.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Configuration.ContentSafety
+    name: ContentSafety
+    href: FoundationaLLM.Common.Models.Configuration.ContentSafety.html
+- uid: FoundationaLLM.Common.Models.Configuration.CosmosDB
+  commentId: N:FoundationaLLM.Common.Models.Configuration.CosmosDB
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.Configuration.CosmosDB
+  nameWithType: FoundationaLLM.Common.Models.Configuration.CosmosDB
+  fullName: FoundationaLLM.Common.Models.Configuration.CosmosDB
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Configuration
+    name: Configuration
+    href: FoundationaLLM.Common.Models.Configuration.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Configuration.CosmosDB
+    name: CosmosDB
+    href: FoundationaLLM.Common.Models.Configuration.CosmosDB.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Configuration
+    name: Configuration
+    href: FoundationaLLM.Common.Models.Configuration.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Configuration.CosmosDB
+    name: CosmosDB
+    href: FoundationaLLM.Common.Models.Configuration.CosmosDB.html
+- uid: FoundationaLLM.Common.Models.Configuration.Environment
+  commentId: N:FoundationaLLM.Common.Models.Configuration.Environment
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.Configuration.Environment
+  nameWithType: FoundationaLLM.Common.Models.Configuration.Environment
+  fullName: FoundationaLLM.Common.Models.Configuration.Environment
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Configuration
+    name: Configuration
+    href: FoundationaLLM.Common.Models.Configuration.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Configuration.Environment
+    name: Environment
+    href: FoundationaLLM.Common.Models.Configuration.Environment.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Configuration
+    name: Configuration
+    href: FoundationaLLM.Common.Models.Configuration.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Configuration.Environment
+    name: Environment
+    href: FoundationaLLM.Common.Models.Configuration.Environment.html
+- uid: FoundationaLLM.Common.Models.Configuration.Events
+  commentId: N:FoundationaLLM.Common.Models.Configuration.Events
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.Configuration.Events
+  nameWithType: FoundationaLLM.Common.Models.Configuration.Events
+  fullName: FoundationaLLM.Common.Models.Configuration.Events
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Configuration
+    name: Configuration
+    href: FoundationaLLM.Common.Models.Configuration.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Configuration.Events
+    name: Events
+    href: FoundationaLLM.Common.Models.Configuration.Events.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Configuration
+    name: Configuration
+    href: FoundationaLLM.Common.Models.Configuration.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Configuration.Events
+    name: Events
+    href: FoundationaLLM.Common.Models.Configuration.Events.html
+- uid: FoundationaLLM.Common.Models.Configuration.Instance
+  commentId: N:FoundationaLLM.Common.Models.Configuration.Instance
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.Configuration.Instance
+  nameWithType: FoundationaLLM.Common.Models.Configuration.Instance
+  fullName: FoundationaLLM.Common.Models.Configuration.Instance
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Configuration
+    name: Configuration
+    href: FoundationaLLM.Common.Models.Configuration.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Configuration.Instance
+    name: Instance
+    href: FoundationaLLM.Common.Models.Configuration.Instance.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Configuration
+    name: Configuration
+    href: FoundationaLLM.Common.Models.Configuration.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Configuration.Instance
+    name: Instance
+    href: FoundationaLLM.Common.Models.Configuration.Instance.html
+- uid: FoundationaLLM.Common.Models.Configuration.KeyVault
+  commentId: N:FoundationaLLM.Common.Models.Configuration.KeyVault
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.Configuration.KeyVault
+  nameWithType: FoundationaLLM.Common.Models.Configuration.KeyVault
+  fullName: FoundationaLLM.Common.Models.Configuration.KeyVault
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Configuration
+    name: Configuration
+    href: FoundationaLLM.Common.Models.Configuration.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Configuration.KeyVault
+    name: KeyVault
+    href: FoundationaLLM.Common.Models.Configuration.KeyVault.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Configuration
+    name: Configuration
+    href: FoundationaLLM.Common.Models.Configuration.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Configuration.KeyVault
+    name: KeyVault
+    href: FoundationaLLM.Common.Models.Configuration.KeyVault.html
+- uid: FoundationaLLM.Common.Models.Configuration.ResourceProviders
+  commentId: N:FoundationaLLM.Common.Models.Configuration.ResourceProviders
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.Configuration.ResourceProviders
+  nameWithType: FoundationaLLM.Common.Models.Configuration.ResourceProviders
+  fullName: FoundationaLLM.Common.Models.Configuration.ResourceProviders
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Configuration
+    name: Configuration
+    href: FoundationaLLM.Common.Models.Configuration.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Configuration.ResourceProviders
+    name: ResourceProviders
+    href: FoundationaLLM.Common.Models.Configuration.ResourceProviders.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Configuration
+    name: Configuration
+    href: FoundationaLLM.Common.Models.Configuration.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Configuration.ResourceProviders
+    name: ResourceProviders
+    href: FoundationaLLM.Common.Models.Configuration.ResourceProviders.html
+- uid: FoundationaLLM.Common.Models.Configuration.Security
+  commentId: N:FoundationaLLM.Common.Models.Configuration.Security
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.Configuration.Security
+  nameWithType: FoundationaLLM.Common.Models.Configuration.Security
+  fullName: FoundationaLLM.Common.Models.Configuration.Security
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Configuration
+    name: Configuration
+    href: FoundationaLLM.Common.Models.Configuration.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Configuration.Security
+    name: Security
+    href: FoundationaLLM.Common.Models.Configuration.Security.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Configuration
+    name: Configuration
+    href: FoundationaLLM.Common.Models.Configuration.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Configuration.Security
+    name: Security
+    href: FoundationaLLM.Common.Models.Configuration.Security.html
+- uid: FoundationaLLM.Common.Models.Configuration.Storage
+  commentId: N:FoundationaLLM.Common.Models.Configuration.Storage
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.Configuration.Storage
+  nameWithType: FoundationaLLM.Common.Models.Configuration.Storage
+  fullName: FoundationaLLM.Common.Models.Configuration.Storage
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Configuration
+    name: Configuration
+    href: FoundationaLLM.Common.Models.Configuration.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Configuration.Storage
+    name: Storage
+    href: FoundationaLLM.Common.Models.Configuration.Storage.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Configuration
+    name: Configuration
+    href: FoundationaLLM.Common.Models.Configuration.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Configuration.Storage
+    name: Storage
+    href: FoundationaLLM.Common.Models.Configuration.Storage.html
+- uid: FoundationaLLM.Common.Models.Configuration.Text
+  commentId: N:FoundationaLLM.Common.Models.Configuration.Text
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.Configuration.Text
+  nameWithType: FoundationaLLM.Common.Models.Configuration.Text
+  fullName: FoundationaLLM.Common.Models.Configuration.Text
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Configuration
+    name: Configuration
+    href: FoundationaLLM.Common.Models.Configuration.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Configuration.Text
+    name: Text
+    href: FoundationaLLM.Common.Models.Configuration.Text.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Configuration
+    name: Configuration
+    href: FoundationaLLM.Common.Models.Configuration.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Configuration.Text
+    name: Text
+    href: FoundationaLLM.Common.Models.Configuration.Text.html
+- uid: FoundationaLLM.Common.Models.Configuration.Users
+  commentId: N:FoundationaLLM.Common.Models.Configuration.Users
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.Configuration.Users
+  nameWithType: FoundationaLLM.Common.Models.Configuration.Users
+  fullName: FoundationaLLM.Common.Models.Configuration.Users
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Configuration
+    name: Configuration
+    href: FoundationaLLM.Common.Models.Configuration.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Configuration.Users
+    name: Users
+    href: FoundationaLLM.Common.Models.Configuration.Users.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Configuration
+    name: Configuration
+    href: FoundationaLLM.Common.Models.Configuration.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Configuration.Users
+    name: Users
+    href: FoundationaLLM.Common.Models.Configuration.Users.html

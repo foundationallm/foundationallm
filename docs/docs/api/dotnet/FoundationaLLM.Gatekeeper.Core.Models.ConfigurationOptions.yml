@@ -1,0 +1,38 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Gatekeeper.Core.Models.ConfigurationOptions
+  commentId: N:FoundationaLLM.Gatekeeper.Core.Models.ConfigurationOptions
+  id: ConfigurationOptions
+  parent: FoundationaLLM.Gatekeeper.Core.Models
+  children:
+  - FoundationaLLM.Gatekeeper.Core.Models.ConfigurationOptions.EnkryptGuardrailsServiceSettings
+  - FoundationaLLM.Gatekeeper.Core.Models.ConfigurationOptions.GatekeeperServiceSettings
+  - FoundationaLLM.Gatekeeper.Core.Models.ConfigurationOptions.LakeraGuardServiceSettings
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM.Gatekeeper.Core.Models.ConfigurationOptions
+  nameWithType: FoundationaLLM.Gatekeeper.Core.Models.ConfigurationOptions
+  fullName: FoundationaLLM.Gatekeeper.Core.Models.ConfigurationOptions
+  type: Namespace
+  assemblies:
+  - FoundationaLLM.Gatekeeper.Core
+references:
+- uid: FoundationaLLM.Gatekeeper.Core.Models.ConfigurationOptions.EnkryptGuardrailsServiceSettings
+  commentId: T:FoundationaLLM.Gatekeeper.Core.Models.ConfigurationOptions.EnkryptGuardrailsServiceSettings
+  href: FoundationaLLM.Gatekeeper.Core.Models.ConfigurationOptions.EnkryptGuardrailsServiceSettings.html
+  name: EnkryptGuardrailsServiceSettings
+  nameWithType: EnkryptGuardrailsServiceSettings
+  fullName: FoundationaLLM.Gatekeeper.Core.Models.ConfigurationOptions.EnkryptGuardrailsServiceSettings
+- uid: FoundationaLLM.Gatekeeper.Core.Models.ConfigurationOptions.GatekeeperServiceSettings
+  commentId: T:FoundationaLLM.Gatekeeper.Core.Models.ConfigurationOptions.GatekeeperServiceSettings
+  href: FoundationaLLM.Gatekeeper.Core.Models.ConfigurationOptions.GatekeeperServiceSettings.html
+  name: GatekeeperServiceSettings
+  nameWithType: GatekeeperServiceSettings
+  fullName: FoundationaLLM.Gatekeeper.Core.Models.ConfigurationOptions.GatekeeperServiceSettings
+- uid: FoundationaLLM.Gatekeeper.Core.Models.ConfigurationOptions.LakeraGuardServiceSettings
+  commentId: T:FoundationaLLM.Gatekeeper.Core.Models.ConfigurationOptions.LakeraGuardServiceSettings
+  href: FoundationaLLM.Gatekeeper.Core.Models.ConfigurationOptions.LakeraGuardServiceSettings.html
+  name: LakeraGuardServiceSettings
+  nameWithType: LakeraGuardServiceSettings
+  fullName: FoundationaLLM.Gatekeeper.Core.Models.ConfigurationOptions.LakeraGuardServiceSettings

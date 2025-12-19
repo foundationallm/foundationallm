@@ -1,0 +1,688 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Common.Authentication.APIKeyAuthenticationFilter
+  commentId: T:FoundationaLLM.Common.Authentication.APIKeyAuthenticationFilter
+  id: APIKeyAuthenticationFilter
+  parent: FoundationaLLM.Common.Authentication
+  children:
+  - FoundationaLLM.Common.Authentication.APIKeyAuthenticationFilter.#ctor(FoundationaLLM.Common.Interfaces.IAPIKeyValidationService)
+  - FoundationaLLM.Common.Authentication.APIKeyAuthenticationFilter.OnAuthorization(Microsoft.AspNetCore.Mvc.Filters.AuthorizationFilterContext)
+  langs:
+  - csharp
+  - vb
+  name: APIKeyAuthenticationFilter
+  nameWithType: APIKeyAuthenticationFilter
+  fullName: FoundationaLLM.Common.Authentication.APIKeyAuthenticationFilter
+  type: Class
+  source:
+    remote:
+      path: src/dotnet/Common/Authentication/APIKeyAuthenticationFilter.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: APIKeyAuthenticationFilter
+    path: ../src/dotnet/Common/Authentication/APIKeyAuthenticationFilter.cs
+    startLine: 12
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Authentication
+  summary: Auth filter for X-API-Key header validation.
+  remarks: Initializes a new instance of the APIKeyAuthenticationFilter class.
+  example: []
+  syntax:
+    content: 'public class APIKeyAuthenticationFilter : IAuthorizationFilter, IFilterMetadata'
+    content.vb: Public Class APIKeyAuthenticationFilter Implements IAuthorizationFilter, IFilterMetadata
+  inheritance:
+  - System.Object
+  implements:
+  - Microsoft.AspNetCore.Mvc.Filters.IAuthorizationFilter
+  - Microsoft.AspNetCore.Mvc.Filters.IFilterMetadata
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+  extensionMethods:
+  - System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+- uid: FoundationaLLM.Common.Authentication.APIKeyAuthenticationFilter.#ctor(FoundationaLLM.Common.Interfaces.IAPIKeyValidationService)
+  commentId: M:FoundationaLLM.Common.Authentication.APIKeyAuthenticationFilter.#ctor(FoundationaLLM.Common.Interfaces.IAPIKeyValidationService)
+  id: '#ctor(FoundationaLLM.Common.Interfaces.IAPIKeyValidationService)'
+  parent: FoundationaLLM.Common.Authentication.APIKeyAuthenticationFilter
+  langs:
+  - csharp
+  - vb
+  name: APIKeyAuthenticationFilter(IAPIKeyValidationService)
+  nameWithType: APIKeyAuthenticationFilter.APIKeyAuthenticationFilter(IAPIKeyValidationService)
+  fullName: FoundationaLLM.Common.Authentication.APIKeyAuthenticationFilter.APIKeyAuthenticationFilter(FoundationaLLM.Common.Interfaces.IAPIKeyValidationService)
+  type: Constructor
+  source:
+    remote:
+      path: src/dotnet/Common/Authentication/APIKeyAuthenticationFilter.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: .ctor
+    path: ../src/dotnet/Common/Authentication/APIKeyAuthenticationFilter.cs
+    startLine: 12
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Authentication
+  summary: Auth filter for X-API-Key header validation.
+  remarks: Initializes a new instance of the APIKeyAuthenticationFilter class.
+  example: []
+  syntax:
+    content: public APIKeyAuthenticationFilter(IAPIKeyValidationService apiKeyValidation)
+    parameters:
+    - id: apiKeyValidation
+      type: FoundationaLLM.Common.Interfaces.IAPIKeyValidationService
+    content.vb: Public Sub New(apiKeyValidation As IAPIKeyValidationService)
+  overload: FoundationaLLM.Common.Authentication.APIKeyAuthenticationFilter.#ctor*
+  nameWithType.vb: APIKeyAuthenticationFilter.New(IAPIKeyValidationService)
+  fullName.vb: FoundationaLLM.Common.Authentication.APIKeyAuthenticationFilter.New(FoundationaLLM.Common.Interfaces.IAPIKeyValidationService)
+  name.vb: New(IAPIKeyValidationService)
+- uid: FoundationaLLM.Common.Authentication.APIKeyAuthenticationFilter.OnAuthorization(Microsoft.AspNetCore.Mvc.Filters.AuthorizationFilterContext)
+  commentId: M:FoundationaLLM.Common.Authentication.APIKeyAuthenticationFilter.OnAuthorization(Microsoft.AspNetCore.Mvc.Filters.AuthorizationFilterContext)
+  id: OnAuthorization(Microsoft.AspNetCore.Mvc.Filters.AuthorizationFilterContext)
+  parent: FoundationaLLM.Common.Authentication.APIKeyAuthenticationFilter
+  langs:
+  - csharp
+  - vb
+  name: OnAuthorization(AuthorizationFilterContext)
+  nameWithType: APIKeyAuthenticationFilter.OnAuthorization(AuthorizationFilterContext)
+  fullName: FoundationaLLM.Common.Authentication.APIKeyAuthenticationFilter.OnAuthorization(Microsoft.AspNetCore.Mvc.Filters.AuthorizationFilterContext)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Common/Authentication/APIKeyAuthenticationFilter.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: OnAuthorization
+    path: ../src/dotnet/Common/Authentication/APIKeyAuthenticationFilter.cs
+    startLine: 22
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Authentication
+  summary: Override for default OnAuthorization step to set UnauthorizedObjectResult on the context if the required header is missing or invalid.
+  example: []
+  syntax:
+    content: public void OnAuthorization(AuthorizationFilterContext context)
+    parameters:
+    - id: context
+      type: Microsoft.AspNetCore.Mvc.Filters.AuthorizationFilterContext
+      description: The context containing the HTTP request headers.
+    content.vb: Public Sub OnAuthorization(context As AuthorizationFilterContext)
+  overload: FoundationaLLM.Common.Authentication.APIKeyAuthenticationFilter.OnAuthorization*
+  implements:
+  - Microsoft.AspNetCore.Mvc.Filters.IAuthorizationFilter.OnAuthorization(Microsoft.AspNetCore.Mvc.Filters.AuthorizationFilterContext)
+references:
+- uid: FoundationaLLM.Common.Authentication
+  commentId: N:FoundationaLLM.Common.Authentication
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Authentication
+  nameWithType: FoundationaLLM.Common.Authentication
+  fullName: FoundationaLLM.Common.Authentication
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Authentication
+    name: Authentication
+    href: FoundationaLLM.Common.Authentication.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Authentication
+    name: Authentication
+    href: FoundationaLLM.Common.Authentication.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: Microsoft.AspNetCore.Mvc.Filters.IAuthorizationFilter
+  commentId: T:Microsoft.AspNetCore.Mvc.Filters.IAuthorizationFilter
+  parent: Microsoft.AspNetCore.Mvc.Filters
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.mvc.filters.iauthorizationfilter
+  name: IAuthorizationFilter
+  nameWithType: IAuthorizationFilter
+  fullName: Microsoft.AspNetCore.Mvc.Filters.IAuthorizationFilter
+- uid: Microsoft.AspNetCore.Mvc.Filters.IFilterMetadata
+  commentId: T:Microsoft.AspNetCore.Mvc.Filters.IFilterMetadata
+  parent: Microsoft.AspNetCore.Mvc.Filters
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.mvc.filters.ifiltermetadata
+  name: IFilterMetadata
+  nameWithType: IFilterMetadata
+  fullName: Microsoft.AspNetCore.Mvc.Filters.IFilterMetadata
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  parent: FoundationaLLM.Core.Utils.ObjectExtensions
+  definition: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Microsoft.AspNetCore.Mvc.Filters
+  commentId: N:Microsoft.AspNetCore.Mvc.Filters
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft
+  name: Microsoft.AspNetCore.Mvc.Filters
+  nameWithType: Microsoft.AspNetCore.Mvc.Filters
+  fullName: Microsoft.AspNetCore.Mvc.Filters
+  spec.csharp:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.AspNetCore
+    name: AspNetCore
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore
+  - name: .
+  - uid: Microsoft.AspNetCore.Mvc
+    name: Mvc
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.mvc
+  - name: .
+  - uid: Microsoft.AspNetCore.Mvc.Filters
+    name: Filters
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.mvc.filters
+  spec.vb:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.AspNetCore
+    name: AspNetCore
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore
+  - name: .
+  - uid: Microsoft.AspNetCore.Mvc
+    name: Mvc
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.mvc
+  - name: .
+  - uid: Microsoft.AspNetCore.Mvc.Filters
+    name: Filters
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.mvc.filters
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  isExternal: true
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions
+  commentId: T:FoundationaLLM.Core.Utils.ObjectExtensions
+  parent: FoundationaLLM.Core.Utils
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html
+  name: ObjectExtensions
+  nameWithType: ObjectExtensions
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions
+- uid: FoundationaLLM.Core.Utils
+  commentId: N:FoundationaLLM.Core.Utils
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Core.Utils
+  nameWithType: FoundationaLLM.Core.Utils
+  fullName: FoundationaLLM.Core.Utils
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+- uid: FoundationaLLM.Common.Authentication.APIKeyAuthenticationFilter.#ctor*
+  commentId: Overload:FoundationaLLM.Common.Authentication.APIKeyAuthenticationFilter.#ctor
+  href: FoundationaLLM.Common.Authentication.APIKeyAuthenticationFilter.html#FoundationaLLM_Common_Authentication_APIKeyAuthenticationFilter__ctor_FoundationaLLM_Common_Interfaces_IAPIKeyValidationService_
+  name: APIKeyAuthenticationFilter
+  nameWithType: APIKeyAuthenticationFilter.APIKeyAuthenticationFilter
+  fullName: FoundationaLLM.Common.Authentication.APIKeyAuthenticationFilter.APIKeyAuthenticationFilter
+  nameWithType.vb: APIKeyAuthenticationFilter.New
+  fullName.vb: FoundationaLLM.Common.Authentication.APIKeyAuthenticationFilter.New
+  name.vb: New
+- uid: FoundationaLLM.Common.Interfaces.IAPIKeyValidationService
+  commentId: T:FoundationaLLM.Common.Interfaces.IAPIKeyValidationService
+  parent: FoundationaLLM.Common.Interfaces
+  href: FoundationaLLM.Common.Interfaces.IAPIKeyValidationService.html
+  name: IAPIKeyValidationService
+  nameWithType: IAPIKeyValidationService
+  fullName: FoundationaLLM.Common.Interfaces.IAPIKeyValidationService
+- uid: FoundationaLLM.Common.Interfaces
+  commentId: N:FoundationaLLM.Common.Interfaces
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Interfaces
+  nameWithType: FoundationaLLM.Common.Interfaces
+  fullName: FoundationaLLM.Common.Interfaces
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Interfaces
+    name: Interfaces
+    href: FoundationaLLM.Common.Interfaces.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Interfaces
+    name: Interfaces
+    href: FoundationaLLM.Common.Interfaces.html
+- uid: FoundationaLLM.Common.Authentication.APIKeyAuthenticationFilter.OnAuthorization*
+  commentId: Overload:FoundationaLLM.Common.Authentication.APIKeyAuthenticationFilter.OnAuthorization
+  href: FoundationaLLM.Common.Authentication.APIKeyAuthenticationFilter.html#FoundationaLLM_Common_Authentication_APIKeyAuthenticationFilter_OnAuthorization_Microsoft_AspNetCore_Mvc_Filters_AuthorizationFilterContext_
+  name: OnAuthorization
+  nameWithType: APIKeyAuthenticationFilter.OnAuthorization
+  fullName: FoundationaLLM.Common.Authentication.APIKeyAuthenticationFilter.OnAuthorization
+- uid: Microsoft.AspNetCore.Mvc.Filters.IAuthorizationFilter.OnAuthorization(Microsoft.AspNetCore.Mvc.Filters.AuthorizationFilterContext)
+  commentId: M:Microsoft.AspNetCore.Mvc.Filters.IAuthorizationFilter.OnAuthorization(Microsoft.AspNetCore.Mvc.Filters.AuthorizationFilterContext)
+  parent: Microsoft.AspNetCore.Mvc.Filters.IAuthorizationFilter
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.mvc.filters.iauthorizationfilter.onauthorization
+  name: OnAuthorization(AuthorizationFilterContext)
+  nameWithType: IAuthorizationFilter.OnAuthorization(AuthorizationFilterContext)
+  fullName: Microsoft.AspNetCore.Mvc.Filters.IAuthorizationFilter.OnAuthorization(Microsoft.AspNetCore.Mvc.Filters.AuthorizationFilterContext)
+  spec.csharp:
+  - uid: Microsoft.AspNetCore.Mvc.Filters.IAuthorizationFilter.OnAuthorization(Microsoft.AspNetCore.Mvc.Filters.AuthorizationFilterContext)
+    name: OnAuthorization
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.mvc.filters.iauthorizationfilter.onauthorization
+  - name: (
+  - uid: Microsoft.AspNetCore.Mvc.Filters.AuthorizationFilterContext
+    name: AuthorizationFilterContext
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.mvc.filters.authorizationfiltercontext
+  - name: )
+  spec.vb:
+  - uid: Microsoft.AspNetCore.Mvc.Filters.IAuthorizationFilter.OnAuthorization(Microsoft.AspNetCore.Mvc.Filters.AuthorizationFilterContext)
+    name: OnAuthorization
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.mvc.filters.iauthorizationfilter.onauthorization
+  - name: (
+  - uid: Microsoft.AspNetCore.Mvc.Filters.AuthorizationFilterContext
+    name: AuthorizationFilterContext
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.mvc.filters.authorizationfiltercontext
+  - name: )
+- uid: Microsoft.AspNetCore.Mvc.Filters.AuthorizationFilterContext
+  commentId: T:Microsoft.AspNetCore.Mvc.Filters.AuthorizationFilterContext
+  parent: Microsoft.AspNetCore.Mvc.Filters
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.mvc.filters.authorizationfiltercontext
+  name: AuthorizationFilterContext
+  nameWithType: AuthorizationFilterContext
+  fullName: Microsoft.AspNetCore.Mvc.Filters.AuthorizationFilterContext

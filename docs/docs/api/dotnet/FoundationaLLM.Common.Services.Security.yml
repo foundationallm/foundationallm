@@ -1,0 +1,38 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Common.Services.Security
+  commentId: N:FoundationaLLM.Common.Services.Security
+  id: Security
+  parent: FoundationaLLM.Common.Services
+  children:
+  - FoundationaLLM.Common.Services.Security.EntraUserClaimsProviderService
+  - FoundationaLLM.Common.Services.Security.MicrosoftGraphIdentityManagementService
+  - FoundationaLLM.Common.Services.Security.NoOpUserClaimsProviderService
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM.Common.Services.Security
+  nameWithType: FoundationaLLM.Common.Services.Security
+  fullName: FoundationaLLM.Common.Services.Security
+  type: Namespace
+  assemblies:
+  - FoundationaLLM.Common
+references:
+- uid: FoundationaLLM.Common.Services.Security.EntraUserClaimsProviderService
+  commentId: T:FoundationaLLM.Common.Services.Security.EntraUserClaimsProviderService
+  href: FoundationaLLM.Common.Services.Security.EntraUserClaimsProviderService.html
+  name: EntraUserClaimsProviderService
+  nameWithType: EntraUserClaimsProviderService
+  fullName: FoundationaLLM.Common.Services.Security.EntraUserClaimsProviderService
+- uid: FoundationaLLM.Common.Services.Security.MicrosoftGraphIdentityManagementService
+  commentId: T:FoundationaLLM.Common.Services.Security.MicrosoftGraphIdentityManagementService
+  href: FoundationaLLM.Common.Services.Security.MicrosoftGraphIdentityManagementService.html
+  name: MicrosoftGraphIdentityManagementService
+  nameWithType: MicrosoftGraphIdentityManagementService
+  fullName: FoundationaLLM.Common.Services.Security.MicrosoftGraphIdentityManagementService
+- uid: FoundationaLLM.Common.Services.Security.NoOpUserClaimsProviderService
+  commentId: T:FoundationaLLM.Common.Services.Security.NoOpUserClaimsProviderService
+  href: FoundationaLLM.Common.Services.Security.NoOpUserClaimsProviderService.html
+  name: NoOpUserClaimsProviderService
+  nameWithType: NoOpUserClaimsProviderService
+  fullName: FoundationaLLM.Common.Services.Security.NoOpUserClaimsProviderService

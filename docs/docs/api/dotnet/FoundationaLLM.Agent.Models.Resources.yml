@@ -1,0 +1,24 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Agent.Models.Resources
+  commentId: N:FoundationaLLM.Agent.Models.Resources
+  id: Models.Resources
+  parent: FoundationaLLM.Agent
+  children:
+  - FoundationaLLM.Agent.Models.Resources.AgentReference
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM.Agent.Models.Resources
+  nameWithType: FoundationaLLM.Agent.Models.Resources
+  fullName: FoundationaLLM.Agent.Models.Resources
+  type: Namespace
+  assemblies:
+  - FoundationaLLM.Agent
+references:
+- uid: FoundationaLLM.Agent.Models.Resources.AgentReference
+  commentId: T:FoundationaLLM.Agent.Models.Resources.AgentReference
+  href: FoundationaLLM.Agent.Models.Resources.AgentReference.html
+  name: AgentReference
+  nameWithType: AgentReference
+  fullName: FoundationaLLM.Agent.Models.Resources.AgentReference

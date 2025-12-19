@@ -1,0 +1,751 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Common.Interfaces.IAzureAIService
+  commentId: T:FoundationaLLM.Common.Interfaces.IAzureAIService
+  id: IAzureAIService
+  parent: FoundationaLLM.Common.Interfaces
+  children:
+  - FoundationaLLM.Common.Interfaces.IAzureAIService.CreateDataSet(FoundationaLLM.Common.Models.AzureAIService.InputsMapping,System.String)
+  - FoundationaLLM.Common.Interfaces.IAzureAIService.CreateDataSetVersion(System.String,System.String,System.Int32)
+  - FoundationaLLM.Common.Interfaces.IAzureAIService.DownloadResults(System.Guid)
+  - FoundationaLLM.Common.Interfaces.IAzureAIService.GetJobStatus(System.Guid)
+  - FoundationaLLM.Common.Interfaces.IAzureAIService.GetResultsByIndex(System.Guid,System.Int32,System.Int32)
+  - FoundationaLLM.Common.Interfaces.IAzureAIService.SubmitJob(System.String,System.String,System.Int32,System.String)
+  langs:
+  - csharp
+  - vb
+  name: IAzureAIService
+  nameWithType: IAzureAIService
+  fullName: FoundationaLLM.Common.Interfaces.IAzureAIService
+  type: Interface
+  source:
+    remote:
+      path: src/dotnet/Common/Interfaces/IAzureAIService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: IAzureAIService
+    path: ../src/dotnet/Common/Interfaces/IAzureAIService.cs
+    startLine: 7
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Interfaces
+  summary: Interface for the Azure AI service.
+  example: []
+  syntax:
+    content: public interface IAzureAIService
+    content.vb: Public Interface IAzureAIService
+  extensionMethods:
+  - System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+- uid: FoundationaLLM.Common.Interfaces.IAzureAIService.CreateDataSet(FoundationaLLM.Common.Models.AzureAIService.InputsMapping,System.String)
+  commentId: M:FoundationaLLM.Common.Interfaces.IAzureAIService.CreateDataSet(FoundationaLLM.Common.Models.AzureAIService.InputsMapping,System.String)
+  id: CreateDataSet(FoundationaLLM.Common.Models.AzureAIService.InputsMapping,System.String)
+  parent: FoundationaLLM.Common.Interfaces.IAzureAIService
+  langs:
+  - csharp
+  - vb
+  name: CreateDataSet(InputsMapping, string)
+  nameWithType: IAzureAIService.CreateDataSet(InputsMapping, string)
+  fullName: FoundationaLLM.Common.Interfaces.IAzureAIService.CreateDataSet(FoundationaLLM.Common.Models.AzureAIService.InputsMapping, string)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Common/Interfaces/IAzureAIService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: CreateDataSet
+    path: ../src/dotnet/Common/Interfaces/IAzureAIService.cs
+    startLine: 15
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Interfaces
+  summary: Creates a new data set.
+  example: []
+  syntax:
+    content: Task<string> CreateDataSet(InputsMapping data, string blobName)
+    parameters:
+    - id: data
+      type: FoundationaLLM.Common.Models.AzureAIService.InputsMapping
+      description: ''
+    - id: blobName
+      type: System.String
+      description: ''
+    return:
+      type: System.Threading.Tasks.Task{System.String}
+      description: ''
+    content.vb: Function CreateDataSet(data As InputsMapping, blobName As String) As Task(Of String)
+  overload: FoundationaLLM.Common.Interfaces.IAzureAIService.CreateDataSet*
+  nameWithType.vb: IAzureAIService.CreateDataSet(InputsMapping, String)
+  fullName.vb: FoundationaLLM.Common.Interfaces.IAzureAIService.CreateDataSet(FoundationaLLM.Common.Models.AzureAIService.InputsMapping, String)
+  name.vb: CreateDataSet(InputsMapping, String)
+- uid: FoundationaLLM.Common.Interfaces.IAzureAIService.CreateDataSetVersion(System.String,System.String,System.Int32)
+  commentId: M:FoundationaLLM.Common.Interfaces.IAzureAIService.CreateDataSetVersion(System.String,System.String,System.Int32)
+  id: CreateDataSetVersion(System.String,System.String,System.Int32)
+  parent: FoundationaLLM.Common.Interfaces.IAzureAIService
+  langs:
+  - csharp
+  - vb
+  name: CreateDataSetVersion(string, string, int)
+  nameWithType: IAzureAIService.CreateDataSetVersion(string, string, int)
+  fullName: FoundationaLLM.Common.Interfaces.IAzureAIService.CreateDataSetVersion(string, string, int)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Common/Interfaces/IAzureAIService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: CreateDataSetVersion
+    path: ../src/dotnet/Common/Interfaces/IAzureAIService.cs
+    startLine: 23
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Interfaces
+  summary: Creates a data set version request.
+  example: []
+  syntax:
+    content: Task<DataVersionResponse> CreateDataSetVersion(string dataSetName, string dataSetPath, int version = 1)
+    parameters:
+    - id: dataSetName
+      type: System.String
+      description: ''
+    - id: dataSetPath
+      type: System.String
+      description: ''
+    - id: version
+      type: System.Int32
+      description: ''
+    return:
+      type: System.Threading.Tasks.Task{FoundationaLLM.Common.Models.AzureAIService.DataVersionResponse}
+      description: ''
+    content.vb: Function CreateDataSetVersion(dataSetName As String, dataSetPath As String, version As Integer = 1) As Task(Of DataVersionResponse)
+  overload: FoundationaLLM.Common.Interfaces.IAzureAIService.CreateDataSetVersion*
+  nameWithType.vb: IAzureAIService.CreateDataSetVersion(String, String, Integer)
+  fullName.vb: FoundationaLLM.Common.Interfaces.IAzureAIService.CreateDataSetVersion(String, String, Integer)
+  name.vb: CreateDataSetVersion(String, String, Integer)
+- uid: FoundationaLLM.Common.Interfaces.IAzureAIService.SubmitJob(System.String,System.String,System.Int32,System.String)
+  commentId: M:FoundationaLLM.Common.Interfaces.IAzureAIService.SubmitJob(System.String,System.String,System.Int32,System.String)
+  id: SubmitJob(System.String,System.String,System.Int32,System.String)
+  parent: FoundationaLLM.Common.Interfaces.IAzureAIService
+  langs:
+  - csharp
+  - vb
+  name: SubmitJob(string, string, int, string)
+  nameWithType: IAzureAIService.SubmitJob(string, string, int, string)
+  fullName: FoundationaLLM.Common.Interfaces.IAzureAIService.SubmitJob(string, string, int, string)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Common/Interfaces/IAzureAIService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: SubmitJob
+    path: ../src/dotnet/Common/Interfaces/IAzureAIService.cs
+    startLine: 32
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Interfaces
+  summary: Submits a job to the Azure AI service.
+  example: []
+  syntax:
+    content: Task<Guid> SubmitJob(string displayName, string dataSetName, int dataSetVersion, string metrics)
+    parameters:
+    - id: displayName
+      type: System.String
+      description: ''
+    - id: dataSetName
+      type: System.String
+      description: ''
+    - id: dataSetVersion
+      type: System.Int32
+      description: ''
+    - id: metrics
+      type: System.String
+      description: ''
+    return:
+      type: System.Threading.Tasks.Task{System.Guid}
+      description: ''
+    content.vb: Function SubmitJob(displayName As String, dataSetName As String, dataSetVersion As Integer, metrics As String) As Task(Of Guid)
+  overload: FoundationaLLM.Common.Interfaces.IAzureAIService.SubmitJob*
+  nameWithType.vb: IAzureAIService.SubmitJob(String, String, Integer, String)
+  fullName.vb: FoundationaLLM.Common.Interfaces.IAzureAIService.SubmitJob(String, String, Integer, String)
+  name.vb: SubmitJob(String, String, Integer, String)
+- uid: FoundationaLLM.Common.Interfaces.IAzureAIService.GetJobStatus(System.Guid)
+  commentId: M:FoundationaLLM.Common.Interfaces.IAzureAIService.GetJobStatus(System.Guid)
+  id: GetJobStatus(System.Guid)
+  parent: FoundationaLLM.Common.Interfaces.IAzureAIService
+  langs:
+  - csharp
+  - vb
+  name: GetJobStatus(Guid)
+  nameWithType: IAzureAIService.GetJobStatus(Guid)
+  fullName: FoundationaLLM.Common.Interfaces.IAzureAIService.GetJobStatus(System.Guid)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Common/Interfaces/IAzureAIService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: GetJobStatus
+    path: ../src/dotnet/Common/Interfaces/IAzureAIService.cs
+    startLine: 38
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Interfaces
+  summary: Retrieves the status of a job.
+  example: []
+  syntax:
+    content: Task<string> GetJobStatus(Guid jobId)
+    parameters:
+    - id: jobId
+      type: System.Guid
+      description: ''
+    return:
+      type: System.Threading.Tasks.Task{System.String}
+      description: ''
+    content.vb: Function GetJobStatus(jobId As Guid) As Task(Of String)
+  overload: FoundationaLLM.Common.Interfaces.IAzureAIService.GetJobStatus*
+- uid: FoundationaLLM.Common.Interfaces.IAzureAIService.GetResultsByIndex(System.Guid,System.Int32,System.Int32)
+  commentId: M:FoundationaLLM.Common.Interfaces.IAzureAIService.GetResultsByIndex(System.Guid,System.Int32,System.Int32)
+  id: GetResultsByIndex(System.Guid,System.Int32,System.Int32)
+  parent: FoundationaLLM.Common.Interfaces.IAzureAIService
+  langs:
+  - csharp
+  - vb
+  name: GetResultsByIndex(Guid, int, int)
+  nameWithType: IAzureAIService.GetResultsByIndex(Guid, int, int)
+  fullName: FoundationaLLM.Common.Interfaces.IAzureAIService.GetResultsByIndex(System.Guid, int, int)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Common/Interfaces/IAzureAIService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: GetResultsByIndex
+    path: ../src/dotnet/Common/Interfaces/IAzureAIService.cs
+    startLine: 46
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Interfaces
+  summary: Retrieves the results of a job by index.
+  example: []
+  syntax:
+    content: Task<string> GetResultsByIndex(Guid jobId, int startIndex = 0, int endIndex = 149)
+    parameters:
+    - id: jobId
+      type: System.Guid
+      description: ''
+    - id: startIndex
+      type: System.Int32
+      description: ''
+    - id: endIndex
+      type: System.Int32
+      description: ''
+    return:
+      type: System.Threading.Tasks.Task{System.String}
+      description: ''
+    content.vb: Function GetResultsByIndex(jobId As Guid, startIndex As Integer = 0, endIndex As Integer = 149) As Task(Of String)
+  overload: FoundationaLLM.Common.Interfaces.IAzureAIService.GetResultsByIndex*
+  nameWithType.vb: IAzureAIService.GetResultsByIndex(Guid, Integer, Integer)
+  fullName.vb: FoundationaLLM.Common.Interfaces.IAzureAIService.GetResultsByIndex(System.Guid, Integer, Integer)
+  name.vb: GetResultsByIndex(Guid, Integer, Integer)
+- uid: FoundationaLLM.Common.Interfaces.IAzureAIService.DownloadResults(System.Guid)
+  commentId: M:FoundationaLLM.Common.Interfaces.IAzureAIService.DownloadResults(System.Guid)
+  id: DownloadResults(System.Guid)
+  parent: FoundationaLLM.Common.Interfaces.IAzureAIService
+  langs:
+  - csharp
+  - vb
+  name: DownloadResults(Guid)
+  nameWithType: IAzureAIService.DownloadResults(Guid)
+  fullName: FoundationaLLM.Common.Interfaces.IAzureAIService.DownloadResults(System.Guid)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Common/Interfaces/IAzureAIService.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: DownloadResults
+    path: ../src/dotnet/Common/Interfaces/IAzureAIService.cs
+    startLine: 52
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Interfaces
+  summary: Downloads the results of a job.
+  example: []
+  syntax:
+    content: Task<string> DownloadResults(Guid jobId)
+    parameters:
+    - id: jobId
+      type: System.Guid
+      description: ''
+    return:
+      type: System.Threading.Tasks.Task{System.String}
+      description: ''
+    content.vb: Function DownloadResults(jobId As Guid) As Task(Of String)
+  overload: FoundationaLLM.Common.Interfaces.IAzureAIService.DownloadResults*
+references:
+- uid: FoundationaLLM.Common.Interfaces
+  commentId: N:FoundationaLLM.Common.Interfaces
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Interfaces
+  nameWithType: FoundationaLLM.Common.Interfaces
+  fullName: FoundationaLLM.Common.Interfaces
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Interfaces
+    name: Interfaces
+    href: FoundationaLLM.Common.Interfaces.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Interfaces
+    name: Interfaces
+    href: FoundationaLLM.Common.Interfaces.html
+- uid: System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  parent: FoundationaLLM.Core.Utils.ObjectExtensions
+  definition: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  isExternal: true
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions
+  commentId: T:FoundationaLLM.Core.Utils.ObjectExtensions
+  parent: FoundationaLLM.Core.Utils
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html
+  name: ObjectExtensions
+  nameWithType: ObjectExtensions
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions
+- uid: FoundationaLLM.Core.Utils
+  commentId: N:FoundationaLLM.Core.Utils
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Core.Utils
+  nameWithType: FoundationaLLM.Core.Utils
+  fullName: FoundationaLLM.Core.Utils
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+- uid: FoundationaLLM.Common.Interfaces.IAzureAIService.CreateDataSet*
+  commentId: Overload:FoundationaLLM.Common.Interfaces.IAzureAIService.CreateDataSet
+  href: FoundationaLLM.Common.Interfaces.IAzureAIService.html#FoundationaLLM_Common_Interfaces_IAzureAIService_CreateDataSet_FoundationaLLM_Common_Models_AzureAIService_InputsMapping_System_String_
+  name: CreateDataSet
+  nameWithType: IAzureAIService.CreateDataSet
+  fullName: FoundationaLLM.Common.Interfaces.IAzureAIService.CreateDataSet
+- uid: FoundationaLLM.Common.Models.AzureAIService.InputsMapping
+  commentId: T:FoundationaLLM.Common.Models.AzureAIService.InputsMapping
+  parent: FoundationaLLM.Common.Models.AzureAIService
+  href: FoundationaLLM.Common.Models.AzureAIService.InputsMapping.html
+  name: InputsMapping
+  nameWithType: InputsMapping
+  fullName: FoundationaLLM.Common.Models.AzureAIService.InputsMapping
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System.Threading.Tasks.Task{System.String}
+  commentId: T:System.Threading.Tasks.Task{System.String}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<string>
+  nameWithType: Task<string>
+  fullName: System.Threading.Tasks.Task<string>
+  nameWithType.vb: Task(Of String)
+  fullName.vb: System.Threading.Tasks.Task(Of String)
+  name.vb: Task(Of String)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: FoundationaLLM.Common.Models.AzureAIService
+  commentId: N:FoundationaLLM.Common.Models.AzureAIService
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.AzureAIService
+  nameWithType: FoundationaLLM.Common.Models.AzureAIService
+  fullName: FoundationaLLM.Common.Models.AzureAIService
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.AzureAIService
+    name: AzureAIService
+    href: FoundationaLLM.Common.Models.AzureAIService.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.AzureAIService
+    name: AzureAIService
+    href: FoundationaLLM.Common.Models.AzureAIService.html
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: FoundationaLLM.Common.Interfaces.IAzureAIService.CreateDataSetVersion*
+  commentId: Overload:FoundationaLLM.Common.Interfaces.IAzureAIService.CreateDataSetVersion
+  href: FoundationaLLM.Common.Interfaces.IAzureAIService.html#FoundationaLLM_Common_Interfaces_IAzureAIService_CreateDataSetVersion_System_String_System_String_System_Int32_
+  name: CreateDataSetVersion
+  nameWithType: IAzureAIService.CreateDataSetVersion
+  fullName: FoundationaLLM.Common.Interfaces.IAzureAIService.CreateDataSetVersion
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: System.Threading.Tasks.Task{FoundationaLLM.Common.Models.AzureAIService.DataVersionResponse}
+  commentId: T:System.Threading.Tasks.Task{FoundationaLLM.Common.Models.AzureAIService.DataVersionResponse}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<DataVersionResponse>
+  nameWithType: Task<DataVersionResponse>
+  fullName: System.Threading.Tasks.Task<FoundationaLLM.Common.Models.AzureAIService.DataVersionResponse>
+  nameWithType.vb: Task(Of DataVersionResponse)
+  fullName.vb: System.Threading.Tasks.Task(Of FoundationaLLM.Common.Models.AzureAIService.DataVersionResponse)
+  name.vb: Task(Of DataVersionResponse)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: FoundationaLLM.Common.Models.AzureAIService.DataVersionResponse
+    name: DataVersionResponse
+    href: FoundationaLLM.Common.Models.AzureAIService.DataVersionResponse.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FoundationaLLM.Common.Models.AzureAIService.DataVersionResponse
+    name: DataVersionResponse
+    href: FoundationaLLM.Common.Models.AzureAIService.DataVersionResponse.html
+  - name: )
+- uid: FoundationaLLM.Common.Interfaces.IAzureAIService.SubmitJob*
+  commentId: Overload:FoundationaLLM.Common.Interfaces.IAzureAIService.SubmitJob
+  href: FoundationaLLM.Common.Interfaces.IAzureAIService.html#FoundationaLLM_Common_Interfaces_IAzureAIService_SubmitJob_System_String_System_String_System_Int32_System_String_
+  name: SubmitJob
+  nameWithType: IAzureAIService.SubmitJob
+  fullName: FoundationaLLM.Common.Interfaces.IAzureAIService.SubmitJob
+- uid: System.Threading.Tasks.Task{System.Guid}
+  commentId: T:System.Threading.Tasks.Task{System.Guid}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<Guid>
+  nameWithType: Task<Guid>
+  fullName: System.Threading.Tasks.Task<System.Guid>
+  nameWithType.vb: Task(Of Guid)
+  fullName.vb: System.Threading.Tasks.Task(Of System.Guid)
+  name.vb: Task(Of Guid)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: )
+- uid: FoundationaLLM.Common.Interfaces.IAzureAIService.GetJobStatus*
+  commentId: Overload:FoundationaLLM.Common.Interfaces.IAzureAIService.GetJobStatus
+  href: FoundationaLLM.Common.Interfaces.IAzureAIService.html#FoundationaLLM_Common_Interfaces_IAzureAIService_GetJobStatus_System_Guid_
+  name: GetJobStatus
+  nameWithType: IAzureAIService.GetJobStatus
+  fullName: FoundationaLLM.Common.Interfaces.IAzureAIService.GetJobStatus
+- uid: System.Guid
+  commentId: T:System.Guid
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.guid
+  name: Guid
+  nameWithType: Guid
+  fullName: System.Guid
+- uid: FoundationaLLM.Common.Interfaces.IAzureAIService.GetResultsByIndex*
+  commentId: Overload:FoundationaLLM.Common.Interfaces.IAzureAIService.GetResultsByIndex
+  href: FoundationaLLM.Common.Interfaces.IAzureAIService.html#FoundationaLLM_Common_Interfaces_IAzureAIService_GetResultsByIndex_System_Guid_System_Int32_System_Int32_
+  name: GetResultsByIndex
+  nameWithType: IAzureAIService.GetResultsByIndex
+  fullName: FoundationaLLM.Common.Interfaces.IAzureAIService.GetResultsByIndex
+- uid: FoundationaLLM.Common.Interfaces.IAzureAIService.DownloadResults*
+  commentId: Overload:FoundationaLLM.Common.Interfaces.IAzureAIService.DownloadResults
+  href: FoundationaLLM.Common.Interfaces.IAzureAIService.html#FoundationaLLM_Common_Interfaces_IAzureAIService_DownloadResults_System_Guid_
+  name: DownloadResults
+  nameWithType: IAzureAIService.DownloadResults
+  fullName: FoundationaLLM.Common.Interfaces.IAzureAIService.DownloadResults

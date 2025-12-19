@@ -1,0 +1,985 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Common.Services.Plugins.PluginPackageManagerResolver
+  commentId: T:FoundationaLLM.Common.Services.Plugins.PluginPackageManagerResolver
+  id: PluginPackageManagerResolver
+  parent: FoundationaLLM.Common.Services.Plugins
+  children:
+  - FoundationaLLM.Common.Services.Plugins.PluginPackageManagerResolver.#ctor(FoundationaLLM.Common.Interfaces.IResourceProviderService)
+  - FoundationaLLM.Common.Services.Plugins.PluginPackageManagerResolver.GetPluginPackageManager(FoundationaLLM.Common.Models.ResourceProviders.Plugin.PluginDefinition,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  - FoundationaLLM.Common.Services.Plugins.PluginPackageManagerResolver.GetPluginPackageManager(System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  langs:
+  - csharp
+  - vb
+  name: PluginPackageManagerResolver
+  nameWithType: PluginPackageManagerResolver
+  fullName: FoundationaLLM.Common.Services.Plugins.PluginPackageManagerResolver
+  type: Class
+  source:
+    remote:
+      path: src/dotnet/Common/Services/Plugins/PluginPackageManagerResolver.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: PluginPackageManagerResolver
+    path: ../src/dotnet/Common/Services/Plugins/PluginPackageManagerResolver.cs
+    startLine: 17
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Services.Plugins
+  summary: Provides functionality to resolve and manage plugin packages.
+  remarks: >-
+    This class implements the <xref href="FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManagerResolver" data-throw-if-not-resolved="false"></xref> interface to offer
+        methods for handling plugin package resolution. It is designed to be used in scenarios where dynamic loading and
+        management of plugins are required.
+  example: []
+  syntax:
+    content: 'public class PluginPackageManagerResolver : IPluginPackageManagerResolver'
+    content.vb: Public Class PluginPackageManagerResolver Implements IPluginPackageManagerResolver
+  inheritance:
+  - System.Object
+  implements:
+  - FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManagerResolver
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+  extensionMethods:
+  - System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+- uid: FoundationaLLM.Common.Services.Plugins.PluginPackageManagerResolver.#ctor(FoundationaLLM.Common.Interfaces.IResourceProviderService)
+  commentId: M:FoundationaLLM.Common.Services.Plugins.PluginPackageManagerResolver.#ctor(FoundationaLLM.Common.Interfaces.IResourceProviderService)
+  id: '#ctor(FoundationaLLM.Common.Interfaces.IResourceProviderService)'
+  parent: FoundationaLLM.Common.Services.Plugins.PluginPackageManagerResolver
+  langs:
+  - csharp
+  - vb
+  name: PluginPackageManagerResolver(IResourceProviderService)
+  nameWithType: PluginPackageManagerResolver.PluginPackageManagerResolver(IResourceProviderService)
+  fullName: FoundationaLLM.Common.Services.Plugins.PluginPackageManagerResolver.PluginPackageManagerResolver(FoundationaLLM.Common.Interfaces.IResourceProviderService)
+  type: Constructor
+  source:
+    remote:
+      path: src/dotnet/Common/Services/Plugins/PluginPackageManagerResolver.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: .ctor
+    path: ../src/dotnet/Common/Services/Plugins/PluginPackageManagerResolver.cs
+    startLine: 17
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Services.Plugins
+  summary: Provides functionality to resolve and manage plugin packages.
+  remarks: >-
+    This class implements the <xref href="FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManagerResolver" data-throw-if-not-resolved="false"></xref> interface to offer
+        methods for handling plugin package resolution. It is designed to be used in scenarios where dynamic loading and
+        management of plugins are required.
+  example: []
+  syntax:
+    content: public PluginPackageManagerResolver(IResourceProviderService pluginResourceProvider)
+    parameters:
+    - id: pluginResourceProvider
+      type: FoundationaLLM.Common.Interfaces.IResourceProviderService
+      description: The resource provider service for plugins.
+    content.vb: Public Sub New(pluginResourceProvider As IResourceProviderService)
+  overload: FoundationaLLM.Common.Services.Plugins.PluginPackageManagerResolver.#ctor*
+  nameWithType.vb: PluginPackageManagerResolver.New(IResourceProviderService)
+  fullName.vb: FoundationaLLM.Common.Services.Plugins.PluginPackageManagerResolver.New(FoundationaLLM.Common.Interfaces.IResourceProviderService)
+  name.vb: New(IResourceProviderService)
+- uid: FoundationaLLM.Common.Services.Plugins.PluginPackageManagerResolver.GetPluginPackageManager(System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  commentId: M:FoundationaLLM.Common.Services.Plugins.PluginPackageManagerResolver.GetPluginPackageManager(System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  id: GetPluginPackageManager(System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  parent: FoundationaLLM.Common.Services.Plugins.PluginPackageManagerResolver
+  langs:
+  - csharp
+  - vb
+  name: GetPluginPackageManager(string, UnifiedUserIdentity)
+  nameWithType: PluginPackageManagerResolver.GetPluginPackageManager(string, UnifiedUserIdentity)
+  fullName: FoundationaLLM.Common.Services.Plugins.PluginPackageManagerResolver.GetPluginPackageManager(string, FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Common/Services/Plugins/PluginPackageManagerResolver.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: GetPluginPackageManager
+    path: ../src/dotnet/Common/Services/Plugins/PluginPackageManagerResolver.cs
+    startLine: 23
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Services.Plugins
+  summary: Asynchronously retrieves the plugin package manager associated with the specified plugin object identifier.
+  example: []
+  syntax:
+    content: public Task<IPluginPackageManager> GetPluginPackageManager(string pluginObjectId, UnifiedUserIdentity userIdentity)
+    parameters:
+    - id: pluginObjectId
+      type: System.String
+      description: The unique identifier of the plugin object for which the package manager is requested.
+    - id: userIdentity
+      type: FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity
+      description: The identity of the user requesting the package manager.
+    return:
+      type: System.Threading.Tasks.Task{FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManager}
+      description: A task that represents the asynchronous operation. The task result contains the <xref href="FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManager" data-throw-if-not-resolved="false"></xref> associated with the specified plugin object identifier.
+    content.vb: Public Function GetPluginPackageManager(pluginObjectId As String, userIdentity As UnifiedUserIdentity) As Task(Of IPluginPackageManager)
+  overload: FoundationaLLM.Common.Services.Plugins.PluginPackageManagerResolver.GetPluginPackageManager*
+  implements:
+  - FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManagerResolver.GetPluginPackageManager(System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  nameWithType.vb: PluginPackageManagerResolver.GetPluginPackageManager(String, UnifiedUserIdentity)
+  fullName.vb: FoundationaLLM.Common.Services.Plugins.PluginPackageManagerResolver.GetPluginPackageManager(String, FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  name.vb: GetPluginPackageManager(String, UnifiedUserIdentity)
+- uid: FoundationaLLM.Common.Services.Plugins.PluginPackageManagerResolver.GetPluginPackageManager(FoundationaLLM.Common.Models.ResourceProviders.Plugin.PluginDefinition,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  commentId: M:FoundationaLLM.Common.Services.Plugins.PluginPackageManagerResolver.GetPluginPackageManager(FoundationaLLM.Common.Models.ResourceProviders.Plugin.PluginDefinition,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  id: GetPluginPackageManager(FoundationaLLM.Common.Models.ResourceProviders.Plugin.PluginDefinition,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  parent: FoundationaLLM.Common.Services.Plugins.PluginPackageManagerResolver
+  langs:
+  - csharp
+  - vb
+  name: GetPluginPackageManager(PluginDefinition, UnifiedUserIdentity)
+  nameWithType: PluginPackageManagerResolver.GetPluginPackageManager(PluginDefinition, UnifiedUserIdentity)
+  fullName: FoundationaLLM.Common.Services.Plugins.PluginPackageManagerResolver.GetPluginPackageManager(FoundationaLLM.Common.Models.ResourceProviders.Plugin.PluginDefinition, FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Common/Services/Plugins/PluginPackageManagerResolver.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: GetPluginPackageManager
+    path: ../src/dotnet/Common/Services/Plugins/PluginPackageManagerResolver.cs
+    startLine: 35
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Services.Plugins
+  summary: Retrieves an instance of the plugin package manager for the specified plugin definition and user identity.
+  example: []
+  syntax:
+    content: public Task<IPluginPackageManager> GetPluginPackageManager(PluginDefinition pluginDefinition, UnifiedUserIdentity userIdentity)
+    parameters:
+    - id: pluginDefinition
+      type: FoundationaLLM.Common.Models.ResourceProviders.Plugin.PluginDefinition
+      description: The definition of the plugin for which the package manager is requested.
+    - id: userIdentity
+      type: FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity
+      description: The identity of the user requesting the plugin package manager.
+    return:
+      type: System.Threading.Tasks.Task{FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManager}
+    content.vb: Public Function GetPluginPackageManager(pluginDefinition As PluginDefinition, userIdentity As UnifiedUserIdentity) As Task(Of IPluginPackageManager)
+  overload: FoundationaLLM.Common.Services.Plugins.PluginPackageManagerResolver.GetPluginPackageManager*
+  implements:
+  - FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManagerResolver.GetPluginPackageManager(FoundationaLLM.Common.Models.ResourceProviders.Plugin.PluginDefinition,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+references:
+- uid: FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManagerResolver
+  commentId: T:FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManagerResolver
+  parent: FoundationaLLM.Common.Interfaces.Plugins
+  href: FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManagerResolver.html
+  name: IPluginPackageManagerResolver
+  nameWithType: IPluginPackageManagerResolver
+  fullName: FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManagerResolver
+- uid: FoundationaLLM.Common.Services.Plugins
+  commentId: N:FoundationaLLM.Common.Services.Plugins
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Services.Plugins
+  nameWithType: FoundationaLLM.Common.Services.Plugins
+  fullName: FoundationaLLM.Common.Services.Plugins
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Services
+    name: Services
+    href: FoundationaLLM.Common.Services.html
+  - name: .
+  - uid: FoundationaLLM.Common.Services.Plugins
+    name: Plugins
+    href: FoundationaLLM.Common.Services.Plugins.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Services
+    name: Services
+    href: FoundationaLLM.Common.Services.html
+  - name: .
+  - uid: FoundationaLLM.Common.Services.Plugins
+    name: Plugins
+    href: FoundationaLLM.Common.Services.Plugins.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  parent: FoundationaLLM.Core.Utils.ObjectExtensions
+  definition: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: FoundationaLLM.Common.Interfaces.Plugins
+  commentId: N:FoundationaLLM.Common.Interfaces.Plugins
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Interfaces.Plugins
+  nameWithType: FoundationaLLM.Common.Interfaces.Plugins
+  fullName: FoundationaLLM.Common.Interfaces.Plugins
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Interfaces
+    name: Interfaces
+    href: FoundationaLLM.Common.Interfaces.html
+  - name: .
+  - uid: FoundationaLLM.Common.Interfaces.Plugins
+    name: Plugins
+    href: FoundationaLLM.Common.Interfaces.Plugins.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Interfaces
+    name: Interfaces
+    href: FoundationaLLM.Common.Interfaces.html
+  - name: .
+  - uid: FoundationaLLM.Common.Interfaces.Plugins
+    name: Plugins
+    href: FoundationaLLM.Common.Interfaces.Plugins.html
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  isExternal: true
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions
+  commentId: T:FoundationaLLM.Core.Utils.ObjectExtensions
+  parent: FoundationaLLM.Core.Utils
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html
+  name: ObjectExtensions
+  nameWithType: ObjectExtensions
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions
+- uid: FoundationaLLM.Core.Utils
+  commentId: N:FoundationaLLM.Core.Utils
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Core.Utils
+  nameWithType: FoundationaLLM.Core.Utils
+  fullName: FoundationaLLM.Core.Utils
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+- uid: FoundationaLLM.Common.Services.Plugins.PluginPackageManagerResolver.#ctor*
+  commentId: Overload:FoundationaLLM.Common.Services.Plugins.PluginPackageManagerResolver.#ctor
+  href: FoundationaLLM.Common.Services.Plugins.PluginPackageManagerResolver.html#FoundationaLLM_Common_Services_Plugins_PluginPackageManagerResolver__ctor_FoundationaLLM_Common_Interfaces_IResourceProviderService_
+  name: PluginPackageManagerResolver
+  nameWithType: PluginPackageManagerResolver.PluginPackageManagerResolver
+  fullName: FoundationaLLM.Common.Services.Plugins.PluginPackageManagerResolver.PluginPackageManagerResolver
+  nameWithType.vb: PluginPackageManagerResolver.New
+  fullName.vb: FoundationaLLM.Common.Services.Plugins.PluginPackageManagerResolver.New
+  name.vb: New
+- uid: FoundationaLLM.Common.Interfaces.IResourceProviderService
+  commentId: T:FoundationaLLM.Common.Interfaces.IResourceProviderService
+  parent: FoundationaLLM.Common.Interfaces
+  href: FoundationaLLM.Common.Interfaces.IResourceProviderService.html
+  name: IResourceProviderService
+  nameWithType: IResourceProviderService
+  fullName: FoundationaLLM.Common.Interfaces.IResourceProviderService
+- uid: FoundationaLLM.Common.Interfaces
+  commentId: N:FoundationaLLM.Common.Interfaces
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Interfaces
+  nameWithType: FoundationaLLM.Common.Interfaces
+  fullName: FoundationaLLM.Common.Interfaces
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Interfaces
+    name: Interfaces
+    href: FoundationaLLM.Common.Interfaces.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Interfaces
+    name: Interfaces
+    href: FoundationaLLM.Common.Interfaces.html
+- uid: FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManager
+  commentId: T:FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManager
+  parent: FoundationaLLM.Common.Interfaces.Plugins
+  href: FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManager.html
+  name: IPluginPackageManager
+  nameWithType: IPluginPackageManager
+  fullName: FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManager
+- uid: FoundationaLLM.Common.Services.Plugins.PluginPackageManagerResolver.GetPluginPackageManager*
+  commentId: Overload:FoundationaLLM.Common.Services.Plugins.PluginPackageManagerResolver.GetPluginPackageManager
+  href: FoundationaLLM.Common.Services.Plugins.PluginPackageManagerResolver.html#FoundationaLLM_Common_Services_Plugins_PluginPackageManagerResolver_GetPluginPackageManager_System_String_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_
+  name: GetPluginPackageManager
+  nameWithType: PluginPackageManagerResolver.GetPluginPackageManager
+  fullName: FoundationaLLM.Common.Services.Plugins.PluginPackageManagerResolver.GetPluginPackageManager
+- uid: FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManagerResolver.GetPluginPackageManager(System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  commentId: M:FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManagerResolver.GetPluginPackageManager(System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  parent: FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManagerResolver
+  isExternal: true
+  href: FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManagerResolver.html#FoundationaLLM_Common_Interfaces_Plugins_IPluginPackageManagerResolver_GetPluginPackageManager_System_String_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_
+  name: GetPluginPackageManager(string, UnifiedUserIdentity)
+  nameWithType: IPluginPackageManagerResolver.GetPluginPackageManager(string, UnifiedUserIdentity)
+  fullName: FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManagerResolver.GetPluginPackageManager(string, FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  nameWithType.vb: IPluginPackageManagerResolver.GetPluginPackageManager(String, UnifiedUserIdentity)
+  fullName.vb: FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManagerResolver.GetPluginPackageManager(String, FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  name.vb: GetPluginPackageManager(String, UnifiedUserIdentity)
+  spec.csharp:
+  - uid: FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManagerResolver.GetPluginPackageManager(System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+    name: GetPluginPackageManager
+    href: FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManagerResolver.html#FoundationaLLM_Common_Interfaces_Plugins_IPluginPackageManagerResolver_GetPluginPackageManager_System_String_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity
+    name: UnifiedUserIdentity
+    href: FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity.html
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManagerResolver.GetPluginPackageManager(System.String,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+    name: GetPluginPackageManager
+    href: FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManagerResolver.html#FoundationaLLM_Common_Interfaces_Plugins_IPluginPackageManagerResolver_GetPluginPackageManager_System_String_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity
+    name: UnifiedUserIdentity
+    href: FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity.html
+  - name: )
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity
+  commentId: T:FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity
+  parent: FoundationaLLM.Common.Models.Authentication
+  href: FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity.html
+  name: UnifiedUserIdentity
+  nameWithType: UnifiedUserIdentity
+  fullName: FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity
+- uid: System.Threading.Tasks.Task{FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManager}
+  commentId: T:System.Threading.Tasks.Task{FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManager}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<IPluginPackageManager>
+  nameWithType: Task<IPluginPackageManager>
+  fullName: System.Threading.Tasks.Task<FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManager>
+  nameWithType.vb: Task(Of IPluginPackageManager)
+  fullName.vb: System.Threading.Tasks.Task(Of FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManager)
+  name.vb: Task(Of IPluginPackageManager)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManager
+    name: IPluginPackageManager
+    href: FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManager.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManager
+    name: IPluginPackageManager
+    href: FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManager.html
+  - name: )
+- uid: FoundationaLLM.Common.Models.Authentication
+  commentId: N:FoundationaLLM.Common.Models.Authentication
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.Authentication
+  nameWithType: FoundationaLLM.Common.Models.Authentication
+  fullName: FoundationaLLM.Common.Models.Authentication
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Authentication
+    name: Authentication
+    href: FoundationaLLM.Common.Models.Authentication.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Authentication
+    name: Authentication
+    href: FoundationaLLM.Common.Models.Authentication.html
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManagerResolver.GetPluginPackageManager(FoundationaLLM.Common.Models.ResourceProviders.Plugin.PluginDefinition,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  commentId: M:FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManagerResolver.GetPluginPackageManager(FoundationaLLM.Common.Models.ResourceProviders.Plugin.PluginDefinition,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  parent: FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManagerResolver
+  href: FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManagerResolver.html#FoundationaLLM_Common_Interfaces_Plugins_IPluginPackageManagerResolver_GetPluginPackageManager_FoundationaLLM_Common_Models_ResourceProviders_Plugin_PluginDefinition_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_
+  name: GetPluginPackageManager(PluginDefinition, UnifiedUserIdentity)
+  nameWithType: IPluginPackageManagerResolver.GetPluginPackageManager(PluginDefinition, UnifiedUserIdentity)
+  fullName: FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManagerResolver.GetPluginPackageManager(FoundationaLLM.Common.Models.ResourceProviders.Plugin.PluginDefinition, FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+  spec.csharp:
+  - uid: FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManagerResolver.GetPluginPackageManager(FoundationaLLM.Common.Models.ResourceProviders.Plugin.PluginDefinition,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+    name: GetPluginPackageManager
+    href: FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManagerResolver.html#FoundationaLLM_Common_Interfaces_Plugins_IPluginPackageManagerResolver_GetPluginPackageManager_FoundationaLLM_Common_Models_ResourceProviders_Plugin_PluginDefinition_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_
+  - name: (
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.Plugin.PluginDefinition
+    name: PluginDefinition
+    href: FoundationaLLM.Common.Models.ResourceProviders.Plugin.PluginDefinition.html
+  - name: ','
+  - name: " "
+  - uid: FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity
+    name: UnifiedUserIdentity
+    href: FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity.html
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManagerResolver.GetPluginPackageManager(FoundationaLLM.Common.Models.ResourceProviders.Plugin.PluginDefinition,FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity)
+    name: GetPluginPackageManager
+    href: FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManagerResolver.html#FoundationaLLM_Common_Interfaces_Plugins_IPluginPackageManagerResolver_GetPluginPackageManager_FoundationaLLM_Common_Models_ResourceProviders_Plugin_PluginDefinition_FoundationaLLM_Common_Models_Authentication_UnifiedUserIdentity_
+  - name: (
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.Plugin.PluginDefinition
+    name: PluginDefinition
+    href: FoundationaLLM.Common.Models.ResourceProviders.Plugin.PluginDefinition.html
+  - name: ','
+  - name: " "
+  - uid: FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity
+    name: UnifiedUserIdentity
+    href: FoundationaLLM.Common.Models.Authentication.UnifiedUserIdentity.html
+  - name: )
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Plugin.PluginDefinition
+  commentId: T:FoundationaLLM.Common.Models.ResourceProviders.Plugin.PluginDefinition
+  parent: FoundationaLLM.Common.Models.ResourceProviders.Plugin
+  href: FoundationaLLM.Common.Models.ResourceProviders.Plugin.PluginDefinition.html
+  name: PluginDefinition
+  nameWithType: PluginDefinition
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Plugin.PluginDefinition
+- uid: FoundationaLLM.Common.Models.ResourceProviders.Plugin
+  commentId: N:FoundationaLLM.Common.Models.ResourceProviders.Plugin
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.ResourceProviders.Plugin
+  nameWithType: FoundationaLLM.Common.Models.ResourceProviders.Plugin
+  fullName: FoundationaLLM.Common.Models.ResourceProviders.Plugin
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders
+    name: ResourceProviders
+    href: FoundationaLLM.Common.Models.ResourceProviders.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.Plugin
+    name: Plugin
+    href: FoundationaLLM.Common.Models.ResourceProviders.Plugin.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders
+    name: ResourceProviders
+    href: FoundationaLLM.Common.Models.ResourceProviders.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.ResourceProviders.Plugin
+    name: Plugin
+    href: FoundationaLLM.Common.Models.ResourceProviders.Plugin.html

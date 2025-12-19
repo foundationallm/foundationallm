@@ -1,0 +1,140 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Common.Models.AzureAIService
+  commentId: N:FoundationaLLM.Common.Models.AzureAIService
+  id: AzureAIService
+  parent: FoundationaLLM.Common.Models
+  children:
+  - FoundationaLLM.Common.Models.AzureAIService.AzureAIJobRequest
+  - FoundationaLLM.Common.Models.AzureAIService.BatchDataInput
+  - FoundationaLLM.Common.Models.AzureAIService.CreatedBy
+  - FoundationaLLM.Common.Models.AzureAIService.DataVersion
+  - FoundationaLLM.Common.Models.AzureAIService.DataVersionResponse
+  - FoundationaLLM.Common.Models.AzureAIService.DatasetVersionRequest
+  - FoundationaLLM.Common.Models.AzureAIService.EntityMetadata
+  - FoundationaLLM.Common.Models.AzureAIService.GptConnection
+  - FoundationaLLM.Common.Models.AzureAIService.GptConnections
+  - FoundationaLLM.Common.Models.AzureAIService.InputsMapping
+  - FoundationaLLM.Common.Models.AzureAIService.MutableProps
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM.Common.Models.AzureAIService
+  nameWithType: FoundationaLLM.Common.Models.AzureAIService
+  fullName: FoundationaLLM.Common.Models.AzureAIService
+  type: Namespace
+  assemblies:
+  - FoundationaLLM.Common
+references:
+- uid: FoundationaLLM.Common.Models.AzureAIService.AzureAIJobRequest
+  commentId: T:FoundationaLLM.Common.Models.AzureAIService.AzureAIJobRequest
+  href: FoundationaLLM.Common.Models.AzureAIService.AzureAIJobRequest.html
+  name: AzureAIJobRequest
+  nameWithType: AzureAIJobRequest
+  fullName: FoundationaLLM.Common.Models.AzureAIService.AzureAIJobRequest
+- uid: FoundationaLLM.Common.Models.AzureAIService.BatchDataInput
+  commentId: T:FoundationaLLM.Common.Models.AzureAIService.BatchDataInput
+  parent: FoundationaLLM.Common.Models.AzureAIService
+  href: FoundationaLLM.Common.Models.AzureAIService.BatchDataInput.html
+  name: BatchDataInput
+  nameWithType: BatchDataInput
+  fullName: FoundationaLLM.Common.Models.AzureAIService.BatchDataInput
+- uid: FoundationaLLM.Common.Models.AzureAIService.CreatedBy
+  commentId: T:FoundationaLLM.Common.Models.AzureAIService.CreatedBy
+  parent: FoundationaLLM.Common.Models.AzureAIService
+  href: FoundationaLLM.Common.Models.AzureAIService.CreatedBy.html
+  name: CreatedBy
+  nameWithType: CreatedBy
+  fullName: FoundationaLLM.Common.Models.AzureAIService.CreatedBy
+- uid: FoundationaLLM.Common.Models.AzureAIService.DataVersion
+  commentId: T:FoundationaLLM.Common.Models.AzureAIService.DataVersion
+  parent: FoundationaLLM.Common.Models.AzureAIService
+  href: FoundationaLLM.Common.Models.AzureAIService.DataVersion.html
+  name: DataVersion
+  nameWithType: DataVersion
+  fullName: FoundationaLLM.Common.Models.AzureAIService.DataVersion
+- uid: FoundationaLLM.Common.Models.AzureAIService.DataVersionResponse
+  commentId: T:FoundationaLLM.Common.Models.AzureAIService.DataVersionResponse
+  href: FoundationaLLM.Common.Models.AzureAIService.DataVersionResponse.html
+  name: DataVersionResponse
+  nameWithType: DataVersionResponse
+  fullName: FoundationaLLM.Common.Models.AzureAIService.DataVersionResponse
+- uid: FoundationaLLM.Common.Models.AzureAIService.DatasetVersionRequest
+  commentId: T:FoundationaLLM.Common.Models.AzureAIService.DatasetVersionRequest
+  href: FoundationaLLM.Common.Models.AzureAIService.DatasetVersionRequest.html
+  name: DatasetVersionRequest
+  nameWithType: DatasetVersionRequest
+  fullName: FoundationaLLM.Common.Models.AzureAIService.DatasetVersionRequest
+- uid: FoundationaLLM.Common.Models.AzureAIService.EntityMetadata
+  commentId: T:FoundationaLLM.Common.Models.AzureAIService.EntityMetadata
+  parent: FoundationaLLM.Common.Models.AzureAIService
+  href: FoundationaLLM.Common.Models.AzureAIService.EntityMetadata.html
+  name: EntityMetadata
+  nameWithType: EntityMetadata
+  fullName: FoundationaLLM.Common.Models.AzureAIService.EntityMetadata
+- uid: FoundationaLLM.Common.Models.AzureAIService.GptConnection
+  commentId: T:FoundationaLLM.Common.Models.AzureAIService.GptConnection
+  parent: FoundationaLLM.Common.Models.AzureAIService
+  href: FoundationaLLM.Common.Models.AzureAIService.GptConnection.html
+  name: GptConnection
+  nameWithType: GptConnection
+  fullName: FoundationaLLM.Common.Models.AzureAIService.GptConnection
+- uid: FoundationaLLM.Common.Models.AzureAIService.GptConnections
+  commentId: T:FoundationaLLM.Common.Models.AzureAIService.GptConnections
+  parent: FoundationaLLM.Common.Models.AzureAIService
+  href: FoundationaLLM.Common.Models.AzureAIService.GptConnections.html
+  name: GptConnections
+  nameWithType: GptConnections
+  fullName: FoundationaLLM.Common.Models.AzureAIService.GptConnections
+- uid: FoundationaLLM.Common.Models.AzureAIService.InputsMapping
+  commentId: T:FoundationaLLM.Common.Models.AzureAIService.InputsMapping
+  parent: FoundationaLLM.Common.Models.AzureAIService
+  href: FoundationaLLM.Common.Models.AzureAIService.InputsMapping.html
+  name: InputsMapping
+  nameWithType: InputsMapping
+  fullName: FoundationaLLM.Common.Models.AzureAIService.InputsMapping
+- uid: FoundationaLLM.Common.Models.AzureAIService.MutableProps
+  commentId: T:FoundationaLLM.Common.Models.AzureAIService.MutableProps
+  parent: FoundationaLLM.Common.Models.AzureAIService
+  href: FoundationaLLM.Common.Models.AzureAIService.MutableProps.html
+  name: MutableProps
+  nameWithType: MutableProps
+  fullName: FoundationaLLM.Common.Models.AzureAIService.MutableProps
+- uid: FoundationaLLM.Common.Models.AzureAIService
+  commentId: N:FoundationaLLM.Common.Models.AzureAIService
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.AzureAIService
+  nameWithType: FoundationaLLM.Common.Models.AzureAIService
+  fullName: FoundationaLLM.Common.Models.AzureAIService
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.AzureAIService
+    name: AzureAIService
+    href: FoundationaLLM.Common.Models.AzureAIService.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.AzureAIService
+    name: AzureAIService
+    href: FoundationaLLM.Common.Models.AzureAIService.html

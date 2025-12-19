@@ -1,0 +1,31 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Common.Constants.Events
+  commentId: N:FoundationaLLM.Common.Constants.Events
+  id: Events
+  parent: FoundationaLLM.Common.Constants
+  children:
+  - FoundationaLLM.Common.Constants.Events.EventGridTopics
+  - FoundationaLLM.Common.Constants.Events.EventTypes
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM.Common.Constants.Events
+  nameWithType: FoundationaLLM.Common.Constants.Events
+  fullName: FoundationaLLM.Common.Constants.Events
+  type: Namespace
+  assemblies:
+  - FoundationaLLM.Common
+references:
+- uid: FoundationaLLM.Common.Constants.Events.EventGridTopics
+  commentId: T:FoundationaLLM.Common.Constants.Events.EventGridTopics
+  href: FoundationaLLM.Common.Constants.Events.EventGridTopics.html
+  name: EventGridTopics
+  nameWithType: EventGridTopics
+  fullName: FoundationaLLM.Common.Constants.Events.EventGridTopics
+- uid: FoundationaLLM.Common.Constants.Events.EventTypes
+  commentId: T:FoundationaLLM.Common.Constants.Events.EventTypes
+  href: FoundationaLLM.Common.Constants.Events.EventTypes.html
+  name: EventTypes
+  nameWithType: EventTypes
+  fullName: FoundationaLLM.Common.Constants.Events.EventTypes

@@ -1,0 +1,472 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Common.Constants.ServiceStatuses
+  commentId: T:FoundationaLLM.Common.Constants.ServiceStatuses
+  id: ServiceStatuses
+  parent: FoundationaLLM.Common.Constants
+  children:
+  - FoundationaLLM.Common.Constants.ServiceStatuses.Error
+  - FoundationaLLM.Common.Constants.ServiceStatuses.Initializing
+  - FoundationaLLM.Common.Constants.ServiceStatuses.PartiallyAvailable
+  - FoundationaLLM.Common.Constants.ServiceStatuses.Ready
+  - FoundationaLLM.Common.Constants.ServiceStatuses.Warning
+  langs:
+  - csharp
+  - vb
+  name: ServiceStatuses
+  nameWithType: ServiceStatuses
+  fullName: FoundationaLLM.Common.Constants.ServiceStatuses
+  type: Class
+  source:
+    remote:
+      path: src/dotnet/Common/Constants/ServiceStatuses.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: ServiceStatuses
+    path: ../src/dotnet/Common/Constants/ServiceStatuses.cs
+    startLine: 5
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants
+  summary: Service status constants.
+  example: []
+  syntax:
+    content: public static class ServiceStatuses
+    content.vb: Public Module ServiceStatuses
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: FoundationaLLM.Common.Constants.ServiceStatuses.Initializing
+  commentId: F:FoundationaLLM.Common.Constants.ServiceStatuses.Initializing
+  id: Initializing
+  parent: FoundationaLLM.Common.Constants.ServiceStatuses
+  langs:
+  - csharp
+  - vb
+  name: Initializing
+  nameWithType: ServiceStatuses.Initializing
+  fullName: FoundationaLLM.Common.Constants.ServiceStatuses.Initializing
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Constants/ServiceStatuses.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: Initializing
+    path: ../src/dotnet/Common/Constants/ServiceStatuses.cs
+    startLine: 10
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants
+  summary: The service is in an initializing state.
+  example: []
+  syntax:
+    content: public const string Initializing = "Initializing"
+    return:
+      type: System.String
+    content.vb: Public Const Initializing As String = "Initializing"
+- uid: FoundationaLLM.Common.Constants.ServiceStatuses.Ready
+  commentId: F:FoundationaLLM.Common.Constants.ServiceStatuses.Ready
+  id: Ready
+  parent: FoundationaLLM.Common.Constants.ServiceStatuses
+  langs:
+  - csharp
+  - vb
+  name: Ready
+  nameWithType: ServiceStatuses.Ready
+  fullName: FoundationaLLM.Common.Constants.ServiceStatuses.Ready
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Constants/ServiceStatuses.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: Ready
+    path: ../src/dotnet/Common/Constants/ServiceStatuses.cs
+    startLine: 15
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants
+  summary: The service is operational and ready to accept requests.
+  example: []
+  syntax:
+    content: public const string Ready = "Ready"
+    return:
+      type: System.String
+    content.vb: Public Const Ready As String = "Ready"
+- uid: FoundationaLLM.Common.Constants.ServiceStatuses.PartiallyAvailable
+  commentId: F:FoundationaLLM.Common.Constants.ServiceStatuses.PartiallyAvailable
+  id: PartiallyAvailable
+  parent: FoundationaLLM.Common.Constants.ServiceStatuses
+  langs:
+  - csharp
+  - vb
+  name: PartiallyAvailable
+  nameWithType: ServiceStatuses.PartiallyAvailable
+  fullName: FoundationaLLM.Common.Constants.ServiceStatuses.PartiallyAvailable
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Constants/ServiceStatuses.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: PartiallyAvailable
+    path: ../src/dotnet/Common/Constants/ServiceStatuses.cs
+    startLine: 21
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants
+  summary: >-
+    The service is partially available. This is usually caused by
+
+    one or more subordinate services being in a warning or error state.
+  example: []
+  syntax:
+    content: public const string PartiallyAvailable = "Partially_Available"
+    return:
+      type: System.String
+    content.vb: Public Const PartiallyAvailable As String = "Partially_Available"
+- uid: FoundationaLLM.Common.Constants.ServiceStatuses.Warning
+  commentId: F:FoundationaLLM.Common.Constants.ServiceStatuses.Warning
+  id: Warning
+  parent: FoundationaLLM.Common.Constants.ServiceStatuses
+  langs:
+  - csharp
+  - vb
+  name: Warning
+  nameWithType: ServiceStatuses.Warning
+  fullName: FoundationaLLM.Common.Constants.ServiceStatuses.Warning
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Constants/ServiceStatuses.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: Warning
+    path: ../src/dotnet/Common/Constants/ServiceStatuses.cs
+    startLine: 26
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants
+  summary: The service is in a warning state.
+  example: []
+  syntax:
+    content: public const string Warning = "Warning"
+    return:
+      type: System.String
+    content.vb: Public Const Warning As String = "Warning"
+- uid: FoundationaLLM.Common.Constants.ServiceStatuses.Error
+  commentId: F:FoundationaLLM.Common.Constants.ServiceStatuses.Error
+  id: Error
+  parent: FoundationaLLM.Common.Constants.ServiceStatuses
+  langs:
+  - csharp
+  - vb
+  name: Error
+  nameWithType: ServiceStatuses.Error
+  fullName: FoundationaLLM.Common.Constants.ServiceStatuses.Error
+  type: Field
+  source:
+    remote:
+      path: src/dotnet/Common/Constants/ServiceStatuses.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: Error
+    path: ../src/dotnet/Common/Constants/ServiceStatuses.cs
+    startLine: 31
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Constants
+  summary: The service is in an error state.
+  example: []
+  syntax:
+    content: public const string Error = "Error"
+    return:
+      type: System.String
+    content.vb: Public Const Error As String = "Error"
+references:
+- uid: FoundationaLLM.Common.Constants
+  commentId: N:FoundationaLLM.Common.Constants
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Constants
+  nameWithType: FoundationaLLM.Common.Constants
+  fullName: FoundationaLLM.Common.Constants
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Constants
+    name: Constants
+    href: FoundationaLLM.Common.Constants.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Constants
+    name: Constants
+    href: FoundationaLLM.Common.Constants.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String

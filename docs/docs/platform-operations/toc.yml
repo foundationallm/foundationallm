@@ -1,0 +1,83 @@
+items:
+- name: Deployment
+  href: deployment/index.md
+  items:
+  - name: Deployment Overview
+    href: deployment/index.md
+  - name: Quick Start Deployment
+    href: deployment/deployment-quick-start.md
+  - name: Standard Deployment
+    href: deployment/deployment-standard.md
+  - name: Deployment Configuration
+    href: deployment/deployment-configuration.md
+  - name: App Configuration Values
+    href: deployment/app-configuration-values.md
+  - name: Azure Resource Providers
+    href: deployment/azure-resource-providers-requirements.md
+  - name: Custom Domains
+    href: deployment/custom-domains.md
+  - name: Soft Delete
+    href: deployment/soft-delete.md
+  - name: Standard Deployment Manifest
+    href: deployment/standard-manifest.md
+- name: Security & Permissions
+  href: security-permissions/platform-security.md
+  items:
+  - name: Platform Security
+    href: security-permissions/platform-security.md
+  - name: Authentication & Authorization
+    href: security-permissions/authentication-authorization/index.md
+    items:
+    - name: Pre-Requisites
+      href: security-permissions/authentication-authorization/pre-requisites.md
+    - name: Core Authentication Setup
+      href: security-permissions/authentication-authorization/pre-deployment/core-authentication-setup.md
+    - name: Management Authentication Setup
+      href: security-permissions/authentication-authorization/pre-deployment/management-authentication-setup.md
+    - name: Authorization Setup
+      href: security-permissions/authentication-authorization/pre-deployment/authorization-setup.md
+    - name: Core Authentication Post-Deployment
+      href: security-permissions/authentication-authorization/post-deployment/core-authentication-post.md
+    - name: Management Authentication Post-Deployment
+      href: security-permissions/authentication-authorization/post-deployment/management-authentication-post.md
+    - name: Authorization Post-Deployment
+      href: security-permissions/authentication-authorization/post-deployment/authorization-post.md
+  - name: Role-Based Access Control
+    href: security-permissions/role-based-access-control/index.md
+    items:
+    - name: Role Definitions
+      href: security-permissions/role-based-access-control/role-definitions.md
+    - name: Role Assignments
+      href: security-permissions/role-based-access-control/role-assignments.md
+    - name: Scope
+      href: security-permissions/role-based-access-control/scope.md
+    - name: Role Management
+      href: security-permissions/role-based-access-control/role-management.md
+    - name: Agent Role Assignments
+      href: security-permissions/role-based-access-control/agent-role-assignments.md
+  - name: Configure Access Control for Services
+    href: security-permissions/configure-access-control-services.md
+  - name: Graph API Permissions
+    href: security-permissions/graph-api-permissions.md
+  - name: Network Security Groups
+    href: security-permissions/network-security-groups.md
+  - name: Vulnerabilities
+    href: security-permissions/vulnerabilities.md
+- name: Monitoring & Troubleshooting
+  href: monitoring-troubleshooting/logs.md
+  items:
+  - name: Logs & Audit Trails
+    href: monitoring-troubleshooting/logs.md
+  - name: Troubleshooting Guide
+    href: monitoring-troubleshooting/troubleshooting.md
+- name: How-To Guides
+  href: how-to-guides/updating-container-versions.md
+  items:
+  - name: Updating Container Versions
+    href: how-to-guides/updating-container-versions.md
+  - name: Backups & Data Resiliency
+    href: how-to-guides/backups.md
+  - name: Purging User Conversations
+    href: how-to-guides/purge-conversations.md
+  - name: Creating Release Notes
+    href: how-to-guides/creating-release-notes.md

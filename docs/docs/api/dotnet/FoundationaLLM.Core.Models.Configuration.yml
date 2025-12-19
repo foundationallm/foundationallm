@@ -1,0 +1,78 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Core.Models.Configuration
+  commentId: N:FoundationaLLM.Core.Models.Configuration
+  id: Configuration
+  parent: FoundationaLLM.Core.Models
+  children:
+  - FoundationaLLM.Core.Models.Configuration.ChatSessionNameSummarizationType
+  - FoundationaLLM.Core.Models.Configuration.CoreServiceSettings
+  - FoundationaLLM.Core.Models.Configuration.OneDriveWorkSchoolFile
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM.Core.Models.Configuration
+  nameWithType: FoundationaLLM.Core.Models.Configuration
+  fullName: FoundationaLLM.Core.Models.Configuration
+  type: Namespace
+  assemblies:
+  - FoundationaLLM.Core
+references:
+- uid: FoundationaLLM.Core.Models.Configuration.ChatSessionNameSummarizationType
+  commentId: T:FoundationaLLM.Core.Models.Configuration.ChatSessionNameSummarizationType
+  parent: FoundationaLLM.Core.Models.Configuration
+  href: FoundationaLLM.Core.Models.Configuration.ChatSessionNameSummarizationType.html
+  name: ChatSessionNameSummarizationType
+  nameWithType: ChatSessionNameSummarizationType
+  fullName: FoundationaLLM.Core.Models.Configuration.ChatSessionNameSummarizationType
+- uid: FoundationaLLM.Core.Models.Configuration.CoreServiceSettings
+  commentId: T:FoundationaLLM.Core.Models.Configuration.CoreServiceSettings
+  href: FoundationaLLM.Core.Models.Configuration.CoreServiceSettings.html
+  name: CoreServiceSettings
+  nameWithType: CoreServiceSettings
+  fullName: FoundationaLLM.Core.Models.Configuration.CoreServiceSettings
+- uid: FoundationaLLM.Core.Models.Configuration.OneDriveWorkSchoolFile
+  commentId: T:FoundationaLLM.Core.Models.Configuration.OneDriveWorkSchoolFile
+  parent: FoundationaLLM.Core.Models.Configuration
+  href: FoundationaLLM.Core.Models.Configuration.OneDriveWorkSchoolFile.html
+  name: OneDriveWorkSchoolFile
+  nameWithType: OneDriveWorkSchoolFile
+  fullName: FoundationaLLM.Core.Models.Configuration.OneDriveWorkSchoolFile
+- uid: FoundationaLLM.Core.Models.Configuration
+  commentId: N:FoundationaLLM.Core.Models.Configuration
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Core.Models.Configuration
+  nameWithType: FoundationaLLM.Core.Models.Configuration
+  fullName: FoundationaLLM.Core.Models.Configuration
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Models
+    name: Models
+    href: FoundationaLLM.Core.Models.html
+  - name: .
+  - uid: FoundationaLLM.Core.Models.Configuration
+    name: Configuration
+    href: FoundationaLLM.Core.Models.Configuration.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Models
+    name: Models
+    href: FoundationaLLM.Core.Models.html
+  - name: .
+  - uid: FoundationaLLM.Core.Models.Configuration
+    name: Configuration
+    href: FoundationaLLM.Core.Models.Configuration.html

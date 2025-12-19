@@ -1,0 +1,105 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Common.Constants.Authentication
+  commentId: N:FoundationaLLM.Common.Constants.Authentication
+  id: Authentication
+  parent: FoundationaLLM.Common.Constants
+  children:
+  - FoundationaLLM.Common.Constants.Authentication.AuthenticationParametersKeys
+  - FoundationaLLM.Common.Constants.Authentication.AuthenticationTypes
+  - FoundationaLLM.Common.Constants.Authentication.EntraUserClaimConstants
+  - FoundationaLLM.Common.Constants.Authentication.GroupIDs
+  - FoundationaLLM.Common.Constants.Authentication.RoleAssignmentResultReasons
+  - FoundationaLLM.Common.Constants.Authentication.ScopeURIs
+  - FoundationaLLM.Common.Constants.Authentication.SecurityPrincipalTypes
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM.Common.Constants.Authentication
+  nameWithType: FoundationaLLM.Common.Constants.Authentication
+  fullName: FoundationaLLM.Common.Constants.Authentication
+  type: Namespace
+  assemblies:
+  - FoundationaLLM.Common
+references:
+- uid: FoundationaLLM.Common.Constants.Authentication.AuthenticationParametersKeys
+  commentId: T:FoundationaLLM.Common.Constants.Authentication.AuthenticationParametersKeys
+  href: FoundationaLLM.Common.Constants.Authentication.AuthenticationParametersKeys.html
+  name: AuthenticationParametersKeys
+  nameWithType: AuthenticationParametersKeys
+  fullName: FoundationaLLM.Common.Constants.Authentication.AuthenticationParametersKeys
+- uid: FoundationaLLM.Common.Constants.Authentication.AuthenticationTypes
+  commentId: T:FoundationaLLM.Common.Constants.Authentication.AuthenticationTypes
+  parent: FoundationaLLM.Common.Constants.Authentication
+  href: FoundationaLLM.Common.Constants.Authentication.AuthenticationTypes.html
+  name: AuthenticationTypes
+  nameWithType: AuthenticationTypes
+  fullName: FoundationaLLM.Common.Constants.Authentication.AuthenticationTypes
+- uid: FoundationaLLM.Common.Constants.Authentication.EntraUserClaimConstants
+  commentId: T:FoundationaLLM.Common.Constants.Authentication.EntraUserClaimConstants
+  href: FoundationaLLM.Common.Constants.Authentication.EntraUserClaimConstants.html
+  name: EntraUserClaimConstants
+  nameWithType: EntraUserClaimConstants
+  fullName: FoundationaLLM.Common.Constants.Authentication.EntraUserClaimConstants
+- uid: FoundationaLLM.Common.Constants.Authentication.GroupIDs
+  commentId: T:FoundationaLLM.Common.Constants.Authentication.GroupIDs
+  href: FoundationaLLM.Common.Constants.Authentication.GroupIDs.html
+  name: GroupIDs
+  nameWithType: GroupIDs
+  fullName: FoundationaLLM.Common.Constants.Authentication.GroupIDs
+- uid: FoundationaLLM.Common.Constants.Authentication.RoleAssignmentResultReasons
+  commentId: T:FoundationaLLM.Common.Constants.Authentication.RoleAssignmentResultReasons
+  href: FoundationaLLM.Common.Constants.Authentication.RoleAssignmentResultReasons.html
+  name: RoleAssignmentResultReasons
+  nameWithType: RoleAssignmentResultReasons
+  fullName: FoundationaLLM.Common.Constants.Authentication.RoleAssignmentResultReasons
+- uid: FoundationaLLM.Common.Constants.Authentication.ScopeURIs
+  commentId: T:FoundationaLLM.Common.Constants.Authentication.ScopeURIs
+  href: FoundationaLLM.Common.Constants.Authentication.ScopeURIs.html
+  name: ScopeURIs
+  nameWithType: ScopeURIs
+  fullName: FoundationaLLM.Common.Constants.Authentication.ScopeURIs
+- uid: FoundationaLLM.Common.Constants.Authentication.SecurityPrincipalTypes
+  commentId: T:FoundationaLLM.Common.Constants.Authentication.SecurityPrincipalTypes
+  href: FoundationaLLM.Common.Constants.Authentication.SecurityPrincipalTypes.html
+  name: SecurityPrincipalTypes
+  nameWithType: SecurityPrincipalTypes
+  fullName: FoundationaLLM.Common.Constants.Authentication.SecurityPrincipalTypes
+- uid: FoundationaLLM.Common.Constants.Authentication
+  commentId: N:FoundationaLLM.Common.Constants.Authentication
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Constants.Authentication
+  nameWithType: FoundationaLLM.Common.Constants.Authentication
+  fullName: FoundationaLLM.Common.Constants.Authentication
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Constants
+    name: Constants
+    href: FoundationaLLM.Common.Constants.html
+  - name: .
+  - uid: FoundationaLLM.Common.Constants.Authentication
+    name: Authentication
+    href: FoundationaLLM.Common.Constants.Authentication.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Constants
+    name: Constants
+    href: FoundationaLLM.Common.Constants.html
+  - name: .
+  - uid: FoundationaLLM.Common.Constants.Authentication
+    name: Authentication
+    href: FoundationaLLM.Common.Constants.Authentication.html

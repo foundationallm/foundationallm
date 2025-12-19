@@ -1,0 +1,24 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.AuthorizationEngine.Middleware
+  commentId: N:FoundationaLLM.AuthorizationEngine.Middleware
+  id: Middleware
+  parent: FoundationaLLM.AuthorizationEngine
+  children:
+  - FoundationaLLM.AuthorizationEngine.Middleware.AuthorizationAPIMiddleware
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM.AuthorizationEngine.Middleware
+  nameWithType: FoundationaLLM.AuthorizationEngine.Middleware
+  fullName: FoundationaLLM.AuthorizationEngine.Middleware
+  type: Namespace
+  assemblies:
+  - FoundationaLLM.AuthorizationEngine
+references:
+- uid: FoundationaLLM.AuthorizationEngine.Middleware.AuthorizationAPIMiddleware
+  commentId: T:FoundationaLLM.AuthorizationEngine.Middleware.AuthorizationAPIMiddleware
+  href: FoundationaLLM.AuthorizationEngine.Middleware.AuthorizationAPIMiddleware.html
+  name: AuthorizationAPIMiddleware
+  nameWithType: AuthorizationAPIMiddleware
+  fullName: FoundationaLLM.AuthorizationEngine.Middleware.AuthorizationAPIMiddleware

@@ -1,0 +1,855 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManager
+  commentId: T:FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManager
+  id: IPluginPackageManager
+  parent: FoundationaLLM.Common.Interfaces.Plugins
+  children:
+  - FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManager.GetContentTextExtractionPlugin(System.String,System.Collections.Generic.Dictionary{System.String,System.Object},FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManagerResolver,System.IServiceProvider)
+  - FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManager.GetContentTextPartitioningPlugin(System.String,System.Collections.Generic.Dictionary{System.String,System.Object},FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManagerResolver,System.IServiceProvider)
+  - FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManager.GetDataPipelineStagePlugin(System.String,System.Collections.Generic.Dictionary{System.String,System.Object},FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManagerResolver,System.IServiceProvider)
+  - FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManager.GetDataSourcePlugin(System.String,System.String,System.Collections.Generic.Dictionary{System.String,System.Object},FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManagerResolver,System.IServiceProvider)
+  - FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManager.GetMetadata(System.String)
+  - FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManager.RegisterService(System.String,System.Object)
+  - FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManager.TryGetService(System.String,System.Object@)
+  langs:
+  - csharp
+  - vb
+  name: IPluginPackageManager
+  nameWithType: IPluginPackageManager
+  fullName: FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManager
+  type: Interface
+  source:
+    remote:
+      path: src/dotnet/Common/Interfaces/Plugins/IPluginPackageManager.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: IPluginPackageManager
+    path: ../src/dotnet/Common/Interfaces/Plugins/IPluginPackageManager.cs
+    startLine: 7
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Interfaces.Plugins
+  summary: Provides methods to manage plugins in FoundationaLLM plugin packages.
+  example: []
+  syntax:
+    content: public interface IPluginPackageManager
+    content.vb: Public Interface IPluginPackageManager
+  extensionMethods:
+  - System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+- uid: FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManager.GetMetadata(System.String)
+  commentId: M:FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManager.GetMetadata(System.String)
+  id: GetMetadata(System.String)
+  parent: FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManager
+  langs:
+  - csharp
+  - vb
+  name: GetMetadata(string)
+  nameWithType: IPluginPackageManager.GetMetadata(string)
+  fullName: FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManager.GetMetadata(string)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Common/Interfaces/Plugins/IPluginPackageManager.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: GetMetadata
+    path: ../src/dotnet/Common/Interfaces/Plugins/IPluginPackageManager.cs
+    startLine: 14
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Interfaces.Plugins
+  summary: Gets the plugin package configuration with the plugin configurations of to the plugins in the package.
+  example: []
+  syntax:
+    content: PluginPackageMetadata GetMetadata(string instanceId)
+    parameters:
+    - id: instanceId
+      type: System.String
+      description: The FoundationaLLM instance identifier.
+    return:
+      type: FoundationaLLM.Common.Models.Plugins.Metadata.PluginPackageMetadata
+      description: An object of type <xref href="FoundationaLLM.Common.Models.Plugins.Metadata.PluginPackageMetadata" data-throw-if-not-resolved="false"></xref>.
+    content.vb: Function GetMetadata(instanceId As String) As PluginPackageMetadata
+  overload: FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManager.GetMetadata*
+  nameWithType.vb: IPluginPackageManager.GetMetadata(String)
+  fullName.vb: FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManager.GetMetadata(String)
+  name.vb: GetMetadata(String)
+- uid: FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManager.TryGetService(System.String,System.Object@)
+  commentId: M:FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManager.TryGetService(System.String,System.Object@)
+  id: TryGetService(System.String,System.Object@)
+  parent: FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManager
+  langs:
+  - csharp
+  - vb
+  name: TryGetService(string, out object?)
+  nameWithType: IPluginPackageManager.TryGetService(string, out object?)
+  fullName: FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManager.TryGetService(string, out object?)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Common/Interfaces/Plugins/IPluginPackageManager.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: TryGetService
+    path: ../src/dotnet/Common/Interfaces/Plugins/IPluginPackageManager.cs
+    startLine: 22
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Interfaces.Plugins
+  summary: Tries to get a service that is registered internally in the plugin package.
+  example: []
+  syntax:
+    content: bool TryGetService(string serviceName, out object? service)
+    parameters:
+    - id: serviceName
+      type: System.String
+      description: The name of the service to be retrieved.
+    - id: service
+      type: System.Object
+      description: When the method returns, contains the requested service if it was found; otherwise, null.
+    return:
+      type: System.Boolean
+      description: <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if the service was successfully retrieved.
+    content.vb: Function TryGetService(serviceName As String, service As Object) As Boolean
+  overload: FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManager.TryGetService*
+  nameWithType.vb: IPluginPackageManager.TryGetService(String, Object)
+  fullName.vb: FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManager.TryGetService(String, Object)
+  name.vb: TryGetService(String, Object)
+- uid: FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManager.RegisterService(System.String,System.Object)
+  commentId: M:FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManager.RegisterService(System.String,System.Object)
+  id: RegisterService(System.String,System.Object)
+  parent: FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManager
+  langs:
+  - csharp
+  - vb
+  name: RegisterService(string, object)
+  nameWithType: IPluginPackageManager.RegisterService(string, object)
+  fullName: FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManager.RegisterService(string, object)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Common/Interfaces/Plugins/IPluginPackageManager.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: RegisterService
+    path: ../src/dotnet/Common/Interfaces/Plugins/IPluginPackageManager.cs
+    startLine: 29
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Interfaces.Plugins
+  summary: Registers an internal service in the plugin package.
+  example: []
+  syntax:
+    content: void RegisterService(string serviceName, object service)
+    parameters:
+    - id: serviceName
+      type: System.String
+      description: The name of the service.
+    - id: service
+      type: System.Object
+      description: The service to be registered.
+    content.vb: Sub RegisterService(serviceName As String, service As Object)
+  overload: FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManager.RegisterService*
+  nameWithType.vb: IPluginPackageManager.RegisterService(String, Object)
+  fullName.vb: FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManager.RegisterService(String, Object)
+  name.vb: RegisterService(String, Object)
+- uid: FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManager.GetDataSourcePlugin(System.String,System.String,System.Collections.Generic.Dictionary{System.String,System.Object},FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManagerResolver,System.IServiceProvider)
+  commentId: M:FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManager.GetDataSourcePlugin(System.String,System.String,System.Collections.Generic.Dictionary{System.String,System.Object},FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManagerResolver,System.IServiceProvider)
+  id: GetDataSourcePlugin(System.String,System.String,System.Collections.Generic.Dictionary{System.String,System.Object},FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManagerResolver,System.IServiceProvider)
+  parent: FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManager
+  langs:
+  - csharp
+  - vb
+  name: GetDataSourcePlugin(string, string, Dictionary<string, object>, IPluginPackageManagerResolver, IServiceProvider)
+  nameWithType: IPluginPackageManager.GetDataSourcePlugin(string, string, Dictionary<string, object>, IPluginPackageManagerResolver, IServiceProvider)
+  fullName: FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManager.GetDataSourcePlugin(string, string, System.Collections.Generic.Dictionary<string, object>, FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManagerResolver, System.IServiceProvider)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Common/Interfaces/Plugins/IPluginPackageManager.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: GetDataSourcePlugin
+    path: ../src/dotnet/Common/Interfaces/Plugins/IPluginPackageManager.cs
+    startLine: 41
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Interfaces.Plugins
+  summary: Gets a data source plugin by its name.
+  example: []
+  syntax:
+    content: IDataSourcePlugin GetDataSourcePlugin(string pluginName, string dataSourceObjectId, Dictionary<string, object> pluginParameters, IPluginPackageManagerResolver packageManagerResolver, IServiceProvider serviceProvider)
+    parameters:
+    - id: pluginName
+      type: System.String
+      description: The name of the data source plugin.
+    - id: dataSourceObjectId
+      type: System.String
+      description: The FoundationaLLM object identifier of the data source.
+    - id: pluginParameters
+      type: System.Collections.Generic.Dictionary{System.String,System.Object}
+      description: The dictionary containing the plugin parameters.
+    - id: packageManagerResolver
+      type: FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManagerResolver
+      description: The package manager resolver for the plugin.
+    - id: serviceProvider
+      type: System.IServiceProvider
+      description: The service provider of the dependency injection container.
+    return:
+      type: FoundationaLLM.Common.Interfaces.Plugins.IDataSourcePlugin
+      description: The <xref href="FoundationaLLM.Common.Interfaces.Plugins.IDataSourcePlugin" data-throw-if-not-resolved="false"></xref> interface implemented by the data source plugin.
+    content.vb: Function GetDataSourcePlugin(pluginName As String, dataSourceObjectId As String, pluginParameters As Dictionary(Of String, Object), packageManagerResolver As IPluginPackageManagerResolver, serviceProvider As IServiceProvider) As IDataSourcePlugin
+  overload: FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManager.GetDataSourcePlugin*
+  exceptions:
+  - type: System.NotImplementedException
+    commentId: T:System.NotImplementedException
+    description: ''
+  nameWithType.vb: IPluginPackageManager.GetDataSourcePlugin(String, String, Dictionary(Of String, Object), IPluginPackageManagerResolver, IServiceProvider)
+  fullName.vb: FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManager.GetDataSourcePlugin(String, String, System.Collections.Generic.Dictionary(Of String, Object), FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManagerResolver, System.IServiceProvider)
+  name.vb: GetDataSourcePlugin(String, String, Dictionary(Of String, Object), IPluginPackageManagerResolver, IServiceProvider)
+- uid: FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManager.GetDataPipelineStagePlugin(System.String,System.Collections.Generic.Dictionary{System.String,System.Object},FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManagerResolver,System.IServiceProvider)
+  commentId: M:FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManager.GetDataPipelineStagePlugin(System.String,System.Collections.Generic.Dictionary{System.String,System.Object},FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManagerResolver,System.IServiceProvider)
+  id: GetDataPipelineStagePlugin(System.String,System.Collections.Generic.Dictionary{System.String,System.Object},FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManagerResolver,System.IServiceProvider)
+  parent: FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManager
+  langs:
+  - csharp
+  - vb
+  name: GetDataPipelineStagePlugin(string, Dictionary<string, object>, IPluginPackageManagerResolver, IServiceProvider)
+  nameWithType: IPluginPackageManager.GetDataPipelineStagePlugin(string, Dictionary<string, object>, IPluginPackageManagerResolver, IServiceProvider)
+  fullName: FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManager.GetDataPipelineStagePlugin(string, System.Collections.Generic.Dictionary<string, object>, FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManagerResolver, System.IServiceProvider)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Common/Interfaces/Plugins/IPluginPackageManager.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: GetDataPipelineStagePlugin
+    path: ../src/dotnet/Common/Interfaces/Plugins/IPluginPackageManager.cs
+    startLine: 57
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Interfaces.Plugins
+  summary: Gets a data pipeline stage plugin by its name.
+  example: []
+  syntax:
+    content: IDataPipelineStagePlugin GetDataPipelineStagePlugin(string pluginName, Dictionary<string, object> pluginParameters, IPluginPackageManagerResolver packageManagerResolver, IServiceProvider serviceProvider)
+    parameters:
+    - id: pluginName
+      type: System.String
+      description: The name of the data pipeline stage plugin.
+    - id: pluginParameters
+      type: System.Collections.Generic.Dictionary{System.String,System.Object}
+      description: The dictionary containing the plugin parameters.
+    - id: packageManagerResolver
+      type: FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManagerResolver
+      description: The package manager resolver for the plugin.
+    - id: serviceProvider
+      type: System.IServiceProvider
+      description: The service provider of the dependency injection container.
+    return:
+      type: FoundationaLLM.Common.Interfaces.Plugins.IDataPipelineStagePlugin
+      description: The <xref href="FoundationaLLM.Common.Interfaces.Plugins.IDataPipelineStagePlugin" data-throw-if-not-resolved="false"></xref> interface implemented by the data pipeline stage plugin.
+    content.vb: Function GetDataPipelineStagePlugin(pluginName As String, pluginParameters As Dictionary(Of String, Object), packageManagerResolver As IPluginPackageManagerResolver, serviceProvider As IServiceProvider) As IDataPipelineStagePlugin
+  overload: FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManager.GetDataPipelineStagePlugin*
+  exceptions:
+  - type: System.NotImplementedException
+    commentId: T:System.NotImplementedException
+    description: ''
+  nameWithType.vb: IPluginPackageManager.GetDataPipelineStagePlugin(String, Dictionary(Of String, Object), IPluginPackageManagerResolver, IServiceProvider)
+  fullName.vb: FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManager.GetDataPipelineStagePlugin(String, System.Collections.Generic.Dictionary(Of String, Object), FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManagerResolver, System.IServiceProvider)
+  name.vb: GetDataPipelineStagePlugin(String, Dictionary(Of String, Object), IPluginPackageManagerResolver, IServiceProvider)
+- uid: FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManager.GetContentTextExtractionPlugin(System.String,System.Collections.Generic.Dictionary{System.String,System.Object},FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManagerResolver,System.IServiceProvider)
+  commentId: M:FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManager.GetContentTextExtractionPlugin(System.String,System.Collections.Generic.Dictionary{System.String,System.Object},FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManagerResolver,System.IServiceProvider)
+  id: GetContentTextExtractionPlugin(System.String,System.Collections.Generic.Dictionary{System.String,System.Object},FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManagerResolver,System.IServiceProvider)
+  parent: FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManager
+  langs:
+  - csharp
+  - vb
+  name: GetContentTextExtractionPlugin(string, Dictionary<string, object>, IPluginPackageManagerResolver, IServiceProvider)
+  nameWithType: IPluginPackageManager.GetContentTextExtractionPlugin(string, Dictionary<string, object>, IPluginPackageManagerResolver, IServiceProvider)
+  fullName: FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManager.GetContentTextExtractionPlugin(string, System.Collections.Generic.Dictionary<string, object>, FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManagerResolver, System.IServiceProvider)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Common/Interfaces/Plugins/IPluginPackageManager.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: GetContentTextExtractionPlugin
+    path: ../src/dotnet/Common/Interfaces/Plugins/IPluginPackageManager.cs
+    startLine: 72
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Interfaces.Plugins
+  summary: Gets a content text extraction plugin by its name.
+  example: []
+  syntax:
+    content: IContentTextExtractionPlugin GetContentTextExtractionPlugin(string pluginName, Dictionary<string, object> pluginParameters, IPluginPackageManagerResolver packageManagerResolver, IServiceProvider serviceProvider)
+    parameters:
+    - id: pluginName
+      type: System.String
+      description: The name of the content text extraction plugin.
+    - id: pluginParameters
+      type: System.Collections.Generic.Dictionary{System.String,System.Object}
+      description: The dictionary containing the plugin parameters.
+    - id: packageManagerResolver
+      type: FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManagerResolver
+      description: The package manager resolver for the plugin.
+    - id: serviceProvider
+      type: System.IServiceProvider
+      description: The service provider of the dependency injection container.
+    return:
+      type: FoundationaLLM.Common.Interfaces.Plugins.IContentTextExtractionPlugin
+      description: The <xref href="FoundationaLLM.Common.Interfaces.Plugins.IContentTextExtractionPlugin" data-throw-if-not-resolved="false"></xref> interface implemented by the content text extraction plugin.
+    content.vb: Function GetContentTextExtractionPlugin(pluginName As String, pluginParameters As Dictionary(Of String, Object), packageManagerResolver As IPluginPackageManagerResolver, serviceProvider As IServiceProvider) As IContentTextExtractionPlugin
+  overload: FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManager.GetContentTextExtractionPlugin*
+  exceptions:
+  - type: System.NotImplementedException
+    commentId: T:System.NotImplementedException
+    description: ''
+  nameWithType.vb: IPluginPackageManager.GetContentTextExtractionPlugin(String, Dictionary(Of String, Object), IPluginPackageManagerResolver, IServiceProvider)
+  fullName.vb: FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManager.GetContentTextExtractionPlugin(String, System.Collections.Generic.Dictionary(Of String, Object), FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManagerResolver, System.IServiceProvider)
+  name.vb: GetContentTextExtractionPlugin(String, Dictionary(Of String, Object), IPluginPackageManagerResolver, IServiceProvider)
+- uid: FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManager.GetContentTextPartitioningPlugin(System.String,System.Collections.Generic.Dictionary{System.String,System.Object},FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManagerResolver,System.IServiceProvider)
+  commentId: M:FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManager.GetContentTextPartitioningPlugin(System.String,System.Collections.Generic.Dictionary{System.String,System.Object},FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManagerResolver,System.IServiceProvider)
+  id: GetContentTextPartitioningPlugin(System.String,System.Collections.Generic.Dictionary{System.String,System.Object},FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManagerResolver,System.IServiceProvider)
+  parent: FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManager
+  langs:
+  - csharp
+  - vb
+  name: GetContentTextPartitioningPlugin(string, Dictionary<string, object>, IPluginPackageManagerResolver, IServiceProvider)
+  nameWithType: IPluginPackageManager.GetContentTextPartitioningPlugin(string, Dictionary<string, object>, IPluginPackageManagerResolver, IServiceProvider)
+  fullName: FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManager.GetContentTextPartitioningPlugin(string, System.Collections.Generic.Dictionary<string, object>, FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManagerResolver, System.IServiceProvider)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Common/Interfaces/Plugins/IPluginPackageManager.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: GetContentTextPartitioningPlugin
+    path: ../src/dotnet/Common/Interfaces/Plugins/IPluginPackageManager.cs
+    startLine: 87
+  assemblies:
+  - FoundationaLLM.Common
+  namespace: FoundationaLLM.Common.Interfaces.Plugins
+  summary: Gets a content text partitioning plugin by its name.
+  example: []
+  syntax:
+    content: IContentTextPartitioningPlugin GetContentTextPartitioningPlugin(string pluginName, Dictionary<string, object> pluginParameters, IPluginPackageManagerResolver packageManagerResolver, IServiceProvider serviceProvider)
+    parameters:
+    - id: pluginName
+      type: System.String
+      description: The name of the content text partitioning plugin.
+    - id: pluginParameters
+      type: System.Collections.Generic.Dictionary{System.String,System.Object}
+      description: The dictionary containing the plugin parameters.
+    - id: packageManagerResolver
+      type: FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManagerResolver
+      description: The package manager resolver for the plugin.
+    - id: serviceProvider
+      type: System.IServiceProvider
+      description: The service provider of the dependency injection container.
+    return:
+      type: FoundationaLLM.Common.Interfaces.Plugins.IContentTextPartitioningPlugin
+      description: The <xref href="FoundationaLLM.Common.Interfaces.Plugins.IContentTextExtractionPlugin" data-throw-if-not-resolved="false"></xref> interface implemented by the content text partitioning plugin.
+    content.vb: Function GetContentTextPartitioningPlugin(pluginName As String, pluginParameters As Dictionary(Of String, Object), packageManagerResolver As IPluginPackageManagerResolver, serviceProvider As IServiceProvider) As IContentTextPartitioningPlugin
+  overload: FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManager.GetContentTextPartitioningPlugin*
+  exceptions:
+  - type: System.NotImplementedException
+    commentId: T:System.NotImplementedException
+    description: ''
+  nameWithType.vb: IPluginPackageManager.GetContentTextPartitioningPlugin(String, Dictionary(Of String, Object), IPluginPackageManagerResolver, IServiceProvider)
+  fullName.vb: FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManager.GetContentTextPartitioningPlugin(String, System.Collections.Generic.Dictionary(Of String, Object), FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManagerResolver, System.IServiceProvider)
+  name.vb: GetContentTextPartitioningPlugin(String, Dictionary(Of String, Object), IPluginPackageManagerResolver, IServiceProvider)
+references:
+- uid: FoundationaLLM.Common.Interfaces.Plugins
+  commentId: N:FoundationaLLM.Common.Interfaces.Plugins
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Interfaces.Plugins
+  nameWithType: FoundationaLLM.Common.Interfaces.Plugins
+  fullName: FoundationaLLM.Common.Interfaces.Plugins
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Interfaces
+    name: Interfaces
+    href: FoundationaLLM.Common.Interfaces.html
+  - name: .
+  - uid: FoundationaLLM.Common.Interfaces.Plugins
+    name: Plugins
+    href: FoundationaLLM.Common.Interfaces.Plugins.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Interfaces
+    name: Interfaces
+    href: FoundationaLLM.Common.Interfaces.html
+  - name: .
+  - uid: FoundationaLLM.Common.Interfaces.Plugins
+    name: Plugins
+    href: FoundationaLLM.Common.Interfaces.Plugins.html
+- uid: System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  parent: FoundationaLLM.Core.Utils.ObjectExtensions
+  definition: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  isExternal: true
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions
+  commentId: T:FoundationaLLM.Core.Utils.ObjectExtensions
+  parent: FoundationaLLM.Core.Utils
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html
+  name: ObjectExtensions
+  nameWithType: ObjectExtensions
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions
+- uid: FoundationaLLM.Core.Utils
+  commentId: N:FoundationaLLM.Core.Utils
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Core.Utils
+  nameWithType: FoundationaLLM.Core.Utils
+  fullName: FoundationaLLM.Core.Utils
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+- uid: FoundationaLLM.Common.Models.Plugins.Metadata.PluginPackageMetadata
+  commentId: T:FoundationaLLM.Common.Models.Plugins.Metadata.PluginPackageMetadata
+  parent: FoundationaLLM.Common.Models.Plugins.Metadata
+  href: FoundationaLLM.Common.Models.Plugins.Metadata.PluginPackageMetadata.html
+  name: PluginPackageMetadata
+  nameWithType: PluginPackageMetadata
+  fullName: FoundationaLLM.Common.Models.Plugins.Metadata.PluginPackageMetadata
+- uid: FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManager.GetMetadata*
+  commentId: Overload:FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManager.GetMetadata
+  href: FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManager.html#FoundationaLLM_Common_Interfaces_Plugins_IPluginPackageManager_GetMetadata_System_String_
+  name: GetMetadata
+  nameWithType: IPluginPackageManager.GetMetadata
+  fullName: FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManager.GetMetadata
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: FoundationaLLM.Common.Models.Plugins.Metadata
+  commentId: N:FoundationaLLM.Common.Models.Plugins.Metadata
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.Plugins.Metadata
+  nameWithType: FoundationaLLM.Common.Models.Plugins.Metadata
+  fullName: FoundationaLLM.Common.Models.Plugins.Metadata
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Plugins
+    name: Plugins
+    href: FoundationaLLM.Common.Models.Plugins.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Plugins.Metadata
+    name: Metadata
+    href: FoundationaLLM.Common.Models.Plugins.Metadata.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Plugins
+    name: Plugins
+    href: FoundationaLLM.Common.Models.Plugins.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Plugins.Metadata
+    name: Metadata
+    href: FoundationaLLM.Common.Models.Plugins.Metadata.html
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManager.TryGetService*
+  commentId: Overload:FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManager.TryGetService
+  href: FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManager.html#FoundationaLLM_Common_Interfaces_Plugins_IPluginPackageManager_TryGetService_System_String_System_Object__
+  name: TryGetService
+  nameWithType: IPluginPackageManager.TryGetService
+  fullName: FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManager.TryGetService
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManager.RegisterService*
+  commentId: Overload:FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManager.RegisterService
+  href: FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManager.html#FoundationaLLM_Common_Interfaces_Plugins_IPluginPackageManager_RegisterService_System_String_System_Object_
+  name: RegisterService
+  nameWithType: IPluginPackageManager.RegisterService
+  fullName: FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManager.RegisterService
+- uid: FoundationaLLM.Common.Interfaces.Plugins.IDataSourcePlugin
+  commentId: T:FoundationaLLM.Common.Interfaces.Plugins.IDataSourcePlugin
+  parent: FoundationaLLM.Common.Interfaces.Plugins
+  href: FoundationaLLM.Common.Interfaces.Plugins.IDataSourcePlugin.html
+  name: IDataSourcePlugin
+  nameWithType: IDataSourcePlugin
+  fullName: FoundationaLLM.Common.Interfaces.Plugins.IDataSourcePlugin
+- uid: System.NotImplementedException
+  commentId: T:System.NotImplementedException
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.notimplementedexception
+  name: NotImplementedException
+  nameWithType: NotImplementedException
+  fullName: System.NotImplementedException
+- uid: FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManager.GetDataSourcePlugin*
+  commentId: Overload:FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManager.GetDataSourcePlugin
+  href: FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManager.html#FoundationaLLM_Common_Interfaces_Plugins_IPluginPackageManager_GetDataSourcePlugin_System_String_System_String_System_Collections_Generic_Dictionary_System_String_System_Object__FoundationaLLM_Common_Interfaces_Plugins_IPluginPackageManagerResolver_System_IServiceProvider_
+  name: GetDataSourcePlugin
+  nameWithType: IPluginPackageManager.GetDataSourcePlugin
+  fullName: FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManager.GetDataSourcePlugin
+- uid: System.Collections.Generic.Dictionary{System.String,System.Object}
+  commentId: T:System.Collections.Generic.Dictionary{System.String,System.Object}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.Dictionary`2
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  name: Dictionary<string, object>
+  nameWithType: Dictionary<string, object>
+  fullName: System.Collections.Generic.Dictionary<string, object>
+  nameWithType.vb: Dictionary(Of String, Object)
+  fullName.vb: System.Collections.Generic.Dictionary(Of String, Object)
+  name.vb: Dictionary(Of String, Object)
+  spec.csharp:
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManagerResolver
+  commentId: T:FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManagerResolver
+  parent: FoundationaLLM.Common.Interfaces.Plugins
+  href: FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManagerResolver.html
+  name: IPluginPackageManagerResolver
+  nameWithType: IPluginPackageManagerResolver
+  fullName: FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManagerResolver
+- uid: System.IServiceProvider
+  commentId: T:System.IServiceProvider
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.iserviceprovider
+  name: IServiceProvider
+  nameWithType: IServiceProvider
+  fullName: System.IServiceProvider
+- uid: System.Collections.Generic.Dictionary`2
+  commentId: T:System.Collections.Generic.Dictionary`2
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  name: Dictionary<TKey, TValue>
+  nameWithType: Dictionary<TKey, TValue>
+  fullName: System.Collections.Generic.Dictionary<TKey, TValue>
+  nameWithType.vb: Dictionary(Of TKey, TValue)
+  fullName.vb: System.Collections.Generic.Dictionary(Of TKey, TValue)
+  name.vb: Dictionary(Of TKey, TValue)
+  spec.csharp:
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  - name: <
+  - name: TKey
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TKey
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: FoundationaLLM.Common.Interfaces.Plugins.IDataPipelineStagePlugin
+  commentId: T:FoundationaLLM.Common.Interfaces.Plugins.IDataPipelineStagePlugin
+  parent: FoundationaLLM.Common.Interfaces.Plugins
+  href: FoundationaLLM.Common.Interfaces.Plugins.IDataPipelineStagePlugin.html
+  name: IDataPipelineStagePlugin
+  nameWithType: IDataPipelineStagePlugin
+  fullName: FoundationaLLM.Common.Interfaces.Plugins.IDataPipelineStagePlugin
+- uid: FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManager.GetDataPipelineStagePlugin*
+  commentId: Overload:FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManager.GetDataPipelineStagePlugin
+  href: FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManager.html#FoundationaLLM_Common_Interfaces_Plugins_IPluginPackageManager_GetDataPipelineStagePlugin_System_String_System_Collections_Generic_Dictionary_System_String_System_Object__FoundationaLLM_Common_Interfaces_Plugins_IPluginPackageManagerResolver_System_IServiceProvider_
+  name: GetDataPipelineStagePlugin
+  nameWithType: IPluginPackageManager.GetDataPipelineStagePlugin
+  fullName: FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManager.GetDataPipelineStagePlugin
+- uid: FoundationaLLM.Common.Interfaces.Plugins.IContentTextExtractionPlugin
+  commentId: T:FoundationaLLM.Common.Interfaces.Plugins.IContentTextExtractionPlugin
+  parent: FoundationaLLM.Common.Interfaces.Plugins
+  href: FoundationaLLM.Common.Interfaces.Plugins.IContentTextExtractionPlugin.html
+  name: IContentTextExtractionPlugin
+  nameWithType: IContentTextExtractionPlugin
+  fullName: FoundationaLLM.Common.Interfaces.Plugins.IContentTextExtractionPlugin
+- uid: FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManager.GetContentTextExtractionPlugin*
+  commentId: Overload:FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManager.GetContentTextExtractionPlugin
+  href: FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManager.html#FoundationaLLM_Common_Interfaces_Plugins_IPluginPackageManager_GetContentTextExtractionPlugin_System_String_System_Collections_Generic_Dictionary_System_String_System_Object__FoundationaLLM_Common_Interfaces_Plugins_IPluginPackageManagerResolver_System_IServiceProvider_
+  name: GetContentTextExtractionPlugin
+  nameWithType: IPluginPackageManager.GetContentTextExtractionPlugin
+  fullName: FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManager.GetContentTextExtractionPlugin
+- uid: FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManager.GetContentTextPartitioningPlugin*
+  commentId: Overload:FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManager.GetContentTextPartitioningPlugin
+  href: FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManager.html#FoundationaLLM_Common_Interfaces_Plugins_IPluginPackageManager_GetContentTextPartitioningPlugin_System_String_System_Collections_Generic_Dictionary_System_String_System_Object__FoundationaLLM_Common_Interfaces_Plugins_IPluginPackageManagerResolver_System_IServiceProvider_
+  name: GetContentTextPartitioningPlugin
+  nameWithType: IPluginPackageManager.GetContentTextPartitioningPlugin
+  fullName: FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManager.GetContentTextPartitioningPlugin
+- uid: FoundationaLLM.Common.Interfaces.Plugins.IContentTextPartitioningPlugin
+  commentId: T:FoundationaLLM.Common.Interfaces.Plugins.IContentTextPartitioningPlugin
+  parent: FoundationaLLM.Common.Interfaces.Plugins
+  href: FoundationaLLM.Common.Interfaces.Plugins.IContentTextPartitioningPlugin.html
+  name: IContentTextPartitioningPlugin
+  nameWithType: IContentTextPartitioningPlugin
+  fullName: FoundationaLLM.Common.Interfaces.Plugins.IContentTextPartitioningPlugin

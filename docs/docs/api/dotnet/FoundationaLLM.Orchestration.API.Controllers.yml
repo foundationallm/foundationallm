@@ -1,0 +1,31 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Orchestration.API.Controllers
+  commentId: N:FoundationaLLM.Orchestration.API.Controllers
+  id: Controllers
+  parent: FoundationaLLM.Orchestration.API
+  children:
+  - FoundationaLLM.Orchestration.API.Controllers.CompletionsController
+  - FoundationaLLM.Orchestration.API.Controllers.StatusController
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM.Orchestration.API.Controllers
+  nameWithType: FoundationaLLM.Orchestration.API.Controllers
+  fullName: FoundationaLLM.Orchestration.API.Controllers
+  type: Namespace
+  assemblies:
+  - FoundationaLLM.Orchestration.API
+references:
+- uid: FoundationaLLM.Orchestration.API.Controllers.CompletionsController
+  commentId: T:FoundationaLLM.Orchestration.API.Controllers.CompletionsController
+  href: FoundationaLLM.Orchestration.API.Controllers.CompletionsController.html
+  name: CompletionsController
+  nameWithType: CompletionsController
+  fullName: FoundationaLLM.Orchestration.API.Controllers.CompletionsController
+- uid: FoundationaLLM.Orchestration.API.Controllers.StatusController
+  commentId: T:FoundationaLLM.Orchestration.API.Controllers.StatusController
+  href: FoundationaLLM.Orchestration.API.Controllers.StatusController.html
+  name: StatusController
+  nameWithType: StatusController
+  fullName: FoundationaLLM.Orchestration.API.Controllers.StatusController

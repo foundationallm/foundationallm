@@ -1,0 +1,111 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Common.Interfaces.Plugins
+  commentId: N:FoundationaLLM.Common.Interfaces.Plugins
+  id: Plugins
+  parent: FoundationaLLM.Common.Interfaces
+  children:
+  - FoundationaLLM.Common.Interfaces.Plugins.IContentTextExtractionPlugin
+  - FoundationaLLM.Common.Interfaces.Plugins.IContentTextPartitioningPlugin
+  - FoundationaLLM.Common.Interfaces.Plugins.IDataPipelineStagePlugin
+  - FoundationaLLM.Common.Interfaces.Plugins.IDataSourcePlugin
+  - FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManager
+  - FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManagerResolver
+  - FoundationaLLM.Common.Interfaces.Plugins.IPluginService
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM.Common.Interfaces.Plugins
+  nameWithType: FoundationaLLM.Common.Interfaces.Plugins
+  fullName: FoundationaLLM.Common.Interfaces.Plugins
+  type: Namespace
+  assemblies:
+  - FoundationaLLM.Common
+references:
+- uid: FoundationaLLM.Common.Interfaces.Plugins.IContentTextExtractionPlugin
+  commentId: T:FoundationaLLM.Common.Interfaces.Plugins.IContentTextExtractionPlugin
+  parent: FoundationaLLM.Common.Interfaces.Plugins
+  href: FoundationaLLM.Common.Interfaces.Plugins.IContentTextExtractionPlugin.html
+  name: IContentTextExtractionPlugin
+  nameWithType: IContentTextExtractionPlugin
+  fullName: FoundationaLLM.Common.Interfaces.Plugins.IContentTextExtractionPlugin
+- uid: FoundationaLLM.Common.Interfaces.Plugins.IContentTextPartitioningPlugin
+  commentId: T:FoundationaLLM.Common.Interfaces.Plugins.IContentTextPartitioningPlugin
+  parent: FoundationaLLM.Common.Interfaces.Plugins
+  href: FoundationaLLM.Common.Interfaces.Plugins.IContentTextPartitioningPlugin.html
+  name: IContentTextPartitioningPlugin
+  nameWithType: IContentTextPartitioningPlugin
+  fullName: FoundationaLLM.Common.Interfaces.Plugins.IContentTextPartitioningPlugin
+- uid: FoundationaLLM.Common.Interfaces.Plugins.IDataPipelineStagePlugin
+  commentId: T:FoundationaLLM.Common.Interfaces.Plugins.IDataPipelineStagePlugin
+  parent: FoundationaLLM.Common.Interfaces.Plugins
+  href: FoundationaLLM.Common.Interfaces.Plugins.IDataPipelineStagePlugin.html
+  name: IDataPipelineStagePlugin
+  nameWithType: IDataPipelineStagePlugin
+  fullName: FoundationaLLM.Common.Interfaces.Plugins.IDataPipelineStagePlugin
+- uid: FoundationaLLM.Common.Interfaces.Plugins.IDataSourcePlugin
+  commentId: T:FoundationaLLM.Common.Interfaces.Plugins.IDataSourcePlugin
+  parent: FoundationaLLM.Common.Interfaces.Plugins
+  href: FoundationaLLM.Common.Interfaces.Plugins.IDataSourcePlugin.html
+  name: IDataSourcePlugin
+  nameWithType: IDataSourcePlugin
+  fullName: FoundationaLLM.Common.Interfaces.Plugins.IDataSourcePlugin
+- uid: FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManager
+  commentId: T:FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManager
+  parent: FoundationaLLM.Common.Interfaces.Plugins
+  href: FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManager.html
+  name: IPluginPackageManager
+  nameWithType: IPluginPackageManager
+  fullName: FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManager
+- uid: FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManagerResolver
+  commentId: T:FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManagerResolver
+  parent: FoundationaLLM.Common.Interfaces.Plugins
+  href: FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManagerResolver.html
+  name: IPluginPackageManagerResolver
+  nameWithType: IPluginPackageManagerResolver
+  fullName: FoundationaLLM.Common.Interfaces.Plugins.IPluginPackageManagerResolver
+- uid: FoundationaLLM.Common.Interfaces.Plugins.IPluginService
+  commentId: T:FoundationaLLM.Common.Interfaces.Plugins.IPluginService
+  parent: FoundationaLLM.Common.Interfaces.Plugins
+  href: FoundationaLLM.Common.Interfaces.Plugins.IPluginService.html
+  name: IPluginService
+  nameWithType: IPluginService
+  fullName: FoundationaLLM.Common.Interfaces.Plugins.IPluginService
+- uid: FoundationaLLM.Common.Interfaces.Plugins
+  commentId: N:FoundationaLLM.Common.Interfaces.Plugins
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Interfaces.Plugins
+  nameWithType: FoundationaLLM.Common.Interfaces.Plugins
+  fullName: FoundationaLLM.Common.Interfaces.Plugins
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Interfaces
+    name: Interfaces
+    href: FoundationaLLM.Common.Interfaces.html
+  - name: .
+  - uid: FoundationaLLM.Common.Interfaces.Plugins
+    name: Plugins
+    href: FoundationaLLM.Common.Interfaces.Plugins.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Interfaces
+    name: Interfaces
+    href: FoundationaLLM.Common.Interfaces.html
+  - name: .
+  - uid: FoundationaLLM.Common.Interfaces.Plugins
+    name: Plugins
+    href: FoundationaLLM.Common.Interfaces.Plugins.html

@@ -1,0 +1,71 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Common.Models.Configuration.API
+  commentId: N:FoundationaLLM.Common.Models.Configuration.API
+  id: API
+  parent: FoundationaLLM.Common.Models.Configuration
+  children:
+  - FoundationaLLM.Common.Models.Configuration.API.APIClientSettings
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM.Common.Models.Configuration.API
+  nameWithType: FoundationaLLM.Common.Models.Configuration.API
+  fullName: FoundationaLLM.Common.Models.Configuration.API
+  type: Namespace
+  assemblies:
+  - FoundationaLLM.Common
+references:
+- uid: FoundationaLLM.Common.Models.Configuration.API.APIClientSettings
+  commentId: T:FoundationaLLM.Common.Models.Configuration.API.APIClientSettings
+  parent: FoundationaLLM.Common.Models.Configuration.API
+  href: FoundationaLLM.Common.Models.Configuration.API.APIClientSettings.html
+  name: APIClientSettings
+  nameWithType: APIClientSettings
+  fullName: FoundationaLLM.Common.Models.Configuration.API.APIClientSettings
+- uid: FoundationaLLM.Common.Models.Configuration.API
+  commentId: N:FoundationaLLM.Common.Models.Configuration.API
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Common.Models.Configuration.API
+  nameWithType: FoundationaLLM.Common.Models.Configuration.API
+  fullName: FoundationaLLM.Common.Models.Configuration.API
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Configuration
+    name: Configuration
+    href: FoundationaLLM.Common.Models.Configuration.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Configuration.API
+    name: API
+    href: FoundationaLLM.Common.Models.Configuration.API.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Common
+    name: Common
+    href: FoundationaLLM.Common.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models
+    name: Models
+    href: FoundationaLLM.Common.Models.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Configuration
+    name: Configuration
+    href: FoundationaLLM.Common.Models.Configuration.html
+  - name: .
+  - uid: FoundationaLLM.Common.Models.Configuration.API
+    name: API
+    href: FoundationaLLM.Common.Models.Configuration.API.html

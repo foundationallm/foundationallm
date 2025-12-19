@@ -1,0 +1,200 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Plugins.DataPipeline.Plugins
+  id: Plugins
+  parent: FoundationaLLM.Plugins.DataPipeline
+  children:
+  - FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextExtraction
+  - FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextPartitioning
+  - FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
+  - FoundationaLLM.Plugins.DataPipeline.Plugins.DataSource
+  langs:
+  - csharp
+  - vb
+  name: FoundationaLLM.Plugins.DataPipeline.Plugins
+  type: Namespace
+references:
+- uid: FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextExtraction
+  commentId: N:FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextExtraction
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextExtraction
+  nameWithType: FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextExtraction
+  fullName: FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextExtraction
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Plugins
+    name: Plugins
+    href: FoundationaLLM.Plugins.html
+  - name: .
+  - uid: FoundationaLLM.Plugins.DataPipeline
+    name: DataPipeline
+    href: FoundationaLLM.Plugins.DataPipeline.html
+  - name: .
+  - uid: FoundationaLLM.Plugins.DataPipeline.Plugins
+    name: Plugins
+    href: FoundationaLLM.Plugins.DataPipeline.Plugins.html
+  - name: .
+  - uid: FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextExtraction
+    name: ContentTextExtraction
+    href: FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextExtraction.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Plugins
+    name: Plugins
+    href: FoundationaLLM.Plugins.html
+  - name: .
+  - uid: FoundationaLLM.Plugins.DataPipeline
+    name: DataPipeline
+    href: FoundationaLLM.Plugins.DataPipeline.html
+  - name: .
+  - uid: FoundationaLLM.Plugins.DataPipeline.Plugins
+    name: Plugins
+    href: FoundationaLLM.Plugins.DataPipeline.Plugins.html
+  - name: .
+  - uid: FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextExtraction
+    name: ContentTextExtraction
+    href: FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextExtraction.html
+- uid: FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextPartitioning
+  commentId: N:FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextPartitioning
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextPartitioning
+  nameWithType: FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextPartitioning
+  fullName: FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextPartitioning
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Plugins
+    name: Plugins
+    href: FoundationaLLM.Plugins.html
+  - name: .
+  - uid: FoundationaLLM.Plugins.DataPipeline
+    name: DataPipeline
+    href: FoundationaLLM.Plugins.DataPipeline.html
+  - name: .
+  - uid: FoundationaLLM.Plugins.DataPipeline.Plugins
+    name: Plugins
+    href: FoundationaLLM.Plugins.DataPipeline.Plugins.html
+  - name: .
+  - uid: FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextPartitioning
+    name: ContentTextPartitioning
+    href: FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextPartitioning.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Plugins
+    name: Plugins
+    href: FoundationaLLM.Plugins.html
+  - name: .
+  - uid: FoundationaLLM.Plugins.DataPipeline
+    name: DataPipeline
+    href: FoundationaLLM.Plugins.DataPipeline.html
+  - name: .
+  - uid: FoundationaLLM.Plugins.DataPipeline.Plugins
+    name: Plugins
+    href: FoundationaLLM.Plugins.DataPipeline.Plugins.html
+  - name: .
+  - uid: FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextPartitioning
+    name: ContentTextPartitioning
+    href: FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextPartitioning.html
+- uid: FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
+  commentId: N:FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
+  nameWithType: FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
+  fullName: FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Plugins
+    name: Plugins
+    href: FoundationaLLM.Plugins.html
+  - name: .
+  - uid: FoundationaLLM.Plugins.DataPipeline
+    name: DataPipeline
+    href: FoundationaLLM.Plugins.DataPipeline.html
+  - name: .
+  - uid: FoundationaLLM.Plugins.DataPipeline.Plugins
+    name: Plugins
+    href: FoundationaLLM.Plugins.DataPipeline.Plugins.html
+  - name: .
+  - uid: FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
+    name: DataPipelineStage
+    href: FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Plugins
+    name: Plugins
+    href: FoundationaLLM.Plugins.html
+  - name: .
+  - uid: FoundationaLLM.Plugins.DataPipeline
+    name: DataPipeline
+    href: FoundationaLLM.Plugins.DataPipeline.html
+  - name: .
+  - uid: FoundationaLLM.Plugins.DataPipeline.Plugins
+    name: Plugins
+    href: FoundationaLLM.Plugins.DataPipeline.Plugins.html
+  - name: .
+  - uid: FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
+    name: DataPipelineStage
+    href: FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage.html
+- uid: FoundationaLLM.Plugins.DataPipeline.Plugins.DataSource
+  commentId: N:FoundationaLLM.Plugins.DataPipeline.Plugins.DataSource
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Plugins.DataPipeline.Plugins.DataSource
+  nameWithType: FoundationaLLM.Plugins.DataPipeline.Plugins.DataSource
+  fullName: FoundationaLLM.Plugins.DataPipeline.Plugins.DataSource
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Plugins
+    name: Plugins
+    href: FoundationaLLM.Plugins.html
+  - name: .
+  - uid: FoundationaLLM.Plugins.DataPipeline
+    name: DataPipeline
+    href: FoundationaLLM.Plugins.DataPipeline.html
+  - name: .
+  - uid: FoundationaLLM.Plugins.DataPipeline.Plugins
+    name: Plugins
+    href: FoundationaLLM.Plugins.DataPipeline.Plugins.html
+  - name: .
+  - uid: FoundationaLLM.Plugins.DataPipeline.Plugins.DataSource
+    name: DataSource
+    href: FoundationaLLM.Plugins.DataPipeline.Plugins.DataSource.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Plugins
+    name: Plugins
+    href: FoundationaLLM.Plugins.html
+  - name: .
+  - uid: FoundationaLLM.Plugins.DataPipeline
+    name: DataPipeline
+    href: FoundationaLLM.Plugins.DataPipeline.html
+  - name: .
+  - uid: FoundationaLLM.Plugins.DataPipeline.Plugins
+    name: Plugins
+    href: FoundationaLLM.Plugins.DataPipeline.Plugins.html
+  - name: .
+  - uid: FoundationaLLM.Plugins.DataPipeline.Plugins.DataSource
+    name: DataSource
+    href: FoundationaLLM.Plugins.DataPipeline.Plugins.DataSource.html

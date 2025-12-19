@@ -1,0 +1,638 @@
+### YamlMime:ManagedReference
+items:
+- uid: FoundationaLLM.Gateway.Services.GatewayMetrics
+  commentId: T:FoundationaLLM.Gateway.Services.GatewayMetrics
+  id: GatewayMetrics
+  parent: FoundationaLLM.Gateway.Services
+  children:
+  - FoundationaLLM.Gateway.Services.GatewayMetrics.#ctor(System.Diagnostics.Metrics.IMeterFactory)
+  - FoundationaLLM.Gateway.Services.GatewayMetrics.IncrementTextChunkMeters(System.Int64,System.Int64)
+  - FoundationaLLM.Gateway.Services.GatewayMetrics.IncrementTextChunksSizeTokens(System.Int64,System.Int64)
+  langs:
+  - csharp
+  - vb
+  name: GatewayMetrics
+  nameWithType: GatewayMetrics
+  fullName: FoundationaLLM.Gateway.Services.GatewayMetrics
+  type: Class
+  source:
+    remote:
+      path: src/dotnet/Gateway/Services/GatewayMetrics.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: GatewayMetrics
+    path: ../src/dotnet/Gateway/Services/GatewayMetrics.cs
+    startLine: 4
+  assemblies:
+  - FoundationaLLM.Gateway
+  namespace: FoundationaLLM.Gateway.Services
+  syntax:
+    content: public class GatewayMetrics
+    content.vb: Public Class GatewayMetrics
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+  extensionMethods:
+  - System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+- uid: FoundationaLLM.Gateway.Services.GatewayMetrics.#ctor(System.Diagnostics.Metrics.IMeterFactory)
+  commentId: M:FoundationaLLM.Gateway.Services.GatewayMetrics.#ctor(System.Diagnostics.Metrics.IMeterFactory)
+  id: '#ctor(System.Diagnostics.Metrics.IMeterFactory)'
+  parent: FoundationaLLM.Gateway.Services.GatewayMetrics
+  langs:
+  - csharp
+  - vb
+  name: GatewayMetrics(IMeterFactory)
+  nameWithType: GatewayMetrics.GatewayMetrics(IMeterFactory)
+  fullName: FoundationaLLM.Gateway.Services.GatewayMetrics.GatewayMetrics(System.Diagnostics.Metrics.IMeterFactory)
+  type: Constructor
+  source:
+    remote:
+      path: src/dotnet/Gateway/Services/GatewayMetrics.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: .ctor
+    path: ../src/dotnet/Gateway/Services/GatewayMetrics.cs
+    startLine: 12
+  assemblies:
+  - FoundationaLLM.Gateway
+  namespace: FoundationaLLM.Gateway.Services
+  syntax:
+    content: public GatewayMetrics(IMeterFactory meterFactory)
+    parameters:
+    - id: meterFactory
+      type: System.Diagnostics.Metrics.IMeterFactory
+    content.vb: Public Sub New(meterFactory As IMeterFactory)
+  overload: FoundationaLLM.Gateway.Services.GatewayMetrics.#ctor*
+  nameWithType.vb: GatewayMetrics.New(IMeterFactory)
+  fullName.vb: FoundationaLLM.Gateway.Services.GatewayMetrics.New(System.Diagnostics.Metrics.IMeterFactory)
+  name.vb: New(IMeterFactory)
+- uid: FoundationaLLM.Gateway.Services.GatewayMetrics.IncrementTextChunkMeters(System.Int64,System.Int64)
+  commentId: M:FoundationaLLM.Gateway.Services.GatewayMetrics.IncrementTextChunkMeters(System.Int64,System.Int64)
+  id: IncrementTextChunkMeters(System.Int64,System.Int64)
+  parent: FoundationaLLM.Gateway.Services.GatewayMetrics
+  langs:
+  - csharp
+  - vb
+  name: IncrementTextChunkMeters(long, long)
+  nameWithType: GatewayMetrics.IncrementTextChunkMeters(long, long)
+  fullName: FoundationaLLM.Gateway.Services.GatewayMetrics.IncrementTextChunkMeters(long, long)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Gateway/Services/GatewayMetrics.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: IncrementTextChunkMeters
+    path: ../src/dotnet/Gateway/Services/GatewayMetrics.cs
+    startLine: 29
+  assemblies:
+  - FoundationaLLM.Gateway
+  namespace: FoundationaLLM.Gateway.Services
+  syntax:
+    content: public void IncrementTextChunkMeters(long embeddingsCount, long completionsCount)
+    parameters:
+    - id: embeddingsCount
+      type: System.Int64
+    - id: completionsCount
+      type: System.Int64
+    content.vb: Public Sub IncrementTextChunkMeters(embeddingsCount As Long, completionsCount As Long)
+  overload: FoundationaLLM.Gateway.Services.GatewayMetrics.IncrementTextChunkMeters*
+  nameWithType.vb: GatewayMetrics.IncrementTextChunkMeters(Long, Long)
+  fullName.vb: FoundationaLLM.Gateway.Services.GatewayMetrics.IncrementTextChunkMeters(Long, Long)
+  name.vb: IncrementTextChunkMeters(Long, Long)
+- uid: FoundationaLLM.Gateway.Services.GatewayMetrics.IncrementTextChunksSizeTokens(System.Int64,System.Int64)
+  commentId: M:FoundationaLLM.Gateway.Services.GatewayMetrics.IncrementTextChunksSizeTokens(System.Int64,System.Int64)
+  id: IncrementTextChunksSizeTokens(System.Int64,System.Int64)
+  parent: FoundationaLLM.Gateway.Services.GatewayMetrics
+  langs:
+  - csharp
+  - vb
+  name: IncrementTextChunksSizeTokens(long, long)
+  nameWithType: GatewayMetrics.IncrementTextChunksSizeTokens(long, long)
+  fullName: FoundationaLLM.Gateway.Services.GatewayMetrics.IncrementTextChunksSizeTokens(long, long)
+  type: Method
+  source:
+    remote:
+      path: src/dotnet/Gateway/Services/GatewayMetrics.cs
+      branch: cursor/documentation-navigation-fix-f293
+      repo: https://github.com/foundationallm/foundationallm.git
+    id: IncrementTextChunksSizeTokens
+    path: ../src/dotnet/Gateway/Services/GatewayMetrics.cs
+    startLine: 38
+  assemblies:
+  - FoundationaLLM.Gateway
+  namespace: FoundationaLLM.Gateway.Services
+  syntax:
+    content: public void IncrementTextChunksSizeTokens(long embeddingsSize, long completionsSize)
+    parameters:
+    - id: embeddingsSize
+      type: System.Int64
+    - id: completionsSize
+      type: System.Int64
+    content.vb: Public Sub IncrementTextChunksSizeTokens(embeddingsSize As Long, completionsSize As Long)
+  overload: FoundationaLLM.Gateway.Services.GatewayMetrics.IncrementTextChunksSizeTokens*
+  nameWithType.vb: GatewayMetrics.IncrementTextChunksSizeTokens(Long, Long)
+  fullName.vb: FoundationaLLM.Gateway.Services.GatewayMetrics.IncrementTextChunksSizeTokens(Long, Long)
+  name.vb: IncrementTextChunksSizeTokens(Long, Long)
+references:
+- uid: FoundationaLLM.Gateway.Services
+  commentId: N:FoundationaLLM.Gateway.Services
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Gateway.Services
+  nameWithType: FoundationaLLM.Gateway.Services
+  fullName: FoundationaLLM.Gateway.Services
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Gateway
+    name: Gateway
+    href: FoundationaLLM.Gateway.html
+  - name: .
+  - uid: FoundationaLLM.Gateway.Services
+    name: Services
+    href: FoundationaLLM.Gateway.Services.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Gateway
+    name: Gateway
+    href: FoundationaLLM.Gateway.html
+  - name: .
+  - uid: FoundationaLLM.Gateway.Services
+    name: Services
+    href: FoundationaLLM.Gateway.Services.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System.Object.FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  parent: FoundationaLLM.Core.Utils.ObjectExtensions
+  definition: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  commentId: M:FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+  isExternal: true
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  name: GetPropertyValues(object, List<string>)
+  nameWithType: ObjectExtensions.GetPropertyValues(object, List<string>)
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(object, System.Collections.Generic.List<string>)
+  nameWithType.vb: ObjectExtensions.GetPropertyValues(Object, List(Of String))
+  fullName.vb: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(Object, System.Collections.Generic.List(Of String))
+  name.vb: GetPropertyValues(Object, List(Of String))
+  spec.csharp:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FoundationaLLM.Core.Utils.ObjectExtensions.GetPropertyValues(System.Object,System.Collections.Generic.List{System.String})
+    name: GetPropertyValues
+    href: FoundationaLLM.Core.Utils.ObjectExtensions.html#FoundationaLLM_Core_Utils_ObjectExtensions_GetPropertyValues_System_Object_System_Collections_Generic_List_System_String__
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: FoundationaLLM.Core.Utils.ObjectExtensions
+  commentId: T:FoundationaLLM.Core.Utils.ObjectExtensions
+  parent: FoundationaLLM.Core.Utils
+  href: FoundationaLLM.Core.Utils.ObjectExtensions.html
+  name: ObjectExtensions
+  nameWithType: ObjectExtensions
+  fullName: FoundationaLLM.Core.Utils.ObjectExtensions
+- uid: FoundationaLLM.Core.Utils
+  commentId: N:FoundationaLLM.Core.Utils
+  href: FoundationaLLM.html
+  name: FoundationaLLM.Core.Utils
+  nameWithType: FoundationaLLM.Core.Utils
+  fullName: FoundationaLLM.Core.Utils
+  spec.csharp:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+  spec.vb:
+  - uid: FoundationaLLM
+    name: FoundationaLLM
+    href: FoundationaLLM.html
+  - name: .
+  - uid: FoundationaLLM.Core
+    name: Core
+    href: FoundationaLLM.Core.html
+  - name: .
+  - uid: FoundationaLLM.Core.Utils
+    name: Utils
+    href: FoundationaLLM.Core.Utils.html
+- uid: FoundationaLLM.Gateway.Services.GatewayMetrics.#ctor*
+  commentId: Overload:FoundationaLLM.Gateway.Services.GatewayMetrics.#ctor
+  href: FoundationaLLM.Gateway.Services.GatewayMetrics.html#FoundationaLLM_Gateway_Services_GatewayMetrics__ctor_System_Diagnostics_Metrics_IMeterFactory_
+  name: GatewayMetrics
+  nameWithType: GatewayMetrics.GatewayMetrics
+  fullName: FoundationaLLM.Gateway.Services.GatewayMetrics.GatewayMetrics
+  nameWithType.vb: GatewayMetrics.New
+  fullName.vb: FoundationaLLM.Gateway.Services.GatewayMetrics.New
+  name.vb: New
+- uid: System.Diagnostics.Metrics.IMeterFactory
+  commentId: T:System.Diagnostics.Metrics.IMeterFactory
+  parent: System.Diagnostics.Metrics
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.diagnostics.metrics.imeterfactory
+  name: IMeterFactory
+  nameWithType: IMeterFactory
+  fullName: System.Diagnostics.Metrics.IMeterFactory
+- uid: System.Diagnostics.Metrics
+  commentId: N:System.Diagnostics.Metrics
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Diagnostics.Metrics
+  nameWithType: System.Diagnostics.Metrics
+  fullName: System.Diagnostics.Metrics
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Diagnostics
+    name: Diagnostics
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.diagnostics
+  - name: .
+  - uid: System.Diagnostics.Metrics
+    name: Metrics
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.diagnostics.metrics
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Diagnostics
+    name: Diagnostics
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.diagnostics
+  - name: .
+  - uid: System.Diagnostics.Metrics
+    name: Metrics
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.diagnostics.metrics
+- uid: FoundationaLLM.Gateway.Services.GatewayMetrics.IncrementTextChunkMeters*
+  commentId: Overload:FoundationaLLM.Gateway.Services.GatewayMetrics.IncrementTextChunkMeters
+  href: FoundationaLLM.Gateway.Services.GatewayMetrics.html#FoundationaLLM_Gateway_Services_GatewayMetrics_IncrementTextChunkMeters_System_Int64_System_Int64_
+  name: IncrementTextChunkMeters
+  nameWithType: GatewayMetrics.IncrementTextChunkMeters
+  fullName: FoundationaLLM.Gateway.Services.GatewayMetrics.IncrementTextChunkMeters
+- uid: System.Int64
+  commentId: T:System.Int64
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int64
+  name: long
+  nameWithType: long
+  fullName: long
+  nameWithType.vb: Long
+  fullName.vb: Long
+  name.vb: Long
+- uid: FoundationaLLM.Gateway.Services.GatewayMetrics.IncrementTextChunksSizeTokens*
+  commentId: Overload:FoundationaLLM.Gateway.Services.GatewayMetrics.IncrementTextChunksSizeTokens
+  href: FoundationaLLM.Gateway.Services.GatewayMetrics.html#FoundationaLLM_Gateway_Services_GatewayMetrics_IncrementTextChunksSizeTokens_System_Int64_System_Int64_
+  name: IncrementTextChunksSizeTokens
+  nameWithType: GatewayMetrics.IncrementTextChunksSizeTokens
+  fullName: FoundationaLLM.Gateway.Services.GatewayMetrics.IncrementTextChunksSizeTokens
