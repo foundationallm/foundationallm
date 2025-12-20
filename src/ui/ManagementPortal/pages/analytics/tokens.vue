@@ -196,6 +196,13 @@
 				<Card>
 					<template #title>Token Usage by Model</template>
 					<template #content>
+						<Message severity="info" :closable="false" class="info-message">
+							<span>
+								<strong>Note:</strong> Token usage is attributed to each agent's primary model. 
+								Agents may use additional models for tools, prompt rewriting, or caching, 
+								which are shown in the "Agents Using" count but tokens are attributed to the main model.
+							</span>
+						</Message>
 						<DataTable 
 							:value="modelAnalytics" 
 							:paginator="true" 
@@ -240,13 +247,20 @@
 							:sortOrder="-1"
 						>
 							<Column field="agent_name" header="Agent Name" sortable></Column>
-							<Column field="model_name" header="Model" sortable></Column>
+							<Column field="model_name" header="Primary Model" sortable>
+								<template #body="slotProps">
+									<span>{{ slotProps.data.model_name }}</span>
+									<span v-if="slotProps.data.model_count > 1" class="model-count-badge">
+										+{{ slotProps.data.model_count - 1 }} more
+									</span>
+								</template>
+							</Column>
 							<Column field="unique_users" header="Unique Users" sortable>
 								<template #body="slotProps">
 									{{ formatNumberWithCommas(slotProps.data.unique_users ?? 0) }}
 								</template>
 							</Column>
-							<Column field="total_conversations" header="Total Conversations" sortable>
+							<Column field="total_conversations" header="Conversations" sortable>
 								<template #body="slotProps">
 									{{ formatNumberWithCommas(slotProps.data.total_conversations ?? 0) }}
 								</template>
@@ -362,29 +376,60 @@ const getPercentageOfTotal = (value: number, total: number) => {
 	return ((value / total) * 100).toFixed(2);
 };
 
-// Build a mapping from agent name to its model object ID
-const getAgentModelMapping = () => {
-	const mapping: { [agentName: string]: string } = {};
+// Build a mapping from agent name to ALL its model object IDs (main + tools + rewrite + cache)
+const getAgentModelsMapping = () => {
+	const mapping: { [agentName: string]: { mainModel: string | null; allModels: string[] } } = {};
 	
 	for (const agentResult of agentDefinitions.value) {
 		const agent = agentResult.resource;
 		if (!agent?.name) continue;
 		
-		// Try to find the main model from workflow.resource_object_ids
+		const allModels: Set<string> = new Set();
+		let mainModel: string | null = null;
+		
+		// 1. Find the main model from workflow.resource_object_ids
 		if (agent.workflow?.resource_object_ids) {
 			for (const [objectId, resourceInfo] of Object.entries(agent.workflow.resource_object_ids)) {
 				const info = resourceInfo as any;
 				if (info?.properties?.object_role === 'main_model') {
-					mapping[agent.name] = objectId;
+					mainModel = objectId;
+					allModels.add(objectId);
 					break;
 				}
 			}
 		}
 		
 		// Fallback: use ai_model_object_id if available
-		if (!mapping[agent.name] && agent.ai_model_object_id) {
-			mapping[agent.name] = agent.ai_model_object_id;
+		if (!mainModel && agent.ai_model_object_id) {
+			mainModel = agent.ai_model_object_id;
+			allModels.add(agent.ai_model_object_id);
 		}
+		
+		// 2. Collect tool models
+		if (agent.tools && Array.isArray(agent.tools)) {
+			for (const tool of agent.tools) {
+				if (tool.ai_model_object_ids) {
+					for (const modelId of Object.values(tool.ai_model_object_ids)) {
+						if (modelId) allModels.add(modelId as string);
+					}
+				}
+			}
+		}
+		
+		// 3. User prompt rewrite model
+		if (agent.text_rewrite_settings?.user_prompt_rewrite_settings?.user_prompt_rewrite_ai_model_object_id) {
+			allModels.add(agent.text_rewrite_settings.user_prompt_rewrite_settings.user_prompt_rewrite_ai_model_object_id);
+		}
+		
+		// 4. Semantic cache embedding model
+		if (agent.cache_settings?.semantic_cache_settings?.embedding_ai_model_object_id) {
+			allModels.add(agent.cache_settings.semantic_cache_settings.embedding_ai_model_object_id);
+		}
+		
+		mapping[agent.name] = {
+			mainModel,
+			allModels: Array.from(allModels)
+		};
 	}
 	
 	return mapping;
@@ -409,49 +454,120 @@ const getModelInfoMapping = () => {
 
 // Computed: agents with their model names attached
 const agentsWithModels = computed(() => {
-	const agentModelMapping = getAgentModelMapping();
+	const agentModelsMapping = getAgentModelsMapping();
 	const modelInfoMapping = getModelInfoMapping();
 	
 	return agents.value.map(agent => {
-		const modelObjectId = agentModelMapping[agent.agent_name];
-		const modelInfo = modelObjectId ? modelInfoMapping[modelObjectId] : null;
+		const agentModels = agentModelsMapping[agent.agent_name];
+		const mainModelId = agentModels?.mainModel;
+		const mainModelInfo = mainModelId ? modelInfoMapping[mainModelId] : null;
+		
+		// Get all model names for this agent
+		const allModelNames = (agentModels?.allModels || [])
+			.map(id => modelInfoMapping[id]?.name || 'Unknown')
+			.filter((name, index, arr) => arr.indexOf(name) === index); // unique names
 		
 		return {
 			...agent,
-			model_object_id: modelObjectId || null,
-			model_name: modelInfo?.name || 'Unknown',
-			deployment_name: modelInfo?.deployment_name || ''
+			model_object_id: mainModelId || null,
+			model_name: mainModelInfo?.name || 'Unknown',
+			deployment_name: mainModelInfo?.deployment_name || '',
+			all_models: allModelNames,
+			model_count: allModelNames.length
 		};
 	});
 });
 
 // Computed: model analytics aggregated from agent data
+// Note: Since agents can use multiple models, we distribute tokens proportionally
+// based on the number of models an agent uses, or attribute to main model only
 const modelAnalytics = computed(() => {
-	const modelStats: { [modelName: string]: { 
+	const agentModelsMapping = getAgentModelsMapping();
+	const modelInfoMapping = getModelInfoMapping();
+	
+	const modelStats: { [modelId: string]: { 
 		model_name: string;
 		deployment_name: string;
 		total_tokens: number;
 		agent_count: number;
 		agents: string[];
+		is_main_model_usage: boolean;
 	}} = {};
 	
-	for (const agent of agentsWithModels.value) {
-		const modelName = agent.model_name || 'Unknown';
-		const deploymentName = agent.deployment_name || '';
+	for (const agent of agents.value) {
+		const agentModels = agentModelsMapping[agent.agent_name];
+		if (!agentModels) continue;
 		
-		if (!modelStats[modelName]) {
-			modelStats[modelName] = {
-				model_name: modelName,
-				deployment_name: deploymentName,
-				total_tokens: 0,
-				agent_count: 0,
-				agents: []
-			};
+		const allModelIds = agentModels.allModels;
+		const mainModelId = agentModels.mainModel;
+		const agentTokens = agent.total_tokens ?? 0;
+		
+		if (allModelIds.length === 0) {
+			// No models found, attribute to "Unknown"
+			if (!modelStats['unknown']) {
+				modelStats['unknown'] = {
+					model_name: 'Unknown',
+					deployment_name: '',
+					total_tokens: 0,
+					agent_count: 0,
+					agents: [],
+					is_main_model_usage: false
+				};
+			}
+			modelStats['unknown'].total_tokens += agentTokens;
+			modelStats['unknown'].agent_count += 1;
+			modelStats['unknown'].agents.push(agent.agent_name);
+		} else if (allModelIds.length === 1) {
+			// Single model - attribute all tokens to it
+			const modelId = allModelIds[0];
+			const modelInfo = modelInfoMapping[modelId];
+			
+			if (!modelStats[modelId]) {
+				modelStats[modelId] = {
+					model_name: modelInfo?.name || 'Unknown',
+					deployment_name: modelInfo?.deployment_name || '',
+					total_tokens: 0,
+					agent_count: 0,
+					agents: [],
+					is_main_model_usage: true
+				};
+			}
+			modelStats[modelId].total_tokens += agentTokens;
+			modelStats[modelId].agent_count += 1;
+			if (!modelStats[modelId].agents.includes(agent.agent_name)) {
+				modelStats[modelId].agents.push(agent.agent_name);
+			}
+		} else {
+			// Multiple models - attribute tokens to main model (most likely source of majority tokens)
+			// But track all models used by this agent
+			const primaryModelId = mainModelId || allModelIds[0];
+			
+			for (const modelId of allModelIds) {
+				const modelInfo = modelInfoMapping[modelId];
+				const isMainModel = modelId === primaryModelId;
+				
+				if (!modelStats[modelId]) {
+					modelStats[modelId] = {
+						model_name: modelInfo?.name || 'Unknown',
+						deployment_name: modelInfo?.deployment_name || '',
+						total_tokens: 0,
+						agent_count: 0,
+						agents: [],
+						is_main_model_usage: isMainModel
+					};
+				}
+				
+				// Attribute tokens only to the main/primary model
+				if (isMainModel) {
+					modelStats[modelId].total_tokens += agentTokens;
+				}
+				
+				modelStats[modelId].agent_count += 1;
+				if (!modelStats[modelId].agents.includes(agent.agent_name)) {
+					modelStats[modelId].agents.push(agent.agent_name);
+				}
+			}
 		}
-		
-		modelStats[modelName].total_tokens += agent.total_tokens ?? 0;
-		modelStats[modelName].agent_count += 1;
-		modelStats[modelName].agents.push(agent.agent_name);
 	}
 	
 	// Convert to array and sort by total_tokens descending
@@ -1109,5 +1225,24 @@ onUnmounted(() => {
 
 .p-input-icon-left input {
 	padding-left: 2.5rem;
+}
+
+.model-count-badge {
+	display: inline-block;
+	margin-left: 0.5rem;
+	padding: 0.15rem 0.5rem;
+	font-size: 0.75rem;
+	font-weight: 500;
+	color: var(--primary-color);
+	background-color: var(--primary-100);
+	border-radius: 1rem;
+}
+
+.info-message {
+	margin-bottom: 1rem;
+}
+
+.info-message :deep(.p-message-text) {
+	font-size: 0.875rem;
 }
 </style>
