@@ -158,20 +158,70 @@
 
 				<Card class="metric-card">
 					<template #content>
-						<div class="metric-value">{{ formatNumber(averageTokensPerUser) }}</div>
-						<div class="metric-label">Avg Tokens/User</div>
+						<div class="metric-value">{{ formatNumberWithCommas(totalModels) }}</div>
+						<div class="metric-label">Total Models</div>
 					</template>
 				</Card>
 			</div>
 
-			<!-- Top Users Pie Chart -->
-			<div v-if="topUsersChartData" class="chart-container">
+			<!-- Charts Row - Top Users and Model Distribution -->
+			<div class="charts-row">
+				<!-- Top Users Pie Chart -->
+				<div v-if="topUsersChartData" class="chart-container chart-half">
+					<Card>
+						<template #title>Top 10 Users by Token Consumption</template>
+						<template #content>
+							<div class="pie-chart-wrapper">
+								<canvas ref="topUsersPieCanvas"></canvas>
+							</div>
+						</template>
+					</Card>
+				</div>
+
+				<!-- Model Token Distribution Pie Chart -->
+				<div v-if="modelChartData.length > 0" class="chart-container chart-half">
+					<Card>
+						<template #title>Token Usage by Model</template>
+						<template #content>
+							<div class="pie-chart-wrapper">
+								<canvas ref="modelPieCanvas"></canvas>
+							</div>
+						</template>
+					</Card>
+				</div>
+			</div>
+
+			<!-- Token Usage by Model -->
+			<div class="table-section">
 				<Card>
-					<template #title>Top 10 Users by Token Consumption</template>
+					<template #title>Token Usage by Model</template>
 					<template #content>
-						<div class="pie-chart-wrapper">
-							<canvas ref="topUsersPieCanvas"></canvas>
-						</div>
+						<DataTable 
+							:value="modelAnalytics" 
+							:paginator="true" 
+							:rows="10" 
+							class="tokens-table"
+							sortField="total_tokens"
+							:sortOrder="-1"
+						>
+							<Column field="model_name" header="Model Name" sortable></Column>
+							<Column field="deployment_name" header="Deployment" sortable></Column>
+							<Column field="agent_count" header="Agents Using" sortable>
+								<template #body="slotProps">
+									{{ formatNumberWithCommas(slotProps.data.agent_count ?? 0) }}
+								</template>
+							</Column>
+							<Column field="total_tokens" header="Total Tokens" sortable>
+								<template #body="slotProps">
+									{{ formatNumberWithCommas(slotProps.data.total_tokens ?? 0) }}
+								</template>
+							</Column>
+							<Column header="% of Total">
+								<template #body="slotProps">
+									{{ getPercentageOfTotal(slotProps.data.total_tokens ?? 0, totalModelTokens) }}%
+								</template>
+							</Column>
+						</DataTable>
 					</template>
 				</Card>
 			</div>
@@ -182,7 +232,7 @@
 					<template #title>Token Usage by Agent</template>
 					<template #content>
 						<DataTable 
-							:value="agents" 
+							:value="agentsWithModels" 
 							:paginator="true" 
 							:rows="10" 
 							class="tokens-table"
@@ -190,6 +240,7 @@
 							:sortOrder="-1"
 						>
 							<Column field="agent_name" header="Agent Name" sortable></Column>
+							<Column field="model_name" header="Model" sortable></Column>
 							<Column field="unique_users" header="Unique Users" sortable>
 								<template #body="slotProps">
 									{{ formatNumberWithCommas(slotProps.data.unique_users ?? 0) }}
@@ -280,10 +331,15 @@ const loading = ref(true);
 const error = ref<string | null>(null);
 const agents = ref<any[]>([]);
 const users = ref<any[]>([]);
+const agentDefinitions = ref<any[]>([]);
+const aiModels = ref<any[]>([]);
 const usernameFilter = ref<string>('');
 const topUsersPieCanvas = ref<HTMLCanvasElement | null>(null);
+const modelPieCanvas = ref<HTMLCanvasElement | null>(null);
 let topUsersPieChart: Chart | null = null;
+let modelPieChart: Chart | null = null;
 const topUsersChartData = ref<any[]>([]);
+const modelChartData = ref<any[]>([]);
 
 // Initialize date range to last 3 months
 const endDate = ref<Date>(new Date());
@@ -306,6 +362,102 @@ const getPercentageOfTotal = (value: number, total: number) => {
 	return ((value / total) * 100).toFixed(2);
 };
 
+// Build a mapping from agent name to its model object ID
+const getAgentModelMapping = () => {
+	const mapping: { [agentName: string]: string } = {};
+	
+	for (const agentResult of agentDefinitions.value) {
+		const agent = agentResult.resource;
+		if (!agent?.name) continue;
+		
+		// Try to find the main model from workflow.resource_object_ids
+		if (agent.workflow?.resource_object_ids) {
+			for (const [objectId, resourceInfo] of Object.entries(agent.workflow.resource_object_ids)) {
+				const info = resourceInfo as any;
+				if (info?.properties?.object_role === 'main_model') {
+					mapping[agent.name] = objectId;
+					break;
+				}
+			}
+		}
+		
+		// Fallback: use ai_model_object_id if available
+		if (!mapping[agent.name] && agent.ai_model_object_id) {
+			mapping[agent.name] = agent.ai_model_object_id;
+		}
+	}
+	
+	return mapping;
+};
+
+// Build a mapping from model object ID to model info
+const getModelInfoMapping = () => {
+	const mapping: { [objectId: string]: { name: string; deployment_name: string } } = {};
+	
+	for (const modelResult of aiModels.value) {
+		const model = modelResult.resource;
+		if (!model?.object_id) continue;
+		
+		mapping[model.object_id] = {
+			name: model.name || model.display_name || 'Unknown Model',
+			deployment_name: model.deployment_name || ''
+		};
+	}
+	
+	return mapping;
+};
+
+// Computed: agents with their model names attached
+const agentsWithModels = computed(() => {
+	const agentModelMapping = getAgentModelMapping();
+	const modelInfoMapping = getModelInfoMapping();
+	
+	return agents.value.map(agent => {
+		const modelObjectId = agentModelMapping[agent.agent_name];
+		const modelInfo = modelObjectId ? modelInfoMapping[modelObjectId] : null;
+		
+		return {
+			...agent,
+			model_object_id: modelObjectId || null,
+			model_name: modelInfo?.name || 'Unknown',
+			deployment_name: modelInfo?.deployment_name || ''
+		};
+	});
+});
+
+// Computed: model analytics aggregated from agent data
+const modelAnalytics = computed(() => {
+	const modelStats: { [modelName: string]: { 
+		model_name: string;
+		deployment_name: string;
+		total_tokens: number;
+		agent_count: number;
+		agents: string[];
+	}} = {};
+	
+	for (const agent of agentsWithModels.value) {
+		const modelName = agent.model_name || 'Unknown';
+		const deploymentName = agent.deployment_name || '';
+		
+		if (!modelStats[modelName]) {
+			modelStats[modelName] = {
+				model_name: modelName,
+				deployment_name: deploymentName,
+				total_tokens: 0,
+				agent_count: 0,
+				agents: []
+			};
+		}
+		
+		modelStats[modelName].total_tokens += agent.total_tokens ?? 0;
+		modelStats[modelName].agent_count += 1;
+		modelStats[modelName].agents.push(agent.agent_name);
+	}
+	
+	// Convert to array and sort by total_tokens descending
+	return Object.values(modelStats).sort((a, b) => b.total_tokens - a.total_tokens);
+});
+
 // Computed properties for summary metrics
 const totalAgentTokens = computed(() => {
 	return agents.value.reduce((sum, agent) => sum + (agent.total_tokens ?? 0), 0);
@@ -313,6 +465,10 @@ const totalAgentTokens = computed(() => {
 
 const totalUserTokens = computed(() => {
 	return users.value.reduce((sum, user) => sum + (user.total_tokens ?? 0), 0);
+});
+
+const totalModelTokens = computed(() => {
+	return modelAnalytics.value.reduce((sum, model) => sum + (model.total_tokens ?? 0), 0);
 });
 
 const totalTokens = computed(() => {
@@ -327,9 +483,8 @@ const totalAgents = computed(() => {
 	return agents.value.length;
 });
 
-const averageTokensPerUser = computed(() => {
-	if (totalUsers.value === 0) return 0;
-	return Math.round(totalTokens.value / totalUsers.value);
+const totalModels = computed(() => {
+	return modelAnalytics.value.length;
 });
 
 const filteredUsers = computed(() => {
@@ -498,16 +653,26 @@ const loadData = async () => {
 		const start = startDate.value?.toISOString();
 		const end = endDate.value?.toISOString();
 		
-		[agents.value, users.value] = await Promise.all([
+		// Fetch analytics data and resource definitions in parallel
+		const [agentsAnalytics, usersAnalytics, agentDefs, models] = await Promise.all([
 			api.getAllAgentsAnalytics(start, end),
-			api.getAllUsersAnalytics(start, end)
+			api.getAllUsersAnalytics(start, end),
+			api.getAgents(),
+			api.getAIModels()
 		]);
 		
-		// Prepare top users data for pie chart
+		agents.value = agentsAnalytics;
+		users.value = usersAnalytics;
+		agentDefinitions.value = agentDefs;
+		aiModels.value = models;
+		
+		// Prepare chart data
 		prepareTopUsersChartData();
+		prepareModelChartData();
 		
 		await nextTick();
 		updateTopUsersPieChart();
+		updateModelPieChart();
 	} catch (err: any) {
 		error.value = err.data?.error || err.data?.message || err.message || 'Failed to load token analytics';
 	} finally {
@@ -541,6 +706,34 @@ const prepareTopUsersChartData = () => {
 	}
 	
 	topUsersChartData.value = chartData;
+};
+
+const prepareModelChartData = () => {
+	// Sort models by total_tokens descending
+	const sortedModels = [...modelAnalytics.value].sort((a, b) => (b.total_tokens ?? 0) - (a.total_tokens ?? 0));
+	
+	// Get top 9 models
+	const top9 = sortedModels.slice(0, 9);
+	
+	// Calculate "Other" as sum of remaining models
+	const otherModels = sortedModels.slice(9);
+	const otherTokens = otherModels.reduce((sum, model) => sum + (model.total_tokens ?? 0), 0);
+	
+	// Build chart data
+	const chartData: any[] = top9.map(model => ({
+		label: model.model_name || 'Unknown',
+		value: model.total_tokens ?? 0
+	}));
+	
+	// Add "Other" category if there are more than 9 models
+	if (otherModels.length > 0) {
+		chartData.push({
+			label: `Other (${otherModels.length} models)`,
+			value: otherTokens
+		});
+	}
+	
+	modelChartData.value = chartData;
 };
 
 const updateTopUsersPieChart = () => {
@@ -621,10 +814,97 @@ const updateTopUsersPieChart = () => {
 	});
 };
 
+const updateModelPieChart = () => {
+	if (!modelPieCanvas.value) {
+		return;
+	}
+
+	// Destroy existing chart
+	if (modelPieChart) {
+		modelPieChart.destroy();
+		modelPieChart = null;
+	}
+
+	if (!modelChartData.value || modelChartData.value.length === 0) {
+		return;
+	}
+
+	// Use a different color palette for models
+	const colors = [
+		'#6366F1', '#8B5CF6', '#A855F7', '#D946EF', '#EC4899',
+		'#F43F5E', '#EF4444', '#F97316', '#FACC15', '#84CC16'
+	];
+
+	const labels = modelChartData.value.map(item => item.label);
+	const data = modelChartData.value.map(item => item.value);
+
+	modelPieChart = new Chart(modelPieCanvas.value, {
+		type: 'pie',
+		data: {
+			labels,
+			datasets: [{
+				data,
+				backgroundColor: colors.slice(0, data.length),
+				borderColor: '#ffffff',
+				borderWidth: 2
+			}]
+		},
+		options: {
+			responsive: true,
+			maintainAspectRatio: false,
+			plugins: {
+				legend: {
+					display: true,
+					position: 'right',
+					labels: {
+						generateLabels: (chart) => {
+							const chartData = chart.data;
+							if (chartData.labels && chartData.datasets.length) {
+								const total = chartData.datasets[0].data.reduce((sum: number, val: any) => sum + val, 0);
+								return chartData.labels.map((label, i) => {
+									const value = chartData.datasets[0].data[i] as number;
+									const percentage = total > 0 ? ((value / total) * 100).toFixed(1) : '0.0';
+									return {
+										text: `${label}: ${formatNumber(value)} (${percentage}%)`,
+										fillStyle: colors[i % colors.length],
+										hidden: false,
+										index: i,
+										strokeStyle: '#ffffff',
+										lineWidth: 2
+									};
+								});
+							}
+							return [];
+						}
+					}
+				},
+				tooltip: {
+					callbacks: {
+						label: (context) => {
+							const value = context.parsed;
+							const total = context.dataset.data.reduce((sum: number, val: any) => sum + val, 0);
+							const percentage = total > 0 ? ((value / total) * 100).toFixed(1) : '0.0';
+							return `${context.label}: ${formatNumberWithCommas(value)} tokens (${percentage}%)`;
+						}
+					}
+				}
+			}
+		}
+	});
+};
+
 watch([topUsersChartData, topUsersPieCanvas], () => {
 	if (topUsersChartData.value && topUsersPieCanvas.value) {
 		nextTick(() => {
 			updateTopUsersPieChart();
+		});
+	}
+}, { deep: true });
+
+watch([modelChartData, modelPieCanvas], () => {
+	if (modelChartData.value && modelPieCanvas.value) {
+		nextTick(() => {
+			updateModelPieChart();
 		});
 	}
 }, { deep: true });
@@ -637,6 +917,10 @@ onUnmounted(() => {
 	if (topUsersPieChart) {
 		topUsersPieChart.destroy();
 		topUsersPieChart = null;
+	}
+	if (modelPieChart) {
+		modelPieChart.destroy();
+		modelPieChart = null;
 	}
 });
 </script>
@@ -753,13 +1037,32 @@ onUnmounted(() => {
 	color: var(--text-color-secondary);
 }
 
+.charts-row {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 1.5rem;
+	margin-bottom: 2rem;
+}
+
 .chart-container {
 	margin-bottom: 2rem;
 }
 
+.chart-half {
+	flex: 1 1 calc(50% - 0.75rem);
+	min-width: 400px;
+	margin-bottom: 0;
+}
+
+@media (max-width: 900px) {
+	.chart-half {
+		flex: 1 1 100%;
+	}
+}
+
 .pie-chart-wrapper {
 	position: relative;
-	height: 400px;
+	height: 350px;
 	width: 100%;
 	display: flex;
 	justify-content: center;
