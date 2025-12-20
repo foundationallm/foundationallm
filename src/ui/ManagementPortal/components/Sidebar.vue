@@ -91,6 +91,14 @@
 							>Agents</NuxtLink
 						>
 					</li>
+					<li>
+						<NuxtLink
+							to="/analytics/tokens"
+							class="sidebar__item"
+							:class="{ 'router-link-active': isRouteActive('/analytics/tokens') }"
+							>Token Usage</NuxtLink
+						>
+					</li>
 				</ul>
 
 				<!-- Data Catalog -->
