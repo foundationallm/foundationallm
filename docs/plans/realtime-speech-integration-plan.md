@@ -4,11 +4,17 @@
 
 This document outlines a comprehensive plan to integrate realtime speech-to-speech models (like GPT-Realtime) into FoundationaLLM. The integration enables voice-based conversations with AI agents through the Chat User Portal, with full transcription support and seamless integration into the existing conversation history.
 
-**Reference Implementation:** This plan is based on the [Azure OpenAI Realtime Audio SDK](https://github.com/Azure-Samples/aoai-realtime-audio-sdk), which provides proven patterns for:
-- WebSocket-based realtime communication with GPT-4o-realtime
-- Audio capture using AudioWorklet API (24kHz, PCM16 format)
-- Audio playback with proper buffering and scheduling
-- Message protocol for session management, audio streaming, and transcription
+**Reference Implementation:** This plan is based on the [FoundationaLLM Realtime Speech Prototype](https://github.com/foundationallm/realtime-speech-prototype/tree/cursor/realtime-agent-mcp-integration-1f31), which provides proven patterns for:
+- Python/FastAPI backend with WebSocket proxy to Azure Realtime API
+- JavaScript frontend with Web Audio API for microphone capture (24kHz, PCM16 format)
+- Audio playback with queue management and interrupt handling
+- Session configuration with voice, temperature, VAD settings
+- MCP (Model Context Protocol) tool integration
+- User/agent audio visualization with canvas-based waveforms
+- Transcription display and conversation management
+- Goodbye phrase detection for session termination
+
+The prototype architecture will be adapted to FoundationaLLM's .NET/Vue.js stack while maintaining the same WebSocket message protocol and audio handling patterns.
 
 ## Table of Contents
 
@@ -22,6 +28,123 @@ This document outlines a comprehensive plan to integrate realtime speech-to-spee
 8. [Implementation Phases](#8-implementation-phases)
 9. [Security Considerations](#9-security-considerations)
 10. [Testing Strategy](#10-testing-strategy)
+
+---
+
+## Reference Implementation Patterns
+
+The [realtime-speech-prototype](https://github.com/foundationallm/realtime-speech-prototype/tree/cursor/realtime-agent-mcp-integration-1f31) provides the authoritative patterns for this integration. All implementations should follow these patterns:
+
+### Backend Patterns (from Python/FastAPI → adapt to .NET)
+
+| Prototype File | Purpose | FoundationaLLM Equivalent |
+|---------------|---------|--------------------------|
+| `app.py` | FastAPI app with `/ws` WebSocket endpoint | `RealtimeSpeechController.cs` |
+| `realtime_client.py` | Azure Realtime API WebSocket client | `RealtimeSpeechService.cs` |
+| `websocket_handler.py` | Browser WebSocket message handling | Part of `RealtimeSpeechController.cs` |
+| `conversation_manager.py` | State tracking, goodbye detection | Extend existing `ICoreService` |
+| `config.py` | Configuration (endpoint, API key, MCP) | App settings / `AIModelBase` properties |
+
+### Frontend Patterns (from JavaScript → adapt to TypeScript/Vue.js)
+
+| Prototype Pattern | Description | FoundationaLLM Implementation |
+|------------------|-------------|------------------------------|
+| `VoiceAgentClient` class | Main client class in `app.js` | Vue composable `useRealtimeSpeech.ts` |
+| `ScriptProcessorNode` | Audio capture at 24kHz | Same pattern in TypeScript |
+| `nextPlayTime` queue | Smooth audio playback scheduling | Same pattern |
+| Canvas visualization | Frequency spectrum display | Vue component with canvas |
+| Session settings panel | Voice, temperature, VAD config | Vue component with form controls |
+
+### WebSocket Message Protocol (use exactly as in prototype)
+
+**Client → Server Messages:**
+```javascript
+{ type: 'start', settings: {...} }     // Start conversation with settings
+{ type: 'stop' }                        // Stop conversation
+{ type: 'audio', data: '<base64>' }     // Send audio chunk
+{ type: 'interrupt' }                   // Interrupt agent response
+{ type: 'update_settings', settings: {...} }  // Update settings mid-session
+```
+
+**Server → Client Messages:**
+```javascript
+{ type: 'status', status: 'connected' | 'disconnected' }
+{ type: 'audio', data: '<base64>' }     // Agent audio chunk
+{ type: 'transcript', text: '<delta>' } // Transcript delta (optional)
+{ type: 'transcript_done', text: '...', speaker: 'user' | 'agent' }
+{ type: 'tool_call', tool: '...', args: {...} }
+{ type: 'tool_result', call_id: '...', result: '...' }
+{ type: 'greeting_complete' }           // Agent greeting done, enable mic
+{ type: 'response_done' }               // Agent response finished
+{ type: 'interrupted' }                 // Response was interrupted
+{ type: 'settings_applied' }            // Settings update confirmed
+{ type: 'settings_error', message: '...' }
+{ type: 'error', message: '...' }
+```
+
+### Azure Realtime API Protocol (from `realtime_client.py`)
+
+**Session Configuration:**
+```python
+{
+    "type": "session.update",
+    "session": {
+        "type": "realtime",
+        "instructions": "<system prompt>",
+        "temperature": 0.8,
+        "turn_detection": {
+            "type": "server_vad",
+            "threshold": 0.5,
+            "silence_duration_ms": 500,
+            "prefix_padding_ms": 300
+        },
+        "input_audio_transcription": { "model": "whisper-1" },
+        "tools": [{ "type": "mcp", "server_url": "...", "server_label": "..." }],
+        "tool_choice": "auto"
+    }
+}
+```
+
+**Audio Streaming:**
+```python
+{ "type": "input_audio_buffer.append", "audio": "<base64 PCM16>" }
+```
+
+**Key Event Types to Handle:**
+- `session.created` / `session.updated`
+- `response.output_audio.delta` (audio data)
+- `response.output_audio_transcript.delta` / `.done` (agent transcript)
+- `conversation.item.input_audio_transcription.completed` (user transcript)
+- `response.done` (response complete)
+- `input_audio_buffer.speech_started` / `.speech_stopped`
+- `response.function_call_arguments.done` (MCP tool call)
+- `error`
+
+### Audio Format Requirements
+
+From the prototype's audio handling:
+- **Sample Rate**: 24000 Hz (required by Azure Realtime API)
+- **Format**: PCM16 (16-bit signed integers)
+- **Channels**: Mono (1 channel)
+- **Encoding**: Base64 for WebSocket transmission
+- **Buffer Size**: 4096 samples per chunk (170ms at 24kHz)
+
+### Session Settings (from prototype settings panel)
+
+```typescript
+interface SessionSettings {
+    voice: 'alloy' | 'ash' | 'ballad' | 'coral' | 'echo' | 'sage' | 'shimmer' | 'verse';
+    temperature: number;  // 0.6 - 1.2
+    vadType: 'server_vad' | 'semantic_vad' | 'none';
+    vadThreshold: number;  // 0.0 - 1.0
+    silenceDuration: number;  // 200 - 1500 ms
+    prefixPadding: number;  // 100 - 1000 ms
+    eagerness: 'low' | 'medium' | 'high' | 'auto';
+    maxTokens: 'inf' | number;
+    transcriptionEnabled: boolean;
+    customInstructions: string;
+}
+```
 
 ---
 
@@ -66,10 +189,30 @@ This document outlines a comprehensive plan to integrate realtime speech-to-spee
 
 ### Key Components
 
-1. **User Portal**: Handles microphone access, audio visualization, and user interactions
-2. **CoreAPI**: Manages WebSocket connections, proxies to GPT-Realtime, and persists transcriptions
-3. **GPT-Realtime API**: Azure OpenAI's realtime speech-to-speech endpoint
-4. **Conversation Store**: Existing FoundationaLLM conversation persistence
+Based on the [realtime-speech-prototype](https://github.com/foundationallm/realtime-speech-prototype):
+
+1. **User Portal (Vue.js)**: Adapts the `VoiceAgentClient` JavaScript class from the prototype
+   - Microphone capture with ScriptProcessorNode (24kHz, PCM16)
+   - Audio playback with queue management for smooth streaming
+   - Canvas-based frequency visualizations for user and agent audio
+   - Session settings panel (voice, temperature, VAD configuration)
+   - Interrupt detection and handling
+
+2. **CoreAPI (.NET)**: Adapts the Python FastAPI backend pattern
+   - `RealtimeSpeechController`: WebSocket endpoint (equivalent to `websocket_handler.py`)
+   - `RealtimeSpeechService`: Azure Realtime API client (equivalent to `realtime_client.py`)
+   - Session configuration with MCP tool support
+   - Greeting flow management (prevents audio until agent greets)
+
+3. **Azure OpenAI GPT-Realtime API**: The underlying realtime speech-to-speech service
+   - WebSocket protocol with base64-encoded PCM16 audio
+   - Server-side VAD (Voice Activity Detection)
+   - Built-in transcription via Whisper-1
+   - MCP (Model Context Protocol) tool integration
+
+4. **Conversation Store**: FoundationaLLM's existing conversation persistence
+   - Stores transcriptions as messages in the conversation history
+   - Links realtime speech sessions to existing text conversations
 
 ---
 
@@ -360,7 +503,18 @@ Add a new section for "Realtime Speech Configuration":
 
 ## 4. CoreAPI Updates
 
+The CoreAPI updates adapt the Python backend from the [realtime-speech-prototype](https://github.com/foundationallm/realtime-speech-prototype):
+
+| Prototype Component | .NET Implementation |
+|--------------------|---------------------|
+| `app.py` WebSocket endpoint `/ws` | `RealtimeSpeechController` endpoint `/sessions/{sessionId}/realtime-speech` |
+| `websocket_handler.py` `WebSocketHandler` class | Integrated into `RealtimeSpeechController` |
+| `realtime_client.py` `RealtimeClient` class | `RealtimeSpeechService` service |
+| `conversation_manager.py` | Leverage existing `ICoreService` conversation methods |
+
 ### 4.1 New Controller: RealtimeSpeechController
+
+Adapts the WebSocket handling from `websocket_handler.py` in the prototype.
 
 #### File: `src/dotnet/CoreAPI/Controllers/RealtimeSpeechController.cs` (New)
 
@@ -494,6 +648,14 @@ namespace FoundationaLLM.Core.Interfaces
 
 ### 4.3 RealtimeSpeechService Implementation
 
+This service adapts the `RealtimeClient` class from `realtime_client.py` in the prototype. Key patterns:
+
+1. **WebSocket URL construction**: Handle both GA and preview API versions (see `_build_websocket_url`)
+2. **Session configuration**: Send `session.update` event with instructions, VAD, transcription, and MCP tools
+3. **Event handling**: Process all Azure Realtime API event types (see `_handle_message`)
+4. **Greeting flow**: Track `greeting_sent` to prevent duplicate greetings
+5. **MCP tool support**: Configure MCP servers via the `tools` array in session config
+
 #### File: `src/dotnet/Core/Services/RealtimeSpeechService.cs` (New)
 
 ```csharp
@@ -511,6 +673,7 @@ namespace FoundationaLLM.Core.Services
 {
     /// <summary>
     /// Service for handling realtime speech-to-speech communication with GPT-Realtime API.
+    /// Adapted from realtime_client.py in the realtime-speech-prototype.
     /// </summary>
     public class RealtimeSpeechService : IRealtimeSpeechService
     {
@@ -863,6 +1026,16 @@ app.UseWebSockets();
 
 ## 5. User Portal UI Updates
 
+The User Portal updates adapt the JavaScript frontend from the [realtime-speech-prototype](https://github.com/foundationallm/realtime-speech-prototype):
+
+| Prototype Component | Vue.js Implementation |
+|--------------------|----------------------|
+| `static/app.js` `VoiceAgentClient` class | `useRealtimeSpeech.ts` composable |
+| Audio capture with `ScriptProcessorNode` | Same pattern in TypeScript |
+| Canvas-based frequency visualization | `RealtimeSpeechButton.vue` with canvas |
+| `static/index.html` settings panel | Settings integrated into component |
+| `static/styles.css` | Scoped styles in Vue component |
+
 ### 5.1 New Component: RealtimeSpeechButton
 
 #### File: `src/ui/UserPortal/components/RealtimeSpeechButton.vue` (New)
@@ -1094,11 +1267,18 @@ export default {
 </style>
 ```
 
-### 5.2 AudioHandler Class (Based on Azure SDK Reference)
+### 5.2 VoiceAgentClient Class (Based on realtime-speech-prototype)
 
-#### File: `src/ui/UserPortal/js/audioHandler.ts` (New)
+#### File: `src/ui/UserPortal/js/voiceAgentClient.ts` (New)
 
-This implementation is based on the proven patterns from the [Azure OpenAI Realtime Audio SDK](https://github.com/Azure-Samples/aoai-realtime-audio-sdk).
+This implementation is adapted from the `VoiceAgentClient` class in the [realtime-speech-prototype](https://github.com/foundationallm/realtime-speech-prototype) `static/app.js`.
+
+Key patterns from the prototype:
+- Uses `ScriptProcessorNode` for audio capture (with AudioWorklet as future enhancement)
+- Queued audio playback with `nextPlayTime` for smooth streaming
+- Interrupt detection based on user speech level threshold
+- Canvas-based frequency visualization
+- Session settings management (voice, temperature, VAD)
 
 ```typescript
 /**
@@ -1308,12 +1488,20 @@ registerProcessor('audio-recorder-processor', AudioRecorderProcessor);
 
 ### 5.4 Composable: useRealtimeSpeech
 
+This composable adapts the `VoiceAgentClient` class from the prototype's `static/app.js`. Key patterns to preserve:
+
+1. **Microphone gating**: Don't send audio until `greeting_complete` is received (prevents interrupting the agent's greeting)
+2. **Audio queue management**: Use `nextPlayTime` for smooth playback scheduling
+3. **Interrupt detection**: Track `isAgentSpeaking` and detect sustained user speech above threshold
+4. **Session settings**: Support the full range of settings from the prototype
+
 #### File: `src/ui/UserPortal/composables/useRealtimeSpeech.ts` (New)
 
 ```typescript
 import { ref, onUnmounted } from 'vue';
-import { AudioHandler } from '@/js/audioHandler';
 import api from '@/js/api';
+
+// Adapted from VoiceAgentClient in realtime-speech-prototype/static/app.js
 
 interface UseRealtimeSpeechOptions {
     agentName: string;
