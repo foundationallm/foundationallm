@@ -4,6 +4,12 @@
 
 This document outlines a comprehensive plan to integrate realtime speech-to-speech models (like GPT-Realtime) into FoundationaLLM. The integration enables voice-based conversations with AI agents through the Chat User Portal, with full transcription support and seamless integration into the existing conversation history.
 
+**Reference Implementation:** This plan is based on the [Azure OpenAI Realtime Audio SDK](https://github.com/Azure-Samples/aoai-realtime-audio-sdk), which provides proven patterns for:
+- WebSocket-based realtime communication with GPT-4o-realtime
+- Audio capture using AudioWorklet API (24kHz, PCM16 format)
+- Audio playback with proper buffering and scheduling
+- Message protocol for session management, audio streaming, and transcription
+
 ## Table of Contents
 
 1. [Architecture Overview](#1-architecture-overview)
@@ -1088,12 +1094,225 @@ export default {
 </style>
 ```
 
-### 5.2 Composable: useRealtimeSpeech
+### 5.2 AudioHandler Class (Based on Azure SDK Reference)
+
+#### File: `src/ui/UserPortal/js/audioHandler.ts` (New)
+
+This implementation is based on the proven patterns from the [Azure OpenAI Realtime Audio SDK](https://github.com/Azure-Samples/aoai-realtime-audio-sdk).
+
+```typescript
+/**
+ * AudioHandler manages audio recording and playback for realtime speech.
+ * Based on Azure OpenAI Realtime Audio SDK patterns.
+ */
+export class AudioHandler {
+    private context: AudioContext;
+    private workletNode: AudioWorkletNode | null = null;
+    private stream: MediaStream | null = null;
+    private source: MediaStreamAudioSourceNode | null = null;
+    private readonly sampleRate = 24000; // Required by GPT-Realtime API
+
+    // Playback scheduling for smooth audio
+    private nextPlayTime: number = 0;
+    private isPlaying: boolean = false;
+    private playbackQueue: AudioBufferSourceNode[] = [];
+
+    constructor() {
+        this.context = new AudioContext({ sampleRate: this.sampleRate });
+    }
+
+    async initialize() {
+        // Load the audio worklet processor
+        await this.context.audioWorklet.addModule('/audio-processor.js');
+    }
+
+    /**
+     * Start recording audio from the microphone.
+     * @param onChunk Callback for each audio chunk (PCM16 as Uint8Array)
+     */
+    async startRecording(onChunk: (chunk: Uint8Array) => void) {
+        try {
+            if (!this.workletNode) {
+                await this.initialize();
+            }
+
+            // Request microphone with optimal settings for realtime speech
+            this.stream = await navigator.mediaDevices.getUserMedia({
+                audio: {
+                    channelCount: 1,
+                    sampleRate: this.sampleRate,
+                    echoCancellation: true,
+                    noiseSuppression: true,
+                },
+            });
+
+            await this.context.resume();
+            this.source = this.context.createMediaStreamSource(this.stream);
+            this.workletNode = new AudioWorkletNode(
+                this.context,
+                'audio-recorder-processor',
+            );
+
+            this.workletNode.port.onmessage = (event) => {
+                if (event.data.eventType === 'audio') {
+                    const float32Data = event.data.audioData;
+                    // Convert Float32 to Int16 (PCM16 format required by API)
+                    const int16Data = new Int16Array(float32Data.length);
+                    for (let i = 0; i < float32Data.length; i++) {
+                        const s = Math.max(-1, Math.min(1, float32Data[i]));
+                        int16Data[i] = s < 0 ? s * 0x8000 : s * 0x7fff;
+                    }
+                    const uint8Data = new Uint8Array(int16Data.buffer);
+                    onChunk(uint8Data);
+                }
+            };
+
+            this.source.connect(this.workletNode);
+            this.workletNode.connect(this.context.destination);
+            this.workletNode.port.postMessage({ command: 'START_RECORDING' });
+        } catch (error) {
+            console.error('Error starting recording:', error);
+            throw error;
+        }
+    }
+
+    stopRecording() {
+        if (!this.workletNode || !this.source || !this.stream) {
+            return;
+        }
+        this.workletNode.port.postMessage({ command: 'STOP_RECORDING' });
+        this.workletNode.disconnect();
+        this.source.disconnect();
+        this.stream.getTracks().forEach((track) => track.stop());
+    }
+
+    /**
+     * Start streaming playback mode - resets playback timing.
+     */
+    startStreamingPlayback() {
+        this.isPlaying = true;
+        this.nextPlayTime = this.context.currentTime;
+    }
+
+    /**
+     * Stop streaming playback and clear the queue.
+     */
+    stopStreamingPlayback() {
+        this.isPlaying = false;
+        this.playbackQueue.forEach((source) => source.stop());
+        this.playbackQueue = [];
+    }
+
+    /**
+     * Play an audio chunk. Chunks are scheduled sequentially for smooth playback.
+     * @param chunk PCM16 audio data as Uint8Array
+     */
+    playChunk(chunk: Uint8Array) {
+        if (!this.isPlaying) return;
+
+        // Convert Int16 (PCM16) to Float32 for Web Audio API
+        const int16Data = new Int16Array(chunk.buffer);
+        const float32Data = new Float32Array(int16Data.length);
+        for (let i = 0; i < int16Data.length; i++) {
+            float32Data[i] = int16Data[i] / (int16Data[i] < 0 ? 0x8000 : 0x7fff);
+        }
+
+        // Create audio buffer and source
+        const audioBuffer = this.context.createBuffer(
+            1,
+            float32Data.length,
+            this.sampleRate,
+        );
+        audioBuffer.getChannelData(0).set(float32Data);
+
+        const source = this.context.createBufferSource();
+        source.buffer = audioBuffer;
+        source.connect(this.context.destination);
+
+        // Schedule playback for smooth audio
+        const chunkDuration = audioBuffer.length / this.sampleRate;
+        source.start(this.nextPlayTime);
+
+        // Track source for cleanup
+        this.playbackQueue.push(source);
+        source.onended = () => {
+            const index = this.playbackQueue.indexOf(source);
+            if (index > -1) {
+                this.playbackQueue.splice(index, 1);
+            }
+        };
+
+        this.nextPlayTime += chunkDuration;
+
+        // Handle timing drift
+        if (this.nextPlayTime < this.context.currentTime) {
+            this.nextPlayTime = this.context.currentTime;
+        }
+    }
+
+    /**
+     * Clear the playback buffer (e.g., when user starts speaking).
+     */
+    clearPlayback() {
+        this.stopStreamingPlayback();
+        this.nextPlayTime = this.context.currentTime;
+    }
+
+    async close() {
+        this.workletNode?.disconnect();
+        this.source?.disconnect();
+        this.stream?.getTracks().forEach((track) => track.stop());
+        await this.context.close();
+    }
+}
+```
+
+### 5.3 Audio Worklet Processor
+
+#### File: `src/ui/UserPortal/public/audio-processor.js` (New)
+
+```javascript
+/**
+ * AudioWorklet processor for recording audio at 24kHz.
+ * Converts Float32 samples to format suitable for GPT-Realtime API.
+ */
+class AudioRecorderProcessor extends AudioWorkletProcessor {
+    constructor() {
+        super();
+        this.isRecording = false;
+        this.port.onmessage = (event) => {
+            if (event.data.command === 'START_RECORDING') {
+                this.isRecording = true;
+            } else if (event.data.command === 'STOP_RECORDING') {
+                this.isRecording = false;
+            }
+        };
+    }
+
+    process(inputs, outputs, parameters) {
+        const input = inputs[0];
+        if (this.isRecording && input.length > 0) {
+            const audioData = input[0];
+            // Send audio data to main thread
+            this.port.postMessage({
+                eventType: 'audio',
+                audioData: audioData,
+            });
+        }
+        return true;
+    }
+}
+
+registerProcessor('audio-recorder-processor', AudioRecorderProcessor);
+```
+
+### 5.4 Composable: useRealtimeSpeech
 
 #### File: `src/ui/UserPortal/composables/useRealtimeSpeech.ts` (New)
 
 ```typescript
 import { ref, onUnmounted } from 'vue';
+import { AudioHandler } from '@/js/audioHandler';
 import api from '@/js/api';
 
 interface UseRealtimeSpeechOptions {
@@ -1101,7 +1320,6 @@ interface UseRealtimeSpeechOptions {
     sessionId: string;
     onTranscription?: (text: string, sender: 'User' | 'AI') => void;
     onStatusChange?: (status: 'connecting' | 'connected' | 'disconnected' | 'error') => void;
-    onAudioData?: (data: ArrayBuffer, sender: 'User' | 'AI') => void;
 }
 
 export function useRealtimeSpeech(options: UseRealtimeSpeechOptions) {
@@ -1113,11 +1331,8 @@ export function useRealtimeSpeech(options: UseRealtimeSpeechOptions) {
     const error = ref<string | null>(null);
 
     let websocket: WebSocket | null = null;
-    let audioContext: AudioContext | null = null;
-    let mediaStream: MediaStream | null = null;
-    let audioProcessor: ScriptProcessorNode | null = null;
-    let audioQueue: ArrayBuffer[] = [];
-    let isPlaying = false;
+    let audioHandler: AudioHandler | null = null;
+    let recordingActive = false;
 
     async function connect() {
         if (isActive.value || isConnecting.value) return;
@@ -1127,41 +1342,25 @@ export function useRealtimeSpeech(options: UseRealtimeSpeechOptions) {
             error.value = null;
             options.onStatusChange?.('connecting');
 
-            // Request microphone access
-            mediaStream = await navigator.mediaDevices.getUserMedia({
-                audio: {
-                    echoCancellation: true,
-                    noiseSuppression: true,
-                    sampleRate: 24000,
-                },
-            });
+            // Initialize audio handler
+            audioHandler = new AudioHandler();
+            await audioHandler.initialize();
 
-            // Setup audio context
-            audioContext = new AudioContext({ sampleRate: 24000 });
-            const source = audioContext.createMediaStreamSource(mediaStream);
-            
-            // Create processor for capturing audio
-            audioProcessor = audioContext.createScriptProcessor(4096, 1, 1);
-            audioProcessor.onaudioprocess = handleAudioProcess;
-            source.connect(audioProcessor);
-            audioProcessor.connect(audioContext.destination);
+            // Get WebSocket URL and connect
+            const bearerToken = await api.getBearerToken();
+            const wsProtocol = api.getApiUrl()?.startsWith('https') ? 'wss' : 'ws';
+            const wsHost = api.getApiUrl()?.replace(/^https?:\/\//, '');
+            const wsUrl = `${wsProtocol}://${wsHost}/instances/${api.instanceId}/sessions/${options.sessionId}/realtime-speech?agentName=${options.agentName}&access_token=${bearerToken}`;
 
-            // Get WebSocket URL from API
-            const config = await api.getRealtimeSpeechConfig(options.agentName);
-            if (!config.enabled) {
-                throw new Error('Realtime speech is not enabled for this agent');
-            }
-
-            // Connect WebSocket
-            const wsUrl = `${api.getApiUrl().replace('http', 'ws')}/instances/${api.instanceId}/sessions/${options.sessionId}/realtime-speech?agentName=${options.agentName}`;
-            
             websocket = new WebSocket(wsUrl);
-            websocket.binaryType = 'arraybuffer';
 
-            websocket.onopen = () => {
+            websocket.onopen = async () => {
                 isConnecting.value = false;
                 isActive.value = true;
                 options.onStatusChange?.('connected');
+
+                // Start recording and streaming audio
+                await startAudioCapture();
             };
 
             websocket.onmessage = handleWebSocketMessage;
@@ -1185,30 +1384,29 @@ export function useRealtimeSpeech(options: UseRealtimeSpeechOptions) {
         }
     }
 
-    function handleAudioProcess(event: AudioProcessingEvent) {
-        if (!isActive.value || !websocket || websocket.readyState !== WebSocket.OPEN) return;
+    async function startAudioCapture() {
+        if (!audioHandler || !websocket) return;
 
-        const inputData = event.inputBuffer.getChannelData(0);
-        
-        // Calculate audio level for visualization
-        let sum = 0;
-        for (let i = 0; i < inputData.length; i++) {
-            sum += inputData[i] * inputData[i];
-        }
-        userAudioLevel.value = Math.sqrt(sum / inputData.length);
+        recordingActive = true;
+        await audioHandler.startRecording((chunk: Uint8Array) => {
+            if (!recordingActive || websocket?.readyState !== WebSocket.OPEN) return;
 
-        // Convert to 16-bit PCM
-        const pcmData = new Int16Array(inputData.length);
-        for (let i = 0; i < inputData.length; i++) {
-            pcmData[i] = Math.max(-32768, Math.min(32767, inputData[i] * 32768));
-        }
+            // Calculate audio level for visualization
+            const int16Data = new Int16Array(chunk.buffer);
+            let sum = 0;
+            for (let i = 0; i < int16Data.length; i++) {
+                const normalized = int16Data[i] / 32768;
+                sum += normalized * normalized;
+            }
+            userAudioLevel.value = Math.sqrt(sum / int16Data.length);
 
-        // Send audio to server
-        const message = JSON.stringify({
-            type: 'input_audio_buffer.append',
-            audio: btoa(String.fromCharCode(...new Uint8Array(pcmData.buffer))),
+            // Send audio as base64-encoded PCM16
+            const base64Audio = btoa(String.fromCharCode(...chunk));
+            websocket.send(JSON.stringify({
+                type: 'input_audio_buffer.append',
+                audio: base64Audio,
+            }));
         });
-        websocket.send(message);
     }
 
     function handleWebSocketMessage(event: MessageEvent) {
@@ -1216,24 +1414,63 @@ export function useRealtimeSpeech(options: UseRealtimeSpeechOptions) {
             const message = JSON.parse(event.data);
 
             switch (message.type) {
+                case 'session.created':
+                    console.log('Realtime session created');
+                    break;
+
+                case 'input_audio_buffer.speech_started':
+                    // User started speaking - stop AI playback
+                    audioHandler?.stopStreamingPlayback();
+                    break;
+
                 case 'response.audio.delta':
-                    // Queue audio for playback
-                    const audioData = Uint8Array.from(atob(message.delta), c => c.charCodeAt(0));
-                    audioQueue.push(audioData.buffer);
-                    playNextAudio();
+                    // Receive AI audio chunk
+                    if (!audioHandler) break;
+                    const audioData = Uint8Array.from(
+                        atob(message.delta),
+                        (c) => c.charCodeAt(0)
+                    );
+                    
+                    // Start playback on first chunk
+                    if (message.content_index === 0 && message.output_index === 0) {
+                        audioHandler.startStreamingPlayback();
+                    }
+                    
+                    audioHandler.playChunk(audioData);
+
+                    // Calculate AI audio level for visualization
+                    const int16Data = new Int16Array(audioData.buffer);
+                    let sum = 0;
+                    for (let i = 0; i < int16Data.length; i++) {
+                        const normalized = int16Data[i] / 32768;
+                        sum += normalized * normalized;
+                    }
+                    aiAudioLevel.value = Math.sqrt(sum / int16Data.length);
                     break;
 
                 case 'conversation.item.input_audio_transcription.completed':
+                    // User speech transcription completed
                     options.onTranscription?.(message.transcript, 'User');
                     break;
 
+                case 'response.audio_transcript.delta':
+                    // AI response transcription (streaming)
+                    // Could be used for real-time display
+                    break;
+
                 case 'response.audio_transcript.done':
+                    // AI response transcription completed
                     options.onTranscription?.(message.transcript, 'AI');
                     break;
 
+                case 'response.done':
+                    // Response completed
+                    aiAudioLevel.value = 0;
+                    break;
+
                 case 'error':
-                    console.error('Server error:', message.error);
-                    error.value = message.error?.message || 'Server error';
+                    console.error('Realtime API error:', message.error);
+                    error.value = message.error?.message || 'API error';
                     break;
             }
         } catch (err) {
@@ -1241,70 +1478,21 @@ export function useRealtimeSpeech(options: UseRealtimeSpeechOptions) {
         }
     }
 
-    async function playNextAudio() {
-        if (isPlaying || audioQueue.length === 0 || !audioContext) return;
-
-        isPlaying = true;
-        const audioData = audioQueue.shift()!;
-
-        try {
-            // Convert PCM16 to Float32 for Web Audio API
-            const int16Data = new Int16Array(audioData);
-            const float32Data = new Float32Array(int16Data.length);
-            for (let i = 0; i < int16Data.length; i++) {
-                float32Data[i] = int16Data[i] / 32768;
-            }
-
-            const audioBuffer = audioContext.createBuffer(1, float32Data.length, 24000);
-            audioBuffer.getChannelData(0).set(float32Data);
-
-            const source = audioContext.createBufferSource();
-            source.buffer = audioBuffer;
-            source.connect(audioContext.destination);
-            
-            source.onended = () => {
-                isPlaying = false;
-                playNextAudio();
-            };
-
-            source.start();
-
-            // Calculate AI audio level for visualization
-            let sum = 0;
-            for (let i = 0; i < float32Data.length; i++) {
-                sum += float32Data[i] * float32Data[i];
-            }
-            aiAudioLevel.value = Math.sqrt(sum / float32Data.length);
-
-        } catch (err) {
-            console.error('Audio playback error:', err);
-            isPlaying = false;
-            playNextAudio();
-        }
-    }
-
     async function disconnect() {
+        recordingActive = false;
+
+        if (audioHandler) {
+            audioHandler.stopRecording();
+            audioHandler.stopStreamingPlayback();
+            await audioHandler.close();
+            audioHandler = null;
+        }
+
         if (websocket) {
             websocket.close();
             websocket = null;
         }
 
-        if (audioProcessor) {
-            audioProcessor.disconnect();
-            audioProcessor = null;
-        }
-
-        if (mediaStream) {
-            mediaStream.getTracks().forEach(track => track.stop());
-            mediaStream = null;
-        }
-
-        if (audioContext) {
-            await audioContext.close();
-            audioContext = null;
-        }
-
-        audioQueue = [];
         isActive.value = false;
         isConnecting.value = false;
         userAudioLevel.value = 0;
