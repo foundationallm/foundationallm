@@ -1,11 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.14.36414.22
+# Visual Studio Version 18
+VisualStudioVersion = 18.1.11312.151 d18.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzureOpenAIAssistantsUtility", "azure-openai-assistants\AzureOpenAIAssistantsUtility.csproj", "{EDB7500F-BC81-407D-BB82-C3C2C85ADE88}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzureCosmosDBUtility", "azure-cosmosdb\AzureCosmosDBUtility.csproj", "{6E7EC098-143C-43BF-8954-D2DA7D4C2D13}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextExtraction", "text-extraction\TextExtraction.csproj", "{1DA89F10-EDAF-416D-8667-6402DEEBE25C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{6E7EC098-143C-43BF-8954-D2DA7D4C2D13}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6E7EC098-143C-43BF-8954-D2DA7D4C2D13}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6E7EC098-143C-43BF-8954-D2DA7D4C2D13}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1DA89F10-EDAF-416D-8667-6402DEEBE25C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1DA89F10-EDAF-416D-8667-6402DEEBE25C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1DA89F10-EDAF-416D-8667-6402DEEBE25C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1DA89F10-EDAF-416D-8667-6402DEEBE25C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

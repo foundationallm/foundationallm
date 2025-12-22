@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <RootNamespace>FoundationaLLM.Utils.TextExtraction</RootNamespace>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <AssemblyName>fllm-text</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="PdfPig" Version="0.1.12" />
+    <PackageReference Include="System.CommandLine" Version="2.0.1" />
+    <PackageReference Include="System.Memory.Data" Version="10.0.1" />
+  </ItemGroup>
+
+</Project>
