@@ -152,9 +152,15 @@ namespace FoundationaLLM.Infrastructure.ResourceProviders
                 throw new ResourceProviderException("The resource path does not match the object definition (name mismatch).",
                     StatusCodes.Status400BadRequest);
 
-            // Update Azure Container App using Azure SDK
-            if (!string.IsNullOrEmpty(containerApp.AzureResourceId))
+            // Create or update Azure Container App using Azure SDK
+            if (existingReference is null)
             {
+                // Create a new Azure Container App
+                await CreateAzureContainerAppInAzure(containerApp);
+            }
+            else if (!string.IsNullOrEmpty(containerApp.AzureResourceId))
+            {
+                // Update existing Azure Container App
                 await UpdateAzureContainerAppInAzure(containerApp);
             }
 
@@ -225,6 +231,137 @@ namespace FoundationaLLM.Infrastructure.ResourceProviders
             }
         }
 
+        private async Task CreateAzureContainerAppInAzure(AzureContainerApp containerApp)
+        {
+            try
+            {
+                // Validate required properties for creation
+                if (string.IsNullOrEmpty(containerApp.EnvironmentObjectId))
+                {
+                    throw new ResourceProviderException("EnvironmentObjectId is required to create a new Azure Container App.",
+                        StatusCodes.Status400BadRequest);
+                }
+
+                if (string.IsNullOrEmpty(containerApp.ContainerImage))
+                {
+                    throw new ResourceProviderException("ContainerImage is required to create a new Azure Container App.",
+                        StatusCodes.Status400BadRequest);
+                }
+
+                // Load the parent Container Apps Environment to get Azure resource details
+                var environment = await LoadResource<AzureContainerAppsEnvironment>(containerApp.EnvironmentObjectId);
+                if (environment == null || string.IsNullOrEmpty(environment.AzureResourceId))
+                {
+                    throw new ResourceProviderException($"Container Apps Environment {containerApp.EnvironmentObjectId} not found or missing Azure resource ID.",
+                        StatusCodes.Status404NotFound);
+                }
+
+                var armClient = new ArmClient(_credential);
+                var environmentResourceId = new ResourceIdentifier(environment.AzureResourceId);
+
+                // Get the resource group from the environment's Azure resource ID
+                var resourceGroupId = environmentResourceId.Parent;
+                if (resourceGroupId is null)
+                {
+                    throw new ResourceProviderException("Unable to determine resource group from Container Apps Environment.",
+                        StatusCodes.Status500InternalServerError);
+                }
+
+                var resourceGroupResource = armClient.GetResourceGroupResource(resourceGroupId);
+                var containerAppsCollection = resourceGroupResource.GetContainerApps();
+
+                // Build the Container App data
+                var containerAppData = new ContainerAppData(new Azure.Core.AzureLocation(environment.Location ?? "eastus"))
+                {
+                    ManagedEnvironmentId = environmentResourceId,
+                    WorkloadProfileName = containerApp.WorkloadProfileName,
+                    Template = new ContainerAppTemplate
+                    {
+                        Scale = new ContainerAppScale
+                        {
+                            MinReplicas = containerApp.MinReplicas ?? 0,
+                            MaxReplicas = containerApp.MaxReplicas ?? 10
+                        }
+                    }
+                };
+
+                // Add container configuration
+                var container = new ContainerAppContainer
+                {
+                    Name = containerApp.Name,
+                    Image = containerApp.ContainerImage
+                };
+
+                // Add resource configuration if provided
+                if (containerApp.CpuCores.HasValue || containerApp.MemoryGb.HasValue)
+                {
+                    container.Resources = new AppContainerResources
+                    {
+                        Cpu = containerApp.CpuCores,
+                        Memory = containerApp.MemoryGb.HasValue ? $"{containerApp.MemoryGb}Gi" : null
+                    };
+                }
+
+                // Add environment variables if provided
+                if (containerApp.EnvironmentVariables != null)
+                {
+                    foreach (var env in containerApp.EnvironmentVariables)
+                    {
+                        container.Env.Add(new ContainerAppEnvironmentVariable
+                        {
+                            Name = env.Key,
+                            Value = env.Value
+                        });
+                    }
+                }
+
+                containerAppData.Template.Containers.Add(container);
+
+                // Add ingress configuration if provided
+                if (containerApp.Ingress != null && containerApp.Ingress.Enabled)
+                {
+                    containerAppData.Configuration = new ContainerAppConfiguration
+                    {
+                        Ingress = new ContainerAppIngressConfiguration
+                        {
+                            External = containerApp.Ingress.External,
+                            TargetPort = containerApp.Ingress.TargetPort,
+                            Transport = containerApp.Ingress.Transport != null
+                                ? Enum.Parse<ContainerAppIngressTransportMethod>(containerApp.Ingress.Transport, ignoreCase: true)
+                                : ContainerAppIngressTransportMethod.Auto
+                        }
+                    };
+                }
+
+                // Create the Container App
+                var operation = await containerAppsCollection.CreateOrUpdateAsync(
+                    Azure.WaitUntil.Completed,
+                    containerApp.Name!,
+                    containerAppData);
+
+                var createdApp = operation.Value;
+
+                // Update the resource with the Azure resource ID
+                containerApp.AzureResourceId = createdApp.Id.ToString();
+                containerApp.ProvisioningState = createdApp.Data.ProvisioningState?.ToString();
+                containerApp.LatestRevisionName = createdApp.Data.LatestRevisionName;
+                containerApp.Fqdn = createdApp.Data.Configuration?.Ingress?.Fqdn;
+
+                _logger.LogInformation("Successfully created Azure Container App {ContainerAppName} in Azure with resource ID {ResourceId}",
+                    containerApp.Name, containerApp.AzureResourceId);
+            }
+            catch (ResourceProviderException)
+            {
+                throw;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Failed to create Azure Container App {ContainerAppName} in Azure", containerApp.Name);
+                throw new ResourceProviderException($"Failed to create Azure Container App {containerApp.Name}: {ex.Message}",
+                    StatusCodes.Status500InternalServerError);
+            }
+        }
+
         private async Task<ResourceProviderUpsertResult> UpdateAzureKubernetesServiceDeployment(ResourcePath resourcePath, string serializedResource, UnifiedUserIdentity userIdentity)
         {
             var deployment = JsonSerializer.Deserialize<AzureKubernetesServiceDeployment>(serializedResource)
@@ -237,9 +374,15 @@ namespace FoundationaLLM.Infrastructure.ResourceProviders
                 throw new ResourceProviderException("The resource path does not match the object definition (name mismatch).",
                     StatusCodes.Status400BadRequest);
 
-            // Update Kubernetes deployment using Kubernetes client
-            if (!string.IsNullOrEmpty(deployment.ClusterObjectId) && deployment.Replicas.HasValue)
+            // Create or update Kubernetes deployment
+            if (existingReference is null)
             {
+                // Create a new Kubernetes deployment
+                await CreateKubernetesDeploymentInCluster(deployment);
+            }
+            else if (!string.IsNullOrEmpty(deployment.ClusterObjectId))
+            {
+                // Update existing Kubernetes deployment
                 await UpdateKubernetesDeploymentInCluster(deployment);
             }
 
@@ -294,6 +437,136 @@ namespace FoundationaLLM.Infrastructure.ResourceProviders
             {
                 _logger.LogError(ex, "Failed to update Kubernetes deployment {DeploymentName}", deployment.Name);
                 throw new ResourceProviderException($"Failed to update Kubernetes deployment {deployment.Name}: {ex.Message}",
+                    StatusCodes.Status500InternalServerError);
+            }
+        }
+
+        private async Task CreateKubernetesDeploymentInCluster(AzureKubernetesServiceDeployment deployment)
+        {
+            try
+            {
+                // Validate required properties for creation
+                if (string.IsNullOrEmpty(deployment.ClusterObjectId))
+                {
+                    throw new ResourceProviderException("ClusterObjectId is required to create a new Kubernetes deployment.",
+                        StatusCodes.Status400BadRequest);
+                }
+
+                if (string.IsNullOrEmpty(deployment.ContainerImage))
+                {
+                    throw new ResourceProviderException("ContainerImage is required to create a new Kubernetes deployment.",
+                        StatusCodes.Status400BadRequest);
+                }
+
+                var kubeConfig = await GetKubernetesConfigFromCluster(deployment.ClusterObjectId);
+                using var client = new Kubernetes(kubeConfig);
+
+                var k8sNamespace = deployment.Namespace ?? "default";
+
+                // Build the Kubernetes deployment spec
+                var k8sDeployment = new V1Deployment
+                {
+                    ApiVersion = "apps/v1",
+                    Kind = "Deployment",
+                    Metadata = new V1ObjectMeta
+                    {
+                        Name = deployment.Name,
+                        NamespaceProperty = k8sNamespace,
+                        Labels = deployment.Labels ?? new Dictionary<string, string>
+                        {
+                            { "app", deployment.Name! }
+                        }
+                    },
+                    Spec = new V1DeploymentSpec
+                    {
+                        Replicas = deployment.Replicas ?? 1,
+                        Selector = new V1LabelSelector
+                        {
+                            MatchLabels = new Dictionary<string, string>
+                            {
+                                { "app", deployment.Name! }
+                            }
+                        },
+                        Strategy = new V1DeploymentStrategy
+                        {
+                            Type = deployment.Strategy ?? "RollingUpdate"
+                        },
+                        Template = new V1PodTemplateSpec
+                        {
+                            Metadata = new V1ObjectMeta
+                            {
+                                Labels = new Dictionary<string, string>
+                                {
+                                    { "app", deployment.Name! }
+                                }
+                            },
+                            Spec = new V1PodSpec
+                            {
+                                Containers =
+                                [
+                                    new V1Container
+                                    {
+                                        Name = deployment.Name,
+                                        Image = deployment.ContainerImage,
+                                        Resources = new V1ResourceRequirements
+                                        {
+                                            Requests = new Dictionary<string, ResourceQuantity>(),
+                                            Limits = new Dictionary<string, ResourceQuantity>()
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                };
+
+                // Add resource requests and limits if provided
+                var container = k8sDeployment.Spec.Template.Spec.Containers[0];
+                if (!string.IsNullOrEmpty(deployment.CpuRequest))
+                {
+                    container.Resources.Requests["cpu"] = new ResourceQuantity(deployment.CpuRequest);
+                }
+                if (!string.IsNullOrEmpty(deployment.CpuLimit))
+                {
+                    container.Resources.Limits["cpu"] = new ResourceQuantity(deployment.CpuLimit);
+                }
+                if (!string.IsNullOrEmpty(deployment.MemoryRequest))
+                {
+                    container.Resources.Requests["memory"] = new ResourceQuantity(deployment.MemoryRequest);
+                }
+                if (!string.IsNullOrEmpty(deployment.MemoryLimit))
+                {
+                    container.Resources.Limits["memory"] = new ResourceQuantity(deployment.MemoryLimit);
+                }
+
+                // Add environment variables if provided
+                if (deployment.EnvironmentVariables != null && deployment.EnvironmentVariables.Count > 0)
+                {
+                    container.Env = deployment.EnvironmentVariables.Select(env => new V1EnvVar
+                    {
+                        Name = env.Key,
+                        Value = env.Value
+                    }).ToList();
+                }
+
+                // Create the deployment
+                var createdDeployment = await client.CreateNamespacedDeploymentAsync(k8sDeployment, k8sNamespace);
+
+                // Update the resource with deployment status
+                deployment.ReadyReplicas = createdDeployment.Status?.ReadyReplicas;
+                deployment.AvailableReplicas = createdDeployment.Status?.AvailableReplicas;
+
+                _logger.LogInformation("Successfully created Kubernetes deployment {DeploymentName} in cluster {ClusterObjectId}",
+                    deployment.Name, deployment.ClusterObjectId);
+            }
+            catch (ResourceProviderException)
+            {
+                throw;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Failed to create Kubernetes deployment {DeploymentName}", deployment.Name);
+                throw new ResourceProviderException($"Failed to create Kubernetes deployment {deployment.Name}: {ex.Message}",
                     StatusCodes.Status500InternalServerError);
             }
         }
