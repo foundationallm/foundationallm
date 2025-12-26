@@ -80,7 +80,7 @@ namespace FoundationaLLM.Client.Core.Clients.RESTClients
 
             if (response.IsSuccessStatusCode)
             {
-                return chatSessionProperties.Name;
+                return chatSessionProperties.Name ?? string.Empty;
             }
 
             throw new Exception($"Failed to rename chat session. Status code: {response.StatusCode}. Reason: {response.ReasonPhrase}");

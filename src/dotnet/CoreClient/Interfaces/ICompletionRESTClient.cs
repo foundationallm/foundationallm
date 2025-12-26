@@ -12,7 +12,7 @@ namespace FoundationaLLM.Client.Core.Interfaces
     {
         /// <summary>
         /// Performs a completion request to the Core API. For session-based requests, set the
-        /// <see cref="CompletionRequest.SessionId"/> property to the unique identifier for the session.
+        /// <see cref="CompletionRequestBase.SessionId"/> property to the unique identifier for the session.
         /// Set the property to <see langword="null"/> or empty for non-session-based requests.
         /// Session-less completion requests do not maintain message history or data retention in Cosmos DB.
         /// </summary>
