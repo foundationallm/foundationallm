@@ -176,6 +176,12 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
         private void ProcessExtractedKnowledgePart(
             DataPipelineContentItemKnowledgePart knowledgePart)
         {
+            if (string.IsNullOrWhiteSpace(knowledgePart.IndexEntryId))
+            {
+                throw new PluginException(
+                    $"The knowledge part for content item '{knowledgePart.ContentItemCanonicalId}' does not have a valid IndexEntryId.");
+            }
+
             foreach (var entity in knowledgePart.EntitiesAndRelationships!.Entities)
             {
                 var existingEntity = _entityRelationships.Entities
@@ -197,7 +203,7 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
                         Type = entity.Type,
                         Name = entity.Name,
                         Descriptions = [entity.Description],
-                        ChunkIds = [knowledgePart.IndexEntryId ?? string.Empty],
+                        ChunkIds = [knowledgePart.IndexEntryId!],
                         IndexEntryId = Convert.ToBase64String(
                             MD5.HashData(Encoding.UTF8.GetBytes(
                                 $"{entity.Type}-{entity.Name}-{Guid.NewGuid()}")))

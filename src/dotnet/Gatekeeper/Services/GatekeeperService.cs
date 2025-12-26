@@ -118,8 +118,8 @@ namespace FoundationaLLM.Gatekeeper.Core.Services
 
             var completionResponse = await _orchestrationAPIService.GetCompletion(instanceId, completionRequest);
 
-            if (_gatekeeperServiceSettings.EnableMicrosoftPresidio)
-                completionResponse.Completion = await _gatekeeperIntegrationAPIService.AnonymizeText(completionResponse.Completion ?? string.Empty);
+            if (_gatekeeperServiceSettings.EnableMicrosoftPresidio && !string.IsNullOrEmpty(completionResponse.Completion))
+                completionResponse.Completion = await _gatekeeperIntegrationAPIService.AnonymizeText(completionResponse.Completion);
 
             return completionResponse;
         }
