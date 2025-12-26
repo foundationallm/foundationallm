@@ -22,12 +22,14 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
     /// <param name="packageManager">The package manager for the plugin.</param>
     /// <param name="packageManagerResolver">The package manager resolver for the plugin.</param>
     /// <param name="serviceProvider">The service provider of the dependency injection container.</param>
+#pragma warning disable CS9107 // Parameter is captured into the state of the enclosing type and also passed to the base constructor
     public class AzureAIContentSafetyShieldingDataPipelineStagePlugin(
         Dictionary<string, object> pluginParameters,
         IPluginPackageManager packageManager,
         IPluginPackageManagerResolver packageManagerResolver,
         IServiceProvider serviceProvider)
         : DataPipelineStagePluginBase(pluginParameters, packageManager, packageManagerResolver, serviceProvider)
+#pragma warning restore CS9107
     {
         protected override string Name => PluginNames.AZUREAICONTENTSAFETYSHIELDING_DATAPIPELINESTAGE;
 

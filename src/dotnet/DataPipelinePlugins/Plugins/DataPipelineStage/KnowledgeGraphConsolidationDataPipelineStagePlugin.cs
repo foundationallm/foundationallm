@@ -197,7 +197,7 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
                         Type = entity.Type,
                         Name = entity.Name,
                         Descriptions = [entity.Description],
-                        ChunkIds = [knowledgePart.IndexEntryId],
+                        ChunkIds = [knowledgePart.IndexEntryId ?? string.Empty],
                         IndexEntryId = Convert.ToBase64String(
                             MD5.HashData(Encoding.UTF8.GetBytes(
                                 $"{entity.Type}-{entity.Name}-{Guid.NewGuid()}")))

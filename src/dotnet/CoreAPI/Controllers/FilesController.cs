@@ -113,7 +113,7 @@ namespace FoundationaLLM.Core.API.Controllers
 
             var uploadResult = await _coreService.UploadAttachment(
                 instanceId,
-                sessionId,
+                sessionId ?? string.Empty,
                 new AttachmentFile
                 {
                     Name = name,
@@ -122,7 +122,7 @@ namespace FoundationaLLM.Core.API.Controllers
                     ContentType = contentType,
                     OriginalFileName = fileName
                 },
-                agentName);
+                agentName ?? string.Empty);
 
             if (uploadResult.Resource != null)
             {
@@ -162,7 +162,7 @@ namespace FoundationaLLM.Core.API.Controllers
                         { TelemetryActivityTagNames.UserId, _callContext.CurrentUserIdentity?.UserId ?? "N/A" }
                    });
 
-            var attachment = await _coreService.DownloadAttachment(instanceId, fileProvider, fileId);
+            var attachment = await _coreService.DownloadAttachment(instanceId, fileProvider ?? string.Empty, fileId ?? string.Empty);
 
             return attachment == null
                 ? NotFound()
