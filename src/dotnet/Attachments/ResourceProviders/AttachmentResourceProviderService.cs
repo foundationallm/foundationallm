@@ -92,7 +92,7 @@ namespace FoundationaLLM.Attachment.ResourceProviders
                     if (resourcePath.ResourceTypeInstances[0].ResourceId != null)
                     {
                         var attachment = await _cosmosDBService.GetAttachment(userIdentity.UPN!, resourcePath.ResourceTypeInstances[0].ResourceId!);
-                        if (attachment != null)
+                        if (attachment is not null)
                             attachments.Add(attachment);
                     }
                     else
@@ -225,12 +225,13 @@ namespace FoundationaLLM.Attachment.ResourceProviders
 
             if (typeof(T) == typeof(AttachmentFile))
             {
+                var nullablePropertyValues = propertyValues.ToDictionary(kvp => kvp.Key, kvp => (object?)kvp.Value);
                 var result = await _cosmosDBService.PatchItemPropertiesAsync<AttachmentReference>(
                         AzureCosmosDBContainers.Attachments,
                         userIdentity.UPN!,
                         resourcePath.MainResourceId!,
                         userIdentity.UPN!,
-                        propertyValues,
+                        nullablePropertyValues,
                         default)
                     ?? throw new ResourceProviderException(
                         $"The {_name} resource provider did not find the {resourcePath.RawResourcePath} resource. "

@@ -173,10 +173,11 @@ namespace FoundationaLLM.Conversation.ResourceProviders
             // This is the PEP (Policy Enforcement Point) where the resource provider enforces the policy definition to update the resource properties.
             // The implementation relies on using a filter predicate to ensure that the user identity is authorized to update the resource properties.
 
+            var nullablePropertyValues = propertyValues.ToDictionary(kvp => kvp.Key, kvp => (object?)kvp.Value);
             var result = await _cosmosDBService.PatchConversationPropertiesAsync(
                 resourcePath.ResourceId!,
                 userIdentity.UPN!,
-                propertyValues)
+                nullablePropertyValues)
                 ?? throw new ResourceProviderException(
                     $"The {_name} resource provider did not find the {resourcePath.RawResourcePath} resource. "
                     + "This indicates that either the resource does not exist or existing policies do not allow the user to update it.",

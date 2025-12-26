@@ -142,6 +142,10 @@ namespace FoundationaLLM.SemanticKernel.Core.Agents
             try
             {
                 var kernel = BuildKernel();
+                if (kernel == null)
+                {
+                    throw new InvalidOperationException("Failed to build kernel.");
+                }
 
                 // Use observability features to capture the fully rendered prompt.
                 var promptFilter = new DefaultPromptFilter();
