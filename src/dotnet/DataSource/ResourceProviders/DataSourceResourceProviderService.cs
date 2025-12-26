@@ -218,8 +218,8 @@ namespace FoundationaLLM.DataSource.ResourceProviders
                 }
             }
 
-            UpdateBaseProperties(dataSource, userIdentity, isNew: existingDataSourceReference == null);
-            if (existingDataSourceReference == null)
+            UpdateBaseProperties(dataSource, userIdentity, isNew: existingDataSourceReference is null);
+            if (existingDataSourceReference is null)
                 await CreateResource<DataSourceBase>(dataSourceReference, dataSource);
             else
                 await SaveResource<DataSourceBase>(existingDataSourceReference, dataSource);
@@ -227,7 +227,7 @@ namespace FoundationaLLM.DataSource.ResourceProviders
             return new ResourceProviderUpsertResult
             {
                 ObjectId = dataSource!.ObjectId,
-                ResourceExists = existingDataSourceReference != null
+                ResourceExists = existingDataSourceReference is not null
             };
         }
 

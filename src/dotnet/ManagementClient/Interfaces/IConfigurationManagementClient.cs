@@ -41,8 +41,8 @@ namespace FoundationaLLM.Client.Management.Interfaces
         /// <summary>
         /// Upserts an app configuration value. If the value does not exist, it will be created.
         /// To create a standard Key-value App Configuration, use the <see cref="AppConfigurationKeyValue"/>
-        /// class for the <see cref="appConfiguration"/> parameter. To create a Key Vault reference App Configuration,
-        /// use the <see cref="AppConfigurationKeyVaultReference"/> class for the <see cref="appConfiguration"/> parameter.
+        /// class for the <paramref name="appConfiguration"/> parameter. To create a Key Vault reference App Configuration,
+        /// use the <see cref="AppConfigurationKeyVaultReference"/> class for the <paramref name="appConfiguration"/> parameter.
         /// </summary>
         /// <param name="appConfiguration">Use either the <see cref="AppConfigurationKeyValue"/> type or the
         /// <see cref="AppConfigurationKeyVaultReference"/> type to save the App Config value as a key-value

@@ -143,8 +143,8 @@ namespace FoundationaLLM.AIModel.ResourceProviders
                 }
             }
 
-            UpdateBaseProperties(aiModel, userIdentity, isNew: existingAIModelReference == null);
-            if (existingAIModelReference == null)
+            UpdateBaseProperties(aiModel, userIdentity, isNew: existingAIModelReference is null);
+            if (existingAIModelReference is null)
                 await CreateResource<AIModelBase>(aiModelReference, aiModel);
             else
                 await SaveResource<AIModelBase>(existingAIModelReference, aiModel);
@@ -152,7 +152,7 @@ namespace FoundationaLLM.AIModel.ResourceProviders
             return new ResourceProviderUpsertResult
             {
                 ObjectId = aiModel!.ObjectId,
-                ResourceExists = existingAIModelReference != null
+                ResourceExists = existingAIModelReference is not null
             };
         }
 

@@ -34,7 +34,7 @@ namespace FoundationaLLM.Client.Management
             : this(managementUri, credential, instanceId, new APIClientSettings()) { }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CoreClient"/> class with
+        /// Initializes a new instance of the <see cref="ManagementClient"/> class with
         /// the specified Core API URI, TokenCredential, and optional client settings.
         /// </summary>
         /// <param name="managementUri">The base URI of the Core API.</param>

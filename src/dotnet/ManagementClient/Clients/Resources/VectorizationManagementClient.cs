@@ -156,7 +156,6 @@ namespace FoundationaLLM.Client.Management.Clients.Resources
             );
         }
 
-        /// <inheritdoc/>
         //public async Task<ResourceNameCheckResult> CheckTextPartitioningProfileNameAsync(ResourceName resourceName)
         //{
         //    if (string.IsNullOrWhiteSpace(resourceName.Name) || string.IsNullOrWhiteSpace(resourceName.Type))
@@ -186,7 +185,6 @@ namespace FoundationaLLM.Client.Management.Clients.Resources
             );
         }
 
-        /// <inheritdoc/>
         //public async Task<ResourceNameCheckResult> CheckTextEmbeddingProfileNameAsync(ResourceName resourceName)
         //{
         //    if (string.IsNullOrWhiteSpace(resourceName.Name) || string.IsNullOrWhiteSpace(resourceName.Type))
