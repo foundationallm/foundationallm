@@ -404,12 +404,12 @@ namespace FoundationaLLM.Common.Models.Authorization
                     }
                 },
                 {
-                    "/providers/FoundationaLLM.Authorization/roleDefinitions/a7e0b2d4-8c3f-4e5a-9b1d-6f2c8a9e0d3b",
+                    "/providers/FoundationaLLM.Authorization/roleDefinitions/0a763742-1425-4334-bd2b-981cf3c0f548",
                     new RoleDefinition
                     {
-                        Name = "a7e0b2d4-8c3f-4e5a-9b1d-6f2c8a9e0d3b",
+                        Name = "0a763742-1425-4334-bd2b-981cf3c0f548",
                         Type = "FoundationaLLM.Authorization/roleDefinitions",
-                        ObjectId = "/providers/FoundationaLLM.Authorization/roleDefinitions/a7e0b2d4-8c3f-4e5a-9b1d-6f2c8a9e0d3b",
+                        ObjectId = "/providers/FoundationaLLM.Authorization/roleDefinitions/0a763742-1425-4334-bd2b-981cf3c0f548",
                         DisplayName = "Infrastructure Contributor",
                         Description = "Manage infrastructure resources including Azure Container Apps and Azure Kubernetes Service deployments.",
                         AssignableScopes = [
@@ -418,19 +418,7 @@ namespace FoundationaLLM.Common.Models.Authorization
                             new RoleDefinitionPermissions
                             {
                                 Actions = [
-                                    "FoundationaLLM.Infrastructure/azureContainerAppsEnvironments/read",
-                                    "FoundationaLLM.Infrastructure/azureContainerApps/read",
-                                    "FoundationaLLM.Infrastructure/azureContainerApps/write",
-                                    "FoundationaLLM.Infrastructure/azureContainerApps/delete",
-                                    "FoundationaLLM.Infrastructure/azureContainerApps/restart",
-                                    "FoundationaLLM.Infrastructure/azureContainerApps/scale",
-                                    "FoundationaLLM.Infrastructure/azureKubernetesServices/read",
-                                    "FoundationaLLM.Infrastructure/azureKubernetesServiceDeployments/read",
-                                    "FoundationaLLM.Infrastructure/azureKubernetesServiceDeployments/write",
-                                    "FoundationaLLM.Infrastructure/azureKubernetesServiceDeployments/delete",
-                                    "FoundationaLLM.Infrastructure/azureKubernetesServiceDeployments/restart",
-                                    "FoundationaLLM.Infrastructure/azureKubernetesServiceDeployments/scale",
-                                    "FoundationaLLM.Infrastructure/management/write",],
+                                    "FoundationaLLM.Infrastructure/*",],
                                 NotActions = [],
                                 DataActions = [],
                                 NotDataActions = [],

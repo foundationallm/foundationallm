@@ -162,7 +162,7 @@ namespace FoundationaLLM.Infrastructure.ResourceProviders
             {
                 Name = containerApp.Name!,
                 Type = InfrastructureTypes.AzureContainerApp,
-                Filename = $"/{_name}/{InfrastructureResourceTypeNames.AzureContainerAppsEnvironments}/{resourcePath.MainResourceId}/{containerApp.Name}.json",
+                Filename = $"/{_name}/{resourcePath.MainResourceId}/{containerApp.Name}.json",
                 Deleted = false
             };
 
@@ -247,7 +247,7 @@ namespace FoundationaLLM.Infrastructure.ResourceProviders
             {
                 Name = deployment.Name!,
                 Type = InfrastructureTypes.AzureKubernetesServiceDeployment,
-                Filename = $"/{_name}/{InfrastructureResourceTypeNames.AzureKubernetesServices}/{resourcePath.MainResourceId}/{deployment.Name}.json",
+                Filename = $"/{_name}/{resourcePath.MainResourceId}/{deployment.Name}.json",
                 Deleted = false
             };
 

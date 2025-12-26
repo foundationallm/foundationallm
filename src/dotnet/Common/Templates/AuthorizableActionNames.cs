@@ -618,16 +618,6 @@ namespace FoundationaLLM.Common.Constants.Authorization
         public const string FoundationaLLM_Infrastructure_AzureContainerApps_Delete = "FoundationaLLM.Infrastructure/azureContainerApps/delete";
 
         /// <summary>
-        /// Restart Azure Container Apps.
-        /// </summary>
-        public const string FoundationaLLM_Infrastructure_AzureContainerApps_Restart = "FoundationaLLM.Infrastructure/azureContainerApps/restart";
-
-        /// <summary>
-        /// Scale Azure Container Apps.
-        /// </summary>
-        public const string FoundationaLLM_Infrastructure_AzureContainerApps_Scale = "FoundationaLLM.Infrastructure/azureContainerApps/scale";
-
-        /// <summary>
         /// Read Azure Kubernetes Services.
         /// </summary>
         public const string FoundationaLLM_Infrastructure_AzureKubernetesServices_Read = "FoundationaLLM.Infrastructure/azureKubernetesServices/read";
@@ -646,16 +636,6 @@ namespace FoundationaLLM.Common.Constants.Authorization
         /// Delete Azure Kubernetes Service Deployments.
         /// </summary>
         public const string FoundationaLLM_Infrastructure_AzureKubernetesServiceDeployments_Delete = "FoundationaLLM.Infrastructure/azureKubernetesServiceDeployments/delete";
-
-        /// <summary>
-        /// Restart Azure Kubernetes Service Deployments.
-        /// </summary>
-        public const string FoundationaLLM_Infrastructure_AzureKubernetesServiceDeployments_Restart = "FoundationaLLM.Infrastructure/azureKubernetesServiceDeployments/restart";
-
-        /// <summary>
-        /// Scale Azure Kubernetes Service Deployments.
-        /// </summary>
-        public const string FoundationaLLM_Infrastructure_AzureKubernetesServiceDeployments_Scale = "FoundationaLLM.Infrastructure/azureKubernetesServiceDeployments/scale";
 
         /// <summary>
         /// Execute management actions.

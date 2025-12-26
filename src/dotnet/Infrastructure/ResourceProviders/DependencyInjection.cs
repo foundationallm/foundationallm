@@ -3,6 +3,7 @@ using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Configuration.Instance;
 using FoundationaLLM.Common.Models.Configuration.ResourceProviders;
 using FoundationaLLM.Infrastructure.ResourceProviders;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -22,11 +23,25 @@ namespace FoundationaLLM
         /// <param name="proxyMode">Indicates whether the resource provider is running in proxy mode.</param>
         public static void AddInfrastructureResourceProvider(
             this IHostApplicationBuilder builder,
+            bool proxyMode = false) =>
+            builder.Services.AddInfrastructureResourceProvider(
+                builder.Configuration,
+                proxyMode: proxyMode);
+
+        /// <summary>
+        /// Registers the FoundationaLLM.Infrastructure resource provider with the dependency injection container.
+        /// </summary>
+        /// <param name="services">The <see cref="IServiceCollection"/> dependency injection container service collection.</param>
+        /// <param name="configuration">The <see cref="IConfiguration"/> configuration provider.</param>
+        /// <param name="proxyMode">Indicates whether the resource provider is running in proxy mode.</param>
+        public static void AddInfrastructureResourceProvider(
+            this IServiceCollection services,
+            IConfiguration configuration,
             bool proxyMode = false)
         {
-            builder.AddInfrastructureResourceProviderStorage();
+            services.AddInfrastructureResourceProviderStorage(configuration);
 
-            builder.Services.AddSingleton<IResourceProviderService, InfrastructureResourceProviderService>(sp =>
+            services.AddSingleton<IResourceProviderService, InfrastructureResourceProviderService>(sp =>
                 new InfrastructureResourceProviderService(
                     sp.GetRequiredService<IOptions<InstanceSettings>>(),
                     sp.GetRequiredService<IOptions<ResourceProviderCacheSettings>>(),
@@ -38,7 +53,8 @@ namespace FoundationaLLM
                     sp,
                     sp.GetRequiredService<ILoggerFactory>(),
                     proxyMode: proxyMode));
-            builder.Services.ActivateSingleton<IResourceProviderService>();
+
+            services.ActivateSingleton<IResourceProviderService>();
         }
     }
 }

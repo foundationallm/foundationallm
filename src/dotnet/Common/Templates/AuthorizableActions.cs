@@ -783,20 +783,6 @@ namespace FoundationaLLM.Common.Models.Authorization
                         "Infrastructure")
                 },
                 {
-                    AuthorizableActionNames.FoundationaLLM_Infrastructure_AzureContainerApps_Restart,
-                    new AuthorizableAction(
-                        AuthorizableActionNames.FoundationaLLM_Infrastructure_AzureContainerApps_Restart,
-                        "Restart Azure Container Apps.",
-                        "Infrastructure")
-                },
-                {
-                    AuthorizableActionNames.FoundationaLLM_Infrastructure_AzureContainerApps_Scale,
-                    new AuthorizableAction(
-                        AuthorizableActionNames.FoundationaLLM_Infrastructure_AzureContainerApps_Scale,
-                        "Scale Azure Container Apps.",
-                        "Infrastructure")
-                },
-                {
                     AuthorizableActionNames.FoundationaLLM_Infrastructure_AzureKubernetesServices_Read,
                     new AuthorizableAction(
                         AuthorizableActionNames.FoundationaLLM_Infrastructure_AzureKubernetesServices_Read,
@@ -822,20 +808,6 @@ namespace FoundationaLLM.Common.Models.Authorization
                     new AuthorizableAction(
                         AuthorizableActionNames.FoundationaLLM_Infrastructure_AzureKubernetesServiceDeployments_Delete,
                         "Delete Azure Kubernetes Service Deployments.",
-                        "Infrastructure")
-                },
-                {
-                    AuthorizableActionNames.FoundationaLLM_Infrastructure_AzureKubernetesServiceDeployments_Restart,
-                    new AuthorizableAction(
-                        AuthorizableActionNames.FoundationaLLM_Infrastructure_AzureKubernetesServiceDeployments_Restart,
-                        "Restart Azure Kubernetes Service Deployments.",
-                        "Infrastructure")
-                },
-                {
-                    AuthorizableActionNames.FoundationaLLM_Infrastructure_AzureKubernetesServiceDeployments_Scale,
-                    new AuthorizableAction(
-                        AuthorizableActionNames.FoundationaLLM_Infrastructure_AzureKubernetesServiceDeployments_Scale,
-                        "Scale Azure Kubernetes Service Deployments.",
                         "Infrastructure")
                 },
                 {

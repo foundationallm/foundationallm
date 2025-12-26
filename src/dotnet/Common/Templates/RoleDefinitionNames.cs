@@ -78,7 +78,7 @@ namespace FoundationaLLM.Common.Constants.Authorization
         /// <summary>
         /// Manage infrastructure resources including Azure Container Apps and Azure Kubernetes Service deployments.
         /// </summary>
-        public const string Infrastructure_Contributor = "a7e0b2d4-8c3f-4e5a-9b1d-6f2c8a9e0d3b";
+        public const string Infrastructure_Contributor = "0a763742-1425-4334-bd2b-981cf3c0f548";
 
     }
 }
