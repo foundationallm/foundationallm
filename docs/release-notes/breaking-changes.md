@@ -18,6 +18,39 @@ The following configuration entries have changed their default values:
 | `FoundationaLLM:APIEndpoints:ContextAPI:Configuration:FileService:KnowledgeSearchContextFileMaxSizeBytes` | `{"c, cpp, cs, css, html, java, js, json, jsonl, md, php, py, rb, sh, tex, ts, txt, xml, yaml, yml": 1048576, "gif, jpeg, jpg, png, wav":20971520}` |
 | `FoundationaLLM:APIEndpoints:ContextAPI:Configuration:FileService:KnowledgeSearchFileExtensions` | `c, cpp, cs, css, html, java, js, json, jsonl, md, php, py, rb, sh, tex, ts, txt, xml, yaml, yml, gif, jpeg, jpg, png, wav, pdf, docx, pptx` |
 
+The following App Configuration values have been added for the FoundationaLLM.Infrastructure resource provider:
+
+| Name | Default value | Description |
+| --- | --- | --- |
+| `FoundationaLLM:ResourceProviders:Infrastructure:Storage:AccountName` | `<storage_account_name>` | The name of the storage account used by the FoundationaLLM.Infrastructure resource provider. |
+| `FoundationaLLM:ResourceProviders:Infrastructure:Storage:AuthenticationType` | `AzureIdentity` | The type of authentication used by the FoundationaLLM.Infrastructure resource provider to connect to the storage account. |
+
+### New resource providers
+
+**FoundationaLLM.Infrastructure**
+
+The `FoundationaLLM.Infrastructure` resource provider has been added to manage infrastructure components for FoundationaLLM deployments, including Azure Container Apps and Azure Kubernetes Service deployments.
+
+A new folder named `FoundationaLLM.Infrastructure` must be created in the FoundationaLLM storage account under the `resource-provider` container. The folder must contain the following file:
+- `_resource-references.json` - the resource references file.
+
+The content of the `_resource-references.json` file is as follows:
+
+```json
+{
+    "ResourceReferences": [],
+    "DefaultResourceName": null
+}
+```
+
+### RBAC role changes
+
+The following RBAC role has been added:
+
+| Role Name | Role ID | Description |
+| --- | --- | --- |
+| `Infrastructure Contributor` | `0a763742-1425-4334-bd2b-981cf3c0f548` | Manage infrastructure resources including Azure Container Apps and Azure Kubernetes Service deployments. |
+
 ## Starting from 0.9.7-rc487
 
 ### Artifact changes
