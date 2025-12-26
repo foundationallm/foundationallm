@@ -87,8 +87,11 @@ namespace FoundationaLLM.Attachment.ResourceProviders
             switch (resourcePath.MainResourceTypeName)
             {
                 case AttachmentResourceTypeNames.Attachments:
-                    var attachments = resourcePath.ResourceTypeInstances[0].ResourceId != null
-                        ? [(await _cosmosDBService.GetAttachment(userIdentity.UPN!, resourcePath.ResourceTypeInstances[0].ResourceId!))!]
+                    var attachmentResult = resourcePath.ResourceTypeInstances[0].ResourceId != null
+                        ? await _cosmosDBService.GetAttachment(userIdentity.UPN!, resourcePath.ResourceTypeInstances[0].ResourceId!)
+                        : null;
+                    var attachments = attachmentResult != null
+                        ? [attachmentResult]
                         : await _cosmosDBService.GetAttachments(userIdentity.UPN!);
 
                     var attachmentFiles = new List<AttachmentFile>();
