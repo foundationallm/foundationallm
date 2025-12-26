@@ -89,10 +89,16 @@ namespace FoundationaLLM.Attachment.ResourceProviders
                 case AttachmentResourceTypeNames.Attachments:
                     var attachments = new List<AttachmentReference>();
 
-                    if (resourcePath.ResourceTypeInstances[0].ResourceId != null)
-                        attachments = [await _cosmosDBService.GetAttachment(userIdentity.UPN!, resourcePath.ResourceTypeInstances[0].ResourceId!)];
+                    if (resourcePath.ResourceTypeInstances[0].ResourceId is not null)
+                    {
+                        var attachment = await _cosmosDBService.GetAttachment(userIdentity.UPN!, resourcePath.ResourceTypeInstances[0].ResourceId!);
+                        if (attachment is not null)
+                            attachments.Add(attachment);
+                    }
                     else
+                    {
                         attachments = await _cosmosDBService.GetAttachments(userIdentity.UPN!);
+                    }
 
                     var attachmentFiles = new List<AttachmentFile>();
                     foreach(var attachment in attachments)
@@ -212,7 +218,7 @@ namespace FoundationaLLM.Attachment.ResourceProviders
                     StatusCodes.Status400BadRequest)
             };
 
-        protected override async Task<TResult> UpdateResourcePropertiesAsyncInternal<T, TResult>(ResourcePath resourcePath, ResourcePathAuthorizationResult authorizationResult, Dictionary<string, object?> propertyValues, UnifiedUserIdentity userIdentity)
+        protected override async Task<TResult> UpdateResourcePropertiesAsyncInternal<T, TResult>(ResourcePath resourcePath, ResourcePathAuthorizationResult authorizationResult, Dictionary<string, object> propertyValues, UnifiedUserIdentity userIdentity)
         {
             _ = EnsureAndValidatePolicyDefinitions(resourcePath, authorizationResult);
 
@@ -221,12 +227,13 @@ namespace FoundationaLLM.Attachment.ResourceProviders
 
             if (typeof(T) == typeof(AttachmentFile))
             {
+                var nullablePropertyValues = propertyValues.ToDictionary(kvp => kvp.Key, kvp => (object?)kvp.Value);
                 var result = await _cosmosDBService.PatchItemPropertiesAsync<AttachmentReference>(
                         AzureCosmosDBContainers.Attachments,
                         userIdentity.UPN!,
                         resourcePath.MainResourceId!,
                         userIdentity.UPN!,
-                        propertyValues,
+                        nullablePropertyValues,
                         default)
                     ?? throw new ResourceProviderException(
                         $"The {_name} resource provider did not find the {resourcePath.RawResourcePath} resource. "

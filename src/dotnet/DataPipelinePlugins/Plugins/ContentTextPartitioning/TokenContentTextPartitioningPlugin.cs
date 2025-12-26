@@ -26,9 +26,6 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.ContentTextPartitioning
     {
         protected override string Name => PluginNames.TOKEN_CONTENTTEXTPARTITIONING;
 
-        private readonly ILogger<TokenContentTextPartitioningPlugin> _logger =
-            serviceProvider.GetRequiredService<ILogger<TokenContentTextPartitioningPlugin>>();
-
         /// <inheritdoc/>
         public async Task<PluginResult<List<DataPipelineContentItemContentPart>>> PartitionText(
             string contentItemCanonicalId,

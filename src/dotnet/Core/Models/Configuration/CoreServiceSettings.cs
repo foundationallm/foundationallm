@@ -35,6 +35,7 @@ namespace FoundationaLLM.Core.Models.Configuration
         /// <summary>
         /// Gets or sets the polling interval, in milliseconds, used when waiting for completion responses from the
         /// service.
+        /// </summary>
         public ConfigurationValue<int> CompletionResponsePollingIntervalMilliseconds { get; set; } = new ConfigurationValue<int>() { Value = 1000 };
     }
 }
