@@ -90,7 +90,11 @@ namespace FoundationaLLM.Attachment.ResourceProviders
                     var attachments = new List<AttachmentReference>();
 
                     if (resourcePath.ResourceTypeInstances[0].ResourceId != null)
-                        attachments = [await _cosmosDBService.GetAttachment(userIdentity.UPN!, resourcePath.ResourceTypeInstances[0].ResourceId!)];
+                    {
+                        var attachment = await _cosmosDBService.GetAttachment(userIdentity.UPN!, resourcePath.ResourceTypeInstances[0].ResourceId!);
+                        if (attachment != null)
+                            attachments.Add(attachment);
+                    }
                     else
                         attachments = await _cosmosDBService.GetAttachments(userIdentity.UPN!);
 
@@ -212,7 +216,7 @@ namespace FoundationaLLM.Attachment.ResourceProviders
                     StatusCodes.Status400BadRequest)
             };
 
-        protected override async Task<TResult> UpdateResourcePropertiesAsyncInternal<T, TResult>(ResourcePath resourcePath, ResourcePathAuthorizationResult authorizationResult, Dictionary<string, object?> propertyValues, UnifiedUserIdentity userIdentity)
+        protected override async Task<TResult> UpdateResourcePropertiesAsyncInternal<T, TResult>(ResourcePath resourcePath, ResourcePathAuthorizationResult authorizationResult, Dictionary<string, object> propertyValues, UnifiedUserIdentity userIdentity)
         {
             _ = EnsureAndValidatePolicyDefinitions(resourcePath, authorizationResult);
 
