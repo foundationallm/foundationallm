@@ -603,5 +603,75 @@
 				"field_name": "FoundationaLLM_Context_Management_Write"
 			}
 		]
+	},
+	{
+		"category": "Infrastructure",
+		"actions": [
+			{
+				"name": "FoundationaLLM.Infrastructure/azureContainerAppsEnvironments/read",
+				"description": "Read Azure Container Apps Environments.",
+				"field_name": "FoundationaLLM_Infrastructure_AzureContainerAppsEnvironments_Read"
+			},
+			{
+				"name": "FoundationaLLM.Infrastructure/azureContainerApps/read",
+				"description": "Read Azure Container Apps.",
+				"field_name": "FoundationaLLM_Infrastructure_AzureContainerApps_Read"
+			},
+			{
+				"name": "FoundationaLLM.Infrastructure/azureContainerApps/write",
+				"description": "Create or update Azure Container Apps.",
+				"field_name": "FoundationaLLM_Infrastructure_AzureContainerApps_Write"
+			},
+			{
+				"name": "FoundationaLLM.Infrastructure/azureContainerApps/delete",
+				"description": "Delete Azure Container Apps.",
+				"field_name": "FoundationaLLM_Infrastructure_AzureContainerApps_Delete"
+			},
+			{
+				"name": "FoundationaLLM.Infrastructure/azureContainerApps/restart",
+				"description": "Restart Azure Container Apps.",
+				"field_name": "FoundationaLLM_Infrastructure_AzureContainerApps_Restart"
+			},
+			{
+				"name": "FoundationaLLM.Infrastructure/azureContainerApps/scale",
+				"description": "Scale Azure Container Apps.",
+				"field_name": "FoundationaLLM_Infrastructure_AzureContainerApps_Scale"
+			},
+			{
+				"name": "FoundationaLLM.Infrastructure/azureKubernetesServices/read",
+				"description": "Read Azure Kubernetes Services.",
+				"field_name": "FoundationaLLM_Infrastructure_AzureKubernetesServices_Read"
+			},
+			{
+				"name": "FoundationaLLM.Infrastructure/azureKubernetesServiceDeployments/read",
+				"description": "Read Azure Kubernetes Service Deployments.",
+				"field_name": "FoundationaLLM_Infrastructure_AzureKubernetesServiceDeployments_Read"
+			},
+			{
+				"name": "FoundationaLLM.Infrastructure/azureKubernetesServiceDeployments/write",
+				"description": "Create or update Azure Kubernetes Service Deployments.",
+				"field_name": "FoundationaLLM_Infrastructure_AzureKubernetesServiceDeployments_Write"
+			},
+			{
+				"name": "FoundationaLLM.Infrastructure/azureKubernetesServiceDeployments/delete",
+				"description": "Delete Azure Kubernetes Service Deployments.",
+				"field_name": "FoundationaLLM_Infrastructure_AzureKubernetesServiceDeployments_Delete"
+			},
+			{
+				"name": "FoundationaLLM.Infrastructure/azureKubernetesServiceDeployments/restart",
+				"description": "Restart Azure Kubernetes Service Deployments.",
+				"field_name": "FoundationaLLM_Infrastructure_AzureKubernetesServiceDeployments_Restart"
+			},
+			{
+				"name": "FoundationaLLM.Infrastructure/azureKubernetesServiceDeployments/scale",
+				"description": "Scale Azure Kubernetes Service Deployments.",
+				"field_name": "FoundationaLLM_Infrastructure_AzureKubernetesServiceDeployments_Scale"
+			},
+			{
+				"name": "FoundationaLLM.Infrastructure/management/write",
+				"description": "Execute management actions.",
+				"field_name": "FoundationaLLM_Infrastructure_Management_Write"
+			}
+		]
 	}
 ]

@@ -1,3 +1,9 @@
+using Azure.Core;
+using Azure.Identity;
+using Azure.ResourceManager;
+using Azure.ResourceManager.AppContainers;
+using Azure.ResourceManager.AppContainers.Models;
+using Azure.ResourceManager.ContainerService;
 using FoundationaLLM.Common.Constants.Configuration;
 using FoundationaLLM.Common.Constants.Events;
 using FoundationaLLM.Common.Constants.ResourceProviders;
@@ -11,6 +17,8 @@ using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders.Infrastructure;
 using FoundationaLLM.Common.Services.ResourceProviders;
 using FoundationaLLM.Infrastructure.Models;
+using k8s;
+using k8s.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -56,6 +64,8 @@ namespace FoundationaLLM.Infrastructure.ResourceProviders
             useInternalReferencesStore: true,
             proxyMode: proxyMode)
     {
+        private readonly TokenCredential _credential = new DefaultAzureCredential();
+
         /// <inheritdoc/>
         protected override Dictionary<string, ResourceTypeDescriptor> GetResourceTypes() =>
             InfrastructureResourceProviderMetadata.AllowedResourceTypes;
@@ -142,6 +152,12 @@ namespace FoundationaLLM.Infrastructure.ResourceProviders
                 throw new ResourceProviderException("The resource path does not match the object definition (name mismatch).",
                     StatusCodes.Status400BadRequest);
 
+            // Update Azure Container App using Azure SDK
+            if (!string.IsNullOrEmpty(containerApp.AzureResourceId))
+            {
+                await UpdateAzureContainerAppInAzure(containerApp);
+            }
+
             var reference = new InfrastructureReference
             {
                 Name = containerApp.Name!,
@@ -165,6 +181,39 @@ namespace FoundationaLLM.Infrastructure.ResourceProviders
             };
         }
 
+        private async Task UpdateAzureContainerAppInAzure(AzureContainerApp containerApp)
+        {
+            try
+            {
+                var armClient = new ArmClient(_credential);
+                var containerAppResourceId = new ResourceIdentifier(containerApp.AzureResourceId!);
+                var containerAppResource = armClient.GetContainerAppResource(containerAppResourceId);
+
+                var response = await containerAppResource.GetAsync();
+                var existingApp = response.Value;
+                var appData = existingApp.Data;
+
+                // Update scale settings if provided
+                if (containerApp.MinReplicas.HasValue || containerApp.MaxReplicas.HasValue)
+                {
+                    if (appData.Template?.Scale != null)
+                    {
+                        appData.Template.Scale.MinReplicas = containerApp.MinReplicas ?? appData.Template.Scale.MinReplicas;
+                        appData.Template.Scale.MaxReplicas = containerApp.MaxReplicas ?? appData.Template.Scale.MaxReplicas;
+                    }
+                    await containerAppResource.UpdateAsync(Azure.WaitUntil.Completed, appData);
+                }
+
+                _logger.LogInformation("Successfully updated Azure Container App {ContainerAppName} in Azure", containerApp.Name);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Failed to update Azure Container App {ContainerAppName} in Azure", containerApp.Name);
+                throw new ResourceProviderException($"Failed to update Azure Container App {containerApp.Name}: {ex.Message}",
+                    StatusCodes.Status500InternalServerError);
+            }
+        }
+
         private async Task<ResourceProviderUpsertResult> UpdateAzureKubernetesServiceDeployment(ResourcePath resourcePath, string serializedResource, UnifiedUserIdentity userIdentity)
         {
             var deployment = JsonSerializer.Deserialize<AzureKubernetesServiceDeployment>(serializedResource)
@@ -176,6 +225,12 @@ namespace FoundationaLLM.Infrastructure.ResourceProviders
             if (resourcePath.ResourceId != deployment.Name)
                 throw new ResourceProviderException("The resource path does not match the object definition (name mismatch).",
                     StatusCodes.Status400BadRequest);
+
+            // Update Kubernetes deployment using Kubernetes client
+            if (!string.IsNullOrEmpty(deployment.ClusterObjectId) && deployment.Replicas.HasValue)
+            {
+                await UpdateKubernetesDeploymentInCluster(deployment);
+            }
 
             var reference = new InfrastructureReference
             {
@@ -198,6 +253,32 @@ namespace FoundationaLLM.Infrastructure.ResourceProviders
                 ObjectId = deployment!.ObjectId,
                 ResourceExists = existingReference is not null
             };
+        }
+
+        private async Task UpdateKubernetesDeploymentInCluster(AzureKubernetesServiceDeployment deployment)
+        {
+            try
+            {
+                var kubeConfig = await GetKubernetesConfigFromCluster(deployment.ClusterObjectId!);
+                using var client = new Kubernetes(kubeConfig);
+
+                var k8sNamespace = deployment.Namespace ?? "default";
+                var existingDeployment = await client.ReadNamespacedDeploymentAsync(deployment.Name!, k8sNamespace);
+
+                if (deployment.Replicas.HasValue && existingDeployment?.Spec != null)
+                {
+                    existingDeployment.Spec.Replicas = deployment.Replicas;
+                    await client.ReplaceNamespacedDeploymentAsync(existingDeployment, deployment.Name!, k8sNamespace);
+                }
+
+                _logger.LogInformation("Successfully updated Kubernetes deployment {DeploymentName} in cluster", deployment.Name);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Failed to update Kubernetes deployment {DeploymentName}", deployment.Name);
+                throw new ResourceProviderException($"Failed to update Kubernetes deployment {deployment.Name}: {ex.Message}",
+                    StatusCodes.Status500InternalServerError);
+            }
         }
 
         #endregion
@@ -233,9 +314,39 @@ namespace FoundationaLLM.Infrastructure.ResourceProviders
 
         private async Task<ResourceProviderActionResult> RestartAzureContainerApp(ResourcePath resourcePath, UnifiedUserIdentity userIdentity)
         {
-            // TODO: Implement actual Azure Container App restart logic using Azure SDK
             _logger.LogInformation("Restart action triggered for Azure Container App {ContainerAppName}", resourcePath.ResourceId);
-            await Task.CompletedTask;
+
+            try
+            {
+                var containerApp = await LoadResource<AzureContainerApp>(resourcePath.ResourceId!);
+                if (containerApp != null && !string.IsNullOrEmpty(containerApp.AzureResourceId))
+                {
+                    var armClient = new ArmClient(_credential);
+                    var containerAppResourceId = new ResourceIdentifier(containerApp.AzureResourceId);
+                    var containerAppResource = armClient.GetContainerAppResource(containerAppResourceId);
+
+                    // Get the current revision and restart by creating a new revision
+                    var response = await containerAppResource.GetAsync();
+                    var existingApp = response.Value;
+                    var appData = existingApp.Data;
+
+                    // To restart a Container App, we update it with a new revision suffix
+                    if (appData.Template != null)
+                    {
+                        appData.Template.RevisionSuffix = $"restart-{DateTimeOffset.UtcNow.ToUnixTimeSeconds()}";
+                    }
+
+                    await containerAppResource.UpdateAsync(Azure.WaitUntil.Completed, appData);
+                    _logger.LogInformation("Successfully restarted Azure Container App {ContainerAppName}", resourcePath.ResourceId);
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Failed to restart Azure Container App {ContainerAppName}", resourcePath.ResourceId);
+                throw new ResourceProviderException($"Failed to restart Azure Container App {resourcePath.ResourceId}: {ex.Message}",
+                    StatusCodes.Status500InternalServerError);
+            }
+
             return new ResourceProviderActionResult(resourcePath.RawResourcePath, true);
         }
 
@@ -245,18 +356,84 @@ namespace FoundationaLLM.Infrastructure.ResourceProviders
                 ?? throw new ResourceProviderException("The scale request is invalid.",
                     StatusCodes.Status400BadRequest);
 
-            // TODO: Implement actual Azure Container App scale logic using Azure SDK
             _logger.LogInformation("Scale action triggered for Azure Container App {ContainerAppName} with replicas: Replicas={Replicas}, Min={MinReplicas}, Max={MaxReplicas}",
                 resourcePath.ResourceId, scaleRequest.Replicas, scaleRequest.MinReplicas, scaleRequest.MaxReplicas);
-            await Task.CompletedTask;
+
+            try
+            {
+                var containerApp = await LoadResource<AzureContainerApp>(resourcePath.ResourceId!);
+                if (containerApp != null && !string.IsNullOrEmpty(containerApp.AzureResourceId))
+                {
+                    var armClient = new ArmClient(_credential);
+                    var containerAppResourceId = new ResourceIdentifier(containerApp.AzureResourceId);
+                    var containerAppResource = armClient.GetContainerAppResource(containerAppResourceId);
+
+                    var response = await containerAppResource.GetAsync();
+                    var existingApp = response.Value;
+                    var appData = existingApp.Data;
+
+                    if (appData.Template?.Scale != null)
+                    {
+                        appData.Template.Scale.MinReplicas = scaleRequest.MinReplicas;
+                        appData.Template.Scale.MaxReplicas = scaleRequest.MaxReplicas;
+                    }
+                    else if (appData.Template != null)
+                    {
+                        appData.Template.Scale = new ContainerAppScale
+                        {
+                            MinReplicas = scaleRequest.MinReplicas,
+                            MaxReplicas = scaleRequest.MaxReplicas
+                        };
+                    }
+
+                    await containerAppResource.UpdateAsync(Azure.WaitUntil.Completed, appData);
+                    _logger.LogInformation("Successfully scaled Azure Container App {ContainerAppName}", resourcePath.ResourceId);
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Failed to scale Azure Container App {ContainerAppName}", resourcePath.ResourceId);
+                throw new ResourceProviderException($"Failed to scale Azure Container App {resourcePath.ResourceId}: {ex.Message}",
+                    StatusCodes.Status500InternalServerError);
+            }
+
             return new ResourceProviderActionResult(resourcePath.RawResourcePath, true);
         }
 
         private async Task<ResourceProviderActionResult> RestartAzureKubernetesServiceDeployment(ResourcePath resourcePath, UnifiedUserIdentity userIdentity)
         {
-            // TODO: Implement actual Kubernetes deployment restart logic
             _logger.LogInformation("Restart action triggered for Kubernetes deployment {DeploymentName}", resourcePath.ResourceId);
-            await Task.CompletedTask;
+
+            try
+            {
+                var deployment = await LoadResource<AzureKubernetesServiceDeployment>(resourcePath.ResourceId!);
+                if (deployment != null && !string.IsNullOrEmpty(deployment.ClusterObjectId))
+                {
+                    var kubeConfig = await GetKubernetesConfigFromCluster(deployment.ClusterObjectId);
+                    using var client = new Kubernetes(kubeConfig);
+
+                    var k8sNamespace = deployment.Namespace ?? "default";
+                    var existingDeployment = await client.ReadNamespacedDeploymentAsync(deployment.Name!, k8sNamespace);
+
+                    if (existingDeployment?.Spec?.Template?.Metadata != null)
+                    {
+                        // Add or update restart annotation to trigger rolling restart
+                        existingDeployment.Spec.Template.Metadata.Annotations ??= new Dictionary<string, string>();
+                        existingDeployment.Spec.Template.Metadata.Annotations["kubectl.kubernetes.io/restartedAt"] =
+                            DateTimeOffset.UtcNow.ToString("o");
+
+                        await client.ReplaceNamespacedDeploymentAsync(existingDeployment, deployment.Name!, k8sNamespace);
+                        _logger.LogInformation("Successfully restarted Kubernetes deployment {DeploymentName}", resourcePath.ResourceId);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Failed to restart Kubernetes deployment {DeploymentName}", resourcePath.ResourceId);
+                throw new ResourceProviderException($"Failed to restart Kubernetes deployment {resourcePath.ResourceId}: {ex.Message}",
+                    StatusCodes.Status500InternalServerError);
+            }
+
             return new ResourceProviderActionResult(resourcePath.RawResourcePath, true);
         }
 
@@ -266,11 +443,79 @@ namespace FoundationaLLM.Infrastructure.ResourceProviders
                 ?? throw new ResourceProviderException("The scale request is invalid.",
                     StatusCodes.Status400BadRequest);
 
-            // TODO: Implement actual Kubernetes deployment scale logic
             _logger.LogInformation("Scale action triggered for Kubernetes deployment {DeploymentName} with replicas: Replicas={Replicas}, Min={MinReplicas}, Max={MaxReplicas}",
                 resourcePath.ResourceId, scaleRequest.Replicas, scaleRequest.MinReplicas, scaleRequest.MaxReplicas);
-            await Task.CompletedTask;
+
+            try
+            {
+                var deployment = await LoadResource<AzureKubernetesServiceDeployment>(resourcePath.ResourceId!);
+                if (deployment != null && !string.IsNullOrEmpty(deployment.ClusterObjectId) && scaleRequest.Replicas.HasValue)
+                {
+                    var kubeConfig = await GetKubernetesConfigFromCluster(deployment.ClusterObjectId);
+                    using var client = new Kubernetes(kubeConfig);
+
+                    var k8sNamespace = deployment.Namespace ?? "default";
+                    var existingDeployment = await client.ReadNamespacedDeploymentAsync(deployment.Name!, k8sNamespace);
+
+                    if (existingDeployment?.Spec != null)
+                    {
+                        existingDeployment.Spec.Replicas = scaleRequest.Replicas;
+                        await client.ReplaceNamespacedDeploymentAsync(existingDeployment, deployment.Name!, k8sNamespace);
+                        _logger.LogInformation("Successfully scaled Kubernetes deployment {DeploymentName} to {Replicas} replicas",
+                            resourcePath.ResourceId, scaleRequest.Replicas);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Failed to scale Kubernetes deployment {DeploymentName}", resourcePath.ResourceId);
+                throw new ResourceProviderException($"Failed to scale Kubernetes deployment {resourcePath.ResourceId}: {ex.Message}",
+                    StatusCodes.Status500InternalServerError);
+            }
+
             return new ResourceProviderActionResult(resourcePath.RawResourcePath, true);
+        }
+
+        private async Task<KubernetesClientConfiguration> GetKubernetesConfigFromCluster(string clusterObjectId)
+        {
+            try
+            {
+                // Load the AKS cluster resource to get credentials
+                var aksCluster = await LoadResource<AzureKubernetesService>(clusterObjectId);
+                if (aksCluster == null || string.IsNullOrEmpty(aksCluster.AzureResourceId))
+                {
+                    throw new ResourceProviderException($"AKS cluster {clusterObjectId} not found or missing Azure resource ID.",
+                        StatusCodes.Status404NotFound);
+                }
+
+                var armClient = new ArmClient(_credential);
+                var aksResourceId = new ResourceIdentifier(aksCluster.AzureResourceId);
+                var aksResource = armClient.GetContainerServiceManagedClusterResource(aksResourceId);
+
+                // Get admin credentials
+                var credentialsResponse = await aksResource.GetClusterAdminCredentialsAsync();
+                var credentials = credentialsResponse.Value;
+
+                if (credentials.Kubeconfigs == null || credentials.Kubeconfigs.Count == 0)
+                {
+                    throw new ResourceProviderException($"No kubeconfig available for AKS cluster {clusterObjectId}.",
+                        StatusCodes.Status500InternalServerError);
+                }
+
+                var kubeConfigBytes = credentials.Kubeconfigs[0].Value;
+                using var stream = new MemoryStream(kubeConfigBytes);
+                return KubernetesClientConfiguration.BuildConfigFromConfigFile(stream);
+            }
+            catch (ResourceProviderException)
+            {
+                throw;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Failed to get Kubernetes config for cluster {ClusterObjectId}", clusterObjectId);
+                throw new ResourceProviderException($"Failed to get Kubernetes config for cluster: {ex.Message}",
+                    StatusCodes.Status500InternalServerError);
+            }
         }
 
         #endregion
@@ -281,10 +526,10 @@ namespace FoundationaLLM.Infrastructure.ResourceProviders
             switch (resourcePath.ResourceTypeName)
             {
                 case InfrastructureResourceTypeNames.AzureContainerApps:
-                    await DeleteResource<AzureContainerApp>(resourcePath);
+                    await DeleteAzureContainerApp(resourcePath);
                     break;
                 case InfrastructureResourceTypeNames.AzureKubernetesServiceDeployments:
-                    await DeleteResource<AzureKubernetesServiceDeployment>(resourcePath);
+                    await DeleteAzureKubernetesServiceDeployment(resourcePath);
                     break;
                 default:
                     throw new ResourceProviderException($"The resource type {resourcePath.ResourceTypeName} is not supported by the {_name} resource provider.",
@@ -292,6 +537,53 @@ namespace FoundationaLLM.Infrastructure.ResourceProviders
             };
             await SendResourceProviderEvent(
                     EventTypes.FoundationaLLM_ResourceProvider_Cache_ResetCommand);
+        }
+
+        private async Task DeleteAzureContainerApp(ResourcePath resourcePath)
+        {
+            var containerApp = await LoadResource<AzureContainerApp>(resourcePath.ResourceId!);
+            if (containerApp != null && !string.IsNullOrEmpty(containerApp.AzureResourceId))
+            {
+                try
+                {
+                    var armClient = new ArmClient(_credential);
+                    var containerAppResourceId = new ResourceIdentifier(containerApp.AzureResourceId);
+                    var containerAppResource = armClient.GetContainerAppResource(containerAppResourceId);
+                    await containerAppResource.DeleteAsync(Azure.WaitUntil.Completed);
+                    _logger.LogInformation("Successfully deleted Azure Container App {ContainerAppName} from Azure", resourcePath.ResourceId);
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "Failed to delete Azure Container App {ContainerAppName} from Azure", resourcePath.ResourceId);
+                    throw new ResourceProviderException($"Failed to delete Azure Container App {resourcePath.ResourceId}: {ex.Message}",
+                        StatusCodes.Status500InternalServerError);
+                }
+            }
+            await DeleteResource<AzureContainerApp>(resourcePath);
+        }
+
+        private async Task DeleteAzureKubernetesServiceDeployment(ResourcePath resourcePath)
+        {
+            var deployment = await LoadResource<AzureKubernetesServiceDeployment>(resourcePath.ResourceId!);
+            if (deployment != null && !string.IsNullOrEmpty(deployment.ClusterObjectId))
+            {
+                try
+                {
+                    var kubeConfig = await GetKubernetesConfigFromCluster(deployment.ClusterObjectId);
+                    using var client = new Kubernetes(kubeConfig);
+
+                    var k8sNamespace = deployment.Namespace ?? "default";
+                    await client.DeleteNamespacedDeploymentAsync(deployment.Name!, k8sNamespace);
+                    _logger.LogInformation("Successfully deleted Kubernetes deployment {DeploymentName} from cluster", resourcePath.ResourceId);
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "Failed to delete Kubernetes deployment {DeploymentName} from cluster", resourcePath.ResourceId);
+                    throw new ResourceProviderException($"Failed to delete Kubernetes deployment {resourcePath.ResourceId}: {ex.Message}",
+                        StatusCodes.Status500InternalServerError);
+                }
+            }
+            await DeleteResource<AzureKubernetesServiceDeployment>(resourcePath);
         }
 
         #endregion
