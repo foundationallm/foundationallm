@@ -435,7 +435,7 @@ namespace FoundationaLLM.Configuration.Services
 
             }
             else
-                await _appConfigurationService.SetConfigurationSettingAsync(appConfig.Key, appConfig.Value, appConfig.ContentType);
+                await _appConfigurationService.SetConfigurationSettingAsync(appConfig.Key, appConfig.Value ?? string.Empty, appConfig.ContentType);
 
             await SendResourceProviderEvent(
                 EventTypes.FoundationaLLM_ResourceProvider_AppConfig_UpdateKeyCommand,
@@ -472,8 +472,8 @@ namespace FoundationaLLM.Configuration.Services
 
             //TODO: Add validation for the API endpoint configuration
 
-            UpdateBaseProperties(apiEndpoint, userIdentity, isNew: existingApiEndpointReference == null);
-            if (existingApiEndpointReference == null)
+            UpdateBaseProperties(apiEndpoint, userIdentity, isNew: existingApiEndpointReference is null);
+            if (existingApiEndpointReference is null)
                 await CreateResource<APIEndpointConfiguration>(apiEndpointReference, apiEndpoint);
             else
                 await SaveResource<APIEndpointConfiguration>(existingApiEndpointReference, apiEndpoint);
@@ -481,7 +481,7 @@ namespace FoundationaLLM.Configuration.Services
             return new ResourceProviderUpsertResult
             {
                 ObjectId = apiEndpoint!.ObjectId,
-                ResourceExists = existingApiEndpointReference != null
+                ResourceExists = existingApiEndpointReference is not null
             };
         }
 
