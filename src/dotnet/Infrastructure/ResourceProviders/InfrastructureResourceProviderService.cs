@@ -196,10 +196,21 @@ namespace FoundationaLLM.Infrastructure.ResourceProviders
                 // Update scale settings if provided
                 if (containerApp.MinReplicas.HasValue || containerApp.MaxReplicas.HasValue)
                 {
-                    if (appData.Template?.Scale != null)
+                    if (appData.Template != null)
                     {
-                        appData.Template.Scale.MinReplicas = containerApp.MinReplicas ?? appData.Template.Scale.MinReplicas;
-                        appData.Template.Scale.MaxReplicas = containerApp.MaxReplicas ?? appData.Template.Scale.MaxReplicas;
+                        if (appData.Template.Scale != null)
+                        {
+                            appData.Template.Scale.MinReplicas = containerApp.MinReplicas ?? appData.Template.Scale.MinReplicas;
+                            appData.Template.Scale.MaxReplicas = containerApp.MaxReplicas ?? appData.Template.Scale.MaxReplicas;
+                        }
+                        else
+                        {
+                            appData.Template.Scale = new ContainerAppScale
+                            {
+                                MinReplicas = containerApp.MinReplicas,
+                                MaxReplicas = containerApp.MaxReplicas
+                            };
+                        }
                     }
                     await containerAppResource.UpdateAsync(Azure.WaitUntil.Completed, appData);
                 }
@@ -259,7 +270,13 @@ namespace FoundationaLLM.Infrastructure.ResourceProviders
         {
             try
             {
-                var kubeConfig = await GetKubernetesConfigFromCluster(deployment.ClusterObjectId!);
+                if (string.IsNullOrEmpty(deployment.ClusterObjectId))
+                {
+                    throw new ResourceProviderException("ClusterObjectId is required for Kubernetes deployment operations.",
+                        StatusCodes.Status400BadRequest);
+                }
+
+                var kubeConfig = await GetKubernetesConfigFromCluster(deployment.ClusterObjectId);
                 using var client = new Kubernetes(kubeConfig);
 
                 var k8sNamespace = deployment.Namespace ?? "default";
@@ -503,8 +520,22 @@ namespace FoundationaLLM.Infrastructure.ResourceProviders
                 }
 
                 var kubeConfigBytes = credentials.Kubeconfigs[0].Value;
+                if (kubeConfigBytes == null || kubeConfigBytes.Length == 0)
+                {
+                    throw new ResourceProviderException($"Invalid kubeconfig data for AKS cluster {clusterObjectId}.",
+                        StatusCodes.Status500InternalServerError);
+                }
+
                 using var stream = new MemoryStream(kubeConfigBytes);
-                return KubernetesClientConfiguration.BuildConfigFromConfigFile(stream);
+                var config = KubernetesClientConfiguration.BuildConfigFromConfigFile(stream);
+
+                if (string.IsNullOrEmpty(config.Host))
+                {
+                    throw new ResourceProviderException($"Invalid kubeconfig: missing host configuration for AKS cluster {clusterObjectId}.",
+                        StatusCodes.Status500InternalServerError);
+                }
+
+                return config;
             }
             catch (ResourceProviderException)
             {
