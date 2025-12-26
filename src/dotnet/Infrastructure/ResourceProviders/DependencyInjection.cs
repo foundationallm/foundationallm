@@ -16,7 +16,7 @@ namespace FoundationaLLM
     public static partial class DependencyInjection
     {
         /// <summary>
-        /// Add the Infrastructure resource provider and its related services the the dependency injection container.
+        /// Add the Infrastructure resource provider and its related services to the dependency injection container.
         /// </summary>
         /// <param name="builder">The application builder.</param>
         /// <param name="proxyMode">Indicates whether the resource provider is running in proxy mode.</param>

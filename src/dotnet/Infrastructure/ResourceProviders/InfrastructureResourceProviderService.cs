@@ -246,8 +246,8 @@ namespace FoundationaLLM.Infrastructure.ResourceProviders
                     StatusCodes.Status400BadRequest);
 
             // TODO: Implement actual Azure Container App scale logic using Azure SDK
-            _logger.LogInformation("Scale action triggered for Azure Container App {ContainerAppName} with replicas: Min={MinReplicas}, Max={MaxReplicas}",
-                resourcePath.ResourceId, scaleRequest.MinReplicas, scaleRequest.MaxReplicas);
+            _logger.LogInformation("Scale action triggered for Azure Container App {ContainerAppName} with replicas: Replicas={Replicas}, Min={MinReplicas}, Max={MaxReplicas}",
+                resourcePath.ResourceId, scaleRequest.Replicas, scaleRequest.MinReplicas, scaleRequest.MaxReplicas);
             await Task.CompletedTask;
             return new ResourceProviderActionResult(resourcePath.RawResourcePath, true);
         }
@@ -267,8 +267,8 @@ namespace FoundationaLLM.Infrastructure.ResourceProviders
                     StatusCodes.Status400BadRequest);
 
             // TODO: Implement actual Kubernetes deployment scale logic
-            _logger.LogInformation("Scale action triggered for Kubernetes deployment {DeploymentName} with replicas: {Replicas}",
-                resourcePath.ResourceId, scaleRequest.Replicas);
+            _logger.LogInformation("Scale action triggered for Kubernetes deployment {DeploymentName} with replicas: Replicas={Replicas}, Min={MinReplicas}, Max={MaxReplicas}",
+                resourcePath.ResourceId, scaleRequest.Replicas, scaleRequest.MinReplicas, scaleRequest.MaxReplicas);
             await Task.CompletedTask;
             return new ResourceProviderActionResult(resourcePath.RawResourcePath, true);
         }
