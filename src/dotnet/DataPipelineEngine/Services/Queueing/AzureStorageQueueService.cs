@@ -171,8 +171,8 @@ namespace FoundationaLLM.DataPipelineEngine.Services.Queueing
                 throw new RequestFailedException(response);
         }
 
-        private void ValidateResponse<T>(
-            Azure.Response<T> response)
+        private void ValidateResponse<TResponse>(
+            Azure.Response<TResponse> response)
         {
             var rawResponse = response.GetRawResponse();
             ValidateResponse(rawResponse);

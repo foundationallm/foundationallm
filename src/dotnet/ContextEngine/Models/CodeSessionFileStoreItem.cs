@@ -41,6 +41,6 @@ namespace FoundationaLLM.Context.Models
         /// Gets or sets the path of the file system item.
         /// </summary>
         [JsonIgnore]
-        public string ParentPath { get; set; }
+        public required string ParentPath { get; set; }
     }
 }

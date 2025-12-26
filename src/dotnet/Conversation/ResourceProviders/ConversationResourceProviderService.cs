@@ -166,7 +166,7 @@ namespace FoundationaLLM.Conversation.ResourceProviders
             } as TResult)!;
         }
 
-        protected override async Task<TResult> UpdateResourcePropertiesAsyncInternal<T, TResult>(ResourcePath resourcePath, ResourcePathAuthorizationResult authorizationResult, Dictionary<string, object?> propertyValues, UnifiedUserIdentity userIdentity)
+        protected override async Task<TResult> UpdateResourcePropertiesAsyncInternal<T, TResult>(ResourcePath resourcePath, ResourcePathAuthorizationResult authorizationResult, Dictionary<string, object> propertyValues, UnifiedUserIdentity userIdentity)
         {
             _ = EnsureAndValidatePolicyDefinitions(resourcePath, authorizationResult);
 
