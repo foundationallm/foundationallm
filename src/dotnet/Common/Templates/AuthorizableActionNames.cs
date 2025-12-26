@@ -594,5 +594,74 @@ namespace FoundationaLLM.Common.Constants.Authorization
         public const string FoundationaLLM_Context_Management_Write = "FoundationaLLM.Context/management/write";
 
         #endregion
+
+        #region Infrastructure
+
+        /// <summary>
+        /// Read Azure Container Apps Environments.
+        /// </summary>
+        public const string FoundationaLLM_Infrastructure_AzureContainerAppsEnvironments_Read = "FoundationaLLM.Infrastructure/azureContainerAppsEnvironments/read";
+
+        /// <summary>
+        /// Read Azure Container Apps.
+        /// </summary>
+        public const string FoundationaLLM_Infrastructure_AzureContainerApps_Read = "FoundationaLLM.Infrastructure/azureContainerApps/read";
+
+        /// <summary>
+        /// Create or update Azure Container Apps.
+        /// </summary>
+        public const string FoundationaLLM_Infrastructure_AzureContainerApps_Write = "FoundationaLLM.Infrastructure/azureContainerApps/write";
+
+        /// <summary>
+        /// Delete Azure Container Apps.
+        /// </summary>
+        public const string FoundationaLLM_Infrastructure_AzureContainerApps_Delete = "FoundationaLLM.Infrastructure/azureContainerApps/delete";
+
+        /// <summary>
+        /// Restart Azure Container Apps.
+        /// </summary>
+        public const string FoundationaLLM_Infrastructure_AzureContainerApps_Restart = "FoundationaLLM.Infrastructure/azureContainerApps/restart";
+
+        /// <summary>
+        /// Scale Azure Container Apps.
+        /// </summary>
+        public const string FoundationaLLM_Infrastructure_AzureContainerApps_Scale = "FoundationaLLM.Infrastructure/azureContainerApps/scale";
+
+        /// <summary>
+        /// Read Azure Kubernetes Services.
+        /// </summary>
+        public const string FoundationaLLM_Infrastructure_AzureKubernetesServices_Read = "FoundationaLLM.Infrastructure/azureKubernetesServices/read";
+
+        /// <summary>
+        /// Read Azure Kubernetes Service Deployments.
+        /// </summary>
+        public const string FoundationaLLM_Infrastructure_AzureKubernetesServiceDeployments_Read = "FoundationaLLM.Infrastructure/azureKubernetesServiceDeployments/read";
+
+        /// <summary>
+        /// Create or update Azure Kubernetes Service Deployments.
+        /// </summary>
+        public const string FoundationaLLM_Infrastructure_AzureKubernetesServiceDeployments_Write = "FoundationaLLM.Infrastructure/azureKubernetesServiceDeployments/write";
+
+        /// <summary>
+        /// Delete Azure Kubernetes Service Deployments.
+        /// </summary>
+        public const string FoundationaLLM_Infrastructure_AzureKubernetesServiceDeployments_Delete = "FoundationaLLM.Infrastructure/azureKubernetesServiceDeployments/delete";
+
+        /// <summary>
+        /// Restart Azure Kubernetes Service Deployments.
+        /// </summary>
+        public const string FoundationaLLM_Infrastructure_AzureKubernetesServiceDeployments_Restart = "FoundationaLLM.Infrastructure/azureKubernetesServiceDeployments/restart";
+
+        /// <summary>
+        /// Scale Azure Kubernetes Service Deployments.
+        /// </summary>
+        public const string FoundationaLLM_Infrastructure_AzureKubernetesServiceDeployments_Scale = "FoundationaLLM.Infrastructure/azureKubernetesServiceDeployments/scale";
+
+        /// <summary>
+        /// Execute management actions.
+        /// </summary>
+        public const string FoundationaLLM_Infrastructure_Management_Write = "FoundationaLLM.Infrastructure/management/write";
+
+        #endregion
     }
 }

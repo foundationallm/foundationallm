@@ -403,6 +403,44 @@ namespace FoundationaLLM.Common.Models.Authorization
                         UpdatedBy = null
                     }
                 },
+                {
+                    "/providers/FoundationaLLM.Authorization/roleDefinitions/a7e0b2d4-8c3f-4e5a-9b1d-6f2c8a9e0d3b",
+                    new RoleDefinition
+                    {
+                        Name = "a7e0b2d4-8c3f-4e5a-9b1d-6f2c8a9e0d3b",
+                        Type = "FoundationaLLM.Authorization/roleDefinitions",
+                        ObjectId = "/providers/FoundationaLLM.Authorization/roleDefinitions/a7e0b2d4-8c3f-4e5a-9b1d-6f2c8a9e0d3b",
+                        DisplayName = "Infrastructure Contributor",
+                        Description = "Manage infrastructure resources including Azure Container Apps and Azure Kubernetes Service deployments.",
+                        AssignableScopes = [
+                            "/",],
+                        Permissions = [                            
+                            new RoleDefinitionPermissions
+                            {
+                                Actions = [
+                                    "FoundationaLLM.Infrastructure/azureContainerAppsEnvironments/read",
+                                    "FoundationaLLM.Infrastructure/azureContainerApps/read",
+                                    "FoundationaLLM.Infrastructure/azureContainerApps/write",
+                                    "FoundationaLLM.Infrastructure/azureContainerApps/delete",
+                                    "FoundationaLLM.Infrastructure/azureContainerApps/restart",
+                                    "FoundationaLLM.Infrastructure/azureContainerApps/scale",
+                                    "FoundationaLLM.Infrastructure/azureKubernetesServices/read",
+                                    "FoundationaLLM.Infrastructure/azureKubernetesServiceDeployments/read",
+                                    "FoundationaLLM.Infrastructure/azureKubernetesServiceDeployments/write",
+                                    "FoundationaLLM.Infrastructure/azureKubernetesServiceDeployments/delete",
+                                    "FoundationaLLM.Infrastructure/azureKubernetesServiceDeployments/restart",
+                                    "FoundationaLLM.Infrastructure/azureKubernetesServiceDeployments/scale",
+                                    "FoundationaLLM.Infrastructure/management/write",],
+                                NotActions = [],
+                                DataActions = [],
+                                NotDataActions = [],
+                            },],
+                        CreatedOn = DateTimeOffset.Parse("2025-05-01T00:00:00.0000000Z"),
+                        UpdatedOn = DateTimeOffset.Parse("2025-05-01T00:00:00.0000000Z"),
+                        CreatedBy = null,
+                        UpdatedBy = null
+                    }
+                },
             });
     }
 }
