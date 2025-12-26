@@ -89,5 +89,15 @@
         /// Trigger a resource command.
         /// </summary>
         public const string TriggerCommand = "trigger-command";
+
+        /// <summary>
+        /// Restart an infrastructure resource.
+        /// </summary>
+        public const string Restart = "restart";
+
+        /// <summary>
+        /// Scale an infrastructure resource.
+        /// </summary>
+        public const string Scale = "scale";
     }
 }
