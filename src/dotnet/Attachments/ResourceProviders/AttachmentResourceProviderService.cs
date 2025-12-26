@@ -89,7 +89,7 @@ namespace FoundationaLLM.Attachment.ResourceProviders
                 case AttachmentResourceTypeNames.Attachments:
                     var attachments = new List<AttachmentReference>();
 
-                    if (resourcePath.ResourceTypeInstances[0].ResourceId != null)
+                    if (resourcePath.ResourceTypeInstances[0].ResourceId is not null)
                     {
                         var attachment = await _cosmosDBService.GetAttachment(userIdentity.UPN!, resourcePath.ResourceTypeInstances[0].ResourceId!);
                         if (attachment is not null)
