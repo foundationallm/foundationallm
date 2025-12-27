@@ -11,6 +11,20 @@ This document outlines a comprehensive plan to enhance FoundationaLLM to support
 
 The implementation will follow FoundationaLLM's existing architectural patterns while extending the platform to handle multimodal outputs natively.
 
+### Key Architectural Decisions
+
+Based on architectural review, the following key decisions have been made:
+
+1. **Model Type**: All image generation models use the existing `completion` type. No distinction between `COMPLETION`, `IMAGE_GENERATION`, and `MULTIMODAL_GENERATION` - image generation is fundamentally a form of completion.
+
+2. **Image Configuration**: Image configuration (aspect ratio, response modalities) is specified **per completion request**, not in model parameters. This allows flexibility to change settings with each request, with reasonable defaults defined.
+
+3. **Image Processing**: Generated image processing is handled by the **Orchestration API using the Context API file service**, not by LangChain API or direct blob storage. This follows FoundationaLLM's standard approach for file handling.
+
+4. **Workflow Integration**: No separate image generation workflow is created. Image generation functionality is **integrated into the existing `FoundationaLLMFunctionCallingWorkflow`**.
+
+5. **Tool Location**: Image generation tools (e.g., Gemini image generation tool) are placed in the **`agent_core` plugin** (`src/python/plugins/agent_core`), not in the core plugin.
+
 ---
 
 ## Table of Contents
@@ -135,9 +149,10 @@ Current `AIModelBase.model_parameters` doesn't support:
 │                        Orchestration Layer                                   │
 │  ┌────────────────────────────────────────────────────────────────────────┐ │
 │  │                    Agent / Workflow Selection                          │ │
-│  │   • Image Generation Workflow (new)                                    │ │
-│  │   • Multimodal Chat Workflow (enhanced)                                │ │
-│  │   • Tool-based Image Generation (existing)                             │ │
+│  │   • FoundationaLLMFunctionCallingWorkflow (enhanced)                   │ │
+│  │     - Integrated image generation support                              │ │
+│  │     - Direct model output for images                                   │ │
+│  │   • Tool-based Image Generation (existing + new Gemini tool)          │ │
 │  └────────────────────────────────────────────────────────────────────────┘ │
 └───────────────────────────────┬─────────────────────────────────────────────┘
                                 │
@@ -165,39 +180,51 @@ Current `AIModelBase.model_parameters` doesn't support:
 ┌─────────────────────────────────────────────────────────────────────────────┐
 │                         Response Processing Layer                            │
 │  ┌────────────────────────────────────────────────────────────────────────┐ │
-│  │   ImageResponseProcessor (new)                                          │ │
+│  │   Orchestration API (via Context API File Service)                      │ │
 │  │   • Extract base64 images from model response                          │ │
-│  │   • Upload to blob storage                                              │ │
-│  │   • Generate accessible URLs                                            │ │
+│  │   • Upload to Context API file service                                  │ │
+│  │   • Generate accessible URLs via Context API                            │ │
 │  │   • Create ImageFileMessageContentItem                                  │ │
+│  │   • Note: Processing handled by Orchestration API, not LangChain API   │ │
 │  └────────────────────────────────────────────────────────────────────────┘ │
 └─────────────────────────────────────────────────────────────────────────────┘
 ```
 
-### 3.2 New AI Model Type: `multimodal-generation`
+### 3.2 AI Model Type: Use Existing `completion` Type
 
-Instead of just `image-generation`, introduce a more flexible type that supports models capable of both text and image generation:
+**Important**: All image generation models should use the existing `completion` type. Image generation is fundamentally a form of completion, so no new model types are needed.
 
 ```python
 class AIModelTypes(str, Enum):
     BASIC = "basic"
     EMBEDDING = "embedding"
-    COMPLETION = "completion"
-    IMAGE_GENERATION = "image-generation"
-    MULTIMODAL_GENERATION = "multimodal-generation"  # NEW
+    COMPLETION = "completion"  # Used for both text and image generation
+    IMAGE_GENERATION = "image-generation"  # Existing, but new models should use COMPLETION
 ```
 
-### 3.3 Extended Model Parameters
+### 3.3 Image Configuration via Completion Request
+
+Image configuration should be specified **per completion request**, not in model parameters. This allows flexibility to change image settings (aspect ratio, etc.) with each request. Reasonable defaults should be defined.
 
 ```python
-class MultimodalGenerationAIModel(AIModelBase):
-    """AI model capable of multimodal generation (text + images)."""
-    
-    # Response modalities configuration
-    response_modalities: List[str] = ["TEXT", "IMAGE"]  # or just ["IMAGE"]
-    
-    # Image generation configuration
+class CompletionRequestBase(BaseModel):
+    """Base class for completion requests."""
+    operation_id: str
+    session_id: Optional[str] = None
+    user_prompt: str
+    user_prompt_rewrite: Optional[str] = None
+    message_history: Optional[List[MessageHistoryItem]] = []
+    file_history: Optional[List[FileHistoryItem]] = []
+    attachments: Optional[List[AttachmentProperties]] = []
+    # NEW: Image generation configuration (optional, per-request)
     image_config: Optional[ImageGenerationConfig] = None
+
+class ImageGenerationConfig(BaseModel):
+    """Configuration for image generation in completion requests."""
+    aspect_ratio: Optional[str] = "1:1"  # Default: square
+    response_modalities: Optional[List[str]] = ["IMAGE"]  # Default: image only
+    # Additional provider-specific options can be added here
+```
     
     # Input modalities supported
     input_modalities: List[str] = ["TEXT", "IMAGE"]  # Can accept images as input
@@ -236,21 +263,21 @@ class ImageGenerationConfig(BaseModel):
 ### Phase 2: Completion Flow Integration
 **Goal**: Enable image generation through normal completion requests
 
-4. **Create Image Generation Workflow**
-   - New workflow: `FoundationaLLMImageGenerationWorkflow`
-   - Handles text → image generation
-   - Handles image → modified image (editing)
-   - Handles image + reference → styled image (style transfer)
+4. **Extend FoundationaLLMFunctionCallingWorkflow**
+   - Integrate image generation support into existing function calling workflow
+   - Handle image generation requests when model supports it
+   - Process image responses from multimodal models
+   - No separate image generation workflow needed
 
-5. **Extend CompletionResponse Model**
-   - Add support for `generated_images` field
+5. **Extend CompletionRequest Model**
+   - Add optional `image_config` field to `CompletionRequestBase`
+   - Support per-request image configuration (aspect ratio, response modalities)
+   - Define reasonable defaults for image generation
+
+6. **Extend CompletionResponse Model**
    - Update `OpenAIImageFileMessageContentItem` for base64 data URLs
    - Add image metadata (prompt used, aspect ratio, etc.)
-
-6. **Update Agent Configuration**
-   - New workflow type: `ImageGeneration`
-   - New capability: `image_generation_enabled`
-   - Model selection for image generation
+   - Support mixed text + image responses
 
 ### Phase 3: UI & User Experience
 **Goal**: Enable users to generate and view images in the chat interface
@@ -270,13 +297,16 @@ class ImageGenerationConfig(BaseModel):
 **Goal**: Allow image generation as a tool within existing agents
 
 9. **Create Gemini Image Generation Tool**
+   - **Location**: `src/python/plugins/agent_core/pkg/foundationallm_agent_plugins/tools/`
    - Similar to DALL-E tool but for Gemini
    - Support image editing via tool
    - Support style transfer via tool
+   - Must be placed in agent_core plugin, not core plugin
 
 10. **Enhance Existing Tools**
     - Allow tools to return generated images
     - Update tool artifact handling for images
+    - Ensure tools use Context API for file storage
 
 ### Phase 5: Testing & Documentation
 **Goal**: Ensure quality and provide guidance
@@ -384,411 +414,105 @@ class LanguageModelFactory:
                 language_model = ChatGoogleGenerativeAI(**model_kwargs)
 ```
 
-### 5.3 Image Response Processor
+### 5.3 Image Processing via Context API
 
-**New File**: `src/python/plugins/core/pkg/foundationallm/services/image_response_processor.py`
+**Important**: Image processing must be handled by the Orchestration API using the Context API file service, not by LangChain API or direct blob storage.
 
-```python
-"""
-Image Response Processor for handling multimodal model outputs.
-"""
+**Integration in FoundationaLLMFunctionCallingWorkflow**:
 
-import base64
-import uuid
-from typing import List, Optional, Tuple
-from pathlib import Path
+The existing `FoundationaLLMFunctionCallingWorkflow` already has access to the Context API client (`self.context_api_client`). When processing image responses:
 
-from langchain_core.messages import AIMessage
+1. Extract base64 images from model response
+2. Use `context_api_client.post_async()` to create files via Context API
+3. Context API handles storage and returns file records with URLs
+4. Create `OpenAIImageFileMessageContentItem` with file references
 
-from foundationallm.config import Configuration
-from foundationallm.storage import BlobStorageManager
-from foundationallm.models.orchestration import (
-    OpenAIImageFileMessageContentItem,
-    ContentArtifact
-)
-from foundationallm.models.constants import (
-    AgentCapabilityCategories,
-    ContentArtifactTypeNames
-)
-
-
-class ImageResponseProcessor:
-    """
-    Processes multimodal responses containing generated images.
-    Extracts images, uploads to storage, and creates response content items.
-    """
-    
-    def __init__(
-        self,
-        config: Configuration,
-        storage_account_name: str,
-        container_name: str
-    ):
-        self.config = config
-        self.storage_manager = BlobStorageManager(
-            account_name=storage_account_name,
-            container_name=container_name,
-            authentication_type=config.get_value(
-                'FoundationaLLM:ResourceProviders:Attachment:Storage:AuthenticationType'
-            )
-        )
-    
-    def extract_images_from_response(
-        self,
-        response: AIMessage,
-        operation_id: str,
-        conversation_id: Optional[str] = None
-    ) -> Tuple[List[OpenAIImageFileMessageContentItem], List[ContentArtifact]]:
-        """
-        Extract images from a multimodal AI response.
-        
-        Parameters
-        ----------
-        response : AIMessage
-            The response from the language model.
-        operation_id : str
-            The operation ID for tracking.
-        conversation_id : Optional[str]
-            The conversation ID for organizing stored images.
-            
-        Returns
-        -------
-        Tuple[List[OpenAIImageFileMessageContentItem], List[ContentArtifact]]
-            Tuple of content items and artifacts for the images.
-        """
-        content_items = []
-        content_artifacts = []
-        
-        # Handle different response formats
-        if isinstance(response.content, list):
-            for idx, block in enumerate(response.content):
-                if isinstance(block, dict) and block.get("image_url"):
-                    # Extract base64 from data URL
-                    url = block["image_url"].get("url", "")
-                    if url.startswith("data:"):
-                        image_data = self._extract_base64_from_data_url(url)
-                        if image_data:
-                            content_type, base64_data = image_data
-                            
-                            # Upload to storage
-                            file_name = f"{operation_id}_{idx}.{self._get_extension(content_type)}"
-                            blob_path = self._upload_image(
-                                base64_data,
-                                file_name,
-                                conversation_id
-                            )
-                            
-                            # Create content item
-                            content_item = OpenAIImageFileMessageContentItem(
-                                file_id=blob_path,
-                                file_url=self._get_blob_url(blob_path),
-                                agent_capability_category=AgentCapabilityCategories.FOUNDATIONALLM_IMAGE_GENERATION
-                            )
-                            content_items.append(content_item)
-                            
-                            # Create artifact
-                            artifact = ContentArtifact(
-                                id=f"generated_image_{idx}",
-                                title=f"Generated Image {idx + 1}",
-                                filepath=blob_path,
-                                source="image_generation",
-                                type=ContentArtifactTypeNames.GENERATED_IMAGE,
-                                metadata={
-                                    "content_type": content_type,
-                                    "operation_id": operation_id
-                                }
-                            )
-                            content_artifacts.append(artifact)
-        
-        return content_items, content_artifacts
-    
-    def _extract_base64_from_data_url(self, data_url: str) -> Optional[Tuple[str, str]]:
-        """Extract content type and base64 data from a data URL."""
-        try:
-            # Format: data:image/png;base64,AAAA...
-            header, data = data_url.split(",", 1)
-            content_type = header.split(":")[1].split(";")[0]
-            return content_type, data
-        except (ValueError, IndexError):
-            return None
-    
-    def _upload_image(
-        self,
-        base64_data: str,
-        file_name: str,
-        conversation_id: Optional[str] = None
-    ) -> str:
-        """Upload base64 image data to blob storage."""
-        image_bytes = base64.b64decode(base64_data)
-        
-        # Organize by conversation if provided
-        path_prefix = f"generated-images/{conversation_id}/" if conversation_id else "generated-images/"
-        blob_path = f"{path_prefix}{file_name}"
-        
-        self.storage_manager.write_file_content(
-            blob_path,
-            image_bytes
-        )
-        
-        return blob_path
-    
-    def _get_blob_url(self, blob_path: str) -> str:
-        """Get accessible URL for a blob."""
-        return self.storage_manager.get_blob_url(blob_path)
-    
-    def _get_extension(self, content_type: str) -> str:
-        """Get file extension from content type."""
-        extensions = {
-            "image/png": "png",
-            "image/jpeg": "jpg",
-            "image/webp": "webp",
-            "image/gif": "gif"
-        }
-        return extensions.get(content_type, "png")
-```
-
-### 5.4 Image Generation Workflow
-
-**New File**: `src/python/plugins/agent_langchain/pkg/foundationallm_agent_plugins_langchain/workflows/foundationallm_image_generation_workflow.py`
+**Example integration in workflow**:
 
 ```python
-"""
-Class: FoundationaLLMImageGenerationWorkflow
-Description: FoundationaLLM workflow for image generation using multimodal models.
-"""
+# In FoundationaLLMFunctionCallingWorkflow.invoke_async()
 
-import base64
-import time
-from typing import Dict, List, Optional
-
-from langchain_core.messages import (
-    AIMessage,
-    BaseMessage,
-    HumanMessage,
-    SystemMessage
-)
-
-from foundationallm.config import Configuration, UserIdentity
-from foundationallm.langchain.common import FoundationaLLMWorkflowBase, FoundationaLLMToolBase
-from foundationallm.models.agents import GenericAgentWorkflow, AgentWorkflowBase
-from foundationallm.models.constants import AgentCapabilityCategories
-from foundationallm.models.messages import MessageHistoryItem
-from foundationallm.models.orchestration import (
-    CompletionRequestObjectKeys,
-    CompletionResponse,
-    ContentArtifact,
-    FileHistoryItem,
-    OpenAITextMessageContentItem,
-    OpenAIImageFileMessageContentItem
-)
-from foundationallm.operations import OperationsManager
-from foundationallm.services import ImageResponseProcessor
-
-
-class FoundationaLLMImageGenerationWorkflow(FoundationaLLMWorkflowBase):
-    """
-    FoundationaLLM workflow for image generation using multimodal models
-    like Google Gemini's gemini-3-pro-image-preview.
-    
-    Supports:
-    - Text to image generation
-    - Image editing with text prompts
-    - Style transfer with reference images
-    """
-    
-    def __init__(
-        self,
-        workflow_config: GenericAgentWorkflow | AgentWorkflowBase,
-        objects: Dict,
-        tools: List[FoundationaLLMToolBase],
-        operations_manager: OperationsManager,
-        user_identity: UserIdentity,
-        config: Configuration,
-        intercept_http_calls: bool = False
-    ):
-        super().__init__(
-            workflow_config, objects, tools, operations_manager, user_identity, config
-        )
-        self.name = workflow_config.name
-        self.default_error_message = workflow_config.properties.get(
-            'default_error_message',
-            'An error occurred while generating the image.'
-        ) if workflow_config.properties else 'An error occurred while generating the image.'
-        
-        # Create the image generation LLM
-        self.create_workflow_llm(intercept_http_calls=intercept_http_calls)
-        self.instance_id = objects.get(CompletionRequestObjectKeys.INSTANCE_ID, None)
-        
-        # Initialize image response processor
-        storage_account = config.get_value(
-            'FoundationaLLM:ResourceProviders:Attachment:Storage:AccountName'
-        )
-        container = config.get_value(
-            'FoundationaLLM:ResourceProviders:Attachment:Storage:ContainerName'
-        )
-        self.image_processor = ImageResponseProcessor(
-            config, storage_account, container
-        )
-    
-    async def invoke_async(
-        self,
-        operation_id: str,
-        user_prompt: str,
-        user_prompt_rewrite: Optional[str],
-        message_history: List[MessageHistoryItem],
-        file_history: List[FileHistoryItem],
-        conversation_id: Optional[str] = None,
-        objects: dict = None
-    ) -> CompletionResponse:
-        """
-        Invokes the image generation workflow.
-        """
-        workflow_start_time = time.time()
-        
-        if objects is None:
-            objects = {}
-        
-        content_artifacts: List[ContentArtifact] = []
-        response_content = []
-        input_tokens = 0
-        output_tokens = 0
-        error_message = None
-        
-        llm_prompt = user_prompt_rewrite or user_prompt
-        workflow_main_prompt = self.create_workflow_main_prompt()
-        
-        # Build messages including any input images
-        messages = await self._build_messages(
-            llm_prompt,
-            workflow_main_prompt,
-            message_history,
-            file_history,
-            objects
-        )
-        
-        try:
-            # Invoke the multimodal model
-            response: AIMessage = await self.workflow_llm.ainvoke(messages)
-            
-            # Extract any text response
-            text_content = self._extract_text_content(response)
-            if text_content:
-                response_content.append(OpenAITextMessageContentItem(
-                    value=text_content,
+# After receiving LLM response with images
+if isinstance(llm_response.content, list):
+    for block in llm_response.content:
+        if isinstance(block, dict) and block.get("image_url"):
+            url = block["image_url"].get("url", "")
+            if url.startswith("data:"):
+                # Extract base64
+                content_type, base64_data = extract_base64_from_data_url(url)
+                image_bytes = base64.b64decode(base64_data)
+                
+                # Upload via Context API
+                file_name = f"generated_image_{operation_id}_{idx}.png"
+                self.context_api_client.headers['X-USER-IDENTITY'] = self.user_identity.model_dump_json()
+                
+                context_file_response = await self.context_api_client.post_async(
+                    endpoint=f"/instances/{self.instance_id}/files",
+                    data={
+                        "agent_name": objects.get('Agent.AgentName'),
+                        "conversation_id": conversation_id,
+                        "file_name": file_name,
+                        "file_content_type": content_type,
+                        "file_content": base64_data  # Context API expects base64
+                    }
+                )
+                
+                # Create content item from Context API response
+                file_record = context_file_response.data
+                content_items.append(OpenAIImageFileMessageContentItem(
+                    file_id=file_record.object_id,
+                    file_url=file_record.url,
                     agent_capability_category=AgentCapabilityCategories.FOUNDATIONALLM_IMAGE_GENERATION
                 ))
-            
-            # Extract and process generated images
-            image_items, image_artifacts = self.image_processor.extract_images_from_response(
-                response,
-                operation_id,
-                conversation_id
-            )
-            response_content.extend(image_items)
-            content_artifacts.extend(image_artifacts)
-            
-            # Get usage statistics
-            if response.usage_metadata:
-                input_tokens = response.usage_metadata.get("input_tokens", 0)
-                output_tokens = response.usage_metadata.get("output_tokens", 0)
-                
-        except Exception as ex:
-            self.logger.error('Error during image generation: %s', str(ex))
-            error_message = str(ex)
-            response_content.append(OpenAITextMessageContentItem(
-                value=f"Failed to generate image: {self.default_error_message}",
-                agent_capability_category=AgentCapabilityCategories.FOUNDATIONALLM_IMAGE_GENERATION
-            ))
-        
-        workflow_end_time = time.time()
-        
-        # Create workflow execution artifact
-        workflow_artifact = self.create_workflow_execution_content_artifact(
-            llm_prompt,
-            input_tokens,
-            output_tokens,
-            workflow_end_time - workflow_start_time,
-            error_message=error_message
-        )
-        content_artifacts.append(workflow_artifact)
-        
-        return CompletionResponse(
-            operation_id=operation_id,
-            content=response_content,
-            content_artifacts=content_artifacts,
-            user_prompt=llm_prompt,
-            full_prompt=workflow_main_prompt,
-            completion_tokens=output_tokens,
-            prompt_tokens=input_tokens,
-            total_tokens=output_tokens + input_tokens,
-            total_cost=0,
-            is_error=error_message is not None,
-            errors=[error_message] if error_message else []
-        )
-    
-    async def _build_messages(
-        self,
-        llm_prompt: str,
-        system_prompt: str,
-        message_history: List[MessageHistoryItem],
-        file_history: List[FileHistoryItem],
-        objects: dict
-    ) -> List[BaseMessage]:
-        """
-        Build the message list for the model, including any input images.
-        """
-        messages = [SystemMessage(content=system_prompt)]
-        
-        # Add conversation history
-        for message in message_history:
-            if message.sender == "User":
-                messages.append(HumanMessage(content=message.text))
-            else:
-                messages.append(AIMessage(content=message.text))
-        
-        # Build the current message content (may include images)
-        current_content = []
-        current_content.append({"type": "text", "text": llm_prompt})
-        
-        # Add any attached images from file history
-        for file_item in file_history:
-            if file_item.content_type.startswith("image/") and file_item.embed_content_in_request:
-                image_base64 = await self._load_image_as_base64(file_item)
-                if image_base64:
-                    current_content.append({
-                        "type": "image_url",
-                        "image_url": f"data:{file_item.content_type};base64,{image_base64}"
-                    })
-        
-        messages.append(HumanMessage(content=current_content))
-        return messages
-    
-    async def _load_image_as_base64(self, file_item: FileHistoryItem) -> Optional[str]:
-        """Load an image file and convert to base64."""
-        # Implementation depends on file storage mechanism
-        # This is a placeholder for the actual implementation
-        pass
-    
-    def _extract_text_content(self, response: AIMessage) -> Optional[str]:
-        """Extract text content from a multimodal response."""
-        if isinstance(response.content, str):
-            return response.content
-        
-        if isinstance(response.content, list):
-            text_parts = []
-            for block in response.content:
-                if isinstance(block, str):
-                    text_parts.append(block)
-                elif isinstance(block, dict) and block.get("type") == "text":
-                    text_parts.append(block.get("text", ""))
-            return " ".join(text_parts) if text_parts else None
-        
-        return None
+```
+
+### 5.4 Enhanced Function Calling Workflow
+
+**Modified File**: `src/python/plugins/agent_core/pkg/foundationallm_agent_plugins/workflows/foundationallm_function_calling_workflow.py`
+
+**Note**: No separate image generation workflow is needed. Image generation functionality is integrated into the existing `FoundationaLLMFunctionCallingWorkflow`.
+
+**Key Changes to FoundationaLLMFunctionCallingWorkflow**:
+
+1. **Handle Image Configuration from Request**:
+   - Read `image_config` from completion request objects
+   - Pass image configuration to language model factory when creating LLM
+   - Apply per-request image settings (aspect ratio, response modalities)
+
+2. **Process Image Responses**:
+   - Detect image content in LLM responses
+   - Extract base64 images from multimodal responses
+   - Upload images via Context API file service (not direct blob storage)
+   - Create `OpenAIImageFileMessageContentItem` from Context API file records
+
+3. **Support Mixed Responses**:
+   - Handle responses containing both text and images
+   - Properly format content items for UI display
+
+**Example modifications**:
+
+```python
+# In FoundationaLLMFunctionCallingWorkflow.invoke_async()
+
+# Extract image config from request
+image_config = objects.get(CompletionRequestObjectKeys.IMAGE_CONFIG, None)
+
+# When creating workflow LLM, pass image config if model supports it
+# (This would be handled in create_workflow_llm or language_model_factory)
+
+# After receiving LLM response
+if isinstance(llm_response.content, list):
+    for block in llm_response.content:
+        if isinstance(block, dict) and block.get("image_url"):
+            # Process image via Context API (see section 5.3)
+            ...
 ```
 
 ### 5.5 Gemini Image Generation Tool
 
-**New File**: `src/python/plugins/core/pkg/foundationallm/langchain/tools/gemini_image_generation_tool.py`
+**New File**: `src/python/plugins/agent_core/pkg/foundationallm_agent_plugins/tools/foundationallm_gemini_image_generation_tool.py`
+
+**Important**: This tool must be placed in the `agent_core` plugin, not in the `core` plugin.
 
 ```python
 """
@@ -853,12 +577,14 @@ class GeminiImageGenerationToolInput(BaseModel):
     )
 
 
-class GeminiImageGenerationTool(FoundationaLLMToolBase):
+class FoundationaLLMGeminiImageGenerationTool(FoundationaLLMToolBase):
     """
     Gemini image generation tool supporting:
     - Text-to-image generation
     - Image editing with text prompts
     - Style transfer with reference images
+    
+    This tool is part of the agent_core plugin and uses Context API for file storage.
     """
     
     args_schema: Type[BaseModel] = GeminiImageGenerationToolInput
@@ -888,6 +614,9 @@ class GeminiImageGenerationTool(FoundationaLLMToolBase):
             self.ai_model.endpoint_object_id, self.objects, APIEndpointConfiguration
         )
         self.client = self._get_client()
+        
+        # Initialize Context API client for file storage
+        self.__create_context_client()
     
     def _run(
         self,
@@ -941,21 +670,38 @@ class GeminiImageGenerationTool(FoundationaLLMToolBase):
             image_data = self._extract_image(response)
             
             if image_data:
+                # Upload image via Context API
+                file_name = f"gemini_generated_{uuid.uuid4()}.png"
+                self.context_api_client.headers['X-USER-IDENTITY'] = self.user_identity.model_dump_json()
+                
+                context_file_response = await self.context_api_client.post_async(
+                    endpoint=f"/instances/{self.instance_id}/files",
+                    data={
+                        "agent_name": self.objects.get('Agent.AgentName'),
+                        "conversation_id": self.runnable_config.get(RunnableConfigKeys.CONVERSATION_ID),
+                        "file_name": file_name,
+                        "file_content_type": "image/png",
+                        "file_content": image_data
+                    }
+                )
+                
+                file_record = context_file_response.data
                 content_artifact = ContentArtifact(
                     id=self.tool_config.name,
                     title="Generated Image",
                     source="gemini_image_generation",
-                    filepath=None,  # Will be set by caller
+                    filepath=file_record.object_id,  # Context API file ID
                     type="image",
                     metadata={
                         "tool_name": self.tool_config.name,
                         "prompt": prompt,
                         "aspect_ratio": aspect_ratio,
                         "is_edit": source_image_base64 is not None,
-                        "has_style_reference": reference_image_base64 is not None
+                        "has_style_reference": reference_image_base64 is not None,
+                        "file_url": file_record.url
                     }
                 )
-                return image_data, [content_artifact]
+                return f"Image generated and saved: {file_record.url}", [content_artifact]
             else:
                 raise ToolException("No image was generated in the response.")
                 
@@ -988,7 +734,38 @@ class GeminiImageGenerationTool(FoundationaLLMToolBase):
         return None
 ```
 
-### 5.6 New Constants and Types
+### 5.6 Extended Completion Request Model
+
+**File Update**: `src/python/plugins/core/pkg/foundationallm/models/orchestration/completion_request_base.py`
+
+```python
+from typing import List, Optional
+from pydantic import BaseModel, Field
+from foundationallm.models.attachments import AttachmentProperties
+from foundationallm.models.messages import MessageHistoryItem
+from .file_history_item import FileHistoryItem
+
+class ImageGenerationConfig(BaseModel):
+    """Configuration for image generation in completion requests."""
+    aspect_ratio: Optional[str] = Field("1:1", description="Aspect ratio (e.g., '1:1', '16:9', '9:16')")
+    response_modalities: Optional[List[str]] = Field(["IMAGE"], description="Response modalities: ['IMAGE'], ['TEXT', 'IMAGE'], etc.")
+
+class CompletionRequestBase(BaseModel):
+    """
+    Base class for completion requests.
+    """
+    operation_id: str = Field(description="The operation ID for the completion request.")
+    session_id: Optional[str] = Field(None, description="The session ID for the completion request.")
+    user_prompt: str = Field(description="The user prompt for the completion request.")
+    user_prompt_rewrite: Optional[str] = Field(None, description="The user prompt rewrite for the completion request.")
+    message_history: Optional[List[MessageHistoryItem]] = Field(list, description="The message history for the completion.")
+    file_history: Optional[List[FileHistoryItem]] = Field(list, description="The file history for the completion request.")
+    attachments: Optional[List[AttachmentProperties]] = Field(list, description="The attachments collection for the completion request.")
+    # NEW: Optional image generation configuration
+    image_config: Optional[ImageGenerationConfig] = Field(None, description="Image generation configuration for this request.")
+```
+
+### 5.7 New Constants and Types
 
 **File Update**: `src/python/plugins/core/pkg/foundationallm/models/constants/agent_capability_categories.py`
 
@@ -1012,7 +789,7 @@ class ContentArtifactTypeNames:
     # ... other types
 ```
 
-### 5.7 Updated Completion Response Model
+### 5.8 Updated Completion Response Model
 
 **File Update**: `src/python/plugins/core/pkg/foundationallm/models/orchestration/openai_image_file_message_content_item.py`
 
@@ -1026,8 +803,8 @@ class OpenAIImageFileMessageContentItem(MessageContentItemBase):
     """An image file message content item."""
 
     type: Literal[MessageContentItemTypes.IMAGE_FILE] = MessageContentItemTypes.IMAGE_FILE
-    file_id: Optional[str] = Field(None, description="The storage path/ID of the image file.")
-    file_url: Optional[str] = Field(None, description="The accessible URL of the image file.")
+    file_id: Optional[str] = Field(None, description="The storage path/ID of the image file (Context API file ID).")
+    file_url: Optional[str] = Field(None, description="The accessible URL of the image file (from Context API).")
     
     # New fields for richer metadata
     original_prompt: Optional[str] = Field(None, description="The prompt used to generate this image.")
@@ -1066,21 +843,19 @@ Example AI model configuration:
 
 ```json
 {
-  "type": "multimodal-generation",
+  "type": "completion",
   "name": "gemini-3-pro-image",
   "display_name": "Gemini 3 Pro Image",
   "description": "Google Gemini 3 Pro for image generation and editing",
   "endpoint_object_id": "/instances/{instanceId}/providers/FoundationaLLM.Configuration/apiEndpointConfigurations/gemini-image-endpoint",
   "deployment_name": "gemini-3-pro-image-preview",
   "model_parameters": {
-    "temperature": 1.0,
-    "response_modalities": ["IMAGE", "TEXT"],
-    "image_config": {
-      "aspect_ratio": "1:1"
-    }
+    "temperature": 1.0
   }
 }
 ```
+
+**Note**: Image configuration (aspect ratio, response modalities) is specified per completion request, not in model configuration. The model type is `completion`, not `multimodal-generation` or `image-generation`.
 
 ### 6.3 Agent Workflow Configuration
 
@@ -1088,11 +863,11 @@ Example agent workflow for image generation:
 
 ```json
 {
-  "type": "image-generation-workflow",
+  "type": "function-calling-workflow",
   "name": "gemini-image-workflow",
-  "workflow_host": "LangChain",
-  "package_name": "foundationallm_agent_plugins_langchain",
-  "class_name": "FoundationaLLMImageGenerationWorkflow",
+  "workflow_host": "FoundationaLLM",
+  "package_name": "foundationallm_agent_plugins",
+  "class_name": "FoundationaLLMFunctionCallingWorkflow",
   "resource_object_ids": {
     "/instances/{instanceId}/providers/FoundationaLLM.AIModel/aiModels/gemini-3-pro-image": {
       "object_id": "/instances/{instanceId}/providers/FoundationaLLM.AIModel/aiModels/gemini-3-pro-image",
@@ -1112,6 +887,8 @@ Example agent workflow for image generation:
   }
 }
 ```
+
+**Note**: Use the existing `FoundationaLLMFunctionCallingWorkflow`, not a separate image generation workflow.
 
 ### 6.4 Environment Variables
 
@@ -1143,15 +920,16 @@ GOOGLE_CLOUD_LOCATION=us-central1
    - Test response_modalities parameter handling
    - Test image_config parameter handling
 
-2. **Image Response Processor Tests**
-   - Test base64 extraction from data URLs
-   - Test image upload to blob storage
-   - Test content item creation
+2. **Function Calling Workflow Image Tests**
+   - Test image generation in function calling workflow
+   - Test image processing via Context API
+   - Test per-request image configuration
+   - Test mixed text + image responses
 
-3. **Image Generation Workflow Tests**
-   - Test text-to-image generation flow
-   - Test image editing flow
-   - Test error handling
+3. **Context API Integration Tests**
+   - Test image upload via Context API file service
+   - Test file record retrieval
+   - Test URL generation
 
 4. **Gemini Image Tool Tests**
    - Test tool input validation
@@ -1170,18 +948,23 @@ class TestGeminiImageGeneration:
     
     @pytest.mark.asyncio
     async def test_text_to_image_generation(self):
-        """Test generating an image from a text prompt."""
+        """Test generating an image from a text prompt via function calling workflow."""
         # Setup
-        workflow = create_test_workflow()
+        workflow = create_test_function_calling_workflow()
         
-        # Execute
+        # Execute with image config
+        image_config = ImageGenerationConfig(
+            aspect_ratio="16:9",
+            response_modalities=["IMAGE"]
+        )
         response = await workflow.invoke_async(
             operation_id="test-op-1",
             user_prompt="Generate a sunset over mountains",
             user_prompt_rewrite=None,
             message_history=[],
             file_history=[],
-            conversation_id="test-conv-1"
+            conversation_id="test-conv-1",
+            objects={"ImageConfig": image_config}
         )
         
         # Assert
@@ -1314,24 +1097,23 @@ Plan for future integration with:
 
 | File | Description |
 |------|-------------|
-| `src/python/plugins/core/pkg/foundationallm/services/image_response_processor.py` | Process multimodal responses |
-| `src/python/plugins/agent_langchain/pkg/.../foundationallm_image_generation_workflow.py` | Image generation workflow |
-| `src/python/plugins/core/pkg/foundationallm/langchain/tools/gemini_image_generation_tool.py` | Gemini image tool |
-| `src/dotnet/Common/Models/ResourceProviders/AIModel/MultimodalGenerationAIModel.cs` | New AI model type |
+| `src/python/plugins/agent_core/pkg/foundationallm_agent_plugins/tools/foundationallm_gemini_image_generation_tool.py` | Gemini image generation tool (in agent_core plugin) |
 | `tests/python/test_gemini_image_generation.py` | Unit/integration tests |
 
 ### Modified Files
 
 | File | Changes |
 |------|---------|
-| `language_model_factory.py` | Add GOOGLE_GENAI provider, image config support |
+| `language_model_factory.py` | Add GOOGLE_GENAI provider, support image config from request |
 | `language_model_provider.py` | Add GOOGLE_GENAI enum |
 | `APIEndpointProviders.cs` | Add GOOGLE_GENAI constant |
-| `AIModelTypes.cs` | Add multimodal-generation type |
+| `completion_request_base.py` | Add optional `image_config` field |
+| `foundationallm_function_calling_workflow.py` | Integrate image generation support, use Context API for file storage |
 | `agent_capability_categories.py` | Add image generation category |
 | `content_artifact_type_names.py` | Add generated_image type |
 | `openai_image_file_message_content_item.py` | Add new metadata fields |
 | `requirements.txt` | Ensure langchain-google-genai version |
+| `tool_plugin_manager.py` (agent_core) | Register Gemini image generation tool |
 
 ---
 
