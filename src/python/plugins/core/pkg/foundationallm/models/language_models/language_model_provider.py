@@ -8,3 +8,4 @@ class LanguageModelProvider(str, Enum):
     BEDROCK = "bedrock"
     VERTEXAI = "vertexai"
     DATABRICKS = "databricks"
+    GOOGLE_GENAI = "google_genai"  # Google Gemini Developer API

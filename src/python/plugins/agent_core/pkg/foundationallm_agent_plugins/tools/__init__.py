@@ -5,3 +5,4 @@ from .foundationallm_sql_tool import FoundationaLLMSQLTool
 from .foundationallm_databricks_tool import FoundationaLLMDatabricksTool
 from .foundationallm_kql_tool import FoundationaLLMKQLTool
 from .foundationallm_knowledge_tool import FoundationaLLMKnowledgeTool
+from .foundationallm_gemini_image_generation_tool import FoundationaLLMGeminiImageGenerationTool
