@@ -110,6 +110,11 @@ namespace FoundationaLLM.Core.API
             builder.AddUserProfileService();
             builder.Services.AddScoped<IOneDriveWorkSchoolService, OneDriveWorkSchoolService>();
 
+            // OpenAI compatibility services
+            builder.Services.AddScoped<Core.API.Services.IOpenAIRequestTranslator, Core.API.Services.OpenAIRequestTranslator>();
+            builder.Services.AddScoped<Core.API.Services.IOpenAIResponseTranslator, Core.API.Services.OpenAIResponseTranslator>();
+            builder.Services.AddScoped<IOpenAICompatibilityService, Core.Services.OpenAICompatibilityService>();
+
             builder.Services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
             builder.AddOrchestrationContext();
 

@@ -1,4 +1,4 @@
-﻿using FoundationaLLM.Common.Constants.Authentication;
+using FoundationaLLM.Common.Constants.Authentication;
 using FoundationaLLM.Common.Constants.ResourceProviders;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Authorization;
@@ -39,50 +39,62 @@ namespace FoundationaLLM.Common.Authentication
 
         /// <summary>
         /// Handles authentication for agent access tokens.
+        /// Supports both X-AGENT-ACCESS-TOKEN header and Authorization: Bearer header for OpenAI compatibility.
         /// </summary>
         /// <returns></returns>
         protected override async Task<AuthenticateResult> HandleAuthenticateAsync()
         {
-            if (!Request.Headers.TryGetValue(
+            string? agentAccessToken = null;
+
+            // Check existing X-AGENT-ACCESS-TOKEN header (existing behavior - backward compatible)
+            if (Request.Headers.TryGetValue(
                 Constants.HttpHeaders.AgentAccessToken,
-                out var agentAccessToken))
+                out var headerToken))
+            {
+                agentAccessToken = headerToken.ToString();
+            }
+            // Check Authorization header for Bearer token (new behavior for OpenAI compatibility)
+            else if (Request.Headers.TryGetValue("Authorization", out var authHeader))
+            {
+                var headerValue = authHeader.ToString();
+                if (headerValue.StartsWith("Bearer ", StringComparison.OrdinalIgnoreCase))
+                {
+                    agentAccessToken = headerValue.Substring(7).Trim();
+                }
+            }
+
+            if (string.IsNullOrWhiteSpace(agentAccessToken))
             {
                 return AuthenticateResult.NoResult();
             }
 
             try
             {
+                // The agent access token is used to handle requests to authenticate FoundationaLLM agents.
+                var validationResult = await ValidateAgentAccessToken(agentAccessToken);
 
-                if (!string.IsNullOrWhiteSpace(agentAccessToken.ToString()))
+                if (validationResult?.Valid ?? false)
                 {
-                    var agentAccessTokenValue = agentAccessToken.ToString();
-                    // The agent access token is used to handle requests to authenticate FoundationaLLM agents.
-
-                    var validationResult = await ValidateAgentAccessToken(agentAccessTokenValue);
-
-                    if (validationResult?.Valid ?? false)
+                    var claims = new List<Claim>
                     {
-                        var claims = new List<Claim>
-                        {
-                            new Claim(ClaimConstants.Name, validationResult.VirtualIdentity!.Name!),
-                            new Claim(ClaimConstants.Oid, validationResult.VirtualIdentity!.UserId!),
-                            new Claim(ClaimConstants.ObjectId, validationResult.VirtualIdentity!.UserId!),
-                            new Claim(ClaimConstants.PreferredUserName, validationResult.VirtualIdentity!.UPN!),
-                            new Claim(ClaimConstants.Scope, "Data.Read")
-                        };
+                        new Claim(ClaimConstants.Name, validationResult.VirtualIdentity!.Name!),
+                        new Claim(ClaimConstants.Oid, validationResult.VirtualIdentity!.UserId!),
+                        new Claim(ClaimConstants.ObjectId, validationResult.VirtualIdentity!.UserId!),
+                        new Claim(ClaimConstants.PreferredUserName, validationResult.VirtualIdentity!.UPN!),
+                        new Claim(ClaimConstants.Scope, "Data.Read")
+                    };
 
-                        claims.AddRange(
-                            validationResult.VirtualIdentity!.GroupIds
-                                .Select(groupId => new Claim(EntraUserClaimConstants.Groups, groupId))
-                                .ToArray());
+                    claims.AddRange(
+                        validationResult.VirtualIdentity!.GroupIds
+                            .Select(groupId => new Claim(EntraUserClaimConstants.Groups, groupId))
+                            .ToArray());
 
-                        var identity = new ClaimsIdentity(claims, Scheme.Name);
-                        var identities = new List<ClaimsIdentity> { identity };
-                        var principal = new ClaimsPrincipal(identities);
-                        var ticket = new AuthenticationTicket(principal, Scheme.Name);
+                    var identity = new ClaimsIdentity(claims, Scheme.Name);
+                    var identities = new List<ClaimsIdentity> { identity };
+                    var principal = new ClaimsPrincipal(identities);
+                    var ticket = new AuthenticationTicket(principal, Scheme.Name);
 
-                        return AuthenticateResult.Success(ticket);
-                    }
+                    return AuthenticateResult.Success(ticket);
                 }
             }
             catch (Exception ex)
