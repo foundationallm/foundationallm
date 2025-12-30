@@ -32,7 +32,7 @@ The Data Pipelines system follows a distributed, queue-based architecture with t
                     ▼                    ▼
      ┌──────────────────────────┐  ┌────────────────────────────┐
      │DataPipelineFrontendWorker│  │ DataPipelineBackendWorker  │
-     │   (Text/Embed stages)    │  │ (Knowledge Graph stages)   │
+     │  (User-triggered runs)   │  │  (Event/schedule runs)     │
      └──────────────────────────┘  └────────────────────────────┘
 ```
 
@@ -56,24 +56,30 @@ builder.AddDataPipelineResourceProvider();
 ```
 
 ### 2. DataPipelineFrontendWorker (`src/dotnet/DataPipelineFrontendWorker/`)
-Background worker service that processes lightweight data pipeline stages.
+Background worker service that processes data pipelines triggered by direct user actions in the User Portal.
 
-**Responsibilities:**
-- Text extraction from documents (PDF, DOCX, PPTX, XLSX, images)
-- Text partitioning (token-based, semantic)
-- Text embedding via Gateway API
-- Azure AI Search indexing
-- Content safety shielding
+**Trigger Scenarios:**
+- User uploads files that require processing by data pipelines
+- User initiates content processing through UI interactions
+- Real-time, interactive pipeline executions
+
+**Capabilities:**
+- Can execute any data pipeline with any combination of stages
+- Optimized for single document or small batch processing
+- Provides responsive feedback for user-initiated operations
 
 ### 3. DataPipelineBackendWorker (`src/dotnet/DataPipelineBackendWorker/`)
-Background worker service for compute-intensive knowledge graph operations.
+Background worker service that processes data pipelines triggered by events or schedules.
 
-**Responsibilities:**
-- Knowledge extraction from content
-- Knowledge graph consolidation
-- Knowledge graph embedding
-- Knowledge graph summarization
-- Knowledge graph indexing and publishing
+**Trigger Scenarios:**
+- Scheduled batch processing jobs
+- Event-driven pipeline executions (e.g., storage events, webhooks)
+- Bulk document processing operations
+
+**Capabilities:**
+- Can execute any data pipeline with any combination of stages
+- Optimized for processing multiple documents at once
+- Handles long-running, resource-intensive batch operations
 
 ### 4. DataPipelineEngine (`src/dotnet/DataPipelineEngine/`)
 Core engine library containing services and runners.
@@ -313,3 +319,56 @@ src/dotnet/
     │   └── DataPipelines/
     └── Constants/DataPipelines/
 ```
+
+## Planning Guidelines
+
+You must propose all plans and code changes according to the already established patterns and approaches that exist in the FoundationaLLM Data Pipelines code.
+
+You must always create the plan first and wait until the plan is explicitly approved before starting to generate any changes. You will always follow these steps:
+- Create a PR with the plan.
+- Address comments in the PR that require you to change the plan.
+- Wait until the plan is explicitly approved.
+- Once the plan is explicitly approved, create the code changes in the PR.
+
+When creating implementation plans, use this structure (adapt sections based on project size):
+
+### Overview
+- What problem are we solving and why?
+- Success criteria (what does "done" look like?)
+- Who will use this and how?
+
+### Technical Approach  
+- High-level architecture and key technology choices
+- Important APIs, data structures, or integrations
+- Major technical decisions and trade-offs
+
+### Implementation Plan
+Break work into logical phases. For smaller projects, phases might be days; for larger ones, weeks or sprints:
+
+**Phase 1: Foundation**
+- Set up core structure (models, database, basic framework)
+- Essential configuration and dependencies
+
+**Phase 2: Core Functionality**
+- Primary features and user workflows
+- Business logic and key integrations
+
+**Phase 3: Polish & Deploy**
+- Error handling, testing, and edge cases
+- Documentation and deployment preparation
+
+**Phase 4: Proposed code**
+- Proposed Data Pipelines code based on the plan
+
+For each phase, list specific tasks with complexity estimates (Small/Medium/Large) and any dependencies.
+
+### Considerations
+- **Assumptions**: What are we taking for granted?
+- **Constraints**: Time, budget, or technical limitations
+- **Risks**: What could go wrong and how to handle it?
+
+### Not Included
+- Features or improvements saved for later versions
+- Nice-to-have items that aren't essential
+
+Adjust the detail level based on your needs - solo projects might need less formal documentation, while team projects benefit from more thorough planning. Focus on creating a roadmap that helps you stay organized and make progress.
