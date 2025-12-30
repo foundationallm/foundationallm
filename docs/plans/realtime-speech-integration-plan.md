@@ -2,7 +2,9 @@
 
 ## Executive Summary
 
-This document outlines a comprehensive plan to integrate realtime speech-to-speech models (like GPT-Realtime) into FoundationaLLM. The integration enables voice-based conversations with AI agents through the Chat User Portal, with full transcription support and seamless integration into the existing conversation history.
+This document outlines a comprehensive plan to integrate realtime speech-to-speech models into FoundationaLLM. The integration enables voice-based conversations with AI agents through the Chat User Portal, with full transcription support and seamless integration into the existing conversation history.
+
+**Provider-Agnostic Design:** Following FoundationaLLM's philosophy of being provider-agnostic, this implementation introduces an abstraction layer (`IRealtimeSpeechProvider`) that allows the platform to support multiple realtime speech providers. The initial implementation includes Azure OpenAI GPT-Realtime, with the architecture ready to support additional providers such as Azure Speech SDK realtime, Google Gemini Live, or other future offerings.
 
 **Reference Implementation:** This plan is based on the [FoundationaLLM Realtime Speech Prototype](https://github.com/foundationallm/realtime-speech-prototype/tree/cursor/realtime-agent-mcp-integration-1f31), which provides proven patterns for:
 - Python/FastAPI backend with WebSocket proxy to Azure Realtime API
@@ -172,18 +174,31 @@ interface SessionSettings {
 │  └─────────────────────────────────────────────────────────────────────┘│
 │  ┌─────────────────────────────────────────────────────────────────────┐│
 │  │                  RealtimeSpeechService                              ││
-│  │  - GPT-Realtime API client                                          ││
-│  │  - Audio format conversion                                          ││
+│  │  - Provider-agnostic orchestration                                  ││
 │  │  - Conversation context management                                  ││
+│  └─────────────────────────────────────────────────────────────────────┘│
+│  ┌─────────────────────────────────────────────────────────────────────┐│
+│  │              IRealtimeSpeechProvider (Abstraction)                  ││
+│  │  ┌─────────────────────┐  ┌─────────────────────┐  ┌─────────────┐ ││
+│  │  │ AzureOpenAI         │  │ (Future Provider)   │  │ (Future     │ ││
+│  │  │ RealtimeSpeech      │  │ e.g., Azure Speech  │  │  Provider)  │ ││
+│  │  │ Provider            │  │ SDK, Gemini Live    │  │             │ ││
+│  │  └─────────────────────┘  └─────────────────────┘  └─────────────┘ ││
 │  └─────────────────────────────────────────────────────────────────────┘│
 └───────────────────────────────┬─────────────────────────────────────────┘
                                 │ WebSocket / HTTP
                                 ▼
 ┌─────────────────────────────────────────────────────────────────────────┐
-│                    Azure OpenAI GPT-Realtime API                         │
-│  - Speech-to-speech with native voice                                    │
-│  - Real-time audio streaming                                             │
-│  - Built-in transcription                                                │
+│               Realtime Speech Backend (Provider-Specific)                │
+│  ┌─────────────────────────────────────────────────────────────────────┐│
+│  │ Azure OpenAI GPT-Realtime API (Initial Implementation)              ││
+│  │  - Speech-to-speech with native voice                               ││
+│  │  - Real-time audio streaming                                        ││
+│  │  - Built-in transcription                                           ││
+│  └─────────────────────────────────────────────────────────────────────┘│
+│  ┌─────────────────────────────────────────────────────────────────────┐│
+│  │ Future: Azure Speech SDK / Google Gemini Live / Other Providers     ││
+│  └─────────────────────────────────────────────────────────────────────┘│
 └─────────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -198,17 +213,21 @@ Based on the [realtime-speech-prototype](https://github.com/foundationallm/realt
    - Session settings panel (voice, temperature, VAD configuration)
    - Interrupt detection and handling
 
-2. **CoreAPI (.NET)**: Adapts the Python FastAPI backend pattern
+2. **CoreAPI (.NET)**: Adapts the Python FastAPI backend pattern with provider abstraction
    - `RealtimeSpeechController`: WebSocket endpoint (equivalent to `websocket_handler.py`)
-   - `RealtimeSpeechService`: Azure Realtime API client (equivalent to `realtime_client.py`)
+   - `IRealtimeSpeechProvider`: Provider abstraction interface for multiple backends
+   - `IRealtimeSpeechProviderFactory`: Factory for instantiating providers based on model config
+   - `RealtimeSpeechService`: Orchestrating service that uses providers in a provider-agnostic way
+   - `AzureOpenAIRealtimeSpeechProvider`: Azure OpenAI GPT-Realtime implementation
    - Session configuration with MCP tool support
    - Greeting flow management (prevents audio until agent greets)
 
-3. **Azure OpenAI GPT-Realtime API**: The underlying realtime speech-to-speech service
+3. **Realtime Speech Backend (Provider-Agnostic)**: The underlying realtime speech-to-speech service
+   - Initial support: **Azure OpenAI GPT-Realtime API**
+   - Future support: Azure Speech SDK, Google Gemini Live, Anthropic Claude voice, etc.
    - WebSocket protocol with base64-encoded PCM16 audio
    - Server-side VAD (Voice Activity Detection)
-   - Built-in transcription via Whisper-1
-   - MCP (Model Context Protocol) tool integration
+   - Built-in transcription support
 
 4. **Conversation Store**: FoundationaLLM's existing conversation persistence
    - Stores transcriptions as messages in the conversation history
@@ -362,18 +381,13 @@ Add additional configuration fields for realtime speech models (voice selection,
 
 ## 3. Agent Configuration Updates
 
-### 3.1 Add Realtime Speech Model Reference to Agent
+### 3.1 Add Realtime Speech Settings to Agent
+
+Following the established pattern used by `AgentSemanticCacheSettings` and `AgentUserPromptRewriteSettings`, the model object id is placed inside the settings object, not directly on the agent.
 
 #### File: `src/dotnet/Common/Models/ResourceProviders/Agent/AgentBase.cs`
 
 ```csharp
-/// <summary>
-/// The object identifier of the realtime speech AI model configured for this agent.
-/// When set, enables speech-to-speech capabilities in the User Portal.
-/// </summary>
-[JsonPropertyName("realtime_speech_model_object_id")]
-public string? RealtimeSpeechModelObjectId { get; set; }
-
 /// <summary>
 /// Configuration for realtime speech sessions.
 /// </summary>
@@ -388,6 +402,7 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.Agent
 {
     /// <summary>
     /// Configuration settings for realtime speech functionality.
+    /// Follows the same pattern as AgentSemanticCacheSettings and AgentUserPromptRewriteSettings.
     /// </summary>
     public class RealtimeSpeechSettings
     {
@@ -396,6 +411,13 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.Agent
         /// </summary>
         [JsonPropertyName("enabled")]
         public bool Enabled { get; set; } = false;
+
+        /// <summary>
+        /// Gets or sets the object identifier of the AI model to use for realtime speech.
+        /// This follows the same pattern as EmbeddingAIModelObjectId in AgentSemanticCacheSettings.
+        /// </summary>
+        [JsonPropertyName("realtime_speech_ai_model_object_id")]
+        public required string RealtimeSpeechAIModelObjectId { get; set; }
 
         /// <summary>
         /// Stop words that will terminate the realtime session.
@@ -438,15 +460,15 @@ Add a computed property or ensure the `RealtimeSpeechSettings` is included in se
 /// </summary>
 [JsonIgnore]
 public bool HasRealtimeSpeechCapabilities =>
-    !string.IsNullOrWhiteSpace(RealtimeSpeechModelObjectId) &&
-    RealtimeSpeechSettings?.Enabled == true;
+    RealtimeSpeechSettings?.Enabled == true &&
+    !string.IsNullOrWhiteSpace(RealtimeSpeechSettings?.RealtimeSpeechAIModelObjectId);
 ```
 
 ### 3.3 Update Management Portal Agent Configuration
 
 #### File: `src/ui/ManagementPortal/pages/agents/create.vue`
 
-Add a new section for "Realtime Speech Configuration":
+Add a new section for "Realtime Speech Configuration". Note that the model selection is part of the realtime speech settings, following the same pattern as other agent settings that require models:
 
 ```vue
 <!-- Realtime Speech Configuration -->
@@ -460,7 +482,7 @@ Add a new section for "Realtime Speech Configuration":
     </div>
     <div>
         <ToggleButton
-            v-model="realtimeSpeechEnabled"
+            v-model="realtimeSpeechSettings.enabled"
             on-label="Yes"
             on-icon="pi pi-check-circle"
             off-label="No"
@@ -469,13 +491,13 @@ Add a new section for "Realtime Speech Configuration":
         />
     </div>
 
-    <template v-if="realtimeSpeechEnabled">
+    <template v-if="realtimeSpeechSettings.enabled">
         <div class="step-header col-span-2">
             Which realtime speech model should be used?
         </div>
         <div class="col-span-2">
             <Dropdown
-                v-model="realtimeSpeechModelObjectId"
+                v-model="realtimeSpeechSettings.realtime_speech_ai_model_object_id"
                 :options="realtimeSpeechModelOptions"
                 option-label="name"
                 option-value="object_id"
@@ -489,10 +511,39 @@ Add a new section for "Realtime Speech Configuration":
         </div>
         <div class="col-span-2">
             <InputText
-                v-model="realtimeSpeechStopWords"
+                v-model="realtimeSpeechStopWordsInput"
                 type="text"
                 class="w-full"
                 placeholder="stop, end conversation, goodbye"
+                @update:model-value="updateStopWords"
+            />
+        </div>
+
+        <div id="aria-show-transcriptions" class="step-header">
+            Show transcriptions in chat?
+        </div>
+        <div>
+            <ToggleButton
+                v-model="realtimeSpeechSettings.show_transcriptions"
+                on-label="Yes"
+                on-icon="pi pi-check-circle"
+                off-label="No"
+                off-icon="pi pi-times-circle"
+                aria-labelledby="aria-show-transcriptions"
+            />
+        </div>
+
+        <div id="aria-include-history" class="step-header">
+            Include conversation history in session context?
+        </div>
+        <div>
+            <ToggleButton
+                v-model="realtimeSpeechSettings.include_conversation_history"
+                on-label="Yes"
+                on-icon="pi pi-check-circle"
+                off-label="No"
+                off-icon="pi pi-times-circle"
+                aria-labelledby="aria-include-history"
             />
         </div>
     </template>
@@ -516,6 +567,10 @@ The CoreAPI updates adapt the Python backend from the [realtime-speech-prototype
 
 Adapts the WebSocket handling from `websocket_handler.py` in the prototype.
 
+**Note on Authentication:** The controller supports both Microsoft Entra ID authentication and FoundationaLLM Agent Access Token authentication, following the same pattern as `SessionsController`, `CompletionsController`, and `FilesController`. This enables both:
+- Interactive users authenticating via Entra ID
+- API clients using agent access tokens
+
 #### File: `src/dotnet/CoreAPI/Controllers/RealtimeSpeechController.cs` (New)
 
 ```csharp
@@ -532,9 +587,16 @@ namespace FoundationaLLM.Core.API.Controllers
     /// <summary>
     /// Provides WebSocket endpoints for realtime speech-to-speech communication.
     /// </summary>
+    /// <remarks>
+    /// This controller supports both Microsoft Entra ID and Agent Access Token authentication,
+    /// enabling use by both interactive users and API clients with agent access tokens.
+    /// </remarks>
     [Authorize(
         AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme,
         Policy = AuthorizationPolicyNames.MicrosoftEntraIDStandard)]
+    [Authorize(
+        AuthenticationSchemes = AgentAccessTokenDefaults.AuthenticationScheme,
+        Policy = AuthorizationPolicyNames.FoundationaLLMAgentAccessToken)]
     [ApiController]
     [Route("instances/{instanceId}")]
     public class RealtimeSpeechController : ControllerBase
@@ -646,116 +708,177 @@ namespace FoundationaLLM.Core.Interfaces
 }
 ```
 
-### 4.3 RealtimeSpeechService Implementation
+### 4.3 Provider-Agnostic Architecture
 
-This service adapts the `RealtimeClient` class from `realtime_client.py` in the prototype. Key patterns:
+**Design Philosophy:** FoundationaLLM is designed to be provider-agnostic. The realtime speech implementation follows this philosophy by introducing an abstraction layer that supports multiple realtime speech providers, not just Azure OpenAI GPT-Realtime.
 
-1. **WebSocket URL construction**: Handle both GA and preview API versions (see `_build_websocket_url`)
-2. **Session configuration**: Send `session.update` event with instructions, VAD, transcription, and MCP tools
-3. **Event handling**: Process all Azure Realtime API event types (see `_handle_message`)
-4. **Greeting flow**: Track `greeting_sent` to prevent duplicate greetings
-5. **MCP tool support**: Configure MCP servers via the `tools` array in session config
+This architecture allows the platform to support:
+- **Azure OpenAI GPT-Realtime** (current implementation)
+- **Future providers** (e.g., Azure Speech SDK realtime, Google Gemini Live, Anthropic Claude voice, etc.)
 
-#### File: `src/dotnet/Core/Services/RealtimeSpeechService.cs` (New)
+#### File: `src/dotnet/Core/Interfaces/IRealtimeSpeechProvider.cs` (New)
+
+```csharp
+using System.Net.WebSockets;
+using FoundationaLLM.Common.Models.RealtimeSpeech;
+using FoundationaLLM.Common.Models.ResourceProviders.AIModel;
+
+namespace FoundationaLLM.Core.Interfaces
+{
+    /// <summary>
+    /// Defines the contract for realtime speech providers.
+    /// This abstraction allows supporting multiple speech-to-speech backends.
+    /// </summary>
+    public interface IRealtimeSpeechProvider
+    {
+        /// <summary>
+        /// Gets the provider type identifier (e.g., "azure-openai-realtime", "azure-speech-sdk").
+        /// </summary>
+        string ProviderType { get; }
+
+        /// <summary>
+        /// Establishes a connection to the realtime speech backend.
+        /// </summary>
+        /// <param name="model">The AI model configuration.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>A WebSocket connection to the backend.</returns>
+        Task<WebSocket> ConnectAsync(RealtimeSpeechAIModel model, CancellationToken cancellationToken);
+
+        /// <summary>
+        /// Configures the session with the given instructions and settings.
+        /// </summary>
+        /// <param name="backendSocket">The backend WebSocket connection.</param>
+        /// <param name="model">The AI model configuration.</param>
+        /// <param name="instructions">System instructions for the session.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        Task ConfigureSessionAsync(
+            WebSocket backendSocket,
+            RealtimeSpeechAIModel model,
+            string? instructions,
+            CancellationToken cancellationToken);
+
+        /// <summary>
+        /// Parses a message from the backend and extracts transcription if available.
+        /// </summary>
+        /// <param name="message">The raw message bytes.</param>
+        /// <returns>Parsed result containing transcription data if present.</returns>
+        RealtimeSpeechMessageResult ParseBackendMessage(byte[] message);
+
+        /// <summary>
+        /// Transforms a message from the client to the format expected by the backend.
+        /// </summary>
+        /// <param name="clientMessage">The client message bytes.</param>
+        /// <returns>Transformed message for the backend.</returns>
+        byte[] TransformClientMessage(byte[] clientMessage);
+    }
+
+    /// <summary>
+    /// Result of parsing a backend message.
+    /// </summary>
+    public class RealtimeSpeechMessageResult
+    {
+        /// <summary>
+        /// The message type.
+        /// </summary>
+        public string? MessageType { get; set; }
+
+        /// <summary>
+        /// User transcription, if this message contains one.
+        /// </summary>
+        public string? UserTranscription { get; set; }
+
+        /// <summary>
+        /// Agent transcription, if this message contains one.
+        /// </summary>
+        public string? AgentTranscription { get; set; }
+
+        /// <summary>
+        /// Indicates if this is an error message.
+        /// </summary>
+        public bool IsError { get; set; }
+
+        /// <summary>
+        /// Error message, if applicable.
+        /// </summary>
+        public string? ErrorMessage { get; set; }
+    }
+}
+```
+
+#### File: `src/dotnet/Core/Interfaces/IRealtimeSpeechProviderFactory.cs` (New)
+
+```csharp
+using FoundationaLLM.Common.Models.ResourceProviders.AIModel;
+
+namespace FoundationaLLM.Core.Interfaces
+{
+    /// <summary>
+    /// Factory for creating realtime speech providers based on model configuration.
+    /// </summary>
+    public interface IRealtimeSpeechProviderFactory
+    {
+        /// <summary>
+        /// Creates the appropriate provider for the given AI model.
+        /// </summary>
+        /// <param name="model">The AI model configuration.</param>
+        /// <returns>A realtime speech provider instance.</returns>
+        IRealtimeSpeechProvider CreateProvider(RealtimeSpeechAIModel model);
+    }
+}
+```
+
+#### File: `src/dotnet/Core/Services/Providers/AzureOpenAIRealtimeSpeechProvider.cs` (New)
 
 ```csharp
 using System.Net.WebSockets;
 using System.Text;
 using System.Text.Json;
-using FoundationaLLM.Common.Interfaces;
-using FoundationaLLM.Common.Models.Conversation;
 using FoundationaLLM.Common.Models.RealtimeSpeech;
-using FoundationaLLM.Common.Models.ResourceProviders.Agent;
 using FoundationaLLM.Common.Models.ResourceProviders.AIModel;
 using FoundationaLLM.Core.Interfaces;
 
-namespace FoundationaLLM.Core.Services
+namespace FoundationaLLM.Core.Services.Providers
 {
     /// <summary>
-    /// Service for handling realtime speech-to-speech communication with GPT-Realtime API.
+    /// Azure OpenAI GPT-Realtime provider implementation.
     /// Adapted from realtime_client.py in the realtime-speech-prototype.
     /// </summary>
-    public class RealtimeSpeechService : IRealtimeSpeechService
+    public class AzureOpenAIRealtimeSpeechProvider : IRealtimeSpeechProvider
     {
-        private readonly IResourceProviderService _agentResourceProvider;
-        private readonly IResourceProviderService _aiModelResourceProvider;
-        private readonly IResourceProviderService _promptResourceProvider;
-        private readonly IConversationService _conversationService;
         private readonly IHttpClientFactory _httpClientFactory;
-        private readonly ILogger<RealtimeSpeechService> _logger;
+        private readonly ILogger<AzureOpenAIRealtimeSpeechProvider> _logger;
 
-        public RealtimeSpeechService(
-            IEnumerable<IResourceProviderService> resourceProviderServices,
-            IConversationService conversationService,
+        public string ProviderType => "azure-openai-realtime";
+
+        public AzureOpenAIRealtimeSpeechProvider(
             IHttpClientFactory httpClientFactory,
-            ILogger<RealtimeSpeechService> logger)
+            ILogger<AzureOpenAIRealtimeSpeechProvider> logger)
         {
-            var providers = resourceProviderServices.ToDictionary(rps => rps.Name);
-            _agentResourceProvider = providers["FoundationaLLM_Agent"];
-            _aiModelResourceProvider = providers["FoundationaLLM_AIModel"];
-            _promptResourceProvider = providers["FoundationaLLM_Prompt"];
-            _conversationService = conversationService;
             _httpClientFactory = httpClientFactory;
             _logger = logger;
         }
 
-        public async Task HandleWebSocketConnection(
-            string instanceId,
-            string sessionId,
-            string agentName,
-            WebSocket clientWebSocket,
+        public async Task<WebSocket> ConnectAsync(
+            RealtimeSpeechAIModel model,
             CancellationToken cancellationToken)
         {
-            // 1. Load agent and its realtime speech configuration
-            var agent = await GetAgentAsync(instanceId, agentName);
-            if (agent?.RealtimeSpeechModelObjectId == null)
-            {
-                await CloseWithError(clientWebSocket, "Agent does not support realtime speech");
-                return;
-            }
-
-            // 2. Load the realtime speech model
-            var realtimeModel = await GetRealtimeSpeechModelAsync(
-                instanceId,
-                agent.RealtimeSpeechModelObjectId);
-
-            // 3. Get agent's main prompt for instructions
-            var mainPrompt = await GetAgentMainPromptAsync(instanceId, agent);
-
-            // 4. Get conversation history if enabled
-            List<Message>? conversationHistory = null;
-            if (agent.RealtimeSpeechSettings?.IncludeConversationHistory == true)
-            {
-                conversationHistory = await _conversationService.GetMessagesAsync(
-                    instanceId,
-                    sessionId);
-            }
-
-            // 5. Connect to GPT-Realtime API
-            using var gptWebSocket = await ConnectToGptRealtimeAsync(realtimeModel);
-
-            // 6. Send session configuration with instructions
-            await SendSessionUpdateAsync(
-                gptWebSocket,
-                realtimeModel,
-                mainPrompt,
-                conversationHistory);
-
-            // 7. Start bidirectional message proxying
-            await ProxyWebSocketMessagesAsync(
-                clientWebSocket,
-                gptWebSocket,
-                instanceId,
-                sessionId,
-                agent,
-                cancellationToken);
+            var clientWebSocket = new ClientWebSocket();
+            
+            // Build WebSocket URL for Azure OpenAI Realtime API
+            var wsUrl = BuildWebSocketUrl(model);
+            
+            // Set authentication header
+            clientWebSocket.Options.SetRequestHeader("api-key", model.ApiKey);
+            
+            await clientWebSocket.ConnectAsync(new Uri(wsUrl), cancellationToken);
+            return clientWebSocket;
         }
 
-        private async Task SendSessionUpdateAsync(
-            ClientWebSocket gptWebSocket,
+        public async Task ConfigureSessionAsync(
+            WebSocket backendSocket,
             RealtimeSpeechAIModel model,
             string? instructions,
-            List<Message>? conversationHistory)
+            CancellationToken cancellationToken)
         {
             var sessionUpdate = new
             {
@@ -763,10 +886,10 @@ namespace FoundationaLLM.Core.Services
                 session = new
                 {
                     modalities = new[] { "text", "audio" },
-                    instructions = BuildInstructions(instructions, conversationHistory),
-                    voice = model.Voice,
-                    input_audio_format = model.InputAudioFormat,
-                    output_audio_format = model.OutputAudioFormat,
+                    instructions = instructions,
+                    voice = model.Voice ?? "alloy",
+                    input_audio_format = model.InputAudioFormat ?? "pcm16",
+                    output_audio_format = model.OutputAudioFormat ?? "pcm16",
                     input_audio_transcription = new
                     {
                         model = model.InputAudioTranscriptionModel ?? "whisper-1"
@@ -783,11 +906,180 @@ namespace FoundationaLLM.Core.Services
 
             var json = JsonSerializer.Serialize(sessionUpdate);
             var bytes = Encoding.UTF8.GetBytes(json);
-            await gptWebSocket.SendAsync(
+            await backendSocket.SendAsync(
                 new ArraySegment<byte>(bytes),
                 WebSocketMessageType.Text,
                 true,
-                CancellationToken.None);
+                cancellationToken);
+        }
+
+        public RealtimeSpeechMessageResult ParseBackendMessage(byte[] message)
+        {
+            var result = new RealtimeSpeechMessageResult();
+            
+            try
+            {
+                var json = Encoding.UTF8.GetString(message);
+                var doc = JsonDocument.Parse(json);
+                result.MessageType = doc.RootElement.GetProperty("type").GetString();
+
+                // Handle user transcription completed
+                if (result.MessageType == "conversation.item.input_audio_transcription.completed")
+                {
+                    result.UserTranscription = doc.RootElement
+                        .GetProperty("transcript")
+                        .GetString();
+                }
+
+                // Handle assistant response transcription
+                if (result.MessageType == "response.audio_transcript.done")
+                {
+                    result.AgentTranscription = doc.RootElement
+                        .GetProperty("transcript")
+                        .GetString();
+                }
+
+                // Handle errors
+                if (result.MessageType == "error")
+                {
+                    result.IsError = true;
+                    result.ErrorMessage = doc.RootElement
+                        .GetProperty("error")
+                        .GetProperty("message")
+                        .GetString();
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogWarning(ex, "Error parsing Azure OpenAI realtime message");
+            }
+
+            return result;
+        }
+
+        public byte[] TransformClientMessage(byte[] clientMessage)
+        {
+            // Azure OpenAI uses the same format, no transformation needed
+            return clientMessage;
+        }
+
+        private string BuildWebSocketUrl(RealtimeSpeechAIModel model)
+        {
+            // Build URL for Azure OpenAI Realtime API
+            // Format: wss://{endpoint}/openai/realtime?api-version={version}&deployment={deployment}
+            var endpoint = model.Endpoint?.TrimEnd('/');
+            var deployment = model.DeploymentName;
+            var apiVersion = model.Version ?? "2024-10-01-preview";
+            
+            return $"{endpoint?.Replace("https://", "wss://")}/openai/realtime?api-version={apiVersion}&deployment={deployment}";
+        }
+    }
+}
+```
+
+### 4.4 RealtimeSpeechService Implementation
+
+The orchestrating service uses the provider abstraction to handle realtime speech sessions in a provider-agnostic way.
+
+#### File: `src/dotnet/Core/Services/RealtimeSpeechService.cs` (New)
+
+```csharp
+using System.Net.WebSockets;
+using System.Text;
+using FoundationaLLM.Common.Interfaces;
+using FoundationaLLM.Common.Models.Conversation;
+using FoundationaLLM.Common.Models.RealtimeSpeech;
+using FoundationaLLM.Common.Models.ResourceProviders.Agent;
+using FoundationaLLM.Common.Models.ResourceProviders.AIModel;
+using FoundationaLLM.Core.Interfaces;
+
+namespace FoundationaLLM.Core.Services
+{
+    /// <summary>
+    /// Service for handling realtime speech-to-speech communication.
+    /// This service orchestrates between clients and realtime speech providers
+    /// in a provider-agnostic manner.
+    /// </summary>
+    public class RealtimeSpeechService : IRealtimeSpeechService
+    {
+        private readonly IRealtimeSpeechProviderFactory _providerFactory;
+        private readonly IResourceProviderService _agentResourceProvider;
+        private readonly IResourceProviderService _aiModelResourceProvider;
+        private readonly IResourceProviderService _promptResourceProvider;
+        private readonly IConversationService _conversationService;
+        private readonly ILogger<RealtimeSpeechService> _logger;
+
+        public RealtimeSpeechService(
+            IRealtimeSpeechProviderFactory providerFactory,
+            IEnumerable<IResourceProviderService> resourceProviderServices,
+            IConversationService conversationService,
+            ILogger<RealtimeSpeechService> logger)
+        {
+            _providerFactory = providerFactory;
+            var providers = resourceProviderServices.ToDictionary(rps => rps.Name);
+            _agentResourceProvider = providers["FoundationaLLM_Agent"];
+            _aiModelResourceProvider = providers["FoundationaLLM_AIModel"];
+            _promptResourceProvider = providers["FoundationaLLM_Prompt"];
+            _conversationService = conversationService;
+            _logger = logger;
+        }
+
+        public async Task HandleWebSocketConnection(
+            string instanceId,
+            string sessionId,
+            string agentName,
+            WebSocket clientWebSocket,
+            CancellationToken cancellationToken)
+        {
+            // 1. Load agent and validate realtime speech configuration
+            var agent = await GetAgentAsync(instanceId, agentName);
+            if (agent?.RealtimeSpeechSettings?.Enabled != true ||
+                string.IsNullOrWhiteSpace(agent.RealtimeSpeechSettings?.RealtimeSpeechAIModelObjectId))
+            {
+                await CloseWithError(clientWebSocket, "Agent does not support realtime speech");
+                return;
+            }
+
+            // 2. Load the realtime speech model
+            var realtimeModel = await GetRealtimeSpeechModelAsync(
+                instanceId,
+                agent.RealtimeSpeechSettings.RealtimeSpeechAIModelObjectId);
+
+            // 3. Create the appropriate provider for this model
+            var provider = _providerFactory.CreateProvider(realtimeModel);
+
+            // 4. Get agent's main prompt for instructions
+            var mainPrompt = await GetAgentMainPromptAsync(instanceId, agent);
+
+            // 5. Get conversation history if enabled
+            List<Message>? conversationHistory = null;
+            if (agent.RealtimeSpeechSettings?.IncludeConversationHistory == true)
+            {
+                conversationHistory = await _conversationService.GetMessagesAsync(
+                    instanceId,
+                    sessionId);
+            }
+
+            // 6. Connect to realtime speech backend via provider
+            using var backendSocket = await provider.ConnectAsync(realtimeModel, cancellationToken);
+
+            // 7. Configure session with instructions
+            var instructions = BuildInstructions(mainPrompt, conversationHistory);
+            await provider.ConfigureSessionAsync(
+                backendSocket,
+                realtimeModel,
+                instructions,
+                cancellationToken);
+
+            // 8. Start bidirectional message proxying
+            await ProxyWebSocketMessagesAsync(
+                clientWebSocket,
+                backendSocket,
+                provider,
+                instanceId,
+                sessionId,
+                agent,
+                cancellationToken);
         }
 
         private string BuildInstructions(string? mainPrompt, List<Message>? history)
@@ -815,44 +1107,45 @@ namespace FoundationaLLM.Core.Services
 
         private async Task ProxyWebSocketMessagesAsync(
             WebSocket clientWebSocket,
-            ClientWebSocket gptWebSocket,
+            WebSocket backendSocket,
+            IRealtimeSpeechProvider provider,
             string instanceId,
             string sessionId,
             AgentBase agent,
             CancellationToken cancellationToken)
         {
-            var clientToGpt = ProxyMessages(
+            var clientToBackend = ProxyClientToBackend(
                 clientWebSocket,
-                gptWebSocket,
-                "Client->GPT",
+                backendSocket,
+                provider,
                 cancellationToken);
 
-            var gptToClient = ProxyMessagesWithTranscriptionCapture(
-                gptWebSocket,
+            var backendToClient = ProxyBackendToClient(
+                backendSocket,
                 clientWebSocket,
+                provider,
                 instanceId,
                 sessionId,
                 agent,
                 cancellationToken);
 
-            await Task.WhenAny(clientToGpt, gptToClient);
+            await Task.WhenAny(clientToBackend, backendToClient);
         }
 
-        private async Task ProxyMessagesWithTranscriptionCapture(
-            ClientWebSocket source,
-            WebSocket destination,
-            string instanceId,
-            string sessionId,
-            AgentBase agent,
+        private async Task ProxyClientToBackend(
+            WebSocket clientSocket,
+            WebSocket backendSocket,
+            IRealtimeSpeechProvider provider,
             CancellationToken cancellationToken)
         {
             var buffer = new byte[8192];
             var messageBuilder = new List<byte>();
 
             while (!cancellationToken.IsCancellationRequested &&
-                   source.State == WebSocketState.Open)
+                   clientSocket.State == WebSocketState.Open &&
+                   backendSocket.State == WebSocketState.Open)
             {
-                var result = await source.ReceiveAsync(
+                var result = await clientSocket.ReceiveAsync(
                     new ArraySegment<byte>(buffer),
                     cancellationToken);
 
@@ -866,16 +1159,11 @@ namespace FoundationaLLM.Core.Services
                     var message = messageBuilder.ToArray();
                     messageBuilder.Clear();
 
-                    // Check for transcription events and save to conversation
-                    await HandleGptMessageAsync(
-                        message,
-                        instanceId,
-                        sessionId,
-                        agent);
+                    // Transform message for the backend if needed
+                    var transformedMessage = provider.TransformClientMessage(message);
 
-                    // Forward to client
-                    await destination.SendAsync(
-                        new ArraySegment<byte>(message),
+                    await backendSocket.SendAsync(
+                        new ArraySegment<byte>(transformedMessage),
                         result.MessageType,
                         true,
                         cancellationToken);
@@ -883,57 +1171,57 @@ namespace FoundationaLLM.Core.Services
             }
         }
 
-        private async Task HandleGptMessageAsync(
-            byte[] message,
+        private async Task ProxyBackendToClient(
+            WebSocket backendSocket,
+            WebSocket clientSocket,
+            IRealtimeSpeechProvider provider,
             string instanceId,
             string sessionId,
-            AgentBase agent)
+            AgentBase agent,
+            CancellationToken cancellationToken)
         {
-            try
+            var buffer = new byte[8192];
+            var messageBuilder = new List<byte>();
+
+            while (!cancellationToken.IsCancellationRequested &&
+                   backendSocket.State == WebSocketState.Open)
             {
-                var json = Encoding.UTF8.GetString(message);
-                var doc = JsonDocument.Parse(json);
-                var type = doc.RootElement.GetProperty("type").GetString();
+                var result = await backendSocket.ReceiveAsync(
+                    new ArraySegment<byte>(buffer),
+                    cancellationToken);
 
-                // Handle user transcription completed
-                if (type == "conversation.item.input_audio_transcription.completed")
+                if (result.MessageType == WebSocketMessageType.Close)
+                    break;
+
+                messageBuilder.AddRange(buffer.Take(result.Count));
+
+                if (result.EndOfMessage)
                 {
-                    var transcript = doc.RootElement
-                        .GetProperty("transcript")
-                        .GetString();
+                    var message = messageBuilder.ToArray();
+                    messageBuilder.Clear();
 
-                    if (!string.IsNullOrWhiteSpace(transcript))
+                    // Parse message and extract transcriptions
+                    var parseResult = provider.ParseBackendMessage(message);
+                    
+                    // Save transcriptions to conversation
+                    if (!string.IsNullOrWhiteSpace(parseResult.UserTranscription))
                     {
                         await SaveTranscriptionToConversation(
-                            instanceId,
-                            sessionId,
-                            transcript,
-                            "User",
-                            agent);
+                            instanceId, sessionId, parseResult.UserTranscription, "User", agent);
                     }
-                }
-
-                // Handle assistant response transcription
-                if (type == "response.audio_transcript.done")
-                {
-                    var transcript = doc.RootElement
-                        .GetProperty("transcript")
-                        .GetString();
-
-                    if (!string.IsNullOrWhiteSpace(transcript))
+                    if (!string.IsNullOrWhiteSpace(parseResult.AgentTranscription))
                     {
                         await SaveTranscriptionToConversation(
-                            instanceId,
-                            sessionId,
-                            transcript,
-                            "Agent",
-                            agent);
+                            instanceId, sessionId, parseResult.AgentTranscription, "Agent", agent);
                     }
+
+                    // Forward to client
+                    await clientSocket.SendAsync(
+                        new ArraySegment<byte>(message),
+                        result.MessageType,
+                        true,
+                        cancellationToken);
                 }
-            }
-            catch (Exception ex)
-            {
-                _logger.LogWarning(ex, "Error parsing GPT realtime message");
             }
         }
 
@@ -961,12 +1249,12 @@ namespace FoundationaLLM.Core.Services
             await _conversationService.AddMessageAsync(instanceId, sessionId, message);
         }
 
-        // ... additional helper methods ...
+        // ... additional helper methods (GetAgentAsync, GetRealtimeSpeechModelAsync, etc.) ...
     }
 }
 ```
 
-### 4.4 Message Models for Realtime Speech
+### 4.5 Message Models for Realtime Speech
 
 #### File: `src/dotnet/Common/Models/RealtimeSpeech/RealtimeSpeechConfiguration.cs` (New)
 
@@ -1005,7 +1293,7 @@ namespace FoundationaLLM.Common.Models.RealtimeSpeech
 }
 ```
 
-### 4.5 WebSocket Middleware Configuration
+### 4.6 WebSocket Middleware Configuration
 
 #### File: `src/dotnet/CoreAPI/Program.cs`
 
@@ -1726,7 +2014,8 @@ Add computed property:
 ```typescript
 showRealtimeSpeech() {
     const agent = this.$appStore.lastSelectedAgent?.resource;
-    return agent?.realtime_speech_settings?.enabled === true;
+    return agent?.realtime_speech_settings?.enabled === true &&
+           !!agent?.realtime_speech_settings?.realtime_speech_ai_model_object_id;
 }
 ```
 
@@ -1738,23 +2027,45 @@ showRealtimeSpeech() {
 // Add to AgentBase interface
 export interface AgentBase extends ResourceBase {
     // ... existing properties ...
-    
-    /**
-     * Object ID of the realtime speech AI model.
-     */
-    realtime_speech_model_object_id?: string | null;
 
     /**
      * Realtime speech configuration settings.
+     * The model object id is inside this settings object, following the pattern
+     * used by other agent settings that reference models.
      */
     realtime_speech_settings?: RealtimeSpeechSettings | null;
 }
 
 export interface RealtimeSpeechSettings {
+    /**
+     * Whether realtime speech is enabled for this agent.
+     */
     enabled: boolean;
+    
+    /**
+     * Object ID of the realtime speech AI model.
+     * This follows the same pattern as embedding_ai_model_object_id in AgentSemanticCacheSettings.
+     */
+    realtime_speech_ai_model_object_id: string;
+    
+    /**
+     * Stop words that terminate the realtime session.
+     */
     stop_words: string[];
+    
+    /**
+     * Maximum session duration in seconds (0 = unlimited).
+     */
     max_session_duration_seconds: number;
+    
+    /**
+     * Whether to show transcriptions in the chat thread.
+     */
     show_transcriptions: boolean;
+    
+    /**
+     * Whether to include conversation history in session context.
+     */
     include_conversation_history: boolean;
 }
 
@@ -1964,14 +2275,16 @@ When starting a realtime session, the conversation history is formatted and incl
 
 ### Agent Configuration JSON
 
+Note: The model object id is inside the `realtime_speech_settings` object, following the same pattern as `AgentSemanticCacheSettings.embedding_ai_model_object_id` and `AgentUserPromptRewriteSettings.user_prompt_rewrite_ai_model_object_id`.
+
 ```json
 {
     "name": "voice-assistant",
     "type": "generic-agent",
     "display_name": "Voice Assistant",
-    "realtime_speech_model_object_id": "/instances/{instanceId}/providers/FoundationaLLM.AIModel/aiModels/gpt-4o-realtime",
     "realtime_speech_settings": {
         "enabled": true,
+        "realtime_speech_ai_model_object_id": "/instances/{instanceId}/providers/FoundationaLLM.AIModel/aiModels/gpt-4o-realtime",
         "stop_words": ["stop", "end conversation", "goodbye"],
         "max_session_duration_seconds": 600,
         "show_transcriptions": true,
@@ -2024,5 +2337,44 @@ When starting a realtime session, the conversation history is formatted and incl
 
 ---
 
-*Document Version: 1.0*
+## Appendix D: Design Decisions
+
+This section documents key architectural decisions made during the planning of this feature.
+
+### D.1 Model Object ID Placement
+
+**Decision:** The realtime speech model object ID is placed inside `RealtimeSpeechSettings.RealtimeSpeechAIModelObjectId`, not directly on the agent object.
+
+**Rationale:** This follows the established pattern in FoundationaLLM where agent settings that require model references store them within the settings object:
+- `AgentSemanticCacheSettings.EmbeddingAIModelObjectId`
+- `AgentUserPromptRewriteSettings.UserPromptRewriteAIModelObjectId`
+
+This pattern keeps model references encapsulated within their related settings, making it clear which setting the model serves.
+
+### D.2 Provider-Agnostic Architecture
+
+**Decision:** Implement a provider abstraction layer (`IRealtimeSpeechProvider`) rather than hardcoding to a specific realtime speech API.
+
+**Rationale:** FoundationaLLM's philosophy is to be provider-agnostic, allowing customers to choose the best AI services for their needs. The provider abstraction:
+- Allows easy addition of new realtime speech providers
+- Keeps provider-specific code isolated in dedicated provider classes
+- Makes the `RealtimeSpeechService` a pure orchestrator without provider dependencies
+- Supports future providers like Azure Speech SDK, Google Gemini Live, etc.
+
+### D.3 Dual Authentication Support
+
+**Decision:** The `RealtimeSpeechController` supports both Microsoft Entra ID and Agent Access Token authentication.
+
+**Rationale:** Following the pattern used by `SessionsController`, `CompletionsController`, and `FilesController`, dual authentication enables:
+- Interactive users authenticating via Entra ID from the User Portal
+- API clients (including external applications) using agent access tokens
+- Consistent authentication behavior across similar endpoints
+
+---
+
+*Document Version: 1.1*
 *Last Updated: December 2024*
+
+**Revision History:**
+- v1.1 (Dec 2024): Updated to move model object ID into RealtimeSpeechSettings, added provider-agnostic architecture, added dual authentication support
+- v1.0 (Dec 2024): Initial plan
