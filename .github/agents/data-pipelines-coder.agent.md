@@ -256,6 +256,12 @@ public interface IDataPipelineStateService
 
 ## Development Guidelines
 
+### General Rules for Configuration
+
+For any new configuration entry, changes must be made in only one place, `Common/Constants/Data/AppConfiguration.json`.
+If `AppConfiguration.json` is changes, all T4 templates that are referencing the file must be run.
+The CS files resulting from running T4 templates must never be changed directly, as they will be overridden anyway when the templates are run the next time.
+
 ### Adding a New Stage Plugin
 
 1. Create plugin class in `DataPipelinePlugins/Plugins/DataPipelineStage/`
