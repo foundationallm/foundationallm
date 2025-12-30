@@ -82,24 +82,24 @@ src/dotnet/CoreAPI/
 #### Phase 1: Core Chat Completions (MVP)
 | Endpoint | Priority | Notes |
 |----------|----------|-------|
-| `POST /v1/chat/completions` | P0 | Primary chat interface |
-| `GET /v1/models` | P0 | Model discovery |
-| `GET /v1/models/{id}` | P0 | Model metadata |
+| `POST /openai/v1/chat/completions` | P0 | Primary chat interface |
+| `GET /openai/v1/models` | P0 | Model discovery |
+| `GET /openai/v1/models/{id}` | P0 | Model metadata |
 
 #### Phase 2: Extended Functionality
 | Endpoint | Priority | Notes |
 |----------|----------|-------|
-| `POST /v1/responses` | P1 | Modern unified interface |
-| `POST /v1/embeddings` | P2 | Vector generation |
+| `POST /openai/v1/responses` | P1 | Modern unified interface |
+| `POST /openai/v1/embeddings` | P2 | Vector generation |
 
 #### Phase 3: Additional Features
 | Endpoint | Priority | Notes |
 |----------|----------|-------|
-| `GET /v1/files` | P3 | File listing |
-| `POST /v1/files` | P3 | File upload |
-| `DELETE /v1/files/{id}` | P3 | File deletion |
-| `POST /v1/audio/transcriptions` | P3 | Speech-to-text |
-| `POST /v1/audio/speech` | P3 | Text-to-speech |
+| `GET /openai/v1/files` | P3 | File listing |
+| `POST /openai/v1/files` | P3 | File upload |
+| `DELETE /openai/v1/files/{id}` | P3 | File deletion |
+| `POST /openai/v1/audio/transcriptions` | P3 | Speech-to-text |
+| `POST /openai/v1/audio/speech` | P3 | Text-to-speech |
 
 ---
 
@@ -109,12 +109,12 @@ src/dotnet/CoreAPI/
 
 #### 1.1 Models and Core Infrastructure
 - [ ] Create OpenAI-compatible model classes
-- [ ] Implement `OpenAIAuthenticationHandler` for Bearer tokens
-- [ ] Create base controller infrastructure
-- [ ] Implement `/v1/models` and `/v1/models/{id}` endpoints
+- [ ] Extend existing Core API authentication to support Bearer tokens in Authorization header
+- [ ] Create `OpenAIController` with base route `/openai`
+- [ ] Implement `/openai/v1/models` and `/openai/v1/models/{id}` endpoints
 
 #### 1.2 Chat Completions (Non-Streaming)
-- [ ] Implement `POST /v1/chat/completions` endpoint
+- [ ] Implement `POST /openai/v1/chat/completions` endpoint
 - [ ] Create request/response translation services
 - [ ] Map FoundationaLLM agents to OpenAI models
 - [ ] Handle basic chat completion flow
@@ -142,7 +142,7 @@ src/dotnet/CoreAPI/
 ### Phase 3: Responses API and Extensibility
 
 #### 3.1 Responses API
-- [ ] Implement `POST /v1/responses` endpoint
+- [ ] Implement `POST /openai/v1/responses` endpoint
 - [ ] Add multimodal input support
 - [ ] Implement structured output (JSON schema)
 
@@ -161,6 +161,8 @@ src/dotnet/CoreAPI/
 ```
 src/dotnet/
 ├── Common/
+│   ├── Authentication/
+│   │   └── AgentAccessTokenAuthenticationHandler.cs  # MODIFY - extend to support Bearer tokens
 │   └── Models/
 │       └── OpenAI/                              # NEW
 │           ├── Requests/
@@ -180,7 +182,7 @@ src/dotnet/
 │           │   ├── OpenAIModelList.cs
 │           │   ├── OpenAIResponseObject.cs
 │           │   └── OpenAIError.cs
-│           └── Common/
+│           └── Shared/
 │               ├── OpenAIFinishReason.cs
 │               └── OpenAIMessageRole.cs
 ├── Core/
@@ -190,12 +192,7 @@ src/dotnet/
 │       └── OpenAICompatibilityService.cs        # NEW
 └── CoreAPI/
     ├── Controllers/
-    │   └── v1/                                  # NEW
-    │       ├── ChatCompletionsController.cs
-    │       ├── ModelsController.cs
-    │       └── ResponsesController.cs
-    ├── Authentication/                          # NEW
-    │   └── OpenAIBearerTokenHandler.cs
+    │   └── OpenAIController.cs                  # NEW - single controller with base route /openai
     ├── Middleware/                              # NEW
     │   └── OpenAICompatibilityMiddleware.cs
     └── Services/                                # NEW
@@ -343,20 +340,25 @@ public class OpenAIUsage
 ### 4.4 Controller Implementation
 
 ```csharp
-// ChatCompletionsController.cs
-namespace FoundationaLLM.Core.API.Controllers.v1;
+// OpenAIController.cs
+namespace FoundationaLLM.Core.API.Controllers;
 
 [ApiController]
-[Route("v1")]
-[Authorize(AuthenticationSchemes = OpenAIBearerDefaults.AuthenticationScheme)]
-public class ChatCompletionsController : ControllerBase
+[Route("openai")]
+[Authorize(
+    AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme,
+    Policy = AuthorizationPolicyNames.MicrosoftEntraIDStandard)]
+[Authorize(
+    AuthenticationSchemes = AgentAccessTokenDefaults.AuthenticationScheme,
+    Policy = AuthorizationPolicyNames.FoundationaLLMAgentAccessToken)]
+public class OpenAIController : ControllerBase
 {
     private readonly IOpenAICompatibilityService _openAIService;
-    private readonly ILogger<ChatCompletionsController> _logger;
+    private readonly ILogger<OpenAIController> _logger;
 
-    public ChatCompletionsController(
+    public OpenAIController(
         IOpenAICompatibilityService openAIService,
-        ILogger<ChatCompletionsController> logger)
+        ILogger<OpenAIController> logger)
     {
         _openAIService = openAIService;
         _logger = logger;
@@ -365,7 +367,7 @@ public class ChatCompletionsController : ControllerBase
     /// <summary>
     /// Creates a chat completion - OpenAI compatible endpoint
     /// </summary>
-    [HttpPost("chat/completions")]
+    [HttpPost("v1/chat/completions")]
     [Produces("application/json", "text/event-stream")]
     public async Task<IActionResult> CreateChatCompletion(
         [FromBody] OpenAIChatCompletionRequest request,
@@ -378,6 +380,31 @@ public class ChatCompletionsController : ControllerBase
 
         var response = await _openAIService.CreateChatCompletionAsync(request, cancellationToken);
         return Ok(response);
+    }
+
+    /// <summary>
+    /// Lists available models - OpenAI compatible endpoint
+    /// </summary>
+    [HttpGet("v1/models")]
+    [Produces("application/json")]
+    public async Task<IActionResult> ListModels(CancellationToken cancellationToken)
+    {
+        var models = await _openAIService.ListModelsAsync(cancellationToken);
+        return Ok(models);
+    }
+
+    /// <summary>
+    /// Retrieves a specific model - OpenAI compatible endpoint
+    /// </summary>
+    [HttpGet("v1/models/{id}")]
+    [Produces("application/json")]
+    public async Task<IActionResult> GetModel(string id, CancellationToken cancellationToken)
+    {
+        var model = await _openAIService.GetModelAsync(id, cancellationToken);
+        if (model == null)
+            return NotFound(new { error = new { message = $"Model {id} not found", type = "not_found" } });
+        
+        return Ok(model);
     }
 
     private async Task<IActionResult> HandleStreamingCompletion(
@@ -424,20 +451,19 @@ public class ChatCompletionsController : ControllerBase
 | `Common/Models/OpenAI/Responses/OpenAIModel.cs` | Model information |
 | `Common/Models/OpenAI/Responses/OpenAIModelList.cs` | Model list response |
 | `Common/Models/OpenAI/Responses/OpenAIError.cs` | Error response model |
+| `Common/Models/OpenAI/Shared/OpenAIFinishReason.cs` | Finish reason enum |
+| `Common/Models/OpenAI/Shared/OpenAIMessageRole.cs` | Message role enum |
 | `Core/Interfaces/IOpenAICompatibilityService.cs` | Service interface |
 | `Core/Services/OpenAICompatibilityService.cs` | Main translation service |
-| `CoreAPI/Controllers/v1/ChatCompletionsController.cs` | Chat completions controller |
-| `CoreAPI/Controllers/v1/ModelsController.cs` | Models controller |
-| `CoreAPI/Authentication/OpenAIBearerTokenHandler.cs` | Bearer token auth |
-| `CoreAPI/Authentication/OpenAIBearerDefaults.cs` | Auth defaults |
-| `CoreAPI/Authentication/OpenAIBearerOptions.cs` | Auth options |
+| `CoreAPI/Controllers/OpenAIController.cs` | OpenAI controller with all endpoints |
 
 ### Files to Modify
 
 | File Path | Changes |
 |-----------|---------|
-| `CoreAPI/Program.cs` | Add OpenAI authentication, middleware, services |
-| `Common/Constants/HttpHeaders.cs` | Add OpenAI header constants |
+| `CoreAPI/Program.cs` | Add OpenAI middleware, services |
+| `Common/Authentication/AgentAccessTokenAuthenticationHandler.cs` | Extend to support Bearer tokens in Authorization header |
+| `Common/Constants/HttpHeaders.cs` | Add OpenAI header constants (if needed) |
 | `Common/Services/DependencyInjection.cs` | Add OpenAI service registration methods |
 
 ---
@@ -498,52 +524,68 @@ errors                    →       error object (if present)
 
 ### Supported Authentication Methods
 
-#### Method 1: OpenAI-Style Bearer Token (Primary)
+#### Method 1: Bearer Token in Authorization Header (New for OpenAI Compatibility)
 ```http
-Authorization: Bearer sk-foundationallm-xxx
+Authorization: Bearer <agent-access-token>
 ```
 
-Maps to existing FoundationaLLM Agent Access Token system:
-- Parse token prefix to identify authentication type
-- Validate against Agent Resource Provider
-- Extract user identity from token claims
+This extends the existing FoundationaLLM Agent Access Token system to support Bearer tokens in the standard `Authorization` header, in addition to the existing `X-AGENT-ACCESS-TOKEN` header support.
 
-#### Method 2: Entra ID Bearer Token (Existing)
+#### Method 2: Agent Access Token Header (Existing)
+```http
+X-AGENT-ACCESS-TOKEN: <agent-access-token>
+```
+
+Existing FoundationaLLM Agent Access Token header authentication continues to work unchanged.
+
+#### Method 3: Entra ID Bearer Token (Existing)
 ```http
 Authorization: Bearer eyJ0eXAi...
 ```
 
-Existing Microsoft Entra ID authentication continues to work.
+Existing Microsoft Entra ID JWT Bearer token authentication continues to work.
 
-### Authentication Handler Implementation
+### Authentication Handler Extension
+
+The existing `AgentAccessTokenAuthenticationHandler` will be extended to also check the `Authorization` header for Bearer tokens containing agent access tokens. This ensures backward compatibility while adding OpenAI-style authentication support.
+
+**Implementation Approach:**
+- Extend `AgentAccessTokenAuthenticationHandler.HandleAuthenticateAsync()` to check both:
+  1. `X-AGENT-ACCESS-TOKEN` header (existing behavior - no breaking changes)
+  2. `Authorization: Bearer <token>` header (new behavior for OpenAI compatibility)
+- If a Bearer token is found in the Authorization header, validate it as an agent access token
+- If validation succeeds, create the same claims and authentication ticket as the existing implementation
+- This maintains full backward compatibility with existing clients
 
 ```csharp
-// OpenAIBearerTokenHandler.cs
-public class OpenAIBearerTokenHandler : AuthenticationHandler<OpenAIBearerOptions>
+// Extended AgentAccessTokenAuthenticationHandler.cs
+protected override async Task<AuthenticateResult> HandleAuthenticateAsync()
 {
-    protected override async Task<AuthenticateResult> HandleAuthenticateAsync()
+    string? agentAccessToken = null;
+    
+    // Check existing X-AGENT-ACCESS-TOKEN header (existing behavior)
+    if (Request.Headers.TryGetValue(Constants.HttpHeaders.AgentAccessToken, out var headerToken))
     {
-        if (!Request.Headers.TryGetValue("Authorization", out var authHeader))
-            return AuthenticateResult.NoResult();
-
-        var headerValue = authHeader.ToString();
-        if (!headerValue.StartsWith("Bearer ", StringComparison.OrdinalIgnoreCase))
-            return AuthenticateResult.NoResult();
-
-        var token = headerValue.Substring(7);
-        
-        // Determine token type and validate
-        if (IsFoundationaLLMToken(token))
-        {
-            return await ValidateFoundationaLLMToken(token);
-        }
-        else if (IsEntraIDToken(token))
-        {
-            return AuthenticateResult.NoResult(); // Fall through to JWT handler
-        }
-
-        return AuthenticateResult.Fail("Invalid token");
+        agentAccessToken = headerToken.ToString();
     }
+    // Check Authorization header for Bearer token (new behavior)
+    else if (Request.Headers.TryGetValue("Authorization", out var authHeader))
+    {
+        var headerValue = authHeader.ToString();
+        if (headerValue.StartsWith("Bearer ", StringComparison.OrdinalIgnoreCase))
+        {
+            agentAccessToken = headerValue.Substring(7).Trim();
+        }
+    }
+    
+    if (string.IsNullOrWhiteSpace(agentAccessToken))
+    {
+        return AuthenticateResult.NoResult();
+    }
+    
+    // Existing validation logic continues unchanged
+    var validationResult = await ValidateAgentAccessToken(agentAccessToken);
+    // ... rest of existing implementation
 }
 ```
 
@@ -672,9 +714,7 @@ tests/dotnet/
 │       └── OpenAIRequestTranslatorTests.cs
 └── CoreAPI.Tests/
     └── Controllers/
-        └── v1/
-            ├── ChatCompletionsControllerTests.cs
-            └── ModelsControllerTests.cs
+        └── OpenAIControllerTests.cs
 ```
 
 ### Integration Tests
@@ -685,8 +725,8 @@ public async Task ChatCompletion_WithOpenAISDK_ReturnsValidResponse()
 {
     // Arrange
     var client = new OpenAIClient(
-        new Uri("https://localhost:5000/v1"),
-        new AzureKeyCredential("sk-test-key"));
+        new Uri("https://localhost:5000/openai"),
+        new AzureKeyCredential("<agent-access-token>"));
 
     // Act
     var response = await client.GetChatClient("test-agent")
@@ -714,7 +754,10 @@ public async Task ChatCompletion_WithOpenAISDK_ReturnsValidResponse()
 ```python
 from openai import OpenAI
 
-client = OpenAI(base_url="https://api.foundationallm.com/v1")
+client = OpenAI(
+    base_url="https://api.foundationallm.com/openai",
+    api_key="<agent-access-token>"
+)
 
 resp = client.chat.completions.create(
     model="your-agent",
@@ -731,30 +774,20 @@ print(resp.choices[0].message.content)
 ### Backward Compatibility
 
 - Existing `/instances/{instanceId}/completions` endpoints remain unchanged
-- New `/v1/*` endpoints operate in parallel
+- New `/openai/v1/*` endpoints operate in parallel
+- Existing `X-AGENT-ACCESS-TOKEN` header authentication continues to work
+- New `Authorization: Bearer` header support extends existing authentication without breaking changes
 - Gradual migration path for existing clients
 
 ### Configuration
 
-Add to `appsettings.json`:
-```json
-{
-  "FoundationaLLM": {
-    "OpenAICompatibility": {
-      "Enabled": true,
-      "DefaultInstanceId": "default-instance",
-      "ModelAgentMappings": {
-        "gpt-4": "knowledge-management-agent",
-        "gpt-3.5-turbo": "basic-chat-agent"
-      },
-      "RateLimiting": {
-        "RequestsPerMinute": 60,
-        "TokensPerMinute": 100000
-      }
-    }
-  }
-}
-```
+Configuration will be handled through the standard FoundationaLLM configuration system (not via `appsettings.json`). Configuration settings will be managed through:
+- Environment variables
+- Azure App Configuration
+- Key Vault references
+- Resource provider configuration
+
+Model-to-agent mappings and other OpenAI compatibility settings will be configured through the standard FoundationaLLM configuration infrastructure.
 
 ### Rate Limiting Headers
 
@@ -769,7 +802,7 @@ x-ratelimit-reset-tokens: 1m
 
 ### Monitoring and Observability
 
-- OpenTelemetry integration for `/v1/*` endpoints
+- OpenTelemetry integration for `/openai/v1/*` endpoints
 - Custom metrics for OpenAI compatibility layer
 - Request/response logging for debugging
 - Token usage tracking
@@ -781,9 +814,9 @@ x-ratelimit-reset-tokens: 1m
 ### Chat Completion Request
 
 ```json
-POST /v1/chat/completions HTTP/1.1
+POST /openai/v1/chat/completions HTTP/1.1
 Host: api.foundationallm.com
-Authorization: Bearer sk-foundationallm-xxx
+Authorization: Bearer <agent-access-token>
 Content-Type: application/json
 
 {
@@ -904,11 +937,10 @@ Content-Type: application/json
 - [ ] Implement all response models
 - [ ] Create `IOpenAICompatibilityService` interface
 - [ ] Implement `OpenAICompatibilityService`
-- [ ] Create `OpenAIBearerTokenHandler`
-- [ ] Create `ChatCompletionsController`
-- [ ] Create `ModelsController`
+- [ ] Extend `AgentAccessTokenAuthenticationHandler` to support Bearer tokens in Authorization header
+- [ ] Create `OpenAIController` with base route `/openai`
 - [ ] Update `Program.cs` with new services
-- [ ] Add configuration settings
+- [ ] Configure model-to-agent mappings through standard FoundationaLLM configuration
 - [ ] Write unit tests
 - [ ] Write integration tests
 
