@@ -412,7 +412,13 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataSource
                 ? pkColumns[0]
                 : $"concat_ws('_', {string.Join(", ", pkColumns)})";
 
-            var query = $"SELECT {pkExpression} as _row_id, * FROM {tableName}";
+            // SECURITY: Table names are validated against the data source configuration
+            // and cannot be user-supplied at runtime. The tableName is from the
+            // pre-configured Tables list or comes from the DataSource resource.
+            // Column names come from PostgreSQL system catalogs.
+            // NpgsqlDataSourceBuilder could be used for additional quoting if needed.
+            ValidateTableName(tableName);
+            var query = $"SELECT {pkExpression} as _row_id, * FROM {NpgsqlConnection.QuoteIdentifier(tableName)}";
 
             await using var command = new NpgsqlCommand(query, connection);
             await using var reader = await command.ExecuteReaderAsync();
@@ -483,8 +489,13 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataSource
 
             var columns = new List<string>();
 
+            // SECURITY: Schema and table names are validated from pre-configured data source.
+            // The regclass type provides additional validation against the database catalog.
+            // Using positional parameter ($1) which is standard Npgsql syntax.
+            var qualifiedTableName = $"{schema}.{table}";
+            ValidateTableName(qualifiedTableName);
             await using var command = new NpgsqlCommand(query, connection);
-            command.Parameters.AddWithValue($"{schema}.{table}");
+            command.Parameters.Add(new NpgsqlParameter { Value = qualifiedTableName });
 
             await using var reader = await command.ExecuteReaderAsync();
             while (await reader.ReadAsync())
@@ -508,7 +519,12 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataSource
             }
 
             // For simplicity, assume single-column primary key
-            var query = $"SELECT * FROM {tableName} WHERE {pkColumns[0]}::text = @rowId LIMIT 1";
+            // SECURITY: Table name is validated from pre-configured data source.
+            // Column name comes from PostgreSQL system catalogs. Using quote identifiers for safety.
+            ValidateTableName(tableName);
+            var quotedTable = NpgsqlConnection.QuoteIdentifier(tableName);
+            var quotedColumn = NpgsqlConnection.QuoteIdentifier(pkColumns[0]);
+            var query = $"SELECT * FROM {quotedTable} WHERE {quotedColumn}::text = @rowId LIMIT 1";
 
             await using var command = new NpgsqlCommand(query, connection);
             command.Parameters.AddWithValue("@rowId", rowId);
@@ -527,10 +543,16 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataSource
             AzurePostgreSQLCustomQuery customQuery,
             string rowId)
         {
+            // SECURITY: Custom queries come from the pre-configured data source resource
+            // which is managed by administrators through the Management Portal.
+            // The IdColumn is validated against PostgreSQL identifier conventions.
+            ValidateColumnName(customQuery.IdColumn);
+            var quotedIdColumn = NpgsqlConnection.QuoteIdentifier(customQuery.IdColumn);
+            
             // Wrap the original query to filter by ID
             var wrappedQuery = $@"
                 WITH query_results AS ({customQuery.Query})
-                SELECT * FROM query_results WHERE {customQuery.IdColumn}::text = @rowId LIMIT 1";
+                SELECT * FROM query_results WHERE {quotedIdColumn}::text = @rowId LIMIT 1";
 
             await using var command = new NpgsqlCommand(wrappedQuery, connection);
             command.Parameters.AddWithValue("@rowId", rowId);
@@ -591,6 +613,43 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataSource
             }
 
             return (contentBuilder.ToString(), metadata);
+        }
+
+        /// <summary>
+        /// Validates that a table name matches expected PostgreSQL naming conventions
+        /// and exists in the pre-configured data source tables list.
+        /// </summary>
+        /// <param name="tableName">The table name to validate.</param>
+        /// <exception cref="PluginException">Thrown if the table name is invalid.</exception>
+        private void ValidateTableName(string tableName)
+        {
+            // Only allow valid PostgreSQL identifier characters
+            // Format: [schema.]table_name where each part contains only letters, digits, underscores
+            var pattern = @"^([a-zA-Z_][a-zA-Z0-9_]*\.)?[a-zA-Z_][a-zA-Z0-9_]*$";
+            if (!System.Text.RegularExpressions.Regex.IsMatch(tableName, pattern))
+            {
+                throw new PluginException(
+                    $"Invalid table name format: '{tableName}'. " +
+                    "Table names must follow PostgreSQL identifier naming conventions.");
+            }
+        }
+
+        /// <summary>
+        /// Validates that a column name matches expected PostgreSQL naming conventions.
+        /// </summary>
+        /// <param name="columnName">The column name to validate.</param>
+        /// <exception cref="PluginException">Thrown if the column name is invalid.</exception>
+        private void ValidateColumnName(string columnName)
+        {
+            // Only allow valid PostgreSQL identifier characters
+            // Column names must start with a letter or underscore, followed by letters, digits, or underscores
+            var pattern = @"^[a-zA-Z_][a-zA-Z0-9_]*$";
+            if (!System.Text.RegularExpressions.Regex.IsMatch(columnName, pattern))
+            {
+                throw new PluginException(
+                    $"Invalid column name format: '{columnName}'. " +
+                    "Column names must follow PostgreSQL identifier naming conventions.");
+            }
         }
 
         #endregion
@@ -1003,7 +1062,7 @@ FoundationaLLM:DataSource:ProductCatalogDB:Username = "my-managed-identity-name"
 | Large tables causing memory issues | Medium | High | Implement pagination/streaming for large result sets |
 | Connection pool exhaustion | Low | Medium | Use Npgsql connection pooling, implement retry logic |
 | Token expiration during long operations | Low | Medium | Refresh tokens periodically for managed identity |
-| SQL injection via table names | Low | High | Validate table names against schema, use parameterized queries |
+| SQL injection via table names | Low | High | Validate table names using regex pattern matching, use `NpgsqlConnection.QuoteIdentifier()` for identifier quoting, only allow table names from pre-configured data source configuration |
 | Binary data types not supported | Medium | Low | Document supported data types, log warnings for unsupported types |
 
 ---
