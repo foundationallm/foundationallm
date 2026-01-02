@@ -279,6 +279,45 @@ class LanguageModelFactory:
                     model=ai_model.deployment_name,
                     workspace_client=workspace_client
                 )
+            case LanguageModelProvider.GOOGLE_GENAI:
+                # Google Gemini Developer API (API key based)
+                try:
+                    api_key = self.config.get_value(
+                        api_endpoint.authentication_parameters.get('api_key_configuration_name')
+                    )
+                except Exception as e:
+                    raise LangChainException(f"Failed to retrieve Gemini API key: {str(e)}", 500)
+                
+                if api_key is None:
+                    raise LangChainException("Gemini API key is missing from configuration.", 400)
+                
+                # Build kwargs for ChatGoogleGenerativeAI
+                model_kwargs = {
+                    "model": ai_model.deployment_name,
+                    "google_api_key": api_key,
+                    "temperature": ai_model.model_parameters.get("temperature", 1.0),
+                }
+                
+                # Handle image generation specific parameters from agent_model_parameter_overrides
+                # These can come from image_config in the completion request
+                if agent_model_parameter_overrides:
+                    # Handle response_modalities
+                    if "response_modalities" in agent_model_parameter_overrides:
+                        from langchain_google_genai import Modality
+                        modalities = []
+                        for mod in agent_model_parameter_overrides["response_modalities"]:
+                            if mod.upper() == "IMAGE":
+                                modalities.append(Modality.IMAGE)
+                            elif mod.upper() == "TEXT":
+                                modalities.append(Modality.TEXT)
+                        if modalities:
+                            model_kwargs["response_modalities"] = modalities
+                    
+                    # Handle image_config (aspect_ratio, etc.)
+                    if "image_config" in agent_model_parameter_overrides:
+                        model_kwargs["image_config"] = agent_model_parameter_overrides["image_config"]
+                
+                language_model = ChatGoogleGenerativeAI(**model_kwargs)
 
 
         # Set model parameters.

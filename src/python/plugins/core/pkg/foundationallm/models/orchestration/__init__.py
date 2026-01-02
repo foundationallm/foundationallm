@@ -12,5 +12,5 @@ from .openai_image_file_message_content_item import OpenAIImageFileMessageConten
 from .openai_text_message_content_item import OpenAITextMessageContentItem
 
 from .completion_request_object_keys import CompletionRequestObjectKeys
-from .completion_request_base import CompletionRequestBase
+from .completion_request_base import CompletionRequestBase, ImageGenerationConfig
 from .completion_response import CompletionResponse
