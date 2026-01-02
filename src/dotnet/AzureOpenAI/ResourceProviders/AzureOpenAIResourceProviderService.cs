@@ -402,7 +402,7 @@ namespace FoundationaLLM.AzureOpenAI.ResourceProviders
                     {
                         { OpenAIAgentCapabilityParameterNames.CreateOpenAIFile, true },
                         { OpenAIAgentCapabilityParameterNames.OpenAIEndpoint, fileMapping.OpenAIEndpoint },
-                        { OpenAIAgentCapabilityParameterNames.AttachmentObjectId,  attachmentObjectId }
+                        { OpenAIAgentCapabilityParameterNames.AttachmentObjectId,  attachmentObjectId! }
                     };
 
                 var agentCapabilityResult = await gatewayClient!.CreateAgentCapability(

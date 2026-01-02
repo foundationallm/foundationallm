@@ -31,7 +31,6 @@ namespace FoundationaLLM.State.Interfaces
         /// <summary>
         /// Retrieves the result of a long-running operation.
         /// </summary>
-        /// <typeparam name="T">Define the type used to deserialize the operation result object.</typeparam>
         /// <param name="operationId">The long-running operation identifier.</param>
         /// <returns></returns>
         Task<JsonDocument?> GetLongRunningOperationResult(string operationId);

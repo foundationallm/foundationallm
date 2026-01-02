@@ -34,10 +34,10 @@ namespace FoundationaLLM.Client.Management
             : this(managementUri, credential, instanceId, new APIClientSettings()) { }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CoreClient"/> class with
-        /// the specified Core API URI, TokenCredential, and optional client settings.
+        /// Initializes a new instance of the <see cref="ManagementClient"/> class with
+        /// the specified Management API URI, TokenCredential, and optional client settings.
         /// </summary>
-        /// <param name="managementUri">The base URI of the Core API.</param>
+        /// <param name="managementUri">The base URI of the Management API.</param>
         /// <param name="credential">A <see cref="TokenCredential"/> of an authenticated
         /// user or service principle from which the client library can generate auth tokens.</param>
         /// <param name="instanceId">The unique (GUID) ID for the FoundationaLLM deployment.

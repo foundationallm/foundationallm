@@ -31,18 +31,23 @@ namespace FoundationaLLM.SemanticKernel.Core.Agents
     /// <param name="request">The <see cref="KnowledgeManagementCompletionRequest"/> to be processed by the agent.</param>
     /// <param name="resourceProviderServices">A collection of <see cref="IResourceProviderService"/> resource providers.</param>
     /// <param name="loggerFactory">The <see cref="ILoggerFactory"/> used to create loggers for logging.</param>
+    /// <param name="httpClientFactoryService">The <see cref="IHttpClientFactoryService"/> used to create HTTP clients.</param>
+#pragma warning disable CS9113 // Parameter is unread - preserved for future use
     public class SemanticKernelKnowledgeManagementAgent(
         LLMCompletionRequest request,
         IEnumerable<IResourceProviderService> resourceProviderServices,
         ILoggerFactory loggerFactory,
         IHttpClientFactoryService httpClientFactoryService) : SemanticKernelAgentBase(request, resourceProviderServices, loggerFactory.CreateLogger<SemanticKernelKnowledgeManagementAgent>())
+#pragma warning restore CS9113
     {
         private readonly ILoggerFactory _loggerFactory = loggerFactory;
 
         //private string _textEmbeddingDeploymentName = string.Empty;
         //private string _textEmbeddingEndpoint = string.Empty;
         private string _indexerName = string.Empty;
+#pragma warning disable CS0414 // Field is assigned but never used - preserved for future use
         private IndexerType _indexerType = IndexerType.AzureAISearchIndexer;
+#pragma warning restore CS0414
         private string _indexName = string.Empty;
         private string _prompt = string.Empty;
         private Dictionary<string, string>? _agentDescriptions = [];
@@ -137,6 +142,10 @@ namespace FoundationaLLM.SemanticKernel.Core.Agents
             try
             {
                 var kernel = BuildKernel();
+                if (kernel == null)
+                {
+                    throw new InvalidOperationException("Failed to build kernel.");
+                }
 
                 // Use observability features to capture the fully rendered prompt.
                 var promptFilter = new DefaultPromptFilter();
@@ -172,7 +181,7 @@ namespace FoundationaLLM.SemanticKernel.Core.Agents
             }
         }
 
-        private Kernel BuildKernel()
+        private Kernel? BuildKernel()
         {
             return null;
 
