@@ -130,6 +130,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Context", "dotnet\Context\C
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "..\tests\dotnet\Tests\Tests.csproj", "{48EA21C7-20DD-4B81-802B-CE2CCA19E16C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "dotnet\Infrastructure\Infrastructure.csproj", "{F1A0C2BC-9A7F-F9A9-52D6-2317776AD5BF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -347,6 +349,10 @@ Global
 		{48EA21C7-20DD-4B81-802B-CE2CCA19E16C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{48EA21C7-20DD-4B81-802B-CE2CCA19E16C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{48EA21C7-20DD-4B81-802B-CE2CCA19E16C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F1A0C2BC-9A7F-F9A9-52D6-2317776AD5BF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F1A0C2BC-9A7F-F9A9-52D6-2317776AD5BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F1A0C2BC-9A7F-F9A9-52D6-2317776AD5BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F1A0C2BC-9A7F-F9A9-52D6-2317776AD5BF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -412,6 +418,7 @@ Global
 		{980C5B34-1E8C-FC13-A78C-BC69D5567E0D} = {A5985DC7-94FA-4DD7-A277-0D29577A77CB}
 		{7684E824-6E01-D908-112B-FF35240070DA} = {2C948535-3001-4852-9686-492A23E9E356}
 		{48EA21C7-20DD-4B81-802B-CE2CCA19E16C} = {B9ABEB53-19C8-4224-8820-CF2D82DCC559}
+		{F1A0C2BC-9A7F-F9A9-52D6-2317776AD5BF} = {2C948535-3001-4852-9686-492A23E9E356}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FF5DE858-4B85-4EE8-8A6D-46E8E4FBA078}

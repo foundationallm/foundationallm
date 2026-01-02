@@ -75,5 +75,10 @@ namespace FoundationaLLM.Common.Constants.Authorization
         /// </summary>
         public const string Resource_Providers_Administrator = "/providers/FoundationaLLM.Authorization/roleDefinitions/63b6cc4d-9e1c-4891-8201-cf58286ebfe6";
 
+        /// <summary>
+        /// Manage infrastructure resources including Azure Container Apps and Azure Kubernetes Service deployments.
+        /// </summary>
+        public const string Infrastructure_Contributor = "/providers/FoundationaLLM.Authorization/roleDefinitions/0a763742-1425-4334-bd2b-981cf3c0f548";
+
     }
 }

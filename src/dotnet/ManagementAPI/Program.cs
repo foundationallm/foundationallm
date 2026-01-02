@@ -89,6 +89,7 @@ namespace FoundationaLLM.Management.API
             builder.AddPluginResourceProvider();
             builder.AddVectorResourceProvider();
             builder.AddContextResourceProvider(proxyMode: true);
+            builder.AddInfrastructureResourceProvider();
 
             builder.AddAzureCosmosDBService();
 

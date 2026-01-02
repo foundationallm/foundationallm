@@ -582,5 +582,56 @@ namespace FoundationaLLM
                 };
             });
         }
+        
+        /// <summary>
+        /// Add the named <see cref="IStorageService"/> implementation for the FoundationaLLM.Infrastructure resource provider.
+        /// </summary>
+        /// <param name="builder">The application builder.</param>
+        public static void AddInfrastructureResourceProviderStorage(this IHostApplicationBuilder builder)
+        {
+            builder.Services.AddOptions<BlobStorageServiceSettings>(
+                DependencyInjectionKeys.FoundationaLLM_ResourceProviders_Infrastructure)
+                .Bind(builder.Configuration.GetSection(AppConfigurationKeySections.FoundationaLLM_ResourceProviders_Infrastructure_Storage));
+
+            builder.Services.AddSingleton<IStorageService, BlobStorageService>(sp =>
+            {
+                var settings = sp.GetRequiredService<IOptionsMonitor<BlobStorageServiceSettings>>()
+                    .Get(DependencyInjectionKeys.FoundationaLLM_ResourceProviders_Infrastructure);
+                var logger = sp.GetRequiredService<ILogger<BlobStorageService>>();
+
+                return new BlobStorageService(
+                    Options.Create<BlobStorageServiceSettings>(settings),
+                    logger)
+                {
+                    InstanceName = DependencyInjectionKeys.FoundationaLLM_ResourceProviders_Infrastructure
+                };
+            });
+        }
+
+        /// <summary>
+        /// Add the named <see cref="IStorageService"/> implementation for the FoundationaLLM.Infrastructure resource provider.
+        /// </summary>
+        /// <param name="services">The <see cref="IServiceCollection"/> dependency injection container service collection.</param>
+        /// <param name="configuration">The <see cref="IConfiguration"/> application configuration provider.</param>
+        public static void AddInfrastructureResourceProviderStorage(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.AddOptions<BlobStorageServiceSettings>(
+                DependencyInjectionKeys.FoundationaLLM_ResourceProviders_Infrastructure)
+                .Bind(configuration.GetSection(AppConfigurationKeySections.FoundationaLLM_ResourceProviders_Infrastructure_Storage));
+
+            services.AddSingleton<IStorageService, BlobStorageService>(sp =>
+            {
+                var settings = sp.GetRequiredService<IOptionsMonitor<BlobStorageServiceSettings>>()
+                    .Get(DependencyInjectionKeys.FoundationaLLM_ResourceProviders_Infrastructure);
+                var logger = sp.GetRequiredService<ILogger<BlobStorageService>>();
+
+                return new BlobStorageService(
+                    Options.Create<BlobStorageServiceSettings>(settings),
+                    logger)
+                {
+                    InstanceName = DependencyInjectionKeys.FoundationaLLM_ResourceProviders_Infrastructure
+                };
+            });
+        }
     }
 }
