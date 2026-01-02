@@ -1,4 +1,4 @@
-﻿using FoundationaLLM.Common.Constants;
+using FoundationaLLM.Common.Constants;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Azure.CosmosDB;
 using FoundationaLLM.Common.Models.Configuration.CosmosDB;
@@ -727,6 +727,26 @@ namespace FoundationaLLM.Common.Services.Azure
                 .Build();
 
             await _agents.CreateItemAsync(item: agentFile, partitionKey: partitionKey, cancellationToken: cancellationToken);
+        }
+
+        /// <inheritdoc/>
+        public async Task<List<T>> QueryItemsAsync<T>(string containerName, QueryDefinition query, CancellationToken cancellationToken = default)
+        {
+            if (!_containers.TryGetValue(containerName, out var container))
+            {
+                throw new ArgumentException($"Container {containerName} not found.");
+            }
+
+            var response = container.GetItemQueryIterator<T>(query);
+            var results = new List<T>();
+
+            while (response.HasMoreResults)
+            {
+                var page = await response.ReadNextAsync(cancellationToken);
+                results.AddRange(page);
+            }
+
+            return results;
         }
 
         /// <inheritdoc/>

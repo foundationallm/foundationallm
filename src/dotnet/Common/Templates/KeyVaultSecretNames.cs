@@ -13,6 +13,18 @@ namespace FoundationaLLM.Common.Constants.Configuration
     public static partial class KeyVaultSecretNames
     {
         /// <summary>
+        /// Salt value used for anonymization.
+        /// </summary>
+        public const string FoundationaLLM_Analytics_AnonymizationSalt =
+            "foundationallm-foundationallm-analytics-anonymizationsalt";
+
+        /// <summary>
+        /// The shared key of the Log Analytics workspace.
+        /// </summary>
+        public const string FoundationaLLM_Analytics_LogAnalyticsSharedKey =
+            "foundationallm-foundationallm-analytics-loganalytics-sharedkey";
+
+        /// <summary>
         /// The name of the Azure Key Vault secret holding the connection string for the App Insights service used by the Core API.
         /// </summary>
         public const string FoundationaLLM_APIEndpoints_CoreAPI_Essentials_AppInsightsConnectionString =
