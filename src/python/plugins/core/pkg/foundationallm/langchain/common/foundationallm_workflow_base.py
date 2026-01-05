@@ -183,13 +183,13 @@ class FoundationaLLMWorkflowBase(ABC):
             ResourceObjectIdPropertyValues.MAIN_MODEL
         )
         if model_object_id:
+            http_async_client = LoggingAsyncHttpClient(timeout=30.0) if intercept_http_calls else None
+            model_parameter_overrides = model_object_id.properties.get('model_parameters', {})
             self.workflow_llm = \
                 language_model_factory.get_language_model(
                     model_object_id.object_id,
-                    http_async_client=LoggingAsyncHttpClient(timeout=30.0)
-                ) if intercept_http_calls else \
-                language_model_factory.get_language_model(
-                    model_object_id.object_id
+                    agent_model_parameter_overrides=model_parameter_overrides,
+                    http_async_client=http_async_client
                 )
         else:
             error_msg = 'No main model found in workflow configuration'
@@ -343,7 +343,7 @@ class FoundationaLLMWorkflowBase(ABC):
         """
         api_endpoint = ObjectUtils.get_object_by_id(ai_model.endpoint_object_id, self.objects, APIEndpointConfiguration)
         return api_endpoint
-    
+
     def get_text_from_message(self, message: BaseMessage) -> str:
         """
         Extracts text from content blocks returned by the LLM.
