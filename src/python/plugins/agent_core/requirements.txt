@@ -12,7 +12,7 @@ databricks-sql-connector[pyarrow]==4.1.4
 databricks-langchain==0.9.0
 langchain==1.0.3
 langchain-aws==1.0.0
-langchain_azure_ai==1.0.2
+langchain-azure-ai==1.0.2
 langchain-google-genai==4.1.1
 langchain-google-vertexai==3.2.0
 langchain-openai==1.0.2

@@ -7,7 +7,6 @@ import os
 import sys
 import uuid
 
-sys.path.append('pkg')
 from foundationallm.operations.operations_manager import OperationsManager
 from foundationallm_agent_plugins import (
     FoundationaLLMAgentToolPluginManager,
