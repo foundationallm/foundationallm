@@ -109,7 +109,7 @@ docs/
 ├── setup-guides/               # How-to guides
 │   ├── agents/                 # Agent configuration
 │   ├── branding/               # Branding customization
-│   ├── exposed-apis/           # API documentation
+│   ├── rest-apis/              # REST API documentation
 │   ├── management-ui/          # Management Portal guides
 │   └── vectorization/          # Vectorization setup
 ├── operations/                 # Administration guides

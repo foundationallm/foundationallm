@@ -113,17 +113,17 @@ items:
       href: setup-guides/agents/image-description.md
   - name: Branding
     href: setup-guides/branding/index.md
-  - name: Exposed APIs
-    href: setup-guides/exposed-apis/index.md
+  - name: REST APIs
+    href: setup-guides/rest-apis/index.md
     items:
-    - name: Exposed APIs
-      href: setup-guides/exposed-apis/index.md
+    - name: REST APIs
+      href: setup-guides/rest-apis/index.md
     - name: Core API
-      href: setup-guides/exposed-apis/core-api.md
+      href: setup-guides/rest-apis/core-api.md
     - name: Management API
-      href: setup-guides/exposed-apis/management-api.md  
+      href: setup-guides/rest-apis/management-api.md  
     - name: Resource management
-      href: setup-guides/exposed-apis/resource-management/resource-management.md
+      href: setup-guides/rest-apis/resource-management/resource-management.md
   - name: Management UI
     href: setup-guides/management-ui/management-ui.md
     items:
