@@ -133,20 +133,20 @@ items:
       href: setup-guides/management-ui/data-pipeline-management.md
     - name: System Status Messages
       href: setup-guides/management-ui/system-status-messages.md
-  - name: Vectorization
+  - name: Knowledge Sources
     href: setup-guides/vectorization/index.md
     items:
-    - name: Vectorization concepts
+    - name: Context Engineering Concepts
       href: setup-guides/vectorization/vectorization-concepts.md
-    - name: Configuring vectorization
+    - name: Configuring Context Engineering
       href: setup-guides/vectorization/vectorization-configuration.md
-    - name: Managing vectorization profiles
+    - name: Managing Profiles
       href: setup-guides/vectorization/vectorization-profiles.md
-    - name: Triggering vectorization
+    - name: Triggering Data Pipelines
       href: setup-guides/vectorization/vectorization-triggering.md
-    - name: Monitoring and troubleshooting
+    - name: Monitoring and Troubleshooting
       href: setup-guides/vectorization/vectorization-monitoring-troubleshooting.md
-    - name: SharePoint Online Upload Guide
+    - name: SharePoint Online Guide
       href: setup-guides/vectorization/sharepoint-upload-guide.md
     - name: Azure Data Lake Guide
       href: setup-guides/vectorization/azure-data-lake-guide.md

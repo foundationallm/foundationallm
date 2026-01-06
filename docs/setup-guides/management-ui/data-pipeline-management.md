@@ -239,7 +239,7 @@ For more on performance, see [Reduced Vectorization Latency](#performance-config
 
 ## Performance Configuration
 
-### Reducing Vectorization Latency
+### Reducing Processing Latency
 
 Several configuration options affect pipeline performance:
 
@@ -251,14 +251,14 @@ Several configuration options affect pipeline performance:
 
 ### Scaling for Large Volumes
 
-For enterprise-scale vectorization:
+For enterprise-scale content processing:
 
-1. Deploy multiple Vectorization Workers
+1. Deploy multiple Data Pipeline Workers
 2. Use asynchronous processing
 3. Configure appropriate resource limits
 4. Monitor Azure service quotas
 
-See [Vectorization Configuration](../vectorization/vectorization-configuration.md) for detailed settings.
+See [Context Engineering Configuration](../vectorization/vectorization-configuration.md) for detailed settings.
 
 ## Managing Existing Pipelines
 

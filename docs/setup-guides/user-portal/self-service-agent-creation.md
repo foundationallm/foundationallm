@@ -126,9 +126,9 @@ Allow users to upload files when chatting with your agent. Supported file types 
 - Spreadsheets (CSV, XLSX)
 - Images (PNG, JPG, GIF)
 
-#### Private Storage Knowledge Source
+#### Private Knowledge Source
 
-Connect your agent to a private storage location containing knowledge documents. See [Private Storage for Custom Agent Owners](../agents/private-storage.md) for configuration details.
+Connect your agent to a private storage location containing knowledge documents. Files uploaded to private storage are automatically processed and made available for your agent's context. See [Private Storage for Custom Agent Owners](../agents/private-storage.md) for configuration details.
 
 <!-- [TODO: Document private storage tool selection UI] -->
 

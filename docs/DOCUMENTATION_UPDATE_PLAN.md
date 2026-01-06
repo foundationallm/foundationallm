@@ -2,6 +2,19 @@
 
 This document outlines the planned documentation updates for end-users, administrators, and developers using the FoundationaLLM APIs.
 
+> **Status**: Initial documentation complete. See [DOCUMENTATION_UPDATE_SUMMARY.md](DOCUMENTATION_UPDATE_SUMMARY.md) for details.
+
+## Terminology Standards
+
+The following terminology standards have been applied throughout the documentation:
+
+| Term | Usage | Notes |
+|------|-------|-------|
+| **Knowledge Source** | General term for document repositories | Replaces "vectorization" in most contexts |
+| **Context Engineering** | Process of preparing content for AI agents | Includes extraction, partitioning, embedding |
+| **Data Pipeline** | Automated workflow for processing content | Replaces "Vectorization Pipeline" |
+| **Vectorization** | Only used when specifically referring to creating vector embeddings | Technical term, use sparingly |
+
 ## Table of Contents
 
 1. [Executive Summary](#executive-summary)

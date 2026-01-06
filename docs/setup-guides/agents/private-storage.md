@@ -8,7 +8,7 @@ When creating a self-service agent, owners can configure a private storage locat
 
 - Is accessible only to their specific agent
 - Contains documents relevant to the agent's purpose
-- Is automatically vectorized and indexed
+- Is automatically processed and indexed
 - Remains isolated from other users and agents
 
 ## Use Cases
@@ -126,15 +126,15 @@ Before using private storage:
 > [!NOTE]
 > Removing a document also removes its vectors from the search index.
 
-## Processing Pipeline
+## Content Processing
 
-When you upload a document to private storage:
+When you upload a document to private storage, the data pipeline processes it through these context engineering stages:
 
 1. **Upload**: Document stored in agent-specific storage
 2. **Extract**: Text extracted from the document
 3. **Partition**: Text split into chunks
-4. **Embed**: Vectors generated for each chunk
-5. **Index**: Vectors stored in agent-specific index partition
+4. **Embed**: Vector embeddings generated for each chunk
+5. **Index**: Content stored in agent-specific index partition
 
 Processing typically completes within a few minutes for small documents.
 

@@ -22,12 +22,12 @@ Set up and configure agents to define personas and connect to your data sources:
 - [Private Storage](agents/private-storage.md) - Private knowledge sources for custom agents
 - [Image Description](agents/image-description.md) - LLM-generated image descriptions
 
-## Knowledge Sources & Vectorization
+## Knowledge Sources
 
-Configure knowledge sources and vectorization to enable vector search:
+Configure knowledge sources to provide context for your agents:
 
-- [Vectorization Overview](vectorization/index.md) - Vectorization concepts and configuration
-- [SharePoint Online Guide](vectorization/sharepoint-upload-guide.md) - Use SharePoint as a knowledge source
+- [Knowledge Sources Overview](vectorization/index.md) - Understanding knowledge sources and context engineering
+- [SharePoint Online Guide](vectorization/sharepoint-upload-guide.md) - Use SharePoint or OneDrive as a knowledge source
 - [Azure Data Lake Guide](vectorization/azure-data-lake-guide.md) - Use Azure Data Lake as a knowledge source
 - [Knowledge Graph Source](vectorization/knowledge-graph-source.md) - Use Knowledge Graphs as a knowledge source
 

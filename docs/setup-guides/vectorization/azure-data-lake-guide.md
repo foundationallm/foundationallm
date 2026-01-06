@@ -9,7 +9,7 @@ Azure Data Lake Storage Gen2 is a scalable and cost-effective data lake solution
 - Process large volumes of documents
 - Organize content in a hierarchical folder structure
 - Leverage existing data lake investments
-- Scale vectorization for enterprise workloads
+- Scale content processing for enterprise workloads
 
 ## Prerequisites
 
@@ -27,7 +27,8 @@ Azure Data Lake Storage Gen2        FoundationaLLM
          |------------------------------>|  Data Pipeline
          |  (via Azure SDK)              |       |
          |                               |       v
-         |                               |  Vectorization
+         |                               |  Context Engineering
+         |                               |  (embedding, indexing)
          |                               |       |
          |                               |       v
          |                               |  Azure AI Search
@@ -275,7 +276,7 @@ FoundationaLLM supports **Azure Data Lake Storage Gen2** only.
 
 ## Related Topics
 
-- [Vectorization Profiles](vectorization-profiles.md) - Full data source configuration reference
+- [Knowledge Source Profiles](vectorization-profiles.md) - Full data source configuration reference
 - [Data Pipeline Management](../management-ui/data-pipeline-management.md) - Pipeline configuration guide
 - [SharePoint Online Guide](sharepoint-upload-guide.md) - Alternative data source option
-- [Vectorization Configuration](vectorization-configuration.md) - Worker and API settings
+- [Context Engineering Configuration](vectorization-configuration.md) - Worker and API settings

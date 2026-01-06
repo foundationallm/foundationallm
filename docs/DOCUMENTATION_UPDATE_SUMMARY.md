@@ -4,6 +4,27 @@
 
 This report summarizes the documentation updates made to address the 30 topics outlined in the documentation requirements.
 
+## Recent Updates
+
+### Terminology Standardization (Latest)
+
+The following terminology changes have been applied:
+
+| Old Term | New Term | Rationale |
+|----------|----------|-----------|
+| Vectorization (general) | Knowledge Source | Less technical, user-friendly |
+| Vectorization Pipeline | Data Pipeline | Consistent with platform terminology |
+| Vectorization process | Context Engineering | Describes the broader process |
+
+**Note**: "Vectorization" is still used when specifically referring to the technical process of creating vector embeddings.
+
+### SharePoint Documentation Enhancement (Latest)
+
+The SharePoint guide (`sharepoint-upload-guide.md`) has been updated to document **two approaches**:
+
+1. **End User OneDrive File Selection** - Users can select files from OneDrive using the "Select file from OneDrive" button in the User Portal during conversations
+2. **Backend Knowledge Source** - Administrators configure SharePoint document libraries as knowledge sources for agents via data pipelines
+
 ## Documentation Produced
 
 ### New Files Created
@@ -34,16 +55,19 @@ This report summarizes the documentation updates made to address the 30 topics o
 
 | File | Changes |
 |------|---------|
-| `toc.yml` | Added all new files to navigation |
+| `toc.yml` | Added all new files to navigation; renamed "Vectorization" section to "Knowledge Sources" |
 | `setup-guides/index.md` | Added User Portal, Knowledge Sources sections |
-| `setup-guides/vectorization/index.md` | Added links to new knowledge source guides |
+| `setup-guides/vectorization/index.md` | Renamed to Knowledge Sources overview; added terminology guide and Context Engineering concept |
 | `setup-guides/agents/index.md` | Added links to new agent capability docs |
+| `setup-guides/management-ui/data-pipeline-management.md` | Updated terminology (vectorization → context engineering) |
+| `setup-guides/agents/private-storage.md` | Updated terminology for content processing |
+| `setup-guides/user-portal/self-service-agent-creation.md` | Updated private storage terminology |
 
 ## Topic Coverage Summary
 
 | # | Topic | Status | Notes |
 |---|-------|--------|-------|
-| 1 | Upload files from SharePoint Online | ✅ Documented | `sharepoint-upload-guide.md` |
+| 1 | Upload files from SharePoint Online | ✅ Documented | `sharepoint-upload-guide.md` - Covers BOTH OneDrive selection AND backend knowledge source |
 | 2 | Azure Data Lake as knowledge source | ✅ Documented | `azure-data-lake-guide.md` |
 | 3 | Private storage for custom agent owners | ✅ Documented | `private-storage.md` - needs implementation details |
 | 4 | Data pipeline creation & invocation | ✅ Documented | `data-pipeline-management.md` |
@@ -153,6 +177,7 @@ The following items were marked with `[TODO]` comments in the documentation and 
 - [ ] Add link to video walkthrough when available
 
 ### `setup-guides/vectorization/sharepoint-upload-guide.md`
+- [ ] Add screenshot of OneDrive file selection button in User Portal
 - [ ] Add screenshot of SharePoint data source creation UI
 - [ ] Confirm supported SharePoint file types and size limits
 - [ ] Document file sync/refresh behavior
