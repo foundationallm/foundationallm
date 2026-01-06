@@ -83,6 +83,11 @@ namespace FoundationaLLM.Common.Constants.ResourceProviders
         public const string FoundationaLLM_Context = "FoundationaLLM.Context";
 
         /// <summary>
+        /// The name of the FoundationaLLM.Infrastructure resource provider.
+        /// </summary>
+        public const string FoundationaLLM_Infrastructure = "FoundationaLLM.Infrastructure";
+
+        /// <summary>
         /// Contains all the resource provider names.
         /// </summary>
         public readonly static ImmutableList<string> All = [
@@ -99,7 +104,8 @@ namespace FoundationaLLM.Common.Constants.ResourceProviders
             FoundationaLLM_DataPipeline,
             FoundationaLLM_Plugin,
             FoundationaLLM_Vector,
-            FoundationaLLM_Context
+            FoundationaLLM_Context,
+            FoundationaLLM_Infrastructure
         ];
     }
 }

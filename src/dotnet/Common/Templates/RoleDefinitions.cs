@@ -403,6 +403,32 @@ namespace FoundationaLLM.Common.Models.Authorization
                         UpdatedBy = null
                     }
                 },
+                {
+                    "/providers/FoundationaLLM.Authorization/roleDefinitions/0a763742-1425-4334-bd2b-981cf3c0f548",
+                    new RoleDefinition
+                    {
+                        Name = "0a763742-1425-4334-bd2b-981cf3c0f548",
+                        Type = "FoundationaLLM.Authorization/roleDefinitions",
+                        ObjectId = "/providers/FoundationaLLM.Authorization/roleDefinitions/0a763742-1425-4334-bd2b-981cf3c0f548",
+                        DisplayName = "Infrastructure Contributor",
+                        Description = "Manage infrastructure resources including Azure Container Apps and Azure Kubernetes Service deployments.",
+                        AssignableScopes = [
+                            "/",],
+                        Permissions = [                            
+                            new RoleDefinitionPermissions
+                            {
+                                Actions = [
+                                    "FoundationaLLM.Infrastructure/*",],
+                                NotActions = [],
+                                DataActions = [],
+                                NotDataActions = [],
+                            },],
+                        CreatedOn = DateTimeOffset.Parse("2025-05-01T00:00:00.0000000Z"),
+                        UpdatedOn = DateTimeOffset.Parse("2025-05-01T00:00:00.0000000Z"),
+                        CreatedBy = null,
+                        UpdatedBy = null
+                    }
+                },
             });
     }
 }

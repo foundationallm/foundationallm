@@ -754,6 +754,69 @@ namespace FoundationaLLM.Common.Models.Authorization
                         "Execute management actions.",
                         "Context")
                 },
+                {
+                    AuthorizableActionNames.FoundationaLLM_Infrastructure_AzureContainerAppsEnvironments_Read,
+                    new AuthorizableAction(
+                        AuthorizableActionNames.FoundationaLLM_Infrastructure_AzureContainerAppsEnvironments_Read,
+                        "Read Azure Container Apps Environments.",
+                        "Infrastructure")
+                },
+                {
+                    AuthorizableActionNames.FoundationaLLM_Infrastructure_AzureContainerApps_Read,
+                    new AuthorizableAction(
+                        AuthorizableActionNames.FoundationaLLM_Infrastructure_AzureContainerApps_Read,
+                        "Read Azure Container Apps.",
+                        "Infrastructure")
+                },
+                {
+                    AuthorizableActionNames.FoundationaLLM_Infrastructure_AzureContainerApps_Write,
+                    new AuthorizableAction(
+                        AuthorizableActionNames.FoundationaLLM_Infrastructure_AzureContainerApps_Write,
+                        "Create or update Azure Container Apps.",
+                        "Infrastructure")
+                },
+                {
+                    AuthorizableActionNames.FoundationaLLM_Infrastructure_AzureContainerApps_Delete,
+                    new AuthorizableAction(
+                        AuthorizableActionNames.FoundationaLLM_Infrastructure_AzureContainerApps_Delete,
+                        "Delete Azure Container Apps.",
+                        "Infrastructure")
+                },
+                {
+                    AuthorizableActionNames.FoundationaLLM_Infrastructure_AzureKubernetesServices_Read,
+                    new AuthorizableAction(
+                        AuthorizableActionNames.FoundationaLLM_Infrastructure_AzureKubernetesServices_Read,
+                        "Read Azure Kubernetes Services.",
+                        "Infrastructure")
+                },
+                {
+                    AuthorizableActionNames.FoundationaLLM_Infrastructure_AzureKubernetesServiceDeployments_Read,
+                    new AuthorizableAction(
+                        AuthorizableActionNames.FoundationaLLM_Infrastructure_AzureKubernetesServiceDeployments_Read,
+                        "Read Azure Kubernetes Service Deployments.",
+                        "Infrastructure")
+                },
+                {
+                    AuthorizableActionNames.FoundationaLLM_Infrastructure_AzureKubernetesServiceDeployments_Write,
+                    new AuthorizableAction(
+                        AuthorizableActionNames.FoundationaLLM_Infrastructure_AzureKubernetesServiceDeployments_Write,
+                        "Create or update Azure Kubernetes Service Deployments.",
+                        "Infrastructure")
+                },
+                {
+                    AuthorizableActionNames.FoundationaLLM_Infrastructure_AzureKubernetesServiceDeployments_Delete,
+                    new AuthorizableAction(
+                        AuthorizableActionNames.FoundationaLLM_Infrastructure_AzureKubernetesServiceDeployments_Delete,
+                        "Delete Azure Kubernetes Service Deployments.",
+                        "Infrastructure")
+                },
+                {
+                    AuthorizableActionNames.FoundationaLLM_Infrastructure_Management_Write,
+                    new AuthorizableAction(
+                        AuthorizableActionNames.FoundationaLLM_Infrastructure_Management_Write,
+                        "Execute management actions.",
+                        "Infrastructure")
+                },
             });
 
         /// <summary>
