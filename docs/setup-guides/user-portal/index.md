@@ -69,3 +69,17 @@ The User Portal behavior can be customized through the following App Configurati
 | `FoundationaLLM:UserPortal:Configuration:ShowLastConversationOnStartup` | Show last conversation on login |
 
 For more configuration options, see [App Configuration Values](../../deployment/app-configuration-values.md).
+
+## Agent Capabilities
+
+Agents in FoundationaLLM support a variety of capabilities that enhance user interactions:
+
+| Capability | Description |
+|------------|-------------|
+| **Conversation History** | Maintains context across exchanges in a session |
+| **Content Safety** | Filters harmful content using Azure Content Safety |
+| **Data Protection** | Masks PII using Microsoft Presidio |
+| **Semantic Cache** | Reduces latency by caching similar queries |
+| **Prompt Rewriting** | Improves prompt quality automatically |
+
+For detailed documentation on agent capabilities, see [Agents and Workflows](../agents/agents_workflows.md#agent-configuration-section).

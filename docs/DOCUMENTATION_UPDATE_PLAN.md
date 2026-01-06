@@ -15,6 +15,22 @@ The following terminology standards have been applied throughout the documentati
 | **Data Pipeline** | Automated workflow for processing content | Replaces "Vectorization Pipeline" |
 | **Vectorization** | Only used when specifically referring to creating vector embeddings | Technical term, use sparingly |
 
+## Agent Capabilities Documentation
+
+The following agent capabilities have been comprehensively documented in `setup-guides/agents/agents_workflows.md`:
+
+| Capability | Status |
+|------------|--------|
+| Conversation History | ✅ Documented |
+| Gatekeeper | ✅ Documented |
+| Content Safety (Azure, Lakera, Enkrypt) | ✅ Documented |
+| Data Protection (Presidio) | ✅ Documented |
+| Prompt Rewriting | ✅ Documented |
+| Semantic Cache | ✅ Documented |
+| Cost Center | ✅ Documented |
+| Agent Expiration | ✅ Documented |
+| Portal Experience Controls | ✅ Documented |
+
 ## Table of Contents
 
 1. [Executive Summary](#executive-summary)

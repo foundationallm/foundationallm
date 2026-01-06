@@ -101,13 +101,43 @@ Adjust the temperature to control response creativity:
 | 0.4 - 0.7 | Balanced |
 | 0.8 - 1.0 | More creative, varied |
 
-### Step 5: Configure Agent Status
+### Step 5: Configure Agent Status and Behavior
 
-Set the agent's operational status:
+Configure the agent's operational status and behavioral settings.
 
-- **Active**: Agent is available for use
-- **Inactive**: Agent is hidden but can be reactivated
-- **Expiration Date**: Optional date when the agent becomes inactive
+#### Agent Status
+
+| Status | Description |
+|--------|-------------|
+| **Active** | Agent is available for use |
+| **Inactive** | Agent is hidden but can be reactivated |
+| **Expiration Date** | Optional date when the agent automatically becomes inactive |
+
+#### Conversation History
+
+Configure how the agent remembers previous exchanges within a session:
+
+| Setting | Description | Default |
+|---------|-------------|---------|
+| **Enable History** | Agent retains context from earlier messages | Enabled |
+| **Max Messages** | Number of previous messages to include in context | 5 |
+
+Enabling conversation history allows for more natural, contextual conversations but consumes additional tokens.
+
+#### Content Safety (Gatekeeper)
+
+If available for self-service agents, configure content moderation:
+
+| Option | Description |
+|--------|-------------|
+| **Content Safety** | Filter harmful content (Azure Content Safety) |
+| **Data Protection** | Mask PII in conversations (Microsoft Presidio) |
+
+#### Cost Center (Optional)
+
+Assign a cost center identifier for usage tracking and budget allocation. This helps organizations track AI costs by department or project.
+
+For detailed information on all agent configuration options, see [Agents and Workflows](../agents/agents_workflows.md#agent-configuration-section).
 
 ### Step 6: Select Tools
 

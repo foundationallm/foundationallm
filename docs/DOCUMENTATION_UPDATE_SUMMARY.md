@@ -18,7 +18,23 @@ The following terminology changes have been applied:
 
 **Note**: "Vectorization" is still used when specifically referring to the technical process of creating vector embeddings.
 
-### SharePoint Documentation Enhancement (Latest)
+### Agent Capabilities Documentation (Latest)
+
+The agent workflows documentation (`agents_workflows.md`) has been significantly expanded with comprehensive documentation for:
+
+| Capability | Coverage |
+|------------|----------|
+| **Conversation History** | Configuration, use cases, best practices |
+| **Gatekeeper** | Architecture, enabling/disabling |
+| **Content Safety** | Azure Content Safety, Prompt Shield, Lakera Guard, Enkrypt |
+| **Data Protection** | Microsoft Presidio, entity types, configuration |
+| **Prompt Rewriting** | How it works, configuration, use cases |
+| **Semantic Cache** | Architecture, configuration, considerations |
+| **Cost Center** | Purpose, tracking metrics, best practices |
+| **Agent Expiration** | Configuration, behavior, reactivation |
+| **Portal Experience Controls** | Token display, rating, prompts, file upload |
+
+### SharePoint Documentation Enhancement
 
 The SharePoint guide (`sharepoint-upload-guide.md`) has been updated to document **two approaches**:
 
@@ -61,7 +77,9 @@ The SharePoint guide (`sharepoint-upload-guide.md`) has been updated to document
 | `setup-guides/agents/index.md` | Added links to new agent capability docs |
 | `setup-guides/management-ui/data-pipeline-management.md` | Updated terminology (vectorization → context engineering) |
 | `setup-guides/agents/private-storage.md` | Updated terminology for content processing |
-| `setup-guides/user-portal/self-service-agent-creation.md` | Updated private storage terminology |
+| `setup-guides/user-portal/self-service-agent-creation.md` | Updated private storage terminology; added agent configuration settings |
+| `setup-guides/agents/agents_workflows.md` | Major expansion: added comprehensive documentation for all agent capabilities |
+| `setup-guides/user-portal/index.md` | Added Agent Capabilities section with links |
 
 ## Topic Coverage Summary
 
