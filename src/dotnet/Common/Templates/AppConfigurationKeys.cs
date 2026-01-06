@@ -73,6 +73,136 @@ namespace FoundationaLLM.Common.Constants.Configuration
 
         #endregion
 
+        #region FoundationaLLM:Analytics
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:Analytics:Enabled setting.
+        /// <para>Value description:<br/>The flag indicating whether analytics is enabled</para>
+        /// </summary>
+        public const string FoundationaLLM_Analytics_Enabled =
+            "FoundationaLLM:Analytics:Enabled";
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:Analytics:AnonymizationSalt setting.
+        /// <para>Value description:<br/>Salt value used for anonymization.</para>
+        /// </summary>
+        public const string FoundationaLLM_Analytics_AnonymizationSalt =
+            "FoundationaLLM:Analytics:AnonymizationSalt";
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:Analytics:LogAnalyticsWorkspaceId setting.
+        /// <para>Value description:<br/>The identifier of the Log Analytics workspace.</para>
+        /// </summary>
+        public const string FoundationaLLM_Analytics_LogAnalyticsWorkspaceId =
+            "FoundationaLLM:Analytics:LogAnalyticsWorkspaceId";
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:Analytics:LogAnalyticsSharedKey setting.
+        /// <para>Value description:<br/>The shared key of the Log Analytics workspace.</para>
+        /// </summary>
+        public const string FoundationaLLM_Analytics_LogAnalyticsSharedKey =
+            "FoundationaLLM:Analytics:LogAnalyticsSharedKey";
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:Analytics:CacheDurationMinutes setting.
+        /// <para>Value description:<br/>The duration of caching in minutes.</para>
+        /// </summary>
+        public const string FoundationaLLM_Analytics_CacheDurationMinutes =
+            "FoundationaLLM:Analytics:CacheDurationMinutes";
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:Analytics:RetentionDays setting.
+        /// <para>Value description:<br/>The duration of retention in days.</para>
+        /// </summary>
+        public const string FoundationaLLM_Analytics_RetentionDays =
+            "FoundationaLLM:Analytics:RetentionDays";
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:Analytics:EnableRealTimeUpdates setting.
+        /// <para>Value description:<br/>The flag indicating whether real time updates are enabled.</para>
+        /// </summary>
+        public const string FoundationaLLM_Analytics_EnableRealTimeUpdates =
+            "FoundationaLLM:Analytics:EnableRealTimeUpdates";
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:Analytics:AbuseDetection:Enabled setting.
+        /// <para>Value description:<br/>Enable or disable the abuse detection subsystem (true/false).</para>
+        /// </summary>
+        public const string FoundationaLLM_Analytics_AbuseDetection_Enabled =
+            "FoundationaLLM:Analytics:AbuseDetection:Enabled";
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:Analytics:AbuseDetection:HighRequestRateThreshold setting.
+        /// <para>Value description:<br/>Number of requests within the monitored interval considered a high request rate and subject to mitigation.</para>
+        /// </summary>
+        public const string FoundationaLLM_Analytics_AbuseDetection_HighRequestRateThreshold =
+            "FoundationaLLM:Analytics:AbuseDetection:HighRequestRateThreshold";
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:Analytics:AbuseDetection:ExtremeRequestRateThreshold setting.
+        /// <para>Value description:<br/>Number of requests within the monitored interval considered an extreme request rate for aggressive throttling or blocking.</para>
+        /// </summary>
+        public const string FoundationaLLM_Analytics_AbuseDetection_ExtremeRequestRateThreshold =
+            "FoundationaLLM:Analytics:AbuseDetection:ExtremeRequestRateThreshold";
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:Analytics:AbuseDetection:RapidFireThreshold setting.
+        /// <para>Value description:<br/>Count of rapid consecutive requests from the same source that, when exceeded within the RapidFireWindowMinutes, indicate rapid-fire abuse.</para>
+        /// </summary>
+        public const string FoundationaLLM_Analytics_AbuseDetection_RapidFireThreshold =
+            "FoundationaLLM:Analytics:AbuseDetection:RapidFireThreshold";
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:Analytics:AbuseDetection:RapidFireWindowMinutes setting.
+        /// <para>Value description:<br/>Time window in minutes used to evaluate rapid-fire request behavior for the RapidFireThreshold.</para>
+        /// </summary>
+        public const string FoundationaLLM_Analytics_AbuseDetection_RapidFireWindowMinutes =
+            "FoundationaLLM:Analytics:AbuseDetection:RapidFireWindowMinutes";
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:Analytics:AbuseDetection:ContinuousUsageHours setting.
+        /// <para>Value description:<br/>Number of continuous hours of activity from a single user or client considered suspicious and subject to further checks.</para>
+        /// </summary>
+        public const string FoundationaLLM_Analytics_AbuseDetection_ContinuousUsageHours =
+            "FoundationaLLM:Analytics:AbuseDetection:ContinuousUsageHours";
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:Analytics:AbuseDetection:AgentHoppingThreshold setting.
+        /// <para>Value description:<br/>Number of distinct agents accessed within the AgentHoppingWindowMinutes that indicates agent-hopping abuse.</para>
+        /// </summary>
+        public const string FoundationaLLM_Analytics_AbuseDetection_AgentHoppingThreshold =
+            "FoundationaLLM:Analytics:AbuseDetection:AgentHoppingThreshold";
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:Analytics:AbuseDetection:AgentHoppingWindowMinutes setting.
+        /// <para>Value description:<br/>Time window in minutes used to evaluate agent-hopping behavior for the AgentHoppingThreshold.</para>
+        /// </summary>
+        public const string FoundationaLLM_Analytics_AbuseDetection_AgentHoppingWindowMinutes =
+            "FoundationaLLM:Analytics:AbuseDetection:AgentHoppingWindowMinutes";
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:Analytics:AbuseDetection:FileUploadAbuseCount setting.
+        /// <para>Value description:<br/>Maximum number of file uploads within the monitored period considered abusive and subject to rate limiting.</para>
+        /// </summary>
+        public const string FoundationaLLM_Analytics_AbuseDetection_FileUploadAbuseCount =
+            "FoundationaLLM:Analytics:AbuseDetection:FileUploadAbuseCount";
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:Analytics:AbuseDetection:FileUploadAbuseSizeGB setting.
+        /// <para>Value description:<br/>Total uploaded file size in gigabytes within the monitored period that, when exceeded, is considered abusive.</para>
+        /// </summary>
+        public const string FoundationaLLM_Analytics_AbuseDetection_FileUploadAbuseSizeGB =
+            "FoundationaLLM:Analytics:AbuseDetection:FileUploadAbuseSizeGB";
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:Analytics:AbuseDetection:HighErrorRateThreshold setting.
+        /// <para>Value description:<br/>Percentage (0-100) of error responses within the monitored interval considered a high error rate that may indicate abuse or system issues.</para>
+        /// </summary>
+        public const string FoundationaLLM_Analytics_AbuseDetection_HighErrorRateThreshold =
+            "FoundationaLLM:Analytics:AbuseDetection:HighErrorRateThreshold";
+
+        #endregion
+
         #region FoundationaLLM:PythonSDK
         
         /// <summary>

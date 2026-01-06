@@ -61,6 +61,7 @@ mindmap
     - [Quota Definition](#quota-definition)
     - [API Raw Request Rate](#api-raw-request-rate)
     - [Agent Request Rate](#agent-request-rate)
+  - [Usage Analytics](#usage-analytics)
   - [Resource Provider](#resource-provider)
   - [Tool](#tool)
   - [Workflow](#workflow)
@@ -213,6 +214,12 @@ For more details, see [API Raw Request Rate](./quota/api-raw-request-rate.md).
 The API call rate is the maximum number of Core API completion calls that a client can make to the Core API targeting a specific agent within a specified time period. The API call rate is used to limit the rate at which a client can perform completions targeting a specific agent.
 
 For more details, see [Agent Request Rate](./quota/agent-request-rate.md).
+
+## Usage Analytics
+
+FoundationaLLM usage analytics provides insights into platform usage patterns, agent performance, and resource utilization while strictly protecting sensitive message content and personally identifiable information (PII). The analytics system tracks aggregated metrics such as request volumes, response times, token consumption, and feature usage without storing or exposing user conversations or identifying information.
+
+For more details, see [Usage Analytics Plan](./usage-analytics-plan.md).
 
 ## Resource Provider
 

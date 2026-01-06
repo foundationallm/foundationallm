@@ -46,6 +46,7 @@ namespace FoundationaLLM.Common.Constants.Configuration
             options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_AzureEventGrid_Essentials);
             options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_AzureEventGrid_Configuration);
             options.Select(AppConfigurationKeys.FoundationaLLM_Events_Profiles_ManagementAPI);
+            options.Select(AppConfigurationKeyFilters.FoundationaLLM_Analytics);
         }
         /// <summary>
         /// Selects configuration options for ManagementPortal.

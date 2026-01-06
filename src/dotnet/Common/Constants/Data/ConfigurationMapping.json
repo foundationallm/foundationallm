@@ -29,7 +29,9 @@
 
 			"APIEndpoints:AzureEventGrid:Essentials:*",
 			"APIEndpoints:AzureEventGrid:Configuration:*",
-			"Events:Profiles:ManagementAPI"
+			"Events:Profiles:ManagementAPI",
+
+			"Analytics:*"
 		]
 	},
 	{

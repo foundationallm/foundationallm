@@ -2,16 +2,16 @@
 	<Dialog modal :visible="isVisible" :header="title" :style="{ minWidth: '50%', maxWidth: '600px' }" :closable="false" class="confirmation-dialog">
 		<!-- Body slot -->
 		<div class="confirmation-message">
-			<slot>{{ message }}</slot>
+			<slot>{{ displayMessage }}</slot>
 		</div>
 
 		<template #footer>
 		<div class="confirmation-dialog-footer">
 			<!-- Confirm -->
-			<Button :severity="confirmButtonSeverity === 'danger' ? 'danger' : 'primary'" :label="confirmText" @click="handleConfirm" autofocus/>
+			<Button :severity="displayConfirmButtonSeverity === 'danger' ? 'danger' : 'primary'" :label="displayConfirmText" @click="handleConfirm" autofocus/>
 
 			<!-- Cancel -->
-			<Button class="ml-2" :label="cancelText" text @click="handleCancel" />
+			<Button class="ml-2" :label="displayCancelText" text @click="handleCancel" />
 		</div>
 		</template>
 	</Dialog>
@@ -74,19 +74,19 @@ export default {
 			return this.header || this.confirmationStore.title;
 		},
 
-		message() {
+		displayMessage() {
 			return this.$props.message || this.confirmationStore.message;
 		},
 
-		confirmText() {
+		displayConfirmText() {
 			return this.$props.confirmText || this.confirmationStore.confirmText;
 		},
 
-		cancelText() {
+		displayCancelText() {
 			return this.$props.cancelText || this.confirmationStore.cancelText;
 		},
 
-		confirmButtonSeverity() {
+		displayConfirmButtonSeverity() {
 			return this.$props.confirmButtonSeverity || this.confirmationStore.confirmButtonSeverity;
 		},
 	},
