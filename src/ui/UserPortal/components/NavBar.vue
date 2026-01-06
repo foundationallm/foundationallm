@@ -164,7 +164,6 @@
 			currentSession(newSession: Session, oldSession: Session) {
 				if (newSession.sessionId !== oldSession?.sessionId) {
 					this.setAgentOptions();
-					this.updateAgentSelection();
 				}
 			},
 			'appStore.selectedAgents': {
@@ -181,7 +180,6 @@
 			},
 			'appStore.lastSelectedAgent': {
 				handler() {
-					this.setAgentOptions();
 					this.updateAgentSelection();
 				},
 				deep: true,
@@ -239,11 +237,10 @@
 				this.hasAvailableAgents = this.appStore.agents.some(
 					(agent: any) => !isAgentExpired(agent));
 
+				// Cache the current session agent to avoid repeated lookups in the filter loop
+				const currentSessionAgent = this.appStore.getSessionAgent(this.currentSession);
 				const isCurrentAgent = (agent: any): boolean => {
-					return (
-						agent.resource.name ===
-						this.appStore.getSessionAgent(this.currentSession)?.resource?.name
-					);
+					return agent.resource.name === currentSessionAgent?.resource?.name;
 				};
 
 				// Filter out expired agents, disabled agents, and agents not enabled in user profile
@@ -306,20 +303,20 @@
 						items: featuredAgents,
 					});
 				}
-				if (!this.appStore.getSessionAgent(this.currentSession) && this.currentSession) {
-					let selectedAgent = null;
 
-					if (featuredAgents.length > 0) {
-						selectedAgent = featuredAgents[0];
-					}
+				// Auto-select a default agent only for NEW sessions (no messages yet).
+				// If the session has messages, the agent will be derived from those messages
+				// by ChatThread.updateSessionAgentFromMessages - don't auto-select here.
+				if (!currentSessionAgent && this.currentSession) {
+					const hasMessages = this.appStore.currentMessages && this.appStore.currentMessages.length > 0;
+					const isNewSession = !hasMessages;
 
-					if (selectedAgent) {
+					if (isNewSession && featuredAgents.length > 0) {
+						const selectedAgent = featuredAgents[0];
 						this.agentSelection = selectedAgent;
 						this.appStore.setSessionAgent(this.currentSession, selectedAgent.value, false);
 					}
 				}
-
-
 
 				// Add Other Agents group if there are non-featured agents
 				if (nonFeaturedAgents.length > 0) {
@@ -330,7 +327,7 @@
 				}
 
 				// Update agent selection after options are set
-				this.updateAgentSelection();
+				this.updateAgentSelection(currentSessionAgent);
 			},
 
 			// handleCopySession() {
@@ -343,8 +340,8 @@
 			// 	});
 			// },
 
-			updateAgentSelection() {
-				const agent = this.appStore.getSessionAgent(this.currentSession);
+			updateAgentSelection(cachedAgent?: any) {
+				const agent = cachedAgent !== undefined ? cachedAgent : this.appStore.getSessionAgent(this.currentSession);
 
 				if (!agent) {
 					this.agentSelection = null;
