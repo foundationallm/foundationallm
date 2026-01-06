@@ -18,7 +18,23 @@ The following terminology changes have been applied:
 
 **Note**: "Vectorization" is still used when specifically referring to the technical process of creating vector embeddings.
 
-### Agent Capabilities Documentation (Latest)
+### Core API Developer Documentation (Latest)
+
+The Core API documentation (`setup-guides/exposed-apis/core-api.md`) has been completely rewritten with comprehensive developer-focused content:
+
+| Section | Content |
+|---------|---------|
+| **Overview** | API purpose, architecture diagram |
+| **Authentication** | curl examples for Azure CLI and client credentials |
+| **Sessions** | Full CRUD operations with curl examples |
+| **Completions** | Session-based, sessionless, with parameter overrides |
+| **Attachments** | File upload and usage examples |
+| **Messages** | Retrieval and rating endpoints |
+| **Error Handling** | Status codes, error format, rate limit handling |
+| **Code Examples** | Complete Python and JavaScript/Node.js clients |
+| **Best Practices** | Session usage, polling, security, optimization |
+
+### Agent Capabilities Documentation
 
 The agent workflows documentation (`agents_workflows.md`) has been significantly expanded with comprehensive documentation for:
 
@@ -80,6 +96,7 @@ The SharePoint guide (`sharepoint-upload-guide.md`) has been updated to document
 | `setup-guides/user-portal/self-service-agent-creation.md` | Updated private storage terminology; added agent configuration settings |
 | `setup-guides/agents/agents_workflows.md` | Major expansion: added comprehensive documentation for all agent capabilities |
 | `setup-guides/user-portal/index.md` | Added Agent Capabilities section with links |
+| `setup-guides/exposed-apis/core-api.md` | Complete rewrite: comprehensive developer guide with curl examples |
 
 ## Topic Coverage Summary
 

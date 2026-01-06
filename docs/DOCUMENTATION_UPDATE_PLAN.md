@@ -31,6 +31,25 @@ The following agent capabilities have been comprehensively documented in `setup-
 | Agent Expiration | ✅ Documented |
 | Portal Experience Controls | ✅ Documented |
 
+## Core API Developer Documentation
+
+The Core API documentation has been comprehensively updated for developers:
+
+| Section | Status |
+|---------|--------|
+| Overview & Architecture | ✅ Documented |
+| Base URL & Versioning | ✅ Documented |
+| Authentication (curl examples) | ✅ Documented |
+| Sessions API (CRUD) | ✅ Documented |
+| Completions API | ✅ Documented |
+| Attachments API | ✅ Documented |
+| Messages API | ✅ Documented |
+| Error Handling | ✅ Documented |
+| Rate Limiting | ✅ Documented |
+| Python Code Example | ✅ Documented |
+| JavaScript Code Example | ✅ Documented |
+| Best Practices | ✅ Documented |
+
 ## Table of Contents
 
 1. [Executive Summary](#executive-summary)
