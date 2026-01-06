@@ -1,15 +1,48 @@
 # Monitoring Data Pipelines
 
-Learn how to monitor data pipeline execution and track processing status.
+Learn how to monitor data pipeline execution, track processing status, and understand performance characteristics.
 
 ## Overview
 
 Monitoring data pipelines helps you:
 
-- Track processing progress
-- Identify and diagnose failures
-- Understand processing performance
-- Plan capacity and scheduling
+- Track processing progress in real-time
+- Identify and diagnose failures quickly
+- Understand processing performance and latency
+- Plan capacity and scheduling optimization
+- Measure the effectiveness of performance improvements
+
+## Performance and Latency
+
+### Understanding Processing Latency
+
+Data pipeline latency refers to the time between when data is submitted and when it becomes available for agent queries. FoundationaLLM optimizes this through:
+
+| Optimization | Benefit |
+|--------------|---------|
+| **Parallel Stage Processing** | Multiple stages can run concurrently where dependencies allow |
+| **Batch Processing** | Documents are processed in optimized batches |
+| **Efficient Embedding** | Text embedding uses optimized batch sizes |
+| **Incremental Indexing** | Only changed content is reprocessed |
+
+### Factors Affecting Latency
+
+| Factor | Impact | Mitigation |
+|--------|--------|------------|
+| **Document Size** | Larger documents take longer to process | Split large documents |
+| **Document Count** | More documents increase total time | Use parallel processing |
+| **Embedding Model** | Model complexity affects speed | Balance quality vs. speed |
+| **Index Size** | Large indexes may slow indexing | Use index partitions |
+| **Network Latency** | Remote services add overhead | Use regional deployments |
+
+### Performance Configuration
+
+To optimize pipeline performance:
+
+1. **Adjust Batch Sizes**: Larger batches can improve throughput but increase memory usage
+2. **Configure Parallelism**: Set appropriate concurrent processing limits
+3. **Tune Chunk Sizes**: Balance between context quality and processing speed
+4. **Schedule Off-Peak**: Run large pipelines during low-usage periods
 
 ## Monitoring Locations
 

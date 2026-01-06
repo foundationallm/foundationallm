@@ -1,18 +1,37 @@
 # Image Description
 
-Learn about image-to-text description capabilities for processing visual content in FoundationaLLM.
+Learn about LLM-generated image description capabilities for processing visual content in FoundationaLLM.
 
 ## Overview
 
-FoundationaLLM can process images to extract textual content and generate descriptions, making visual content searchable and accessible to agents.
+FoundationaLLM leverages Large Language Models (LLMs) with vision capabilities to process images, extract textual content, and generate rich descriptions. This makes visual content searchable and accessible to agents, enabling knowledge retrieval from image-based documents.
+
+## LLM-Generated Image Descriptions
+
+FoundationaLLM uses vision-capable LLMs to analyze images and generate detailed textual descriptions. These descriptions:
+
+- Are generated using models like GPT-4 Vision or Claude Vision
+- Can describe image content up to the model's context window limits
+- Are stored as searchable text in your knowledge base
+- Enable semantic search across visual content
+
+### Description Quality Factors
+
+| Factor | Impact |
+|--------|--------|
+| **Model Size** | Larger models produce more detailed, accurate descriptions |
+| **Token Allocation** | More tokens allow longer, richer descriptions |
+| **Image Resolution** | Higher resolution enables finer detail recognition |
+| **Image Complexity** | Simple images are described more accurately |
 
 ## Capabilities
 
 | Capability | Description |
 |------------|-------------|
 | **OCR (Optical Character Recognition)** | Extract text visible in images |
-| **Image Description** | Generate natural language descriptions of image content |
+| **LLM Image Description** | Generate natural language descriptions using vision models |
 | **Visual Q&A** | Answer questions about image content |
+| **Content Summarization** | Create concise summaries of complex visual content |
 
 ## Supported Image Formats
 
@@ -71,22 +90,32 @@ To process images in a data pipeline:
 
 ## Model Considerations
 
-### Token Limits
+### Token Limits and Model Size
 
-Image processing consumes tokens from your AI model allocation:
+Image processing consumes tokens from your AI model allocation. The quality and length of generated descriptions depends on your model configuration:
 
-- Higher detail levels use more tokens
-- Large images may require resizing
+| Model Tier | Typical Token Limit | Description Quality |
+|------------|---------------------|---------------------|
+| **GPT-4 Vision** | Up to 128K tokens | Highly detailed, comprehensive descriptions |
+| **GPT-4o** | Up to 128K tokens | Fast, accurate descriptions |
+| **Claude 3 Vision** | Up to 200K tokens | Extended context for complex images |
+
+**Key considerations:**
+
+- Higher detail levels use more tokens per image
+- Large images may require resizing before processing
 - Batch processing can optimize throughput
+- Token limits apply to both input (image) and output (description)
 
 ### Model Capabilities
 
-| Model | OCR | Description | Analysis |
-|-------|-----|-------------|----------|
-| **GPT-4 Vision** | ✅ | ✅ | ✅ |
-| **Claude Vision** | ✅ | ✅ | ✅ |
+| Model | OCR | Description | Analysis | Max Image Size |
+|-------|-----|-------------|----------|----------------|
+| **GPT-4 Vision** | ✅ | ✅ | ✅ | 20MB |
+| **GPT-4o** | ✅ | ✅ | ✅ | 20MB |
+| **Claude 3 Vision** | ✅ | ✅ | ✅ | 20MB |
 
-> **TODO**: Document specific model configurations supported in your deployment.
+> **Note**: Actual limits depend on your specific model deployment configuration. Contact your administrator for deployment-specific limits.
 
 ### Resolution Considerations
 

@@ -2,14 +2,55 @@
 
 Control which agents appear in your agent selector and learn how to access agent settings.
 
-## Understanding Agent Availability
+## Understanding the Agent Catalog
+
+The **agent catalog** is the collection of all agents available to you. Think of it as your personal library of AI assistants. Each user's catalog may be different based on their permissions and organization settings.
+
+### What Determines Your Agent Catalog
 
 The agents you see in the Chat User Portal depend on several factors:
 
-1. **Organization publishing**: Agents must be published by administrators
+1. **Organization publishing**: Administrators publish agents for general use
 2. **Access permissions**: Your role determines which agents you can access
-3. **Your preferences**: You can enable or disable agents you have access to
-4. **Featured agents**: Some agents are highlighted as featured and cannot be disabled
+3. **Shared agents**: Colleagues may share custom agents with you
+4. **Your own agents**: Agents you create (if self-service is enabled)
+5. **Your preferences**: You can enable or disable agents you have access to
+6. **Featured agents**: Some agents are highlighted as featured and cannot be disabled
+
+### How Agents Appear in the Dropdown
+
+When you click the agent selector in the navigation bar:
+
+1. **Featured agents** appear first, grouped at the top
+2. **Other enabled agents** appear below in alphabetical order
+3. Only agents you've enabled in Settings appear in the dropdown
+4. Your most recently used agents may be prioritized
+
+## User Portal vs. Management Portal
+
+Agent management happens in different places depending on your role:
+
+| Task | User Portal | Management Portal |
+|------|-------------|-------------------|
+| Select an agent to use | ✅ | ❌ |
+| Enable/disable agents for yourself | ✅ | ❌ |
+| Create self-service agents | ✅ (if enabled) | ✅ |
+| Edit your custom agents | ✅ (if enabled) | ✅ |
+| Configure enterprise agents | ❌ | ✅ |
+| Manage all organization agents | ❌ | ✅ |
+| Set up data sources and pipelines | ❌ | ✅ |
+| Configure agent access control | ❌ | ✅ |
+
+**User Portal** is designed for end users who want to:
+- Use agents in conversations
+- Manage which agents appear in their personal agent selector
+- Create and edit their own custom agents (if self-service is enabled)
+
+**Management Portal** is designed for administrators who need to:
+- Create and configure enterprise-wide agents
+- Manage agent permissions and access control
+- Set up knowledge sources and data pipelines
+- Configure platform-wide settings
 
 ## Accessing Agent Settings
 

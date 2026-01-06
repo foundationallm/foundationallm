@@ -15,6 +15,12 @@ items:
     href: how-to-guides/using-agents/selecting-agent.md
   - name: Managing Available Agents
     href: how-to-guides/using-agents/managing-available-agents.md
+  - name: Creating & Editing Agents
+    href: how-to-guides/using-agents/creating-editing-agents.md
+  - name: Sharing Agents
+    href: how-to-guides/using-agents/sharing-agents.md
+  - name: Setting Default Agent
+    href: how-to-guides/using-agents/setting-default-agent.md
   - name: Managing Conversations
     href: how-to-guides/using-agents/managing-conversations.md
   - name: Configuring Accessibility
@@ -39,3 +45,5 @@ items:
     href: how-to-guides/using-agents/printing-conversations.md
   - name: Viewing Agent Prompts
     href: how-to-guides/using-agents/viewing-agent-prompts.md
+  - name: Viewing Status Messages
+    href: how-to-guides/using-agents/viewing-status-messages.md

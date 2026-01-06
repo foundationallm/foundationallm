@@ -1,9 +1,6 @@
 # Directly calling the Management API
 
-This guide provides steps for importing and configuring the Postman collection for the FoundationaLLM Management API. The Management API is used to manage the FoundationaLLM system, including creating and managing agents, vectorization profiles, and more. Once you configure the Postman collection, including authentication, follow the instructions in the links below to perform various operations using the Management API:
-
-- [Managing agents](../../setup-guides/agents/index.md)
-- [Vectorization management](../../setup-guides/vectorization/index.md)
+This guide provides steps for importing and configuring the Postman collection for the FoundationaLLM Management API. The Management API is used to manage the FoundationaLLM system, including creating and managing agents, data pipelines, knowledge sources, and more. Once you configure the Postman collection, including authentication, follow the instructions in the Management Portal documentation to perform various operations using the Management API.
 
 ## Postman collection
 

@@ -21,6 +21,10 @@ items:
     href: how-to-guides/agents/all-agents.md
   - name: My Agents
     href: how-to-guides/agents/my-agents.md
+  - name: Agent Management Walkthrough
+    href: how-to-guides/agents/agent-management-walkthrough.md
+  - name: Agent Creation Walkthrough
+    href: how-to-guides/agents/agent-creation-walkthrough.md
   - name: Prompts
     href: how-to-guides/agents/prompts.md
 - name: Data
@@ -67,6 +71,8 @@ items:
     href: how-to-guides/fllm-platform/configuration.md
   - name: Deployment Information
     href: how-to-guides/fllm-platform/deployment-information.md
+  - name: Status Messages
+    href: how-to-guides/fllm-platform/status-messages.md
 - name: Managing Plugins
   href: how-to-guides/managing-plugins.md
 - name: Configuring Quotas
@@ -92,6 +98,8 @@ items:
     href: reference/concepts/plugins-packages.md
   - name: Quotas
     href: reference/concepts/quotas.md
+  - name: API & Token Limits
+    href: reference/concepts/api-limits.md
   - name: Branding
     href: reference/branding/index.md
     items:

@@ -226,6 +226,7 @@ Access the interactive API documentation:
 ## Related Topics
 
 - [API Reference](api-reference.md)
+- [OpenAI Endpoint Facades](openai-endpoint-facades.md)
 - [Directly Calling Core API](directly-calling-core-api.md)
 - [Finding Your Core API URL](finding-core-api-url.md)
 - [Standard Deployment Local API Access](standard-deployment-local-api-access.md)

@@ -1,6 +1,25 @@
 # Core API Reference
 
-Complete endpoint reference for the FoundationaLLM Core API.
+Complete endpoint reference for the FoundationaLLM Core API, designed for developers integrating FoundationaLLM into applications.
+
+## Developer Overview
+
+The Core API is the primary interface for building applications that interact with FoundationaLLM agents. Use this API to:
+
+- **Send prompts to agents** and receive AI-generated responses
+- **Manage conversations** (sessions) and message history
+- **Upload files** for agent analysis
+- **List available agents** the user has access to
+- **Check service status** and configuration
+
+### Common Integration Patterns
+
+| Pattern | Use Case | Key Endpoints |
+|---------|----------|---------------|
+| **Chatbot Integration** | Embed AI chat in your app | `POST /completions`, `POST /sessions` |
+| **Batch Processing** | Process many requests | `POST /async-completions` |
+| **Document Analysis** | Analyze uploaded files | `POST /files/upload`, `POST /completions` |
+| **Custom UI** | Build custom chat interface | All session and completion endpoints |
 
 ## Base URL
 
@@ -8,14 +27,89 @@ Complete endpoint reference for the FoundationaLLM Core API.
 https://{core-api-url}/instances/{instanceId}
 ```
 
+| Variable | Description | Where to Find |
+|----------|-------------|---------------|
+| `{core-api-url}` | Core API endpoint | App Config: `FoundationaLLM:APIs:CoreAPI:APIUrl` |
+| `{instanceId}` | FoundationaLLM instance ID | App Config: `FoundationaLLM:Instance:Id` |
+
+---
+
 ## Authentication
 
-All endpoints require authentication via one of:
+All Core API endpoints require authentication. FoundationaLLM supports two authentication methods:
 
-| Scheme | Header | Description |
-|--------|--------|-------------|
-| Bearer | `Authorization: Bearer <jwt>` | Entra ID JWT token |
-| Agent Token | `X-AGENT-ACCESS-TOKEN: <token>` | Agent access token |
+### Method 1: Entra ID Bearer Token (Recommended)
+
+Use Microsoft Entra ID (Azure AD) JWT tokens for authenticated user access. This is the standard approach for applications where users sign in.
+
+**Header:**
+```
+Authorization: Bearer <jwt-token>
+```
+
+**Getting a token with Azure CLI:**
+
+```bash
+# Login to Azure
+az login
+
+# Get token for Core API (replace with your client ID)
+TOKEN=$(az account get-access-token \
+  --resource api://{core-api-client-id} \
+  --query accessToken -o tsv)
+```
+
+**Example curl request with Bearer token:**
+
+```bash
+curl -X GET "https://{core-api-url}/instances/{instanceId}/completions/agents" \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json"
+```
+
+### Method 2: Agent Access Token
+
+Use Agent Access Tokens for scenarios where Entra ID authentication isn't practical, such as:
+
+- Public-facing applications
+- Embedded widgets
+- Automated systems without user context
+
+**Header:**
+```
+X-AGENT-ACCESS-TOKEN: <agent-token>
+```
+
+**Example curl request with Agent Access Token:**
+
+```bash
+curl -X POST "https://{core-api-url}/instances/{instanceId}/completions" \
+  -H "X-AGENT-ACCESS-TOKEN: your-agent-access-token-here" \
+  -H "Content-Type: application/json" \
+  -d '{"user_prompt": "What can you help me with?"}'
+```
+
+### Authentication Comparison
+
+| Feature | Entra ID Bearer Token | Agent Access Token |
+|---------|----------------------|-------------------|
+| **User Identity** | Tracks actual user | Uses agent's virtual identity |
+| **Setup** | Requires Entra ID app registration | Created in Management Portal |
+| **Token Lifetime** | Short-lived (typically 1 hour) | Configurable expiration |
+| **Multi-agent** | Access all permitted agents | Bound to single agent |
+| **Audit Trail** | Full user attribution | Agent-level attribution |
+| **Best For** | User-authenticated apps | Public integrations |
+
+### Creating Agent Access Tokens
+
+1. Open the Management Portal
+2. Navigate to the agent's edit page
+3. Scroll to the **Security** section
+4. Click **Create Access Token**
+5. Set description and expiration date
+6. Copy the generated token immediately
+
+See [Agent Access Tokens](../../../management-portal/reference/concepts/agent-access-tokens.md) for detailed setup instructions.
 
 ---
 
@@ -23,14 +117,29 @@ All endpoints require authentication via one of:
 
 ### POST /completions
 
-Request a synchronous completion from an agent.
+Request a synchronous completion from an agent. The API waits for the full response before returning.
 
-**Request:**
+**curl Example (Bearer Token):**
 
-```http
-POST /instances/{instanceId}/completions
-Content-Type: application/json
-Authorization: Bearer <token>
+```bash
+curl -X POST "https://{core-api-url}/instances/{instanceId}/completions" \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "user_prompt": "What is FoundationaLLM?",
+    "agent_name": "knowledge-agent"
+  }'
+```
+
+**curl Example (Agent Access Token):**
+
+```bash
+curl -X POST "https://{core-api-url}/instances/{instanceId}/completions" \
+  -H "X-AGENT-ACCESS-TOKEN: your-token-here" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "user_prompt": "What is FoundationaLLM?"
+  }'
 ```
 
 **Request Body:**
@@ -59,10 +168,10 @@ Authorization: Bearer <token>
 | Field | Type | Required | Description |
 |-------|------|----------|-------------|
 | `operation_id` | string | No | Custom operation ID (auto-generated if not provided) |
-| `user_prompt` | string | Yes | User's question or instruction |
-| `session_id` | string | No | Conversation session for context |
-| `agent_name` | string | No | Specific agent to use |
-| `attachments` | array | No | File attachment references |
+| `user_prompt` | string | **Yes** | User's question or instruction |
+| `session_id` | string | No | Conversation session for context continuity |
+| `agent_name` | string | No | Specific agent to use (required for Bearer auth if multiple agents) |
+| `attachments` | array | No | File attachment references from uploads |
 | `settings` | object | No | Runtime parameter overrides |
 
 **Response (200 OK):**
@@ -85,27 +194,30 @@ Authorization: Bearer <token>
 
 **Error Responses:**
 
-| Status | Description |
-|--------|-------------|
-| 400 | Invalid request body |
-| 401 | Authentication required |
-| 429 | Quota exceeded |
+| Status | Description | Example |
+|--------|-------------|---------|
+| 400 | Invalid request body | Missing required field `user_prompt` |
+| 401 | Authentication required | Invalid or expired token |
+| 403 | Access denied | No permission for specified agent |
+| 429 | Quota exceeded | Rate limit reached |
 
 ---
 
 ### POST /async-completions
 
-Start an asynchronous completion operation.
+Start an asynchronous completion operation for long-running requests. Returns immediately with an operation ID.
 
-**Request:**
+**curl Example:**
 
-```http
-POST /instances/{instanceId}/async-completions
-Content-Type: application/json
-Authorization: Bearer <token>
+```bash
+curl -X POST "https://{core-api-url}/instances/{instanceId}/async-completions" \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "user_prompt": "Analyze this complex document and provide a detailed summary...",
+    "agent_name": "document-agent"
+  }'
 ```
-
-**Request Body:** Same as `/completions`
 
 **Response (202 Accepted):**
 
@@ -118,17 +230,19 @@ Authorization: Bearer <token>
 }
 ```
 
+Use the `operation_id` to poll for completion status.
+
 ---
 
 ### GET /completions/agents
 
 List agents available to the current user.
 
-**Request:**
+**curl Example:**
 
-```http
-GET /instances/{instanceId}/completions/agents
-Authorization: Bearer <token>
+```bash
+curl -X GET "https://{core-api-url}/instances/{instanceId}/completions/agents" \
+  -H "Authorization: Bearer $TOKEN"
 ```
 
 **Response (200 OK):**
@@ -153,15 +267,17 @@ Authorization: Bearer <token>
 
 ## Sessions Endpoints
 
+Sessions maintain conversation context across multiple messages.
+
 ### GET /sessions
 
 List all conversations for the current user.
 
-**Request:**
+**curl Example:**
 
-```http
-GET /instances/{instanceId}/sessions
-Authorization: Bearer <token>
+```bash
+curl -X GET "https://{core-api-url}/instances/{instanceId}/sessions" \
+  -H "Authorization: Bearer $TOKEN"
 ```
 
 **Response (200 OK):**
@@ -186,20 +302,22 @@ Authorization: Bearer <token>
 
 Create a new conversation session.
 
-**Request:**
+**curl Example (Bearer Token):**
 
-```http
-POST /instances/{instanceId}/sessions
-Content-Type: application/json
-Authorization: Bearer <token>
+```bash
+curl -X POST "https://{core-api-url}/instances/{instanceId}/sessions" \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"name": "New Conversation"}'
 ```
 
-**Request Body:**
+**curl Example (Agent Access Token):**
 
-```json
-{
-  "name": "New Conversation"
-}
+```bash
+curl -X POST "https://{core-api-url}/instances/{instanceId}/sessions" \
+  -H "X-AGENT-ACCESS-TOKEN: your-token-here" \
+  -H "Content-Type: application/json" \
+  -d '{"name": "New Conversation"}'
 ```
 
 **Response (200 OK):**
@@ -221,11 +339,11 @@ Authorization: Bearer <token>
 
 Retrieve messages for a conversation.
 
-**Request:**
+**curl Example:**
 
-```http
-GET /instances/{instanceId}/sessions/{sessionId}/messages
-Authorization: Bearer <token>
+```bash
+curl -X GET "https://{core-api-url}/instances/{instanceId}/sessions/{sessionId}/messages" \
+  -H "Authorization: Bearer $TOKEN"
 ```
 
 **Response (200 OK):**
@@ -257,56 +375,15 @@ Authorization: Bearer <token>
 
 ---
 
-### GET /sessions/{sessionId}/messagescount
-
-Get the count of messages in a conversation.
-
-**Request:**
-
-```http
-GET /instances/{instanceId}/sessions/{sessionId}/messagescount
-Authorization: Bearer <token>
-```
-
-**Response (200 OK):**
-
-```json
-42
-```
-
----
-
-### POST /sessions/{sessionId}/update
-
-Update conversation properties.
-
-**Request:**
-
-```http
-POST /instances/{instanceId}/sessions/{sessionId}/update
-Content-Type: application/json
-Authorization: Bearer <token>
-```
-
-**Request Body:**
-
-```json
-{
-  "name": "Renamed Conversation"
-}
-```
-
----
-
 ### DELETE /sessions/{sessionId}
 
 Delete a conversation and all its messages.
 
-**Request:**
+**curl Example:**
 
-```http
-DELETE /instances/{instanceId}/sessions/{sessionId}
-Authorization: Bearer <token>
+```bash
+curl -X DELETE "https://{core-api-url}/instances/{instanceId}/sessions/{sessionId}" \
+  -H "Authorization: Bearer $TOKEN"
 ```
 
 **Response (200 OK):** Empty body
@@ -315,47 +392,45 @@ Authorization: Bearer <token>
 
 ### POST /sessions/{sessionId}/message/{messageId}/rate
 
-Rate an assistant response.
+Rate an assistant response (thumbs up/down).
 
-**Request:**
+**curl Example:**
 
-```http
-POST /instances/{instanceId}/sessions/{sessionId}/message/{messageId}/rate
-Content-Type: application/json
-Authorization: Bearer <token>
-```
-
-**Request Body:**
-
-```json
-{
-  "rating": true,
-  "comments": "Very helpful response"
-}
+```bash
+curl -X POST "https://{core-api-url}/instances/{instanceId}/sessions/{sessionId}/message/{messageId}/rate" \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "rating": true,
+    "comments": "Very helpful response"
+  }'
 ```
 
 ---
 
-### GET /sessions/{sessionId}/completionprompts/{completionPromptId}
+## Files Endpoints
 
-Retrieve the compiled prompt for a specific completion.
+### POST /files/upload
 
-**Request:**
+Upload a file attachment for agent analysis.
 
-```http
-GET /instances/{instanceId}/sessions/{sessionId}/completionprompts/{completionPromptId}
-Authorization: Bearer <token>
+**curl Example:**
+
+```bash
+curl -X POST "https://{core-api-url}/instances/{instanceId}/files/upload" \
+  -H "Authorization: Bearer $TOKEN" \
+  -F "file=@/path/to/document.pdf" \
+  -F "agent_name=knowledge-agent" \
+  -F "session_id=session-guid"
 ```
 
 **Response (200 OK):**
 
 ```json
 {
-  "id": "prompt-guid",
-  "session_id": "session-guid",
-  "prefix": "You are a helpful assistant...",
-  "suffix": "",
-  "prompt": "Full compiled prompt..."
+  "object_id": "/instances/{instanceId}/providers/FoundationaLLM.Attachment/attachments/file-guid",
+  "display_name": "document.pdf",
+  "content_type": "application/pdf"
 }
 ```
 
@@ -367,11 +442,11 @@ Authorization: Bearer <token>
 
 Get Core API service status.
 
-**Request:**
+**curl Example:**
 
-```http
-GET /instances/{instanceId}/status
-Authorization: Bearer <token>
+```bash
+curl -X GET "https://{core-api-url}/instances/{instanceId}/status" \
+  -H "Authorization: Bearer $TOKEN"
 ```
 
 **Response (200 OK):**
@@ -393,11 +468,11 @@ Authorization: Bearer <token>
 
 Get portal branding configuration.
 
-**Request:**
+**curl Example:**
 
-```http
-GET /instances/{instanceId}/branding
-Authorization: Bearer <token>
+```bash
+curl -X GET "https://{core-api-url}/instances/{instanceId}/branding" \
+  -H "Authorization: Bearer $TOKEN"
 ```
 
 **Response (200 OK):**
@@ -414,43 +489,13 @@ Authorization: Bearer <token>
 
 ---
 
-## Files Endpoints
+## Rate Limiting and Quotas
 
-### POST /files/upload
+The Core API enforces quota limits to prevent abuse and ensure fair usage.
 
-Upload a file attachment.
+### Quota Response
 
-**Request:**
-
-```http
-POST /instances/{instanceId}/files/upload
-Content-Type: multipart/form-data
-Authorization: Bearer <token>
-```
-
-**Form Fields:**
-
-| Field | Type | Description |
-|-------|------|-------------|
-| `file` | file | The file to upload |
-| `agent_name` | string | Agent for the attachment |
-| `session_id` | string | Conversation session |
-
-**Response (200 OK):**
-
-```json
-{
-  "object_id": "/instances/{instanceId}/providers/FoundationaLLM.Attachment/attachments/file-guid",
-  "display_name": "document.pdf",
-  "content_type": "application/pdf"
-}
-```
-
----
-
-## Rate Limiting
-
-The Core API enforces quota limits. When exceeded:
+When quota is exceeded:
 
 **Response (429 Too Many Requests):**
 
@@ -463,10 +508,102 @@ The Core API enforces quota limits. When exceeded:
 }
 ```
 
+### Handling Rate Limits in Code
+
+```bash
+# Example retry logic with curl
+response=$(curl -s -w "\n%{http_code}" -X POST \
+  "https://{core-api-url}/instances/{instanceId}/completions" \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"user_prompt": "Hello"}')
+
+http_code=$(echo "$response" | tail -1)
+if [ "$http_code" = "429" ]; then
+  echo "Rate limited. Waiting 60 seconds..."
+  sleep 60
+  # Retry request
+fi
+```
+
+---
+
+## Validation Rules
+
+### Request Validation
+
+| Field | Validation | Error Message |
+|-------|------------|---------------|
+| `user_prompt` | Required, non-empty | "user_prompt is required" |
+| `session_id` | Valid GUID format | "Invalid session_id format" |
+| `agent_name` | Must exist and be accessible | "Agent not found or access denied" |
+| `temperature` | 0.0 to 1.0 | "temperature must be between 0 and 1" |
+| `max_new_tokens` | Positive integer | "max_new_tokens must be positive" |
+
+### Common Validation Errors
+
+```json
+{
+  "error": {
+    "code": "ValidationError",
+    "message": "One or more validation errors occurred",
+    "details": [
+      {
+        "field": "user_prompt",
+        "message": "The user_prompt field is required."
+      }
+    ]
+  }
+}
+```
+
+---
+
+## Complete Workflow Example
+
+Here's a complete example of creating a session, sending a message, and retrieving the response:
+
+```bash
+# Set variables
+CORE_API="https://your-core-api.azurecontainerapps.io"
+INSTANCE_ID="your-instance-guid"
+TOKEN=$(az account get-access-token --resource api://your-client-id --query accessToken -o tsv)
+
+# 1. Create a new session
+SESSION=$(curl -s -X POST "$CORE_API/instances/$INSTANCE_ID/sessions" \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"name": "API Test Conversation"}')
+
+SESSION_ID=$(echo $SESSION | jq -r '.id')
+echo "Created session: $SESSION_ID"
+
+# 2. Send a message
+RESPONSE=$(curl -s -X POST "$CORE_API/instances/$INSTANCE_ID/completions" \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  -d "{
+    \"user_prompt\": \"What is FoundationaLLM?\",
+    \"session_id\": \"$SESSION_ID\",
+    \"agent_name\": \"knowledge-agent\"
+  }")
+
+echo "Response: $(echo $RESPONSE | jq -r '.completion')"
+
+# 3. Retrieve conversation history
+MESSAGES=$(curl -s -X GET "$CORE_API/instances/$INSTANCE_ID/sessions/$SESSION_ID/messages" \
+  -H "Authorization: Bearer $TOKEN")
+
+echo "Messages in session: $(echo $MESSAGES | jq length)"
+```
+
 ---
 
 ## Related Topics
 
 - [Core API Overview](index.md)
 - [Directly Calling Core API](directly-calling-core-api.md)
-- [.NET SDK - Core Client](../../sdks/dotnet/index.md)
+- [Agent Access Tokens](../../../management-portal/reference/concepts/agent-access-tokens.md)
+- [Quotas Reference](../../../management-portal/reference/concepts/quotas.md)
+- [.NET SDK](../../sdks/dotnet/index.md)
+- [Python SDK](../../sdks/python/index.md)
