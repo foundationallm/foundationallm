@@ -239,9 +239,6 @@
 
 				// Cache the current session agent to avoid repeated lookups in the filter loop
 				const currentSessionAgent = this.appStore.getSessionAgent(this.currentSession);
-				const isCurrentAgent = (agent: any): boolean => {
-					return agent.resource.name === currentSessionAgent?.resource?.name;
-				};
 
 				// Filter out expired agents, disabled agents, and agents not enabled in user profile
 				// but keep the currently selected agent even if it doesn't meet these criteria

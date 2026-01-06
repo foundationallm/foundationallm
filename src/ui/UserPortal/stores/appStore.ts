@@ -850,7 +850,7 @@ export const useAppStore = defineStore('app', {
 
 			this.userProfileLoadingPromise = (async () => {
 				try {
-					
+
 					this.userProfile = await api.getUserProfile();
 					this.oneDriveWorkSchool = this.userProfile?.flags.oneDriveWorkSchoolEnabled;
 					this.isUserProfileLoaded = true;
