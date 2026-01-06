@@ -39,7 +39,9 @@ The Core API documentation has been comprehensively updated for developers:
 |---------|--------|
 | Overview & Architecture | ✅ Documented |
 | Base URL & Versioning | ✅ Documented |
-| Authentication (curl examples) | ✅ Documented |
+| Authentication - Entra ID (curl examples) | ✅ Documented |
+| Authentication - Agent Access Tokens (curl examples) | ✅ Documented |
+| Authentication Methods Comparison | ✅ Documented |
 | Sessions API (CRUD) | ✅ Documented |
 | Completions API | ✅ Documented |
 | Attachments API | ✅ Documented |

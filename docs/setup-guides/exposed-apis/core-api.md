@@ -52,11 +52,33 @@ All API requests should include the `api-version` query parameter:
 
 ## Authentication
 
-The Core API uses Microsoft Entra ID (Azure AD) bearer token authentication.
+The Core API supports two authentication methods:
 
-### Obtaining an Access Token
+1. **Microsoft Entra ID (Azure AD) Bearer Tokens** - For user-authenticated and service-to-service scenarios
+2. **Agent Access Tokens** - For public-facing applications and scenarios without user authentication
 
-#### Using Azure CLI
+### Authentication Methods Comparison
+
+| Feature | Entra ID Bearer Token | Agent Access Token |
+|---------|----------------------|-------------------|
+| **Use Case** | Enterprise apps, user-authenticated scenarios | Public apps, kiosks, embedded agents |
+| **User Identity** | Full user identity from Entra ID | Virtual user identity per token |
+| **Scope** | Access to all agents user has permission for | Access to single specific agent |
+| **Token Lifetime** | Typically 1 hour (refreshable) | Configurable expiration date |
+| **Setup Complexity** | Requires Entra ID app registration | Created per-agent in Management Portal |
+| **User Login Required** | Yes (or service principal) | No |
+| **Quota Tracking** | By user principal name | By token (shared across all users of token) |
+| **Best For** | Internal enterprise applications | Customer-facing chatbots, public demos |
+
+---
+
+### Option 1: Microsoft Entra ID Bearer Token
+
+Use Entra ID authentication for enterprise applications where users authenticate with their organizational credentials.
+
+#### Obtaining an Access Token
+
+##### Using Azure CLI
 
 ```bash
 # Login to Azure
@@ -71,7 +93,9 @@ TOKEN=$(az account get-access-token \
 echo $TOKEN
 ```
 
-#### Using curl with Client Credentials
+##### Using curl with Client Credentials
+
+For service-to-service authentication:
 
 ```bash
 # Set your tenant and app details
@@ -92,14 +116,131 @@ TOKEN=$(curl -s -X POST \
 echo $TOKEN
 ```
 
-### Using the Token
+#### Using Entra ID Token
 
-Include the token in the `Authorization` header for all API requests:
+Include the token in the `Authorization` header:
 
 ```bash
-curl -X GET "${CORE_API_URL}/status" \
-  -H "Authorization: Bearer ${TOKEN}"
+curl -X GET "${CORE_API_URL}/instances/${INSTANCE_ID}/sessions?api-version=1.0" \
+  -H "Authorization: Bearer ${TOKEN}" \
+  -H "Content-Type: application/json"
 ```
+
+---
+
+### Option 2: Agent Access Token
+
+Use Agent Access Tokens for public-facing applications where users don't need to authenticate with Entra ID. This is ideal for:
+
+- Public chatbots and demos
+- Kiosk applications
+- Embedded chat widgets
+- Customer support interfaces
+
+#### Creating an Agent Access Token
+
+1. Navigate to **Management Portal** > **Agents** > [Your Agent]
+2. Go to the **Security** section
+3. Click **Create Access Token**
+4. Enter a description and expiration date
+5. Copy and securely store the generated token
+
+> [!IMPORTANT]
+> The token is only displayed once. Store it securely immediately after creation.
+
+For detailed setup instructions, see [Agent Access Token](../agents/Agent_AccessToken.md).
+
+#### Using Agent Access Token with curl
+
+Agent Access Tokens use the `X-AGENT-ACCESS-TOKEN` header instead of the `Authorization` header:
+
+##### Create a Session
+
+```bash
+AGENT_ACCESS_TOKEN="your-agent-access-token"
+
+curl -X POST "${CORE_API_URL}/instances/${INSTANCE_ID}/sessions?api-version=1.0" \
+  -H "X-AGENT-ACCESS-TOKEN: ${AGENT_ACCESS_TOKEN}" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "Public Chat Session"
+  }'
+```
+
+**Response:**
+
+```json
+{
+  "id": "session-789",
+  "name": "Public Chat Session",
+  "type": "Session"
+}
+```
+
+##### Send a Completion
+
+```bash
+SESSION_ID="session-789"
+
+curl -X POST "${CORE_API_URL}/instances/${INSTANCE_ID}/completions?api-version=1.0" \
+  -H "X-AGENT-ACCESS-TOKEN: ${AGENT_ACCESS_TOKEN}" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "session_id": "'"${SESSION_ID}"'",
+    "user_prompt": "Hello, what can you help me with?"
+  }'
+```
+
+##### Poll for Completion Status
+
+```bash
+OPERATION_ID="op-abc123"
+
+curl -X GET "${CORE_API_URL}/instances/${INSTANCE_ID}/async-completions/${OPERATION_ID}/status?api-version=1.0" \
+  -H "X-AGENT-ACCESS-TOKEN: ${AGENT_ACCESS_TOKEN}"
+```
+
+##### Upload an Attachment
+
+```bash
+curl -X POST "${CORE_API_URL}/instances/${INSTANCE_ID}/attachments?api-version=1.0" \
+  -H "X-AGENT-ACCESS-TOKEN: ${AGENT_ACCESS_TOKEN}" \
+  -F "file=@/path/to/document.pdf"
+```
+
+#### Agent Access Token Limitations
+
+When using Agent Access Tokens, be aware of these limitations:
+
+| Limitation | Description |
+|------------|-------------|
+| **Single Agent** | Token only provides access to the specific agent it was created for |
+| **No Agent Override** | Cannot use `settings.agent_name` to switch agents |
+| **Shared Identity** | All users of the token share the same virtual identity |
+| **Quota Sharing** | Rate limits are shared across all token users |
+
+#### Security Considerations for Agent Access Tokens
+
+1. **Token Storage**: Store tokens in secure environment variables or secret managers
+2. **Token Rotation**: Set appropriate expiration dates and rotate tokens regularly
+3. **Access Control**: Assign only necessary RBAC permissions to the token's virtual security group
+4. **Monitoring**: Monitor usage patterns to detect potential abuse
+5. **Revocation**: Delete the token immediately if compromised
+
+---
+
+### Choosing the Right Authentication Method
+
+| Scenario | Recommended Method |
+|----------|-------------------|
+| Internal enterprise application | Entra ID Bearer Token |
+| User needs access to multiple agents | Entra ID Bearer Token |
+| Per-user quota tracking required | Entra ID Bearer Token |
+| Public website chatbot | Agent Access Token |
+| Customer support widget | Agent Access Token |
+| Kiosk or shared terminal | Agent Access Token |
+| Demo or proof-of-concept | Agent Access Token |
+| API integration with existing auth | Entra ID Bearer Token |
 
 ---
 

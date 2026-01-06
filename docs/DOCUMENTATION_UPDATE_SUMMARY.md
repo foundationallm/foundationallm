@@ -25,7 +25,7 @@ The Core API documentation (`setup-guides/exposed-apis/core-api.md`) has been co
 | Section | Content |
 |---------|---------|
 | **Overview** | API purpose, architecture diagram |
-| **Authentication** | curl examples for Azure CLI and client credentials |
+| **Authentication** | Dual authentication methods: Entra ID Bearer Tokens AND Agent Access Tokens |
 | **Sessions** | Full CRUD operations with curl examples |
 | **Completions** | Session-based, sessionless, with parameter overrides |
 | **Attachments** | File upload and usage examples |
@@ -33,6 +33,22 @@ The Core API documentation (`setup-guides/exposed-apis/core-api.md`) has been co
 | **Error Handling** | Status codes, error format, rate limit handling |
 | **Code Examples** | Complete Python and JavaScript/Node.js clients |
 | **Best Practices** | Session usage, polling, security, optimization |
+
+#### Authentication Methods Documented
+
+The authentication section now covers **both** supported authentication methods:
+
+| Method | Use Case | Header |
+|--------|----------|--------|
+| **Entra ID Bearer Token** | Enterprise apps, user-authenticated scenarios | `Authorization: Bearer {token}` |
+| **Agent Access Token** | Public apps, kiosks, embedded agents | `X-AGENT-ACCESS-TOKEN: {token}` |
+
+The documentation includes:
+- Comparison table of both authentication approaches
+- curl examples for obtaining Entra ID tokens (Azure CLI and client credentials)
+- curl examples for using Agent Access Tokens (sessions, completions, attachments)
+- Security considerations for Agent Access Tokens
+- Decision guide for choosing the right authentication method
 
 ### Agent Capabilities Documentation
 
