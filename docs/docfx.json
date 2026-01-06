@@ -1,41 +1,18 @@
 {
-    "metadata": [
-      {
-        "src": [
-          {
-            "src": "../src/dotnet",
-            "files": [
-              "**/**.csproj"
-            ],
-            "exclude": [
-              "**/obj/**",
-              "**/bin/**",
-              "_site/**"
-            ]
-          }
-        ],
-        "dest": "api/dotnet",
-        "includePrivateMembers": false,
-        "disableGitFeatures": false,
-        "disableDefaultFilter": false,
-        "noRestore": false,
-        "memberLayout": "samePage",
-        "namespaceLayout": "nested",
-        "EnumSortOrder": "alphabetic",
-        "allowCompilationErrors": false
-      }
-    ],
     "build": {
       "globalMetadata": {
         "_appName": "FoundationaLLM",
         "_appTitle": "FoundationaLLM",
         "_appFaviconPath": "media/favicon.ico",
-        "_appLogoPath": "media/fllm-icon.svg",
+        "_appLogoPath": "media/fllm-icon-50x50.svg",
         "_appFooter": "© FoundationaLLM. All rights reserved. | Find out more about FoundationaLLM at <a href=\"https://foundationallm.ai\">foundationallm.ai</a>.",
         "_enableSearch": true,
+        "_disableNavbar": false,
+        "_disableToc": false,
+        "_disableTocFilter": false,
         "_disableSideFilter": false,
         "_disableNewTab": false,
-        "_disableContribution": false,
+        "_disableContribution": true,
         "_disableBreadcrumb": false,
         "_disableNextArticle": false,
         "_lang": "en"
@@ -43,16 +20,10 @@
       "content": [
         {
           "files": [
-            "api/dotnet/**.yml",
-            "api/dotnet/index.md"
-          ]
-        },
-        {
-          "files": [
-            "**.md",
-            "**.yml",
+            "**/*.md",
+            "**/*.yml",
             "toc.yml",
-            "*.md"
+            "**/toc.yml"
           ]
         }
       ],
@@ -68,8 +39,7 @@
       "fileMetadataFiles": [],
       "template": [
         "default",
-        "modern",
-        "templates/foundationallm"
+        "modern"
       ],
       "xrefService": [ "https://xref.docs.microsoft.com/query?uid={uid}" ],
       "postProcessors": ["ExtractSearchIndex"],

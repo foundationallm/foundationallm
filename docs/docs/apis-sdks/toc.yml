@@ -1,0 +1,34 @@
+items:
+- name: Core API
+  href: apis/core-api/index.md
+  items:
+  - name: Overview
+    href: apis/core-api/index.md
+  - name: Finding Core API URL
+    href: apis/core-api/finding-core-api-url.md
+  - name: Directly Calling Core API
+    href: apis/core-api/directly-calling-core-api.md
+  - name: Local API Access
+    href: apis/core-api/standard-deployment-local-api-access.md
+  - name: API Reference
+    href: apis/core-api/api-reference.md
+- name: Management API
+  href: apis/management-api/index.md
+  items:
+  - name: Overview
+    href: apis/management-api/index.md
+  - name: Resource Providers
+    href: apis/management-api/resource-providers-overview.md
+  - name: Directly Calling Management API
+    href: apis/management-api/directly-calling-management-api.md
+  - name: API Reference
+    href: apis/management-api/api-reference.md
+  - name: Data Pipelines API
+    href: apis/management-api/data-pipelines.md
+- name: SDKs
+  href: sdks/dotnet/index.md
+  items:
+  - name: .NET SDK
+    href: sdks/dotnet/index.md
+  - name: Python SDK
+    href: sdks/python/index.md

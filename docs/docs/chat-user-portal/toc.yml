@@ -1,0 +1,49 @@
+items:
+- name: Overview
+  href: index.md
+- name: Quick Start
+  href: quick-start/quickstart.md
+  items:
+  - name: Quickstart Guide
+    href: quick-start/quickstart.md
+  - name: Creating Your First Agent
+    href: quick-start/creating-first-agent.md
+- name: How-To Guides
+  href: how-to-guides/using-agents/selecting-agent.md
+  items:
+  - name: Selecting an Agent
+    href: how-to-guides/using-agents/selecting-agent.md
+  - name: Managing Available Agents
+    href: how-to-guides/using-agents/managing-available-agents.md
+  - name: Creating & Editing Agents
+    href: how-to-guides/using-agents/creating-editing-agents.md
+  - name: Sharing Agents
+    href: how-to-guides/using-agents/sharing-agents.md
+  - name: Setting Default Agent
+    href: how-to-guides/using-agents/setting-default-agent.md
+  - name: Managing Conversations
+    href: how-to-guides/using-agents/managing-conversations.md
+  - name: Configuring Accessibility
+    href: how-to-guides/using-agents/configuring-accessibility.md
+  - name: Uploading Files
+    href: how-to-guides/using-agents/uploading-files.md
+  - name: Downloading Files
+    href: how-to-guides/using-agents/downloading-files.md
+  - name: Using Code Interpreter
+    href: how-to-guides/using-agents/using-code-interpreter.md
+  - name: Using Knowledge Tool
+    href: how-to-guides/using-agents/using-knowledge-tool.md
+  - name: Using Other Tools
+    href: how-to-guides/using-agents/using-other-tools.md
+  - name: Monitoring Token Consumption
+    href: how-to-guides/using-agents/monitoring-tokens.md
+  - name: Rating Agent Responses
+    href: how-to-guides/using-agents/rating-responses.md
+  - name: Copying Prompts & Results
+    href: how-to-guides/using-agents/copying-prompts-results.md
+  - name: Printing Conversations
+    href: how-to-guides/using-agents/printing-conversations.md
+  - name: Viewing Agent Prompts
+    href: how-to-guides/using-agents/viewing-agent-prompts.md
+  - name: Viewing Status Messages
+    href: how-to-guides/using-agents/viewing-status-messages.md
