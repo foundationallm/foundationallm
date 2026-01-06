@@ -53,6 +53,8 @@ items:
       href: development/calling-apis/directly-calling-vectorization-api.md
     - name: Local API Access for Standard Deployments
       href: development/calling-apis/standard-deployment-local-api-access.md
+    - name: API Validation and Errors
+      href: development/calling-apis/api-validation-errors.md
   - name: Contributing
     href: development/contributing/index.md
     items:
@@ -71,6 +73,27 @@ items:
     href: setup-guides/index.md
   - name: Quickstart guide
     href: setup-guides/quickstart.md
+  - name: User Portal
+    href: setup-guides/user-portal/index.md
+    items:
+    - name: User Portal Guide
+      href: setup-guides/user-portal/index.md
+    - name: Managing Your Agent Catalog
+      href: setup-guides/user-portal/agent-management.md
+    - name: Self-Service Agent Creation
+      href: setup-guides/user-portal/self-service-agent-creation.md
+    - name: Agent Sharing Model
+      href: setup-guides/user-portal/agent-sharing-model.md
+    - name: Accessibility Features
+      href: setup-guides/user-portal/accessibility.md
+    - name: Walkthroughs
+      items:
+      - name: Agent Management Walkthrough
+        href: setup-guides/user-portal/walkthroughs/agent-management-walkthrough.md
+      - name: Agent Creation Walkthrough
+        href: setup-guides/user-portal/walkthroughs/agent-creation-walkthrough.md
+      - name: Status Message Walkthrough
+        href: setup-guides/user-portal/walkthroughs/status-message-walkthrough.md
   - name: Agents
     href: setup-guides/agents/index.md
     items:
@@ -84,6 +107,10 @@ items:
       href: setup-guides/agents/agents_workflows.md
     - name: Agent Access Token
       href: setup-guides/agents/Agent_AccessToken.md
+    - name: Private Storage
+      href: setup-guides/agents/private-storage.md
+    - name: Image Description
+      href: setup-guides/agents/image-description.md
   - name: Branding
     href: setup-guides/branding/index.md
   - name: Exposed APIs
@@ -99,6 +126,13 @@ items:
       href: setup-guides/exposed-apis/resource-management/resource-management.md
   - name: Management UI
     href: setup-guides/management-ui/management-ui.md
+    items:
+    - name: Management UI Overview
+      href: setup-guides/management-ui/management-ui.md
+    - name: Data Pipeline Management
+      href: setup-guides/management-ui/data-pipeline-management.md
+    - name: System Status Messages
+      href: setup-guides/management-ui/system-status-messages.md
   - name: Vectorization
     href: setup-guides/vectorization/index.md
     items:
@@ -112,6 +146,12 @@ items:
       href: setup-guides/vectorization/vectorization-triggering.md
     - name: Monitoring and troubleshooting
       href: setup-guides/vectorization/vectorization-monitoring-troubleshooting.md
+    - name: SharePoint Online Upload Guide
+      href: setup-guides/vectorization/sharepoint-upload-guide.md
+    - name: Azure Data Lake Guide
+      href: setup-guides/vectorization/azure-data-lake-guide.md
+    - name: Knowledge Graph Source
+      href: setup-guides/vectorization/knowledge-graph-source.md
 - name: Operations
   href: operations/index.md
   items:
